@@ -1,0 +1,14 @@
+production:
+  sessions:
+    default:
+      database: jiji
+      hosts:
+        - localhost:27017
+        
+test:
+  sessions:
+    default:
+      database: jiji_test
+      hosts:
+        - localhost:27017
+        

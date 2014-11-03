@@ -10,7 +10,7 @@ module Web
   class WebApplication
     
     def initialize
-      @container = Jiji::Composing::ContainerFactory.instance.new_container;
+      @container = Jiji::Composing::ContainerFactory.instance.new_container
     end
       
     def build

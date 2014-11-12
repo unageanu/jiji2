@@ -1,3 +1,5 @@
+# coding: utf-8
+
 require 'jiji/composing/container_factory'
 
 describe Jiji::Composing::ContainerFactory, "#instance" do

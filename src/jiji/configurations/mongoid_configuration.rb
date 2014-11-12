@@ -1,4 +1,7 @@
-require 'mongoid'
+# coding: utf-8
 
-mongoid_setting_file = "#{File.dirname(__FILE__)}/../../../configurations/mongoid.yml"
+require 'mongoid'
+require 'jiji/utils/requires'
+
+mongoid_setting_file = "#{Jiji::Utils::Requires.root}/configurations/mongoid.yml"
 Mongoid.load!(mongoid_setting_file, ENV["JIJI_ENV"] || :production)

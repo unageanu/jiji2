@@ -14,7 +14,7 @@ module Web
     end
       
     def build
-      echo_service = container.lookup(:echo_service)
+      echo_service  = container.lookup(:echo_service)
       return Rack::Builder.new do
         map( "/echo" ) { run echo_service }
       end

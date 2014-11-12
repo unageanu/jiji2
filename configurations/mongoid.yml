@@ -1,14 +1,20 @@
+
+default:
+  hosts: &hosts
+    - 127.0.0.1:27017
+  options: &options
+    raise_not_found_error: false
+    
 production:
   sessions:
     default:
       database: jiji
-      hosts:
-        - localhost:27017
-        
+      hosts:   *hosts
+  options: *options
+      
 test:
   sessions:
     default:
       database: jiji_test
-      hosts:
-        - localhost:27017
-        
+      hosts:   *hosts
+  options: *options

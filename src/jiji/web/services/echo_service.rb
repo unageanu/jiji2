@@ -5,7 +5,7 @@ require 'sinatra/base'
 module Jiji
 module Web
 
-  class EchoService < Sinatra::Base
+  class EchoService < Jiji::Web::AbstractService
     
     get "/" do
       "Hello"

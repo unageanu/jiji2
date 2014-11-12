@@ -1,11 +1,13 @@
 source 'https://rubygems.org'
 
-gem 'encase',  '0.1.2'
+gem 'encase',    '0.1.2'
 
-gem 'rack',    '1.5.2'
-gem 'sinatra', '1.4.5'
+gem 'lru_redux', '0.8.1'
 
-gem 'mongoid', '4.0.0'
+gem 'rack',      '1.5.2'
+gem 'sinatra',   '1.4.5'
+
+gem 'mongoid',   '4.0.0'
 
 
 group :test do

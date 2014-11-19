@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'encase',    '0.1.2'
 
 gem 'lru_redux', '0.8.1'
+gem 'bcrypt'
 
 gem 'rack',      '1.5.2'
 gem 'sinatra',   '1.4.5'

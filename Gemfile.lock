@@ -10,6 +10,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.1)
       tzinfo (~> 1.1)
+    bcrypt (3.1.9)
     bson (2.3.0)
     builder (3.2.2)
     connection_pool (2.0.0)
@@ -58,6 +59,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt
   encase (= 0.1.2)
   lru_redux (= 0.8.1)
   mongoid (= 4.0.0)

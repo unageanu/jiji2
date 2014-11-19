@@ -1,7 +1,7 @@
 # coding: utf-8
 
-require 'jiji/model/dao/setting'
 require 'bcrypt'
+require 'jiji/utils/value_object'
 
 module Jiji
 module Model
@@ -9,55 +9,29 @@ module Settings
 
   class SecuritySetting
     
-    def initialize
-      @setting = find || new_setting
+    include Mongoid::Document
+    include Jiji::Utils::ValueObject
+    
+    store_in collection: "settings"
+    
+    field :category,        type: Symbol, default: :security
+    field :salt,            type: String, default: nil
+    field :hashed_password, type: String, default: nil
+    field :expiration_days, type: Integer,default: 10
+    
+    def self.load_or_create
+      find || SecuritySetting.new
     end
     
     def password=( password )
-      salt = new_salt
-      values[:hashed_password] = hash(password, salt)
-      values[:salt] = salt
+      self.salt = new_salt
+      self.hashed_password = hash(password, salt)
     end
     
-    def salt
-      values[:salt]
-    end
-    
-    def hashed_password
-      values[:hashed_password]
-    end
-    
-    def expiration_days
-      values[:expiration_days]
-    end
-    
-    def expiration_days=(value)
-      values[:expiration_days]=value
-    end
-    
-    def save
-      @setting.save
-    end
-
   private
     
-    def values
-      @setting[:values]
-    end
-    
-    def find
-      Jiji::Model::Dao::Setting.find_by( :category => "security" )
-    end
-    
-    def new_setting
-      Jiji::Model::Dao::Setting.new {|s|
-        s.category = :security
-        s.values   = {
-          :expiration_days => 10,
-          :salt            => nil,
-          :hashed_password => nil
-        }
-      }
+    def self.find
+      SecuritySetting.find_by( :category => :security )
     end
     
     def hash( password, salt )

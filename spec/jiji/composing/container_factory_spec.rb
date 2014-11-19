@@ -1,5 +1,5 @@
 # coding: utf-8
-
+require 'jiji/test/test_configuration'
 require 'jiji/composing/container_factory'
 
 describe Jiji::Composing::ContainerFactory, "#instance" do

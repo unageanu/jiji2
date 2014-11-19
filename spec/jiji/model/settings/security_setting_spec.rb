@@ -14,7 +14,7 @@ describe Jiji::Model::Settings::SecuritySetting do
   end
   
   example "設定がない場合、初期値を返す" do
-    setting = Jiji::Model::Settings::SecuritySetting.new
+    setting = Jiji::Model::Settings::SecuritySetting.load_or_create
     
     expect( setting.salt ).to be nil
     expect( setting.hashed_password ).to be nil
@@ -22,7 +22,7 @@ describe Jiji::Model::Settings::SecuritySetting do
   end
   
   example "パスワードを設定して永続化できる。saltは自動生成される。" do
-    setting = Jiji::Model::Settings::SecuritySetting.new
+    setting = Jiji::Model::Settings::SecuritySetting.load_or_create
     
     setting.password = 'aaa'
     
@@ -45,7 +45,7 @@ describe Jiji::Model::Settings::SecuritySetting do
     setting.expiration_days = 12
     setting.save
     
-    setting = Jiji::Model::Settings::SecuritySetting.new
+    setting = Jiji::Model::Settings::SecuritySetting.load_or_create
     expect( setting.salt ).to eq salt
     expect( setting.hashed_password ).to eq hash
     expect( setting.expiration_days ).to eq 12

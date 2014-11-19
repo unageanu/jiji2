@@ -1,5 +1,6 @@
 # coding: utf-8
 
+require 'jiji/test/test_configuration'
 require 'jiji/security/session'
 require 'date'
 

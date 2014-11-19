@@ -42,7 +42,7 @@ private
     
     def configure_model( container )
       container.configure do
-        object :security_setting, Jiji::Model::Settings::SecuritySetting.new
+        object :security_setting, Jiji::Model::Settings::SecuritySetting.load_or_create
       end
     end
     

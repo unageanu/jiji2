@@ -1,12 +1,12 @@
 # coding: utf-8
 
+require 'jiji/test/test_configuration'
 require 'jiji/composing/container_factory'
 
 describe Jiji::Security::Authenticator do
   
   before(:all) do
     @data_builder = Jiji::Test::DataBuilder.new
-    #@data_builder.new_setting(:password, {:password=>})
     
     @container = Jiji::Composing::ContainerFactory.instance.new_container
     

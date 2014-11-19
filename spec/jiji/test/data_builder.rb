@@ -9,28 +9,22 @@ module Test
   class DataBuilder
     
     def new_rate(seed)
-      Jiji::Model::Dao::Rate.new {|r|
-        r.pair      = seed
-        r.open      = 100 + seed
-        r.close     = 101 + seed
-        r.high      = 110 + seed
-        r.low       = 90  + seed
-        r.buy_swap  = 2   + seed
-        r.sell_swap = 20  + seed
-        r.timestamp = DateTime.new(seed+1000, 1, 1, 0, 0, 0)
+      Jiji::Model::Trading::Rate.new {|r|
+        r.pair_id     = seed
+        r.open_price  = 100 + seed
+        r.close_price = 101 + seed
+        r.high_price  = 110 + seed
+        r.low_price   = 90  + seed
+        r.buy_swap    = 2   + seed
+        r.sell_swap   = 20  + seed
+        r.timestamp   = DateTime.new(seed+1000, 1, 1, 0, 0, 0)
       }
     end
     
-    def new_setting(category, values)
-      Jiji::Model::Dao::Setting.new {|r|
-        r.category = seed
-        r.values   = values
-      }
-    end
     
     def clean
-      Jiji::Model::Dao::Rate.delete_all
-      Jiji::Model::Dao::Setting.delete_all
+      Jiji::Model::Trading::Rate.delete_all
+      Jiji::Model::Settings::SecuritySetting.delete_all
     end
     
   end

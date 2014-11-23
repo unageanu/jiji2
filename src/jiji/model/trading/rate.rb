@@ -2,82 +2,69 @@
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
-require 'jiji/model/trading/bid_ask'
 
 module Jiji
 module Model
 module Trading
 
   class Rate
-  
-    include Mongoid::Document
+    
     include Jiji::Utils::ValueObject
     
-    store_in collection: "rates"
+    attr :open, :close, :high, :low
     
-    field :pair_id,  type: Integer
-    
-    field :open_price,     type: Float
-    field :close_price,    type: Float
-    field :high_price,     type: Float
-    field :low_price,      type: Float
-    
-    field  :sell_swap, type: Integer
-    field  :buy_swap,  type: Integer
-    
-    field :timestamp, type: DateTime
-    
-    attr_accessor :pair
-    
-    def open
-      bid_ask( open_price )
-    end
-    def close
-      bid_ask( close_price )
-    end
-    def high
-      bid_ask( high_price )
-    end
-    def low
-      bid_ask( low_price )
-    end
-
-    attr_writer :bid_spread, :ask_spread
-    
-    def bid_spread
-      @bid_spread || 0
-    end
-    def ask_spread
-      @ask_spread || 0
+    def initialize( open, close, high, low )
+      @open  = open
+      @close = close
+      @high  = high
+      @low   = low
     end
     
-    def self.union( *others )
-      rate = others[0].clone
-      others.each {|r|
-        if r.timestamp < rate.timestamp
-          rate.open_price = r.open_price 
-          rate.timestamp = r.timestamp
-        else
-          rate.close_price = r.close_price 
-        end
-        rate.high_price = Math.max(rate.high_price, r.high_price)
-        rate.low_price  = Math.min(rate.low_price,  r.low_price)
+    def pair_id
+      @open.pair_id
+    end
+    def timestamp
+      @open.timestamp
+    end
+    def buy_swap
+      @open.buy_swap
+    end
+    def sell_swap
+      @open.sell_swap
+    end
+    
+    def self.create_from_tick( *ticks )
+      open = close = high = low = ticks[0]
+      ticks.each {|t|
+        open  = t if t.timestamp < open.timestamp
+        close = t if t.timestamp > close.timestamp
+        high  = t if high.bid < t.bid
+        low   = t if low.bid  > t.bid
       }
+      return Rate.new(open, close, high, low)
     end
-
+    
+    def self.union( *rates )
+      open  = rates[0].open
+      close = rates[0].close 
+      high  = rates[0].high 
+      low   = rates[0].low
+      rates.each {|r|
+        open  = r.open  if r.open.timestamp < open.timestamp
+        close = r.close if r.close.timestamp > close.timestamp
+        high  = r.high  if high.bid < r.high.bid
+        low   = r.low   if low.bid  > r.low.bid
+      }
+      return Rate.new(open, close, high, low)
+    end
+  
   protected
     def values
-      [pair_id, buy_swap, sell_swap, timestamp,
-        open_price, close_price, high_price, low_price]
+      [pair_id, open, close, high, low]
     end
+    
+  end
   
-  private
-    def bid_ask( price )
-      BidAsk.new( price, bid_spread, ask_spread )
-    end
-  
-  end 
-
 end
 end
 end

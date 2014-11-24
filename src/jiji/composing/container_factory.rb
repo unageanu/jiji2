@@ -1,6 +1,8 @@
 # coding: utf-8
 
 require 'singleton'
+require 'logger'
+require 'fileutils'
 
 require 'encase/container'
 
@@ -25,6 +27,8 @@ private
       configure_security( container )
       configure_model( container )
       configure_sources( container )
+      configure_plugins( container )
+      configure_logger( container )
     end
     
     def configure_web( container )
@@ -49,6 +53,20 @@ private
     def configure_sources( container )
       container.configure do
         object :time_source, Jiji::Utils::TimeSource.new
+      end
+    end
+    
+    def configure_plugins( container )
+      container.configure do
+        object :plugin_loader, Jiji::Plugin::Loader.new
+      end
+    end
+    
+    def configure_logger( container )
+      logger = Logger.new( STDOUT )
+      logger.level = Logger::DEBUG
+      container.configure do
+        object :logger, logger
       end
     end
     

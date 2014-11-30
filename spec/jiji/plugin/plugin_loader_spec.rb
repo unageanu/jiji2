@@ -11,7 +11,9 @@ describe Jiji::Plugin::Loader, "#load" do
     
     loader.load
     
-    expect(JIJI::Plugin.get(:test).sort!).to eq ["test1","test2"]
+    expect(JIJI::Plugin.get(:test).include?("test1")).to eq true
+    expect(JIJI::Plugin.get(:test).include?("test2")).to eq true
+    expect(JIJI::Plugin.get(:test).include?("error")).to eq false
   end
   
 end

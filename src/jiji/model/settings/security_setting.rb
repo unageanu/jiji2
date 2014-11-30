@@ -28,14 +28,14 @@ module Settings
       self.hashed_password = hash(password, salt)
     end
     
+    def hash( password, salt )
+      BCrypt::Engine.hash_secret( password, salt )
+    end
+    
   private
     
     def self.find
       SecuritySetting.find_by( :category => :security )
-    end
-    
-    def hash( password, salt )
-      BCrypt::Engine.hash_secret( password, salt )
     end
   
     def new_salt

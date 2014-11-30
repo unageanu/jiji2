@@ -26,7 +26,7 @@ describe Jiji::Security::Authenticator do
   end
   
   example "正しいパスワードで認証できる" do
-    token = @authenticator.authenticate( @setting.hashed_password )
+    token = @authenticator.authenticate( "foo" )
     
     expect(token).not_to be nil
     expect(@store.valid_token? token).to be true

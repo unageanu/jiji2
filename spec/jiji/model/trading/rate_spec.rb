@@ -13,7 +13,7 @@ describe Jiji::Model::Trading::Rate do
     @data_builder.clean
   end
   
-  example "tickから作成できる" do
+  it "tickから作成できる" do
     
     rate1 = Jiji::Model::Trading::Rate.create_from_tick(
       @data_builder.new_tick(1,   DateTime.new(2014, 1, 1, 0, 0, 0)),  
@@ -37,7 +37,7 @@ describe Jiji::Model::Trading::Rate do
     expect(rate1.sell_swap).to eq(21)
   end
   
-  example "すべての値が同一である場合、同一とみなされる" do
+  it "すべての値が同一である場合、同一とみなされる" do
     rate1 = @data_builder.new_rate(1)
     rate2 = @data_builder.new_rate(2)
     
@@ -54,7 +54,7 @@ describe Jiji::Model::Trading::Rate do
     expect(rate1.equal?(@data_builder.new_rate(1))).to eq(false)
   end
   
-  example "clone で複製ができる" do
+  it "clone で複製ができる" do
     rate1 = @data_builder.new_rate(1)
     clone = rate1.clone
     
@@ -63,7 +63,7 @@ describe Jiji::Model::Trading::Rate do
     expect(rate1.equal?(clone)).to eq(false)
   end
   
-  example "union で Rateを統合できる" do
+  it "unionで統合できる" do
     rate1 = Jiji::Model::Trading::Rate.create_from_tick(
       @data_builder.new_tick(1,   DateTime.new(2014, 1, 2, 0, 0, 0)),  
       @data_builder.new_tick(2,   DateTime.new(2014, 2, 1, 0, 0, 0))

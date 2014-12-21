@@ -25,7 +25,7 @@ describe Jiji::Security::Authenticator do
     @data_builder.clean
   end
   
-  example "正しいパスワードで認証できる" do
+  it "正しいパスワードで認証できる" do
     token = @authenticator.authenticate( "foo" )
     
     expect(token).not_to be nil
@@ -36,7 +36,7 @@ describe Jiji::Security::Authenticator do
     expect(@store.valid_token? token).to be false
   end
 
-  example "不正なパスワードはエラー" do
+  it "不正なパスワードはエラー" do
     expect { @authenticator.authenticate( 'x' ) }.to raise_error(Jiji::Errors::AuthFailedException) 
   end
   

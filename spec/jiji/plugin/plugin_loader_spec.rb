@@ -5,7 +5,7 @@ require 'jiji/composing/container_factory'
 
 describe Jiji::Plugin::Loader, "#load" do
 
-  example "プラグインの一覧を読み込む" do
+  it "プラグインの一覧を読み込む" do
     container = Jiji::Composing::ContainerFactory.instance.new_container
     loader = container.lookup(:plugin_loader)
     

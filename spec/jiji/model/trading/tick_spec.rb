@@ -13,7 +13,7 @@ describe Jiji::Model::Trading::Tick do
     @data_builder.clean
   end
   
-  example "mongodbに永続化できる" do
+  it "mongodbに永続化できる" do
     tick1 = @data_builder.new_tick(1)
     tick1.save
     
@@ -37,7 +37,7 @@ describe Jiji::Model::Trading::Tick do
     expect(tick2.timestamp).to eq(DateTime.new(1002, 1, 1, 0, 0, 0))
   end
   
-  example "すべての値が同一である場合、同一とみなされる" do
+  it "すべての値が同一である場合、同一とみなされる" do
     tick1 = @data_builder.new_tick(1)
     tick2 = @data_builder.new_tick(2)
     

@@ -12,7 +12,7 @@ describe Jiji::Security::SessionStore do
     @time_source = @container.lookup(:time_source)
   end
   
-  example "tokenに対応するセッションがあれば、valid? はtrueを返す" do
+  it "tokenに対応するセッションがあれば、valid? はtrueを返す" do
     
     @time_source.set( DateTime.new(2000,1,10) ) 
     
@@ -33,7 +33,7 @@ describe Jiji::Security::SessionStore do
     
   end
 
-  example "tokenは最大100個まで保持される" do
+  it "tokenは最大100個まで保持される" do
     
     @time_source.set( DateTime.new(2000,1,10) ) 
     

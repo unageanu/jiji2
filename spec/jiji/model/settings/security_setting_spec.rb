@@ -13,7 +13,7 @@ describe Jiji::Model::Settings::SecuritySetting do
     @data_builder.clean
   end
   
-  example "設定がない場合、初期値を返す" do
+  it "設定がない場合、初期値を返す" do
     setting = Jiji::Model::Settings::SecuritySetting.load_or_create
     
     expect( setting.salt ).to be nil
@@ -21,7 +21,7 @@ describe Jiji::Model::Settings::SecuritySetting do
     expect( setting.expiration_days ).to be 10
   end
   
-  example "パスワードを設定して永続化できる。saltは自動生成される。" do
+  it "パスワードを設定して永続化できる。saltは自動生成される。" do
     setting = Jiji::Model::Settings::SecuritySetting.load_or_create
     
     setting.password = 'aaa'

@@ -56,7 +56,7 @@ private
         
         object :rmt_process,      Trading::RMTProcess.new
         object :rmt_job,          Trading::Jobs::RMTJob.new
-        object :rmt_broker,       Trading::Brokers::RMTBroker.load_or_create
+        object :rmt_broker,       Trading::Brokers::RMTBroker.new
       end
     end
     

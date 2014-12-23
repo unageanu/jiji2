@@ -10,7 +10,7 @@ gem 'sinatra',   '1.4.5'
 
 gem 'mongoid',   '4.0.0'
 
-gem 'clickclient_scrap'
+gem 'clickclient_scrap', '0.1.13'
 gem 'sbiclient'
 
 group :test do

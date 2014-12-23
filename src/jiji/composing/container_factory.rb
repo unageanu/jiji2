@@ -16,6 +16,11 @@ module Composing
     
     include Singleton
     
+    include Jiji
+    include Jiji::Model
+    include Jiji::Security
+    include Jiji::Web
+    
     def new_container
       return configure(Encase::Container.new)
     end
@@ -33,37 +38,42 @@ private
     
     def configure_web( container )
       container.configure do
-        object :echo_service, Jiji::Web::EchoService.new
+        object :echo_service, EchoService.new
       end
     end
     
     def configure_security( container )
       container.configure do
-        object :authenticator, Jiji::Security::Authenticator.new
-        object :session_store, Jiji::Security::SessionStore.new
+        object :authenticator, Authenticator.new
+        object :session_store, SessionStore.new
       end
     end
     
     def configure_model( container )
       container.configure do
-        object :security_setting, Jiji::Model::Settings::SecuritySetting.load_or_create
+        object :security_setting,   Settings::SecuritySetting.load_or_create
+        object :rmt_broker_setting, Settings::RMTBrokerSetting.load_or_create
+        
+        object :rmt_process,      Trading::RMTProcess.new
+        object :rmt_job,          Trading::Jobs::RMTJob.new
+        object :rmt_broker,       Trading::Brokers::RMTBroker.load_or_create
       end
     end
     
     def configure_sources( container )
       container.configure do
-        object :time_source, Jiji::Utils::TimeSource.new
+        object :time_source, Utils::TimeSource.new
       end
     end
     
     def configure_plugins( container )
       container.configure do
-        object :plugin_loader, Jiji::Plugin::Loader.new
+        object :plugin_loader, Plugin::Loader.new
       end
     end
     
     def configure_logger( container )
-      logger = Logger.new( STDOUT )
+      logger = Logger.new( STDOUT ) # TODO
       logger.level = Logger::DEBUG
       container.configure do
         object :logger, logger

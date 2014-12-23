@@ -27,7 +27,7 @@ module Test
     
     def clean
       Jiji::Model::Trading::Tick.delete_all
-      Jiji::Model::Settings::SecuritySetting.delete_all
+      Jiji::Model::Settings::AbstractSetting.delete_all
     end
     
   end

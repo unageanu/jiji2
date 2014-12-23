@@ -12,5 +12,8 @@ module Errors
   class UnauthorizedException < Exception
   end
 
+  class NotInitializedException < Exception
+  end
+
 end
 end

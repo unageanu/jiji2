@@ -1,31 +1,31 @@
 # coding: utf-8
 
 require 'bcrypt'
-require 'jiji/utils/value_object'
+require 'jiji/configurations/mongoid_configuration'
+require 'jiji/model/settings/abstract_setting'
 
 module Jiji
 module Model
 module Settings
 
-  class SecuritySetting
+  class SecuritySetting < AbstractSetting
     
-    include Mongoid::Document
-    include Jiji::Utils::ValueObject
-    
-    store_in collection: "settings"
-    
-    field :category,        type: Symbol, default: :security
     field :salt,            type: String, default: nil
     field :hashed_password, type: String, default: nil
     field :expiration_days, type: Integer,default: 10
     
+    def initialize
+      super
+      self.category = :security
+    end
+    
     def self.load_or_create
-      find || SecuritySetting.new
+      find(:security) || SecuritySetting.new
     end
     
     def password=( password )
       self.salt = new_salt
-      self.hashed_password = hash(password, salt)
+      self.hashed_password = hash(password, self.salt)
     end
     
     def hash( password, salt )
@@ -33,11 +33,7 @@ module Settings
     end
     
   private
-    
-    def self.find
-      SecuritySetting.find_by( :category => :security )
-    end
-  
+
     def new_salt
       BCrypt::Engine.generate_salt
     end

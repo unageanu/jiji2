@@ -43,7 +43,7 @@ module Mock
     end
     
     def list_pairs
-      raise :test if @seed == :error
+      raise RuntimeError.new, "test" if @seed == :error
       return [
         Pair.new(:EURJPY, 10000),
         Pair.new(:EURUSD, 10000),
@@ -52,7 +52,7 @@ module Mock
     end
     
     def list_rates
-      raise :test if @seed == :error
+      raise RuntimeError.new, "test" if @seed == :error
       return {
         :EURJPY => Rate.new(145.110 + @seed, 119.128 + @seed, 10, -20),
         :EURUSD => Rate.new(1.2233  + @seed, 1.2234  + @seed, 11, -16),

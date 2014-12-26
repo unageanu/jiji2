@@ -13,6 +13,10 @@ module Brokers
     
     needs :rmt_broker_setting
     
+    def has_next
+      true
+    end
+    
     def positions
       check_setting_finished
       super

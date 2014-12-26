@@ -23,6 +23,10 @@ module Settings
       find(:security) || SecuritySetting.new
     end
     
+    def password_setted?
+      !!(self.salt && self.hashed_password)
+    end
+    
     def password=( password )
       self.salt = new_salt
       self.hashed_password = hash(password, self.salt)

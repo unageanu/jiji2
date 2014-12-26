@@ -16,6 +16,7 @@ describe Jiji::Model::Settings::SecuritySetting do
   it "設定がない場合、初期値を返す" do
     setting = Jiji::Model::Settings::SecuritySetting.load_or_create
     
+    expect( setting.password_setted? ).to be false
     expect( setting.salt ).to be nil
     expect( setting.hashed_password ).to be nil
     expect( setting.expiration_days ).to be 10
@@ -26,6 +27,7 @@ describe Jiji::Model::Settings::SecuritySetting do
     
     setting.password = 'aaa'
     
+    expect( setting.password_setted? ).to be true
     expect( setting.salt ).not_to be nil
     expect( setting.hashed_password ).not_to be nil
     
@@ -35,6 +37,7 @@ describe Jiji::Model::Settings::SecuritySetting do
     
     setting.password = 'aaa'
     
+    expect( setting.password_setted? ).to be true
     expect( setting.salt ).not_to be old_salt
     expect( setting.hashed_password ).not_to be old_hash
     
@@ -46,6 +49,7 @@ describe Jiji::Model::Settings::SecuritySetting do
     setting.save
     
     setting = Jiji::Model::Settings::SecuritySetting.load_or_create
+    expect( setting.password_setted? ).to be true
     expect( setting.salt ).to eq salt
     expect( setting.hashed_password ).to eq hash
     expect( setting.expiration_days ).to eq 12

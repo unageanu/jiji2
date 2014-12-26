@@ -11,10 +11,12 @@ module Mock
     include JIJI::Plugin::SecuritiesPlugin
     
     attr :props
+    attr_accessor :seed
     
     def initialize(id)
       @serial= 0
-      @id = id
+      @id    = id
+      @seed  = 0
     end
     
     def plugin_id
@@ -41,6 +43,7 @@ module Mock
     end
     
     def list_pairs
+      raise :test if @seed == :error
       return [
         Pair.new(:EURJPY, 10000),
         Pair.new(:EURUSD, 10000),
@@ -49,10 +52,11 @@ module Mock
     end
     
     def list_rates
+      raise :test if @seed == :error
       return {
-        :EURJPY => Rate.new(145.110, 119.128, 10, -20),
-        :EURUSD => Rate.new(1.2233, 1.2234, 11, -16),
-        :USDJPY => Rate.new(119.435, 119.443, -8, 2)
+        :EURJPY => Rate.new(145.110 + @seed, 119.128 + @seed, 10, -20),
+        :EURUSD => Rate.new(1.2233  + @seed, 1.2234  + @seed, 11, -16),
+        :USDJPY => Rate.new(119.435 + @seed, 119.443 + @seed, -8,   2)
       }
     end
     

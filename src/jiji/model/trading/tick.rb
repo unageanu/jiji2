@@ -19,7 +19,7 @@ module Trading
     field :sell_swap, type: Integer
     field :buy_swap,  type: Integer
     
-    field :timestamp, type: DateTime
+    field :timestamp, type: Time
     
   protected
     def values

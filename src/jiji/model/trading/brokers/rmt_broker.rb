@@ -46,7 +46,7 @@ module Brokers
       securities ? securities.list_pairs : []
     end
     def retrieve_rates
-      securities ? securities.list_rates : {}
+      securities ? convert_rates(securities.list_rates) : {}
     end
   
   private
@@ -55,6 +55,22 @@ module Brokers
     end
     def securities
       @rmt_broker_setting.active_securities
+    end
+    def convert_rates(rate, timestamp=Time.now )
+      rate.reduce({}){|r,p|
+        r[p[0]] = convert_rate_to_tick(p[0], p[1], timestamp )
+        r
+      }
+    end
+    def convert_rate_to_tick( pair_id, rate, timestamp )
+      Tick.new {|r|
+        r.bid       = rate.bid
+        r.ask       = rate.ask
+        r.sell_swap = rate.sell_swap
+        r.buy_swap  = rate.buy_swap
+        r.pair_id   = pair_id
+        r.timestamp = timestamp
+      }
     end
   end
 

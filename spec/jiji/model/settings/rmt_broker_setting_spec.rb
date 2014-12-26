@@ -7,13 +7,13 @@ describe Jiji::Model::Settings::RMTBrokerSetting do
   RMTBrokerSetting = Jiji::Model::Settings::RMTBrokerSetting
   Errors           = Jiji::Errors
     
-  before(:all) do
+  before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
     @setting = @container.lookup(:rmt_broker_setting)
   end
   
-  after(:all) do
+  after(:example) do
     @data_builder.clean
   end
   

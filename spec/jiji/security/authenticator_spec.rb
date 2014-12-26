@@ -5,7 +5,7 @@ require 'jiji/composing/container_factory'
 
 describe Jiji::Security::Authenticator do
   
-  before(:all) do
+  before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
     
     @container = Jiji::Composing::ContainerFactory.instance.new_container
@@ -21,7 +21,7 @@ describe Jiji::Security::Authenticator do
     @time_source.set DateTime.new( 2000, 1, 10 )
   end
   
-  after(:all) do
+  after(:example) do
     @data_builder.clean
   end
   

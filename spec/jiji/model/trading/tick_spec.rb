@@ -5,11 +5,11 @@ require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::Tick do
   
-  before(:all) do
+  before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
   end
   
-  after(:all) do
+  after(:example) do
     @data_builder.clean
   end
   

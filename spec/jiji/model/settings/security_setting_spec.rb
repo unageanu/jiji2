@@ -5,11 +5,11 @@ require 'jiji/model/settings/security_setting'
 
 describe Jiji::Model::Settings::SecuritySetting do
   
-  before(:all) do
+  before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
   end
   
-  after(:all) do
+  after(:example) do
     @data_builder.clean
   end
   

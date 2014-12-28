@@ -20,11 +20,15 @@ module Jobs
     def on_inject
       @broker = @rmt_broker
     end
-  
+    
+    def do_next
+      super
+      wait
+    end
+    
   protected
     def after_do_next
       store_rates
-      wait
     end
     
   private

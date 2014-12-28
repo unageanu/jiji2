@@ -103,6 +103,8 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         
         # 永続化された設定から再構築する
         @container    = Jiji::Test::TestContainerFactory.instance.new_container
+        setting = @container.lookup( :rmt_broker_setting ) 
+        setting.setup
         broker = @container.lookup( :rmt_broker ) 
         broker
       }

@@ -12,10 +12,12 @@ module Model
     include Encase
     
     needs :plugin_loader
+    needs :rmt_broker_setting
     needs :rmt_process
     
     def setup
       @plugin_loader.load
+      @rmt_broker_setting.setup
       @rmt_process.start
     end
     

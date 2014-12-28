@@ -25,7 +25,7 @@ module Settings
       self.category = :rmt_broker
     end
     
-    def on_inject
+    def setup
       if self.active_securities_id
         @active_securities = find_and_configure_plugin(
           self.active_securities_id, get_configurations(self.active_securities_id))

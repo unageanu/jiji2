@@ -69,6 +69,7 @@ describe Jiji::Model::Settings::RMTBrokerSetting do
     
     @container = Jiji::Test::TestContainerFactory.instance.new_container
     @setting   = @container.lookup(:rmt_broker_setting)
+    @setting.setup
     expect(@setting.active_securities.plugin_id).to eq :mock2
     expect(@setting.active_securities.props).to eq({"a"=>"aa","c"=>"cc"})
   end

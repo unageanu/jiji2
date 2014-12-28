@@ -38,7 +38,11 @@ private
     
     def configure_web( container )
       container.configure do
-        object :echo_service, EchoService.new
+        object :echo_service,            EchoService.new
+        
+        object :initial_setting_service,    InitialSettingService.new
+        object :rmt_broker_setting_service, RMTBrokerSettingService.new
+        object :security_setting_service,   SecuritySettingService.new
       end
     end
     
@@ -51,6 +55,8 @@ private
     
     def configure_model( container )
       container.configure do
+        object :application, Application.new
+        
         object :security_setting,   Settings::SecuritySetting.load_or_create
         object :rmt_broker_setting, Settings::RMTBrokerSetting.load_or_create
         

@@ -2,5 +2,7 @@
 
 $:.unshift  File.join(File.dirname(__FILE__), "src")
 
+ENV["RACK_ENV"]="production"
+
 require 'jiji'
-run Jiji::Web::WebApplication.new.build
+run Jiji::Web::WebApplication.instance.build

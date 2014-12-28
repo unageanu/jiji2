@@ -15,5 +15,11 @@ module Errors
   class NotInitializedException < Exception
   end
 
+  class IllegalStateException < Exception
+  end
+
+  class InternalServerError < Exception
+  end
+
 end
 end

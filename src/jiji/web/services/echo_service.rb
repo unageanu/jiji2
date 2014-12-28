@@ -8,7 +8,7 @@ module Web
   class EchoService < Jiji::Web::AbstractService
     
     get "/" do
-      "Hello"
+      raise Jiji::Errors::UnauthorizedException.new
     end
     
   end

@@ -1,32 +1,34 @@
 # coding: utf-8
 
 require 'sinatra/base'
+require 'jiji/web/middlewares/base'
 
 module Jiji
 module Web
 
-  class AuthenticationFilter < Sinatra::Base
+  class AuthenticationFilter < Base
     
-    include Encase
-    
-    needs :session_store
-    
-    
-    before %r{^(?!/authenticator$)} do
+    before do
       unauthorized unless auth_success?
     end
+  
+  private
     
     def auth_success?
-      session_store.valid?( extract_ticket )
+      session_store.valid_token?( extract_token )
     end
     
-    def extract_ticket
-      a = request.env["Authorization"]
-      if ( a =~ /X-JIJI-AUTHENTICATE\s([a-f0-9]+)$/ )
+    def extract_token
+      a = request.env["HTTP_AUTHORIZATION"]
+      if ( a =~ /X\-JIJI\-AUTHENTICATE\s+([a-f0-9]+)$/ )
         return $1
       else
         unauthorized
       end
+    end
+    
+    def session_store
+      lookup(:session_store)
     end
     
     def unauthorized

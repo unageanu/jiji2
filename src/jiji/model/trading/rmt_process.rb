@@ -41,9 +41,9 @@ module Trading
     
   private
     def process_message
-      while request = @message_queue.pop
+      while !@message_queue.empty?
         begin 
-          request.call(@job)
+          @message_queue.pop.call(@job)
         rescue => e 
           @logger.error(e)
         end

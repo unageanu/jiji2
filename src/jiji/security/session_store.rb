@@ -1,5 +1,6 @@
 # coding: utf-8
 
+require 'encase'
 require 'jiji/errors/errors'
 require 'lru_redux'
 
@@ -14,6 +15,7 @@ module Security
     
     def initialize( )
       @sessions = LruRedux::ThreadSafeCache.new(100)
+      #@sessions["f"] = Session.new(Time.now + 1 * 60 * 60 * 24)
     end
     
     def << ( session )

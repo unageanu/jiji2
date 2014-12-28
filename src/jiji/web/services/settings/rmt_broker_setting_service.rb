@@ -1,7 +1,8 @@
 # coding: utf-8
 
 require 'sinatra/base'
-require 'json'
+require 'jiji/web/services/abstract_service'
+require 'jiji/model/settings/rmt_broker_setting'
 
 module Jiji
 module Web

@@ -1,6 +1,7 @@
 # coding: utf-8
 
 require 'jiji/configurations/mongoid_configuration'
+require 'jiji/model/trading/brokers/abstract_broker'
 
 module Jiji
 module Model

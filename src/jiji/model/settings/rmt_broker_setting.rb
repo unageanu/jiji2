@@ -2,6 +2,7 @@
 
 require 'encase'
 require 'jiji/configurations/mongoid_configuration'
+require 'jiji/model/settings/abstract_setting'
 
 module Jiji
 module Model

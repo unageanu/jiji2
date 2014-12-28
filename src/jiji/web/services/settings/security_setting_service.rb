@@ -1,7 +1,7 @@
 # coding: utf-8
 
 require 'sinatra/base'
-require 'json'
+require 'jiji/web/services/abstract_service'
 
 module Jiji
 module Web

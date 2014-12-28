@@ -12,7 +12,7 @@ if ENV["MONGOLAB_URI"] || ENV["MONGODB_URI"]
   
   config = YAML.load_file(mongoid_setting_file)["default"]
   sessions = config["sessions"]["default"]
-  sessions["hosts"]     = [u.host+":"+u.port]
+  sessions["hosts"]     = [u.host+":"+u.port.to_s]
   sessions["database"]  = u.path.gsub(/\//, '')
   sessions[":username"] = u.user
   sessions[":password"] = u.password 

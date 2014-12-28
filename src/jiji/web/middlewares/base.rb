@@ -1,7 +1,7 @@
 # coding: utf-8
 
 require 'sinatra/base'
-require 'jiji/errors'
+require 'jiji/errors/errors'
 
 module Jiji
 module Web

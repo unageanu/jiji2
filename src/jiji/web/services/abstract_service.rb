@@ -3,6 +3,7 @@
 require 'encase'
 require 'json'
 require 'jiji/web/middlewares/base'
+require 'jiji/web/middlewares/authentication_filter'
 
 module Jiji
 module Web

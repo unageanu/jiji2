@@ -14,11 +14,11 @@ describe Jiji::Security::SessionStore do
   
   it "tokenに対応するセッションがあれば、valid? はtrueを返す" do
     
-    @time_source.set( DateTime.new(2000,1,10) ) 
+    @time_source.set( Time.utc(2000,1,10) ) 
     
-    s1 = Jiji::Security::Session.new( DateTime.new(2000,1,11) )
-    s2 = Jiji::Security::Session.new( DateTime.new(2000,1,11) )
-    s3 = Jiji::Security::Session.new( DateTime.new(2000,1, 9) ) # 有効期限切れ
+    s1 = Jiji::Security::Session.new( Time.utc(2000,1,11) )
+    s2 = Jiji::Security::Session.new( Time.utc(2000,1,11) )
+    s3 = Jiji::Security::Session.new( Time.utc(2000,1, 9) ) # 有効期限切れ
     
     @store << s1
     @store << s3
@@ -35,11 +35,11 @@ describe Jiji::Security::SessionStore do
 
   it "tokenは最大100個まで保持される" do
     
-    @time_source.set( DateTime.new(2000,1,10) ) 
+    @time_source.set( Time.utc(2000,1,10) ) 
     
     sessions = []
     110.times {
-      s = Jiji::Security::Session.new( DateTime.new(2000,1,11) )
+      s = Jiji::Security::Session.new( Time.utc(2000,1,11) )
       @store   << s
       sessions << s
     }

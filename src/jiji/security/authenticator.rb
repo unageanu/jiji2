@@ -39,7 +39,7 @@ module Security
     end
     
     def expiration_date
-       time_source.now + security_setting.expiration_days
+       time_source.now + security_setting.expiration_days * 60 * 60 * 24
     end
     
   end

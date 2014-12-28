@@ -18,7 +18,7 @@ describe Jiji::Security::Authenticator do
     @setting.password        = "foo"
     @setting.expiration_days = 10
     
-    @time_source.set DateTime.new( 2000, 1, 10 )
+    @time_source.set Time.utc( 2000, 1, 10 )
   end
   
   after(:example) do
@@ -32,7 +32,7 @@ describe Jiji::Security::Authenticator do
     expect(@store.valid_token? token).to be true
     
     # 有効期限を過ぎると使えなくなる
-    @time_source.set DateTime.new( 2000, 1, 21 )
+    @time_source.set Time.utc( 2000, 1, 21 )
     expect(@store.valid_token? token).to be false
   end
 

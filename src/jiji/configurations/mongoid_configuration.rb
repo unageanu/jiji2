@@ -16,7 +16,7 @@ if ENV["MONGOLAB_URI"] || ENV["MONGODB_URI"]
   sessions["database"] = u.path.gsub(/\//, '')
   sessions["username"] = u.user
   sessions["password"] = u.password 
-  
+
   Mongoid.load_configuration(config)
 else
   Mongoid.load!(mongoid_setting_file, ENV["JIJI_ENV"] || :local)

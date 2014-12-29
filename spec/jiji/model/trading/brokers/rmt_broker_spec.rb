@@ -4,13 +4,11 @@ require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Trading::Brokers::RMTBroker do
   
-  RMTBroker = Jiji::Model::Trading::Brokers::RMTBroker
-  
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
     
-    @mock_plugin =  RMTBrokerSetting.available_securities.find {|p| p.plugin_id == :mock}
+    @mock_plugin =  Jiji::Model::Settings::RMTBrokerSetting.available_securities.find {|p| p.plugin_id == :mock}
     @mock_plugin.seed = 0
   end
   

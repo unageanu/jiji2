@@ -1,6 +1,7 @@
 # coding: utf-8
 
 require 'encase'
+require 'active_support/core_ext'
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/model/settings/abstract_setting'
 
@@ -71,6 +72,7 @@ module Settings
       resolve_plugin(securities_id) 
     end
     def find_and_configure_plugin(securities_id, configurations)
+      configurations = configurations.with_indifferent_access
       plugin = RMTBrokerSetting.resolve_plugin(securities_id)
       plugin.init_plugin( configurations, @logger )
       plugin

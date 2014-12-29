@@ -12,7 +12,9 @@ module Trading
     include Mongoid::Document
     include Jiji::Utils::ValueObject
     
-    field :pair_id,  type: Integer
+    store_in collection: "ticks"
+    
+    field :pair_id,  type: Symbol
     
     field :bid,       type: Float
     field :ask,       type: Float

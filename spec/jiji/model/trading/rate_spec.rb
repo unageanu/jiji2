@@ -23,7 +23,7 @@ describe Jiji::Model::Trading::Rate do
       @data_builder.new_tick(-10, DateTime.new(2014, 1, 21, 0, 0, 0))
     )
       
-    expect(rate1.pair_id).to eq(1)
+    expect(rate1.pair_id).to eq(:EURJPY)
     expect(rate1.open.bid).to eq(101)
     expect(rate1.open.ask).to eq(100)
     expect(rate1.close.bid).to eq(102)
@@ -79,7 +79,7 @@ describe Jiji::Model::Trading::Rate do
     
     rate = Jiji::Model::Trading::Rate.union( rate1, rate2, rate3 ) 
     
-    expect(rate.pair_id).to eq(4)
+    expect(rate.pair_id).to eq(:USDJPY)
     expect(rate.open.bid).to eq(104)
     expect(rate.open.ask).to eq(103)
     expect(rate.close.bid).to eq(106)

@@ -21,7 +21,7 @@ describe Jiji::Model::Trading::Tick do
     tick2.save
     
     tick1 = Jiji::Model::Trading::Tick.find(tick1._id)
-    expect(tick1.pair_id).to eq(1)
+    expect(tick1.pair_id).to eq(:EURJPY)
     expect(tick1.bid).to eq(101)
     expect(tick1.ask).to eq(100)
     expect(tick1.buy_swap).to eq(3)
@@ -29,7 +29,7 @@ describe Jiji::Model::Trading::Tick do
     expect(tick1.timestamp).to eq(DateTime.new(1001, 1, 1, 0, 0, 0))
     
     tick2 = Jiji::Model::Trading::Tick.find(tick2._id)
-    expect(tick2.pair_id).to eq(2)
+    expect(tick2.pair_id).to eq(:USDJPY)
     expect(tick2.bid).to eq(102)
     expect(tick2.ask).to eq(101)
     expect(tick2.buy_swap).to eq(4)

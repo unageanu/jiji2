@@ -5,7 +5,6 @@ require 'jiji/test/test_configuration'
 describe Jiji::Model::Settings::RMTBrokerSetting do
   
   RMTBrokerSetting = Jiji::Model::Settings::RMTBrokerSetting
-  Errors           = Jiji::Errors
     
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
@@ -72,6 +71,8 @@ describe Jiji::Model::Settings::RMTBrokerSetting do
     @setting.setup
     expect(@setting.active_securities.plugin_id).to eq :mock2
     expect(@setting.active_securities.props).to eq({"a"=>"aa","c"=>"cc"})
+    
+    @setting.set_active_securities(:mock, {"a"=>"aa","b"=>"bb"})
   end
   
   context "プラグインが存在しない場合" do

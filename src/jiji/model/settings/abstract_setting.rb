@@ -14,10 +14,12 @@ module Settings
     store_in collection: "settings"
     
     field :category, type: Symbol, default: nil
-        
+    
+    after_initialize :init
+
     def initialize
       super
-      @setting_changed_listener = []
+      init
     end
     def on_setting_changed( &proc )
       @setting_changed_listener << proc
@@ -34,7 +36,12 @@ module Settings
         l.call( key, event )
       }
     end
-    
+  
+  private
+    def init
+      @setting_changed_listener = []
+    end
+  
   end
 
 end

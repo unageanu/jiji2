@@ -93,4 +93,127 @@ describe Jiji::Model::Trading::Rate do
     expect(rate.sell_swap).to eq(24)
   end
   
+  describe "fetch" do
+    
+    before(:example) do
+      0.upto(1000) {|i|
+        [:EURJPY,:USDJPY,:EURUSD].each {|pair_id|
+          t = @data_builder.new_tick(i%10, Time.at(20*i)) # 20秒ごとに1つ
+          t.pair_id = pair_id
+          t.save
+        }
+      }
+    end
+    
+    it "fetch でレート一覧を取得できる" do
+      [:EURJPY,:USDJPY,:EURUSD].each {|pair_id|
+        rates = Jiji::Model::Trading::Rate.fetch(pair_id, Time.at(12*20), Time.at(72*20))
+        
+        expect(rates.length).to eq(20)
+        expect(rates[0].timestamp).to eq(Time.at(4*60))
+        expect(rates[0].open.values ).to eq([pair_id, 102.0, 101.0, 22, 4, Time.at(12*20)])
+        expect(rates[0].low.values  ).to eq([pair_id, 102.0, 101.0, 22, 4, Time.at(12*20)])
+        expect(rates[0].high.values ).to eq([pair_id, 104.0, 103.0, 24, 6, Time.at(14*20)])
+        expect(rates[0].close.values).to eq([pair_id, 104.0, 103.0, 24, 6, Time.at(14*20)])
+        
+        expect(rates[9].timestamp).to eq(Time.at(13*60))
+        expect(rates[9].open.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(39*20)])
+        expect(rates[9].low.values  ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(40*20)])
+        expect(rates[9].high.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(39*20)])
+        expect(rates[9].close.values).to eq([pair_id, 101.0, 100.0, 21,  3, Time.at(41*20)])
+        
+        expect(rates[19].timestamp).to eq(Time.at(23*60))
+        expect(rates[19].open.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(69*20)])
+        expect(rates[19].low.values  ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(70*20)])
+        expect(rates[19].high.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(69*20)])
+        expect(rates[19].close.values).to eq([pair_id, 101.0, 100.0, 21,  3, Time.at(71*20)])
+        
+        
+        rates = Jiji::Model::Trading::Rate.fetch(pair_id, Time.at(990*20), Time.at(1200*20))
+
+        expect(rates.length).to eq(4)
+        expect(rates[0].timestamp).to eq(Time.at(330*60))
+        expect(rates[0].open.values ).to eq([pair_id, 100.0,  99.0, 20, 2, Time.at(990*20)])
+        expect(rates[0].low.values  ).to eq([pair_id, 100.0,  99.0, 20, 2, Time.at(990*20)])
+        expect(rates[0].high.values ).to eq([pair_id, 102.0, 101.0, 22, 4, Time.at(992*20)])
+        expect(rates[0].close.values).to eq([pair_id, 102.0, 101.0, 22, 4, Time.at(992*20)])
+        
+        expect(rates[3].timestamp).to eq(Time.at(333*60))
+        expect(rates[3].open.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(999*20)])
+        expect(rates[3].low.values  ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(1000*20)])
+        expect(rates[3].high.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(999*20)])
+        expect(rates[3].close.values).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(1000*20)])
+        
+        
+        rates = Jiji::Model::Trading::Rate.fetch(pair_id, Time.at(0*20), Time.at(300*20), :fifteen_minutes)
+        
+        expect(rates.length).to eq(7)
+        expect(rates[0].timestamp).to eq(Time.at(0*60))
+        expect(rates[0].open.values ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(0*20)])
+        expect(rates[0].low.values  ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(0*20)])
+        expect(rates[0].high.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(9*20)])
+        expect(rates[0].close.values).to eq([pair_id, 104.0, 103.0, 24,  6, Time.at(44*20)])
+        
+        expect(rates[6].timestamp).to eq(Time.at(6*60*15))
+        expect(rates[6].open.values ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(270*20)]) 
+        expect(rates[6].low.values  ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(270*20)])
+        expect(rates[6].high.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(279*20)])
+        expect(rates[6].close.values).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(299*20)])
+        
+        
+        rates = Jiji::Model::Trading::Rate.fetch(pair_id, Time.at(0*20), Time.at(600*20), :thirty_minutes)
+        
+        expect(rates.length).to eq(7)
+        expect(rates[0].timestamp).to eq(Time.at(0*60))
+        expect(rates[0].open.values ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(0*20)])
+        expect(rates[0].low.values  ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(0*20)])
+        expect(rates[0].high.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(9*20)])
+        expect(rates[0].close.values).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(89*20)])
+        
+        expect(rates[6].timestamp).to eq(Time.at(6*60*30))
+        expect(rates[6].open.values ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(540*20)]) 
+        expect(rates[6].low.values  ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(540*20)])
+        expect(rates[6].high.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(549*20)])
+        expect(rates[6].close.values).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(599*20)])
+        
+        
+        rates = Jiji::Model::Trading::Rate.fetch(pair_id, Time.at(0*20), Time.at(600*20), :one_hour)
+
+        expect(rates.length).to eq(4)
+        expect(rates[0].timestamp).to eq(Time.at(0*60))
+        expect(rates[0].open.values ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(0*20)])
+        expect(rates[0].low.values  ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(0*20)])
+        expect(rates[0].high.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(9*20)])
+        expect(rates[0].close.values).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(179*20)])
+        
+        expect(rates[3].timestamp).to eq(Time.at(3*60*60))
+        expect(rates[3].open.values ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(540*20)]) 
+        expect(rates[3].low.values  ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(540*20)])
+        expect(rates[3].high.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(549*20)])
+        expect(rates[3].close.values).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(599*20)])
+        
+        
+        rates = Jiji::Model::Trading::Rate.fetch(pair_id, Time.at(0*20), Time.at(1200*20), :six_hours)
+
+        expect(rates.length).to eq(1)
+        expect(rates[0].timestamp).to eq(Time.at(0*60))
+        expect(rates[0].open.values ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(0*20)])
+        expect(rates[0].low.values  ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(0*20)])
+        expect(rates[0].high.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(9*20)])
+        expect(rates[0].close.values).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(1000*20)])
+        
+        
+        rates = Jiji::Model::Trading::Rate.fetch(pair_id, Time.at(0*20), Time.at(1200*20), :one_day)
+
+        expect(rates.length).to eq(1)
+        expect(rates[0].timestamp).to eq(Time.at(0*60))
+        expect(rates[0].open.values ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(0*20)])
+        expect(rates[0].low.values  ).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(0*20)])
+        expect(rates[0].high.values ).to eq([pair_id, 109.0, 108.0, 29, 11, Time.at(9*20)])
+        expect(rates[0].close.values).to eq([pair_id, 100.0,  99.0, 20,  2, Time.at(1000*20)])
+      }
+    end
+    
+  end
+  
 end

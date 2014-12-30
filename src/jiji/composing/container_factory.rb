@@ -20,6 +20,7 @@ module Composing
     include Jiji::Model
     include Jiji::Security
     include Jiji::Web
+    include Jiji::Db
     
     def new_container
       return configure(Encase::Container.new)
@@ -32,6 +33,7 @@ private
       configure_security( container )
       configure_model( container )
       configure_sources( container )
+      configure_db( container )
       configure_plugins( container )
       configure_logger( container )
     end
@@ -63,6 +65,12 @@ private
         object :rmt_process,      Trading::RMTProcess.new
         object :rmt_job,          Trading::Jobs::RMTJob.new
         object :rmt_broker,       Trading::Brokers::RMTBroker.new
+      end
+    end
+    
+    def configure_db( container )
+      container.configure do
+        object :index_builder, IndexBuilder.new
       end
     end
     

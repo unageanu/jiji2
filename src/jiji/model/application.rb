@@ -14,8 +14,11 @@ module Model
     needs :plugin_loader
     needs :rmt_broker_setting
     needs :rmt_process
+    needs :index_builder
     
     def setup
+      @index_builder.create_indexes
+      
       @plugin_loader.load
       @rmt_broker_setting.setup
       @rmt_process.start

@@ -15,6 +15,8 @@ module Settings
     
     field :category, type: Symbol, default: nil
     
+    index({ :category => 1 }, { unique:true, name: "settings_category_index" })
+    
     after_initialize :init
 
     def initialize

@@ -14,7 +14,7 @@ module Test
       )
     end
     
-    def new_tick(seed, time = DateTime.new(seed+1000, 1, 1, 0, 0, 0))
+    def new_tick(seed, time = Time.utc(seed+1000, 1, 1, 0, 0, 0))
       Jiji::Model::Trading::Tick.new {|r|
         r.pair_id     = seed%2 == 0 ? :USDJPY : :EURJPY
         r.bid         = 100 + seed

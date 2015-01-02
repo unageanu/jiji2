@@ -20,7 +20,7 @@ module Trading
     
     attr_accessor :swaps
     
-    index({ :timestamp=> 1 }, { name: "ticks_timstamp_index" })
+    index({ :timestamp=> 1 }, { name: "ticks_timestamp_index" })
     
     def self.create(pair_and_values, timestamp)
       Tick.new {|t|
@@ -133,7 +133,28 @@ module Trading
     }
 
   end
-
+  
+  class NilTick
+    include Enumerable
+   
+    attr :timestamp
+    
+    def initialize(timestamp=Time.now)
+      @timestamp = timestamp
+    end
+    
+    def [](pair_name)
+      return nil
+    end
+    
+    def each(&block)
+    end
+    
+    def save
+    end
+    
+  end
+  
 end
 end
 end

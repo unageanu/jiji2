@@ -13,7 +13,7 @@ module Brokers
     include Encase
     
     needs :rmt_broker_setting
-    
+
     def has_next
       true
     end
@@ -51,7 +51,8 @@ module Brokers
       securities ? securities.list_pairs : []
     end
     def retrieve_rates
-      securities ? convert_rates(securities.list_rates) : {}
+      securities ? convert_rates(securities.list_rates) 
+                 : Jiji::Model::Trading::NilTick.new
     end
   
   private

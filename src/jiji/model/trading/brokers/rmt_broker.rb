@@ -62,20 +62,14 @@ module Brokers
       @rmt_broker_setting.active_securities
     end
     def convert_rates(rate, timestamp=Time.now )
-      rate.reduce({}){|r,p|
-        r[p[0]] = convert_rate_to_tick(p[0], p[1], timestamp )
+      values = rate.reduce({}){|r,p|
+        r[p[0]] = convert_rate_to_tick(p[1])
         r
       }
+      Tick.create(values, timestamp)
     end
-    def convert_rate_to_tick( pair_id, rate, timestamp )
-      Tick.new {|r|
-        r.bid       = rate.bid
-        r.ask       = rate.ask
-        r.sell_swap = rate.sell_swap
-        r.buy_swap  = rate.buy_swap
-        r.pair_id   = pair_id
-        r.timestamp = timestamp
-      }
+    def convert_rate_to_tick( r )
+      Tick::Value.new(r.bid, r.ask, r.buy_swap, r.sell_swap) 
     end
   end
 

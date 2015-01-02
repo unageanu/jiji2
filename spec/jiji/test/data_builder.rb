@@ -8,25 +8,38 @@ module Test
   
   class DataBuilder
     
-    def new_rate(seed)
+    def new_rate(seed, pair_name=:EURJPY)
       Jiji::Model::Trading::Rate.create_from_tick(
-        new_tick(seed), new_tick(seed+1), new_tick(seed+9), new_tick(seed-11), 
+        pair_name, new_tick(seed), new_tick(seed+1), new_tick(seed+9), new_tick(seed-11)
       )
     end
     
-    def new_tick(seed, time = Time.utc(seed+1000, 1, 1, 0, 0, 0))
-      Jiji::Model::Trading::Tick.new {|r|
-        r.pair_id     = seed%2 == 0 ? :USDJPY : :EURJPY
-        r.bid         = 100 + seed
-        r.ask         = 99 + seed
-        r.buy_swap    = 2   + seed
-        r.sell_swap   = 20  + seed
-        r.timestamp   = time
+    def new_tick(seed, timestamp=Time.at(0))
+      values = [:EURJPY,:USDJPY,:EURUSD].inject({}) {|r, pair_name|
+        r[pair_name] = new_tick_value(seed)
+        r
+      }
+      Jiji::Model::Trading::Tick.create(values,timestamp)
+    end
+    
+    def new_tick_value(seed)
+      Jiji::Model::Trading::Tick::Value.new(
+        100.0+seed, 99.0+seed, 2+seed, 20+seed)
+    end
+    
+    def new_swap(seed, pair_id=1, timestamp=Time.at(0))
+      Jiji::Model::Trading::Swap.new {|s|
+        s.pair_id   = pair_id
+        s.buy_swap  =  2 + seed
+        s.sell_swap = 20 + seed
+        s.timestamp = timestamp
       }
     end
     
     def clean
       Jiji::Model::Trading::Tick.delete_all
+      Jiji::Model::Trading::Pair.delete_all
+      Jiji::Model::Trading::Swap.delete_all
       Jiji::Model::Settings::AbstractSetting.delete_all
     end
     

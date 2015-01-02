@@ -15,6 +15,7 @@ module Jobs
     def initialize(wait_time=10)
       super()
       @wait_time = wait_time
+      @rate_saver = Jiji::Model::Trading::Internal::RateSaver.new
     end
     
     def on_inject
@@ -33,9 +34,7 @@ module Jobs
     
   private
     def store_rates
-      @broker.current_rates.each {|k,v|
-        v.save
-      }
+      @rate_saver.save(@broker.current_rates)
     end
     
     def wait

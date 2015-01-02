@@ -43,7 +43,6 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         expect( pairs[0].trade_unit ).to be 10000
         
         rates = broker.current_rates
-        expect( rates.length ).to be 3
         expect( rates[:EURJPY].bid ).to be 145.110
         expect( rates[:EURJPY].ask ).to be 119.128
         expect( rates[:EURJPY].sell_swap ).to be 10
@@ -51,7 +50,6 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         
         @mock_plugin.seed = 1
         rates = broker.current_rates
-        expect( rates.length ).to be 3
         expect( rates[:EURJPY].bid ).to be 145.110
         expect( rates[:EURJPY].ask ).to be 119.128
         expect( rates[:EURJPY].sell_swap ).to be 10
@@ -59,7 +57,6 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         
         broker.refresh
         rates = broker.current_rates
-        expect( rates.length ).to be 3
         expect( rates[:EURJPY].bid ).to be 146.110
         expect( rates[:EURJPY].ask ).to be 120.128
         expect( rates[:EURJPY].sell_swap ).to be 10

@@ -23,6 +23,13 @@ module Trading
 
     index({ :timestamp => 1 }, { name: "swaps_timestamp_index" })
     
+    def self.delete( start_time, end_time )
+      Swap.where({
+        :timestamp.gte => start_time, 
+        :timestamp.lt  => end_time 
+      }).delete
+    end
+    
   protected
     def values
       [pair_id, sell_swap, buy_swap, timestamp]
@@ -42,6 +49,14 @@ module Trading
       check_period( timestamp )
       check_pair_id( pair_id )
       return @swaps[pair_id].bsearch {|s| s.timestamp <= timestamp }
+    end
+    
+    def get_swaps_at( timestamp )
+      check_period( timestamp )
+      return @swaps.inject({}){|r,v|
+        r[v[0]] = v[1].bsearch {|s| s.timestamp <= timestamp }
+        r
+      }
     end
     
     def self.create( start_time, end_time )

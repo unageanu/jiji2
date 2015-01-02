@@ -45,19 +45,29 @@ module Trading
     end
     
     def self.fetch( start_time, end_time )
+      swaps = Swaps.create( start_time, end_time )
       return Tick.where({
         :timestamp.gte => start_time, 
-        :timestamp.lt => end_time 
-      }).map_reduce(
-        MAP_TEMPLATE_FOR_FETCH_ALL_TICKS.result(binding), 
-        REDUCE_TEMPLATE_FOR_FETCH_ALL_TICKS.result(binding)
-      ).out(inline: true).map {|values|
-        values.reduce({}) {|r,v|
-          pair_id    = v[0].to_sym
-          r[pair_id] = Tick.create_from_hash( pair_id, v[1] )
-          r
-        }
+        :timestamp.lt  => end_time 
+      }).order_by(:timestamp.asc).map {|t|
+        t.swaps = swaps.get_swaps_at( t.timestamp )
+        t
       }
+    end
+    
+    def self.range
+      return {:start=>nil, :end=>nil} unless Tick.exists?
+      
+      first = Tick.order_by(:timestamp.asc).only(:timestamp).first
+      last  = Tick.order_by(:timestamp.asc).only(:timestamp).last
+      return {:start=> first.timestamp, :end=>last.timestamp}
+    end
+    
+    def self.delete( start_time, end_time )
+      Tick.where({
+        :timestamp.gte => start_time, 
+        :timestamp.lt  => end_time 
+      }).delete
     end
     
     def self.create_from_hash(pair, hash, swaps)
@@ -115,22 +125,6 @@ module Trading
         r
       }
     end
-    
-    MAP_TEMPLATE_FOR_FETCH_ALL_TICKS = ERB.new %Q{
-      function() {
-        emit( this.timestamp, this );
-      }
-    }
-
-    REDUCE_TEMPLATE_FOR_FETCH_ALL_TICKS = ERB.new %Q{
-      function(key, values) {
-        var result = {};
-        values.forEach(function(v) {
-          result[v.pair_id] = v
-        });
-        return result;
-      }
-    }
 
   end
   

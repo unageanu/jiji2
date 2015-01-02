@@ -5,7 +5,7 @@ require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::Swaps do
   
-  before(:context) do
+  before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
     
     0.upto(10) {|i|
@@ -16,7 +16,7 @@ describe Jiji::Model::Trading::Swaps do
     }
   end
   
-  after(:context) do
+  after(:example) do
     @data_builder.clean
   end
   
@@ -122,6 +122,16 @@ describe Jiji::Model::Trading::Swaps do
       }.to raise_error( ArgumentError )
 
     end
+  end
+  
+  it "delete で swap を削除できる" do
+    expect(Jiji::Model::Trading::Swap.count).to eq(33)
+    
+    swaps = Jiji::Model::Trading::Swap.delete( Time.at(-50), Time.at(200) )
+    expect(Jiji::Model::Trading::Swap.count).to eq(21)
+    
+    swaps = Jiji::Model::Trading::Swap.delete( Time.at(240), Time.at(300) )
+    expect(Jiji::Model::Trading::Swap.count).to eq(18)
   end
   
 end

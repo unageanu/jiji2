@@ -54,4 +54,19 @@ describe Jiji::Model::Trading::Pairs do
     expect(pair_not_found).to be nil
   end
   
+  it "allで登録済みの通貨ペアを取得できる" do
+    instance = Jiji::Model::Trading::Pairs.instance
+    instance.reload
+    
+    expect(instance.all.size).to eq(0)
+    
+    instance.create_or_get(:EURJPY)
+    instance.create_or_get(:USDJPY)
+    
+    all = instance.all
+    expect(all.size).to eq(2)
+    expect(all[0].name).to eq(:EURJPY)
+    expect(all[1].name).to eq(:USDJPY)
+  end
+  
 end

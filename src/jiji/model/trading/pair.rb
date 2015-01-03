@@ -50,6 +50,12 @@ module Trading
       }
     end
     
+    def all
+      @lock.synchronize {
+        @by_id.values.sort_by {|v| v.id}
+      }
+    end
+    
     def reload
       load
     end

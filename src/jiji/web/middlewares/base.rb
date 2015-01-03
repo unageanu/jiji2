@@ -32,6 +32,10 @@ module Web
       401
     end
     
+    error ArgumentError do
+      400
+    end
+    
     error do
       500
     end

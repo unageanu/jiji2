@@ -27,7 +27,8 @@ module Web
     
     def build
       return Rack::Builder.new do
-        map( "/api/echo" ) { run EchoService }
+        map( "/api/echo" )  { run EchoService }
+        map( "/api/rates" ) { run RateService }
         
         map( "/api/authenticator" ) { run AuthenticationService }
         

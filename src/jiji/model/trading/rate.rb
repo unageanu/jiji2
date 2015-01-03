@@ -55,6 +55,17 @@ module Trading
         close.close, high.high, low.low, open.timestamp)
     end
     
+    def to_json(*a)
+      {
+        :pair      => pair,
+        :open      => open,
+        :close     => close,
+        :high      => high,
+        :low       => low,
+        :timestamp => timestamp 
+      }.to_json(*a)
+    end
+    
   protected
     def values
       [pair, open, close, high, low, timestamp]

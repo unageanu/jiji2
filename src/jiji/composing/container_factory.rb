@@ -65,6 +65,8 @@ private
         object :rmt_process,      Trading::RMTProcess.new
         object :rmt_job,          Trading::Jobs::RMTJob.new
         object :rmt_broker,       Trading::Brokers::RMTBroker.new
+        
+        object :rate_fetcher,     Trading::Internal::RateFetcher.new
       end
     end
     

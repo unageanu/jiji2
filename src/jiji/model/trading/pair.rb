@@ -21,6 +21,10 @@ module Trading
     
     index({ :pair_id => 1 }, { unique: true, name: "pairs_pair_id_index" })
     index({ :name    => 1 }, { unique: true, name: "pairs_name_index" })
+    
+    def to_json(*a)
+      {:pair_id =>pair_id, :name=> name }.to_json(*a)
+    end
   end
   
   class Pairs

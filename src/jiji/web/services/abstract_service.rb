@@ -16,7 +16,7 @@ module Web
     
     include Jiji::Errors
     
-    #use :protection
+    use Rack::Deflater
     
     set :sessions, false
     
@@ -34,16 +34,16 @@ module Web
     
     def serialize(body)
       if request.accept? 'application/x-msgpack'
-        content_type "application/x-msgpack"
+        content_type "application/x-msgpack;charset=UTF-8"
         MessagePack.pack(body)
       else
-        content_type "application/json"
+        content_type "application/json;charset=UTF-8"
         JSON.generate(body)
       end
     end
 
     def ok( body )
-      [200, serialize(body)]
+      [200, no_cache, serialize(body)]
     end
     
     def created( body )
@@ -53,6 +53,16 @@ module Web
     def no_content
       [204]
     end
+    
+
+    def no_cache
+      @no_cache ||= {
+        "Cache-Control" => "no-cache, no-store",
+        "Expires"       => "-1",
+        "Pragma"        => "no-cache"
+      }
+    end
+
     
     def not_found
       raise Jiji::Errors::NotFoundException.new

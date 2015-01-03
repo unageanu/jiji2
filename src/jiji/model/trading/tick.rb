@@ -2,6 +2,7 @@
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
+require 'jiji/web/transport/transportable'
 
 module Jiji
 module Model
@@ -78,6 +79,7 @@ module Trading
     
     class Value
       include Jiji::Utils::ValueObject
+      include Jiji::Web::Transport::Transportable
       
       attr :bid, :ask, :buy_swap, :sell_swap
       
@@ -92,13 +94,13 @@ module Trading
         [bid, ask, buy_swap, sell_swap]
       end
 
-      def to_json(*a)
+      def to_h
         {
           :bid      => bid,
           :ask      => ask,
           :buy_swap => buy_swap,
           :sell_swap=> sell_swap 
-        }.to_json(*a)
+        }
       end
 
     end

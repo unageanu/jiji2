@@ -2,10 +2,12 @@
 
 require 'encase'
 require 'json'
+require 'msgpack'
 require 'time'
 require 'jiji/web/middlewares/base'
 require 'jiji/web/middlewares/authentication_filter'
 require 'jiji/web/transport/json'
+require 'jiji/web/transport/messagepack'
 
 module Jiji
 module Web
@@ -31,16 +33,20 @@ module Web
     end
     
     def serialize(body)
-      JSON.generate(body)
+      if request.accept? 'application/x-msgpack'
+        content_type "application/x-msgpack"
+        MessagePack.pack(body)
+      else
+        content_type "application/json"
+        JSON.generate(body)
+      end
     end
 
     def ok( body )
-      content_type "application/json"
       [200, serialize(body)]
     end
     
     def created( body )
-      content_type "application/json"
       [201, serialize(body)]
     end
     

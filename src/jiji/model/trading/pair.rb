@@ -4,6 +4,7 @@ require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
 require 'thread'
 require 'singleton'
+require 'jiji/web/transport/transportable'
 
 module Jiji
 module Model
@@ -13,6 +14,7 @@ module Trading
   
     include Mongoid::Document
     include Jiji::Utils::ValueObject
+    include Jiji::Web::Transport::Transportable
     
     store_in collection: "pairs"
     
@@ -22,8 +24,8 @@ module Trading
     index({ :pair_id => 1 }, { unique: true, name: "pairs_pair_id_index" })
     index({ :name    => 1 }, { unique: true, name: "pairs_name_index" })
     
-    def to_json(*a)
-      {:pair_id =>pair_id, :name=> name }.to_json(*a)
+    def to_h
+      {:pair_id =>pair_id, :name=> name}
     end
   end
   

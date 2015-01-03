@@ -2,6 +2,7 @@
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
+require 'jiji/web/transport/transportable'
 
 module Jiji
 module Model
@@ -10,6 +11,7 @@ module Trading
   class Rate
     
     include Jiji::Utils::ValueObject
+    include Jiji::Web::Transport::Transportable
     
     attr :pair, :open, :close, :high, :low, :timestamp
     
@@ -55,7 +57,7 @@ module Trading
         close.close, high.high, low.low, open.timestamp)
     end
     
-    def to_json(*a)
+    def to_h
       {
         :pair      => pair,
         :open      => open,
@@ -63,7 +65,7 @@ module Trading
         :high      => high,
         :low       => low,
         :timestamp => timestamp 
-      }.to_json(*a)
+      }
     end
     
   protected

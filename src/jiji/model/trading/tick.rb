@@ -23,6 +23,7 @@ module Trading
     index({ :timestamp=> 1 }, { name: "ticks_timestamp_index" })
     
     def self.create(pair_and_values, timestamp)
+      timestamp = timestamp.round
       Tick.new {|t|
         t.values    = conert_to_array(pair_and_values)
         t.timestamp = timestamp
@@ -90,7 +91,16 @@ module Trading
       def values
         [bid, ask, buy_swap, sell_swap]
       end
-      
+
+      def to_json(*a)
+        {
+          :bid      => bid,
+          :ask      => ask,
+          :buy_swap => buy_swap,
+          :sell_swap=> sell_swap 
+        }.to_json(*a)
+      end
+
     end
 
   private

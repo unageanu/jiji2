@@ -67,6 +67,7 @@ describe Jiji::Model::Trading::Pairs do
     expect(all.size).to eq(2)
     expect(all[0].name).to eq(:EURJPY)
     expect(all[1].name).to eq(:USDJPY)
+    
   end
   
 end

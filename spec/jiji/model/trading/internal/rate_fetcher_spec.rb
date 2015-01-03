@@ -7,8 +7,6 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
   
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
-    register_ticks
-    
     @fetcher = Jiji::Model::Trading::Internal::RateFetcher.new
   end
   
@@ -32,8 +30,11 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
       }
     }
   end
-  
+ 
   it "fetch でレート一覧を取得できる" do
+    
+    register_ticks
+    
     [:EURJPY,:USDJPY,:EURUSD].each {|pair_id|
       rates = @fetcher.fetch(pair_id, Time.at(12*20), Time.at(72*20))
       
@@ -143,4 +144,27 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
     
   end
   
+    
+  it "rangeで返された範囲のレート一覧を取得できる" do
+    
+    t = @data_builder.new_tick(1, Time.now) 
+    t.save
+
+    swap = Jiji::Model::Trading::Swap.new {|s|
+      s.pair_id   = Jiji::Model::Trading::Pairs.instance.create_or_get(:EURJPY).pair_id
+      s.buy_swap  = 10
+      s.sell_swap = -20
+      s.timestamp = t.timestamp
+    }
+    swap.save
+    
+    range = Jiji::Model::Trading::Tick.range
+    rates = @fetcher.fetch( :EURJPY, 
+      Time.parse(range[:start].iso8601), 
+      Time.parse((range[:end]+1).iso8601))
+    
+    expect(rates.length).to eq(1)
+ 
+  end
+      
 end

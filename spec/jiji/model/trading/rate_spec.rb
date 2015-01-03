@@ -16,11 +16,11 @@ describe Jiji::Model::Trading::Rate do
   it "tickから作成できる" do
     
     rate1 = Jiji::Model::Trading::Rate.create_from_tick( :EURJPY,
-      @data_builder.new_tick(1,   DateTime.new(2014, 1, 1, 0, 0, 0)),  
-      @data_builder.new_tick(2,   DateTime.new(2014, 2, 1, 0, 0, 0)),
-      @data_builder.new_tick(3,   DateTime.new(2014, 1, 1, 0, 0, 1)),  
-      @data_builder.new_tick(10,  DateTime.new(2014, 1, 10, 0, 0, 0)),
-      @data_builder.new_tick(-10, DateTime.new(2014, 1, 21, 0, 0, 0))
+      @data_builder.new_tick(1,   Time.new(2014, 1, 1, 0, 0, 0)),  
+      @data_builder.new_tick(2,   Time.new(2014, 2, 1, 0, 0, 0)),
+      @data_builder.new_tick(3,   Time.new(2014, 1, 1, 0, 0, 1)),  
+      @data_builder.new_tick(10,  Time.new(2014, 1, 10, 0, 0, 0)),
+      @data_builder.new_tick(-10, Time.new(2014, 1, 21, 0, 0, 0))
     )
       
     expect(rate1.pair.name).to eq(:EURJPY)
@@ -32,7 +32,7 @@ describe Jiji::Model::Trading::Rate do
     expect(rate1.high.ask).to eq(109)
     expect(rate1.low.bid).to eq(90)
     expect(rate1.low.ask).to eq(89)
-    expect(rate1.timestamp).to  eq(DateTime.new(2014, 1, 1, 0, 0, 0))
+    expect(rate1.timestamp).to  eq(Time.new(2014, 1, 1, 0, 0, 0))
     expect(rate1.buy_swap).to eq(3)
     expect(rate1.sell_swap).to eq(21)
   end

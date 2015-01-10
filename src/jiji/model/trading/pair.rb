@@ -32,13 +32,14 @@ module Trading
   class Pairs
     
     include Singleton
+    include Jiji::Errors
     
     def initialize
       @lock = Mutex.new
       load
     end
     
-    def create_or_get(name)
+    def register(name)
       name = name.to_sym
       @lock.synchronize {
         unless @by_name.include?(name)
@@ -49,10 +50,20 @@ module Trading
         @by_name[name]
       }
     end
+   
+    def create_or_get(name)
+      register(name)
+    end
     
     def get_by_id(id)
       @lock.synchronize {
-        @by_id[id]
+        @by_id[id] || not_found("pair", :id=>id  )
+      }
+    end
+    
+    def get_by_name(name)
+      @lock.synchronize {
+        @by_name[name] || not_found("pair", :name=>name )
       }
     end
     
@@ -77,7 +88,7 @@ module Trading
     end
     def register_new_pair(name)
       pair = Pair.new {|p|
-        p.name = name
+        p.name    = name
         p.pair_id = new_id
       }
       pair.save

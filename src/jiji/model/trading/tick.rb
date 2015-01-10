@@ -26,9 +26,9 @@ module Trading
     def self.create(pair_and_values, timestamp)
       timestamp = timestamp.round
       Tick.new {|t|
-        t.values    = conert_to_array(pair_and_values)
-        t.timestamp = timestamp
+        t.values    = create_values(pair_and_values)
         t.swaps     = create_swaps(pair_and_values, timestamp)
+        t.timestamp = timestamp
       }
     end
     
@@ -38,7 +38,8 @@ module Trading
     end
     
     def each(&block)
-      0.upto(values.length/2) {|i|
+      0.upto((values.length/2)-1) {|i|
+        next unless values[i*2] || values[i*2+1] 
         pair = Pairs.instance.get_by_id(i)
         if (pair != nil) 
           block.call([pair.name, self[pair.name]])
@@ -106,7 +107,7 @@ module Trading
     end
 
   private
-    def self.conert_to_array(pair_and_values)
+    def self.create_values(pair_and_values)
       pair_and_values.inject([]) {|r,v|
         pair = Pairs.instance.create_or_get(v[0])
         r[pair.pair_id*2]   = v[1].bid

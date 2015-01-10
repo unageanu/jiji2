@@ -10,7 +10,10 @@ module Jobs
 
   class RMTJob < AbstractJob
     
+    include Encase
+    
     needs :rmt_broker
+    needs :logger
     
     def initialize(wait_time=10)
       super()

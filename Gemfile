@@ -4,6 +4,7 @@ gem 'encase',    '0.1.2'
 
 gem 'lru_redux', '0.8.1'
 gem 'bcrypt',    '3.1.9'
+gem 'thread',    '0.1.4'
 
 gem 'msgpack',   '0.5.9'
 gem 'rack',      '1.5.2'

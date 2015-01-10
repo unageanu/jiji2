@@ -10,13 +10,9 @@ module Jobs
 
   class AbstractJob
     
-    include Encase
-    
     attr :broker
     attr :agents
     attr :status
-    
-    needs :logger
     
     def initialize
       @agents = Jiji::Model::Agents::Agents.new
@@ -37,7 +33,7 @@ module Jobs
         @agents.next_tick( @broker )
         after_do_next
       rescue => e 
-        @logger.error(e)
+        @logger.error(e) if @logger
       end
     end
     

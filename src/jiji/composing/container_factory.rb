@@ -3,7 +3,7 @@
 require 'singleton'
 require 'logger'
 require 'fileutils'
-
+require 'thread/pool'
 require 'encase/container'
 
 require 'jiji/utils/requires'
@@ -62,9 +62,11 @@ private
         object :security_setting,   Settings::SecuritySetting.load_or_create
         object :rmt_broker_setting, Settings::RMTBrokerSetting.load_or_create
         
-        object :rmt_process,      Trading::RMTProcess.new
+        object :rmt_process,      Trading::Processes::RMTProcess.new
         object :rmt_job,          Trading::Jobs::RMTJob.new
         object :rmt_broker,       Trading::Brokers::RMTBroker.new
+        
+        object :back_test_repository,  Trading::BackTestRepository.new
         
         object :rate_fetcher,     Trading::Internal::RateFetcher.new
       end

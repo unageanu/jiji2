@@ -67,6 +67,11 @@ module Mock
 
     def commit( position_id, count )
     end
+    
+    def self.instance 
+       Jiji::Model::Settings::RMTBrokerSetting.available_securities.find {|p| p.plugin_id == :mock}
+    end
+    
   end
   
 end

@@ -14,6 +14,7 @@ module Model
     needs :plugin_loader
     needs :rmt_broker_setting
     needs :rmt_process
+    needs :backtest_repository
     needs :index_builder
     
     def setup
@@ -25,7 +26,8 @@ module Model
     end
     
     def tear_down
-      @rmt_process.stop
+      @rmt_process.stop.value
+      @backtest_repository.stop
     end
     
   end

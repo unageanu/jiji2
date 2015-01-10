@@ -48,7 +48,7 @@ module Brokers
   
   protected
     def retrieve_pairs
-      securities ? securities.list_pairs : []
+      securities ? convert_pairs(securities.list_pairs) : []
     end
     def retrieve_rates
       securities ? convert_rates(securities.list_rates) 
@@ -71,6 +71,10 @@ module Brokers
     end
     def convert_rate_to_tick( r )
       Tick::Value.new(r.bid, r.ask, r.buy_swap, r.sell_swap) 
+    end
+    def convert_pairs(pairs)
+      instance = Jiji::Model::Trading::Pairs.instance
+      pairs.map {|p| Pairs.instance.create_or_get(p.name) }
     end
   end
 

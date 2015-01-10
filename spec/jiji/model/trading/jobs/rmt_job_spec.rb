@@ -12,7 +12,7 @@ describe Jiji::Model::Trading::Jobs::RMTJob do
     @rmt_broker_setting = @container.lookup(:rmt_broker_setting)
     @rmt_broker_setting.set_active_securities(:mock, {})
     
-    @mock_plugin =  Jiji::Model::Settings::RMTBrokerSetting.available_securities.find {|p| p.plugin_id == :mock}
+    @mock_plugin =  Jiji::Test::Mock::MockSecuritiesPlugin.instance
   end
   
   after(:example) do

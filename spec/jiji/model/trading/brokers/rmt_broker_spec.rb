@@ -8,7 +8,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
     @data_builder = Jiji::Test::DataBuilder.new
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
     
-    @mock_plugin =  Jiji::Model::Settings::RMTBrokerSetting.available_securities.find {|p| p.plugin_id == :mock}
+    @mock_plugin =  Jiji::Test::Mock::MockSecuritiesPlugin.instance
     @mock_plugin.seed = 0
   end
   

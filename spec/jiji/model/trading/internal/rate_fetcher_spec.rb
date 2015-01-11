@@ -14,26 +14,10 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
     @data_builder.clean
   end
   
-  def register_ticks
-    0.upto(1000) {|i|
-      t = @data_builder.new_tick(i%10, Time.at(20*i)) # 20秒ごとに1つ
-      t.save
-      
-      t.each {|v|
-        swap = Jiji::Model::Trading::Swap.new {|s|
-          s.pair_id   = Jiji::Model::Trading::Pairs.instance.create_or_get(v[0]).pair_id
-          s.buy_swap  = v[1].buy_swap
-          s.sell_swap = v[1].sell_swap
-          s.timestamp = t.timestamp
-        }
-        swap.save
-      }
-    }
-  end
  
   it "fetch でレート一覧を取得できる" do
     
-    register_ticks
+    @data_builder.register_ticks(1001)
     
     [:EURJPY,:USDJPY,:EURUSD].each {|pair_id|
       rates = @fetcher.fetch(pair_id, Time.at(12*20), Time.at(72*20))

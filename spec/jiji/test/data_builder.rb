@@ -36,6 +36,23 @@ module Test
       }
     end
     
+    def register_ticks(count, interval=20)
+      count.times {|i|
+        t = new_tick(i%10, Time.at(interval*i))
+        t.save
+        
+        t.each {|v|
+          swap = Jiji::Model::Trading::Swap.new {|s|
+            s.pair_id   = Jiji::Model::Trading::Pairs.instance.create_or_get(v[0]).pair_id
+            s.buy_swap  = v[1].buy_swap
+            s.sell_swap = v[1].sell_swap
+            s.timestamp = t.timestamp
+          }
+          swap.save
+        }
+      }
+    end
+    
     def clean
       Jiji::Model::Trading::Tick.delete_all
       Jiji::Model::Trading::Pair.delete_all

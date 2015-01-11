@@ -45,6 +45,12 @@ shared_examples "process の基本操作ができる" do
     
     expect( future.value ).to eq "x"
     expect( q ).to eq [:running]
+    
+    future = @process.post_message {|job|
+      raise "test"
+    }
+    
+    expect { future.value }.to raise_error
   end
     
 end

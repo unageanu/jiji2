@@ -92,7 +92,7 @@ describe Jiji::Model::Trading::Tick do
   context "tickが登録されている場合" do
     
     before(:context) do
-      register_ticks(10)
+      @data_builder.register_ticks(11)
     end
     after(:context) do
       @data_builder.clean
@@ -185,7 +185,7 @@ describe Jiji::Model::Trading::Tick do
   context "tickが1つだけ登録されている場合" do
     
     before(:context) do
-      register_ticks(0)
+      @data_builder.register_ticks(1)
     end
     after(:context) do
       @data_builder.clean
@@ -232,7 +232,7 @@ describe Jiji::Model::Trading::Tick do
  
   it "delete で tick を削除できる" do
     
-    register_ticks(10)
+    @data_builder.register_ticks(11)
     expect(Jiji::Model::Trading::Tick.count).to eq(11)
     range = Jiji::Model::Trading::Tick.range
     expect(range[:start]).to eq(Time.at(0))
@@ -264,24 +264,5 @@ describe Jiji::Model::Trading::Tick do
     
     @data_builder.clean
   end
-  
-  
-  def register_ticks(count)
-    0.upto(count) {|i|
-      t = @data_builder.new_tick(i%10, Time.at(20*i)) # 20秒ごとに1つ
-      t.save
-      
-      t.each {|v|
-        swap = Jiji::Model::Trading::Swap.new {|s|
-          s.pair_id   = Jiji::Model::Trading::Pairs.instance.create_or_get(v[0]).pair_id
-          s.buy_swap  = v[1].buy_swap
-          s.sell_swap = v[1].sell_swap
-          s.timestamp = t.timestamp
-        }
-        swap.save
-      }
-    }
-  end
-  
   
 end

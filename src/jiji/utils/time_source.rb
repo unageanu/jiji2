@@ -8,7 +8,7 @@ module Utils
     KEY = :jiji_time_source__now
     
     def now
-      Thread.current[KEY] 
+      Thread.current[KEY] || Time.now
     end
     
     def set( time )

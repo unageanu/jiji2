@@ -21,7 +21,8 @@ module Brokers
       @end_time   = end_time
       @current    = start_time
       
-      @buffer     = []
+      @buffer      = []
+      @trade_units = Jiji::Model::Trading::TradeUnits.create(start_time, end_time)
     end
     
     def positions
@@ -47,8 +48,11 @@ module Brokers
   protected
     def retrieve_pairs
       instance = Jiji::Model::Trading::Pairs.instance
-      current_rates.map {|v|
-        instance.create_or_get(v[0])
+      rates = current_rates
+      rates.map {|v|
+        pair = instance.create_or_get(v[0])
+        trade_unit = @trade_units.get_trade_unit_at(pair.pair_id, rates.timestamp)
+        JIJI::Plugin::SecuritiesPlugin::Pair.new( pair.name, trade_unit.trade_unit )
       }
     end
     def retrieve_rates

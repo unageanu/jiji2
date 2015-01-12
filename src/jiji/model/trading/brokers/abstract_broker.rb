@@ -23,6 +23,7 @@ module Trading
     end
     
     def refresh
+      current_rates
       @pairs_cache = nil
       @rates_cache = nil
     end

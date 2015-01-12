@@ -56,6 +56,7 @@ private
     end
     
     def configure_model( container )
+      
       container.configure do
         object :application, Application.new
         
@@ -66,6 +67,7 @@ private
         object :rmt_job,          Trading::Jobs::RMTJob.new
         object :rmt_broker,       Trading::Brokers::RMTBroker.new
         
+        object :back_test_thread_pool, Thread.pool(2)
         object :back_test_repository,  Trading::BackTestRepository.new
         
         object :rate_fetcher,     Trading::Internal::RateFetcher.new

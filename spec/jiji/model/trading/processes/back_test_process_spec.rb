@@ -10,10 +10,9 @@ describe Jiji::Model::Trading::Processes::BackTestProcess do
     @data_builder = Jiji::Test::DataBuilder.new
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
     
-    @test    = Jiji::Test::Mock::MockBackTest.new
+    @job     = Jiji::Test::Mock::MockJob.new
     @logger  = @container.lookup(:logger)
-    @process = Jiji::Model::Trading::Processes::BackTestProcess.new( @test, Thread.pool(1), @logger)
-    @job     = @process.job
+    @process = Jiji::Model::Trading::Processes::BackTestProcess.new( @job, Thread.pool(1), @logger)
   end
   
   after(:example) do

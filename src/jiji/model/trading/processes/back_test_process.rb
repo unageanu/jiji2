@@ -10,12 +10,8 @@ module Trading
 module Processes
   
   class BackTestProcess < AbstractProcess
-    
-    attr :back_test
-    
-    def initialize(back_test, pool, logger)
-      super back_test.job, pool, logger
-      @back_test = back_test
+    def initialize(job, pool, logger)
+      super job, pool, logger
     end
     
   end

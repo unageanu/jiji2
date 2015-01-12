@@ -57,6 +57,7 @@ module Test
       Jiji::Model::Trading::Tick.delete_all
       Jiji::Model::Trading::Pair.delete_all
       Jiji::Model::Trading::Swap.delete_all
+      Jiji::Model::Trading::BackTest.delete_all
       Jiji::Model::Settings::AbstractSetting.delete_all
     end
     

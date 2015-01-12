@@ -22,12 +22,16 @@ module Processes
     
     def start
       @task = @pool.process(@job) {|job|
-        job.prepare_running
-        while ( job.has_next )
-          job.do_next
+        begin
+          job.prepare_running
+          while ( job.has_next )
+            job.do_next
+            process_message
+          end
+          job.post_running
+        ensure
           process_message
         end
-        job.post_running
       }
     end
     

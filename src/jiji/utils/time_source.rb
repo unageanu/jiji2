@@ -12,7 +12,7 @@ module Utils
     end
     
     def set( time )
-      Thread.current[KEY] = time || DateTime.now
+      Thread.current[KEY] = time || Time.now
     end
     
     def reset

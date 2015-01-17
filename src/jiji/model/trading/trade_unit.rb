@@ -29,7 +29,7 @@ module Trading
       }).delete
     end
     
-  protected
+  private
     def values
       [pair_id, trace_unit, timestamp]
     end

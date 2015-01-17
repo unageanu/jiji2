@@ -32,13 +32,12 @@ module Jobs
       wait
     end
     
-  protected
+  private
     def after_do_next
       store_rates
       store_trade_unit_hourly
     end
     
-  private
     def store_rates
       @rate_saver.save(@broker.current_rates)
     end

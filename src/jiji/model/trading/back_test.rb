@@ -64,7 +64,7 @@ module Trading
       self.created_at = time_source.now
 
       #@agents = agents_factory.create(agent_setting)
-      @broker  = Brokers::BackTestBroker.new(start_time, end_time)
+      @broker  = Brokers::BackTestBroker.new(_id, start_time, end_time)
       @job     = Jobs::BackTestJob.new(@agents, @broker, @logger)
       @process = Processes::BackTestProcess.new(@job, back_test_thread_pool, logger)
       

@@ -27,8 +27,7 @@ module Settings
       @setting_changed_listener << proc
     end
   
-  protected
-  
+  private
     def self.find(category)
       AbstractSetting.find_by( :category => category )
     end
@@ -38,8 +37,7 @@ module Settings
         l.call( key, event )
       }
     end
-  
-  private
+    
     def init
       @setting_changed_listener = []
     end

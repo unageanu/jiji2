@@ -29,7 +29,6 @@ module Utils
       }
       return values
     end
-  private
     def _eql?(other, &block)
       return false if other == nil
       return true if self.equal? other

@@ -31,7 +31,7 @@ module Trading
       }).delete
     end
     
-  protected
+  private
     def values
       [pair_id, sell_swap, buy_swap, timestamp]
     end

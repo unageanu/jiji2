@@ -14,7 +14,12 @@ module Brokers
     
     needs :rmt_broker_setting
     needs :time_source
-
+    
+    def initialize
+      super()
+      @back_test_id = nil
+    end
+    
     def has_next
       true
     end
@@ -32,22 +37,14 @@ module Brokers
       order(pair_id, :sell, count )
     end
     
-    def order( pair_id, type, count )
-      check_setting_finished
-      position = securities.order(pair_id, type, count)
-      @positions[position.position_id] = position
-      return position
-    end
-    
-    def commit( position_id, count=1 )
-      securities.commit(position_id, count)
+    def close( position_id )
     end
     
     def destroy
       securities.destroy_plugin if securities
     end
   
-  protected
+  private
     def retrieve_pairs
       securities ? securities.list_pairs : []
     end
@@ -55,8 +52,14 @@ module Brokers
       securities ? convert_rates(securities.list_rates, time_source.now) 
                  : Jiji::Model::Trading::NilTick.new
     end
+    
+    def order( pair_id, type, count )
+      check_setting_finished
+      position = securities.order(pair_id, type, count)
+      @positions[position.position_id] = position
+      return position
+    end
   
-  private
     def check_setting_finished
       raise Jiji::Errors::NotInitializedException.new unless securities
     end

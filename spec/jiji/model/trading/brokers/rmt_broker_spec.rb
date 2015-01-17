@@ -67,7 +67,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         broker.buy(:EURJPY, 1)
         broker.sell(:USDJPY, 2)
         broker.positions.each {|k,v|
-          broker.commit(v.position_id)
+          broker.close(v.position_id)
         }
       end
       

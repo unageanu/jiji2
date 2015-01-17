@@ -45,7 +45,7 @@ module Jobs
       @status == :running && @broker.has_next
     end
   
-  protected
+  private
     def before_do_next
       @broker.refresh
     end

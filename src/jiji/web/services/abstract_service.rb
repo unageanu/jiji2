@@ -20,7 +20,7 @@ module Web
     
     set :sessions, false
     
-  protected
+  private
 
     def load_body
       JSON.load(request.body)

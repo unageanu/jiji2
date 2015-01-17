@@ -15,11 +15,16 @@ module Brokers
     
     attr :start, :end
     
-    def initialize(start_time, end_time)
+    def initialize(back_test_id, start_time, end_time)
+      
+      super()
+      
       check_period(start_time, end_time)
       @start_time = start_time
       @end_time   = end_time
       @current    = start_time
+      
+      @back_test_id = back_test_id
       
       @buffer      = []
       @trade_units = Jiji::Model::Trading::TradeUnits.create(start_time, end_time)
@@ -44,8 +49,8 @@ module Brokers
       fill_buffer if @buffer.empty?
       !@buffer.empty?
     end
-    
-  protected
+  
+  private
     def retrieve_pairs
       instance = Jiji::Model::Trading::Pairs.instance
       rates = current_rates
@@ -59,8 +64,7 @@ module Brokers
       fill_buffer if @buffer.empty?
       @buffer.shift
     end
-  
-  private
+
     def check_period( start_time, end_time )
       if start_time >= end_time
         illegal_argument("illegal period.", {

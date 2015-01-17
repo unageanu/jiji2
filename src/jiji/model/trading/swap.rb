@@ -5,6 +5,7 @@ require 'jiji/utils/value_object'
 require 'jiji/utils/historical_data'
 require 'thread'
 require 'singleton'
+require 'protected_attributes'
 
 module Jiji
 module Model
@@ -23,6 +24,8 @@ module Trading
     field :timestamp,      type: Time
 
     index({ :timestamp => 1 }, { name: "swaps_timestamp_index" })
+    
+    attr_readonly :pair_id, :sell_swap, :buy_swap, :timestamp
     
     def self.delete( start_time, end_time )
       Swap.where({

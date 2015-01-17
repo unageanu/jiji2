@@ -17,6 +17,8 @@ module Settings
     
     index({ :category => 1 }, { unique:true, name: "settings_category_index" })
     
+    attr_readonly :category
+    
     after_initialize :init
 
     def initialize

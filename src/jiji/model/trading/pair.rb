@@ -27,6 +27,9 @@ module Trading
     def to_h
       {:pair_id =>pair_id, :name=> name}
     end
+    
+    attr_readonly :pair_id, :name
+    
   end
   
   class Pairs

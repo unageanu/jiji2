@@ -23,6 +23,8 @@ module Trading
     
     index({ :timestamp=> 1 }, { name: "ticks_timestamp_index" })
     
+    attr_readonly :values, :timestamp
+    
     def self.create(pair_and_values, timestamp)
       timestamp = timestamp.round
       Tick.new {|t|

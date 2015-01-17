@@ -22,6 +22,9 @@ module Trading
 
     index({ :timestamp => 1 }, { name: "trade_units_timestamp_index" })
     
+    attr_readonly :pair_id, :trade_unit, :timestamp
+
+    
     def self.delete( start_time, end_time )
       TradeUnit.where({
         :timestamp.gte => start_time, 

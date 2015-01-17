@@ -20,6 +20,30 @@ describe Jiji::Model::Trading::Swaps do
     @data_builder.clean
   end
   
+  it "Swapの属性は変更できない" do
+    
+    swap = @data_builder.new_swap(0, 0, Time.at(0))
+    swap.save
+    
+    expect(swap._id).not_to be nil
+    expect(swap.pair_id).to eq(0)
+    expect(swap.buy_swap).to eq(2)
+    expect(swap.sell_swap).to eq(20)
+    expect(swap.timestamp).to eq Time.at(0)
+    
+    
+    swap.pair_id   = 10
+    swap.buy_swap  = 10
+    swap.sell_swap = 10
+    swap.timestamp = Time.at(10)
+    
+    expect(swap._id).not_to be nil
+    expect(swap.pair_id).to eq(0)
+    expect(swap.buy_swap).to eq(2)
+    expect(swap.sell_swap).to eq(20)
+    expect(swap.timestamp).to eq Time.at(0)
+  end
+  
   context "開始、終了期間と一致するswapが登録されいる場合" do
     it "期間内のスワップの取得、参照ができる" do
       swaps = Jiji::Model::Trading::Swaps.create( Time.at(0), Time.at(60*5) )

@@ -22,6 +22,7 @@ module Trading
     needs :logger
     needs :time_source
     needs :back_test_thread_pool
+    needs :tick_repository
     #needs :agents_factory
     
     store_in collection: "backtests"
@@ -64,7 +65,7 @@ module Trading
       self.created_at = time_source.now
 
       #@agents = agents_factory.create(agent_setting)
-      @broker  = Brokers::BackTestBroker.new(_id, start_time, end_time)
+      @broker  = Brokers::BackTestBroker.new(_id, start_time, end_time, @tick_repository)
       @job     = Jobs::BackTestJob.new(@agents, @broker, @logger)
       @process = Processes::BackTestProcess.new(@job, back_test_thread_pool, logger)
       

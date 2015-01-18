@@ -7,6 +7,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
     @data_builder.register_ticks(30, 60*10)
+    @repository = Jiji::Model::Trading::TickRepository.new
   end
   
   after(:example) do
@@ -16,7 +17,8 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   context "全期間を対象に実行する場合" do
     
     let(:broker) {
-      Jiji::Model::Trading::Brokers::BackTestBroker.new( "test", Time.at(0), Time.at(60*10*40) )
+      Jiji::Model::Trading::Brokers::BackTestBroker.new( 
+        "test", Time.at(0), Time.at(60*10*40), @repository )
     }
     
     it "期間内のレートを取得できる" do
@@ -89,7 +91,8 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   context "期間の一部を対象に実行する場合" do
     
     let(:broker) {
-      Jiji::Model::Trading::Brokers::BackTestBroker.new( "test", Time.at(100), Time.at(60*10*10+100) )
+      Jiji::Model::Trading::Brokers::BackTestBroker.new( 
+        "test", Time.at(100), Time.at(60*10*10+100), @repository )
     }
     
     it "期間内のレートを取得できる" do
@@ -132,7 +135,8 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   context "期間内にTickがある場合" do
     
     let(:broker) {
-      Jiji::Model::Trading::Brokers::BackTestBroker.new( "test", Time.at(20000), Time.at(30000) )
+      Jiji::Model::Trading::Brokers::BackTestBroker.new( 
+        "test", Time.at(20000), Time.at(30000), @repository )
     }
     
     it "レートは取得できない" do
@@ -143,7 +147,8 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   
   it "start が end よりも未来の場合、エラーになる" do
     expect{
-      Jiji::Model::Trading::Brokers::BackTestBroker.new( "test", Time.at(1000), Time.at(500) )
+      Jiji::Model::Trading::Brokers::BackTestBroker.new( 
+        "test", Time.at(1000), Time.at(500), @repository )
     }.to raise_error( ArgumentError ) 
   end
     

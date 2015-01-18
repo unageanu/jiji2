@@ -15,7 +15,7 @@ module Brokers
     
     attr :start, :end
     
-    def initialize(back_test_id, start_time, end_time)
+    def initialize(back_test_id, start_time, end_time, tick_repository)
       
       super()
       
@@ -26,8 +26,9 @@ module Brokers
       
       @back_test_id = back_test_id
       
-      @buffer      = []
-      @trade_units = Jiji::Model::Trading::Internal::TradeUnits.create(start_time, end_time)
+      @buffer          = []
+      @trade_units     = Jiji::Model::Trading::Internal::TradeUnits.create(start_time, end_time)
+      @tick_repository = tick_repository
     end
     
     def positions
@@ -83,7 +84,7 @@ module Brokers
     def load_next_ticks
       start_time = @current
       end_time   = @end_time > @current+(60*60*2) ? @current+(60*60*2) : @end_time 
-      @buffer += Tick.fetch( start_time, end_time )
+      @buffer += @tick_repository.fetch( start_time, end_time )
       
       @current = end_time
     end

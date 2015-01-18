@@ -49,32 +49,6 @@ module Trading
       }
     end
     
-    def self.fetch( start_time, end_time )
-      swaps = Internal::Swaps.create( start_time, end_time )
-      return Tick.where({
-        :timestamp.gte => start_time, 
-        :timestamp.lt  => end_time 
-      }).order_by(:timestamp.asc).map {|t|
-        t.swaps = swaps.get_swaps_at( t.timestamp )
-        t
-      }
-    end
-    
-    def self.range
-      return {:start=>nil, :end=>nil} unless Tick.exists?
-      
-      first = Tick.order_by(:timestamp.asc).only(:timestamp).first
-      last  = Tick.order_by(:timestamp.asc).only(:timestamp).last
-      return {:start=> first.timestamp, :end=>last.timestamp}
-    end
-    
-    def self.delete( start_time, end_time )
-      Tick.where({
-        :timestamp.gte => start_time, 
-        :timestamp.lt  => end_time 
-      }).delete
-    end
-    
     def self.create_from_hash(pair, hash, swaps)
       swap = swaps.get_swap_at(pair.pair_id, hash["timestamp"])
       Tick::Value.new(hash["bid"],hash["ask"], swap.buy_swap, swap.sell_swap )

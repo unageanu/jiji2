@@ -142,7 +142,7 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
     }
     swap.save
     
-    range = Jiji::Model::Trading::Tick.range
+    range = Jiji::Model::Trading::TickRepository.new.range
     rates = @fetcher.fetch( :EURJPY, 
       Time.parse(range[:start].iso8601), 
       Time.parse((range[:end]+1).iso8601))

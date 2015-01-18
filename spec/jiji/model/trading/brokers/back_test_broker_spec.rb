@@ -22,7 +22,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     it "期間内のレートを取得できる" do
       expect( broker.has_next ).to be true
       
-      rates = broker.current_rates
+      rates = broker.tick
       expect( rates[:EURJPY].bid ).to be 100
       expect( rates[:EURJPY].ask ).to be  99
       expect( rates[:EURJPY].buy_swap  ).to be  2
@@ -35,7 +35,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       broker.refresh
       expect( broker.has_next ).to be true
       
-      rates = broker.current_rates
+      rates = broker.tick
       expect( rates[:EURJPY].bid ).to be 101
       expect( rates[:EURJPY].ask ).to be 100
       expect( rates[:EURJPY].buy_swap  ).to be  3
@@ -44,7 +44,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       28.times {|i|
         broker.refresh
         expect( broker.has_next ).to be true
-        rates = broker.current_rates
+        rates = broker.tick
         expect( rates[:EURJPY].bid ).not_to be nil
         expect( rates[:EURJPY].ask ).not_to be nil
         expect( rates[:USDJPY].bid ).not_to be nil
@@ -58,7 +58,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     it "refresh を行うまで同じレートが取得される" do
       expect( broker.has_next ).to be true
       
-      rates = broker.current_rates
+      rates = broker.tick
       expect( rates[:EURJPY].bid ).to be 100
       expect( rates[:EURJPY].ask ).to be  99
       expect( rates[:EURJPY].buy_swap  ).to be  2
@@ -68,7 +68,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       expect( rates[:EURUSD].buy_swap  ).to be  2
       expect( rates[:EURUSD].sell_swap ).to be 20
       
-      rates = broker.current_rates
+      rates = broker.tick
       expect( rates[:EURJPY].bid ).to be 100
       expect( rates[:EURJPY].ask ).to be  99
       expect( rates[:EURJPY].buy_swap  ).to be  2
@@ -80,7 +80,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     end
     
     it "pair が取得できる" do
-      pairs = broker.available_pairs
+      pairs = broker.pairs
       expect( pairs.length ).to be 3
       expect( pairs[0].name ).to be :EURJPY
     end
@@ -95,7 +95,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     it "期間内のレートを取得できる" do
       expect( broker.has_next ).to be true
       
-      rates = broker.current_rates
+      rates = broker.tick
       expect( rates[:EURJPY].bid ).to be 101
       expect( rates[:EURJPY].ask ).to be 100
       expect( rates[:EURJPY].buy_swap  ).to be  3
@@ -108,7 +108,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       broker.refresh
       expect( broker.has_next ).to be true
       
-      rates = broker.current_rates
+      rates = broker.tick
       expect( rates[:EURJPY].bid ).to be 102
       expect( rates[:EURJPY].ask ).to be 101
       expect( rates[:EURJPY].buy_swap  ).to be  4
@@ -117,7 +117,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       8.times {|i|
         broker.refresh
         expect( broker.has_next ).to be true
-        rates = broker.current_rates
+        rates = broker.tick
         expect( rates[:EURJPY].bid ).not_to be nil
         expect( rates[:EURJPY].ask ).not_to be nil
         expect( rates[:USDJPY].bid ).not_to be nil

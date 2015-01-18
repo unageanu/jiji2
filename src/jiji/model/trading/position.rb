@@ -85,7 +85,7 @@ module Trading
     
     def update
       pair = Pair.instance.create_or_get(@pair_id) 
-      value = @broker.current_rates[pair.name]
+      value = @broker.tick[pair.name]
       @current_price = sell_or_buy == :buy ? value.ask : value.bid
     end
     

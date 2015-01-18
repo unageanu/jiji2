@@ -39,13 +39,13 @@ module Jobs
     end
     
     def store_rates
-      @rate_saver.save(@broker.current_rates)
+      @rate_saver.save(@broker.tick)
     end
     def store_trade_unit_hourly
       now = time_source.now
       return if @next_save_point != nil && @next_save_point > now 
       
-      @trade_unit_saver.save( @broker.available_pairs, now )
+      @trade_unit_saver.save( @broker.pairs, now )
       @next_save_point = now + 60*60
     end
     

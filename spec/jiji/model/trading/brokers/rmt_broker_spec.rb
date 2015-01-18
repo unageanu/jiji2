@@ -37,26 +37,26 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
       it "rate,pairが取得できる" do
         
-        pairs = broker.available_pairs
+        pairs = broker.pairs
         expect( pairs.length ).to be 3
         expect( pairs[0].name ).to be :EURJPY
         #expect( pairs[0].trade_unit ).to be 10000
         
-        rates = broker.current_rates
+        rates = broker.tick
         expect( rates[:EURJPY].bid ).to be 145.110
         expect( rates[:EURJPY].ask ).to be 119.128
         expect( rates[:EURJPY].sell_swap ).to be 10
         expect( rates[:EURJPY].buy_swap  ).to be(-20)
         
         @mock_plugin.seed = 1
-        rates = broker.current_rates
+        rates = broker.tick
         expect( rates[:EURJPY].bid ).to be 145.110
         expect( rates[:EURJPY].ask ).to be 119.128
         expect( rates[:EURJPY].sell_swap ).to be 10
         expect( rates[:EURJPY].buy_swap  ).to be(-20)
         
         broker.refresh
-        rates = broker.current_rates
+        rates = broker.tick
         expect( rates[:EURJPY].bid ).to be 146.110
         expect( rates[:EURJPY].ask ).to be 120.128
         expect( rates[:EURJPY].sell_swap ).to be 10

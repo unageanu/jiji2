@@ -53,14 +53,14 @@ module Brokers
   private
     def retrieve_pairs
       instance = Jiji::Model::Trading::Pairs.instance
-      rates = current_rates
+      rates = tick
       rates.map {|v|
         pair = instance.create_or_get(v[0])
         trade_unit = @trade_units.get_trade_unit_at(pair.pair_id, rates.timestamp)
         JIJI::Plugin::SecuritiesPlugin::Pair.new( pair.name, trade_unit.trade_unit )
       }
     end
-    def retrieve_rates
+    def retrieve_tick
       fill_buffer if @buffer.empty?
       @buffer.shift
     end

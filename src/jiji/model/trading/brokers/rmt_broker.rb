@@ -48,7 +48,7 @@ module Brokers
     def retrieve_pairs
       securities ? securities.list_pairs : []
     end
-    def retrieve_rates
+    def retrieve_tick
       securities ? convert_rates(securities.list_rates, time_source.now) 
                  : Jiji::Model::Trading::NilTick.new
     end

@@ -14,16 +14,16 @@ module Trading
       @positions = {}
     end
     
-    def available_pairs
+    def pairs
       @pairs_cache ||= retrieve_pairs
     end
     
-    def current_rates
-      @rates_cache ||= retrieve_rates
+    def tick
+      @rates_cache ||= retrieve_tick
     end
     
     def refresh
-      current_rates
+      tick
       @pairs_cache = nil
       @rates_cache = nil
     end
@@ -31,7 +31,7 @@ module Trading
   private
     def create_position( pair_name, count, sell_or_buy )
       pair = Pairs.instance.create_or_get(pair_name)
-      tick = current_rates
+      tick = tick
       tick_value = tick[pair_name]
       Position.create( @back_test_id, pair.pair_id, count, sell_or_buy, 
         sell_or_buy == :sell ? tick_value.bid : tick_value.ask, tick.timestamp  )

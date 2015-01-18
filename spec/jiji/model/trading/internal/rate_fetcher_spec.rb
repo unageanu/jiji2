@@ -134,7 +134,7 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
     t = @data_builder.new_tick(1, Time.now) 
     t.save
 
-    swap = Jiji::Model::Trading::Swap.new {|s|
+    swap = Jiji::Model::Trading::Internal::Swap.new {|s|
       s.pair_id   = Jiji::Model::Trading::Pairs.instance.create_or_get(:EURJPY).pair_id
       s.buy_swap  = 10
       s.sell_swap = -20

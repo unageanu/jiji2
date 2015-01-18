@@ -27,7 +27,7 @@ module Brokers
       @back_test_id = back_test_id
       
       @buffer      = []
-      @trade_units = Jiji::Model::Trading::TradeUnits.create(start_time, end_time)
+      @trade_units = Jiji::Model::Trading::Internal::TradeUnits.create(start_time, end_time)
     end
     
     def positions

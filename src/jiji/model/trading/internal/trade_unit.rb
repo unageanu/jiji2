@@ -8,6 +8,7 @@ require 'singleton'
 module Jiji
 module Model
 module Trading
+module Internal
 
   class TradeUnit
   
@@ -79,6 +80,7 @@ module Trading
     
   end
 
+end
 end
 end
 end

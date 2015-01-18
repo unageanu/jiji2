@@ -28,7 +28,7 @@ module Test
     end
     
     def new_swap(seed, pair_id=1, timestamp=Time.at(0))
-      Jiji::Model::Trading::Swap.new {|s|
+      Jiji::Model::Trading::Internal::Swap.new {|s|
         s.pair_id   = pair_id
         s.buy_swap  =  2 + seed
         s.sell_swap = 20 + seed
@@ -37,7 +37,7 @@ module Test
     end
     
     def new_trade_unit(seed, pair_id=1, timestamp=Time.at(0))
-      Jiji::Model::Trading::TradeUnit.new {|s|
+      Jiji::Model::Trading::Internal::TradeUnit.new {|s|
         s.pair_id    = pair_id
         s.trade_unit = 10000 * seed
         s.timestamp  = timestamp
@@ -57,7 +57,7 @@ module Test
     end
     
     def register_swap( pair_id, tick, timestamp )
-      swap = Jiji::Model::Trading::Swap.new {|s|
+      swap = Jiji::Model::Trading::Internal::Swap.new {|s|
         s.pair_id   = Jiji::Model::Trading::Pairs.instance.create_or_get(pair_id).pair_id
         s.buy_swap  = tick.buy_swap
         s.sell_swap = tick.sell_swap
@@ -67,7 +67,7 @@ module Test
     end
     
     def register_trade_unit( pair_id, timestamp )
-      trade_unit = Jiji::Model::Trading::TradeUnit.new {|s|
+      trade_unit = Jiji::Model::Trading::Internal::TradeUnit.new {|s|
         s.pair_id    = Jiji::Model::Trading::Pairs.instance.create_or_get(pair_id).pair_id
         s.trade_unit = 10000
         s.timestamp  = timestamp
@@ -78,8 +78,8 @@ module Test
     def clean
       Jiji::Model::Trading::Tick.delete_all
       Jiji::Model::Trading::Pair.delete_all
-      Jiji::Model::Trading::Swap.delete_all
-      Jiji::Model::Trading::TradeUnit.delete_all
+      Jiji::Model::Trading::Internal::Swap.delete_all
+      Jiji::Model::Trading::Internal::TradeUnit.delete_all
       Jiji::Model::Trading::BackTest.delete_all
       Jiji::Model::Settings::AbstractSetting.delete_all
     end

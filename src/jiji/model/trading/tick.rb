@@ -50,7 +50,7 @@ module Trading
     end
     
     def self.fetch( start_time, end_time )
-      swaps = Swaps.create( start_time, end_time )
+      swaps = Internal::Swaps.create( start_time, end_time )
       return Tick.where({
         :timestamp.gte => start_time, 
         :timestamp.lt  => end_time 
@@ -131,7 +131,7 @@ module Trading
     def self.create_swaps(pair_and_values, timestamp)
       pair_and_values.inject({}) {|r,v|
         pair = Pairs.instance.create_or_get(v[0])
-        r[pair.pair_id] = Swap.new {|s|
+        r[pair.pair_id] = Internal::Swap.new {|s|
           s.pair_id   = pair.pair_id
           s.buy_swap  = v[1].buy_swap  
           s.sell_swap = v[1].sell_swap

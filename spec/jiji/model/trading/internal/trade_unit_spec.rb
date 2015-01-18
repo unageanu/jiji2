@@ -3,7 +3,7 @@
 require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
-describe Jiji::Model::Trading::TradeUnit do
+describe Jiji::Model::Trading::Internal::TradeUnit do
   
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
@@ -22,7 +22,7 @@ describe Jiji::Model::Trading::TradeUnit do
   
   context "開始、終了期間と一致するtrade_unitが登録されいる場合" do
     it "期間内のtrade_unitの取得、参照ができる" do
-      trade_units = Jiji::Model::Trading::TradeUnits.create( Time.at(0), Time.at(60*5) )
+      trade_units = Jiji::Model::Trading::Internal::TradeUnits.create( Time.at(0), Time.at(60*5) )
       
       trade_unit = trade_units.get_trade_unit_at(0, Time.at(0))
       expect(trade_unit.pair_id).to eq(0)
@@ -69,7 +69,7 @@ describe Jiji::Model::Trading::TradeUnit do
   
   context "開始、終了期間と一致するtrade_unitが登録されいない場合" do
     it "期間内のtrade_unitの取得、参照ができる" do
-      trade_units = Jiji::Model::Trading::TradeUnits.create( Time.at(70), Time.at(60*5+10) )
+      trade_units = Jiji::Model::Trading::Internal::TradeUnits.create( Time.at(70), Time.at(60*5+10) )
       
       trade_unit = trade_units.get_trade_unit_at(0, Time.at(70))
       expect(trade_unit.pair_id).to eq(0)
@@ -111,13 +111,13 @@ describe Jiji::Model::Trading::TradeUnit do
   end
   
   it "delete で trade_unit を削除できる" do
-    expect(Jiji::Model::Trading::TradeUnit.count).to eq(33)
+    expect(Jiji::Model::Trading::Internal::TradeUnit.count).to eq(33)
     
-    trade_units = Jiji::Model::Trading::TradeUnit.delete( Time.at(-50), Time.at(200) )
-    expect(Jiji::Model::Trading::TradeUnit.count).to eq(21)
+    trade_units = Jiji::Model::Trading::Internal::TradeUnit.delete( Time.at(-50), Time.at(200) )
+    expect(Jiji::Model::Trading::Internal::TradeUnit.count).to eq(21)
     
-    trade_units = Jiji::Model::Trading::TradeUnit.delete( Time.at(240), Time.at(300) )
-    expect(Jiji::Model::Trading::TradeUnit.count).to eq(18)
+    trade_units = Jiji::Model::Trading::Internal::TradeUnit.delete( Time.at(240), Time.at(300) )
+    expect(Jiji::Model::Trading::Internal::TradeUnit.count).to eq(18)
   end
   
 end

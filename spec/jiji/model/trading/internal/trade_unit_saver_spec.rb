@@ -16,7 +16,7 @@ describe Jiji::Model::Trading::Internal::TradeUnitSaver do
   
   it "1回目の保存時に必ず保存される" do
     
-    expect(Jiji::Model::Trading::TradeUnit.count()).to eq 0 
+    expect(Jiji::Model::Trading::Internal::TradeUnit.count()).to eq 0 
     
     @saver.save([
       JIJI::Plugin::SecuritiesPlugin::Pair.new(:EURJPY, 10000),
@@ -24,9 +24,9 @@ describe Jiji::Model::Trading::Internal::TradeUnitSaver do
       JIJI::Plugin::SecuritiesPlugin::Pair.new(:EURUSD, 10000)
     ], Time.at(1000))
     
-    expect(Jiji::Model::Trading::TradeUnit.count()).to eq 3
+    expect(Jiji::Model::Trading::Internal::TradeUnit.count()).to eq 3
     
-    items = Jiji::Model::Trading::TradeUnit.order_by(:pair_id.asc).all
+    items = Jiji::Model::Trading::Internal::TradeUnit.order_by(:pair_id.asc).all
     expect(items.length).to eq 3
     expect(items[0].trade_unit).to eq 10000
     expect(items[0].timestamp).to eq Time.at(1000)
@@ -45,7 +45,7 @@ describe Jiji::Model::Trading::Internal::TradeUnitSaver do
       JIJI::Plugin::SecuritiesPlugin::Pair.new(:EURUSD, 10000)
     ], Time.at(1000))
     
-    expect(Jiji::Model::Trading::TradeUnit.count()).to eq 3
+    expect(Jiji::Model::Trading::Internal::TradeUnit.count()).to eq 3
     
     @saver.save([
       JIJI::Plugin::SecuritiesPlugin::Pair.new(:EURJPY, 10000),
@@ -53,7 +53,7 @@ describe Jiji::Model::Trading::Internal::TradeUnitSaver do
       JIJI::Plugin::SecuritiesPlugin::Pair.new(:EURUSD, 10000)
     ], Time.at(2000))
     
-    expect(Jiji::Model::Trading::TradeUnit.count()).to eq 3
+    expect(Jiji::Model::Trading::Internal::TradeUnit.count()).to eq 3
 
     @saver.save([
       JIJI::Plugin::SecuritiesPlugin::Pair.new(:EURJPY, 10000),
@@ -61,7 +61,7 @@ describe Jiji::Model::Trading::Internal::TradeUnitSaver do
       JIJI::Plugin::SecuritiesPlugin::Pair.new(:EURUSD, 10000)
     ], Time.at(3000))
     
-    expect(Jiji::Model::Trading::TradeUnit.count()).to eq 3
+    expect(Jiji::Model::Trading::Internal::TradeUnit.count()).to eq 3
     
   end
 
@@ -73,7 +73,7 @@ describe Jiji::Model::Trading::Internal::TradeUnitSaver do
       JIJI::Plugin::SecuritiesPlugin::Pair.new(:EURUSD, 10000)
     ], Time.at(1000))
     
-    expect(Jiji::Model::Trading::TradeUnit.count()).to eq 3
+    expect(Jiji::Model::Trading::Internal::TradeUnit.count()).to eq 3
     
     @saver.save([
       JIJI::Plugin::SecuritiesPlugin::Pair.new(:EURJPY, 11000),
@@ -81,14 +81,14 @@ describe Jiji::Model::Trading::Internal::TradeUnitSaver do
       JIJI::Plugin::SecuritiesPlugin::Pair.new(:EURUSD, 11000)
     ], Time.at(2000))
     
-    expect(Jiji::Model::Trading::TradeUnit.count()).to eq 6
+    expect(Jiji::Model::Trading::Internal::TradeUnit.count()).to eq 6
 
     @saver.save([
       JIJI::Plugin::SecuritiesPlugin::Pair.new(:EURJPY, 11000),
       JIJI::Plugin::SecuritiesPlugin::Pair.new(:USDJPY, 20000)
     ], Time.at(3000))
     
-    expect(Jiji::Model::Trading::TradeUnit.count()).to eq 7
+    expect(Jiji::Model::Trading::Internal::TradeUnit.count()).to eq 7
     
   end
   

@@ -11,7 +11,7 @@ module Web
     delete "/" do
       range = get_range
       Jiji::Model::Trading::Tick.delete( range[:start], range[:end] )
-      Jiji::Model::Trading::Swap.delete( range[:start], range[:end] )
+      Jiji::Model::Trading::Internal::Swap.delete( range[:start], range[:end] )
       no_content
     end
     

@@ -10,7 +10,8 @@ require 'protected_attributes'
 module Jiji
 module Model
 module Trading
-
+module Internal
+  
   class Swap
   
     include Mongoid::Document
@@ -81,6 +82,7 @@ module Trading
     
   end
 
+end
 end
 end
 end

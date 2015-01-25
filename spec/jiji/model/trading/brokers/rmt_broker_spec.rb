@@ -40,7 +40,12 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         pairs = broker.pairs
         expect( pairs.length ).to be 3
         expect( pairs[0].name ).to be :EURJPY
-        #expect( pairs[0].trading_unit ).to be 10000
+        expect( pairs[0].trade_unit ).to be 10000
+        expect( pairs[1].name ).to be :EURUSD
+        expect( pairs[1].trade_unit ).to be 10000
+        expect( pairs[2].name ).to be :USDJPY
+        expect( pairs[2].trade_unit ).to be 10000
+        
         
         rates = broker.tick
         expect( rates[:EURJPY].bid ).to be 145.110

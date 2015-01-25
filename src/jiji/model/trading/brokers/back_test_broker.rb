@@ -35,7 +35,7 @@ module Brokers
       create_position( pair_name, count, :buy, nil )
     end
     
-    def sell( pair_id )
+    def sell( pair_name, count )
       create_position( pair_name, count, :sell, nil )
     end
     

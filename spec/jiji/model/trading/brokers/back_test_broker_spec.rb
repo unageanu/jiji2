@@ -85,7 +85,25 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       pairs = broker.pairs
       expect( pairs.length ).to be 3
       expect( pairs[0].name ).to be :EURJPY
+      expect( pairs[0].trade_unit ).to be 10000
+      expect( pairs[1].name ).to be :USDJPY
+      expect( pairs[1].trade_unit ).to be 10000
+      expect( pairs[2].name ).to be :EURUSD
+      expect( pairs[2].trade_unit ).to be 10000
     end
+    
+    it "売買ができる" do
+      broker.buy(:EURJPY, 1)
+      broker.sell(:USDJPY, 2)
+      broker.positions.each {|k,v|
+        broker.close(v._id)
+      }
+    end
+    
+    it "破棄操作ができる" do
+      broker.destroy
+    end
+    
   end
   
   context "期間の一部を対象に実行する場合" do

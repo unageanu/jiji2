@@ -54,6 +54,12 @@ module Trading
       pairs.find {|p| p.name.to_sym == pair_name.to_sym }.trade_unit
     end
     
+    def check_position_exists(position_id)
+      unless @positions.include? position_id
+        not_found( Jiji::Model::Trading::Position, id=>position_id ) 
+      end
+    end
+    
   end
   
 end

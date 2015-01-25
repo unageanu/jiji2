@@ -68,11 +68,6 @@ module Brokers
     def check_setting_finished
       raise Jiji::Errors::NotInitializedException.new unless securities
     end
-    def check_position_exists(position_id)
-      unless @positions.include? position_id
-        not_found( Jiji::Model::Trading::Position, id=>position_id ) 
-      end
-    end
     
     def securities
       @rmt_broker_setting.active_securities

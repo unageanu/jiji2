@@ -10,24 +10,24 @@ module Model
 module Trading
 module Internal
 
-  class TradeUnit
+  class TradingUnit
   
     include Mongoid::Document
     include Jiji::Utils::ValueObject
     
-    store_in collection: "trade_units"
+    store_in collection: "trading_units"
     
     field :pair_id,       type: Integer
-    field :trade_unit,    type: Integer
+    field :trading_unit,    type: Integer
     field :timestamp,     type: Time
 
-    index({ :timestamp => 1 }, { name: "trade_units_timestamp_index" })
+    index({ :timestamp => 1 }, { name: "trading_units_timestamp_index" })
     
-    attr_readonly :pair_id, :trade_unit, :timestamp
+    attr_readonly :pair_id, :trading_unit, :timestamp
 
     
     def self.delete( start_time, end_time )
-      TradeUnit.where({
+      TradingUnit.where({
         :timestamp.gte => start_time, 
         :timestamp.lt  => end_time 
       }).delete
@@ -40,18 +40,18 @@ module Internal
     
   end
   
-  class TradeUnits
+  class TradingUnits
 
     def initialize( values )
       @values = values
     end
     
-    def get_trade_unit_at( pair_id, timestamp )
+    def get_trading_unit_at( pair_id, timestamp )
       check_pair_id( pair_id )
       return @values[pair_id].get_at(timestamp)
     end
     
-    def get_trade_units_at( timestamp )
+    def get_trading_units_at( timestamp )
       return @values.inject({}){|r,v|
         r[v[0]] = v[1].get_at(timestamp)
         r
@@ -59,7 +59,7 @@ module Internal
     end
     
     def self.create( start_time, end_time )
-      data = Jiji::Utils::HistoricalData.load( TradeUnit, start_time, end_time).inject({}){|r,v|
+      data = Jiji::Utils::HistoricalData.load( TradingUnit, start_time, end_time).inject({}){|r,v|
         r[v.pair_id] = [] unless r.include?( v.pair_id )
         r[v.pair_id] << v
         r
@@ -67,7 +67,7 @@ module Internal
         r[v[0]] = Jiji::Utils::HistoricalData.new( v[1], start_time, end_time )
         r
       }
-      TradeUnits.new( data )
+      TradingUnits.new( data )
     end
     
   private 

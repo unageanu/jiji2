@@ -48,7 +48,7 @@ module Trading
         unless @by_name.include?(name)
           pair = register_new_pair(name) 
           @by_name[name]       = pair
-          @by_id[pair.pair_id] = pair
+          @by_id[pair.pair_id.to_s] = pair
         end
         @by_name[name]
       }
@@ -60,7 +60,7 @@ module Trading
     
     def get_by_id(id)
       @lock.synchronize {
-        @by_id[id] || not_found("pair", :id=>id  )
+        @by_id[id.to_s] || not_found("pair", :id=>id  )
       }
     end
     
@@ -86,7 +86,7 @@ module Trading
       @by_id   = {}
       Pair.each {|pair|
         @by_name[pair.name]  = pair
-        @by_id[pair.pair_id] = pair
+        @by_id[pair.pair_id.to_s] = pair
       }
     end
     def register_new_pair(name)

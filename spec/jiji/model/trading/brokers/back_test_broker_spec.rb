@@ -25,12 +25,12 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       expect( broker.has_next ).to be true
       
       rates = broker.tick
-      expect( rates[:EURJPY].bid ).to be 100
-      expect( rates[:EURJPY].ask ).to be  99
+      expect( rates[:EURJPY].bid ).to eq 100
+      expect( rates[:EURJPY].ask ).to eq 100.003 
       expect( rates[:EURJPY].buy_swap  ).to be  2
       expect( rates[:EURJPY].sell_swap ).to be 20
-      expect( rates[:EURUSD].bid ).to be 100
-      expect( rates[:EURUSD].ask ).to be  99
+      expect( rates[:EURUSD].bid ).to eq 100
+      expect( rates[:EURUSD].ask ).to eq 100.003
       expect( rates[:EURUSD].buy_swap  ).to be  2
       expect( rates[:EURUSD].sell_swap ).to be 20
       
@@ -38,8 +38,8 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       expect( broker.has_next ).to be true
       
       rates = broker.tick
-      expect( rates[:EURJPY].bid ).to be 101
-      expect( rates[:EURJPY].ask ).to be 100
+      expect( rates[:EURJPY].bid ).to eq 101
+      expect( rates[:EURJPY].ask ).to eq 101.003
       expect( rates[:EURJPY].buy_swap  ).to be  3
       expect( rates[:EURJPY].sell_swap ).to be 21
       
@@ -61,22 +61,22 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       expect( broker.has_next ).to be true
       
       rates = broker.tick
-      expect( rates[:EURJPY].bid ).to be 100
-      expect( rates[:EURJPY].ask ).to be  99
+      expect( rates[:EURJPY].bid ).to eq 100
+      expect( rates[:EURJPY].ask ).to eq 100.003
       expect( rates[:EURJPY].buy_swap  ).to be  2
       expect( rates[:EURJPY].sell_swap ).to be 20
-      expect( rates[:EURUSD].bid ).to be 100
-      expect( rates[:EURUSD].ask ).to be  99
+      expect( rates[:EURUSD].bid ).to eq 100
+      expect( rates[:EURUSD].ask ).to eq 100.003
       expect( rates[:EURUSD].buy_swap  ).to be  2
       expect( rates[:EURUSD].sell_swap ).to be 20
       
       rates = broker.tick
-      expect( rates[:EURJPY].bid ).to be 100
-      expect( rates[:EURJPY].ask ).to be  99
+      expect( rates[:EURJPY].bid ).to eq 100
+      expect( rates[:EURJPY].ask ).to eq 100.003
       expect( rates[:EURJPY].buy_swap  ).to be  2
       expect( rates[:EURJPY].sell_swap ).to be 20
-      expect( rates[:EURUSD].bid ).to be 100
-      expect( rates[:EURUSD].ask ).to be  99
+      expect( rates[:EURUSD].bid ).to eq 100
+      expect( rates[:EURUSD].ask ).to eq 100.003
       expect( rates[:EURUSD].buy_swap  ).to be  2
       expect( rates[:EURUSD].sell_swap ).to be 20
     end
@@ -99,12 +99,12 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       expect( broker.has_next ).to be true
       
       rates = broker.tick
-      expect( rates[:EURJPY].bid ).to be 101
-      expect( rates[:EURJPY].ask ).to be 100
+      expect( rates[:EURJPY].bid ).to eq 101
+      expect( rates[:EURJPY].ask ).to eq 101.003
       expect( rates[:EURJPY].buy_swap  ).to be  3
       expect( rates[:EURJPY].sell_swap ).to be 21
-      expect( rates[:EURUSD].bid ).to be 101
-      expect( rates[:EURUSD].ask ).to be 100
+      expect( rates[:EURUSD].bid ).to eq 101
+      expect( rates[:EURUSD].ask ).to eq 101.003
       expect( rates[:EURUSD].buy_swap  ).to be  3
       expect( rates[:EURUSD].sell_swap ).to be 21
       
@@ -112,8 +112,8 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       expect( broker.has_next ).to be true
       
       rates = broker.tick
-      expect( rates[:EURJPY].bid ).to be 102
-      expect( rates[:EURJPY].ask ).to be 101
+      expect( rates[:EURJPY].bid ).to eq 102
+      expect( rates[:EURJPY].ask ).to eq 102.003
       expect( rates[:EURJPY].buy_swap  ).to be  4
       expect( rates[:EURJPY].sell_swap ).to be 22
       

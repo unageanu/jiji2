@@ -25,14 +25,14 @@ module Utils
     end
     
     def self.load(data_type, start_time, end_time)
-      start_time = caluculate_start_time(data_type, start_time)
+      start_time = calculate_start_time(data_type, start_time)
       return data_type.where( 
         :timestamp.gte => start_time, 
         :timestamp.lte => end_time
       ).order_by(:timestamp.desc)
     end
     
-    def self.caluculate_start_time(data_type, start_time)
+    def self.calculate_start_time(data_type, start_time)
       # 開始時点のswapを必ず含めるため、
       # 開始より以前で最大のstart_timeを再計算する
       first = data_type.where( :timestamp.lte => start_time )

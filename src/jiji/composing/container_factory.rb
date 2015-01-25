@@ -70,6 +70,8 @@ private
         object :back_test_thread_pool, Thread.pool(2)
         object :back_test_repository,  Trading::BackTestRepository.new
         
+        object :position_repository,  Trading::PositionRepository.new
+        
         object :tick_repository,  Trading::TickRepository.new
         object :rate_fetcher,     Trading::Internal::RateFetcher.new
       end

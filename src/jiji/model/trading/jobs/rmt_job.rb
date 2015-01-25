@@ -20,7 +20,7 @@ module Jobs
       super()
       @wait_time = wait_time
       @rate_saver = Jiji::Model::Trading::Internal::RateSaver.new
-      @trade_unit_saver = Jiji::Model::Trading::Internal::TradeUnitSaver.new
+      @trading_unit_saver = Jiji::Model::Trading::Internal::TradingUnitSaver.new
     end
     
     def on_inject
@@ -35,17 +35,17 @@ module Jobs
   private
     def after_do_next
       store_rates
-      store_trade_unit_hourly
+      store_trading_unit_hourly
     end
     
     def store_rates
       @rate_saver.save(@broker.tick)
     end
-    def store_trade_unit_hourly
+    def store_trading_unit_hourly
       now = time_source.now
       return if @next_save_point != nil && @next_save_point > now 
       
-      @trade_unit_saver.save( @broker.pairs, now )
+      @trading_unit_saver.save( @broker.pairs, now )
       @next_save_point = now + 60*60
     end
     

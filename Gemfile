@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.1.3'
+
 gem 'encase',    '0.1.2'
 
 gem 'lru_redux', '0.8.1'
@@ -9,6 +11,7 @@ gem 'thread',    '0.1.4'
 gem 'msgpack',   '0.5.9'
 gem 'rack',      '1.5.2'
 gem 'sinatra',   '1.4.5'
+gem 'unicorn',   '4.8.3'
 
 gem 'mongoid',   '4.0.0'
 

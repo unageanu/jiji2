@@ -10,13 +10,14 @@ module Web
     
     delete "/" do
       range = get_range
-      Jiji::Model::Trading::Tick.delete( range[:start], range[:end] )
+      tick_repository.delete( range[:start], range[:end] )
       Jiji::Model::Trading::Internal::Swap.delete( range[:start], range[:end] )
+      Jiji::Model::Trading::Internal::TradingUnit.delete( range[:start], range[:end] )
       no_content
     end
     
     get "/range" do
-      ok( Jiji::Model::Trading::Tick.range )
+      ok( tick_repository.range )
     end
     
     get "/pairs" do
@@ -34,11 +35,14 @@ module Web
     def fetcher
       lookup(:rate_fetcher)
     end
+    def tick_repository
+      lookup(:tick_repository)
+    end
     
     def get_range
       return {
-        :start => get_time_from_query_parm("start"),
-        :end   => get_time_from_query_parm("end")
+        :start => get_time_from_query_param("start"),
+        :end   => get_time_from_query_param("end")
       }
     end
     

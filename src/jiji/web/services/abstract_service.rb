@@ -25,7 +25,13 @@ module Web
     def load_body
       JSON.load(request.body)
     end
-    def get_time_from_query_parm(key)
+    def get_time_from_query_param(key)
+      if request[key] == nil 
+        illegal_argument( "illegal argument. key=#{key}" )
+      end 
+      Time.parse(request[key])
+    end
+    def get_pagenation_query_from_query_param(key)
       if request[key] == nil 
         illegal_argument( "illegal argument. key=#{key}" )
       end 

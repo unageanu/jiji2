@@ -36,9 +36,16 @@ module Trading
       tick
       @pairs_cache = nil
       @rates_cache = nil
+      update_positions
     end
     
   private
+    def update_positions
+      @positions.values.each {|p| 
+        p.update( tick ) 
+      }
+    end
+  
     def create_position( pair_name, count, sell_or_buy, external_position_id )
       pair = Pairs.instance.create_or_get(pair_name)
       position = Position.create( @back_test_id, external_position_id, 

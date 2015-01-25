@@ -2,6 +2,7 @@
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/model/trading/brokers/abstract_broker'
+require 'jiji/errors/errors'
 
 module Jiji
 module Model
@@ -11,6 +12,7 @@ module Brokers
   class RMTBroker < AbstractBroker
     
     include Encase
+    include Jiji::Errors
     
     needs :rmt_broker_setting
     needs :time_source
@@ -30,14 +32,13 @@ module Brokers
     end
     
     def buy( pair_id, count=1 )
-      order(pair_id, :buy, count )
+      external_position_id = order(pair_id, :buy, count )
+      create_position( pair_id, count, :buy,  external_position_id )
     end
     
     def sell( pair_id, count=1 )
-      order(pair_id, :sell, count )
-    end
-    
-    def close( position_id )
+      external_position_id = order(pair_id, :sell, count )
+      create_position( pair_id, count, :sell,  external_position_id )
     end
     
     def destroy
@@ -56,13 +57,23 @@ module Brokers
     def order( pair_id, type, count )
       check_setting_finished
       position = securities.order(pair_id, type, count)
-      @positions[position.position_id] = position
-      return position
+      return position.position_id
     end
+    def do_close( position )
+      check_setting_finished
+      securities.commit(position.external_position_id, position.lot)
+    end
+  
   
     def check_setting_finished
       raise Jiji::Errors::NotInitializedException.new unless securities
     end
+    def check_position_exists(position_id)
+      unless @positions.include? position_id
+        not_found( Jiji::Model::Trading::Position, id=>position_id ) 
+      end
+    end
+    
     def securities
       @rmt_broker_setting.active_securities
     end

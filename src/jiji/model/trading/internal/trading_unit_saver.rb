@@ -8,7 +8,7 @@ module Model
 module Trading
 module Internal
 
-  class TradeUnitSaver
+  class TradingUnitSaver
     
     def initialize
       @current = {}
@@ -17,7 +17,7 @@ module Internal
     def save( pairs, timestamp )
       pairs.each {|v|
         if ( changed?( v ) )
-          save_trade_unit( v, timestamp)
+          save_trading_unit( v, timestamp)
           update_current( v )
         end
       }
@@ -31,12 +31,12 @@ module Internal
           || current.trade_unit != value.trade_unit
     end
     
-    def save_trade_unit(value, timestamp)
+    def save_trading_unit(value, timestamp)
       pair = Pairs.instance.create_or_get(value.name)
-      TradeUnit::new {|t|
-        t.pair_id    = pair.pair_id
-        t.trade_unit = value.trade_unit
-        t.timestamp  = timestamp
+      TradingUnit::new {|t|
+        t.pair_id      = pair.pair_id
+        t.trading_unit = value.trade_unit
+        t.timestamp    = timestamp
       }.save
     end
     

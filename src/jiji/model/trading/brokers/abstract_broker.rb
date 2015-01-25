@@ -8,10 +8,12 @@ module Trading
 
   class AbstractBroker
     
-    attr_accessor :positions
-    
     def initialize
       @positions = {}
+    end
+    
+    def positions
+      @positions
     end
     
     def pairs
@@ -22,6 +24,14 @@ module Trading
       @rates_cache ||= retrieve_tick
     end
     
+    def close( position_id )
+      check_position_exists(position_id)
+      
+      position = @positions[position_id]
+      do_close( position )
+      position.close
+    end
+    
     def refresh
       tick
       @pairs_cache = nil
@@ -29,12 +39,19 @@ module Trading
     end
     
   private
-    def create_position( pair_name, count, sell_or_buy )
+    def create_position( pair_name, count, sell_or_buy, external_position_id )
       pair = Pairs.instance.create_or_get(pair_name)
-      tick = tick
-      tick_value = tick[pair_name]
-      Position.create( @back_test_id, pair.pair_id, count, sell_or_buy, 
-        sell_or_buy == :sell ? tick_value.bid : tick_value.ask, tick.timestamp  )
+      position = Position.create( @back_test_id, external_position_id, 
+        pair.pair_id, count, resolve_trading_unit(pair_name), sell_or_buy, tick )
+      @positions[position._id] = position
+      position
+    end
+    
+    def do_close( position )
+    end
+    
+    def resolve_trading_unit(pair_name)
+      pairs.find {|p| p.name.to_sym == pair_name.to_sym }.trade_unit
     end
     
   end

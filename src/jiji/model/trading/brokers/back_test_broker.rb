@@ -27,20 +27,16 @@ module Brokers
       @back_test_id = back_test_id
       
       @buffer          = []
-      @trade_units     = Jiji::Model::Trading::Internal::TradeUnits.create(start_time, end_time)
+      @trading_units     = Jiji::Model::Trading::Internal::TradingUnits.create(start_time, end_time)
       @tick_repository = tick_repository
     end
     
-    def positions
-      # TODO
-    end
-    
-    def buy( pair_id, count )
-      # TODO
+    def buy( pair_name, count )
+      create_position( pair_name, count, :buy, nil )
     end
     
     def sell( pair_id )
-      # TODO
+      create_position( pair_name, count, :sell, nil )
     end
     
     def destroy
@@ -57,8 +53,8 @@ module Brokers
       rates = tick
       rates.map {|v|
         pair = instance.create_or_get(v[0])
-        trade_unit = @trade_units.get_trade_unit_at(pair.pair_id, rates.timestamp)
-        JIJI::Plugin::SecuritiesPlugin::Pair.new( pair.name, trade_unit.trade_unit )
+        trading_unit = @trading_units.get_trading_unit_at(pair.pair_id, rates.timestamp)
+        JIJI::Plugin::SecuritiesPlugin::Pair.new( pair.name, trading_unit.trading_unit )
       }
     end
     def retrieve_tick

@@ -5,7 +5,6 @@ require 'jiji/utils/value_object'
 require 'jiji/utils/historical_data'
 require 'thread'
 require 'singleton'
-require 'protected_attributes'
 
 module Jiji
 module Model

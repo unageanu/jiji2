@@ -24,7 +24,7 @@ module Test
     
     def new_tick_value(seed)
       Jiji::Model::Trading::Tick::Value.new(
-        100.0+seed, 99.0+seed, 2+seed, 20+seed)
+        100.00+seed, 100.003+seed, 2+seed, 20+seed)
     end
     
     def new_swap(seed, pair_id=1, timestamp=Time.at(0))
@@ -36,12 +36,17 @@ module Test
       }
     end
     
-    def new_trade_unit(seed, pair_id=1, timestamp=Time.at(0))
-      Jiji::Model::Trading::Internal::TradeUnit.new {|s|
+    def new_trading_unit(seed, pair_id=1, timestamp=Time.at(0))
+      Jiji::Model::Trading::Internal::TradingUnit.new {|s|
         s.pair_id    = pair_id
-        s.trade_unit = 10000 * seed
+        s.trading_unit = 10000 * seed
         s.timestamp  = timestamp
       }
+    end
+    
+    def new_position(seed, back_test_id=nil, pair_id=1, timestamp=Time.at(seed))
+      Jiji::Model::Trading::Position.create( back_test_id,
+        nil, pair_id, seed, 10000, seed % 2 == 0 ? :buy : :sell, new_tick(seed, timestamp))
     end
     
     def register_ticks(count, interval=20)
@@ -51,9 +56,18 @@ module Test
         
         t.each {|v|
           register_swap( v[0], v[1], t.timestamp )
-          register_trade_unit( v[0], t.timestamp )
+          register_trading_unit( v[0], t.timestamp )
         }
       }
+    end
+    
+    def register_back_test( seed, repository )
+      repository.register({
+        "name"       => "テスト#{seed}",
+        "start_time" => Time.at(seed*100),
+        "end_time"   => Time.at((seed+1)*200),
+        "memo"       => "メモ#{seed}"
+      })
     end
     
     def register_swap( pair_id, tick, timestamp )
@@ -66,21 +80,22 @@ module Test
       swap.save
     end
     
-    def register_trade_unit( pair_id, timestamp )
-      trade_unit = Jiji::Model::Trading::Internal::TradeUnit.new {|s|
+    def register_trading_unit( pair_id, timestamp )
+      trading_unit = Jiji::Model::Trading::Internal::TradingUnit.new {|s|
         s.pair_id    = Jiji::Model::Trading::Pairs.instance.create_or_get(pair_id).pair_id
-        s.trade_unit = 10000
+        s.trading_unit = 10000
         s.timestamp  = timestamp
       }
-      trade_unit.save
+      trading_unit.save
     end
     
     def clean
       Jiji::Model::Trading::Tick.delete_all
       Jiji::Model::Trading::Pair.delete_all
       Jiji::Model::Trading::Internal::Swap.delete_all
-      Jiji::Model::Trading::Internal::TradeUnit.delete_all
+      Jiji::Model::Trading::Internal::TradingUnit.delete_all
       Jiji::Model::Trading::BackTest.delete_all
+      Jiji::Model::Trading::Position.delete_all
       Jiji::Model::Settings::AbstractSetting.delete_all
     end
     

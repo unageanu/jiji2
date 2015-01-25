@@ -25,17 +25,17 @@ describe Jiji::Model::Trading::Tick do
     
     expect(tick.timestamp).to eq(Time.at(1))
     expect(tick[:EURJPY].bid).to eq(101.0)
-    expect(tick[:EURJPY].ask).to eq(100.0)
+    expect(tick[:EURJPY].ask).to eq(101.003)
     expect(tick[:EURJPY].buy_swap).to eq(3)
     expect(tick[:EURJPY].sell_swap).to eq(21)
     
     expect(tick[:USDJPY].bid).to eq(102.0)
-    expect(tick[:USDJPY].ask).to eq(101.0)
+    expect(tick[:USDJPY].ask).to eq(102.003)
     expect(tick[:USDJPY].buy_swap).to eq(4)
     expect(tick[:USDJPY].sell_swap).to eq(22)
 
     expect(tick[:EURUSD].bid).to eq(103.0)
-    expect(tick[:EURUSD].ask).to eq(102.0)
+    expect(tick[:EURUSD].ask).to eq(103.003)
     expect(tick[:EURUSD].buy_swap).to eq(5)
     expect(tick[:EURUSD].sell_swap).to eq(23)
 
@@ -44,17 +44,17 @@ describe Jiji::Model::Trading::Tick do
     
     expect(tick.timestamp).to eq(Time.at(1))
     expect(tick[:EURJPY].bid).to eq(101.0)
-    expect(tick[:EURJPY].ask).to eq(100.0)
+    expect(tick[:EURJPY].ask).to eq(101.003)
     expect(tick[:EURJPY].buy_swap).to eq(3)
     expect(tick[:EURJPY].sell_swap).to eq(21)
     
     expect(tick[:USDJPY].bid).to eq(102.0)
-    expect(tick[:USDJPY].ask).to eq(101.0)
+    expect(tick[:USDJPY].ask).to eq(102.003)
     expect(tick[:USDJPY].buy_swap).to eq(4)
     expect(tick[:USDJPY].sell_swap).to eq(22)
 
     expect(tick[:EURUSD].bid).to eq(103.0)
-    expect(tick[:EURUSD].ask).to eq(102.0)
+    expect(tick[:EURUSD].ask).to eq(103.003)
     expect(tick[:EURUSD].buy_swap).to eq(5)
     expect(tick[:EURUSD].sell_swap).to eq(23)
     
@@ -72,17 +72,17 @@ describe Jiji::Model::Trading::Tick do
    
     expect(tick.timestamp).to eq(Time.at(1))
     expect(tick[:EURJPY].bid).to eq(101.0)
-    expect(tick[:EURJPY].ask).to eq(100.0)
+    expect(tick[:EURJPY].ask).to eq(101.003)
     expect(tick[:EURJPY].buy_swap).to eq(3)
     expect(tick[:EURJPY].sell_swap).to eq(21)
     
     expect(tick[:USDJPY].bid).to eq(102.0)
-    expect(tick[:USDJPY].ask).to eq(101.0)
+    expect(tick[:USDJPY].ask).to eq(102.003)
     expect(tick[:USDJPY].buy_swap).to eq(4)
     expect(tick[:USDJPY].sell_swap).to eq(22)
 
     expect(tick[:EURUSD].bid).to eq(103.0)
-    expect(tick[:EURUSD].ask).to eq(102.0)
+    expect(tick[:EURUSD].ask).to eq(103.003)
     expect(tick[:EURUSD].buy_swap).to eq(5)
     expect(tick[:EURUSD].sell_swap).to eq(23)
     

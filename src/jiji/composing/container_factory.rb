@@ -32,6 +32,9 @@ private
       configure_web( container )
       configure_security( container )
       configure_model( container )
+      configure_trading_model( container )
+      configure_setting_model( container )
+      configure_agents_model( container )
       configure_sources( container )
       configure_db( container )
       configure_plugins( container )
@@ -56,24 +59,37 @@ private
     end
     
     def configure_model( container )
-      
       container.configure do
         object :application, Application.new
-        
-        object :security_setting,   Settings::SecuritySetting.load_or_create
-        object :rmt_broker_setting, Settings::RMTBrokerSetting.load_or_create
-        
-        object :rmt_process,      Trading::Processes::RMTProcess.new
-        object :rmt_job,          Trading::Jobs::RMTJob.new
-        object :rmt_broker,       Trading::Brokers::RMTBroker.new
+      end
+    end
+    
+    def configure_trading_model( container )
+      container.configure do
+        object :rmt_process,           Trading::Processes::RMTProcess.new
+        object :rmt_job,               Trading::Jobs::RMTJob.new
+        object :rmt_broker,            Trading::Brokers::RMTBroker.new
         
         object :back_test_thread_pool, Thread.pool(2)
         object :back_test_repository,  Trading::BackTestRepository.new
         
-        object :position_repository,  Trading::PositionRepository.new
+        object :position_repository,   Trading::PositionRepository.new
         
-        object :tick_repository,  Trading::TickRepository.new
-        object :rate_fetcher,     Trading::Internal::RateFetcher.new
+        object :tick_repository,       Trading::TickRepository.new
+        object :rate_fetcher,          Trading::Internal::RateFetcher.new
+      end
+    end
+    
+    def configure_setting_model( container )
+      container.configure do
+        object :security_setting,   Settings::SecuritySetting.load_or_create
+        object :rmt_broker_setting, Settings::RMTBrokerSetting.load_or_create
+      end
+    end
+    
+    def configure_agents_model( container )
+      container.configure do
+        object :agent_source_repository,  Agents::AgentSourceRepository.new
       end
     end
     

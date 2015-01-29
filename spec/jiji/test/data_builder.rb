@@ -96,6 +96,7 @@ module Test
       Jiji::Model::Trading::Internal::TradingUnit.delete_all
       Jiji::Model::Trading::BackTest.delete_all
       Jiji::Model::Trading::Position.delete_all
+      Jiji::Model::Agents::AgentSource.delete_all
       Jiji::Model::Settings::AbstractSetting.delete_all
     end
     

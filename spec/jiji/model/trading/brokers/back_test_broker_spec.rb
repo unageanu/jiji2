@@ -14,6 +14,31 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     @data_builder.clean
   end
   
+  shared_examples "broker の基本操作ができる" do
+    it "pair が取得できる" do
+      pairs = broker.pairs
+      expect( pairs.length ).to be 3
+      expect( pairs[0].name ).to be :EURJPY
+      expect( pairs[0].trade_unit ).to be 10000
+      expect( pairs[1].name ).to be :USDJPY
+      expect( pairs[1].trade_unit ).to be 10000
+      expect( pairs[2].name ).to be :EURUSD
+      expect( pairs[2].trade_unit ).to be 10000
+    end
+    
+    it "売買ができる" do
+      broker.buy(:EURJPY, 1)
+      broker.sell(:USDJPY, 2)
+      broker.positions.each {|k,v|
+        broker.close(v._id)
+      }
+    end
+    
+    it "破棄操作ができる" do
+      broker.destroy
+    end
+  end
+  
   context "全期間を対象に実行する場合" do
     
     let(:broker) {
@@ -57,6 +82,43 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       expect( broker.has_next ).to be false
     end
     
+    it "売買していても既定のレートを取得できる" do
+    
+      buy_position = broker.buy(:EURJPY, 1)
+      expect( buy_position.profit_or_loss ).to eq -30
+    
+      expect( broker.has_next ).to be true
+      expect( broker.tick[:EURJPY].bid ).to eq 100
+      
+      broker.refresh
+      
+      expect( buy_position.profit_or_loss ).to eq 9970
+      
+      expect( broker.has_next ).to be true
+      expect( broker.tick[:EURJPY].bid ).to eq 101
+      
+      sell_position = broker.sell(:USDJPY, 2)
+      expect( sell_position.profit_or_loss ).to eq -60
+      
+      broker.close(buy_position._id)
+      
+      28.times {|i|
+        broker.refresh
+        expect( broker.has_next ).to be true
+        rates = broker.tick
+        expect( rates[:EURJPY].bid ).not_to be nil
+        expect( rates[:EURJPY].ask ).not_to be nil
+        expect( rates[:USDJPY].bid ).not_to be nil
+        expect( rates[:USDJPY].ask ).not_to be nil
+        
+        expect( buy_position.profit_or_loss ).to eq 9970
+        #expect( sell_position.profit_or_loss ).to eq -60 - (i+1) * 20000
+      }
+      
+      broker.refresh
+      expect( broker.has_next ).to be false
+    end
+    
     it "refresh を行うまで同じレートが取得される" do
       expect( broker.has_next ).to be true
       
@@ -81,28 +143,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       expect( rates[:EURUSD].sell_swap ).to be 20
     end
     
-    it "pair が取得できる" do
-      pairs = broker.pairs
-      expect( pairs.length ).to be 3
-      expect( pairs[0].name ).to be :EURJPY
-      expect( pairs[0].trade_unit ).to be 10000
-      expect( pairs[1].name ).to be :USDJPY
-      expect( pairs[1].trade_unit ).to be 10000
-      expect( pairs[2].name ).to be :EURUSD
-      expect( pairs[2].trade_unit ).to be 10000
-    end
-    
-    it "売買ができる" do
-      broker.buy(:EURJPY, 1)
-      broker.sell(:USDJPY, 2)
-      broker.positions.each {|k,v|
-        broker.close(v._id)
-      }
-    end
-    
-    it "破棄操作ができる" do
-      broker.destroy
-    end
+    it_behaves_like "broker の基本操作ができる"
     
   end
   
@@ -148,9 +189,12 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       broker.refresh
       expect( broker.has_next ).to be false
     end
+    
+    it_behaves_like "broker の基本操作ができる"
+    
   end
   
-  context "期間内にTickがある場合" do
+  context "期間内にTickがない場合" do
     
     let(:broker) {
       Jiji::Model::Trading::Brokers::BackTestBroker.new( 
@@ -159,6 +203,21 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     
     it "レートは取得できない" do
       expect( broker.has_next ).to be false
+    end
+    
+    it "pair は取得できない" do
+      pairs = broker.pairs
+      expect( pairs.length ).to be 0
+    end
+    
+    it "売買もできない" do
+    
+      expect { broker.buy(:EURJPY, 1) }.to raise_error(  Jiji::Errors::IllegalStateException )
+      expect { broker.sell(:USDJPY, 2) }.to raise_error( Jiji::Errors::IllegalStateException )
+    end
+    
+    it "破棄操作ができる" do
+      broker.destroy
     end
     
   end

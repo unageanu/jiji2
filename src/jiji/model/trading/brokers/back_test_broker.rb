@@ -26,8 +26,11 @@ module Brokers
       
       @back_test_id = back_test_id
       
+      
+      tradingUnits = Jiji::Model::Trading::Internal::TradingUnits
+      
       @buffer          = []
-      @trading_units     = Jiji::Model::Trading::Internal::TradingUnits.create(start_time, end_time)
+      @trading_units   = tradingUnits.create(start_time, end_time)
       @tick_repository = tick_repository
     end
     
@@ -46,20 +49,27 @@ module Brokers
       fill_buffer if @buffer.empty?
       !@buffer.empty?
     end
-  
+    
+    def refresh
+      @buffer.shift
+      super
+    end
+    
   private
     def retrieve_pairs
       instance = Jiji::Model::Trading::Pairs.instance
-      rates = tick
+      rates = tick || []
       rates.map {|v|
         pair = instance.create_or_get(v[0])
-        trading_unit = @trading_units.get_trading_unit_at(pair.pair_id, rates.timestamp)
-        JIJI::Plugin::SecuritiesPlugin::Pair.new( pair.name, trading_unit.trading_unit )
+        trading_unit = @trading_units.get_trading_unit_at(
+            pair.pair_id, rates.timestamp)
+        JIJI::Plugin::SecuritiesPlugin::Pair.new( 
+            pair.name, trading_unit.trading_unit )
       }
     end
     def retrieve_tick
       fill_buffer if @buffer.empty?
-      @buffer.shift
+      @buffer.first
     end
 
     def check_period( start_time, end_time )

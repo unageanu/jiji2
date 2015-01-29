@@ -54,8 +54,8 @@ module Mock
     def list_rates
       raise RuntimeError.new, "test" if @seed == :error
       return {
-        :EURJPY => Rate.new(145.110 + @seed, 119.128 + @seed, 10, -20),
-        :EURUSD => Rate.new(1.2233  + @seed, 1.2234  + @seed, 11, -16),
+        :EURJPY => Rate.new( 145.00 + @seed, 145.003 + @seed, 10, -20),
+        :EURUSD => Rate.new( 1.2233 + @seed,  1.2234 + @seed, 11, -16),
         :USDJPY => Rate.new(119.435 + @seed, 119.443 + @seed, -8,   2)
       }
     end

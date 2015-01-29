@@ -83,11 +83,13 @@ module Trading
     end
     
     def profit_or_loss
-      (current_price * lot * trading_unit - entry_price * lot * trading_unit) \
-        * (sell_or_buy == :buy ? 1 : -1)
+      current = BigDecimal.new(current_price, 10) * lot * trading_unit
+      entry   = BigDecimal.new(entry_price,   10) * lot * trading_unit
+      ( current - entry ) * (sell_or_buy == :buy ? 1 : -1)
     end
     
     def close
+      return if self.status == :closed
       self.exit_price = current_price
       self.status     = :closed
       self.exited_at  = updated_at
@@ -95,6 +97,7 @@ module Trading
     end
     
     def update( tick )
+      return if self.status == :closed
       self.current_price = Position.calculate_current_price( tick, pair_id, sell_or_buy )
       self.updated_at    = tick.timestamp 
     end

@@ -30,13 +30,14 @@ module Trading
       position = @positions[position_id]
       do_close( position )
       position.close
+      
+      @positions.delete position_id
     end
     
     def refresh
-      tick
       @pairs_cache = nil
       @rates_cache = nil
-      update_positions
+      update_positions if has_next
     end
     
   private
@@ -47,6 +48,7 @@ module Trading
     end
   
     def create_position( pair_name, count, sell_or_buy, external_position_id )
+      illegal_state( "tick is not exists." ) unless tick  
       pair = Pairs.instance.create_or_get(pair_name)
       position = Position.create( @back_test_id, external_position_id, 
         pair.pair_id, count, resolve_trading_unit(pair_name), sell_or_buy, tick )

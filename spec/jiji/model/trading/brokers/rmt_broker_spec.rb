@@ -38,34 +38,34 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       it "rate,pairが取得できる" do
         
         pairs = broker.pairs
-        expect( pairs.length ).to be 3
-        expect( pairs[0].name ).to be :EURJPY
-        expect( pairs[0].trade_unit ).to be 10000
-        expect( pairs[1].name ).to be :EURUSD
-        expect( pairs[1].trade_unit ).to be 10000
-        expect( pairs[2].name ).to be :USDJPY
-        expect( pairs[2].trade_unit ).to be 10000
+        expect( pairs.length ).to eq 3
+        expect( pairs[0].name ).to eq :EURJPY
+        expect( pairs[0].trade_unit ).to eq 10000
+        expect( pairs[1].name ).to eq :EURUSD
+        expect( pairs[1].trade_unit ).to eq 10000
+        expect( pairs[2].name ).to eq :USDJPY
+        expect( pairs[2].trade_unit ).to eq 10000
         
         
         rates = broker.tick
-        expect( rates[:EURJPY].bid ).to be 145.110
-        expect( rates[:EURJPY].ask ).to be 119.128
-        expect( rates[:EURJPY].sell_swap ).to be 10
-        expect( rates[:EURJPY].buy_swap  ).to be(-20)
+        expect( rates[:EURJPY].bid ).to eq 145.000
+        expect( rates[:EURJPY].ask ).to eq 145.003
+        expect( rates[:EURJPY].sell_swap ).to eq 10
+        expect( rates[:EURJPY].buy_swap  ).to eq(-20)
         
         @mock_plugin.seed = 1
         rates = broker.tick
-        expect( rates[:EURJPY].bid ).to be 145.110
-        expect( rates[:EURJPY].ask ).to be 119.128
-        expect( rates[:EURJPY].sell_swap ).to be 10
-        expect( rates[:EURJPY].buy_swap  ).to be(-20)
+        expect( rates[:EURJPY].bid ).to eq 145.000
+        expect( rates[:EURJPY].ask ).to eq 145.003
+        expect( rates[:EURJPY].sell_swap ).to eq 10
+        expect( rates[:EURJPY].buy_swap  ).to eq(-20)
         
         broker.refresh
         rates = broker.tick
-        expect( rates[:EURJPY].bid ).to be 146.110
-        expect( rates[:EURJPY].ask ).to be 120.128
-        expect( rates[:EURJPY].sell_swap ).to be 10
-        expect( rates[:EURJPY].buy_swap  ).to be(-20)
+        expect( rates[:EURJPY].bid ).to eq 146.000
+        expect( rates[:EURJPY].ask ).to eq 146.003
+        expect( rates[:EURJPY].sell_swap ).to eq 10
+        expect( rates[:EURJPY].buy_swap  ).to eq(-20)
       end
 
       it "売買ができる" do
@@ -74,6 +74,48 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         broker.positions.each {|k,v|
           broker.close(v._id)
         }
+      end
+      
+      it "売買していても既定のレートを取得できる" do
+        
+        buy_position = broker.buy(:EURJPY, 1)
+        expect( buy_position.profit_or_loss ).to eq -30
+        
+        expect( broker.has_next ).to eq true
+        expect( broker.tick[:EURJPY].bid ).to eq 145.00
+        
+        @mock_plugin.seed += 0.26
+        broker.refresh
+          
+        expect( buy_position.profit_or_loss ).to eq 2570
+          
+        expect( broker.has_next ).to eq true
+        expect( broker.tick[:EURJPY].bid ).to eq 145.26
+          
+        sell_position = broker.sell(:EURUSD, 2)
+        expect( sell_position.profit_or_loss ).to eq -2
+          
+        broker.close(buy_position._id)
+          
+        @mock_plugin.seed += 0.04
+        broker.refresh
+            
+        expect( buy_position.profit_or_loss ).to eq 2570
+        expect( sell_position.profit_or_loss ).to eq -802
+        
+        
+        @mock_plugin.seed += 0.003
+        broker.refresh
+            
+        expect( buy_position.profit_or_loss ).to eq 2570
+        expect( sell_position.profit_or_loss ).to eq -862
+        
+        
+        @mock_plugin.seed -= 0.002
+        broker.refresh
+            
+        expect( buy_position.profit_or_loss ).to eq 2570
+        expect( sell_position.profit_or_loss ).to eq -822
       end
       
       it "破棄操作ができる" do

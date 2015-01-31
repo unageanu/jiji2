@@ -49,7 +49,7 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.error).to eq nil
       
       # 再読み込みしても同じ状態
-      agent_source = @repository.get_by_id_with_body( agent_source._id )
+      agent_source = @repository.get_by_id( agent_source._id )
       expect(agent_source.name).to eq "test2"
       expect(agent_source.type).to eq :agent
       expect(agent_source.created_at).to eq Time.at(100)
@@ -77,7 +77,7 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.error).not_to eq nil
       
       # 再読み込みしても同じ状態
-      agent_source = @repository.get_by_id_with_body( agent_source._id )
+      agent_source = @repository.get_by_id( agent_source._id )
       expect(agent_source.name).to eq "test2"
       expect(agent_source.type).to eq :agent
       expect(agent_source.created_at).to eq Time.at(100)
@@ -118,7 +118,7 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.error).to eq nil
       
       # 再読み込みしても同じ状態
-      agent_source = @repository.get_by_id_with_body( agent_source._id )
+      agent_source = @repository.get_by_id( agent_source._id )
       expect(agent_source.name).to eq "test2"
       expect(agent_source.type).to eq :agent
       expect(agent_source.created_at).to eq Time.at(100)
@@ -163,7 +163,7 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.error).to eq nil
       
       # 再読み込みしても同じ状態
-      agent_source = @repository.get_by_id_with_body( agent_source._id )
+      agent_source = @repository.get_by_id( agent_source._id )
       expect(agent_source.name).to eq "test2"
       expect(agent_source.type).to eq :agent
       expect(agent_source.created_at).to eq Time.at(100)
@@ -191,7 +191,7 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.error).not_to eq nil
       
       # 再読み込みしても同じ状態
-      agent_source = @repository.get_by_id_with_body( agent_source._id )
+      agent_source = @repository.get_by_id( agent_source._id )
       expect(agent_source.name).to eq "test2"
       expect(agent_source.type).to eq :agent
       expect(agent_source.created_at).to eq Time.at(100)
@@ -236,7 +236,7 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.error).to eq nil
       
       # 再読み込みしても同じ状態
-      agent_source = @repository.get_by_id_with_body( agent_source._id )
+      agent_source = @repository.get_by_id( agent_source._id )
       expect(agent_source.name).to eq "test2"
       expect(agent_source.type).to eq :agent
       expect(agent_source.created_at).to eq Time.at(100)
@@ -264,7 +264,7 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.error).not_to eq nil
       
       # 再読み込みしても同じ状態
-      agent_source = @repository.get_by_id_with_body( agent_source._id )
+      agent_source = @repository.get_by_id( agent_source._id )
       expect(agent_source.name).to eq "test2"
       expect(agent_source.type).to eq :agent
       expect(agent_source.created_at).to eq Time.at(100)

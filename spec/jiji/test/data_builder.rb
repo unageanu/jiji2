@@ -70,6 +70,12 @@ module Test
       })
     end
     
+    def register_agent( seed )
+      Jiji::Model::Agents::AgentSource.create(
+        "test#{seed}", seed % 2 == 0 ? :agent : :lib, Time.at(100*seed), "", 
+        "class Foo#{seed}; def to_s; return \"xxx#{seed}\"; end; end")
+    end
+    
     def register_swap( pair_id, tick, timestamp )
       swap = Jiji::Model::Trading::Internal::Swap.new {|s|
         s.pair_id   = Jiji::Model::Trading::Pairs.instance.create_or_get(pair_id).pair_id

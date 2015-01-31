@@ -10,17 +10,16 @@ module Agents
   class AgentSourceRepository
 
     def get_all
-      AgentSource.all.without(:body, :error)
+      AgentSource.all.map {|a| a.evaluate; a }
     end
     
     def get_by_type( type )
-      AgentSource \
-        .find_by({ :type=>type }) \
-        .order_by( {:name=>1} ) \
-        .without(:body, :error)
+      AgentSource.where({ 
+        :type=>type 
+      }).order_by(:name.asc).without(:body, :error)
     end
     
-    def get_by_id_with_body( id )
+    def get_by_id( id )
       source = AgentSource.find(id)
       source.evaluate
       source

@@ -90,6 +90,7 @@ private
     def configure_agents_model( container )
       container.configure do
         object :agent_source_repository,  Agents::AgentSourceRepository.new
+        object :agent_registry,           Agents::AgentRegistry.new
       end
     end
     

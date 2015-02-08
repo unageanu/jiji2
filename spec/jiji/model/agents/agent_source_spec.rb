@@ -306,6 +306,75 @@ describe Jiji::Model::Agents::AgentSource do
     expect(instance_v2.to_s).to eq "var"
   end
   
+  it "他のエージェントソースで定義されたクラスやモジュールを利用できる" do
+  
+    delegate = {}
+    Jiji::Model::Agents::Context._delegates = delegate
+    
+    agent_source = Jiji::Model::Agents::AgentSource.create(
+        "test", :agent, Time.at(100), "memo", 
+        "class Foo; def method_1; return \"xxx\"; end; end;" +
+        "def self.method_a; return \"aaa\"; end")
+    delegate[agent_source.name] = agent_source.context 
+    
+    agent_source2 = Jiji::Model::Agents::AgentSource.create(
+        "test2", :agent, Time.at(100), nil, 
+        "class Foo2 < Foo; def method_2; return \"yyy\" + method_1; end; end;" +
+        "def self.method_b; return method_a + \"bbb\"; end")
+    delegate[agent_source2.name] = agent_source2.context
+    
+    
+    f = agent_source2.context.const_get "Foo2"
+    instance = f.new
+    
+    expect(instance.method_1).to eq "xxx"
+    expect(instance.method_2).to eq "yyyxxx"
+    expect(agent_source2.context.method_a).to eq "aaa"
+    expect(agent_source2.context.method_b).to eq "aaabbb"
+    
+    
+    # 継承元を改変
+    agent_source.update("test", Time.at(200), "memo", 
+        "class Foo; def method_1; return \"xxx2\"; end; end;")
+    delegate[agent_source.name] = agent_source.context 
+    
+    # 生成済みインスタンスの動作は変わらない
+    expect(instance.method_1).to eq "xxx"
+    expect(instance.method_2).to eq "yyyxxx"
+    expect { agent_source2.context.method_a }.to raise_exception( NameError )
+    expect { agent_source2.context.method_b }.to raise_exception( NameError )
+    
+    # クラスを再定義するまで、派生クラスの動作は変わらない
+    f = agent_source2.context.const_get "Foo2"
+    instance = f.new
+    expect(instance.method_1).to eq "xxx"
+    expect(instance.method_2).to eq "yyyxxx"
+    expect { agent_source2.context.method_a }.to raise_exception( NameError )
+    expect { agent_source2.context.method_b }.to raise_exception( NameError )
+    
+    
+    # 派生クラスを再定義
+    agent_source2.update("test2", Time.at(200), "memo", 
+        "class Foo2 < Foo; def method_2; return \"zzz\" + method_1; end; end;" +
+        "def self.method_b; return \"bbb\"; end")
+    delegate[agent_source2.name] = agent_source2.context
+    
+    # 生成済みインスタンスの動作は変わらない
+    expect(instance.method_1).to eq "xxx"
+    expect(instance.method_2).to eq "yyyxxx"
+    expect { agent_source2.context.method_a }.to raise_exception( NameError )
+    expect(agent_source2.context.method_b).to eq "bbb"
+    
+    # 派生クラスの動作が変わらる
+    f = agent_source2.context.const_get "Foo2"
+    instance = f.new
+    expect(instance.method_1).to eq "xxx2"
+    expect(instance.method_2).to eq "zzzxxx2"
+    expect { agent_source2.context.method_a }.to raise_exception( NameError )
+    expect(agent_source2.context.method_b).to eq "bbb"
+    
+  end
+  
   it "リークしない" do
     agent_source = Jiji::Model::Agents::AgentSource.create(
         "test", :agent, Time.at(100), "memo", "class Foo; def to_s; return \"xxx\"; end; end")

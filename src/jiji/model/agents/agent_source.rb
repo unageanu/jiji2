@@ -34,7 +34,7 @@ module Agents
       { unique: true, name: "agent_sources_updated_at_id_index" })
     index(
       { :type=> 1, :name =>1, :id=> 1 }, 
-      { unique: true, name: "agent_sources_updated_at_id_index" })
+      { unique: true, name: "agent_sources_type_name_id_index" })
     
     def self.create( name, type, created_at, memo="", body="" )
       source = AgentSource.new{|a|
@@ -63,7 +63,7 @@ module Agents
       self.status = body.empty? ? :empty : :normal
       @error  = nil
       return if body.empty?
-      @context = Module.new
+      @context = Context.new_context
       begin
         @context.module_eval( body, "#{type}/#{name}", 1 )
       rescue Exception => e

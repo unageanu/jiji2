@@ -25,10 +25,10 @@ describe Jiji::Model::Agents::AgentSource do
     agents = @repository.get_all
     
     expect(agents.length).to eq 10
-    expect(agents.first.context).not_to eq nil
+    expect(agents.first.context).to eq nil
     expect(agents.first.name).to eq "test0"
     expect(agents.first.type).to eq :agent
-    expect(agents.last.context).not_to eq nil
+    expect(agents.last.context).to eq nil
     expect(agents.last.name).to eq "test9"
     expect(agents.last.type).to eq :lib
   end

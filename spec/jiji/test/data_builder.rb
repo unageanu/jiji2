@@ -49,6 +49,27 @@ module Test
         nil, pair_id, seed, 10000, seed % 2 == 0 ? :buy : :sell, new_tick(seed, timestamp))
     end
     
+    def new_agent_body( seed, parent=nil ) 
+       return <<BODY
+class TestAgent#{seed} #{ parent ? " < " + parent : "" }
+  
+  include Jiji::Model::Agents::Agent
+  
+  def self.property_infos
+    return [
+      Property.new(:a, "aa", 1),
+      Property.new(:b, "bb", #{seed})
+    ]
+  end
+  
+  def self.description
+    "description#{seed}"
+  end
+  
+end
+BODY
+    end
+    
     def register_ticks(count, interval=20)
       count.times {|i|
         t = new_tick(i%10, Time.at(interval*i))

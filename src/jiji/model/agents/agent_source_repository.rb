@@ -10,7 +10,7 @@ module Agents
   class AgentSourceRepository
 
     def get_all
-      AgentSource.all.map {|a| a.evaluate; a }
+      AgentSource.all.map {|a| a }
     end
     
     def get_by_type( type )

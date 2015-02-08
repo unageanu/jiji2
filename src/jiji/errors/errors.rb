@@ -20,6 +20,9 @@ module Errors
 
   class InternalServerError < Exception
   end
+
+  class AlreadyExistsException < Exception
+  end
   
   def not_found(type=nil, param=nil)
     raise Jiji::Errors::NotFoundException.new( 
@@ -33,6 +36,11 @@ module Errors
   
   def illegal_argument(msg="", param=nil)
     raise ArgumentError.new(msg + " " + to_string(param))
+  end
+  
+  def already_exists(type=nil, param=nil)
+    raise AlreadyExistsException.new(
+      "#{type || 'entity'} already exists. #{to_string(param)}" )
   end
   
   def to_string(param)

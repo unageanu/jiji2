@@ -16,7 +16,9 @@ gem 'unicorn',   '4.8.3'
 gem 'mongoid',   '4.0.0'
 
 gem 'clickclient_scrap', '0.1.13'
-gem 'sbiclient'
+gem 'sbiclient',         '0.1.5'
+
+gem 'newrelic_rpm', '3.9.9.275'
 
 group :test do
   gem 'rspec',   '3.1.0'

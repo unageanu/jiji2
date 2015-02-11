@@ -1,7 +1,6 @@
 # coding: utf-8
 
 require 'encase'
-require 'active_support/core_ext'
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/model/settings/abstract_setting'
 

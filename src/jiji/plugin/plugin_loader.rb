@@ -53,7 +53,7 @@ module Plugin
       return unless File.exist? plugin
       return if @loaded.include?( plugin )
       begin 
-        Kernel.load plugin
+        Kernel.require plugin
         @logger.info( "plugin loaded. plugin_path=#{plugin}" )
       rescue Exception
         handle_error(plugin, $!)

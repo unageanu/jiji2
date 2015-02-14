@@ -28,8 +28,13 @@ module Settings
     
     def setup
       if self.active_securities_id
-        @active_securities = find_and_configure_plugin(
-          self.active_securities_id, get_configurations(self.active_securities_id))
+        begin
+          @active_securities = find_and_configure_plugin(
+            self.active_securities_id, get_configurations(self.active_securities_id))
+            
+        rescue Jiji::Errors::NotFoundException => e 
+          @logger.error(e) if @logger
+        end
       end
     end
     
@@ -78,10 +83,10 @@ module Settings
     end
     def self.resolve_plugin( securities_id )
       RMTBrokerSetting.available_securities.find {|p| p.plugin_id == securities_id} \
-      || raise_plugin_not_found
+      || raise_plugin_not_found(securities_id)
     end
-    def self.raise_plugin_not_found
-      raise Jiji::Errors::NotFoundException.new
+    def self.raise_plugin_not_found(id)
+      raise Jiji::Errors::NotFoundException.new("plugin is not found. id=#{id}")
     end
   end
 

@@ -36,7 +36,6 @@ module Web
     put "/active-securities" do
       body = load_body
       setting.set_active_securities(body["securities_id"].to_sym, body["configurations"])
-      setting.save
       no_content
     end
     

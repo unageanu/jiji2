@@ -5,7 +5,7 @@ require 'yaml'
 require 'uri'
 require 'jiji/utils/requires'
 
-mongoid_setting_file = "#{Jiji::Utils::Requires.root}/configurations/mongoid.yml"
+mongoid_setting_file = "#{Jiji::Utils::Requires.root}/config/mongoid.yml"
 
 if ENV["MONGOLAB_URI"] || ENV["MONGODB_URI"]
   u = URI.parse(ENV["MONGOLAB_URI"] || ENV["MONGODB_URI"])

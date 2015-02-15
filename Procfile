@@ -1,1 +1,1 @@
-web: bundle exec thin start -R config.ru -p $PORT -C ./config/thin.yml -e $RACK_ENV
+web: bundle exec puma -C config/puma.rb

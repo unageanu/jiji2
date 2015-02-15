@@ -19,10 +19,10 @@ module Web
     def setup
       @application = @container.lookup(:application)
       @application.setup
-    end
-    
-    def tear_down
-      @application.tear_down
+      app = @application
+      at_exit { 
+        app.tear_down 
+      }
     end
     
     def build

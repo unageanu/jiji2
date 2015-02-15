@@ -1,3 +1,5 @@
 /.project
 /.settings
 /log
+/tmp
+/.env

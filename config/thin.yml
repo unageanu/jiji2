@@ -1,0 +1,7 @@
+---
+timeout: 30
+wait: 30
+log: log/thin.log
+servers: 1
+threaded: true
+daemonize: true

@@ -11,7 +11,7 @@ gem 'thread',    '0.1.4'
 gem 'msgpack',   '0.5.9'
 gem 'rack',      '1.5.2'
 gem 'sinatra',   '1.4.5'
-gem 'unicorn',   '4.8.3'
+gem 'thin',      '1.6.3'
 
 gem 'mongoid',   '4.0.0'
 

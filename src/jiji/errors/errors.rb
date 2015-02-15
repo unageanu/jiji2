@@ -1,7 +1,6 @@
 # coding: utf-8
 
-module Jiji
-module Errors
+module Jiji::Errors
 
   class AuthFailedException < Exception
   end
@@ -48,5 +47,4 @@ module Errors
     param.map{|v| v.join("=") }.join(" ")
   end
   
-end
 end

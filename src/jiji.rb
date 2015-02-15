@@ -2,4 +2,32 @@
 
 require 'bundler/setup'
 
+module Jiji
+  module Composing      end
+  module Db             end
+  module Errors         end
+    
+  module Model
+    module Agents       end
+    module Setting      end
+    module Trading
+      module Brokers    end
+      module Internals  end
+      module Jobs       end
+      module Processes  end
+    end
+  end
+  
+  module Plugin         end
+  module Security       end
+  module Utils          end
+  module Web          
+    module Transport    end
+  end
+end
+
+module JIJI
+  module Plugin       end
+end
+
 require 'jiji/web/web_application'

@@ -1,3 +1,5 @@
+# coding: utf-8
+require 'time'
 
 class Time
   def to_msgpack(*a)

@@ -1,8 +1,7 @@
 require 'set'
 require 'encase'
 
-module JIJI
-module Plugin
+module JIJI::Plugin
     
   @@registry = {}
   
@@ -25,50 +24,43 @@ module Plugin
   end
 
 end
-end
 
-module Jiji
-module Plugin
-
-  # プラグインローダー
-  class Loader
-    
-    include Encase
-    
-    needs :logger
-    
-    def initialize
-      @loaded = Set.new
-    end
-    # プラグインをロードする。
-    def load
-      ($: + Gem.path).each {|dir|
-        Dir.glob("#{dir}/**/jiji_plugin.rb").each {|plugin|
-          load_plugin( File.expand_path plugin )
-        }
-      }
-    end
-    
-    def load_plugin( plugin )
-      return unless File.exist? plugin
-      return if @loaded.include?( plugin )
-      begin 
-        Kernel.require plugin
-        @logger.info( "plugin loaded. plugin_path=#{plugin}" )
-      rescue Exception
-        handle_error(plugin, $!)
-      ensure
-        @loaded << plugin
-      end
-    end
-    
-    def handle_error(plugin, error)
-      @logger.error( "plugin load failed. plugin_path=#{plugin}" ) 
-      @logger.error(error)  
-    end
-    
+# プラグインローダー
+class Jiji::Plugin::Loader
+  
+  include Encase
+  
+  needs :logger
+  
+  def initialize
+    @loaded = Set.new
   end
-    
-end
+  # プラグインをロードする。
+  def load
+    ($: + Gem.path).each {|dir|
+      Dir.glob("#{dir}/**/jiji_plugin.rb").each {|plugin|
+        load_plugin( File.expand_path plugin )
+      }
+    }
+  end
+  
+  def load_plugin( plugin )
+    return unless File.exist? plugin
+    return if @loaded.include?( plugin )
+    begin 
+      Kernel.require plugin
+      @logger.info( "plugin loaded. plugin_path=#{plugin}" )
+    rescue Exception
+      handle_error(plugin, $!)
+    ensure
+      @loaded << plugin
+    end
+  end
+  
+  def handle_error(plugin, error)
+    @logger.error( "plugin load failed. plugin_path=#{plugin}" ) 
+    @logger.error(error)  
+  end
+  
 end
 

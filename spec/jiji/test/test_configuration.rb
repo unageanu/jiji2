@@ -1,5 +1,19 @@
 # coding: utf-8
 
+require 'simplecov'
+
+SimpleCov.start do
+  add_filter "/vendor/"
+  add_filter "/src/jiji/web/"
+  add_filter "/spec/"
+end
+
+RSpec.configure do |config|
+  config.run_all_when_everything_filtered = true
+  config.filter_run :focus
+end
+
+
 ENV["JIJI_ENV"]="test"
 
 module Jiji

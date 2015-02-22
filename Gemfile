@@ -21,5 +21,6 @@ gem 'sbiclient',         '0.1.5'
 gem 'newrelic_rpm', '3.9.9.275'
 
 group :test do
-  gem 'rspec',   '3.1.0'
+  gem 'rspec',     '3.1.0'
+  gem "simplecov", '~> 0.9.0'
 end

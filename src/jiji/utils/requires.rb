@@ -1,16 +1,14 @@
 
 module Jiji::Utils
-class Requires
+  class Requires
+    def self.root
+      File.expand_path('../../../../', __FILE__)
+    end
 
-  def self.root
-    File.expand_path("../../../../", __FILE__)
+    def self.require_all(path)
+      Dir["#{root}/src/#{path}/**/*.rb"].each { |f|
+        require f[root.length + 5..-4]
+      }
+    end
   end
-  
-  def self.require_all( path )
-    Dir["#{root}/src/#{path}/**/*.rb"].each { |f|
-      require f[root.length+5 .. -4] 
-    }
-  end
-  
-end
 end

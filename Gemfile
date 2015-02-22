@@ -20,7 +20,13 @@ gem 'sbiclient',         '0.1.5'
 
 gem 'newrelic_rpm', '3.9.9.275'
 
+gem 'rake'
+
 group :test do
   gem 'rspec',     '3.1.0'
-  gem "simplecov", '~> 0.9.0'
+  gem 'simplecov', '~> 0.9.0'
+end
+
+group :development do
+  gem 'rubocop',   '0.29.1'
 end

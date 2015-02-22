@@ -3,9 +3,9 @@
 require 'simplecov'
 
 SimpleCov.start do
-  add_filter "/vendor/"
-  add_filter "/src/jiji/web/"
-  add_filter "/spec/"
+  add_filter '/vendor/'
+  add_filter '/src/jiji/web/'
+  add_filter '/spec/'
 end
 
 RSpec.configure do |config|
@@ -13,8 +13,7 @@ RSpec.configure do |config|
   config.filter_run :focus
 end
 
-
-ENV["JIJI_ENV"]="test"
+ENV['JIJI_ENV'] = 'test'
 
 module Jiji
   module Test end

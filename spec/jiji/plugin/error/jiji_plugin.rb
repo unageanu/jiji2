@@ -1,1 +1,1 @@
-raise "test."
+fail 'test.'

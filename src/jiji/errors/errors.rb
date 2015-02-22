@@ -1,7 +1,6 @@
 # coding: utf-8
 
 module Jiji::Errors
-
   class AuthFailedException < Exception
   end
 
@@ -22,29 +21,28 @@ module Jiji::Errors
 
   class AlreadyExistsException < Exception
   end
-  
-  def not_found(type=nil, param=nil)
-    raise Jiji::Errors::NotFoundException.new( 
-      "#{type || 'entity'} is not found. #{to_string(param)}" )
+
+  def not_found(type = nil, param = nil)
+    fail Jiji::Errors::NotFoundException.new(
+      "#{type || 'entity'} is not found. #{to_string(param)}")
   end
-  
-  def illegal_state(msg="", param=nil)
-    raise Jiji::Errors::IllegalStateException.new(
-      msg +  " " + to_string(param))
+
+  def illegal_state(msg = '', param = nil)
+    fail Jiji::Errors::IllegalStateException.new(
+      msg +  ' ' + to_string(param))
   end
-  
-  def illegal_argument(msg="", param=nil)
-    raise ArgumentError.new(msg + " " + to_string(param))
+
+  def illegal_argument(msg = '', param = nil)
+    fail ArgumentError.new(msg + ' ' + to_string(param))
   end
-  
-  def already_exists(type=nil, param=nil)
-    raise AlreadyExistsException.new(
-      "#{type || 'entity'} already exists. #{to_string(param)}" )
+
+  def already_exists(type = nil, param = nil)
+    fail AlreadyExistsException.new(
+      "#{type || 'entity'} already exists. #{to_string(param)}")
   end
-  
+
   def to_string(param)
-    return "" if param == nil
-    param.map{|v| v.join("=") }.join(" ")
+    return '' if param.nil?
+    param.map { |v| v.join('=') }.join(' ')
   end
-  
 end

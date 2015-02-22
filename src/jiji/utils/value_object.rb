@@ -1,42 +1,46 @@
 
 module Jiji::Utils::ValueObject
-    
   def ==(other)
-    _eql?(other) { |a,b| a == b }
+    _eql?(other) { |a, b| a == b }
   end
+
   def ===(other)
-    _eql?(other) { |a,b| a === b }
+    _eql?(other) { |a, b| a === b }
   end
+
   def eql?(other)
-    _eql?(other) { |a,b| a.eql? b }
+    _eql?(other) { |a, b| a.eql? b }
   end
+
   def hash
     hash = 0
-    values.each {|v|
+    values.each do|v|
       hash = v.hash + 31 * hash
-    }
-    return hash
+    end
+    hash
   end
-protected
+
+  protected
+
   def values
     values = []
     values << self.class
-    instance_variables.each { |name|
-      values << instance_variable_get(name) 
-    }
-    return values
+    instance_variables.each do |name|
+      values << instance_variable_get(name)
+    end
+    values
   end
+
   def _eql?(other, &block)
-    return false if other == nil
+    return false if other.nil?
     return true if self.equal? other
-    return false unless other.kind_of?(Jiji::Utils::ValueObject)
+    return false unless other.is_a?(Jiji::Utils::ValueObject)
     a = values
     b = other.values
     return false if a.length != b.length
-    a.length.times{|i|
-      return false unless block.call( a[i], b[i] )
-    }
-    return true
+    a.length.times do|i|
+      return false unless block.call(a[i], b[i])
+    end
+    true
   end
-
 end

@@ -5,87 +5,81 @@ require 'jiji/utils/value_object'
 require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Agents::Agent
-  
   #====設定可能なプロパティの一覧を返します。
-  #必要に応じてオーバーライドしてください。
-  #戻り値:: JIJI::Agent::Propertyの配列
+  # 必要に応じてオーバーライドしてください。
+  # 戻り値:: JIJI::Agent::Propertyの配列
   def self.property_infos
     []
   end
-  
+
   #====エージェントの説明を返します。
-  #必要に応じてオーバーライドしてください。
+  # 必要に応じてオーバーライドしてください。
   def self.description
-    ""
+    ''
   end
-  
-  
+
   #====設定されたプロパティを取得します。
-  def properties
-    @properties
-  end    
+  attr_reader :properties
   #====プロパティを設定します。
-  def properties=( properties )
+  def properties=(properties)
     @properties = properties
-    properties.each_pair {|k,v|
+    properties.each_pair do|k, v|
       instance_variable_set("@#{k}", v)
-    }
+    end
   end
-  
+
   #====エージェントの登録後に1度だけ呼び出される関数。
-  #必要に応じてオーバーライドしてください。コンストラクタと違い、
-  #このメソッドではoperatorやoutput,loggerが使用可能です。
+  # 必要に応じてオーバーライドしてください。コンストラクタと違い、
+  # このメソッドではoperatorやoutput,loggerが使用可能です。
   def init
   end
-  
+
   #====レート情報が通知されるメソッドです。
-  #エージェントが動作している間順次呼び出されます。 
-  #このメソッドをオーバーライドして、シグナルの計算や
-  #取り引きを行うロジックを実装してください
-  #tick:: Jiji::Model::Trading::Tick
-  def next_tick( tick, broker )
+  # エージェントが動作している間順次呼び出されます。
+  # このメソッドをオーバーライドして、シグナルの計算や
+  # 取り引きを行うロジックを実装してください
+  # tick:: Jiji::Model::Trading::Tick
+  def next_tick(_tick, _broker)
   end
-  
+
   def save_state
   end
-  
-  def restore_state(state)
+
+  def restore_state(_state)
   end
-  
-  
+
   #===エージェントのプロパティ
   class Property
-    
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
-    
+
     #====コンストラクタ
-    #id:: プロパティID
-    #name:: UIでの表示名
-    #default_value:: プロパティの初期値
-    #type:: 種類
-    def initialize( id, name, default_value=nil, type=:string )
+    # id:: プロパティID
+    # name:: UIでの表示名
+    # default_value:: プロパティの初期値
+    # type:: 種類
+    def initialize(id, name, default_value = nil, type = :string)
       @id = id
       @name = name
       @default = default_value
       @type = type
     end
-    #プロパティID。
-    #JIJI::Agent#properties=(props)で渡されるハッシュのキーになります。設定必須です。
-    attr :id, true
+    # プロパティID。
+    # JIJI::Agent#properties=(props)で渡されるハッシュのキーになります。設定必須です。
+    attr_writer :id
     # UIでの表示名。設定必須です。
-    attr :name, true
+    attr_writer :name
     # プロパティの初期値。
-    attr :default, true
+    attr_writer :default
     # 種類。:string or :numberが指定可能。指定しない場合、:stringが指定されたものとみなされます。
-    attr :type, true
-    
+    attr_writer :type
+
     def values
-      [id, name, type, default]
+      [@id, @name, @type, @default]
     end
+
     def to_h # nodoc
-      {:id =>id, :name=> name, :type=>type, :default=>default}
+      { id: id, name: name, type: type, default: default }
     end
   end
-  
 end

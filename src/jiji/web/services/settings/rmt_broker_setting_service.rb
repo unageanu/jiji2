@@ -5,41 +5,39 @@ require 'jiji/web/services/abstract_service'
 require 'jiji/model/settings/rmt_broker_setting'
 
 module Jiji::Web
-class RMTBrokerSettingService < Jiji::Web::AuthenticationRequiredService
-  
-  RMTBrokerSetting = Jiji::Model::Settings::RMTBrokerSetting
-  
-  get "/available-securities" do
-    ok( RMTBrokerSetting.available_securities.map {|p|
-      {:securities_id=>p.plugin_id, :name=>p.display_name}
-    })
-  end
-  
-  get "/:securities_id/configuration_definitions" do
-    ok( RMTBrokerSetting.get_configuration_definitions(params["securities_id"].to_sym))
-  end
-  
-  get "/:securities_id/configurations" do
-    ok( setting.get_configurations(params["securities_id"].to_sym))
-  end
-  
-  get "/active-securities/id" do
-    if (setting.active_securities)
-      ok( setting.active_securities.plugin_id )
-    else
-      not_found
+  class RMTBrokerSettingService < Jiji::Web::AuthenticationRequiredService
+    RMTBrokerSetting = Jiji::Model::Settings::RMTBrokerSetting
+
+    get '/available-securities' do
+      ok(RMTBrokerSetting.available_securities.map do|p|
+        { securities_id: p.plugin_id, name: p.display_name }
+      end)
+    end
+
+    get '/:securities_id/configuration_definitions' do
+      ok(RMTBrokerSetting.get_configuration_definitions(params['securities_id'].to_sym))
+    end
+
+    get '/:securities_id/configurations' do
+      ok(setting.get_configurations(params['securities_id'].to_sym))
+    end
+
+    get '/active-securities/id' do
+      if setting.active_securities
+        ok(setting.active_securities.plugin_id)
+      else
+        not_found
+      end
+    end
+
+    put '/active-securities' do
+      body = load_body
+      setting.set_active_securities(body['securities_id'].to_sym, body['configurations'])
+      no_content
+    end
+
+    def setting
+      lookup(:rmt_broker_setting)
     end
   end
-  
-  put "/active-securities" do
-    body = load_body
-    setting.set_active_securities(body["securities_id"].to_sym, body["configurations"])
-    no_content
-  end
-  
-  def setting
-    lookup(:rmt_broker_setting)
-  end
-  
-end
 end

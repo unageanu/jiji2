@@ -6,7 +6,7 @@ module Jiji
   module Composing      end
   module Db             end
   module Errors         end
-    
+
   module Model
     module Agents       end
     module Graph        end
@@ -18,11 +18,11 @@ module Jiji
       module Processes  end
     end
   end
-  
+
   module Plugin         end
   module Security       end
   module Utils          end
-  module Web          
+  module Web
     module Transport    end
   end
 end

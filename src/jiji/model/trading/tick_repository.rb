@@ -10,13 +10,11 @@ class TickRepository
   
   def fetch( start_time, end_time )
     swaps = Internal::Swaps.create( start_time, end_time )
-    return Tick.where({
-      :timestamp.gte => start_time, 
-      :timestamp.lt  => end_time 
-    }).order_by(:timestamp.asc).map {|t|
+    return Tick.where(      :timestamp.gte => start_time, 
+      :timestamp.lt  => end_time ).order_by(:timestamp.asc).map do|t|
       t.swaps = swaps.get_swaps_at( t.timestamp )
       t
-    }
+    end
   end
   
   def range
@@ -28,10 +26,8 @@ class TickRepository
   end
   
   def delete( start_time, end_time )
-    Tick.where({
-      :timestamp.gte => start_time, 
-      :timestamp.lt  => end_time 
-    }).delete
+    Tick.where(      :timestamp.gte => start_time, 
+      :timestamp.lt  => end_time ).delete
   end
   
 end

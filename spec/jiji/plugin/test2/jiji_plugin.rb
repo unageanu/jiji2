@@ -1,1 +1,1 @@
-JIJI::Plugin.register( :test, "test2" )
+JIJI::Plugin.register(:test, 'test2')

@@ -47,7 +47,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     }
     
     it "期間内のレートを取得できる" do
-      expect( broker.has_next ).to be true
+      expect( broker.has_next? ).to be true
       
       rates = broker.tick
       expect( rates[:EURJPY].bid ).to eq 100
@@ -60,7 +60,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       expect( rates[:EURUSD].sell_swap ).to be 20
       
       broker.refresh
-      expect( broker.has_next ).to be true
+      expect( broker.has_next? ).to be true
       
       rates = broker.tick
       expect( rates[:EURJPY].bid ).to eq 101
@@ -70,7 +70,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       
       28.times {|i|
         broker.refresh
-        expect( broker.has_next ).to be true
+        expect( broker.has_next? ).to be true
         rates = broker.tick
         expect( rates[:EURJPY].bid ).not_to be nil
         expect( rates[:EURJPY].ask ).not_to be nil
@@ -79,32 +79,32 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       }
       
       broker.refresh
-      expect( broker.has_next ).to be false
+      expect( broker.has_next? ).to be false
     end
     
     it "売買していても既定のレートを取得できる" do
     
       buy_position = broker.buy(:EURJPY, 1)
-      expect( buy_position.profit_or_loss ).to eq -30
+      expect( buy_position.profit_or_loss ).to eq(-30)
     
-      expect( broker.has_next ).to be true
+      expect( broker.has_next? ).to be true
       expect( broker.tick[:EURJPY].bid ).to eq 100
       
       broker.refresh
       
       expect( buy_position.profit_or_loss ).to eq 9970
       
-      expect( broker.has_next ).to be true
+      expect( broker.has_next? ).to be true
       expect( broker.tick[:EURJPY].bid ).to eq 101
       
       sell_position = broker.sell(:USDJPY, 2)
-      expect( sell_position.profit_or_loss ).to eq -60
+      expect( sell_position.profit_or_loss ).to eq(-60)
       
       broker.close(buy_position._id)
       
       28.times {|i|
         broker.refresh
-        expect( broker.has_next ).to be true
+        expect( broker.has_next? ).to be true
         rates = broker.tick
         expect( rates[:EURJPY].bid ).not_to be nil
         expect( rates[:EURJPY].ask ).not_to be nil
@@ -116,11 +116,11 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       }
       
       broker.refresh
-      expect( broker.has_next ).to be false
+      expect( broker.has_next? ).to be false
     end
     
     it "refresh を行うまで同じレートが取得される" do
-      expect( broker.has_next ).to be true
+      expect( broker.has_next? ).to be true
       
       rates = broker.tick
       expect( rates[:EURJPY].bid ).to eq 100
@@ -155,7 +155,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     }
     
     it "期間内のレートを取得できる" do
-      expect( broker.has_next ).to be true
+      expect( broker.has_next? ).to be true
       
       rates = broker.tick
       expect( rates[:EURJPY].bid ).to eq 101
@@ -168,7 +168,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       expect( rates[:EURUSD].sell_swap ).to be 21
       
       broker.refresh
-      expect( broker.has_next ).to be true
+      expect( broker.has_next? ).to be true
       
       rates = broker.tick
       expect( rates[:EURJPY].bid ).to eq 102
@@ -178,7 +178,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       
       8.times {|i|
         broker.refresh
-        expect( broker.has_next ).to be true
+        expect( broker.has_next? ).to be true
         rates = broker.tick
         expect( rates[:EURJPY].bid ).not_to be nil
         expect( rates[:EURJPY].ask ).not_to be nil
@@ -187,7 +187,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       }
       
       broker.refresh
-      expect( broker.has_next ).to be false
+      expect( broker.has_next? ).to be false
     end
     
     it_behaves_like "broker の基本操作ができる"
@@ -202,7 +202,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     }
     
     it "レートは取得できない" do
-      expect( broker.has_next ).to be false
+      expect( broker.has_next? ).to be false
     end
     
     it "pair は取得できない" do

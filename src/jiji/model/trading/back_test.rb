@@ -36,7 +36,7 @@ class BackTest
     { :created_at => 1, :id=> 1 }, 
     { unique: true, name: "backtests_created_at_id_index" })
   
-  attr :process, :job, :borker, :agents
+  attr :process
   
   def to_h
     { 
@@ -61,12 +61,13 @@ class BackTest
   def setup
     self.created_at = time_source.now
 
-    #@agents = agents_factory.create(agent_setting)
-    @broker  = Brokers::BackTestBroker.new(_id, start_time, end_time, @tick_repository)
-    @job     = Jobs::BackTestJob.new(@agents, @broker, @logger)
-    @process = Processes::BackTestProcess.new(@job, back_test_thread_pool, logger)
+    #@agents         = agents_factory.create(agent_setting)
+    broker           = Brokers::BackTestBroker.new(_id, start_time, end_time, @tick_repository)
+    trading_context  = TradingContext.new(@agents, broker, time_source, @logger)
+    @process         = Process.new(trading_context, back_test_thread_pool, true)
     
     @process.start
+    @process.post_job( Jobs::NotifyNextTickJobForBackTest.new )
   end
   
   def delete

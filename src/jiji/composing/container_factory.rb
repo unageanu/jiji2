@@ -63,17 +63,17 @@ private
   
   def configure_trading_model( container )
     container.configure do
-      object :rmt_process,           Trading::Processes::RMTProcess.new
-      object :rmt_job,               Trading::Jobs::RMTJob.new
-      object :rmt_broker,            Trading::Brokers::RMTBroker.new
+      object :rmt,                         Trading::RMT.new
+      object :rmt_broker,                  Trading::Brokers::RMTBroker.new
+      object :rmt_next_tick_job_generator, Trading::Internal::RMTNextTickJobGenerator.new
       
-      object :back_test_thread_pool, Thread.pool(2)
-      object :back_test_repository,  Trading::BackTestRepository.new
+      object :back_test_thread_pool,       Thread.pool(2)
+      object :back_test_repository,        Trading::BackTestRepository.new
       
-      object :position_repository,   Trading::PositionRepository.new
+      object :position_repository,         Trading::PositionRepository.new
       
-      object :tick_repository,       Trading::TickRepository.new
-      object :rate_fetcher,          Trading::Internal::RateFetcher.new
+      object :tick_repository,             Trading::TickRepository.new
+      object :rate_fetcher,                Trading::Internal::RateFetcher.new
     end
   end
   

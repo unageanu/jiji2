@@ -41,7 +41,7 @@ class BackTestBroker < AbstractBroker
   def destroy
   end
   
-  def has_next
+  def has_next?
     fill_buffer if @buffer.empty?
     !@buffer.empty?
   end

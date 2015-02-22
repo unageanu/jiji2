@@ -38,14 +38,14 @@ class BackTestRepository
   
   def delete(id)
     back_test = get(id)
-    back_test.process.stop.value
+    back_test.process.stop
     
     back_test.delete
     @back_tests.delete(id)
   end
   
   def stop
-    all.map {|t| t.process.stop }.each {|f| f.value}
+    all.each {|t| t.process.stop }
   end
 
 private

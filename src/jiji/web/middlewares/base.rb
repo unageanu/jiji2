@@ -6,6 +6,11 @@ require 'jiji/errors/errors'
 module Jiji::Web
 class Base < Sinatra::Base
   
+  # TODO 
+  # X-Frame-Options
+  # X-CONTENT-TYPE-OPTIONS: NOSNIFF
+  # 
+  
   before do
     lookup(:time_source).set( Time.now )
   end

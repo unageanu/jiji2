@@ -9,7 +9,8 @@ module Jiji
     
   module Model
     module Agents       end
-    module Setting      end
+    module Graph        end
+    module Settings     end
     module Trading
       module Brokers    end
       module Internals  end

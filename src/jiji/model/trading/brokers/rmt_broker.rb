@@ -19,7 +19,7 @@ class RMTBroker < AbstractBroker
     @back_test_id = nil
   end
   
-  def has_next
+  def has_next?
     true
   end
   

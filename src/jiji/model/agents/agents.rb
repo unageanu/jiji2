@@ -10,10 +10,10 @@ class Agents
     @agents = agents
   end
   
-  def next_tick( broker )
+  def next_tick( tick, broker )
     @agents.each {|a|
       begin
-        a.next_tick( broker )
+        a.next_tick( tick, broker )
       rescue => e
         @logger.error(e)
       end

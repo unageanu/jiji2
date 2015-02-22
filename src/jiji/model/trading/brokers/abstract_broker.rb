@@ -36,7 +36,7 @@ class AbstractBroker
   def refresh
     @pairs_cache = nil
     @rates_cache = nil
-    update_positions if has_next
+    update_positions if has_next?
   end
   
 private

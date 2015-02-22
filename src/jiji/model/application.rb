@@ -10,21 +10,18 @@ class Application
   include Encase
   
   needs :plugin_loader
-  needs :rmt_broker_setting
-  needs :rmt_process
+  needs :rmt
   needs :back_test_repository
   needs :index_builder
   
   def setup
     @index_builder.create_indexes
-    
     @plugin_loader.load
-    @rmt_broker_setting.setup
-    @rmt_process.start
+    @rmt.setup
   end
   
   def tear_down
-    @rmt_process.stop.value
+    @rmt.tear_down
     @back_test_repository.stop
   end
   

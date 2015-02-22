@@ -42,8 +42,8 @@ module Jiji::Model::Agents::Agent
   #エージェントが動作している間順次呼び出されます。 
   #このメソッドをオーバーライドして、シグナルの計算や
   #取り引きを行うロジックを実装してください
-  #rates:: JIJI::Rates
-  def next_tick( broker )
+  #tick:: Jiji::Model::Trading::Tick
+  def next_tick( tick, broker )
   end
   
   def save_state

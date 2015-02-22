@@ -1,7 +1,6 @@
 # coding: utf-8
 
 require 'encase'
-require 'jiji/model/trading/jobs/abstract_job'
 
 module Jiji::Model::Trading::Internal
 class RateSaver

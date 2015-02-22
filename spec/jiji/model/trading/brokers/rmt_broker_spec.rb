@@ -79,9 +79,9 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       it "売買していても既定のレートを取得できる" do
         
         buy_position = broker.buy(:EURJPY, 1)
-        expect( buy_position.profit_or_loss ).to eq -30
+        expect( buy_position.profit_or_loss ).to eq(-30)
         
-        expect( broker.has_next ).to eq true
+        expect( broker.has_next? ).to eq true
         expect( broker.tick[:EURJPY].bid ).to eq 145.00
         
         @mock_plugin.seed += 0.26
@@ -89,11 +89,11 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
           
         expect( buy_position.profit_or_loss ).to eq 2570
           
-        expect( broker.has_next ).to eq true
+        expect( broker.has_next? ).to eq true
         expect( broker.tick[:EURJPY].bid ).to eq 145.26
           
         sell_position = broker.sell(:EURUSD, 2)
-        expect( sell_position.profit_or_loss ).to eq -2
+        expect( sell_position.profit_or_loss ).to eq(-2)
           
         broker.close(buy_position._id)
           
@@ -101,21 +101,21 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         broker.refresh
             
         expect( buy_position.profit_or_loss ).to eq 2570
-        expect( sell_position.profit_or_loss ).to eq -802
+        expect( sell_position.profit_or_loss ).to eq(-802)
         
         
         @mock_plugin.seed += 0.003
         broker.refresh
             
         expect( buy_position.profit_or_loss ).to eq 2570
-        expect( sell_position.profit_or_loss ).to eq -862
+        expect( sell_position.profit_or_loss ).to eq(-862)
         
         
         @mock_plugin.seed -= 0.002
         broker.refresh
             
         expect( buy_position.profit_or_loss ).to eq 2570
-        expect( sell_position.profit_or_loss ).to eq -822
+        expect( sell_position.profit_or_loss ).to eq(-822)
       end
       
       it "破棄操作ができる" do

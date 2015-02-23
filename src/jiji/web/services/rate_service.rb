@@ -5,11 +5,13 @@ require 'jiji/web/services/abstract_service'
 
 module Jiji::Web
   class RateService < Jiji::Web::AuthenticationRequiredService
+    include Jiji::Model::Trading::Internal
+
     delete '/' do
-      range = get_range
+      range = retrieve_range
       tick_repository.delete(range[:start], range[:end])
-      Jiji::Model::Trading::Internal::Swap.delete(range[:start], range[:end])
-      Jiji::Model::Trading::Internal::TradingUnit.delete(range[:start], range[:end])
+      Swap.delete(range[:start], range[:end])
+      TradingUnit.delete(range[:start], range[:end])
       no_content
     end
 
@@ -22,11 +24,11 @@ module Jiji::Web
     end
 
     get '/:pair_name/:interval' do
-      range = get_range
+      range = retrieve_range
       pair_name = params['pair_name'].to_sym
       interval  = params['interval'].to_sym
       ok(fetcher.fetch(pair_name,
-                       range[:start], range[:end], interval))
+        range[:start], range[:end], interval))
     end
 
     def fetcher
@@ -37,7 +39,7 @@ module Jiji::Web
       lookup(:tick_repository)
     end
 
-    def get_range
+    def retrieve_range
       {
         start: get_time_from_query_param('start'),
         end: get_time_from_query_param('end')

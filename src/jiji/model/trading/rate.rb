@@ -38,8 +38,8 @@ module Jiji::Model::Trading
         low   = t if low[pair_name].bid  > t[pair_name].bid
       end
       Rate.new(pair,
-               open[pair_name], close[pair_name],
-               high[pair_name], low[pair_name], open.timestamp)
+        open[pair_name], close[pair_name],
+        high[pair_name], low[pair_name], open.timestamp)
     end
 
     def self.union(*rates)
@@ -51,7 +51,7 @@ module Jiji::Model::Trading
         low   = r if low.low.bid  > r.low.bid
       end
       Rate.new(open.pair, open.open,
-               close.close, high.high, low.low, open.timestamp)
+        close.close, high.high, low.low, open.timestamp)
     end
 
     def to_h

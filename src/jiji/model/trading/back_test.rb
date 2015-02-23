@@ -61,19 +61,32 @@ module Jiji::Model::Trading
       self.created_at = time_source.now
 
       # @agents         = agents_factory.create(agent_setting)
-      broker           = Brokers::BackTestBroker.new(_id, start_time, end_time, @tick_repository)
-      trading_context  = TradingContext.new(@agents, broker, time_source, @logger)
-      @process         = Process.new(trading_context, back_test_thread_pool, true)
+      broker           = create_broker
+      trading_context  = create_trading_context(broker)
+      @process         = create_process(trading_context)
 
       @process.start
       @process.post_job(Jobs::NotifyNextTickJobForBackTest.new)
     end
 
     def delete
-      # TODO delete positions, logs
+      # TODO: delete positions, logs
       super
     end
 
     private
+
+    def create_broker
+      Brokers::BackTestBroker.new(
+        _id, start_time, end_time, @tick_repository)
+    end
+
+    def create_trading_context(broker)
+      TradingContext.new(@agents, broker, time_source, @logger)
+    end
+
+    def create_process(trading_context)
+      Process.new(trading_context, back_test_thread_pool, true)
+    end
   end
 end

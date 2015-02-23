@@ -40,8 +40,8 @@ module Jiji::Model::Agents
     def add_source(name, memo, type, body)
       @mutex.synchronize do
         already_exists(AgentSource, name: name) if @agents.include? name
-        source = AgentSource.create(name,
-                                    type, @time_source.now, memo, body)
+        source = AgentSource.create(
+          name, type, @time_source.now, memo, body)
         @agents[source.name] = source
         Context._delegates[source.name] = source.context
       end
@@ -74,20 +74,14 @@ module Jiji::Model::Agents
     def get_agent_class(name)
       @mutex.synchronize do
         not_found(Agent, name => name) unless name =~ /([^@]+)@([^@]+)$/
-        not_found(Agent, name => name) unless @agents.include? Regexp.last_match(2)
 
-        mod = @agents[Regexp.last_match(2)].context
-        path = Regexp.last_match(1).split('::')
-        path.each do|step|
-          not_found(Agent, name: name) if mod.nil? || !mod.is_a?(Module)
-          not_found(Agent, name: name, step: step) unless mod.const_defined? step
+        class_path = Regexp.last_match(1)
+        agent_name = Regexp.last_match(2)
+        not_found(Agent, name => name) unless @agents.include? agent_name
 
-          mod = mod.const_get step
-        end
-        unless !mod.nil? && mod.is_a?(Class) && mod < Jiji::Model::Agents::Agent
-          not_found(Agent, name => name)
-        end
-        return mod
+        root = @agents[agent_name].context
+        path = class_path.split('::')
+        return find_class_by(root, path, name)
       end
     end
 
@@ -103,8 +97,26 @@ module Jiji::Model::Agents
 
     private
 
+    def find_class_by(root, path, name)
+      mod = root
+      path.each do|step|
+        not_found(Agent, name: name) unless check_object_is(mod, Module)
+        not_found(Agent, name: name, step: step) unless mod.const_defined? step
+
+        mod = mod.const_get step
+      end
+      unless check_object_is(mod, Class) && mod < Agent
+        not_found(Agent, name => name)
+      end
+      mod
+    end
+
+    def check_object_is(o, type)
+      !o.nil? && o.is_a?(type)
+    end
+
     def load_agent_sources
-      load(@agent_source_repository.get_all)
+      load(@agent_source_repository.all)
     end
 
     def load(sources)
@@ -116,9 +128,7 @@ module Jiji::Model::Agents
         @agents[source.name] = source
         Context._delegates[source.name] = source.context
 
-        if source.status == :error
-          failed << source
-        end
+        failed << source if source.status == :error
       end
       return if failed.empty?
       return if failed.length == sources.length # すべてエラーならこれ以上リトライしない
@@ -129,14 +139,12 @@ module Jiji::Model::Agents
       return if checked.include? m
       checked << m
 
-      m.constants.each do|name|
+      m.constants.each do |name|
         cl = m.const_get name
         if cl.is_a?(Class) && cl < Jiji::Model::Agents::Agent
           block.call("#{extract_name(cl.name)}@#{source_name}")
         end
-        if cl.is_a?(Module)
-          find_agent(source_name, cl, checked, &block)
-        end
+        find_agent(source_name, cl, checked, &block) if cl.is_a?(Module)
       end
     end
 

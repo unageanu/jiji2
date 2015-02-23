@@ -33,9 +33,9 @@ module Jiji::Model::Trading
     private
 
     def setup_rmt_process
-      # @agents         = agents_factory.create(agent_setting)
-      @trading_context = TradingContext.new(@agents, rmt_broker, time_source, logger)
-      @process         = Process.new(trading_context, Thread.pool(1), false)
+      # @agents        = agents_factory.create(agent_setting)
+      @trading_context = create_trading_context
+      @process         = create_process(trading_context)
 
       @process.start
       @rmt_next_tick_job_generator.start(@process.job_queue)
@@ -44,6 +44,14 @@ module Jiji::Model::Trading
     def stop_rmt_process
       @rmt_next_tick_job_generator.stop
       @process.stop
+    end
+
+    def create_trading_context
+      TradingContext.new(@agents, rmt_broker, time_source, logger)
+    end
+
+    def create_process(trading_context)
+      Process.new(trading_context, Thread.pool(1), false)
     end
   end
 end

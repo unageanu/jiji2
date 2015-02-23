@@ -4,10 +4,6 @@ module Jiji::Utils::ValueObject
     _eql?(other) { |a, b| a == b }
   end
 
-  def ===(other)
-    _eql?(other) { |a, b| a === b }
-  end
-
   def eql?(other)
     _eql?(other) { |a, b| a.eql? b }
   end

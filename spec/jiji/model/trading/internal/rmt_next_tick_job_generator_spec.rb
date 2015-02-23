@@ -5,7 +5,8 @@ require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::Internal::RMTNextTickJobGenerator do
   before(:example) do
-    @generator = Jiji::Model::Trading::Internal::RMTNextTickJobGenerator.new(0.2)
+    @generator =
+      Jiji::Model::Trading::Internal::RMTNextTickJobGenerator.new(0.2)
   end
 
   it 'wait_timeごとにjobが追加される' do

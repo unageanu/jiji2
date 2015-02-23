@@ -1,25 +1,40 @@
 require 'set'
 require 'encase'
+require 'singleton'
 
 module JIJI::Plugin
-  @@registry = {}
-
   # プラグインを登録する。
   # future:: 機能の識別子
   # instance:: 機能を提供するプラグインインスタンス
   def self.register(future, instance)
-    if @@registry.key? future
-      @@registry[future] << instance
-    else
-      @@registry[future] = [instance]
-    end
+    Registry.instance.register(future, instance)
   end
 
   # プラグインを取得する。
   # future:: 機能の識別子
   # return:: 機能を提供するプラグインの配列
   def self.get(future)
-    @@registry.key?(future) ? @@registry[future] : []
+    Registry.instance.get(future)
+  end
+
+  class Registry
+    include Singleton
+
+    def initialize
+      @registry = {}
+    end
+
+    def register(future, instance)
+      if @registry.key? future
+        @registry[future] << instance
+      else
+        @registry[future] = [instance]
+      end
+    end
+
+    def get(future)
+      @registry.key?(future) ? @registry[future] : []
+    end
   end
 end
 
@@ -47,8 +62,8 @@ class Jiji::Plugin::Loader
     begin
       Kernel.require plugin
       @logger.info("plugin loaded. plugin_path=#{plugin}")
-    rescue Exception
-      handle_error(plugin, $ERROR_INFO)
+    rescue Exception => e
+      handle_error(plugin, e)
     ensure
       @loaded << plugin
     end

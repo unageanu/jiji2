@@ -12,16 +12,18 @@ module Jiji::Model::Trading::Jobs
       after_do_next(trading_context, queue)
     end
 
-    def before_do_next(trading_context, _queue)
+    def before_do_next(trading_context, queue)
       trading_context.broker.refresh
     end
 
-    def after_do_next(_trading_context, _queue)
+    def after_do_next(_trading_context, queue)
     end
   end
 
   class NotifyNextTickJobForRMT < NotifyNextTickJob
-    def after_do_next(trading_context, _queue)
+    include Jiji::Model::Trading::Internal
+
+    def after_do_next(trading_context, queue)
       store_rates(trading_context)
       store_trading_unit_hourly(trading_context)
     end
@@ -42,11 +44,11 @@ module Jiji::Model::Trading::Jobs
     end
 
     def get_or_create_rate_saver(trading_context)
-      trading_context[:rate_saver] ||= Jiji::Model::Trading::Internal::RateSaver.new
+      trading_context[:rate_saver] ||= RateSaver.new
     end
 
     def get_or_create_trading_unit_saver(trading_context)
-      trading_context[:rading_unit_saver] ||= Jiji::Model::Trading::Internal::TradingUnitSaver.new
+      trading_context[:rading_unit_saver] ||= TradingUnitSaver.new
     end
 
     def get_next_save_point(context)
@@ -60,7 +62,7 @@ module Jiji::Model::Trading::Jobs
 
   class NotifyNextTickJobForBackTest < NotifyNextTickJob
     def after_do_next(context, queue)
-      queue << self if context.broker.has_next?
+      queue << self if context.broker.next?
       sleep 0.01
     end
   end

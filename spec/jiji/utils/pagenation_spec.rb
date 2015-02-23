@@ -8,9 +8,9 @@ describe Jiji::Utils::Pagenation::Query do
     @data_builder = Jiji::Test::DataBuilder.new
 
     100.times do|i|
-      swap = @data_builder.new_swap(i,   1, timestamp = Time.at(i))
+      swap = @data_builder.new_swap(i,     1, Time.at(i))
       swap.save
-      swap = @data_builder.new_swap(i * 2, 2, timestamp = Time.at(i))
+      swap = @data_builder.new_swap(i * 2, 2, Time.at(i))
       swap.save
     end
   end
@@ -20,7 +20,8 @@ describe Jiji::Utils::Pagenation::Query do
   end
 
   it '絞り込み条件あり、ソート条件あり、0～10件取得' do
-    q = Jiji::Utils::Pagenation::Query.new({ pair_id: 1 }, { timestamp: :asc }, 0, 10)
+    q = Jiji::Utils::Pagenation::Query.new(
+      { pair_id: 1 }, { timestamp: :asc }, 0, 10)
     swaps = q.execute(Jiji::Model::Trading::Internal::Swap).map { |x| x }
 
     expect(swaps.length).to eq(10)
@@ -31,7 +32,8 @@ describe Jiji::Utils::Pagenation::Query do
   end
 
   it '絞り込み条件あり、ソート条件あり、10～20件取得' do
-    q = Jiji::Utils::Pagenation::Query.new({ pair_id: 1 }, { timestamp: :asc }, 10, 10)
+    q = Jiji::Utils::Pagenation::Query.new(
+      { pair_id: 1 }, { timestamp: :asc }, 10, 10)
     swaps = q.execute(Jiji::Model::Trading::Internal::Swap).map { |x| x }
 
     expect(swaps.length).to eq(10)
@@ -42,7 +44,8 @@ describe Jiji::Utils::Pagenation::Query do
   end
 
   it '絞り込み条件あり、ソート条件あり、95～100件取得' do
-    q = Jiji::Utils::Pagenation::Query.new({ pair_id: 1 }, { timestamp: :asc }, 95, 10)
+    q = Jiji::Utils::Pagenation::Query.new(
+      { pair_id: 1 }, { timestamp: :asc }, 95, 10)
     swaps = q.execute(Jiji::Model::Trading::Internal::Swap).map { |x| x }
 
     expect(swaps.length).to eq(5)
@@ -53,7 +56,8 @@ describe Jiji::Utils::Pagenation::Query do
   end
 
   it '絞り込み条件あり、ソート条件あり(逆順)、0～10件取得' do
-    q = Jiji::Utils::Pagenation::Query.new({ pair_id: 1 }, { timestamp: :desc }, 0, 10)
+    q = Jiji::Utils::Pagenation::Query.new(
+      { pair_id: 1 }, { timestamp: :desc }, 0, 10)
     swaps = q.execute(Jiji::Model::Trading::Internal::Swap).map { |x| x }
 
     expect(swaps.length).to eq(10)
@@ -64,7 +68,8 @@ describe Jiji::Utils::Pagenation::Query do
   end
 
   it '絞り込み条件あり、ソート条件あり(逆順)、10～20件取得' do
-    q = Jiji::Utils::Pagenation::Query.new({ pair_id: 1 }, { timestamp: :desc }, 10, 10)
+    q = Jiji::Utils::Pagenation::Query.new(
+      { pair_id: 1 }, { timestamp: :desc }, 10, 10)
     swaps = q.execute(Jiji::Model::Trading::Internal::Swap).map { |x| x }
 
     expect(swaps.length).to eq(10)
@@ -75,7 +80,8 @@ describe Jiji::Utils::Pagenation::Query do
   end
 
   it '絞り込み条件あり、ソート条件あり(逆順)、95～100件取得' do
-    q = Jiji::Utils::Pagenation::Query.new({ pair_id: 1 }, { timestamp: :desc }, 95, 10)
+    q = Jiji::Utils::Pagenation::Query.new(
+      { pair_id: 1 }, { timestamp: :desc }, 95, 10)
     swaps = q.execute(Jiji::Model::Trading::Internal::Swap).map { |x| x }
 
     expect(swaps.length).to eq(5)
@@ -86,7 +92,8 @@ describe Jiji::Utils::Pagenation::Query do
   end
 
   it '絞り込み条件なし、ソート条件あり、0～10件取得' do
-    q = Jiji::Utils::Pagenation::Query.new(nil, { pair_id: :asc, timestamp: :asc }, 0, 10)
+    q = Jiji::Utils::Pagenation::Query.new(
+      nil, { pair_id: :asc, timestamp: :asc }, 0, 10)
     swaps = q.execute(Jiji::Model::Trading::Internal::Swap).map { |x| x }
 
     expect(swaps.length).to eq(10)
@@ -97,7 +104,8 @@ describe Jiji::Utils::Pagenation::Query do
   end
 
   it '絞り込み条件なし、ソート条件あり(逆順)、0～10件取得' do
-    q = Jiji::Utils::Pagenation::Query.new(nil, { pair_id: :desc, timestamp: :desc }, 0, 10)
+    q = Jiji::Utils::Pagenation::Query.new(
+      nil, { pair_id: :desc, timestamp: :desc }, 0, 10)
     swaps = q.execute(Jiji::Model::Trading::Internal::Swap).map { |x| x }
 
     expect(swaps.length).to eq(10)
@@ -122,7 +130,8 @@ describe Jiji::Utils::Pagenation::Query do
   end
 
   it '絞り込み条件あり、ソート条件あり、全件取得' do
-    q = Jiji::Utils::Pagenation::Query.new({ pair_id: 1 }, timestamp: :asc)
+    q = Jiji::Utils::Pagenation::Query.new(
+      { pair_id: 1 }, timestamp: :asc)
     swaps = q.execute(Jiji::Model::Trading::Internal::Swap).map { |x| x }
 
     expect(swaps.length).to eq(100)

@@ -10,12 +10,12 @@ module Jiji::Model::Trading::Jobs
 
     def exec(context, queue)
       @future.value = call(context, queue)
-    rescue Exception => e
+    rescue StandardError => e
       @future.error = e
       raise e
     end
 
-    def call(_context, _queue)
+    def call(_context, queue)
     end
 
     def self.create_from(&block)

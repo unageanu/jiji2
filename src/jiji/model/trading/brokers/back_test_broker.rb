@@ -7,6 +7,7 @@ require 'jiji/errors/errors'
 module Jiji::Model::Trading::Brokers
   class BackTestBroker < AbstractBroker
     include Jiji::Errors
+    include Jiji::Model::Trading::Internal
 
     attr_reader :start, :end
 
@@ -20,10 +21,8 @@ module Jiji::Model::Trading::Brokers
 
       @back_test_id = back_test_id
 
-      tradingUnits = Jiji::Model::Trading::Internal::TradingUnits
-
       @buffer          = []
-      @trading_units   = tradingUnits.create(start_time, end_time)
+      @trading_units   = TradingUnits.create(start_time, end_time)
       @tick_repository = tick_repository
     end
 
@@ -38,7 +37,7 @@ module Jiji::Model::Trading::Brokers
     def destroy
     end
 
-    def has_next?
+    def next?
       fill_buffer if @buffer.empty?
       !@buffer.empty?
     end
@@ -68,21 +67,18 @@ module Jiji::Model::Trading::Brokers
     end
 
     def check_period(start_time, end_time)
-      if start_time >= end_time
-        illegal_argument('illegal period.',         start_time: start_time,
-                                                    end_time: end_time)
-      end
+      illegal_argument('illegal period.',
+        start_time: start_time, end_time: end_time) if start_time >= end_time
     end
 
     def fill_buffer
-      while @buffer.empty? && @current < @end_time
-        load_next_ticks
-      end
+      load_next_ticks while @buffer.empty? && @current < @end_time
     end
 
     def load_next_ticks
-      start_time = @current
-      end_time   = @end_time > @current + (60 * 60 * 2) ? @current + (60 * 60 * 2) : @end_time
+      start_time  = @current
+      next_period = @current + (60 * 60 * 2)
+      end_time    = @end_time > next_period ? next_period : @end_time
       @buffer += @tick_repository.fetch(start_time, end_time)
 
       @current = end_time

@@ -38,9 +38,7 @@ module Jiji::Model::Trading
       0.upto((values.length / 2) - 1) do|i|
         next unless values[i * 2] || values[i * 2 + 1]
         pair = Pairs.instance.get_by_id(i)
-        unless pair.nil?
-          block.call([pair.name, self[pair.name]])
-        end
+        block.call([pair.name, self[pair.name]]) unless pair.nil?
       end
     end
 
@@ -79,17 +77,16 @@ module Jiji::Model::Trading
     private
 
     def self.create_values(pair_and_values)
-      pair_and_values.inject([]) do|r, v|
+      pair_and_values.each_with_object([]) do|v, r|
         pair = Pairs.instance.create_or_get(v[0])
-        r[pair.pair_id * 2]   = v[1].bid
+        r[pair.pair_id * 2]     = v[1].bid
         r[pair.pair_id * 2 + 1] = v[1].ask
-        r
       end
     end
 
     def create_value(pair)
       if pair.nil? || pair.pair_id < 0 || pair.pair_id * 2 + 1 > values.size
-        fail ArgumentError.new("illegal pair. pair=#{pair}")
+        fail ArgumentError, "illegal pair. pair=#{pair}"
       end
       bid  = values[pair.pair_id * 2]
       ask  = values[pair.pair_id * 2 + 1]
@@ -98,7 +95,7 @@ module Jiji::Model::Trading
     end
 
     def self.create_swaps(pair_and_values, timestamp)
-      pair_and_values.inject({}) do|r, v|
+      pair_and_values.each_with_object({}) do|v, r|
         pair = Pairs.instance.create_or_get(v[0])
         r[pair.pair_id] = Internal::Swap.new do|s|
           s.pair_id   = pair.pair_id
@@ -106,7 +103,6 @@ module Jiji::Model::Trading
           s.sell_swap = v[1].sell_swap
           s.timestamp = timestamp
         end
-        r
       end
     end
   end

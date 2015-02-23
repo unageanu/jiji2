@@ -33,7 +33,7 @@ module Jiji::Model::Trading::Brokers
     def refresh
       @pairs_cache = nil
       @rates_cache = nil
-      update_positions if has_next?
+      update_positions if next?
     end
 
     private
@@ -48,7 +48,7 @@ module Jiji::Model::Trading::Brokers
       illegal_state('tick is not exists.') unless tick
       pair = Pairs.instance.create_or_get(pair_name)
       position = Position.create(@back_test_id, external_position_id,
-                                 pair.pair_id, count, resolve_trading_unit(pair_name), sell_or_buy, tick)
+        pair.pair_id, count, resolve_trading_unit(pair_name), sell_or_buy, tick)
       @positions[position._id] = position
       position
     end
@@ -60,10 +60,8 @@ module Jiji::Model::Trading::Brokers
       pairs.find { |p| p.name.to_sym == pair_name.to_sym }.trade_unit
     end
 
-    def check_position_exists(position_id)
-      unless @positions.include? position_id
-        not_found(Jiji::Model::Trading::Position, id => position_id)
-      end
+    def check_position_exists(id)
+      not_found(Position, id => id) unless @positions.include? id
     end
   end
 end

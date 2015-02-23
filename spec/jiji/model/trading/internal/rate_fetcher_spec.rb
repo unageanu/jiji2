@@ -53,7 +53,8 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
       expect(rates[3].high.values).to eq([109.0, 109.003, 11, 29])
       expect(rates[3].close.values).to eq([100.0, 100.003,  2, 20])
 
-      rates = @fetcher.fetch(pair_id, Time.at(0 * 20), Time.at(300 * 20), :fifteen_minutes)
+      rates = @fetcher.fetch(pair_id,
+        Time.at(0 * 20), Time.at(300 * 20), :fifteen_minutes)
 
       expect(rates.length).to eq(7)
       expect(rates[0].timestamp).to eq(Time.at(0 * 60))
@@ -68,7 +69,8 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
       expect(rates[6].high.values).to eq([109.0, 109.003, 11, 29])
       expect(rates[6].close.values).to eq([109.0, 109.003, 11, 29])
 
-      rates = @fetcher.fetch(pair_id, Time.at(0 * 20), Time.at(600 * 20), :thirty_minutes)
+      rates = @fetcher.fetch(pair_id,
+        Time.at(0 * 20), Time.at(600 * 20), :thirty_minutes)
 
       expect(rates.length).to eq(7)
       expect(rates[0].timestamp).to eq(Time.at(0 * 60))
@@ -83,7 +85,8 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
       expect(rates[6].high.values).to eq([109.0, 109.003, 11, 29])
       expect(rates[6].close.values).to eq([109.0, 109.003, 11, 29])
 
-      rates = @fetcher.fetch(pair_id, Time.at(0 * 20), Time.at(600 * 20), :one_hour)
+      rates = @fetcher.fetch(pair_id,
+        Time.at(0 * 20), Time.at(600 * 20), :one_hour)
 
       expect(rates.length).to eq(4)
       expect(rates[0].timestamp).to eq(Time.at(0 * 60))
@@ -98,7 +101,8 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
       expect(rates[3].high.values).to eq([109.0, 109.003, 11, 29])
       expect(rates[3].close.values).to eq([109.0, 109.003, 11, 29])
 
-      rates = @fetcher.fetch(pair_id, Time.at(0 * 20), Time.at(1200 * 20), :six_hours)
+      rates = @fetcher.fetch(pair_id,
+        Time.at(0 * 20), Time.at(1200 * 20), :six_hours)
 
       expect(rates.length).to eq(1)
       expect(rates[0].timestamp).to eq(Time.at(0 * 60))
@@ -107,7 +111,8 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
       expect(rates[0].high.values).to eq([109.0, 109.003, 11, 29])
       expect(rates[0].close.values).to eq([100.0, 100.003,  2, 20])
 
-      rates = @fetcher.fetch(pair_id, Time.at(0 * 20), Time.at(1200 * 20), :one_day)
+      rates = @fetcher.fetch(pair_id,
+        Time.at(0 * 20), Time.at(1200 * 20), :one_day)
 
       expect(rates.length).to eq(1)
       expect(rates[0].timestamp).to eq(Time.at(0 * 60))
@@ -123,7 +128,8 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
     t.save
 
     swap = Jiji::Model::Trading::Internal::Swap.new do|s|
-      s.pair_id   = Jiji::Model::Trading::Pairs.instance.create_or_get(:EURJPY).pair_id
+      s.pair_id   = Jiji::Model::Trading::Pairs
+      .instance.create_or_get(:EURJPY).pair_id
       s.buy_swap  = 10
       s.sell_swap = -20
       s.timestamp = t.timestamp
@@ -132,8 +138,8 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
 
     range = Jiji::Model::Trading::TickRepository.new.range
     rates = @fetcher.fetch(:EURJPY,
-                           Time.parse(range[:start].iso8601),
-                           Time.parse((range[:end] + 1).iso8601))
+      Time.parse(range[:start].iso8601),
+      Time.parse((range[:end] + 1).iso8601))
 
     expect(rates.length).to eq(1)
   end

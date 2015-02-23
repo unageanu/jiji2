@@ -19,9 +19,15 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
     let(:broker) { @container.lookup(:rmt_broker) }
 
     it '売買はできない' do
-      expect { broker.positions       }.to raise_error(Errors::NotInitializedException)
-      expect { broker.buy(:EURJPY, 1) }.to raise_error(Errors::NotInitializedException)
-      expect { broker.positions       }.to raise_error(Errors::NotInitializedException)
+      expect do
+        broker.positions
+      end.to raise_error(Errors::NotInitializedException)
+      expect do
+        broker.buy(:EURJPY, 1)
+      end.to raise_error(Errors::NotInitializedException)
+      expect do
+        broker.positions
+      end.to raise_error(Errors::NotInitializedException)
     end
 
     it '破棄操作は可能' do
@@ -74,7 +80,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         buy_position = broker.buy(:EURJPY, 1)
         expect(buy_position.profit_or_loss).to eq(-30)
 
-        expect(broker.has_next?).to eq true
+        expect(broker.next?).to eq true
         expect(broker.tick[:EURJPY].bid).to eq 145.00
 
         @mock_plugin.seed += 0.26
@@ -82,7 +88,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
         expect(buy_position.profit_or_loss).to eq 2570
 
-        expect(broker.has_next?).to eq true
+        expect(broker.next?).to eq true
         expect(broker.tick[:EURJPY].bid).to eq 145.26
 
         sell_position = broker.sell(:EURUSD, 2)

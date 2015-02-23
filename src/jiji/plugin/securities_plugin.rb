@@ -30,7 +30,7 @@ module JIJI::Plugin
     # 引数として、ユーザーが入力したパラメータが渡されます。
     # props:: ユーザーが入力したパラメータ(JIJI::Plugin::Securities::Inputのkeyをキーとする設定値の配列)
     # logger:: ロガー
-    def init_plugin(_props, _logger)
+    def init_plugin(_props, logger)
     end
 
     # プラグインを破棄します。jijiの停止時に1度だけ呼び出されます。
@@ -52,13 +52,13 @@ module JIJI::Plugin
     # sell_or_buy:: 売(:sell)または買い(:buy)
     # count:: 取引数量
     # return:: JIJI::Plugin::Securities::Position
-    def order(_pair, _sell_or_buy, _count)
+    def order(_pair, sell_or_buy, count)
     end
 
     # 建玉を決済します。
     # position_id:: 建玉ID
     # count:: 取引数量
-    def commit(_position_id, _count)
+    def commit(_position_id, count)
     end
 
     #===ユーザーに入力を要求するデータの情報
@@ -85,44 +85,5 @@ module JIJI::Plugin
     #===建玉
     # position_id:: 建玉の識別子
     Position = Struct.new(:position_id)
-  end
-
-  # 証券会社アクセスプラグインのマネージャ
-  class SecuritiesPluginManager
-    def initialize
-      @mutex = Mutex.new
-      @selected = nil
-    end
-
-    # 登録済みプラグインの一覧を返す。
-    # return:: 登録済みプラグインの配列
-    def all
-      JIJI::Plugin.get(JIJI::Plugin::SecuritiesPlugin::FUTURE_NAME)
-    end
-
-    # 選択されたプラグインインスタンスを取得する。
-    # return:: 選択されているプラグインインスタンス
-    def selected
-      @mutex.synchronize do
-        unless @selected
-          id = conf.get([:securities, :type], 'illegal').to_sym
-          @selected = all.find do|plugin|
-            id == plugin.plugin_id.to_sym
-          end
-          fail FatalError.new(JIJI::ERROR_NOT_FOUND, "Securities plugin isnot found. plugin_id=#{id}") unless @selected
-          @selected.init_plugin(conf.get([:securities], {}), @server_logger)
-        end
-        @selected
-      end
-    end
-
-    # プラグインを破棄する。
-    def close
-      @mutex.synchronize do
-        @selected.destroy_plugin if @selected
-      end
-    end
-    attr_writer :server_logger
-    attr_writer :conf
   end
 end

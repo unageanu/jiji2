@@ -19,8 +19,8 @@ describe Jiji::Model::Agents::AgentSource do
     @data_builder.clean
   end
 
-  it 'get_allですべてのソースを取得できる' do
-    agents = @repository.get_all
+  it 'allですべてのソースを取得できる' do
+    agents = @repository.all
 
     expect(agents.length).to eq 10
     expect(agents.first.context).to eq nil
@@ -32,7 +32,7 @@ describe Jiji::Model::Agents::AgentSource do
   end
 
   it 'getで特定のソースを取得できる' do
-    agents = @repository.get_all
+    agents = @repository.all
     agent  = @repository.get_by_id(agents.first._id)
 
     expect(agent.context).not_to eq nil

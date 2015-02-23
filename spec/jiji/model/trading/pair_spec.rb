@@ -31,7 +31,9 @@ describe Jiji::Model::Trading::Pairs do
     expect(pair10.name).to eq(:EURJPY)
     expect(pair10.pair_id == pair1.pair_id).to eq(true)
 
-    expect { instance.get_by_id(9999) }.to raise_error(Errors::NotFoundException)
+    expect do
+      instance.get_by_id(9999)
+    end.to raise_error(Errors::NotFoundException)
 
     instance.reload
     pair4 = instance.create_or_get(:EURJPY)
@@ -47,7 +49,9 @@ describe Jiji::Model::Trading::Pairs do
     expect(pair10.name).to eq(:EURJPY)
     expect(pair10.pair_id == pair1.pair_id).to eq(true)
 
-    expect { instance.get_by_id(9999) }.to raise_error(Errors::NotFoundException)
+    expect do
+      instance.get_by_id(9999)
+    end.to raise_error(Errors::NotFoundException)
   end
 
   it 'allで登録済みの通貨ペアを取得できる' do

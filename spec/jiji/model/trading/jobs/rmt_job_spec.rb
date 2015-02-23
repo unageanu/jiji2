@@ -21,50 +21,50 @@ require 'jiji/test/test_configuration'
 #
 # it "正常終了" do
 #
-# expect( @job.has_next ).to be false
+# expect( @job.next?).to be false
 # expect( @job.status ).to be :wait_for_start
 #
 # @job.prepare_running
-# expect( @job.has_next ).to be true
+# expect( @job.next?).to be true
 # expect( @job.status ).to be :running
 #
 # @job.do_next
-# expect( @job.has_next ).to be true
+# expect( @job.next?).to be true
 # expect( @job.status ).to be :running
 #
 # @job.do_next
-# expect( @job.has_next ).to be true
+# expect( @job.next?).to be true
 # expect( @job.status ).to be :running
 #
 # @job.post_running
-# expect( @job.has_next ).to be false
+# expect( @job.next?).to be false
 # expect( @job.status ).to be :finished
 #
 # end
 #
 # it "キャンセルで終了" do
 #
-# expect( @job.has_next ).to be false
+# expect( @job.next?).to be false
 # expect( @job.status ).to be :wait_for_start
 #
 # @job.prepare_running
-# expect( @job.has_next ).to be true
+# expect( @job.next?).to be true
 # expect( @job.status ).to be :running
 #
 # @job.do_next
-# expect( @job.has_next ).to be true
+# expect( @job.next?).to be true
 # expect( @job.status ).to be :running
 #
 # @job.do_next
-# expect( @job.has_next ).to be true
+# expect( @job.next?).to be true
 # expect( @job.status ).to be :running
 #
 # @job.request_cancel
-# expect( @job.has_next ).to be false
+# expect( @job.next?).to be false
 # expect( @job.status ).to be :wait_for_cancel
 #
 # @job.post_running
-# expect( @job.has_next ).to be false
+# expect( @job.next?).to be false
 # expect( @job.status ).to be :cancelled
 #
 # end

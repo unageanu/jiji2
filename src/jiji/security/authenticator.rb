@@ -7,15 +7,14 @@ require 'bcrypt'
 module Jiji::Security
   class Authenticator
     include Encase
+    include Jiji::Errors
 
     needs :security_setting
     needs :session_store
     needs :time_source
 
     def authenticate(password)
-      unless validate_password(password)
-        fail Jiji::Errors::AuthFailedException.new
-      end
+      fail AuthFailedException unless validate_password(password)
       new_session.token
     end
 

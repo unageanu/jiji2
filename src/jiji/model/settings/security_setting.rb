@@ -20,7 +20,7 @@ module Jiji::Model::Settings
     end
 
     def password_setted?
-      !!(salt && hashed_password)
+      !(salt && hashed_password).nil?
     end
 
     def password=(password)

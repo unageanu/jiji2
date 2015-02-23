@@ -147,7 +147,7 @@ describe Jiji::Model::Trading::Process do
       @process3.start
 
       # process2をエラーで停止
-      future = @process2.post_exec do|_context|
+      @process2.post_exec do|_context|
         fail 'test'
       end
       sleep 0.1
@@ -200,9 +200,9 @@ describe Jiji::Model::Trading::Process do
   end
 
   def expects_process_failed_on_error(process)
-    expect(process.running?).to be false
-    expect(process.finished?).to be true
-    expect(process.alive_context?).to be false
+    expect(process.running?).to be(false)
+    expect(process.finished?).to be(true)
+    expect(process.alive_context?).to be(false)
     expect(get_context_status(process)).to be :error
     expects_process_can_process_job(process)
   end

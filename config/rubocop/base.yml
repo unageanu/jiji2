@@ -1,0 +1,24 @@
+# 不要なRDocは書いていない
+Style/Documentation:
+  Enabled: false
+
+# 日本語のコメントを許可する
+Style/AsciiComments:
+  Enabled: false
+
+# 1行目にあわせる
+Style/AlignParameters:
+  EnforcedStyle: with_fixed_indentation
+
+# 明示的にメソッドを指定した方がわかりやすい場合もある。
+Style/SymbolProc:
+  Enabled: false
+
+# compact スタイルを使うが、 module を定義するところだけ、
+# 冗長なのでnested スタイルにしている。
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# 継承元では引数を使わない場合はある
+Lint/UnusedMethodArgument:
+  Enabled: false

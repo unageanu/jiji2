@@ -6,16 +6,19 @@ require 'jiji/model/settings/rmt_broker_setting'
 
 module Jiji::Web
   class RMTBrokerSettingService < Jiji::Web::AuthenticationRequiredService
-    RMTBrokerSetting = Jiji::Model::Settings::RMTBrokerSetting
+    include Jiji::Model::Settings
 
     get '/available-securities' do
-      ok(RMTBrokerSetting.available_securities.map do|p|
+      available_securities = RMTBrokerSetting.available_securities.map do |p|
         { securities_id: p.plugin_id, name: p.display_name }
-      end)
+      end
+      ok(available_securities)
     end
 
     get '/:securities_id/configuration_definitions' do
-      ok(RMTBrokerSetting.get_configuration_definitions(params['securities_id'].to_sym))
+      config = RMTBrokerSetting.get_configuration_definitions(
+        params['securities_id'].to_sym)
+      ok(config)
     end
 
     get '/:securities_id/configurations' do
@@ -32,7 +35,8 @@ module Jiji::Web
 
     put '/active-securities' do
       body = load_body
-      setting.set_active_securities(body['securities_id'].to_sym, body['configurations'])
+      setting.set_active_securities(
+        body['securities_id'].to_sym, body['configurations'])
       no_content
     end
 

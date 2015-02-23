@@ -36,6 +36,8 @@ describe Jiji::Security::Authenticator do
   end
 
   it '不正なパスワードはエラー' do
-    expect { @authenticator.authenticate('x') }.to raise_error(Jiji::Errors::AuthFailedException)
+    expect do
+      @authenticator.authenticate('x')
+    end.to raise_error(Jiji::Errors::AuthFailedException)
   end
 end

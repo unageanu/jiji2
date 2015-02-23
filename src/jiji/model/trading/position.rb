@@ -17,7 +17,8 @@ module Jiji::Model::Trading
     store_in collection: 'positions'
 
     field :back_test_id,          type: BSON::ObjectId # RMTの場合nil
-    field :external_position_id,  type: String # 接続先証券会社でpositionを識別するためのID。バックテストの場合nil
+    field :external_position_id,  type: String
+    # 接続先証券会社でpositionを識別するためのID。バックテストの場合nil
 
     field :pair_id,       type: Integer
     field :lot,           type: Integer
@@ -45,8 +46,7 @@ module Jiji::Model::Trading
       {
         back_test_id: back_test_id,
         external_position_id: external_position_id,
-        pair_id: pair_id,
-        lot: lot,
+        pair_id: pair_id,  lot: lot,
         trading_unit: trading_unit,
         sell_or_buy: sell_or_buy,
         entry_price: entry_price,
@@ -67,9 +67,11 @@ module Jiji::Model::Trading
         p.lot                  = lot
         p.trading_unit         = trading_unit
         p.sell_or_buy          = sell_or_buy
-        p.entry_price          = calculate_entry_price(tick, pair_id, sell_or_buy)
+        p.entry_price          = calculate_entry_price(
+          tick, pair_id, sell_or_buy)
         p.entered_at           = tick.timestamp
-        p.current_price        = calculate_current_price(tick, pair_id, sell_or_buy)
+        p.current_price        = calculate_current_price(
+          tick, pair_id, sell_or_buy)
         p.updated_at           = p.entered_at
         p.status               = :live
         p.external_position_id = external_position_id
@@ -94,11 +96,10 @@ module Jiji::Model::Trading
 
     def update(tick)
       return if status == :closed
-      self.current_price = Position.calculate_current_price(tick, pair_id, sell_or_buy)
+      self.current_price = Position.calculate_current_price(
+        tick, pair_id, sell_or_buy)
       self.updated_at    = tick.timestamp
     end
-
-    private
 
     def self.calculate_entry_price(tick, pair_id, sell_or_buy)
       # 新規エントリー時は、:buy の場合買値で買い、:sell の場合売値で売る。
@@ -107,7 +108,7 @@ module Jiji::Model::Trading
     def self.calculate_current_price(tick, pair_id, sell_or_buy)
       # 現在価格は、:buy の場合売値、:sell の場合買値で計算。
       calculate_price(tick, pair_id,
-                      sell_or_buy == :buy ? :sell : :buy)
+        sell_or_buy == :buy ? :sell : :buy)
     end
     def self.calculate_price(tick, pair_id, sell_or_buy)
       pair = Pairs.instance.get_by_id(pair_id)

@@ -17,6 +17,7 @@ describe Jiji::Model::Agents::AgentSource do
 
   context 'コードが空の場合' do
     it '新規作成できる' do
+      p 'new'
       agent_source = Jiji::Model::Agents::AgentSource.create(
         'test', :agent, Time.at(100))
 
@@ -27,15 +28,16 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.updated_at).to eq Time.at(100)
       expect(agent_source.memo).to eq ''
       expect(agent_source.body).to eq ''
-      expect(agent_source.status).to eq :empty
       expect(agent_source.error).to eq nil
+      expect(agent_source.status).to eq :empty
     end
 
     it '有効なコードに変更できる' do
       agent_source = Jiji::Model::Agents::AgentSource.create(
         'test', :agent, Time.at(100))
 
-      agent_source.update('test2', Time.at(200), 'memo', "class Foo; def to_s; return \"xxx\"; end; end")
+      agent_source.update('test2', Time.at(200),
+        'memo', "class Foo; def to_s; return \"xxx\"; end; end")
 
       expect(agent_source._id).not_to be nil
       expect(agent_source.name).to eq 'test2'
@@ -43,7 +45,8 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.created_at).to eq Time.at(100)
       expect(agent_source.updated_at).to eq Time.at(200)
       expect(agent_source.memo).to eq 'memo'
-      expect(agent_source.body).to eq "class Foo; def to_s; return \"xxx\"; end; end"
+      expect(agent_source.body).to eq(
+        "class Foo; def to_s; return \"xxx\"; end; end")
       expect(agent_source.status).to eq :normal
       expect(agent_source.error).to eq nil
 
@@ -54,7 +57,8 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.created_at).to eq Time.at(100)
       expect(agent_source.updated_at).to eq Time.at(200)
       expect(agent_source.memo).to eq 'memo'
-      expect(agent_source.body).to eq "class Foo; def to_s; return \"xxx\"; end; end"
+      expect(agent_source.body).to eq(
+        "class Foo; def to_s; return \"xxx\"; end; end")
       expect(agent_source.status).to eq :normal
       expect(agent_source.error).to eq nil
     end
@@ -103,7 +107,8 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.status).to eq :error
       expect(agent_source.error).not_to eq nil
 
-      agent_source.update('test2', Time.at(200), 'memo', "class Foo; def to_s; return \"xxx\"; end; end")
+      agent_source.update('test2', Time.at(200), 'memo',
+        "class Foo; def to_s; return \"xxx\"; end; end")
 
       expect(agent_source._id).not_to be nil
       expect(agent_source.name).to eq 'test2'
@@ -111,7 +116,8 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.created_at).to eq Time.at(100)
       expect(agent_source.updated_at).to eq Time.at(200)
       expect(agent_source.memo).to eq 'memo'
-      expect(agent_source.body).to eq "class Foo; def to_s; return \"xxx\"; end; end"
+      expect(agent_source.body).to eq(
+        "class Foo; def to_s; return \"xxx\"; end; end")
       expect(agent_source.status).to eq :normal
       expect(agent_source.error).to eq nil
 
@@ -122,7 +128,8 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.created_at).to eq Time.at(100)
       expect(agent_source.updated_at).to eq Time.at(200)
       expect(agent_source.memo).to eq 'memo'
-      expect(agent_source.body).to eq "class Foo; def to_s; return \"xxx\"; end; end"
+      expect(agent_source.body).to eq(
+        "class Foo; def to_s; return \"xxx\"; end; end")
       expect(agent_source.status).to eq :normal
       expect(agent_source.error).to eq nil
     end
@@ -131,7 +138,8 @@ describe Jiji::Model::Agents::AgentSource do
   context 'コードが空ではない場合' do
     it '新規作成できる' do
       agent_source = Jiji::Model::Agents::AgentSource.create(
-        'test', :agent, Time.at(100), 'memo', "class Var; def to_s; return \"var\"; end; end")
+        'test', :agent, Time.at(100), 'memo',
+        "class Var; def to_s; return \"var\"; end; end")
 
       expect(agent_source._id).not_to be nil
       expect(agent_source.name).to eq 'test'
@@ -139,16 +147,19 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.created_at).to eq Time.at(100)
       expect(agent_source.updated_at).to eq Time.at(100)
       expect(agent_source.memo).to eq 'memo'
-      expect(agent_source.body).to eq "class Var; def to_s; return \"var\"; end; end"
+      expect(agent_source.body).to eq(
+        "class Var; def to_s; return \"var\"; end; end")
       expect(agent_source.status).to eq :normal
       expect(agent_source.error).to eq nil
     end
 
     it '有効なコードに変更できる' do
       agent_source = Jiji::Model::Agents::AgentSource.create(
-        'test', :agent, Time.at(100), 'memo', "class Var; def to_s; return \"var\"; end; end")
+        'test', :agent, Time.at(100), 'memo',
+        "class Var; def to_s; return \"var\"; end; end")
 
-      agent_source.update('test2', Time.at(200), 'memo', "class Foo; def to_s; return \"xxx\"; end; end")
+      agent_source.update('test2', Time.at(200), 'memo',
+        "class Foo; def to_s; return \"xxx\"; end; end")
 
       expect(agent_source._id).not_to be nil
       expect(agent_source.name).to eq 'test2'
@@ -156,7 +167,8 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.created_at).to eq Time.at(100)
       expect(agent_source.updated_at).to eq Time.at(200)
       expect(agent_source.memo).to eq 'memo'
-      expect(agent_source.body).to eq "class Foo; def to_s; return \"xxx\"; end; end"
+      expect(agent_source.body).to eq(
+        "class Foo; def to_s; return \"xxx\"; end; end")
       expect(agent_source.status).to eq :normal
       expect(agent_source.error).to eq nil
 
@@ -167,14 +179,16 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.created_at).to eq Time.at(100)
       expect(agent_source.updated_at).to eq Time.at(200)
       expect(agent_source.memo).to eq 'memo'
-      expect(agent_source.body).to eq "class Foo; def to_s; return \"xxx\"; end; end"
+      expect(agent_source.body).to eq(
+        "class Foo; def to_s; return \"xxx\"; end; end")
       expect(agent_source.status).to eq :normal
       expect(agent_source.error).to eq nil
     end
 
     it '無効なコードに変更した場合、エラーになる' do
       agent_source = Jiji::Model::Agents::AgentSource.create(
-        'test', :agent, Time.at(100), 'memo', "class Var; def to_s; return \"var\"; end; end")
+        'test', :agent, Time.at(100), 'memo',
+        "class Var; def to_s; return \"var\"; end; end")
 
       agent_source.update('test2', Time.at(200), 'memo', 'class Foo; ')
 
@@ -221,7 +235,8 @@ describe Jiji::Model::Agents::AgentSource do
       agent_source = Jiji::Model::Agents::AgentSource.create(
         'test', :agent, Time.at(100), 'memo', 'class Var; ')
 
-      agent_source.update('test2', Time.at(200), 'memo', "class Foo; def to_s; return \"xxx\"; end; end")
+      agent_source.update('test2', Time.at(200), 'memo',
+        "class Foo; def to_s; return \"xxx\"; end; end")
 
       expect(agent_source._id).not_to be nil
       expect(agent_source.name).to eq 'test2'
@@ -229,7 +244,8 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.created_at).to eq Time.at(100)
       expect(agent_source.updated_at).to eq Time.at(200)
       expect(agent_source.memo).to eq 'memo'
-      expect(agent_source.body).to eq "class Foo; def to_s; return \"xxx\"; end; end"
+      expect(agent_source.body).to eq(
+        "class Foo; def to_s; return \"xxx\"; end; end")
       expect(agent_source.status).to eq :normal
       expect(agent_source.error).to eq nil
 
@@ -240,7 +256,8 @@ describe Jiji::Model::Agents::AgentSource do
       expect(agent_source.created_at).to eq Time.at(100)
       expect(agent_source.updated_at).to eq Time.at(200)
       expect(agent_source.memo).to eq 'memo'
-      expect(agent_source.body).to eq "class Foo; def to_s; return \"xxx\"; end; end"
+      expect(agent_source.body).to eq(
+        "class Foo; def to_s; return \"xxx\"; end; end")
       expect(agent_source.status).to eq :normal
       expect(agent_source.error).to eq nil
     end
@@ -276,15 +293,16 @@ describe Jiji::Model::Agents::AgentSource do
 
   it '読み込んだコードを利用できる' do
     agent_source = Jiji::Model::Agents::AgentSource.create(
-      'test', :agent, Time.at(100), 'memo', "class Foo; def to_s; return \"xxx\"; end; end")
+      'test', :agent, Time.at(100), 'memo',
+      "class Foo; def to_s; return \"xxx\"; end; end")
     f = agent_source.context.const_get 'Foo'
     instance_f1 = f.new
 
     expect(instance_f1.to_s).to eq 'xxx'
 
     agent_source.update('test2', Time.at(200), 'memo',
-                        "class Foo; def to_s; return \"xxx2\"; end; end;" \
-                      + "class Var; def to_s; return \"var\";  end; end;")
+      "class Foo; def to_s; return \"xxx2\"; end; end;" \
+    + "class Var; def to_s; return \"var\";  end; end;")
 
     f2 = agent_source.context.const_get 'Foo'
     instance_f2 = f2.new
@@ -328,7 +346,7 @@ describe Jiji::Model::Agents::AgentSource do
 
     # 継承元を改変
     agent_source.update('test', Time.at(200), 'memo',
-                        "class Foo; def method_1; return \"xxx2\"; end; end;")
+      "class Foo; def method_1; return \"xxx2\"; end; end;")
     delegate[agent_source.name] = agent_source.context
 
     # 生成済みインスタンスの動作は変わらない
@@ -347,8 +365,8 @@ describe Jiji::Model::Agents::AgentSource do
 
     # 派生クラスを再定義
     agent_source2.update('test2', Time.at(200), 'memo',
-                         "class Foo2 < Foo; def method_2; return \"zzz\" + method_1; end; end;" \
-                         "def self.method_b; return \"bbb\"; end")
+      "class Foo2 < Foo; def method_2; return \"zzz\" + method_1; end; end;" \
+      "def self.method_b; return \"bbb\"; end")
     delegate[agent_source2.name] = agent_source2.context
 
     # 生成済みインスタンスの動作は変わらない
@@ -368,15 +386,16 @@ describe Jiji::Model::Agents::AgentSource do
 
   it 'リークしない' do
     agent_source = Jiji::Model::Agents::AgentSource.create(
-      'test', :agent, Time.at(100), 'memo', "class Foo; def to_s; return \"xxx\"; end; end")
+      'test', :agent, Time.at(100), 'memo',
+      "class Foo; def to_s; return \"xxx\"; end; end")
 
     # 100000.times {|i|
     10.times do|_i|
       agent_source.update('test2', Time.at(200), 'memo',
-                          "class Foo; def to_s; return \"xxx2\"; end; end;" \
-                        + "class Var; def to_s; return \"var\";  end; end;")
+        "class Foo; def to_s; return \"xxx2\"; end; end;" \
+      + "class Var; def to_s; return \"var\";  end; end;")
       f = agent_source.context.const_get 'Foo'
-      instance_f = f.new
+      f.new
     end
   end
 end

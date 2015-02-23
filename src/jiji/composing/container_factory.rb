@@ -62,17 +62,28 @@ class Jiji::Composing::ContainerFactory
 
   def configure_trading_model(container)
     container.configure do
-      object :rmt,                         Trading::RMT.new
-      object :rmt_broker,                  Trading::Brokers::RMTBroker.new
-      object :rmt_next_tick_job_generator, Trading::Internal::RMTNextTickJobGenerator.new
-
-      object :back_test_thread_pool,       Thread.pool(2)
-      object :back_test_repository,        Trading::BackTestRepository.new
-
       object :position_repository,         Trading::PositionRepository.new
 
       object :tick_repository,             Trading::TickRepository.new
       object :rate_fetcher,                Trading::Internal::RateFetcher.new
+    end
+    configure_rmt_trading_model(container)
+    configure_back_test_trading_model(container)
+  end
+
+  def configure_rmt_trading_model(container)
+    container.configure do
+      object :rmt,                         Trading::RMT.new
+      object :rmt_broker,                  Trading::Brokers::RMTBroker.new
+      object :rmt_next_tick_job_generator,
+        Trading::Internal::RMTNextTickJobGenerator.new
+    end
+  end
+
+  def configure_back_test_trading_model(container)
+    container.configure do
+      object :back_test_thread_pool,       Thread.pool(2)
+      object :back_test_repository,        Trading::BackTestRepository.new
     end
   end
 

@@ -41,9 +41,13 @@ module Jiji::Model::Agents
         a.memo       = memo
         a.body       = body
       end
-      source.evaluate
-      source.save
+      source.evaluate_and_save
       source
+    end
+
+    def evaluate_and_save
+      evaluate
+      save
     end
 
     def update(name, updated_at, memo, body)
@@ -51,22 +55,36 @@ module Jiji::Model::Agents
       self.memo       = memo       || self.memo
       self.body       = body       || self.body
       self.updated_at = updated_at || self.updated_at
-      evaluate
-      save
+      evaluate_and_save
     end
 
     def evaluate
-      self.status = body.empty? ? :empty : :normal
-      @error  = nil
-      return if body.empty?
+      return change_state_to_empty if body.empty?
       @context = Context.new_context
       begin
         @context.module_eval(body, "#{type}/#{name}", 1)
+        change_state_to_normal
       rescue Exception => e
-        self.status = :error
-        @error  = e.to_s
+        change_state_to_error(e)
       end
       @context
+    end
+
+    private
+
+    def change_state_to_normal
+      @error  = nil
+      self.status = :normal
+    end
+
+    def change_state_to_empty
+      @error  = nil
+      self.status = :empty
+    end
+
+    def change_state_to_error(error)
+      @error  = error.to_s
+      self.status = :error
     end
   end
 end

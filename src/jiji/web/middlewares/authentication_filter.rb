@@ -29,7 +29,7 @@ module Jiji::Web
     end
 
     def unauthorized
-      fail Jiji::Errors::UnauthorizedException.new
+      fail Jiji::Errors::UnauthorizedException
     end
   end
 end

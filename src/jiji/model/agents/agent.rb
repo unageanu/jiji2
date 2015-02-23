@@ -39,7 +39,7 @@ module Jiji::Model::Agents::Agent
   # このメソッドをオーバーライドして、シグナルの計算や
   # 取り引きを行うロジックを実装してください
   # tick:: Jiji::Model::Trading::Tick
-  def next_tick(_tick, _broker)
+  def next_tick(_tick, broker)
   end
 
   def save_state

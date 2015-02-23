@@ -16,7 +16,9 @@ end
 ENV['JIJI_ENV'] = 'test'
 
 module Jiji
-  module Test end
+  module Test
+    module Mock end
+  end
 end
 
 require 'pp'

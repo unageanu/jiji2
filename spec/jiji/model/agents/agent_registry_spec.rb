@@ -18,38 +18,40 @@ describe Jiji::Model::Agents::AgentRegistry do
 
   describe '登録' do
     it '登録できる' do
-      source1 = @registory.add_source('aaa', '', :agent,
-                                      @data_builder.new_agent_body(1))
+      @registory.add_source('aaa', '', :agent,
+        new_body(1))
 
       expect(@registory.get_agent_class('TestAgent1@aaa')).not_to be nil
     end
 
     it '名前が重複するとエラー' do
-      source1 = @registory.add_source('aaa', '', :agent,
-                                      @data_builder.new_agent_body(1))
+      @registory.add_source('aaa', '', :agent, new_body(1))
 
       expect do
-        @registory.add_source('aaa', '', :agent,
-                              @data_builder.new_agent_body(2))
+        @registory.add_source('aaa', '', :agent, new_body(2))
       end.to raise_exception(Jiji::Errors::AlreadyExistsException)
     end
 
     it 'コンパイルエラーのコードは登録されない' do
-      source1 = @registory.add_source('aaa', '', :agent,
-                                      @data_builder.new_agent_body(1) + '; class Foo')
-      expect { @registory.get_agent_class('TestAgent1@aaa') }.to raise_exception(Jiji::Errors::NotFoundException)
+      @registory.add_source('aaa', '', :agent,
+        new_body(1) + '; class Foo')
+      expect do
+        @registory.get_agent_class('TestAgent1@aaa')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
     end
   end
 
   describe '削除' do
     it '削除できる' do
-      source1 = @registory.add_source('aaa', '', :agent,
-                                      @data_builder.new_agent_body(1))
+      @registory.add_source('aaa', '', :agent,
+        new_body(1))
 
       expect(@registory.get_agent_class('TestAgent1@aaa')).not_to be nil
 
       @registory.remove_source('aaa')
-      expect { @registory.get_agent_class('TestAgent1@aaa') }.to raise_exception(Jiji::Errors::NotFoundException)
+      expect do
+        @registory.get_agent_class('TestAgent1@aaa')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
     end
 
     it '削除対象がない場合エラー' do
@@ -61,36 +63,41 @@ describe Jiji::Model::Agents::AgentRegistry do
 
   describe '更新' do
     it '更新できる' do
-      source1 = @registory.add_source('aaa', '', :agent,
-                                      @data_builder.new_agent_body(1))
+      @registory.add_source('aaa', '', :agent,
+        new_body(1))
 
       expect(@registory.get_agent_class('TestAgent1@aaa')).not_to be nil
 
       @registory.update_source('aaa', '',
-                               @data_builder.new_agent_body(2))
+        new_body(2))
 
-      expect { @registory.get_agent_class('TestAgent1@aaa') }.to raise_exception(Jiji::Errors::NotFoundException)
+      expect do
+        @registory.get_agent_class('TestAgent1@aaa')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
       expect(@registory.get_agent_class('TestAgent2@aaa')).not_to be nil
     end
 
     it '更新対象がない場合エラー' do
       expect do
         @registory.update_source('aaa', '',
-                                 @data_builder.new_agent_body(2))
+          new_body(2))
       end.to raise_exception(Jiji::Errors::NotFoundException)
     end
 
     it 'コンパイルエラーのコードは登録されない' do
-      source1 = @registory.add_source('aaa', '', :agent,
-                                      @data_builder.new_agent_body(1))
+      @registory.add_source('aaa', '', :agent, new_body(1))
 
       expect(@registory.get_agent_class('TestAgent1@aaa')).not_to be nil
 
       @registory.update_source('aaa', '',
-                               @data_builder.new_agent_body(2)  + '; class Foo')
+        new_body(2)  + '; class Foo')
 
-      expect { @registory.get_agent_class('TestAgent1@aaa') }.to raise_exception(Jiji::Errors::NotFoundException)
-      expect { @registory.get_agent_class('TestAgent2@aaa') }.to raise_exception(Jiji::Errors::NotFoundException)
+      expect do
+        @registory.get_agent_class('TestAgent1@aaa')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
+      expect do
+        @registory.get_agent_class('TestAgent2@aaa')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
     end
   end
 
@@ -98,12 +105,16 @@ describe Jiji::Model::Agents::AgentRegistry do
     names = @registory.map { |x| x }
     expect(names.length).to be 0
 
-    @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))
+    @registory.add_source('aaa', '', :agent, new_body(1))
     @registory.add_source('bbb', '', :agent,
-                          @data_builder.new_agent_body(2) + ';'  + @data_builder.new_agent_body(3))
+      new_body(2) + ';'  + new_body(3))
     @registory.add_source('ccc', '', :agent, 'class Foo; end')
-    @registory.add_source('ddd', '', :agent, 'module Var;  class TestAgent; include Jiji::Model::Agents::Agent;  end; end')
-    @registory.add_source('eee', '', :agent, 'module Var;  module Var2; class TestAgent2; include Jiji::Model::Agents::Agent;  end; end; end')
+    @registory.add_source('ddd', '', :agent,
+      'module Var;  class TestAgent; ' \
+      + 'include Jiji::Model::Agents::Agent;  end; end')
+    @registory.add_source('eee', '', :agent,
+      'module Var;  module Var2; class TestAgent2;' \
+      + 'include Jiji::Model::Agents::Agent;  end; end; end')
 
     names = @registory.map { |x| x }
     expect(names.length).to be 5
@@ -117,18 +128,21 @@ describe Jiji::Model::Agents::AgentRegistry do
   it 'ソース一覧を取得できる' do
     expect(@registory.agent_sources.length).to be 0
 
-    @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))
-    @registory.add_source('bbb', '', :agent, @data_builder.new_agent_body(2))
-    @registory.add_source('ccc', '', :agent, @data_builder.new_agent_body(3))
+    @registory.add_source('aaa', '', :agent, new_body(1))
+    @registory.add_source('bbb', '', :agent, new_body(2))
+    @registory.add_source('ccc', '', :agent, new_body(3))
 
     expect(@registory.agent_sources.length).to be 3
   end
 
   describe 'agent生成' do
     before(:example) do
-      @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))
-      @registory.add_source('bbb', '', :agent, 'module Var;  class TestAgent; include Jiji::Model::Agents::Agent;  end; end')
-      @registory.add_source('ccc', '', :agent, "module Var;  class NotAgent; end; CONST='X'; module Mod; end; end")
+      @registory.add_source('aaa', '', :agent, new_body(1))
+      @registory.add_source('bbb', '', :agent,
+        'module Var;  class TestAgent; ' \
+        + 'include Jiji::Model::Agents::Agent;  end; end')
+      @registory.add_source('ccc', '', :agent,
+        'module Var;  class NotAgent; end; CONST="X"; module Mod; end; end')
     end
 
     it 'agentを作成できる' do
@@ -142,29 +156,43 @@ describe Jiji::Model::Agents::AgentRegistry do
     end
 
     it '名前に対応するクラスが存在しない場合エラー' do
-      expect { @registory.create_agent('TestAgentX@aaa') }.to raise_exception(Jiji::Errors::NotFoundException)
-      expect { @registory.create_agent('TestAgent1@bbb') }.to raise_exception(Jiji::Errors::NotFoundException)
-      expect { @registory.create_agent('Var::TestAgentX@bbb') }.to raise_exception(Jiji::Errors::NotFoundException)
+      expect do
+        @registory.create_agent('TestAgentX@aaa')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
+      expect do
+        @registory.create_agent('TestAgent1@bbb')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
+      expect do
+        @registory.create_agent('Var::TestAgentX@bbb')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
     end
 
     it '定数やAgent派生でないクラスを指定した場合、エラー' do
-      expect { @registory.create_agent('Var::NotAgent@ccc') }.to raise_exception(Jiji::Errors::NotFoundException)
-      expect { @registory.create_agent('Var::CONST@ccc') }.to raise_exception(Jiji::Errors::NotFoundException)
-      expect { @registory.create_agent('Var::Mod@ccc') }.to raise_exception(Jiji::Errors::NotFoundException)
+      expect do
+        @registory.create_agent('Var::NotAgent@ccc')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
+      expect do
+        @registory.create_agent('Var::CONST@ccc')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
+      expect do
+        @registory.create_agent('Var::Mod@ccc')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
     end
   end
 
   describe 'プロパティ/説明の取得' do
     before(:example) do
-      @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))
-      @registory.add_source('bbb', '', :agent, @data_builder.new_agent_body(2))
-      @registory.add_source('ccc', '', :agent, 'module Var;  class TestAgent; include Jiji::Model::Agents::Agent;  end; end')
+      @registory.add_source('aaa', '', :agent, new_body(1))
+      @registory.add_source('bbb', '', :agent, new_body(2))
+      @registory.add_source('ccc', '', :agent,
+        'module Var;  class TestAgent; ' \
+        + 'include Jiji::Model::Agents::Agent;  end; end')
     end
 
     it '説明取得' do
-      expect(@registory.get_agent_description('TestAgent1@aaa')).to eq 'description1'
-      expect(@registory.get_agent_description('TestAgent2@bbb')).to eq 'description2'
-      expect(@registory.get_agent_description('Var::TestAgent@ccc')).to be nil
+      expect(get_deescription('TestAgent1@aaa')).to eq 'description1'
+      expect(get_deescription('TestAgent2@bbb')).to eq 'description2'
+      expect(get_deescription('Var::TestAgent@ccc')).to be nil
     end
 
     it 'プロパティ取得' do
@@ -178,15 +206,19 @@ describe Jiji::Model::Agents::AgentRegistry do
       ]
       expect(@registory.get_agent_property_infos('Var::TestAgent@ccc')).to eq []
     end
+
+    def get_deescription(name)
+      @registory.get_agent_description(name)
+    end
   end
 
   describe 'ソースをロードできる' do
     before(:example) do
-      @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))
-      @registory.add_source('bbb', '', :agent, @data_builder.new_agent_body(2))
-      @registory.add_source('ccc', '', :agent, @data_builder.new_agent_body(3, 'TestAgent1'))
-      @registory.add_source('ddd', '', :agent, @data_builder.new_agent_body(4, 'TestAgent2'))
-      @registory.add_source('eee', '', :agent, @data_builder.new_agent_body(5, 'TestAgent3'))
+      @registory.add_source('aaa', '', :agent, new_body(1))
+      @registory.add_source('bbb', '', :agent, new_body(2))
+      @registory.add_source('ccc', '', :agent, new_body(3, 'TestAgent1'))
+      @registory.add_source('ddd', '', :agent, new_body(4, 'TestAgent2'))
+      @registory.add_source('eee', '', :agent, new_body(5, 'TestAgent3'))
 
       # 1 <- 3 <- 5
       # 2 <- 4
@@ -212,13 +244,13 @@ describe Jiji::Model::Agents::AgentRegistry do
     it '循環参照がある場合' do
       # 1 <- 3 <- 5
       #      ->6 ->5
-      @registory.add_source('fff', '', :agent, @data_builder.new_agent_body(6, 'TestAgent5'))
+      @registory.add_source('fff', '', :agent, new_body(6, 'TestAgent5'))
       @registory.update_source('ccc', '',
-                               @data_builder.new_agent_body(3_2, 'TestAgent6') \
-                             + @data_builder.new_agent_body(3, 'TestAgent1'))
+        new_body(3_2, 'TestAgent6') \
+        + new_body(3, 'TestAgent1'))
 
       # 2 <-> 4
-      @registory.update_source('bbb', '', @data_builder.new_agent_body(2, 'TestAgent4'))
+      @registory.update_source('bbb', '', new_body(2, 'TestAgent4'))
 
       @registory.agent_sources.each do|s|
         expect(s.status).to be :normal
@@ -245,5 +277,9 @@ describe Jiji::Model::Agents::AgentRegistry do
       @repository   = @container.lookup(:agent_source_repository)
       @registory    = @container.lookup(:agent_registry)
     end
+  end
+
+  def new_body(seed, parent = nil)
+    @data_builder.new_agent_body(seed, parent)
   end
 end

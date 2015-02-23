@@ -6,7 +6,9 @@ describe Jiji::Model::Trading::PositionRepository do
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
 
-    @container            = Jiji::Test::TestContainerFactory.instance.new_container
+    factory = Jiji::Test::TestContainerFactory.instance
+
+    @container            = factory.new_container
     @back_test_repository = @container.lookup(:back_test_repository)
     @position_repository  = @container.lookup(:position_repository)
     @time_source          = @container.lookup(:time_source)
@@ -18,8 +20,8 @@ describe Jiji::Model::Trading::PositionRepository do
     @test3 = @data_builder.register_back_test(3, @back_test_repository)
 
     register_rmt_positions
-    register_back_Test_positions(@test1._id)
-    register_back_Test_positions(@test2._id)
+    register_back_test_positions(@test1._id)
+    register_back_test_positions(@test2._id)
   end
 
   after(:example) do
@@ -30,7 +32,7 @@ describe Jiji::Model::Trading::PositionRepository do
     register_positions(nil)
   end
 
-  def register_back_Test_positions(back_test_id)
+  def register_back_test_positions(back_test_id)
     register_positions(back_test_id)
   end
 

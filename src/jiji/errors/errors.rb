@@ -22,23 +22,27 @@ module Jiji::Errors
   class AlreadyExistsException < Exception
   end
 
+  def auth_failed
+    fail Jiji::Errors::AuthFailedException
+  end
+
   def not_found(type = nil, param = nil)
-    fail Jiji::Errors::NotFoundException.new(
-      "#{type || 'entity'} is not found. #{to_string(param)}")
+    fail Jiji::Errors::NotFoundException,
+      "#{type || 'entity'} is not found. #{to_string(param)}"
   end
 
   def illegal_state(msg = '', param = nil)
-    fail Jiji::Errors::IllegalStateException.new(
-      msg +  ' ' + to_string(param))
+    fail Jiji::Errors::IllegalStateException,
+      msg +  ' ' + to_string(param)
   end
 
   def illegal_argument(msg = '', param = nil)
-    fail ArgumentError.new(msg + ' ' + to_string(param))
+    fail ArgumentError, msg + ' ' + to_string(param)
   end
 
   def already_exists(type = nil, param = nil)
-    fail AlreadyExistsException.new(
-      "#{type || 'entity'} already exists. #{to_string(param)}")
+    fail AlreadyExistsException,
+      "#{type || 'entity'} already exists. #{to_string(param)}"
   end
 
   def to_string(param)

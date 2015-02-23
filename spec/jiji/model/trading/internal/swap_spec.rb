@@ -43,7 +43,7 @@ describe Jiji::Model::Trading::Internal::Swaps do
 
   context '開始、終了期間と一致するswapが登録されいる場合' do
     it '期間内のスワップの取得、参照ができる' do
-      swaps = Jiji::Model::Trading::Internal::Swaps.create(Time.at(0), Time.at(60 * 5))
+      swaps = create_swap(Time.at(0), Time.at(60 * 5))
 
       swap = swaps.get_swap_at(0, Time.at(0))
       expect(swap.pair_id).to eq(0)
@@ -96,7 +96,7 @@ describe Jiji::Model::Trading::Internal::Swaps do
 
   context '開始、終了期間と一致するswapが登録されいない場合' do
     it '期間内のスワップの取得、参照ができる' do
-      swaps = Jiji::Model::Trading::Internal::Swaps.create(Time.at(70), Time.at(60 * 5 + 10))
+      swaps = create_swap(Time.at(70), Time.at(60 * 5 + 10))
 
       swap = swaps.get_swap_at(0, Time.at(70))
       expect(swap.pair_id).to eq(0)
@@ -146,10 +146,18 @@ describe Jiji::Model::Trading::Internal::Swaps do
   it 'delete で swap を削除できる' do
     expect(Jiji::Model::Trading::Internal::Swap.count).to eq(33)
 
-    swaps = Jiji::Model::Trading::Internal::Swap.delete(Time.at(-50), Time.at(200))
+    delete_swap(Time.at(-50), Time.at(200))
     expect(Jiji::Model::Trading::Internal::Swap.count).to eq(21)
 
-    swaps = Jiji::Model::Trading::Internal::Swap.delete(Time.at(240), Time.at(300))
+    delete_swap(Time.at(240), Time.at(300))
     expect(Jiji::Model::Trading::Internal::Swap.count).to eq(18)
+  end
+
+  def create_swap(start_time, end_time)
+    Jiji::Model::Trading::Internal::Swaps.create(start_time, end_time)
+  end
+
+  def delete_swap(start_time, end_time)
+    Jiji::Model::Trading::Internal::Swap.delete(start_time, end_time)
   end
 end

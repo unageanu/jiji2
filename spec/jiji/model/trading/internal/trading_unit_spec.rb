@@ -21,7 +21,8 @@ describe Jiji::Model::Trading::Internal::TradingUnit do
 
   context '開始、終了期間と一致するtrading_unitが登録されいる場合' do
     it '期間内のtrading_unitの取得、参照ができる' do
-      trading_units = Jiji::Model::Trading::Internal::TradingUnits.create(Time.at(0), Time.at(60 * 5))
+      trading_units = Jiji::Model::Trading::Internal::TradingUnits
+                      .create(Time.at(0), Time.at(60 * 5))
 
       trading_unit = trading_units.get_trading_unit_at(0, Time.at(0))
       expect(trading_unit.pair_id).to eq(0)
@@ -67,7 +68,8 @@ describe Jiji::Model::Trading::Internal::TradingUnit do
 
   context '開始、終了期間と一致するtrading_unitが登録されいない場合' do
     it '期間内のtrading_unitの取得、参照ができる' do
-      trading_units = Jiji::Model::Trading::Internal::TradingUnits.create(Time.at(70), Time.at(60 * 5 + 10))
+      trading_units = Jiji::Model::Trading::Internal::TradingUnits
+                      .create(Time.at(70), Time.at(60 * 5 + 10))
 
       trading_unit = trading_units.get_trading_unit_at(0, Time.at(70))
       expect(trading_unit.pair_id).to eq(0)
@@ -110,10 +112,12 @@ describe Jiji::Model::Trading::Internal::TradingUnit do
   it 'delete で trading_unit を削除できる' do
     expect(Jiji::Model::Trading::Internal::TradingUnit.count).to eq(33)
 
-    trading_units = Jiji::Model::Trading::Internal::TradingUnit.delete(Time.at(-50), Time.at(200))
+    Jiji::Model::Trading::Internal::TradingUnit
+      .delete(Time.at(-50), Time.at(200))
     expect(Jiji::Model::Trading::Internal::TradingUnit.count).to eq(21)
 
-    trading_units = Jiji::Model::Trading::Internal::TradingUnit.delete(Time.at(240), Time.at(300))
+    Jiji::Model::Trading::Internal::TradingUnit
+      .delete(Time.at(240), Time.at(300))
     expect(Jiji::Model::Trading::Internal::TradingUnit.count).to eq(18)
   end
 end

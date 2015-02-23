@@ -18,7 +18,7 @@ module Jiji::Model::Trading::Brokers
       @back_test_id = nil
     end
 
-    def has_next?
+    def next?
       true
     end
 
@@ -48,8 +48,11 @@ module Jiji::Model::Trading::Brokers
     end
 
     def retrieve_tick
-      securities ? convert_rates(securities.list_rates, time_source.now)
-                 : Jiji::Model::Trading::NilTick.new
+      if securities
+        convert_rates(securities.list_rates, time_source.now)
+      else
+        Jiji::Model::Trading::NilTick.new
+      end
     end
 
     def order(pair_id, type, count)
@@ -64,7 +67,7 @@ module Jiji::Model::Trading::Brokers
     end
 
     def check_setting_finished
-      fail Jiji::Errors::NotInitializedException.new unless securities
+      fail Jiji::Errors::NotInitializedException unless securities
     end
 
     def securities
@@ -72,7 +75,7 @@ module Jiji::Model::Trading::Brokers
     end
 
     def convert_rates(rate, timestamp)
-      values = rate.reduce({})do|r, p|
+      values = rate.each_with_object({})do|p, r|
         r[p[0]] = convert_rate_to_tick(p[1])
         r
       end

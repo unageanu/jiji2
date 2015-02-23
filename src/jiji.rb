@@ -13,7 +13,7 @@ module Jiji
     module Settings     end
     module Trading
       module Brokers    end
-      module Internals  end
+      module Internal   end
       module Jobs       end
       module Processes  end
     end

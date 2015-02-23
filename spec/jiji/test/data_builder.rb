@@ -9,12 +9,14 @@ module Jiji::Test
 
     def new_rate(seed, pair_name = :EURJPY)
       Rate.create_from_tick(
-        pair_name, new_tick(seed), new_tick(seed + 1), new_tick(seed + 9), new_tick(seed - 11)
+        pair_name, new_tick(seed), new_tick(seed + 1),
+        new_tick(seed + 9), new_tick(seed - 11)
       )
     end
 
     def new_tick(seed, timestamp = Time.at(0))
-      values = [:EURJPY, :USDJPY, :EURUSD].inject({}) do|r, pair_name|
+      pairs  = [:EURJPY, :USDJPY, :EURUSD]
+      values = pairs.each_with_object({}) do |pair_name, r|
         r[pair_name] = new_tick_value(seed)
         r
       end
@@ -43,9 +45,10 @@ module Jiji::Test
       end
     end
 
-    def new_position(seed, back_test_id = nil, pair_id = 1, timestamp = Time.at(seed))
-      Position.create(back_test_id,
-                      nil, pair_id, seed, 10_000, seed.even? ? :buy : :sell, new_tick(seed, timestamp))
+    def new_position(seed, back_test_id = nil,
+        pair_id = 1, timestamp = Time.at(seed))
+      Position.create(back_test_id, nil, pair_id,
+        seed, 10_000, seed.even? ? :buy : :sell, new_tick(seed, timestamp))
     end
 
     def new_agent_body(seed, parent = nil)
@@ -87,10 +90,11 @@ BODY
     end
 
     def register_back_test(seed, repository)
-      repository.register('name'       => "テスト#{seed}",
-                          'start_time' => Time.at(seed * 100),
-                          'end_time'   => Time.at((seed + 1) * 200),
-                          'memo'       => "メモ#{seed}")
+      repository.register(
+        'name'       => "テスト#{seed}",
+        'start_time' => Time.at(seed * 100),
+        'end_time'   => Time.at((seed + 1) * 200),
+        'memo'       => "メモ#{seed}")
     end
 
     def register_agent(seed)
@@ -111,9 +115,9 @@ BODY
 
     def register_trading_unit(pair_id, timestamp)
       trading_unit = Internal::TradingUnit.new do|s|
-        s.pair_id    = Pairs.instance.create_or_get(pair_id).pair_id
+        s.pair_id      = Pairs.instance.create_or_get(pair_id).pair_id
         s.trading_unit = 10_000
-        s.timestamp  = timestamp
+        s.timestamp    = timestamp
       end
       trading_unit.save
     end

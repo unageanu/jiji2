@@ -33,7 +33,7 @@ module Jiji::Model::Settings
     end
 
     def fire_setting_changed_event(key, event)
-      @setting_changed_listener.each do|l|
+      @setting_changed_listener.each do |l|
         l.call(key, event)
       end
     end

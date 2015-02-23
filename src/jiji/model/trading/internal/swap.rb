@@ -9,6 +9,7 @@ require 'singleton'
 module Jiji::Model::Trading::Internal
   class Swap
     include Mongoid::Document
+    include Jiji::Utils
     include Jiji::Utils::ValueObject
 
     store_in collection: 'swaps'
@@ -45,31 +46,38 @@ module Jiji::Model::Trading::Internal
     end
 
     def get_swaps_at(timestamp)
-      @swaps.inject({})do|r, v|
+      @swaps.each_with_object({})do|v, r|
         r[v[0]] = v[1].get_at(timestamp)
         r
       end
     end
 
     def self.create(start_time, end_time)
-      data = Jiji::Utils::HistoricalData.load(Swap, start_time, end_time).inject({})do|r, v|
-        r[v.pair_id] = [] unless r.include?(v.pair_id)
-        r[v.pair_id] << v
-        r
-      end.inject({})do|r, v|
-        r[v[0]] = Jiji::Utils::HistoricalData.new(v[1], start_time, end_time)
-        r
-      end
+      data = Jiji::Utils::HistoricalData.load(Swap, start_time, end_time)
+      data = partition_by_pair(data)
+      data = aggregate_by_pair(data, start_time, end_time)
       Swaps.new(data)
     end
 
     private
 
-    def check_pair_id(pair_id)
-      unless @swaps.include?(pair_id)
-        fail Jiji::Errors::NotFoundException.new(
-          "pair is not found. pair_id=#{pair_id}")
+    def self.partition_by_pair(data)
+      data.each_with_object({})do|v, r|
+        r[v.pair_id] = [] unless r.include?(v.pair_id)
+        r[v.pair_id] << v
       end
+    end
+
+    def self.aggregate_by_pair(data, start_time, end_time)
+      data.each_with_object({})do|v, r|
+        r[v[0]] =  Jiji::Utils::HistoricalData.new(v[1], start_time, end_time)
+      end
+    end
+
+    def check_pair_id(pair_id)
+      return if @swaps.include?(pair_id)
+      fail Jiji::Errors::NotFoundException,
+        "pair is not found. pair_id=#{pair_id}"
     end
   end
 end

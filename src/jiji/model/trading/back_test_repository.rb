@@ -50,7 +50,9 @@ module Jiji::Model::Trading
     private
 
     def load
-      @back_tests = BackTest.order_by(:created_at.asc).all.inject(@back_tests) do|r, t|
+      @back_tests = BackTest
+                    .order_by(:created_at.asc)
+                    .all.each_with_object(@back_tests) do|t, r|
         setup_back_test(t)
         r[t.id] = t
         r

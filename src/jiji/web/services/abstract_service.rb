@@ -24,16 +24,12 @@ module Jiji::Web
     end
 
     def get_time_from_query_param(key)
-      if request[key].nil?
-        illegal_argument("illegal argument. key=#{key}")
-      end
+      illegal_argument("illegal argument. key=#{key}") if request[key].nil?
       Time.parse(request[key])
     end
 
     def get_pagenation_query_from_query_param(key)
-      if request[key].nil?
-        illegal_argument("illegal argument. key=#{key}")
-      end
+      illegal_argument("illegal argument. key=#{key}") if request[key].nil?
       Time.parse(request[key])
     end
 
@@ -65,22 +61,6 @@ module Jiji::Web
         'Expires'       => '-1',
         'Pragma'        => 'no-cache'
       }
-    end
-
-    def not_found
-      fail Jiji::Errors::NotFoundException.new
-    end
-
-    def illegal_state
-      fail Jiji::Errors::IllegalStateException.new
-    end
-
-    def auth_failed
-      fail Jiji::Errors::AuthFailedException.new
-    end
-
-    def illegal_argument(message)
-      fail ArgumentError.new(message)
     end
   end
 

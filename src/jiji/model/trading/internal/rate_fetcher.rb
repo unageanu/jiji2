@@ -6,10 +6,12 @@ module Jiji::Model::Trading::Internal
       pair = Jiji::Model::Trading::Pairs.instance.create_or_get(pair_name)
       swaps = Swaps.create(start_time, end_time)
       interval = resolve_collecting_interval(interval)
-      Jiji::Model::Trading::Tick.where(:timestamp.gte => start_time,
-                                       :timestamp.lt  => end_time).map_reduce(
-                                         MAP_TEMPLATE_FOR_FETCH.result(binding),
-                                         REDUCE_TEMPLATE_FOR_FETCH.result(binding)
+      Jiji::Model::Trading::Tick.where(
+        :timestamp.gte => start_time,
+        :timestamp.lt  => end_time
+      ).map_reduce(
+        MAP_TEMPLATE_FOR_FETCH.result(binding),
+        REDUCE_TEMPLATE_FOR_FETCH.result(binding)
       ).out(inline: true).map do|r|
         convert_rate(r, swaps, pair, interval)
       end.sort_by(&:timestamp)
@@ -19,14 +21,23 @@ module Jiji::Model::Trading::Internal
 
     MAP_TEMPLATE_FOR_FETCH = ERB.new %{
       function() {
-        emit( Math.floor(this.timestamp.getTime() / (<%= interval.to_s %>)) * (<%= interval.to_s %>),
-          { bid: this.values[<%= pair.pair_id %>*2], ask: this.values[<%= pair.pair_id %>*2+1], timestamp:this.timestamp});
+        var partition = Math.floor(
+          this.timestamp.getTime() / (<%= interval %>)) * (<%= interval %>);
+        emit( partition,{
+            bid: this.values[<%= pair.pair_id %>*2],
+            ask: this.values[<%= pair.pair_id %>*2+1],
+            timestamp:this.timestamp
+        });
       }
     }
 
     REDUCE_TEMPLATE_FOR_FETCH = ERB.new %{
       function(key, values) {
-        var result = values[0].open ? values[0] : {open:values[0],close:values[0],high:values[0],low:values[0], timestamp:key};
+        var result = values[0].open ? values[0] : {
+          open:values[0], close:values[0],
+          high:values[0],low:values[0],
+          timestamp:key
+        };
         for(var i=0;i<values.length;i++ ) {
           if (values[0].open && i==0) continue;
           var t = values[i];
@@ -41,12 +52,7 @@ module Jiji::Model::Trading::Internal
 
     def convert_rate(fetched_value, swaps, pair, interval)
       v = fetched_value['value']
-      timestamp = nil
-      if v['open']
-        timestamp = Time.at(v['timestamp'] / 1000)
-      else
-        timestamp = Time.at(calcurate_partition_start_time(v['timestamp'], interval))
-      end
+      timestamp = resolve_timestamp(v, interval)
       Jiji::Model::Trading::Rate.new(
         pair,
         create_tick(pair, v['open']  || v, swaps),
@@ -65,6 +71,14 @@ module Jiji::Model::Trading::Internal
       (time.to_i / (interval / 1000)).floor * (interval / 1000)
     end
 
+    def resolve_timestamp(v, interval)
+      if v['open']
+        Time.at(v['timestamp'] / 1000)
+      else
+        Time.at(calcurate_partition_start_time(v['timestamp'], interval))
+      end
+    end
+
     def resolve_collecting_interval(interval)
       case interval
       when :one_minute      then       60 * 1000
@@ -73,7 +87,7 @@ module Jiji::Model::Trading::Internal
       when :one_hour        then    60 * 60 * 1000
       when :six_hours       then  6 * 60 * 60 * 1000
       when :one_day         then 24 * 60 * 60 * 1000
-      else fail ArgumentError.new("unknown interval. interval=#{interval}")
+      else fail ArgumentError, "unknown interval. interval=#{interval}"
       end
     end
   end

@@ -5,7 +5,7 @@ require 'jiji/utils/value_object'
 
 module Jiji::Model::Agents
   class AgentSourceRepository
-    def get_all
+    def all
       AgentSource.all.map { |a| a }
     end
 

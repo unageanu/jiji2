@@ -16,10 +16,8 @@ module Jiji::Utils
     private
 
     def check_period(timestamp)
-      unless timestamp >= @start_time && timestamp <= @end_time
-        fail ArgumentError.new(
-          "out of period. time=#{timestamp} start=#{@start_time} end=#{@start_time}")
-      end
+      return if timestamp >= @start_time && timestamp <= @end_time
+      HistoricalData.out_of_period(timestamp)
     end
 
     def self.load(data_type, start_time, end_time)
@@ -40,7 +38,7 @@ module Jiji::Utils
     end
 
     def self.out_of_period(timestamp)
-      fail ArgumentError.new("out of period. time=#{timestamp}")
+      fail ArgumentError, "out of period. time=#{timestamp}"
     end
   end
 end

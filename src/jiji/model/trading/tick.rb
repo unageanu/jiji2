@@ -23,7 +23,7 @@ module Jiji::Model::Trading
 
     def self.create(pair_and_values, timestamp)
       timestamp = timestamp.round
-      Tick.new do|t|
+      Tick.new do |t|
         t.values    = create_values(pair_and_values)
         t.swaps     = create_swaps(pair_and_values, timestamp)
         t.timestamp = timestamp
@@ -36,7 +36,7 @@ module Jiji::Model::Trading
     end
 
     def each(&block)
-      0.upto((values.length / 2) - 1) do|i|
+      0.upto((values.length / 2) - 1) do |i|
         next unless values[i * 2] || values[i * 2 + 1]
         pair = Pairs.instance.get_by_id(i)
         block.call([pair.name, self[pair.name]]) unless pair.nil?
@@ -80,7 +80,7 @@ module Jiji::Model::Trading
     private
 
     def self.create_values(pair_and_values)
-      pair_and_values.each_with_object([]) do|v, r|
+      pair_and_values.each_with_object([]) do |v, r|
         pair = Pairs.instance.create_or_get(v[0])
         r[pair.pair_id * 2]     = v[1].bid
         r[pair.pair_id * 2 + 1] = v[1].ask
@@ -98,9 +98,9 @@ module Jiji::Model::Trading
     end
 
     def self.create_swaps(pair_and_values, timestamp)
-      pair_and_values.each_with_object({}) do|v, r|
+      pair_and_values.each_with_object({}) do |v, r|
         pair = Pairs.instance.create_or_get(v[0])
-        r[pair.pair_id] = Internal::Swap.new do|s|
+        r[pair.pair_id] = Internal::Swap.new do |s|
           s.pair_id   = pair.pair_id
           s.buy_swap  = v[1].buy_swap
           s.sell_swap = v[1].sell_swap

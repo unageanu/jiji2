@@ -28,7 +28,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     it '売買ができる' do
       broker.buy(:EURJPY, 1)
       broker.sell(:USDJPY, 2)
-      broker.positions.each do|_k, v|
+      broker.positions.each do |_k, v|
         broker.close(v._id)
       end
     end
@@ -66,7 +66,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       expect(rates[:EURJPY].buy_swap).to be 3
       expect(rates[:EURJPY].sell_swap).to be 21
 
-      28.times do|_i|
+      28.times do |_i|
         broker.refresh
         expect(broker.next?).to be true
         rates = broker.tick
@@ -99,7 +99,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
 
       broker.close(buy_position._id)
 
-      28.times do|_i|
+      28.times do |_i|
         broker.refresh
         expect(broker.next?).to be true
         rates = broker.tick
@@ -171,7 +171,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       expect(rates[:EURJPY].buy_swap).to be 4
       expect(rates[:EURJPY].sell_swap).to be 22
 
-      8.times do|_i|
+      8.times do |_i|
         broker.refresh
         expect(broker.next?).to be true
         rates = broker.tick

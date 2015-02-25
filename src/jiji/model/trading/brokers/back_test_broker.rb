@@ -53,7 +53,7 @@ module Jiji::Model::Trading::Brokers
     def retrieve_pairs
       instance = Jiji::Model::Trading::Pairs.instance
       rates = tick || []
-      rates.map do|v|
+      rates.map do |v|
         pair = instance.create_or_get(v[0])
         trading_unit = @trading_units.get_trading_unit_at(
           pair.pair_id, rates.timestamp)

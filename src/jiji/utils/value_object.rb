@@ -10,7 +10,7 @@ module Jiji::Utils::ValueObject
 
   def hash
     hash = 0
-    values.each do|v|
+    values.each do |v|
       hash = v.hash + 31 * hash
     end
     hash
@@ -34,7 +34,7 @@ module Jiji::Utils::ValueObject
     a = values
     b = other.values
     return false if a.length != b.length
-    a.length.times do|i|
+    a.length.times do |i|
       return false unless block.call(a[i], b[i])
     end
     true

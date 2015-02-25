@@ -10,7 +10,7 @@ module Jiji::Model::Trading::Internal
     end
 
     def save(pairs, timestamp)
-      pairs.each do|v|
+      pairs.each do |v|
         if  changed?(v)
           save_trading_unit(v, timestamp)
           update_current(v)
@@ -28,7 +28,7 @@ module Jiji::Model::Trading::Internal
 
     def save_trading_unit(value, timestamp)
       pair = Jiji::Model::Trading::Pairs.instance.create_or_get(value.name)
-      TradingUnit.new do|t|
+      TradingUnit.new do |t|
         t.pair_id      = pair.pair_id
         t.trading_unit = value.trade_unit
         t.timestamp    = timestamp

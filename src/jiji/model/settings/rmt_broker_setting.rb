@@ -76,7 +76,7 @@ module Jiji::Model::Settings
       plugin
     end
     def self.resolve_plugin(securities_id)
-      RMTBrokerSetting.available_securities.find do|p|
+      RMTBrokerSetting.available_securities.find do |p|
         p.plugin_id == securities_id
       end || raise_plugin_not_found(securities_id)
     end

@@ -21,7 +21,7 @@ module Jiji::Model::Agents
     def self.define_const_missing(m)
       def m.const_missing(id)
         result = nil
-        Delegate.instance.delegates.each_pair do|_k, v|
+        Delegate.instance.delegates.each_pair do |_k, v|
           if v.const_defined?(id)
             result = v.const_get(id)
             break
@@ -33,7 +33,7 @@ module Jiji::Model::Agents
     def self.define_method_missing(m)
       def m.method_missing(name, *args, &block)
         target = nil
-        Delegate.instance.delegates.each_pair do|_k, v|
+        Delegate.instance.delegates.each_pair do |_k, v|
           if v.respond_to?(name)
             target = v
             break

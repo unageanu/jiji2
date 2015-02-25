@@ -62,7 +62,7 @@ module Jiji::Model::Trading
 
     def self.create(back_test_id, external_position_id,
         pair_id, lot, trading_unit, sell_or_buy, tick)
-      position = Position.new do|p|
+      position = Position.new do |p|
         p.back_test_id         = back_test_id
         p.pair_id              = pair_id
         p.lot                  = lot

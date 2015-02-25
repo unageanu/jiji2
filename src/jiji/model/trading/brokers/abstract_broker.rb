@@ -40,7 +40,7 @@ module Jiji::Model::Trading::Brokers
     private
 
     def update_positions
-      @positions.values.each do|p|
+      @positions.values.each do |p|
         p.update(tick)
       end
     end

@@ -17,7 +17,7 @@ module Jiji::Model::Trading::Internal
     private
 
     def save_swap_if_required(rates)
-      rates.each do|v|
+      rates.each do |v|
         if  swap_changed?(v[0], v[1])
           save_swap(v[0], v[1], rates.timestamp)
           update_current_swap(v[0], v[1])
@@ -34,7 +34,7 @@ module Jiji::Model::Trading::Internal
 
     def save_swap(pair_name, value, timestamp)
       pair = Jiji::Model::Trading::Pairs.instance.create_or_get(pair_name)
-      Swap.new do|s|
+      Swap.new do |s|
         s.pair_id = pair.pair_id
         s.buy_swap = value.buy_swap
         s.sell_swap = value.sell_swap

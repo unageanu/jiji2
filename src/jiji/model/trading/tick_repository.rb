@@ -13,7 +13,7 @@ module Jiji::Model::Trading
       Tick.where(
         :timestamp.gte => start_time,
         :timestamp.lt  => end_time
-      ).order_by(:timestamp.asc).map do|t|
+      ).order_by(:timestamp.asc).map do |t|
         t.swaps = swaps.get_swaps_at(t.timestamp)
         t
       end

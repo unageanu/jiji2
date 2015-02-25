@@ -76,7 +76,7 @@ module Jiji::Model::Trading::Brokers
     end
 
     def convert_rates(rate, timestamp)
-      values = rate.each_with_object({})do|p, r|
+      values = rate.each_with_object({})do |p, r|
         r[p[0]] = convert_rate_to_tick(p[1])
         r
       end

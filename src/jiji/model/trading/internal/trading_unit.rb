@@ -46,7 +46,7 @@ module Jiji::Model::Trading::Internal
     end
 
     def get_trading_units_at(timestamp)
-      @values.each_with_object({})do|v, r|
+      @values.each_with_object({})do |v, r|
         r[v[0]] = v[1].get_at(timestamp)
       end
     end

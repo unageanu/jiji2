@@ -32,7 +32,7 @@ module Jiji::Model::Trading
     def self.create_from_tick(pair_name, *ticks)
       pair = Pairs.instance.create_or_get(pair_name)
       open = close = high = low = ticks[0]
-      ticks.each do|t|
+      ticks.each do |t|
         open  = t if t.timestamp < open.timestamp
         close = t if t.timestamp > close.timestamp
         high  = t if high[pair_name].bid < t[pair_name].bid
@@ -45,7 +45,7 @@ module Jiji::Model::Trading
 
     def self.union(*rates)
       open = close = high = low = rates[0]
-      rates.each do|r|
+      rates.each do |r|
         open  = r if r.timestamp < open.timestamp
         close = r if r.timestamp > close.timestamp
         high  = r if high.high.bid < r.high.bid

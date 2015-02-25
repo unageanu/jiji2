@@ -7,8 +7,8 @@ describe Jiji::Model::Trading::Internal::TradingUnit do
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
 
-    0.upto(10) do|i|
-      (0..2).each do|pair_id|
+    0.upto(10) do |i|
+      (0..2).each do |pair_id|
         s = @data_builder.new_trading_unit(i, pair_id, Time.at(60 * i))
         s.save
       end

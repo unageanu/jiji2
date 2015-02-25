@@ -13,7 +13,7 @@ module Jiji::Model::Trading::Internal
       ).map_reduce(
         MAP_TEMPLATE_FOR_FETCH.result(binding),
         REDUCE_TEMPLATE_FOR_FETCH.result(binding)
-      ).out(inline: true).map do|r|
+      ).out(inline: true).map do |r|
         convert_rate(r, swaps, pair, interval)
       end.sort_by(&:timestamp)
     end

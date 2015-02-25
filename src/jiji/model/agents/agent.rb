@@ -23,7 +23,7 @@ module Jiji::Model::Agents::Agent
   #====プロパティを設定します。
   def properties=(properties)
     @properties = properties
-    properties.each_pair do|k, v|
+    properties.each_pair do |k, v|
       instance_variable_set("@#{k}", v)
     end
   end

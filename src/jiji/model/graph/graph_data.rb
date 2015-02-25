@@ -18,7 +18,7 @@ module Jiji::Model::Graph
     index({ id: 1, timestamp: 1 }, name: 'graph-data_id_timestamp_index')
 
     def self.create(id, values, time = Time.now)
-      Data.new do|d|
+      Data.new do |d|
         d.id        = id
         d.values    = values
         d.timestamp = time

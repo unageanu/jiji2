@@ -40,10 +40,10 @@ describe Jiji::Security::SessionStore do
       sessions << s
     end
 
-    0.upto(9) do|i|
+    0.upto(9) do |i|
       expect(@store.valid_token?(sessions[i].token)).to be false
     end
-    10.upto(109) do|i|
+    10.upto(109) do |i|
       expect(@store.valid_token?(sessions[i].token)).to be true
     end
   end

@@ -32,7 +32,7 @@ describe Jiji::Model::Settings::RMTBrokerSetting do
 
   it 'アクティブなプラグインを設定できる' do
     plugin = nil
-    @setting.on_setting_changed do|_key, event|
+    @setting.on_setting_changed do |_key, event|
       plugin = event[:value]
     end
 

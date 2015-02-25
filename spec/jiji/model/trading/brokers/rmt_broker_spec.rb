@@ -71,7 +71,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       it '売買ができる' do
         broker.buy(:EURJPY, 1)
         broker.sell(:USDJPY, 2)
-        broker.positions.each do|_k, v|
+        broker.positions.each do |_k, v|
           broker.close(v._id)
         end
       end

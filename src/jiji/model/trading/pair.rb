@@ -82,14 +82,14 @@ module Jiji::Model::Trading
     def load
       @by_name = {}
       @by_id   = {}
-      Pair.each do|pair|
+      Pair.each do |pair|
         @by_name[pair.name]  = pair
         @by_id[pair.pair_id.to_s] = pair
       end
     end
 
     def register_new_pair(name)
-      pair = Pair.new do|p|
+      pair = Pair.new do |p|
         p.name    = name
         p.pair_id = new_id
       end

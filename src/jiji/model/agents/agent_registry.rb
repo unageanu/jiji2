@@ -26,7 +26,7 @@ module Jiji::Model::Agents
     def each(&block)
       checked = Set.new
       agent_sources.each do |source|
-        find_agent(source.name, source.context, checked) do|name|
+        find_agent(source.name, source.context, checked) do |name|
           block.call(name)
         end
       end
@@ -100,7 +100,7 @@ module Jiji::Model::Agents
 
     def find_class_by(root, path, name)
       mod = root
-      path.each do|step|
+      path.each do |step|
         not_found(Agent, name: name) unless check_object_is(mod, Module)
         not_found(Agent, name: name, step: step) unless mod.const_defined? step
 
@@ -124,7 +124,7 @@ module Jiji::Model::Agents
       # エラーになったものを再ロードする。
       # エラーがなくなる or すべてエラーになるまで繰り返し、依存関係によるエラーを解消する。
       failed = []
-      sources.each do|source|
+      sources.each do |source|
         source.evaluate
         @agents[source.name] = source
         Context._delegates[source.name] = source.context

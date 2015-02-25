@@ -40,7 +40,7 @@ describe Jiji::Model::Trading::Process do
         sleep 0.1
 
         q = []
-        future = @process.post_exec do|context|
+        future = @process.post_exec do |context|
           q << context.status
           'x'
         end
@@ -48,7 +48,7 @@ describe Jiji::Model::Trading::Process do
         expect(future.value).to eq 'x'
         expect(q).to eq [:running]
 
-        future = @process.post_exec do|_context|
+        future = @process.post_exec do |_context|
           fail 'test'
         end
 
@@ -68,7 +68,7 @@ describe Jiji::Model::Trading::Process do
         @process.start
         sleep 0.1
 
-        future = @process.post_exec do|_context|
+        future = @process.post_exec do |_context|
           fail 'test'
         end
         expect { future.value }.to raise_error
@@ -94,7 +94,7 @@ describe Jiji::Model::Trading::Process do
         @process.start
         sleep 0.1
 
-        future = @process.post_exec do|_context|
+        future = @process.post_exec do |_context|
           fail 'test'
         end
         expect { future.value }.to raise_error
@@ -124,7 +124,7 @@ describe Jiji::Model::Trading::Process do
     it 'start で処理を開始できる' do
       processes = [@process1, @process2, @process3]
 
-      processes.each do|p|
+      processes.each do |p|
         expects_process_waitting_for_start(p)
       end
 
@@ -147,7 +147,7 @@ describe Jiji::Model::Trading::Process do
       @process3.start
 
       # process2をエラーで停止
-      @process2.post_exec do|_context|
+      @process2.post_exec do |_context|
         fail 'test'
       end
       sleep 0.1
@@ -169,7 +169,7 @@ describe Jiji::Model::Trading::Process do
       # process1を停止 → 2が開始される
       processes.each(&:stop)
 
-      processes.each do|p|
+      processes.each do |p|
         expects_process_cancelled(p)
       end
     end

@@ -49,7 +49,7 @@ module Jiji::Model::Trading::Internal
     end
 
     def get_swaps_at(timestamp)
-      @swaps.each_with_object({})do|v, r|
+      @swaps.each_with_object({})do |v, r|
         r[v[0]] = v[1].get_at(timestamp)
         r
       end
@@ -65,14 +65,14 @@ module Jiji::Model::Trading::Internal
     private
 
     def self.partition_by_pair(data)
-      data.each_with_object({})do|v, r|
+      data.each_with_object({})do |v, r|
         r[v.pair_id] = [] unless r.include?(v.pair_id)
         r[v.pair_id] << v
       end
     end
 
     def self.aggregate_by_pair(data, start_time, end_time)
-      data.each_with_object({})do|v, r|
+      data.each_with_object({})do |v, r|
         r[v[0]] =  Jiji::Utils::HistoricalData.new(v[1], start_time, end_time)
       end
     end

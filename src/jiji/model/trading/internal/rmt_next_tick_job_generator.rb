@@ -13,7 +13,7 @@ module Jiji::Model::Trading::Internal
     end
 
     def start(queue)
-      Thread.start(queue, @wait_time) do|q, wait|
+      Thread.start(queue, @wait_time) do |q, wait|
         while  active?
           q.push(@job)
           sleep wait

@@ -228,7 +228,7 @@ describe Jiji::Model::Agents::AgentRegistry do
       reload
 
       expect(@registory.agent_sources.length).to be 5
-      @registory.agent_sources.each do|s|
+      @registory.agent_sources.each do |s|
         expect(s.status).to be :normal
       end
 
@@ -252,14 +252,14 @@ describe Jiji::Model::Agents::AgentRegistry do
       # 2 <-> 4
       @registory.update_source('bbb', '', new_body(2, 'TestAgent4'))
 
-      @registory.agent_sources.each do|s|
+      @registory.agent_sources.each do |s|
         expect(s.status).to be :normal
       end
 
       reload
 
       expect(@registory.agent_sources.length).to be 6
-      @registory.agent_sources.each do|s|
+      @registory.agent_sources.each do |s|
         if (s.name == 'aaa')
           expect(s.status).to be :normal
         else

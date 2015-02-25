@@ -390,7 +390,7 @@ describe Jiji::Model::Agents::AgentSource do
       "class Foo; def to_s; return \"xxx\"; end; end")
 
     # 100000.times {|i|
-    10.times do|_i|
+    10.times do |_i|
       agent_source.update('test2', Time.at(200), 'memo',
         "class Foo; def to_s; return \"xxx2\"; end; end;" \
       + "class Var; def to_s; return \"var\";  end; end;")

@@ -15,7 +15,7 @@ module Jiji::Model::Trading
     end
 
     def start
-      @task = @pool.process(@trading_context, @job_queue) do|context, queue|
+      @task = @pool.process(@trading_context, @job_queue) do |context, queue|
         run(context, queue)
       end
     end

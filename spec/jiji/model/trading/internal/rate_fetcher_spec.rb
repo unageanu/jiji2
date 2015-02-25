@@ -16,7 +16,7 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
   it 'fetch でレート一覧を取得できる' do
     @data_builder.register_ticks(1001)
 
-    [:EURJPY, :USDJPY, :EURUSD].each do|pair_id|
+    [:EURJPY, :USDJPY, :EURUSD].each do |pair_id|
       rates = @fetcher.fetch(pair_id, Time.at(12 * 20), Time.at(72 * 20))
 
       expect(rates.length).to eq(20)
@@ -127,7 +127,7 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
     t = @data_builder.new_tick(1, Time.now)
     t.save
 
-    swap = Jiji::Model::Trading::Internal::Swap.new do|s|
+    swap = Jiji::Model::Trading::Internal::Swap.new do |s|
       s.pair_id   = Jiji::Model::Trading::Pairs
       .instance.create_or_get(:EURJPY).pair_id
       s.buy_swap  = 10

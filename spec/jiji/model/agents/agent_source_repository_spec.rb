@@ -10,7 +10,7 @@ describe Jiji::Model::Agents::AgentSource do
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
     @repository   = @container.lookup(:agent_source_repository)
 
-    10.times do|i|
+    10.times do |i|
       @data_builder.register_agent(i)
     end
   end

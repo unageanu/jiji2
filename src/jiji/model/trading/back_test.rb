@@ -50,7 +50,7 @@ module Jiji::Model::Trading
     end
 
     def self.create_from_hash(hash)
-      BackTest.new do|b|
+      BackTest.new do |b|
         b.name = hash['name']
         b.memo = hash['memo']
         b.start_time = hash['start_time']

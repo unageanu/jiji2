@@ -11,7 +11,7 @@ module Jiji::Model::Agents
     end
 
     def next_tick(tick, broker)
-      @agents.each do|a|
+      @agents.each do |a|
         begin
           a.next_tick(tick, broker)
         rescue => e
@@ -25,7 +25,7 @@ module Jiji::Model::Agents
     end
 
     def save_state
-      @agents.each do|a|
+      @agents.each do |a|
         begin
           a.save_state
         rescue => e

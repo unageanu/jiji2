@@ -53,7 +53,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     before(:example) do
       @data_builder.register_ticks(5, 60)
 
-      3.times do|i|
+      3.times do |i|
         @time_source.set(Time.at(i))
 
         @repository.register('name'       => "テスト#{i}",

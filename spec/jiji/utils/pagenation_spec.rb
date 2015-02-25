@@ -7,7 +7,7 @@ describe Jiji::Utils::Pagenation::Query do
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
 
-    100.times do|i|
+    100.times do |i|
       swap = @data_builder.new_swap(i,     1, Time.at(i))
       swap.save
       swap = @data_builder.new_swap(i * 2, 2, Time.at(i))

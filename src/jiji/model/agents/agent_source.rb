@@ -34,7 +34,7 @@ module Jiji::Model::Agents
       unique: true, name: 'agent_sources_type_name_id_index')
 
     def self.create(name, type, created_at, memo = '', body = '')
-      source = AgentSource.new do|a|
+      source = AgentSource.new do |a|
         a.name       = name
         a.type       = type
         a.created_at = created_at

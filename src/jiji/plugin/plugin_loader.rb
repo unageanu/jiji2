@@ -52,8 +52,8 @@ class Jiji::Plugin::Loader
   end
   # プラグインをロードする。
   def load
-    ($LOAD_PATH + Gem.path).each do|dir|
-      Dir.glob("#{dir}/**/jiji_plugin.rb").each do|plugin|
+    ($LOAD_PATH + Gem.path).each do |dir|
+      Dir.glob("#{dir}/**/jiji_plugin.rb").each do |plugin|
         load_plugin(File.expand_path plugin)
       end
     end

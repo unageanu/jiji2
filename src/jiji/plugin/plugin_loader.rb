@@ -62,7 +62,7 @@ class Jiji::Plugin::Loader
     begin
       Kernel.require plugin
       @logger.info("plugin loaded. plugin_path=#{plugin}")
-    rescue Exception => e
+    rescue Exception => e # rubocop:disable Lint/RescueException
       handle_error(plugin, e)
     ensure
       @loaded << plugin

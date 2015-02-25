@@ -64,7 +64,7 @@ module Jiji::Model::Agents
       begin
         @context.module_eval(body, "#{type}/#{name}", 1)
         change_state_to_normal
-      rescue Exception => e
+      rescue Exception => e # rubocop:disable Lint/RescueException
         change_state_to_error(e)
       end
       @context

@@ -25,8 +25,8 @@ module Jiji::Model::Trading::Internal
         var partition = Math.floor(
           this.timestamp.getTime() / (<%= interval %>)) * (<%= interval %>);
         emit( partition,{
-            bid: this.values[<%= pair.pair_id %>*2],
-            ask: this.values[<%= pair.pair_id %>*2+1],
+            bid: this.values["<%= pair.pair_id %>"][0],
+            ask: this.values["<%= pair.pair_id %>"][1],
             timestamp:this.timestamp
         });
       }

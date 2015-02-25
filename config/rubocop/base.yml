@@ -26,3 +26,7 @@ Lint/UnusedMethodArgument:
 # class body の前後に改行を挿入する。
 Style/EmptyLinesAroundClassBody:
   EnforcedStyle: empty_lines
+
+# 条件or処理が長い場合、if-endを使いたい。
+Style/GuardClause:
+  Enabled: false

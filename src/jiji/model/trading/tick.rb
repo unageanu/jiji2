@@ -12,7 +12,7 @@ module Jiji::Model::Trading
 
     store_in collection: 'ticks'
 
-    field :values,    type: Array
+    field :values,    type: Hash
     field :timestamp, type: Time
 
     attr_accessor :swaps
@@ -36,9 +36,8 @@ module Jiji::Model::Trading
     end
 
     def each(&block)
-      0.upto((values.length / 2) - 1) do |i|
-        next unless values[i * 2] || values[i * 2 + 1]
-        pair = Pairs.instance.get_by_id(i)
+      values.each do |k, _v|
+        pair = Pairs.instance.get_by_id(k.to_i)
         block.call([pair.name, self[pair.name]]) unless pair.nil?
       end
     end
@@ -80,32 +79,38 @@ module Jiji::Model::Trading
     private
 
     def self.create_values(pair_and_values)
-      pair_and_values.each_with_object([]) do |v, r|
+      pair_and_values.each_with_object({}) do |v, r|
         pair = Pairs.instance.create_or_get(v[0])
-        r[pair.pair_id * 2]     = v[1].bid
-        r[pair.pair_id * 2 + 1] = v[1].ask
+        r[pair.pair_id.to_s] = [v[1].bid, v[1].ask]
       end
     end
 
     def create_value(pair)
-      if pair.nil? || pair.pair_id < 0 || pair.pair_id * 2 + 1 > values.size
+      check_values_includes_pair(pair)
+      v    = values[pair.pair_id.to_s]
+      swap = @swaps[pair.pair_id]
+      Value.new(v[0], v[1], swap.buy_swap, swap.sell_swap)
+    end
+
+    def check_values_includes_pair(pair)
+      if pair.nil? || !values.include?(pair.pair_id.to_s)
         fail ArgumentError, "illegal pair. pair=#{pair}"
       end
-      bid  = values[pair.pair_id * 2]
-      ask  = values[pair.pair_id * 2 + 1]
-      swap = @swaps[pair.pair_id]
-      Value.new(bid, ask, swap.buy_swap, swap.sell_swap)
     end
 
     def self.create_swaps(pair_and_values, timestamp)
       pair_and_values.each_with_object({}) do |v, r|
         pair = Pairs.instance.create_or_get(v[0])
-        r[pair.pair_id] = Internal::Swap.new do |s|
-          s.pair_id   = pair.pair_id
-          s.buy_swap  = v[1].buy_swap
-          s.sell_swap = v[1].sell_swap
-          s.timestamp = timestamp
-        end
+        r[pair.pair_id] = create_swap(pair, v[1], timestamp)
+      end
+    end
+
+    def self.create_swap(pair, value, timestamp)
+      Internal::Swap.new do |s|
+        s.pair_id   = pair.pair_id
+        s.buy_swap  = value.buy_swap
+        s.sell_swap = value.sell_swap
+        s.timestamp = timestamp
       end
     end
 

@@ -6,6 +6,7 @@ require 'lru_redux'
 
 module Jiji::Security
   class SessionStore
+
     include Encase
 
     needs :time_source
@@ -27,5 +28,6 @@ module Jiji::Security
       s = @sessions[token]
       !s.nil? && !s.expired?(time_source.now)
     end
+
   end
 end

@@ -5,6 +5,7 @@ require 'jiji/web/services/abstract_service'
 
 module Jiji::Web
   class InitialSettingService < Jiji::Web::AbstractService
+
     get '/initialized' do
       ok(initialized: setting.password_setted?)
     end
@@ -20,5 +21,6 @@ module Jiji::Web
     def setting
       lookup(:security_setting)
     end
+
   end
 end

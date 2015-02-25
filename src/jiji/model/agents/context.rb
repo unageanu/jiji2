@@ -48,6 +48,7 @@ module Jiji::Model::Agents
   end
 
   class Delegate
+
     include Singleton
 
     def initialize
@@ -59,5 +60,6 @@ module Jiji::Model::Agents
     def delegates=(delegates)
       @delegates = delegates || {}
     end
+
   end
 end

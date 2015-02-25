@@ -5,6 +5,7 @@ require 'jiji/configurations/mongoid_configuration'
 
 module Jiji::Model::Settings
   class AbstractSetting
+
     include Mongoid::Document
 
     store_in collection: 'settings'
@@ -41,5 +42,6 @@ module Jiji::Model::Settings
     def init
       @setting_changed_listener = []
     end
+
   end
 end

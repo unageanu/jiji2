@@ -6,6 +6,7 @@ require 'jiji/model/settings/rmt_broker_setting'
 
 module Jiji::Web
   class RMTBrokerSettingService < Jiji::Web::AuthenticationRequiredService
+
     include Jiji::Model::Settings
 
     get '/available-securities' do
@@ -43,5 +44,6 @@ module Jiji::Web
     def setting
       lookup(:rmt_broker_setting)
     end
+
   end
 end

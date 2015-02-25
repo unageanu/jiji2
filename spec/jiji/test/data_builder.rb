@@ -5,6 +5,7 @@ Jiji::Utils::Requires.require_all('jiji/model')
 
 module Jiji::Test
   class DataBuilder
+
     include Jiji::Model::Trading
 
     def new_rate(seed, pair_name = :EURJPY)
@@ -132,5 +133,6 @@ BODY
       Jiji::Model::Agents::AgentSource.delete_all
       Jiji::Model::Settings::AbstractSetting.delete_all
     end
+
   end
 end

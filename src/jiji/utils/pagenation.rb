@@ -2,6 +2,7 @@ require 'date'
 
 module Jiji::Utils::Pagenation
   class Query
+
     attr_accessor :filter_conditions, :sort_by, :offset, :limit
 
     def initialize(filter_conditions = nil,
@@ -38,5 +39,6 @@ module Jiji::Utils::Pagenation
     def apply_limit(queryable)
       !limit.nil? ? queryable.limit(limit) : queryable
     end
+
   end
 end

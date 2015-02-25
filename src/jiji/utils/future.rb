@@ -2,6 +2,7 @@ require 'thread'
 
 module Jiji::Utils
   class Future
+
     def initialize
       @queue = Queue.new
     end
@@ -22,5 +23,6 @@ module Jiji::Utils
     def error=(val)
       @queue << val
     end
+
   end
 end

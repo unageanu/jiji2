@@ -6,6 +6,7 @@ require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
   class Rate
+
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
@@ -70,5 +71,6 @@ module Jiji::Model::Trading
     def values
       [pair, open, close, high, low, timestamp]
     end
+
   end
 end

@@ -2,6 +2,7 @@ require 'date'
 
 module Jiji::Utils
   class HistoricalData
+
     def initialize(sorted_data, start_time, end_time)
       @data       = sorted_data
       @start_time = start_time
@@ -40,5 +41,6 @@ module Jiji::Utils
     def self.out_of_period(timestamp)
       fail ArgumentError, "out of period. time=#{timestamp}"
     end
+
   end
 end

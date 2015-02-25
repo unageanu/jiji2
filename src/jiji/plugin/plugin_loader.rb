@@ -18,6 +18,7 @@ module JIJI::Plugin
   end
 
   class Registry
+
     include Singleton
 
     def initialize
@@ -35,11 +36,13 @@ module JIJI::Plugin
     def get(future)
       @registry.key?(future) ? @registry[future] : []
     end
+
   end
 end
 
 # プラグインローダー
 class Jiji::Plugin::Loader
+
   include Encase
 
   needs :logger
@@ -73,4 +76,5 @@ class Jiji::Plugin::Loader
     @logger.error("plugin load failed. plugin_path=#{plugin}")
     @logger.error(error)
   end
+
 end

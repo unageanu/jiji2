@@ -5,6 +5,7 @@ require 'jiji/web/services/abstract_service'
 
 module Jiji::Web
   class PositionService < Jiji::Web::AuthenticationRequiredService
+
     delete '/rmt/exited' do
       expires = get_time_from_query_param('expires')
       repository.delete_exited_positions_of_rmt(expires)
@@ -24,5 +25,6 @@ module Jiji::Web
     def repository
       lookup(:position_repository)
     end
+
   end
 end

@@ -4,6 +4,7 @@ require 'jiji/plugin/securities_plugin'
 
 module Jiji::Test::Mock
   class MockSecuritiesPlugin
+
     include JIJI::Plugin::SecuritiesPlugin
 
     attr_reader :plugin_id
@@ -65,6 +66,7 @@ module Jiji::Test::Mock
       Jiji::Model::Settings::RMTBrokerSetting
         .available_securities.find { |p| p.plugin_id == :mock }
     end
+
   end
 end
 

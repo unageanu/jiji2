@@ -2,6 +2,7 @@
 
 module Jiji::Model::Trading::Internal
   class RMTNextTickJobGenerator
+
     include Jiji::Model::Trading::Jobs
 
     def initialize(wait_time = 15)
@@ -31,5 +32,6 @@ module Jiji::Model::Trading::Internal
         @running
       end
     end
+
   end
 end

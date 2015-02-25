@@ -6,6 +6,7 @@ require 'securerandom'
 
 module Jiji::Security
   class Session
+
     def initialize(expires)
       @token = generate_token
       @expires = expires
@@ -22,5 +23,6 @@ module Jiji::Security
     def generate_token
       SecureRandom.hex(32)
     end
+
   end
 end

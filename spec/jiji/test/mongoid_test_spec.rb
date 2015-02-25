@@ -2,19 +2,25 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 class Parent
+
   include Mongoid::Document
 
   store_in collection: 'xxx'
 
   field :parent_id,        type: Symbol
+
 end
 
 class ChildA < Parent
+
   field :v1,        type: Symbol
+
 end
 
 class ChildB < Parent
+
   field :v2,        type: Symbol
+
 end
 
 describe 'Mongoid' do

@@ -5,6 +5,7 @@ require 'jiji/utils/value_object'
 
 module Jiji::Model::Agents
   class Agents
+
     def initialize(agents = [])
       @agents = agents
     end
@@ -32,5 +33,6 @@ module Jiji::Model::Agents
         end
       end
     end
+
   end
 end

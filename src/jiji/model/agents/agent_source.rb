@@ -7,6 +7,7 @@ require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Agents
   class AgentSource
+
     include Mongoid::Document
     include Jiji::Web::Transport::Transportable
     include Jiji::Errors
@@ -86,5 +87,6 @@ module Jiji::Model::Agents
       @error  = error.to_s
       self.status = :error
     end
+
   end
 end

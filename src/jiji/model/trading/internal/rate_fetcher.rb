@@ -2,6 +2,7 @@
 
 module Jiji::Model::Trading::Internal
   class RateFetcher
+
     def fetch(pair_name, start_time, end_time, interval = :one_minute)
       pair = Jiji::Model::Trading::Pairs.instance.create_or_get(pair_name)
       swaps = Swaps.create(start_time, end_time)
@@ -90,5 +91,6 @@ module Jiji::Model::Trading::Internal
       else fail ArgumentError, "unknown interval. interval=#{interval}"
       end
     end
+
   end
 end

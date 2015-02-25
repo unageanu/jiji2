@@ -5,6 +5,7 @@ require 'jiji/web/services/abstract_service'
 
 module Jiji::Web
   class SecuritySettingService < Jiji::Web::AuthenticationRequiredService
+
     put '/password' do
       body = load.body
       if setting.validate_password(body['old_password'])
@@ -19,5 +20,6 @@ module Jiji::Web
     def setting
       lookup(:security_setting)
     end
+
   end
 end

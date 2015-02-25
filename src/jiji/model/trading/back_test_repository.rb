@@ -5,6 +5,7 @@ require 'thread/pool'
 
 module Jiji::Model::Trading
   class BackTestRepository
+
     include Encase
     include Jiji::Errors
 
@@ -64,5 +65,6 @@ module Jiji::Model::Trading
       back_test.setup
       back_test
     end
+
   end
 end

@@ -6,6 +6,7 @@ require 'jiji/model/settings/abstract_setting'
 
 module Jiji::Model::Settings
   class SecuritySetting < AbstractSetting
+
     field :salt,            type: String, default: nil
     field :hashed_password, type: String, default: nil
     field :expiration_days, type: Integer, default: 10
@@ -37,5 +38,6 @@ module Jiji::Model::Settings
     def new_salt
       BCrypt::Engine.generate_salt
     end
+
   end
 end

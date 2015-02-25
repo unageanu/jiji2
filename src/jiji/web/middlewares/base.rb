@@ -5,6 +5,7 @@ require 'jiji/errors/errors'
 
 module Jiji::Web
   class Base < Sinatra::Base
+
     # TODO
     # X-Frame-Options
     # X-CONTENT-TYPE-OPTIONS: NOSNIFF
@@ -41,5 +42,6 @@ module Jiji::Web
     error do
       500
     end
+
   end
 end

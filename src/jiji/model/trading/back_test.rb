@@ -8,6 +8,7 @@ require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
   class BackTest
+
     include Encase
     include Mongoid::Document
     include Jiji::Utils::ValueObject
@@ -88,5 +89,6 @@ module Jiji::Model::Trading
     def create_process(trading_context)
       Process.new(trading_context, back_test_thread_pool, true)
     end
+
   end
 end

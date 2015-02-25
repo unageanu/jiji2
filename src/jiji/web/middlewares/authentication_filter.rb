@@ -5,6 +5,7 @@ require 'jiji/web/middlewares/base'
 
 module Jiji::Web
   class AuthenticationFilter < Base
+
     before do
       unauthorized unless auth_success?
     end
@@ -31,5 +32,6 @@ module Jiji::Web
     def unauthorized
       fail Jiji::Errors::UnauthorizedException
     end
+
   end
 end

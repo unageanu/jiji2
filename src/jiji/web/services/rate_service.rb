@@ -5,6 +5,7 @@ require 'jiji/web/services/abstract_service'
 
 module Jiji::Web
   class RateService < Jiji::Web::AuthenticationRequiredService
+
     include Jiji::Model::Trading::Internal
 
     delete '/' do
@@ -45,5 +46,6 @@ module Jiji::Web
         end: get_time_from_query_param('end')
       }
     end
+
   end
 end

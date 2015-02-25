@@ -5,6 +5,7 @@ require 'thread'
 
 module Jiji::Model::Trading
   class TradingContext
+
     attr_reader :broker
     attr_reader :agents
     attr_reader :status
@@ -51,5 +52,6 @@ module Jiji::Model::Trading
     def []=(_key, value)
       @variables[value]
     end
+
   end
 end

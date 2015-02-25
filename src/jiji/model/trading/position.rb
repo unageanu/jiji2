@@ -9,6 +9,7 @@ require 'jiji/errors/errors'
 
 module Jiji::Model::Trading
   class Position
+
     include Mongoid::Document
     include Jiji::Errors
     include Jiji::Utils::ValueObject
@@ -115,5 +116,6 @@ module Jiji::Model::Trading
       value = tick[pair.name]
       sell_or_buy == :buy ? value.ask : value.bid
     end
+
   end
 end

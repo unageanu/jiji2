@@ -5,6 +5,7 @@ require 'thread'
 
 module Jiji::Model::Trading::Jobs
   class NotifyNextTickJob
+
     def exec(trading_context, queue)
       before_do_next(trading_context, queue)
       trading_context.agents.next_tick(
@@ -18,9 +19,11 @@ module Jiji::Model::Trading::Jobs
 
     def after_do_next(_trading_context, queue)
     end
+
   end
 
   class NotifyNextTickJobForRMT < NotifyNextTickJob
+
     include Jiji::Model::Trading::Internal
 
     def after_do_next(trading_context, queue)
@@ -58,12 +61,15 @@ module Jiji::Model::Trading::Jobs
     def set_next_save_point(context, next_save_point)
       context[:next_save_point] = next_save_point
     end
+
   end
 
   class NotifyNextTickJobForBackTest < NotifyNextTickJob
+
     def after_do_next(context, queue)
       queue << self if context.broker.next?
       sleep 0.01
     end
+
   end
 end

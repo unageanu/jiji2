@@ -4,6 +4,7 @@ require 'encase'
 
 module Jiji::Model::Trading::Internal
   class TradingUnitSaver
+
     def initialize
       @current = {}
     end
@@ -37,5 +38,6 @@ module Jiji::Model::Trading::Internal
     def update_current(value)
       @current[value.name] = value
     end
+
   end
 end

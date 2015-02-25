@@ -7,6 +7,7 @@ require 'singleton'
 
 module Jiji::Model::Trading::Internal
   class TradingUnit
+
     include Mongoid::Document
     include Jiji::Utils::ValueObject
 
@@ -30,9 +31,11 @@ module Jiji::Model::Trading::Internal
     def values
       [pair_id, trace_unit, timestamp]
     end
+
   end
 
   class TradingUnits
+
     def initialize(values)
       @values = values
     end
@@ -75,5 +78,6 @@ module Jiji::Model::Trading::Internal
       fail Jiji::Errors::NotFoundException,
         "pair is not found. pair_id=#{pair_id}"
     end
+
   end
 end

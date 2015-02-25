@@ -5,6 +5,7 @@ require 'jiji/web/services/abstract_service'
 
 module Jiji::Web
   class BackTestService < Jiji::Web::AuthenticationRequiredService
+
     get '/' do
       ok(repository.all)
     end
@@ -21,5 +22,6 @@ module Jiji::Web
     def repository
       lookup(:back_test_repository)
     end
+
   end
 end

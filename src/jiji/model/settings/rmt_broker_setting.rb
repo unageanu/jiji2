@@ -6,6 +6,7 @@ require 'jiji/model/settings/abstract_setting'
 
 module Jiji::Model::Settings
   class RMTBrokerSetting < AbstractSetting
+
     include Encase
     include Mongoid::Document
 
@@ -82,5 +83,6 @@ module Jiji::Model::Settings
     def self.raise_plugin_not_found(id)
       fail Jiji::Errors::NotFoundException, "plugin is not found. id=#{id}"
     end
+
   end
 end

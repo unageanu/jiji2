@@ -4,6 +4,7 @@ require 'jiji/configurations/mongoid_configuration'
 
 module Jiji::Model::Trading::Brokers
   class AbstractBroker
+
     include Jiji::Model::Trading
 
     def initialize
@@ -63,5 +64,6 @@ module Jiji::Model::Trading::Brokers
     def check_position_exists(id)
       not_found(Position, id => id) unless @positions.include? id
     end
+
   end
 end

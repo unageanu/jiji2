@@ -4,6 +4,7 @@ require 'thread'
 
 module Jiji::Model::Trading
   class Process
+
     attr_reader :job_queue
 
     def initialize(trading_context, pool, fail_on_error = false)
@@ -64,5 +65,6 @@ module Jiji::Model::Trading
     def finished?
       !@task.nil? && @task.finished?
     end
+
   end
 end

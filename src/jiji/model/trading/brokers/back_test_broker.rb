@@ -6,6 +6,7 @@ require 'jiji/errors/errors'
 
 module Jiji::Model::Trading::Brokers
   class BackTestBroker < AbstractBroker
+
     include Jiji::Errors
     include Jiji::Model::Trading::Internal
 
@@ -83,5 +84,6 @@ module Jiji::Model::Trading::Brokers
 
       @current = end_time
     end
+
   end
 end

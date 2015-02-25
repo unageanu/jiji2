@@ -2,6 +2,7 @@ require 'date'
 
 module Jiji::Utils
   class TimeSource
+
     KEY = :jiji_time_source__now
 
     def now
@@ -15,5 +16,6 @@ module Jiji::Utils
     def reset
       Thread.current[KEY] = nil
     end
+
   end
 end

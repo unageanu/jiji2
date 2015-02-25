@@ -5,6 +5,7 @@ require 'jiji/web/services/abstract_service'
 
 module Jiji::Web
   class AuthenticationService < Jiji::Web::AbstractService
+
     post '/' do
       token = authenticator.authenticate(load_body['password'])
       created(token: token)
@@ -13,5 +14,6 @@ module Jiji::Web
     def authenticator
       lookup(:authenticator)
     end
+
   end
 end

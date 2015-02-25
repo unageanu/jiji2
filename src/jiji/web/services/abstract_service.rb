@@ -11,6 +11,7 @@ require 'jiji/web/transport/messagepack'
 
 module Jiji::Web
   class AbstractService < Base
+
     include Jiji::Errors
 
     use Rack::Deflater
@@ -62,9 +63,12 @@ module Jiji::Web
         'Pragma'        => 'no-cache'
       }
     end
+
   end
 
   class AuthenticationRequiredService < AbstractService
+
     use Jiji::Web::AuthenticationFilter
+
   end
 end

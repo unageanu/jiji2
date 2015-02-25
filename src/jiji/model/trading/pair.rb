@@ -8,6 +8,7 @@ require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
   class Pair
+
     include Mongoid::Document
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
@@ -25,9 +26,11 @@ module Jiji::Model::Trading
     end
 
     attr_readonly :pair_id, :name
+
   end
 
   class Pairs
+
     include Singleton
     include Jiji::Errors
 
@@ -98,5 +101,6 @@ module Jiji::Model::Trading
       max = @by_name.values.max_by(&:pair_id)
       max ? max.pair_id + 1 : 0
     end
+
   end
 end

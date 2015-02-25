@@ -5,6 +5,7 @@ require 'jiji/errors/errors'
 
 module Jiji::Model::Agents
   class AgentRegistry
+
     include Encase
     include Enumerable
     include Jiji::Errors
@@ -151,5 +152,6 @@ module Jiji::Model::Agents
     def extract_name(class_name)
       class_name.split('::', 2)[1]
     end
+
   end
 end

@@ -6,6 +6,7 @@ require 'bcrypt'
 
 module Jiji::Security
   class Authenticator
+
     include Encase
     include Jiji::Errors
 
@@ -37,5 +38,6 @@ module Jiji::Security
     def expiration_date
       time_source.now + security_setting.expiration_days * 60 * 60 * 24
     end
+
   end
 end

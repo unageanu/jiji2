@@ -2,24 +2,31 @@
 
 module Jiji::Errors
   class AuthFailedException < Exception
+
   end
 
   class NotFoundException < Exception
+
   end
 
   class UnauthorizedException < Exception
+
   end
 
   class NotInitializedException < Exception
+
   end
 
   class IllegalStateException < Exception
+
   end
 
   class InternalServerError < Exception
+
   end
 
   class AlreadyExistsException < Exception
+
   end
 
   def auth_failed

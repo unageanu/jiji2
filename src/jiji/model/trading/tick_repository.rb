@@ -4,6 +4,7 @@ require 'encase'
 
 module Jiji::Model::Trading
   class TickRepository
+
     include Encase
     include Jiji::Errors
 
@@ -32,5 +33,6 @@ module Jiji::Model::Trading
         :timestamp.lt  => end_time
       ).delete
     end
+
   end
 end

@@ -5,6 +5,7 @@ require 'jiji/utils/value_object'
 
 module Jiji::Model::Agents
   class AgentSourceRepository
+
     def all
       AgentSource.all.map { |a| a }
     end
@@ -18,5 +19,6 @@ module Jiji::Model::Agents
       source.evaluate
       source
     end
+
   end
 end

@@ -8,6 +8,7 @@ require 'singleton'
 
 module Jiji::Model::Trading::Internal
   class Swap
+
     include Mongoid::Document
     include Jiji::Utils
     include Jiji::Utils::ValueObject
@@ -33,9 +34,11 @@ module Jiji::Model::Trading::Internal
     def values
       [pair_id, sell_swap, buy_swap, timestamp]
     end
+
   end
 
   class Swaps
+
     def initialize(swaps)
       @swaps      = swaps
     end
@@ -79,5 +82,6 @@ module Jiji::Model::Trading::Internal
       fail Jiji::Errors::NotFoundException,
         "pair is not found. pair_id=#{pair_id}"
     end
+
   end
 end

@@ -2,6 +2,7 @@
 
 module Jiji::Model::Trading::Jobs
   class Job
+
     attr_reader :future
 
     def initialize
@@ -21,9 +22,11 @@ module Jiji::Model::Trading::Jobs
     def self.create_from(&block)
       ProcJob.new(&block)
     end
+
   end
 
   class ProcJob < Job
+
     def initialize(&block)
       super()
       @block = block
@@ -32,5 +35,6 @@ module Jiji::Model::Trading::Jobs
     def call(trading_context, queue)
       @block.call(trading_context, queue)
     end
+
   end
 end

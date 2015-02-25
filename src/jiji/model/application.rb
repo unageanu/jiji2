@@ -6,6 +6,7 @@ require 'jiji/composing/container_factory'
 
 module Jiji::Model
   class Application
+
     include Encase
 
     needs :plugin_loader
@@ -23,5 +24,6 @@ module Jiji::Model
       @rmt.tear_down
       @back_test_repository.stop
     end
+
   end
 end

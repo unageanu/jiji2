@@ -8,6 +8,7 @@ require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
   class RMT
+
     include Encase
     include Jiji::Errors
     include Jiji::Model::Trading
@@ -53,5 +54,6 @@ module Jiji::Model::Trading
     def create_process(trading_context)
       Process.new(trading_context, Thread.pool(1), false)
     end
+
   end
 end

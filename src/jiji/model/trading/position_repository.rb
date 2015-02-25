@@ -4,6 +4,7 @@ require 'encase'
 
 module Jiji::Model::Trading
   class PositionRepository
+
     include Encase
     include Jiji::Errors
 
@@ -29,5 +30,6 @@ module Jiji::Model::Trading
                      :status        => :closed,
                      :exited_at.lt  => exited_before).delete
     end
+
   end
 end

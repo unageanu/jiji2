@@ -6,6 +6,7 @@ require 'jiji/composing/container_factory'
 
 module Jiji::Web
   class WebApplication
+
     include Singleton
 
     def initialize
@@ -36,5 +37,6 @@ module Jiji::Web
     end
 
     attr_reader :container
+
   end
 end

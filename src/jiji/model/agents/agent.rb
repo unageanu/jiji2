@@ -50,6 +50,7 @@ module Jiji::Model::Agents::Agent
 
   #===エージェントのプロパティ
   class Property
+
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
@@ -81,5 +82,6 @@ module Jiji::Model::Agents::Agent
     def to_h # nodoc
       { id: id, name: name, type: type, default: default }
     end
+
   end
 end

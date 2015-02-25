@@ -22,3 +22,7 @@ Style/ClassAndModuleChildren:
 # 継承元では引数を使わない場合はある
 Lint/UnusedMethodArgument:
   Enabled: false
+
+# class body の前後に改行を挿入する。
+Style/EmptyLinesAroundClassBody:
+  EnforcedStyle: empty_lines

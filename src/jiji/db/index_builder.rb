@@ -4,6 +4,7 @@ require 'mongoid'
 require 'jiji/configurations/mongoid_configuration'
 
 class Jiji::Db::IndexBuilder
+
   def create_indexes
     Mongoid.models.each do|m|
       next if m.index_specifications.empty?
@@ -11,4 +12,5 @@ class Jiji::Db::IndexBuilder
       m.create_indexes
     end
   end
+
 end

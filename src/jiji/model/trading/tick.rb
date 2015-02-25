@@ -6,6 +6,7 @@ require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
   class Tick
+
     include Enumerable
     include Mongoid::Document
 
@@ -48,6 +49,7 @@ module Jiji::Model::Trading
     end
 
     class Value
+
       include Jiji::Utils::ValueObject
       include Jiji::Web::Transport::Transportable
 
@@ -72,6 +74,7 @@ module Jiji::Model::Trading
           sell_swap: sell_swap
         }
       end
+
     end
 
     private
@@ -105,9 +108,11 @@ module Jiji::Model::Trading
         end
       end
     end
+
   end
 
   class NilTick
+
     include Enumerable
 
     attr_reader :timestamp
@@ -125,5 +130,6 @@ module Jiji::Model::Trading
 
     def save
     end
+
   end
 end

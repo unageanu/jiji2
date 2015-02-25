@@ -1,6 +1,7 @@
 
 module Jiji::Utils
   class Requires
+
     def self.root
       File.expand_path('../../../../', __FILE__)
     end
@@ -10,5 +11,6 @@ module Jiji::Utils
         require f[root.length + 5..-4]
       end
     end
+
   end
 end

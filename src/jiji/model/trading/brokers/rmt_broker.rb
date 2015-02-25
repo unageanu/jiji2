@@ -6,6 +6,7 @@ require 'jiji/errors/errors'
 
 module Jiji::Model::Trading::Brokers
   class RMTBroker < AbstractBroker
+
     include Encase
     include Jiji::Errors
     include Jiji::Model::Trading
@@ -85,5 +86,6 @@ module Jiji::Model::Trading::Brokers
     def convert_rate_to_tick(r)
       Tick::Value.new(r.bid, r.ask, r.buy_swap, r.sell_swap)
     end
+
   end
 end

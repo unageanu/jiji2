@@ -4,6 +4,7 @@ require 'encase'
 
 module Jiji::Model::Trading::Internal
   class RateSaver
+
     def initialize
       @current_swap = {}
     end
@@ -44,5 +45,6 @@ module Jiji::Model::Trading::Internal
     def update_current_swap(pair_name, value)
       @current_swap[pair_name] = value
     end
+
   end
 end

@@ -10,6 +10,7 @@ require 'jiji/utils/requires'
 Jiji::Utils::Requires.require_all('jiji')
 
 class Jiji::Composing::ContainerFactory
+
   include Singleton
 
   include Jiji
@@ -126,4 +127,5 @@ class Jiji::Composing::ContainerFactory
       object :logger, logger
     end
   end
+
 end

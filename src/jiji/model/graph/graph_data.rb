@@ -6,6 +6,7 @@ require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Graph
   class GraphData
+
     include Mongoid::Document
 
     store_in collection: 'graph-data'
@@ -31,5 +32,6 @@ module Jiji::Model::Graph
     def []=(key, value)
       values[key] = value
     end
+
   end
 end

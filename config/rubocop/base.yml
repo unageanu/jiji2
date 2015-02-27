@@ -30,3 +30,8 @@ Style/EmptyLinesAroundClassBody:
 # 条件or処理が長い場合、if-endを使いたい。
 Style/GuardClause:
   Enabled: false
+
+# 引数は8個までOK
+Metrics/ParameterLists:
+  Max: 8
+  CountKeywordArgs: false

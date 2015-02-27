@@ -7,18 +7,28 @@ module Jiji::Model::Trading::Internal
       pair = Jiji::Model::Trading::Pairs.instance.create_or_get(pair_name)
       swaps = Swaps.create(start_time, end_time)
       interval = resolve_collecting_interval(interval)
+      q = fetch_ticks_within(start_time, end_time)
+      q = aggregate_by_interval(q, pair, interval, swaps)
+      q.sort_by(&:timestamp)
+    end
+
+    private
+
+    def fetch_ticks_within(start_time, end_time)
       Jiji::Model::Trading::Tick.where(
         :timestamp.gte => start_time,
         :timestamp.lt  => end_time
-      ).map_reduce(
+      )
+    end
+
+    def aggregate_by_interval(q, pair, interval, swaps)
+      q.map_reduce(
         MAP_TEMPLATE_FOR_FETCH.result(binding),
         REDUCE_TEMPLATE_FOR_FETCH.result(binding)
       ).out(inline: true).map do |r|
         convert_rate(r, swaps, pair, interval)
-      end.sort_by(&:timestamp)
+      end
     end
-
-    private
 
     MAP_TEMPLATE_FOR_FETCH = ERB.new %{
       function() {
@@ -55,12 +65,11 @@ module Jiji::Model::Trading::Internal
       v = fetched_value['value']
       timestamp = resolve_timestamp(v, interval)
       Jiji::Model::Trading::Rate.new(
-        pair,
+        pair, timestamp,
         create_tick(pair, v['open']  || v, swaps),
         create_tick(pair, v['close'] || v, swaps),
         create_tick(pair, v['high']  || v, swaps),
-        create_tick(pair, v['low']   || v, swaps),
-        timestamp
+        create_tick(pair, v['low']   || v, swaps)
       )
     end
 
@@ -80,17 +89,20 @@ module Jiji::Model::Trading::Internal
       end
     end
 
+    # rubocop:disable Metrics/CyclomaticComplexity
     def resolve_collecting_interval(interval)
+      m = 60 * 1000
       case interval
-      when :one_minute      then       60 * 1000
-      when :fifteen_minutes then    15 * 60 * 1000
-      when :thirty_minutes  then    30 * 60 * 1000
-      when :one_hour        then    60 * 60 * 1000
-      when :six_hours       then  6 * 60 * 60 * 1000
-      when :one_day         then 24 * 60 * 60 * 1000
+      when :one_minute      then       1 * m
+      when :fifteen_minutes then      15 * m
+      when :thirty_minutes  then      30 * m
+      when :one_hour        then      60 * m
+      when :six_hours       then  6 * 60 * m
+      when :one_day         then 24 * 60 * m
       else fail ArgumentError, "unknown interval. interval=#{interval}"
       end
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
 
   end
 end

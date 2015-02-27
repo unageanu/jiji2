@@ -16,6 +16,7 @@ module Jiji
       module Internal   end
       module Jobs       end
       module Processes  end
+      module Utils      end
     end
   end
 

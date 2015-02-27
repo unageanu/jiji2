@@ -10,15 +10,18 @@ module Jiji::Model::Trading
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
-    attr_reader :pair, :open, :close, :high, :low, :timestamp
+    attr_reader :pair, :open, :close, :high, :low
+    attr_reader :timestamp, :close_timestamp
 
-    def initialize(pair, open, close, high, low, timestamp)
-      @pair      = pair
-      @open      = open
-      @close     = close
-      @high      = high
-      @low       = low
-      @timestamp = timestamp
+    def initialize(pair, timestamp, open, close = open,
+      high = open, low = open, close_timestamp = timestamp)
+      @pair            = pair
+      @open            = open
+      @close           = close
+      @high            = high
+      @low             = low
+      @timestamp       = timestamp
+      @close_timestamp = close_timestamp
     end
 
     def buy_swap
@@ -31,28 +34,14 @@ module Jiji::Model::Trading
 
     def self.create_from_tick(pair_name, *ticks)
       pair = Pairs.instance.create_or_get(pair_name)
-      open = close = high = low = ticks[0]
-      ticks.each do |t|
-        open  = t if t.timestamp < open.timestamp
-        close = t if t.timestamp > close.timestamp
-        high  = t if high[pair_name].bid < t[pair_name].bid
-        low   = t if low[pair_name].bid  > t[pair_name].bid
+      rate = Rate.new(pair, ticks[0].timestamp, ticks[0][pair_name])
+      ticks.each_with_object(rate) do |n, r|
+        r << n
       end
-      Rate.new(pair,
-        open[pair_name], close[pair_name],
-        high[pair_name], low[pair_name], open.timestamp)
     end
 
     def self.union(*rates)
-      open = close = high = low = rates[0]
-      rates.each do |r|
-        open  = r if r.timestamp < open.timestamp
-        close = r if r.timestamp > close.timestamp
-        high  = r if high.high.bid < r.high.bid
-        low   = r if low.low.bid  > r.low.bid
-      end
-      Rate.new(open.pair, open.open,
-        close.close, high.high, low.low, open.timestamp)
+      rates.inject(rates.pop) { |a, e| a + e }
     end
 
     def to_h
@@ -66,10 +55,50 @@ module Jiji::Model::Trading
       }
     end
 
+    def <<(tick)
+      value = tick[pair.name]
+      update_open(value, tick.timestamp)
+      update_close(value, tick.timestamp)
+      update_high(value)
+      update_low(value)
+    end
+
+    def +(other)
+      update_open(other.open, other.timestamp)
+      update_close(other.close, other.close_timestamp)
+      update_high(other.high)
+      update_low(other.low)
+      self
+    end
+
     protected
 
     def values
       [pair, open, close, high, low, timestamp]
+    end
+
+    private
+
+    def update_open(value, timestamp)
+      return unless timestamp < @timestamp
+      @open      = value
+      @timestamp = timestamp
+    end
+
+    def update_close(value, timestamp)
+      return unless timestamp > @close_timestamp
+      @close           = value
+      @close_timestamp = timestamp
+    end
+
+    def update_high(value)
+      return unless @high.bid  < value.bid
+      @high  = value
+    end
+
+    def update_low(value)
+      return unless  @low.bid > value.bid
+      @low  = value
     end
 
   end

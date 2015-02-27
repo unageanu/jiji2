@@ -44,7 +44,7 @@ describe Jiji::Model::Trading::PositionRepository do
   end
 
   it 'ソート条件、取得数を指定して、一覧を取得できる' do
-    positions = @position_repository.get_positions(nil)
+    positions = @position_repository.retrieve_positions(nil)
 
     expect(positions.length).to eq(20)
     expect(positions[0].back_test_id).to eq(nil)
@@ -52,7 +52,7 @@ describe Jiji::Model::Trading::PositionRepository do
     expect(positions[19].back_test_id).to eq(nil)
     expect(positions[19].entered_at).to eq(Time.at(19))
 
-    positions = @position_repository.get_positions(
+    positions = @position_repository.retrieve_positions(
       nil, entered_at: :desc)
 
     expect(positions.size).to eq(20)
@@ -61,7 +61,7 @@ describe Jiji::Model::Trading::PositionRepository do
     expect(positions[19].back_test_id).to eq(nil)
     expect(positions[19].entered_at).to eq(Time.at(80))
 
-    positions = @position_repository.get_positions(
+    positions = @position_repository.retrieve_positions(
       nil, { entered_at: :desc }, 10, 30)
 
     expect(positions.size).to eq(30)
@@ -70,7 +70,7 @@ describe Jiji::Model::Trading::PositionRepository do
     expect(positions[29].back_test_id).to eq(nil)
     expect(positions[29].entered_at).to eq(Time.at(60))
 
-    positions = @position_repository.get_positions(
+    positions = @position_repository.retrieve_positions(
       nil, { entered_at: :asc }, 10, 30)
 
     expect(positions.size).to eq(30)
@@ -79,7 +79,7 @@ describe Jiji::Model::Trading::PositionRepository do
     expect(positions[29].back_test_id).to eq(nil)
     expect(positions[29].entered_at).to eq(Time.at(39))
 
-    positions = @position_repository.get_positions(@test1._id)
+    positions = @position_repository.retrieve_positions(@test1._id)
 
     expect(positions.size).to eq(20)
     expect(positions[0].back_test_id).to eq(@test1._id)
@@ -87,7 +87,7 @@ describe Jiji::Model::Trading::PositionRepository do
     expect(positions[19].back_test_id).to eq(@test1._id)
     expect(positions[19].entered_at).to eq(Time.at(19))
 
-    positions = @position_repository.get_positions(
+    positions = @position_repository.retrieve_positions(
       @test1._id, { exited_at: :desc }, 10, 30)
 
     expect(positions.size).to eq(30)
@@ -96,13 +96,13 @@ describe Jiji::Model::Trading::PositionRepository do
     expect(positions[29].back_test_id).to eq(@test1._id)
     expect(positions[29].entered_at).to eq(Time.at(10))
 
-    positions = @position_repository.get_positions(@test3._id)
+    positions = @position_repository.retrieve_positions(@test3._id)
 
     expect(positions.size).to eq(0)
   end
 
   it 'アクティブなRMTの建玉を取得できる' do
-    positions = @position_repository.get_living_positions_of_rmt
+    positions = @position_repository.retrieve_living_positions_of_rmt
 
     expect(positions.size).to eq(50)
     expect(positions[0].back_test_id).to eq(nil)
@@ -114,26 +114,26 @@ describe Jiji::Model::Trading::PositionRepository do
   end
 
   it '不要になったバックテストの建玉を削除できる' do
-    positions = @position_repository.get_positions(@test1._id)
+    positions = @position_repository.retrieve_positions(@test1._id)
     expect(positions.size).to eq(20)
-    positions = @position_repository.get_positions(@test2._id)
+    positions = @position_repository.retrieve_positions(@test2._id)
     expect(positions.size).to eq(20)
 
     @position_repository.delete_all_positions_of_back_test(@test1._id)
 
-    positions = @position_repository.get_positions(@test1._id)
+    positions = @position_repository.retrieve_positions(@test1._id)
     expect(positions.size).to eq(0)
-    positions = @position_repository.get_positions(@test2._id)
+    positions = @position_repository.retrieve_positions(@test2._id)
     expect(positions.size).to eq(20)
   end
 
   it '決済済みになったRMTの建玉を削除できる'  do
-    positions = @position_repository.get_positions
+    positions = @position_repository.retrieve_positions
     expect(positions.size).to eq(20)
 
     @position_repository.delete_closed_positions_of_rmt(Time.at(40))
 
-    positions = @position_repository.get_positions
+    positions = @position_repository.retrieve_positions
     expect(positions.size).to eq(20)
     expect(positions[0].back_test_id).to eq(nil)
     expect(positions[0].entered_at).to eq(Time.at(40))
@@ -144,7 +144,7 @@ describe Jiji::Model::Trading::PositionRepository do
 
     @position_repository.delete_closed_positions_of_rmt(Time.at(60))
 
-    positions = @position_repository.get_positions
+    positions = @position_repository.retrieve_positions
     expect(positions.size).to eq(20)
     expect(positions[0].back_test_id).to eq(nil)
     expect(positions[0].entered_at).to eq(Time.at(50))

@@ -2,8 +2,6 @@
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
-require 'thread'
-require 'singleton'
 require 'jiji/web/transport/transportable'
 require 'jiji/errors/errors'
 
@@ -14,6 +12,7 @@ module Jiji::Model::Trading
     include Jiji::Errors
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
+    include Utils
 
     store_in collection: 'positions'
 
@@ -44,46 +43,26 @@ module Jiji::Model::Trading
     attr_readonly :trading_unit
 
     def to_h
-      {
-        back_test_id: back_test_id,
-        external_position_id: external_position_id,
-        pair_id: pair_id,  lot: lot,
-        trading_unit: trading_unit,
-        sell_or_buy: sell_or_buy,
-        entry_price: entry_price,
-        current_price: current_price,
-        exit_price: exit_price,
-        entered_at: entered_at,
-        exited_at: exited_at,
-        updated_at: updated_at,
-        status: status
-      }
+      h = {}
+      insert_trading_information_to_hash(h)
+      insert_price_and_time_information_to_hash(h)
+      h
     end
 
     def self.create(back_test_id, external_position_id,
         pair_id, lot, trading_unit, sell_or_buy, tick)
       position = Position.new do |p|
-        p.back_test_id         = back_test_id
-        p.pair_id              = pair_id
-        p.lot                  = lot
-        p.trading_unit         = trading_unit
-        p.sell_or_buy          = sell_or_buy
-        p.entry_price          = calculate_entry_price(
-          tick, pair_id, sell_or_buy)
-        p.entered_at           = tick.timestamp
-        p.current_price        = calculate_current_price(
-          tick, pair_id, sell_or_buy)
-        p.updated_at           = p.entered_at
-        p.status               = :live
-        p.external_position_id = external_position_id
+        p.initialize_trading_information(back_test_id,
+          external_position_id, pair_id, lot, trading_unit, sell_or_buy)
+        p.initialize_price_and_time(tick, pair_id, sell_or_buy)
       end
       position.save
       position
     end
 
     def profit_or_loss
-      current = BigDecimal.new(current_price, 10) * lot * trading_unit
-      entry   = BigDecimal.new(entry_price,   10) * lot * trading_unit
+      current = actual_amount_of(current_price)
+      entry   = actual_amount_of(entry_price)
       (current - entry) * (sell_or_buy == :buy ? 1 : -1)
     end
 
@@ -97,24 +76,54 @@ module Jiji::Model::Trading
 
     def update(tick)
       return if status == :closed
-      self.current_price = Position.calculate_current_price(
+      self.current_price = PricingUtils.calculate_current_price(
         tick, pair_id, sell_or_buy)
       self.updated_at    = tick.timestamp
     end
 
-    def self.calculate_entry_price(tick, pair_id, sell_or_buy)
-      # 新規エントリー時は、:buy の場合買値で買い、:sell の場合売値で売る。
-      calculate_price(tick, pair_id, sell_or_buy)
+    def initialize_price_and_time(tick, pair_id, sell_or_buy)
+      self.entry_price   = PricingUtils.calculate_entry_price(
+        tick, pair_id, sell_or_buy)
+      self.current_price = PricingUtils.calculate_current_price(
+        tick, pair_id, sell_or_buy)
+      self.entered_at    = tick.timestamp
+      self.updated_at    = tick.timestamp
     end
-    def self.calculate_current_price(tick, pair_id, sell_or_buy)
-      # 現在価格は、:buy の場合売値、:sell の場合買値で計算。
-      calculate_price(tick, pair_id,
-        sell_or_buy == :buy ? :sell : :buy)
+
+    def initialize_trading_information(back_test_id,
+        external_position_id, pair_id, lot, trading_unit, sell_or_buy)
+      self.back_test_id         = back_test_id
+      self.pair_id              = pair_id
+      self.lot                  = lot
+      self.trading_unit         = trading_unit
+      self.sell_or_buy          = sell_or_buy
+      self.status               = :live
+      self.external_position_id = external_position_id
     end
-    def self.calculate_price(tick, pair_id, sell_or_buy)
-      pair = Pairs.instance.get_by_id(pair_id)
-      value = tick[pair.name]
-      sell_or_buy == :buy ? value.ask : value.bid
+
+    private
+
+    def actual_amount_of(price)
+      BigDecimal.new(price, 10) * lot * trading_unit
+    end
+
+    def insert_trading_information_to_hash(h)
+      h[:back_test_id]         = back_test_id
+      h[:external_position_id] = external_position_id
+      h[:pair_id]              = pair_id
+      h[:lot]                  = lot
+      h[:trading_unit]         = trading_unit
+      h[:sell_or_buy]          = sell_or_buy
+      h[:status]               = status
+    end
+
+    def insert_price_and_time_information_to_hash(h)
+      h[:entry_price]   = entry_price
+      h[:current_price] = current_price
+      h[:exit_price]    = exit_price
+      h[:entered_at]    = entered_at
+      h[:exited_at]     = exited_at
+      h[:updated_at]    = updated_at
     end
 
   end

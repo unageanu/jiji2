@@ -14,12 +14,12 @@ module Jiji::Web
 
     get '/rmt' do
       query = get_time_from_query_param
-      ok(repository.get_positions(nil, query))
+      ok(repository.retrieve_positions(nil, query))
     end
 
     get '/:back_test_id' do
       query = get_time_from_query_param
-      ok(repository.get_positions(params['back_test_id'], query))
+      ok(repository.retrieve_positions(params['back_test_id'], query))
     end
 
     def repository

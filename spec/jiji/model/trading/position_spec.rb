@@ -154,4 +154,25 @@ describe Jiji::Model::Trading::Position do
     expect(position.exited_at).to eq(Time.at(100))
     expect(position.status).to eq(:closed)
   end
+
+  it 'to_hでハッシュに変換できる' do
+    position = Jiji::Model::Trading::Position.create(
+      nil, '1', 2, 100, 10_000, :sell, @data_builder.new_tick(2))
+
+    expect(position.back_test_id).to eq(nil)
+    expect(position.external_position_id).to eq('1')
+    expect(position.pair_id).to eq(2)
+    expect(position.lot).to eq(100)
+    expect(position.trading_unit).to eq(10_000)
+    expect(position.sell_or_buy).to eq(:sell)
+    expect(position.entry_price).to eq(102.0)
+    expect(position.entered_at).to eq(Time.at(0))
+    expect(position.current_price).to eq(102.003)
+    expect(position.updated_at).to eq(Time.at(0))
+    expect(position.exit_price).to eq(nil)
+    expect(position.exited_at).to eq(nil)
+    expect(position.status).to eq(:live)
+
+    expect(Jiji::Model::Trading::Position.count).to eq(1)
+  end
 end

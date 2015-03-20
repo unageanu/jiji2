@@ -159,20 +159,20 @@ describe Jiji::Model::Trading::Position do
     position = Jiji::Model::Trading::Position.create(
       nil, '1', 2, 100, 10_000, :sell, @data_builder.new_tick(2))
 
-    expect(position.back_test_id).to eq(nil)
-    expect(position.external_position_id).to eq('1')
-    expect(position.pair_id).to eq(2)
-    expect(position.lot).to eq(100)
-    expect(position.trading_unit).to eq(10_000)
-    expect(position.sell_or_buy).to eq(:sell)
-    expect(position.entry_price).to eq(102.0)
-    expect(position.entered_at).to eq(Time.at(0))
-    expect(position.current_price).to eq(102.003)
-    expect(position.updated_at).to eq(Time.at(0))
-    expect(position.exit_price).to eq(nil)
-    expect(position.exited_at).to eq(nil)
-    expect(position.status).to eq(:live)
+    hash = position.to_h
 
-    expect(Jiji::Model::Trading::Position.count).to eq(1)
+    expect(hash[:back_test_id]).to eq(nil)
+    expect(hash[:external_position_id]).to eq('1')
+    expect(hash[:pair_id]).to eq(2)
+    expect(hash[:lot]).to eq(100)
+    expect(hash[:trading_unit]).to eq(10_000)
+    expect(hash[:sell_or_buy]).to eq(:sell)
+    expect(hash[:entry_price]).to eq(102.0)
+    expect(hash[:entered_at]).to eq(Time.at(0))
+    expect(hash[:current_price]).to eq(102.003)
+    expect(hash[:updated_at]).to eq(Time.at(0))
+    expect(hash[:exit_price]).to eq(nil)
+    expect(hash[:exited_at]).to eq(nil)
+    expect(hash[:status]).to eq(:live)
   end
 end

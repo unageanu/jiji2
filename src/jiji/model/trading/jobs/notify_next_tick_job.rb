@@ -51,7 +51,7 @@ module Jiji::Model::Trading::Jobs
     end
 
     def get_or_create_trading_unit_saver(trading_context)
-      trading_context[:rading_unit_saver] ||= TradingUnitSaver.new
+      trading_context[:trading_unit_saver] ||= TradingUnitSaver.new
     end
 
     def get_next_save_point(context)

@@ -49,8 +49,8 @@ module Jiji::Model::Trading
       @variables[key]
     end
 
-    def []=(_key, value)
-      @variables[value]
+    def []=(key, value)
+      @variables[key] = value
     end
 
   end

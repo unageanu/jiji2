@@ -3,7 +3,7 @@ require 'rake'
 require 'rspec/core'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
- 
+
 task :default => [:spec,:lint]
 
 desc "Run all specs in spec directory"
@@ -23,14 +23,18 @@ end
 
 def init_rubocop_task(task,src_dir)
   task.patterns = [
-    "#{src_dir}/**/*.rb", 
+    "#{src_dir}/**/*.rb",
     'config/**/*.rb'
   ]
   task.formatters = ['html']
   task.options = [
-    '--auto-correct', 
-    '-o', "./lint/rubocop_#{src_dir}.html", 
+    '--auto-correct',
+    '-o', File.join(build_dir, "lint", "rubocop_#{src_dir}.html"),
     '-c', "config/rubocop/#{src_dir}.yml"
   ]
   task.fail_on_error = false
+end
+
+def build_dir
+  ENV['CIRCLE_ARTIFACTS'] || 'build'
 end

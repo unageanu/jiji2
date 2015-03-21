@@ -3,5 +3,4 @@
 /log
 /tmp
 /.env
-/coverage
-/lint
+/build

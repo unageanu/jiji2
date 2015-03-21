@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.1.3'
+ruby '2.2.1'
 
 gem 'encase',    '0.1.2'
 
@@ -23,10 +23,10 @@ gem 'newrelic_rpm', '3.9.9.275'
 gem 'rake'
 
 group :test do
-  gem 'rspec',     '3.1.0'
+  gem 'rspec',     '~> 3.1.0'
   gem 'simplecov', '~> 0.9.0'
 end
 
 group :development do
-  gem 'rubocop',   '0.29.1'
+  gem 'rubocop',   '~> 0.29.1'
 end

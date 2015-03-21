@@ -25,6 +25,7 @@ gem 'rake'
 group :test do
   gem 'rspec',     '~> 3.1.0'
   gem 'simplecov', '~> 0.9.0'
+  gem 'codeclimate-test-reporter', '~> 0.4.7'
 end
 
 group :development do

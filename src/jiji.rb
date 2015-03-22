@@ -3,7 +3,13 @@
 require 'bundler/setup'
 
 module Jiji
-  module Composing      end
+  module Composing
+    module Configurators
+      module Infrastructure end
+      module Model          end
+    end
+  end
+
   module Db             end
   module Errors         end
 
@@ -22,6 +28,7 @@ module Jiji
 
   module Plugin         end
   module Security       end
+  module Services       end
   module Utils          end
   module Web
     module Transport    end

@@ -21,6 +21,7 @@ RSpec.configure do |config|
 end
 
 ENV['JIJI_ENV'] = 'test'
+ENV['SECRET']   = 'abcdefghijklmnopqrstuvwxyz' * 3
 
 module Jiji
   module Test

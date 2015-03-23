@@ -19,5 +19,5 @@ if ENV['MONGOLAB_URI'] || ENV['MONGODB_URI']
 
   Mongoid.load_configuration(config)
 else
-  Mongoid.load!(mongoid_setting_file, ENV['JIJI_ENV'] || :local)
+  Mongoid.load!(mongoid_setting_file, ENV['RACK_ENV'] || :development)
 end

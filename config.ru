@@ -1,8 +1,8 @@
 # coding: utf-8
 
-$:.unshift  File.join(File.dirname(__FILE__), "src")
-
-ENV["RACK_ENV"]="production"
+base = File.dirname(__FILE__)
+$:.unshift File.join(base, "src")
+$:.unshift File.join(base, "spec") if ENV['RACK_ENV'] =~ /test$/
 
 require 'jiji'
 require 'newrelic_rpm'

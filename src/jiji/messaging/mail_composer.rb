@@ -34,7 +34,7 @@ module Jiji::Messaging
     private
 
     def setup_delivery_method(mail)
-      if (ENV['JIJI_ENV'] == 'test')
+      if ENV['RACK_ENV'] =~ /test$/
         mail.delivery_method :test
       else
         mail.delivery_method :smtp, smtp_server.setting

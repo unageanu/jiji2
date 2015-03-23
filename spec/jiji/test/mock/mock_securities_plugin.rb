@@ -69,10 +69,3 @@ module Jiji::Test::Mock
 
   end
 end
-
-JIJI::Plugin.register(
-  JIJI::Plugin::SecuritiesPlugin::FUTURE_NAME,
-  Jiji::Test::Mock::MockSecuritiesPlugin.new(:mock))
-JIJI::Plugin.register(
-  JIJI::Plugin::SecuritiesPlugin::FUTURE_NAME,
-  Jiji::Test::Mock::MockSecuritiesPlugin.new(:mock2))

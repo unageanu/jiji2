@@ -1,2 +1,2 @@
-ENV['JIJI_ENV'] = 'test'
+ENV['RACK_ENV'] ||= 'test'
 ENV['SECRET']   = 'abcdefghijklmnopqrstuvwxyz' * 3

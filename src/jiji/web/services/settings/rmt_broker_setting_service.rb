@@ -16,13 +16,14 @@ module Jiji::Web
       ok(available_securities)
     end
 
-    get '/:securities_id/configuration_definitions' do
+    get '/available-securities/:securities_id/configuration_definitions' do
       config = RMTBrokerSetting.get_configuration_definitions(
         params['securities_id'].to_sym)
+      p config
       ok(config)
     end
 
-    get '/:securities_id/configurations' do
+    get '/available-securities/:securities_id/configurations' do
       ok(setting.get_configurations(params['securities_id'].to_sym))
     end
 

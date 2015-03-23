@@ -26,9 +26,11 @@ gem 'newrelic_rpm', '3.9.9.275'
 gem 'rake'
 
 group :test do
-  gem 'rspec',     '~> 3.1.0'
-  gem 'simplecov', '~> 0.9.0'
+  gem 'rspec',                     '~> 3.1.0'
+  gem 'simplecov',                 '~> 0.9.0'
   gem 'codeclimate-test-reporter', '~> 0.4.7'
+
+  gem 'httpclient',                '~> 2.6.0.1'
 end
 
 group :development do

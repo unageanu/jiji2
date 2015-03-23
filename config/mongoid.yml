@@ -6,17 +6,24 @@ default:
         - 127.0.0.1:27017
   options: &options
     raise_not_found_error: false
-    
-local:
+
+development:
   sessions:
     default:
       database: jiji
       hosts:   *hosts
   options: *options
-      
+
 test:
   sessions:
     default:
       database: jiji_test
+      hosts:   *hosts
+  options: *options
+
+rest_api_test:
+  sessions:
+    default:
+      database: jiji_rest_api_test
       hosts:   *hosts
   options: *options

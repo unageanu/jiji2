@@ -43,7 +43,9 @@ module Jiji::Model::Settings
     end
 
     def self.get_configuration_definitions(securities_id)
-      resolve_plugin(securities_id).input_infos
+      resolve_plugin(securities_id).input_infos.map do |i|
+        { key: i[:key], description: i[:description], secure: i[:secure] }
+      end
     end
 
     def get_configurations(securities_id)

@@ -21,7 +21,11 @@ module Jiji::Web
     private
 
     def load_body
-      JSON.load(request.body)
+      if request.env['CONTENT_TYPE'] =~ /^application\/x-msgpack/
+        MessagePack.unpack(request.body)
+      else
+        JSON.load(request.body)
+      end
     end
 
     def get_time_from_query_param(key)

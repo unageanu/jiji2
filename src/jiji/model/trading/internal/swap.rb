@@ -56,26 +56,11 @@ module Jiji::Model::Trading::Internal
     end
 
     def self.create(start_time, end_time)
-      data = Jiji::Utils::HistoricalData.load(Swap, start_time, end_time)
-      data = partition_by_pair(data)
-      data = aggregate_by_pair(data, start_time, end_time)
+      data = Jiji::Utils::HistoricalData.load_data(start_time, end_time, Swap)
       Swaps.new(data)
     end
 
     private
-
-    def self.partition_by_pair(data)
-      data.each_with_object({})do |v, r|
-        r[v.pair_id] = [] unless r.include?(v.pair_id)
-        r[v.pair_id] << v
-      end
-    end
-
-    def self.aggregate_by_pair(data, start_time, end_time)
-      data.each_with_object({})do |v, r|
-        r[v[0]] =  Jiji::Utils::HistoricalData.new(v[1], start_time, end_time)
-      end
-    end
 
     def check_pair_id(pair_id)
       return if @swaps.include?(pair_id)

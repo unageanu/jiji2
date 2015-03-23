@@ -6,7 +6,7 @@ require 'jiji/test/data_builder'
 describe Jiji::Web::Transport::Transportable do
   shared_examples '各種オブジェクトをシリアライズ/デシリアライズできる' do
     it 'Time' do
-      data = Time.new(2010, 1, 1)
+      data = Time.new(2010, 1, 1, 0, 0, 0, "+09:00")
       expect(@converter.call(data)).to eq '2010-01-01T00:00:00+09:00'
     end
 

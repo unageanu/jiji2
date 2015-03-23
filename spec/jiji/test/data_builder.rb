@@ -132,6 +132,8 @@ BODY
       Position.delete_all
       Jiji::Model::Agents::AgentSource.delete_all
       Jiji::Model::Settings::AbstractSetting.delete_all
+
+      Mail::TestMailer.deliveries.clear
     end
 
   end

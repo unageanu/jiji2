@@ -6,9 +6,9 @@ module Jiji::Utils
       File.expand_path('../../../../', __FILE__)
     end
 
-    def self.require_all(path)
-      Dir["#{root}/src/#{path}/**/*.rb"].each do |f|
-        require f[root.length + 5..-4]
+    def self.require_all(path, base = 'src')
+      Dir["#{root}/#{base}/#{path}/**/*.rb"].each do |f|
+        require f[(root.length + base.length + 2)..-4]
       end
     end
 

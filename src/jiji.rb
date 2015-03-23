@@ -9,7 +9,7 @@ module Jiji
       module Model          end
     end
   end
-
+  module Messaging      end
   module Db             end
   module Errors         end
 

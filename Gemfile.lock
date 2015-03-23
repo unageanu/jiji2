@@ -31,6 +31,8 @@ GEM
     i18n (0.7.0)
     json (1.8.2)
     lru_redux (0.8.1)
+    mail (2.6.3)
+      mime-types (>= 1.16, < 3)
     mechanize (2.7.3)
       domain_name (~> 0.5, >= 0.5.1)
       http-cookie (~> 1.0)
@@ -116,11 +118,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activesupport (= 4.2.1)
   bcrypt (= 3.1.9)
   clickclient_scrap (= 0.1.13)
   codeclimate-test-reporter (~> 0.4.7)
   encase (= 0.1.2)
   lru_redux (= 0.8.1)
+  mail (= 2.6.3)
   mongoid (= 4.0.0)
   msgpack (= 0.5.9)
   newrelic_rpm (= 3.9.9.275)

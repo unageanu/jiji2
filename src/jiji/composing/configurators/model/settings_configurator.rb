@@ -3,12 +3,13 @@
 module Jiji::Composing::Configurators
   class SettingsConfigurator < AbstractConfigurator
 
-    include Jiji::Model
+    include Jiji::Model::Settings
 
     def configure(container)
       container.configure do
-        object :security_setting,   Settings::SecuritySetting.load_or_create
-        object :rmt_broker_setting, Settings::RMTBrokerSetting.load_or_create
+        object :mail_composer_setting, MailComposerSetting.load_or_create
+        object :security_setting,      SecuritySetting.load_or_create
+        object :rmt_broker_setting,    RMTBrokerSetting.load_or_create
       end
     end
 

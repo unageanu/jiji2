@@ -6,6 +6,7 @@ module Jiji::Composing::Configurators
     def configurators
       [
         DBConfigurator.new,
+        MessagingConfigurator.new,
         SecurityConfigurator.new,
         ServicesConfigurator.new,
         UtilsConfigurator.new,

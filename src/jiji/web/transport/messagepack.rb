@@ -4,7 +4,15 @@ require 'time'
 class Time
 
   def to_msgpack(*a)
-    (to_i * 1000).to_msgpack(*a)
+    iso8601.to_msgpack(*a)
+  end
+
+end
+
+class Struct
+
+  def to_msgpack(*a)
+    to_h.to_msgpack(*a)
   end
 
 end

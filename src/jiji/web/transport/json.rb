@@ -8,3 +8,11 @@ class Time
   end
 
 end
+
+class Struct
+
+  def to_json(*a)
+    to_h.to_json(*a)
+  end
+
+end

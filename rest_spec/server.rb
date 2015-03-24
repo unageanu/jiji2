@@ -26,7 +26,7 @@ module Jiji
       @running = true
     end
 
-  private
+    private
 
     def initialize_db
       Jiji::Test::DataBuilder.new.clean
@@ -35,9 +35,9 @@ module Jiji
     def start_server
       FileUtils.mkdir_p 'log'
       pid = spawn(
-        {"RACK_ENV" => "rest_api_test"},
+        { 'RACK_ENV' => 'rest_api_test' },
         'bundle exec puma -C config/puma.rb',
-        {:out=>'log/test-server.log',:err=>'log/test-server-error.log'})
+        out: 'log/test-server.log', err: 'log/test-server-error.log')
       puts "start server pid=#{pid}"
       sleep 10
       pid
@@ -45,7 +45,7 @@ module Jiji
 
     def register_shutdown_fook(pid)
       at_exit do
-        raise "failed to kill server. pid=#{pid}" unless system("kill #{pid}")
+        fail "failed to kill server. pid=#{pid}" unless system("kill #{pid}")
         puts "stop server pid=#{pid}"
       end
     end

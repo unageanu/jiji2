@@ -11,7 +11,7 @@ module Jiji
     attr_writer :token
     attr_writer :transport
 
-    def initialize(transport=MessagePackTransport.new)
+    def initialize(transport = MessagePackTransport.new)
       @api_url    = 'http://localhost:5000/api'
       @client     = HTTPClient.new
       @client.debug_dev = STDOUT
@@ -19,25 +19,25 @@ module Jiji
       @token      = nil
     end
 
-    def get(path, query=nil, header={})
+    def get(path, query = nil, header = {})
       r = @client.get("#{@api_url}/#{path}",
         query, complement_header(header))
       Response.new(r, @transport)
     end
 
-    def post(path, body, header={})
+    def post(path, body, header = {})
       r = @client.post("#{@api_url}/#{path}",
         serialize_body(body), complement_header(header))
       Response.new(r, @transport)
     end
 
-    def put(path, body, header={})
+    def put(path, body, header = {})
       r = @client.put("#{@api_url}/#{path}",
         serialize_body(body), complement_header(header))
       Response.new(r, @transport)
     end
 
-    def delete(path, header={})
+    def delete(path, header = {})
       r = @client.delete("#{@api_url}/#{path}",
         complement_header(header))
       Response.new(r, @transport)
@@ -57,34 +57,44 @@ module Jiji
     end
 
     class Transport
+
     end
 
     class MessagePackTransport < Transport
+
       def serialize(body)
         MessagePack.pack(body)
       end
+
       def deserialize(body)
         MessagePack.unpack(body)
       end
+
       def content_type
         'application/x-msgpack'
       end
+
     end
 
     class JsonTransport < Transport
+
       def serialize
         JSON.generate(body)
       end
+
       def deserialize(body)
         JSON.parse(body)
       end
+
       def content_type
         'application/json'
       end
+
     end
 
     class Response
-      attr :raw
+
+      attr_reader :raw
 
       def initialize(raw_response, transport)
         @raw       = raw_response
@@ -102,6 +112,7 @@ module Jiji
       def status
         @raw.status
       end
+
     end
 
   end

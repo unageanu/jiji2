@@ -12,11 +12,11 @@ module Jiji
     attr_writer :transport
 
     def initialize(transport = MessagePackTransport.new)
-      @api_url    = 'http://localhost:5000/api'
-      @client     = HTTPClient.new
-      @client.debug_dev = STDOUT
-      @transport  = transport
-      @token      = nil
+      @api_url          = 'http://localhost:5000/api'
+      @client           = HTTPClient.new
+      @client.debug_dev = debug_device
+      @transport        = transport
+      @token            = nil
     end
 
     def get(path, query = nil, header = {})
@@ -54,6 +54,11 @@ module Jiji
       header['Content-Type']  = @transport.content_type
       header['Authorization'] = "X-JIJI-AUTHENTICATE #{@token}" if @token
       header
+    end
+
+    def debug_device
+      log_dir = File.join(BUILD_DIR, 'rest_spec')
+      File.open(File.join(log_dir, 'access.log'), 'w')
     end
 
     class Transport

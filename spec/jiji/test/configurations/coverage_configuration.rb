@@ -2,7 +2,7 @@ require 'simplecov'
 require 'codeclimate-test-reporter'
 
 if (ENV['RACK_ENV'] != 'rest_api_test')
-  dir = File.join(ENV['CIRCLE_ARTIFACTS'] || 'build', 'coverage')
+  dir = File.join(BUILD_DIR, 'coverage')
   SimpleCov.coverage_dir(dir)
   SimpleCov.start do
     add_filter '/vendor/'

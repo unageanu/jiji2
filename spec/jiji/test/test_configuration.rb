@@ -1,5 +1,6 @@
 # coding: utf-8
 
+require 'jiji/test/configurations/build_directory_configuration'
 require 'jiji/test/configurations/coverage_configuration'
 require 'jiji/test/configurations/rspec_configuration'
 require 'jiji/test/configurations/mail_configuration'

@@ -1,6 +1,6 @@
 # coding: utf-8
-require 'client'
 require 'server'
+require 'client'
 
 Jiji::Server.instance.setup('msgpack')
 

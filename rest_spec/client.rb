@@ -2,6 +2,7 @@
 
 require 'httpclient'
 require 'singleton'
+require 'fileutils'
 
 module Jiji
   class Client
@@ -66,6 +67,8 @@ module Jiji
     def debug_device
       log_dir  = File.join(BUILD_DIR, 'rest_spec')
       log_file = "access_#{@transport.name}.log"
+
+      FileUtils.mkdir_p log_dir
       File.open(File.join(log_dir, log_file), 'w')
     end
 

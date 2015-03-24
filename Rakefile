@@ -4,7 +4,7 @@ require 'rspec/core'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 
-task :default => [:spec,:lint]
+task :default => [:spec,:rest_spec,:lint]
 
 desc "Run all specs in spec directory"
 RSpec::Core::RakeTask.new(:spec) {|t|

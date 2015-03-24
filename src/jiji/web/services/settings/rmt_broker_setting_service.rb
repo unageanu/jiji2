@@ -28,7 +28,7 @@ module Jiji::Web
 
     get '/active-securities/id' do
       if setting.active_securities
-        ok(setting.active_securities.plugin_id)
+        ok({ securities_id: setting.active_securities.plugin_id })
       else
         not_found
       end

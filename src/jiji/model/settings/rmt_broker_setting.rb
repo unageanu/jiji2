@@ -50,7 +50,7 @@ module Jiji::Model::Settings
 
     def get_configurations(securities_id)
       RMTBrokerSetting.check_plugin_existence(securities_id)
-      securities_configurations[securities_id]
+      securities_configurations[securities_id] || {}
     end
 
     def set_active_securities(securities_id, configurations)

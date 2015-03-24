@@ -14,7 +14,7 @@ RSpec::Core::RakeTask.new(:spec) {|t|
 desc "Run all specs in rest_spec directory"
 RSpec::Core::RakeTask.new(:rest_spec) {|t|
   t.rspec_opts = '-I src -I spec -I rest_spec -fdoc'
-  t.pattern    = 'rest_spec/**/*_spec.rb'
+  t.pattern    = 'rest_spec/all_specs.rb'
 }
 
 desc 'Run RuboCop on the src/spec directory'

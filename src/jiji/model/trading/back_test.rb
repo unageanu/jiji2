@@ -40,12 +40,12 @@ module Jiji::Model::Trading
 
     def to_h
       {
-        id: _id,
-        name: name,
-        memo: memo,
+        id:         _id,
+        name:       name,
+        memo:       memo,
         created_at: created_at,
         start_time: start_time,
-        end_time: end_time
+        end_time:   end_time
       }
     end
 

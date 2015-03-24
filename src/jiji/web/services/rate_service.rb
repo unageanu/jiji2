@@ -43,7 +43,7 @@ module Jiji::Web
     def retrieve_range
       {
         start: get_time_from_query_param('start'),
-        end: get_time_from_query_param('end')
+        end:   get_time_from_query_param('end')
       }
     end
 

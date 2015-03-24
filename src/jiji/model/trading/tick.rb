@@ -67,9 +67,9 @@ module Jiji::Model::Trading
 
       def to_h
         {
-          bid: bid,
-          ask: ask,
-          buy_swap: buy_swap,
+          bid:       bid,
+          ask:       ask,
+          buy_swap:  buy_swap,
           sell_swap: sell_swap
         }
       end

@@ -10,6 +10,14 @@ Style/AsciiComments:
 Style/AlignParameters:
   EnforcedStyle: with_fixed_indentation
 
+# 引数で渡す場合など、Hashのbracesは、ずれてもよい。
+Style/IndentHash:
+  Enabled: false
+
+# テーブル形式にそろえる
+Style/AlignHash:
+  EnforcedColonStyle: table
+
 # 明示的にメソッドを指定した方がわかりやすい場合もある。
 Style/SymbolProc:
   Enabled: false
@@ -29,6 +37,10 @@ Style/EmptyLinesAroundClassBody:
 
 # 条件or処理が長い場合、if-endを使いたい。
 Style/GuardClause:
+  Enabled: false
+
+# Hashのフォーマットに影響するので、処理しない
+Style/BracesAroundHashParameters:
   Enabled: false
 
 # 引数は8個までOK

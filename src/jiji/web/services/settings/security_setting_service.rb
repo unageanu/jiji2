@@ -7,8 +7,8 @@ module Jiji::Web
   class SecuritySettingService < Jiji::Web::AuthenticationRequiredService
 
     put '/password' do
-      body = load.body
-      if setting.validate_password(body['old_password'])
+      body = load_body
+      if authenticator.validate_password(body['old_password'])
         setting.password = body['password']
         setting.save
         no_content
@@ -19,6 +19,10 @@ module Jiji::Web
 
     def setting
       lookup(:security_setting)
+    end
+
+    def authenticator
+      lookup(:authenticator)
     end
 
   end

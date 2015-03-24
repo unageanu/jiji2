@@ -46,11 +46,11 @@ module Jiji::Model::Trading
 
     def to_h
       {
-        pair: pair,
-        open: open,
-        close: close,
-        high: high,
-        low: low,
+        pair:      pair,
+        open:      open,
+        close:     close,
+        high:      high,
+        low:       low,
         timestamp: timestamp
       }
     end

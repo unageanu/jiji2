@@ -19,11 +19,11 @@ module Jiji::Security
       new_session.token
     end
 
-    private
-
     def validate_password(password)
       hash(password) == security_setting.hashed_password
     end
+
+    private
 
     def hash(password)
       security_setting.hash(password, security_setting.salt)

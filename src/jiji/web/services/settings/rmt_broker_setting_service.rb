@@ -19,7 +19,6 @@ module Jiji::Web
     get '/available-securities/:securities_id/configuration_definitions' do
       config = RMTBrokerSetting.get_configuration_definitions(
         params['securities_id'].to_sym)
-      p config
       ok(config)
     end
 

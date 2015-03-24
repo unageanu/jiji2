@@ -3,8 +3,10 @@
 module Jiji::Model::Trading::Internal
   class RateFetcher
 
+    include Jiji::Errors
+
     def fetch(pair_name, start_time, end_time, interval = :one_minute)
-      pair = Jiji::Model::Trading::Pairs.instance.create_or_get(pair_name)
+      pair = Jiji::Model::Trading::Pairs.instance.get_by_name(pair_name)
       swaps = Swaps.create(start_time, end_time)
       interval = resolve_collecting_interval(interval)
       q = fetch_ticks_within(start_time, end_time)
@@ -99,7 +101,7 @@ module Jiji::Model::Trading::Internal
       when :one_hour        then      60 * m
       when :six_hours       then  6 * 60 * m
       when :one_day         then 24 * 60 * m
-      else fail ArgumentError, "unknown interval. interval=#{interval}"
+      else not_found('interval', interval: interval)
       end
     end
     # rubocop:enable Metrics/CyclomaticComplexity

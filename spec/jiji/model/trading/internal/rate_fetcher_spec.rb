@@ -143,4 +143,18 @@ describe Jiji::Model::Trading::Internal::RateFetcher do
 
     expect(rates.length).to eq(1)
   end
+
+  it '不明なinterval,pairが指定された場合、エラーになる' do
+    @data_builder.register_ticks(1)
+
+    expect do
+      @fetcher.fetch(:UNKNOWN_PAIR,
+        Time.at(0), Time.at(10 * 20), :fifteen_minutes)
+    end.to raise_exception(Jiji::Errors::NotFoundException)
+
+    expect do
+      @fetcher.fetch(:EURJPY,
+        Time.at(0), Time.at(10 * 20), :unknown_interval)
+    end.to raise_exception(Jiji::Errors::NotFoundException)
+  end
 end

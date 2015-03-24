@@ -5,7 +5,7 @@ module Jiji::Model::Trading::Internal
 
     include Jiji::Model::Trading::Jobs
 
-    def initialize(wait_time = 15)
+    def initialize(wait_time = (ENV['TICK_INTERVAL'] || 15).to_i)
       @wait_time = wait_time
       @running   = true
       @mutext    = Mutex.new
@@ -14,7 +14,7 @@ module Jiji::Model::Trading::Internal
 
     def start(queue)
       Thread.start(queue, @wait_time) do |q, wait|
-        while  active?
+        while active?
           q.push(@job)
           sleep wait
         end

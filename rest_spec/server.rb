@@ -1,6 +1,6 @@
 # coding: utf-8
 
-ENV['RACK_ENV'] = 'rest_api_test'
+ENV['ENABLE_COVERADGE_REPORT'] = 'false'
 
 require 'singleton'
 require 'fileutils'
@@ -36,7 +36,7 @@ module Jiji
       log_dir = File.join(BUILD_DIR, 'rest_spec')
       FileUtils.mkdir_p log_dir
       pid = spawn(
-        { 'RACK_ENV' => 'rest_api_test' },
+        { 'RACK_ENV' => 'test' },
         'bundle exec puma -C config/puma.rb',
         out: File.join(log_dir, 'test-server.log'), err: :out)
       puts "start server pid=#{pid}"

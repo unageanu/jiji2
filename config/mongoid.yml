@@ -20,10 +20,3 @@ test:
       database: jiji_test
       hosts:   *hosts
   options: *options
-
-rest_api_test:
-  sessions:
-    default:
-      database: jiji_rest_api_test
-      hosts:   *hosts
-  options: *options

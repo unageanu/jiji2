@@ -14,9 +14,16 @@ module Jiji
     def initialize(transport = MessagePackTransport.new)
       @api_url          = 'http://localhost:5000/api'
       @client           = HTTPClient.new
-      @client.debug_dev = debug_device
       @transport        = transport
+      @client.debug_dev = debug_device
       @token            = nil
+    end
+
+    def transport=(transport)
+      @transport        = transport
+
+      @client.debug_dev.close if @client.debug_dev
+      @client.debug_dev = debug_device
     end
 
     def get(path, query = nil, header = {})
@@ -57,8 +64,9 @@ module Jiji
     end
 
     def debug_device
-      log_dir = File.join(BUILD_DIR, 'rest_spec')
-      File.open(File.join(log_dir, 'access.log'), 'w')
+      log_dir  = File.join(BUILD_DIR, 'rest_spec')
+      log_file = "access_#{@transport.name}.log"
+      File.open(File.join(log_dir, log_file), 'w')
     end
 
     class Transport
@@ -79,11 +87,15 @@ module Jiji
         'application/x-msgpack'
       end
 
+      def name
+        'msgpack'
+      end
+
     end
 
     class JsonTransport < Transport
 
-      def serialize
+      def serialize(body)
         JSON.generate(body)
       end
 
@@ -93,6 +105,10 @@ module Jiji
 
       def content_type
         'application/json'
+      end
+
+      def name
+        'json'
       end
 
     end

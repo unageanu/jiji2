@@ -16,11 +16,11 @@ module Jiji
       @running = false
     end
 
-    def setup
+    def setup(id)
       return if @running
 
       initialize_db
-      pid = start_server
+      pid = start_server(id)
       register_shutdown_fook(pid)
 
       @running = true
@@ -32,14 +32,14 @@ module Jiji
       Jiji::Test::DataBuilder.new.clean
     end
 
-    def start_server
+    def start_server(id)
       log_dir = File.join(BUILD_DIR, 'rest_spec')
       FileUtils.mkdir_p log_dir
       pid = spawn({
           'RACK_ENV'      => 'test',
           'TICK_INTERVAL' => '3'
         }, 'bundle exec puma -C config/puma.rb',
-        out: File.join(log_dir, 'test-server.log'), err: :out)
+        out: File.join(log_dir, "test_server_#{id}.log"), err: :out)
       puts "start server pid=#{pid}"
       sleep 10
       pid

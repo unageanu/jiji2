@@ -1,6 +1,4 @@
-
-require 'server'
-Jiji::Server.instance.setup
+# coding: utf-8
 
 require 'initialization/initialization_spec'
 

@@ -45,9 +45,9 @@ module Jiji
       Response.new(r, @transport)
     end
 
-    def delete(path, header = {})
+    def delete(path, query, header = {})
       r = @client.delete("#{@api_url}/#{path}",
-        complement_header(header))
+        nil, complement_header(header), query)
       Response.new(r, @transport)
     end
 

@@ -81,4 +81,20 @@ describe 'レート取得' do
     r = @client.get('/rates/EURUSD/unknown_interval', range)
     expect(r.status).to eq 404
   end
+
+  it 'DELETE /rates でレートを削除できる' do
+    r = @client.get('/rates/range')
+    start_time = Time.iso8601(r.body['start'])
+    end_time   = Time.iso8601(r.body['end'])
+
+    r = @client.delete('/rates', {
+      'start' => (start_time - 1 ).iso8601,
+      'end'   => (start_time + 3 ).iso8601
+    })
+    expect(r.status).to eq 204
+
+    r = @client.get('/rates/range')
+    expect(Time.iso8601(r.body['start'])).not_to eq start_time
+    expect(Time.iso8601(r.body['end'])).to eq end_time
+  end
 end

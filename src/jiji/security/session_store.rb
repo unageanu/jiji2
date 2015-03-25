@@ -23,6 +23,10 @@ module Jiji::Security
       @sessions.delete token
     end
 
+    def invalidate_all_sessions
+      @sessions.clear
+    end
+
     def new_session(expiration_date, *authorities)
       session = Jiji::Security::Session.new(expiration_date, *authorities)
       self << session

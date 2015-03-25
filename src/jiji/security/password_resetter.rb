@@ -14,7 +14,7 @@ module Jiji::Security
 
     needs :security_setting
     needs :session_store
-
+    needs :authenticator
     needs :mail_composer
     needs :time_source
 
@@ -28,7 +28,9 @@ module Jiji::Security
     def reset_password(password_reset_token, new_password)
       check_token(password_reset_token)
       change_password(new_password)
-      session_store.invalidate(password_reset_token)
+
+      session_store.invalidate_all_sessions
+      authenticator.authenticate(new_password)
     end
 
     private

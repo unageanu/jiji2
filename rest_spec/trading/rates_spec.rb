@@ -88,8 +88,8 @@ describe 'レート取得' do
     end_time   = Time.iso8601(r.body['end'])
 
     r = @client.delete('/rates', {
-      'start' => (start_time - 1 ).iso8601,
-      'end'   => (start_time + 3 ).iso8601
+      'start' => (start_time - 1).iso8601,
+      'end'   => (start_time + 3).iso8601
     })
     expect(r.status).to eq 204
 

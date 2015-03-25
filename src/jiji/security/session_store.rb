@@ -13,20 +13,27 @@ module Jiji::Security
 
     def initialize
       @sessions = LruRedux::ThreadSafeCache.new(100)
-      @sessions['f'] = Session.new(Time.now + 1 * 60 * 60 * 24)
     end
 
     def <<(session)
       @sessions[session.token] = session
     end
 
-    def delete(token)
+    def invalidate(token)
       @sessions.delete token
     end
 
-    def valid_token?(token)
+    def new_session(expiration_date, *authorities)
+      session = Jiji::Security::Session.new(expiration_date, *authorities)
+      self << session
+      session
+    end
+
+    def valid_token?(token, required_authority = nil)
       s = @sessions[token]
-      !s.nil? && !s.expired?(time_source.now)
+      return false if s.nil? || s.expired?(time_source.now)
+      return false if required_authority && !s.has?(required_authority)
+      true
     end
 
   end

@@ -26,7 +26,7 @@ describe Jiji::Security::SessionStore do
     expect(@store.valid_token? s3.token).to be false
 
     # 削除すると使えなくなる
-    @store.delete s1.token
+    @store.invalidate s1.token
     expect(@store.valid_token? s1.token).to be false
   end
 

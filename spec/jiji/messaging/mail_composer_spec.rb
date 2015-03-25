@@ -61,7 +61,10 @@ describe Jiji::Messaging::MailComposer do
 
   it 'メールを送信できる' do
     @composer.compose('foo@var.com', 'テスト') do
-      text_part { 'テストメール' }
+      text_part do
+        content_type 'text/plain; charset=UTF-8'
+        body 'テストメール'
+      end
     end
 
     expect(Mail::TestMailer.deliveries.length).to eq 1

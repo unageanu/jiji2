@@ -13,7 +13,7 @@ module Jiji::Web
     private
 
     def auth_success?
-      session_store.valid_token?(extract_token)
+      session_store.valid_token?(extract_token, :user)
     end
 
     def extract_token

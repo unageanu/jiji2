@@ -42,6 +42,7 @@ describe Jiji::Security::PasswordResetter do
     expect(@store.valid_token? reset_token, :resetting_password).to be true
 
     user_token = @authenticator.authenticate('foo')
+    expect(@store.valid_token? user_token, :user).to be true
 
     new_user_token = @resetter.reset_password(reset_token, 'var')
 

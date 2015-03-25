@@ -46,9 +46,7 @@ module Jiji::Security
 
     def check_mail_address(mail_address)
       registered_mail_address = security_setting.mail_address
-      unless registered_mail_address
-        illegal_state('mail address is not set.')
-      end
+      illegal_state('mail address is not set.') unless registered_mail_address
       unless mail_address == registered_mail_address
         illegal_argument('mail address is not match.')
       end
@@ -56,7 +54,7 @@ module Jiji::Security
 
     def check_token(token)
       unless session_store.valid_token?(token, :resetting_password)
-        illegal_argument(token, token: token)
+        illegal_argument('invalid token.', token: token)
       end
     end
 

@@ -24,19 +24,35 @@ module Jiji::Web
     end
 
     def build
-      Rack::Builder.new do
-        map('/api/echo')  { run EchoService }
-        map('/api/rates') { run RateService }
-
-        map('/api/authenticator') { run AuthenticationService }
-
-        map('/api/setting/initialization') { run InitialSettingService }
-        map('/api/setting/rmt-broker')     { run RMTBrokerSettingService }
-        map('/api/setting/user')           { run UserSettingService  }
-      end
+      builder = Rack::Builder.new
+      register_services(builder)
+      register_setting_services(builder)
+      register_testing_services(builder)
+      builder
     end
 
     attr_reader :container
+
+    private
+
+    def register_services(builder)
+      builder.map('/api/echo')          { run EchoService }
+      builder.map('/api/rates')         { run RateService }
+      builder.map('/api/authenticator') { run AuthenticationService }
+    end
+
+    def register_setting_services(builder)
+      base = '/api/setting'
+      builder.map("#{base}/initialization")    { run InitialSettingService }
+      builder.map("#{base}/rmt-broker")        { run RMTBrokerSettingService }
+      builder.map("#{base}/user")              { run UserSettingService }
+      builder.map("#{base}/password-resetter") { run PasswordResettingService }
+    end
+
+    def register_testing_services(builder)
+      return unless (ENV['RACK_ENV'] == 'test')
+      builder.map('/api/testing/mail') { run Test::MailService  }
+    end
 
   end
 end

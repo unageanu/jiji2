@@ -9,8 +9,8 @@ module Jiji
 
     include Singleton
 
-    attr_writer :token
-    attr_writer :transport
+    attr_accessor :token
+    attr_accessor :transport
 
     def initialize(transport = MessagePackTransport.new)
       @api_url          = 'http://localhost:5000/api'

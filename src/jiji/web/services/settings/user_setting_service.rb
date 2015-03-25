@@ -6,6 +6,10 @@ require 'jiji/web/services/abstract_service'
 module Jiji::Web
   class UserSettingService < Jiji::Web::AuthenticationRequiredService
 
+    get '/mailaddress' do
+      ok(setting.mail_address)
+    end
+
     put '/mailaddress' do
       body = load_body
       setting.mail_address = body['mail_address']

@@ -18,13 +18,11 @@ module Jiji::Security
     needs :mail_composer
     needs :time_source
 
-    def send_password_resetting_mail
-      mail_address = security_setting.mail_address
-      illegal_state('mail address is not set.') unless mail_address
-
+    def send_password_resetting_mail(mail_address)
+      check_mail_address(mail_address)
       session = session_store.new_session(
         expiration_date, :resetting_password)
-      send_mail(mail_address, session.token)
+      send_mail(security_setting.mail_address, session.token)
     end
 
     def reset_password(password_reset_token, new_password)
@@ -41,6 +39,16 @@ module Jiji::Security
           content_type 'text/plain; charset=UTF-8'
           body "トークン: #{token}"
         end
+      end
+    end
+
+    def check_mail_address(mail_address)
+      registered_mail_address = security_setting.mail_address
+      unless registered_mail_address
+        illegal_state('mail address is not set.')
+      end
+      unless mail_address == registered_mail_address
+        illegal_argument('mail address is not match.')
       end
     end
 

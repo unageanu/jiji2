@@ -27,7 +27,7 @@ describe Jiji::Security::PasswordResetter do
   end
 
   it 'パスワードを再設定できる' do
-    @resetter.send_password_resetting_mail
+    @resetter.send_password_resetting_mail( 'foo@var.com' )
 
     expect(Mail::TestMailer.deliveries.length).to eq 1
 
@@ -56,13 +56,19 @@ describe Jiji::Security::PasswordResetter do
     @setting.mail_address = nil
 
     expect do
-      @resetter.send_password_resetting_mail
+      @resetter.send_password_resetting_mail( 'foo@var.com' )
     end.to raise_error(Jiji::Errors::IllegalStateException)
+  end
+
+  it 'メールアドレスが登録されているものと異なる場合、メールは送信できない' do
+    expect do
+      @resetter.send_password_resetting_mail( 'foo2@var.com' )
+    end.to raise_error(ArgumentError)
   end
 
   context '設定メール送信後' do
     before(:example) do
-      @resetter.send_password_resetting_mail
+      @resetter.send_password_resetting_mail( 'foo@var.com' )
       mail = Mail::TestMailer.deliveries[0]
       @token = mail.text_part.body.to_s.scan(/トークン\: ([a-zA-Z0-9]+)/)[0][0]
     end

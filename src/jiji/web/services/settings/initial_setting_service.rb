@@ -10,10 +10,12 @@ module Jiji::Web
       ok(initialized: setting.password_setted?)
     end
 
-    put '/password' do
+    put '/mailaddress-and-password' do
       illegal_state if setting.password_setted?
 
-      setting.password = load_body['password']
+      body = load_body
+      setting.mail_address = body['mail_address']
+      setting.password     = body['password']
       setting.save
       no_content
     end

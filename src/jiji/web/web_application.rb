@@ -32,7 +32,7 @@ module Jiji::Web
 
         map('/api/setting/initialization') { run InitialSettingService }
         map('/api/setting/rmt-broker')     { run RMTBrokerSettingService }
-        map('/api/setting/security')       { run SecuritySettingService  }
+        map('/api/setting/user')           { run UserSettingService  }
       end
     end
 

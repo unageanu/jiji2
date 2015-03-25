@@ -4,7 +4,14 @@ require 'sinatra/base'
 require 'jiji/web/services/abstract_service'
 
 module Jiji::Web
-  class SecuritySettingService < Jiji::Web::AuthenticationRequiredService
+  class UserSettingService < Jiji::Web::AuthenticationRequiredService
+
+    put '/mailaddress' do
+      body = load_body
+      setting.mail_address = body['mail_address']
+      setting.save
+      no_content
+    end
 
     put '/password' do
       body = load_body

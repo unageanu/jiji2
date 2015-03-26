@@ -21,10 +21,12 @@ describe Jiji::Model::Trading::BackTestRepository do
 
     expect(@repository.all.length).to be 0
 
-    test = @repository.register('name'       => 'テスト',
-                                'start_time' => Time.at(100),
-                                'end_time'   => Time.at(200),
-                                'memo'       => 'メモ')
+    test = @repository.register({
+      'name'       => 'テスト',
+      'start_time' => Time.at(100),
+      'end_time'   => Time.at(200),
+      'memo'       => 'メモ'
+    })
 
     expect(test.name).to eq 'テスト'
     expect(test.memo).to eq 'メモ'
@@ -34,13 +36,14 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(@repository.all.length).to be 1
     expect(@repository.all[0]).to be test
 
-    test2 = @repository.register('name'       => 'テスト2',
-                                 'start_time' => Time.at(100),
-                                 'end_time'   => Time.at(300),
-                                 'memo'       => 'メモ')
+    test2 = @repository.register({
+      'name'       => 'テスト2',
+      'start_time' => Time.at(100),
+      'end_time'   => Time.at(300)
+    })
 
     expect(test2.name).to eq 'テスト2'
-    expect(test2.memo).to eq 'メモ'
+    expect(test2.memo).to eq nil
     expect(test2.start_time).to eq Time.at(100)
     expect(test2.end_time).to eq Time.at(300)
 
@@ -56,10 +59,12 @@ describe Jiji::Model::Trading::BackTestRepository do
       3.times do |i|
         @time_source.set(Time.at(i))
 
-        @repository.register('name'       => "テスト#{i}",
-                             'start_time' => Time.at(100),
-                             'end_time'   => Time.at(200),
-                             'memo'       => 'メモ')
+        @repository.register({
+          'name'       => "テスト#{i}",
+          'start_time' => Time.at(100),
+          'end_time'   => Time.at(200),
+          'memo'       => 'メモ'
+        })
       end
     end
 
@@ -90,6 +95,66 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(@repository.all.length).to be 2
       expect(@repository.all[0].name).to eq 'テスト0'
       expect(@repository.all[1].name).to eq 'テスト2'
+    end
+
+    it '名前が不正な場合エラーになる' do
+      expect do
+        @repository.register({
+          'name'       => nil,
+          'start_time' => Time.at(100),
+          'end_time'   => Time.at(200),
+          'memo'       => 'メモ'
+        })
+      end.to raise_exception(ActiveModel::StrictValidationFailed)
+
+      expect do
+        @repository.register({
+          'name'       => '',
+          'start_time' => Time.at(100),
+          'end_time'   => Time.at(200),
+          'memo'       => 'メモ'
+        })
+      end.to raise_exception(ActiveModel::StrictValidationFailed)
+
+      expect do
+        @repository.register({
+          'name'       => 'a' * 201,
+          'start_time' => Time.at(100),
+          'end_time'   => Time.at(200),
+          'memo'       => 'メモ'
+        })
+      end.to raise_exception(ActiveModel::StrictValidationFailed)
+    end
+
+    it 'メモが不正な場合エラーになる' do
+      expect do
+        @repository.register({
+          'name'       => '名前',
+          'start_time' => Time.at(100),
+          'end_time'   => Time.at(200),
+          'memo'       => 'a' * 2001
+        })
+      end.to raise_exception(ActiveModel::StrictValidationFailed)
+    end
+
+    it '期間が不正な場合エラーになる' do
+      expect do
+        @repository.register({
+          'name'       => '名前',
+          'start_time' => nil,
+          'end_time'   => Time.at(200),
+          'memo'       => 'メモ'
+        })
+      end.to raise_exception(ArgumentError)
+
+      expect do
+        @repository.register({
+          'name'       => '名前',
+          'start_time' => Time.at(100),
+          'end_time'   => nil,
+          'memo'       => 'メモ'
+        })
+      end.to raise_exception(ArgumentError)
     end
 
     it 'stopで全テストを停止できる' do

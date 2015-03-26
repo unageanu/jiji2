@@ -2,6 +2,7 @@
 
 require 'encase'
 require 'bcrypt'
+require 'jiji/utils/fix_validates_email_format_issue'
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/model/settings/abstract_setting'
 
@@ -16,6 +17,22 @@ module Jiji::Model::Settings
     field :expiration_days,        type: Integer, default: 10
 
     needs :cryptographic_service
+
+    validates :mail_address,
+      email_format: { strict: true }
+
+    validates :expiration_days,
+      numericality: {
+        only_integer:             true,
+        greater_than_or_equal_to: 0,
+        strict:                   true
+      }
+
+    validates :hashed_password,
+      presence: { strict: true }
+
+    validates :salt,
+      presence: { strict: true }
 
     def initialize
       super

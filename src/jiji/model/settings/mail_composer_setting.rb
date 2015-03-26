@@ -16,6 +16,28 @@ module Jiji::Model::Settings
     field :encrypted_user_name, type: String,  default: nil
     field :encrypted_password,  type: String,  default: nil
 
+    validates :smtp_host,
+      length:      { maximum: 200, strict: true },
+      allow_nil:   true,
+      allow_blank: true
+
+    validates :smtp_port,
+      numericality: {
+        only_integer:             true,
+        greater_than_or_equal_to: 0,
+        strict:                   true
+      }
+
+    validates :user_name,
+      length:      { maximum: 200, strict: true },
+      allow_nil:   true,
+      allow_blank: true
+
+    validates :password,
+      length:      { maximum: 200, strict: true },
+      allow_nil:   true,
+      allow_blank: true
+
     def initialize
       super
       self.category = :mail_composer

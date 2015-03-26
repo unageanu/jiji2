@@ -68,8 +68,10 @@ module Jiji::Model::Trading::Brokers
     end
 
     def check_period(start_time, end_time)
-      illegal_argument('illegal period.',
-        start_time: start_time, end_time: end_time) if start_time >= end_time
+      if !start_time || !end_time || start_time >= end_time
+        illegal_argument('illegal period.',
+          start_time: start_time, end_time: end_time)
+      end
     end
 
     def fill_buffer

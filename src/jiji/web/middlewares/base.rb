@@ -2,6 +2,7 @@
 
 require 'sinatra/base'
 require 'jiji/errors/errors'
+require 'active_model'
 
 module Jiji::Web
   class Base < Sinatra::Base
@@ -39,6 +40,11 @@ module Jiji::Web
     end
 
     error ArgumentError do |_e|
+      print_as_warning
+      400
+    end
+
+    error ActiveModel::StrictValidationFailed do |_e|
       print_as_warning
       400
     end

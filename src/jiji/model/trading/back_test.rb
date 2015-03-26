@@ -32,6 +32,22 @@ module Jiji::Model::Trading
     field :end_time,      type: Time
     field :agent_setting, type: Hash
 
+    validates :name,
+      length:   { maximum: 200, strict: true },
+      presence: { strict: true }
+
+    validates :memo,
+      length:      { maximum: 2000, strict: true },
+      allow_nil:   true,
+      allow_blank: true
+
+    validates :created_at,
+      presence: { strict: true }
+    validates :start_time,
+      presence: { strict: true }
+    validates :end_time,
+      presence: { strict: true }
+
     index(
       { created_at: 1, id: 1 },
       unique: true, name: 'backtests_created_at_id_index')

@@ -17,7 +17,6 @@ describe Jiji::Model::Agents::AgentSource do
 
   context 'コードが空の場合' do
     it '新規作成できる' do
-      p 'new'
       agent_source = Jiji::Model::Agents::AgentSource.create(
         'test', :agent, Time.at(100))
 
@@ -397,5 +396,36 @@ describe Jiji::Model::Agents::AgentSource do
       f = agent_source.context.const_get 'Foo'
       f.new
     end
+  end
+
+  it '名前が不正な場合エラーになる' do
+    expect do
+      Jiji::Model::Agents::AgentSource.create(
+        nil, :agent, Time.at(100), 'memo', nil)
+    end.to raise_exception(ActiveModel::StrictValidationFailed)
+
+    expect do
+      Jiji::Model::Agents::AgentSource.create(
+        '', :agent, Time.at(100), 'memo', nil)
+    end.to raise_exception(ActiveModel::StrictValidationFailed)
+
+    expect do
+      Jiji::Model::Agents::AgentSource.create(
+        'a' * 201, :agent, Time.at(100), 'memo', nil)
+    end.to raise_exception(ActiveModel::StrictValidationFailed)
+  end
+
+  it 'メモが不正な場合エラーになる' do
+    expect do
+      Jiji::Model::Agents::AgentSource.create(
+        nil, :agent, Time.at(100), 'a' * 2001, nil)
+    end.to raise_exception(ActiveModel::StrictValidationFailed)
+  end
+
+  it '作成時刻が不正な場合エラーになる' do
+    expect do
+      Jiji::Model::Agents::AgentSource.create(
+        'a', :agent, nil, nil, nil)
+    end.to raise_exception(ActiveModel::StrictValidationFailed)
   end
 end

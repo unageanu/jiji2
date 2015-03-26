@@ -23,6 +23,20 @@ module Jiji::Model::Agents
     field :created_at,    type: Time
     field :updated_at,    type: Time
 
+    validates :name,
+      length:   { maximum: 200, strict: true },
+      presence: { strict: true }
+
+    validates :memo,
+      length:      { maximum: 2000, strict: true },
+      allow_nil:   true,
+      allow_blank: true
+
+    validates :created_at,
+      presence: { strict: true }
+    validates :updated_at,
+      presence: { strict: true }
+
     attr_readonly :type, :created_at
     attr_reader :error, :context
 
@@ -60,7 +74,7 @@ module Jiji::Model::Agents
     end
 
     def evaluate
-      return change_state_to_empty if body.empty?
+      return change_state_to_empty if body.nil? || body.empty?
       @context = Context.new_context
       begin
         @context.module_eval(body, "#{type}/#{name}", 1)

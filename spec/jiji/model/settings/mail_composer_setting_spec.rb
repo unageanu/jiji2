@@ -45,6 +45,56 @@ describe Jiji::Model::Settings::MailComposerSetting do
     expect(@setting.smtp_port).to be 25
     expect(@setting.user_name).to eq 'aaa'
     expect(@setting.password).to eq 'bbb'
+
+    @setting.smtp_host = ''
+    @setting.smtp_port = 25
+    @setting.user_name = nil
+    @setting.password  = nil
+
+    @setting.save
+
+    expect(@setting.smtp_host).to eq ''
+    expect(@setting.smtp_port).to be 25
+    expect(@setting.user_name).to eq nil
+    expect(@setting.password).to eq nil
+  end
+
+  it 'smtp_hostが不正な場合エラーになる' do
+    @setting.smtp_host = 'a' * 201
+    expect do
+      @setting.save
+    end.to raise_exception(ActiveModel::StrictValidationFailed)
+  end
+
+  it 'smtp_portが不正な場合エラーになる' do
+    @setting.smtp_port = -1
+    expect do
+      @setting.save
+    end.to raise_exception(ActiveModel::StrictValidationFailed)
+
+    @setting.smtp_port = nil
+    expect do
+      @setting.save
+    end.to raise_exception(ActiveModel::StrictValidationFailed)
+
+    @setting.smtp_port = ''
+    expect do
+      @setting.save
+    end.to raise_exception(ActiveModel::StrictValidationFailed)
+  end
+
+  it 'user_nameが不正な場合エラーになる' do
+    @setting.user_name = 'a' * 201
+    expect do
+      @setting.save
+    end.to raise_exception(ActiveModel::StrictValidationFailed)
+  end
+
+  it 'passwordが不正な場合エラーになる' do
+    @setting.password = 'a' * 201
+    expect do
+      @setting.save
+    end.to raise_exception(ActiveModel::StrictValidationFailed)
   end
 
   def recreate_setting

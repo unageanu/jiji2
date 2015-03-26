@@ -1,0 +1,8 @@
+
+# レートを取得する間隔(秒)
+TICK_INTERVAL: "15"
+
+# テスト時に使う設定
+test:
+  SECRET: <%= 'abcdefghijklmnopqrstuvwxyz' * 3 %>
+  TICK_INTERVAL: "3"

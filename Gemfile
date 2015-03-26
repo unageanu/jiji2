@@ -8,6 +8,7 @@ gem 'lru_redux',     '0.8.1'
 gem 'bcrypt',        '3.1.9'
 gem 'thread',        '0.1.4'
 gem 'activesupport', '4.2.1'
+gem 'figaro',        '1.1.0'
 
 gem 'msgpack',   '0.5.9'
 gem 'rack',      '1.5.2'

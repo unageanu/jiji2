@@ -7,8 +7,10 @@ describe Jiji::Model::Settings::SecuritySetting do
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
 
-    @container = Jiji::Composing::ContainerFactory.instance.new_container
-    @setting   = @container.lookup(:security_setting)
+    @container  = Jiji::Composing::ContainerFactory.instance.new_container
+    @repository = @container.lookup(:setting_repository)
+
+    @setting    = @repository.security_setting
   end
 
   after(:example) do
@@ -106,7 +108,6 @@ describe Jiji::Model::Settings::SecuritySetting do
   end
 
   def recreate_setting
-    @container = Jiji::Composing::ContainerFactory.instance.new_container
-    @container.lookup(:security_setting)
+    @setting = @repository.security_setting
   end
 end

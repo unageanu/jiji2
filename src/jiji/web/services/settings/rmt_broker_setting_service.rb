@@ -23,12 +23,13 @@ module Jiji::Web
     end
 
     get '/available-securities/:securities_id/configurations' do
-      ok(setting.get_configurations(params['securities_id'].to_sym))
+      ok(rmt_broker_setting.get_configurations(params['securities_id'].to_sym))
     end
 
     get '/active-securities/id' do
-      if setting.active_securities
-        ok({ securities_id: setting.active_securities.plugin_id })
+      setting = rmt_broker_setting
+      if setting.active_securities_id
+        ok({ securities_id: setting.active_securities_id })
       else
         not_found
       end
@@ -36,13 +37,13 @@ module Jiji::Web
 
     put '/active-securities' do
       body = load_body
-      setting.set_active_securities(
+      rmt_broker_setting.set_active_securities(
         body['securities_id'].to_sym, body['configurations'])
       no_content
     end
 
-    def setting
-      lookup(:rmt_broker_setting)
+    def rmt_broker_setting
+      lookup(:setting_repository).rmt_broker_setting
     end
 
   end

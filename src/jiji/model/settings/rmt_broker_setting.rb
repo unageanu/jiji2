@@ -14,9 +14,8 @@ module Jiji::Model::Settings
     field :securities_configurations, type: Hash,    default: {}
     field :is_trade_enabled,          type: Boolean, default: true
 
-    attr_reader :active_securities
-
     needs :logger
+    needs :rmt_broker
 
     def initialize
       super
@@ -26,16 +25,12 @@ module Jiji::Model::Settings
     def setup
       return unless active_securities_id
       begin
-        @active_securities = find_and_configure_plugin(
+        rmt_broker.securities = find_and_configure_plugin(
           active_securities_id, get_configurations(active_securities_id))
 
       rescue Jiji::Errors::NotFoundException => e
         @logger.error(e) if @logger
       end
-    end
-
-    def self.load_or_create
-      find(:rmt_broker) || RMTBrokerSetting.new
     end
 
     def self.available_securities
@@ -54,14 +49,16 @@ module Jiji::Model::Settings
     end
 
     def set_active_securities(securities_id, configurations)
-      @active_securities = find_and_configure_plugin(
+      securities = find_and_configure_plugin(
         securities_id, configurations)
 
       self.active_securities_id = securities_id
       securities_configurations[securities_id] = configurations
       save
 
-      fire_setting_changed_event(:active_securities, value: @active_securities)
+      rmt_broker.securities = securities
+
+      fire_setting_changed_event(:active_securities, value: securities)
     end
 
     attr_writer :is_trade_enabled

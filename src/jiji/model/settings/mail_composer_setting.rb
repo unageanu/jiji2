@@ -43,10 +43,6 @@ module Jiji::Model::Settings
       self.category = :mail_composer
     end
 
-    def self.load_or_create
-      find(:mail_composer) || MailComposerSetting.new
-    end
-
     def password
       encrypted_password \
       && cryptographic_service.decrypt(encrypted_password)

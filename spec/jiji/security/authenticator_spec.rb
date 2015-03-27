@@ -12,10 +12,14 @@ describe Jiji::Security::Authenticator do
     @authenticator = @container.lookup(:authenticator)
     @store         = @container.lookup(:session_store)
     @time_source   = @container.lookup(:time_source)
-    @setting       = @container.lookup(:security_setting)
+    @repository    = @container.lookup(:setting_repository)
 
+    @setting       = @repository.security_setting
+
+    @setting.mail_address    = 'foo@var.com'
     @setting.password        = 'foo'
     @setting.expiration_days = 10
+    @setting.save
 
     @time_source.set Time.utc(2000, 1, 10)
   end

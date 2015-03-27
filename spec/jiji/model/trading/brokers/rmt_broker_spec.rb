@@ -122,7 +122,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
     context 'プラグインをAPI呼び出しで設定した場合' do
       let(:broker) do
-        setting = @container.lookup(:rmt_broker_setting)
+        setting = @container.lookup(:setting_repository).rmt_broker_setting
         broker  = @container.lookup(:rmt_broker)
 
         setting.set_active_securities(:mock, {})
@@ -134,12 +134,12 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
     context '設定情報からプラグインを読み込んだ場合' do
       let(:broker) do
-        setting = @container.lookup(:rmt_broker_setting)
+        setting = @container.lookup(:setting_repository).rmt_broker_setting
         setting.set_active_securities(:mock, {})
 
         # 永続化された設定から再構築する
         @container    = Jiji::Test::TestContainerFactory.instance.new_container
-        setting = @container.lookup(:rmt_broker_setting)
+        setting = @container.lookup(:setting_repository).rmt_broker_setting
         setting.setup
         broker = @container.lookup(:rmt_broker)
         broker

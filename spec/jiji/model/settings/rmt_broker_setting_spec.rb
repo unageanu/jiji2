@@ -8,7 +8,10 @@ describe Jiji::Model::Settings::RMTBrokerSetting do
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
-    @setting = @container.lookup(:rmt_broker_setting)
+    @broker       = @container.lookup(:rmt_broker)
+    @repository   = @container.lookup(:setting_repository)
+
+    @setting      = @repository.rmt_broker_setting
   end
 
   after(:example) do
@@ -36,19 +39,19 @@ describe Jiji::Model::Settings::RMTBrokerSetting do
       plugin = event[:value]
     end
 
-    expect(@setting.active_securities).to be nil
+    expect(@broker.securities).to be nil
 
     @setting.set_active_securities(:mock,  'a' => 'aa', 'b' => 'bb')
 
-    expect(@setting.active_securities.plugin_id).to eq :mock
-    expect(@setting.active_securities.props).to eq('a' => 'aa', 'b' => 'bb')
+    expect(@broker.securities.plugin_id).to eq :mock
+    expect(@broker.securities.props).to eq('a' => 'aa', 'b' => 'bb')
     expect(plugin.plugin_id).to eq :mock
     expect(plugin.props).to eq('a' => 'aa', 'b' => 'bb')
 
     @setting.set_active_securities(:mock2, 'a' => 'aa', 'c' => 'cc')
 
-    expect(@setting.active_securities.plugin_id).to eq :mock2
-    expect(@setting.active_securities.props).to eq('a' => 'aa', 'c' => 'cc')
+    expect(@broker.securities.plugin_id).to eq :mock2
+    expect(@broker.securities.props).to eq('a' => 'aa', 'c' => 'cc')
     expect(plugin.plugin_id).to eq :mock2
     expect(plugin.props).to eq('a' => 'aa', 'c' => 'cc')
   end
@@ -65,11 +68,10 @@ describe Jiji::Model::Settings::RMTBrokerSetting do
     @setting.set_active_securities(:mock,  'a' => 'aa', 'b' => 'bb')
     @setting.set_active_securities(:mock2, 'a' => 'aa', 'c' => 'cc')
 
-    @container = Jiji::Test::TestContainerFactory.instance.new_container
-    @setting   = @container.lookup(:rmt_broker_setting)
+    @setting    = @repository.rmt_broker_setting
     @setting.setup
-    expect(@setting.active_securities.plugin_id).to eq :mock2
-    expect(@setting.active_securities.props).to eq('a' => 'aa', 'c' => 'cc')
+    expect(@broker.securities.plugin_id).to eq :mock2
+    expect(@broker.securities.props).to eq('a' => 'aa', 'c' => 'cc')
 
     @setting.set_active_securities(:mock, 'a' => 'aa', 'b' => 'bb')
   end

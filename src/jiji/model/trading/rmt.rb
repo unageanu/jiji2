@@ -15,7 +15,7 @@ module Jiji::Model::Trading
 
     needs :logger
     needs :time_source
-    needs :rmt_broker_setting
+    needs :setting_repository
     needs :rmt_broker
     needs :rmt_next_tick_job_generator
     # needs :agents_factory
@@ -23,7 +23,7 @@ module Jiji::Model::Trading
     attr_reader :process, :trading_context
 
     def setup
-      @rmt_broker_setting.setup
+      @setting_repository.rmt_broker_setting.setup
       setup_rmt_process
     end
 

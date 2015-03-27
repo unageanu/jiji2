@@ -68,9 +68,11 @@ module Jiji::Messaging
     class UserSettingSMTPServer < SMTPServer
 
       include Encase
-      needs :mail_composer_setting
+
+      needs :setting_repository
 
       def available?
+        mail_composer_setting = setting_repository.mail_composer_setting
         mail_composer_setting.smtp_host \
         && mail_composer_setting.smtp_port \
         && mail_composer_setting.user_name \
@@ -78,6 +80,7 @@ module Jiji::Messaging
       end
 
       def setting
+        mail_composer_setting = setting_repository.mail_composer_setting
         {
           address:   mail_composer_setting.smtp_host,
           port:      mail_composer_setting.smtp_port,

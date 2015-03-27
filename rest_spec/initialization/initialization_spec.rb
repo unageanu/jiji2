@@ -14,6 +14,14 @@ describe '初期化' do
       expect(r.body['initialized']).to eq false
     end
 
+    it 'メールアドレスが不正な場合エラー' do
+      r = @client.put('setting/initialization/mailaddress-and-password', {
+        mail_address: 'foovar.com',
+        password:     'test'
+      })
+      expect(r.status).to eq 400
+    end
+
     it 'PUT /setting/initialization/mailaddress-and-password で初期化できる' do
       r = @client.put('setting/initialization/mailaddress-and-password', {
         mail_address: 'foo@var.com',

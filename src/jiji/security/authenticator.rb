@@ -10,7 +10,7 @@ module Jiji::Security
     include Encase
     include Jiji::Errors
 
-    needs :security_setting
+    needs :setting_repository
     needs :session_store
     needs :time_source
 
@@ -31,6 +31,10 @@ module Jiji::Security
 
     def expiration_date
       time_source.now + security_setting.expiration_days * 60 * 60 * 24
+    end
+
+    def security_setting
+      setting_repository.security_setting
     end
 
   end

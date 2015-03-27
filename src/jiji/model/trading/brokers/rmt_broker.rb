@@ -1,7 +1,6 @@
 # coding: utf-8
 
-require 'jiji/configurations/mongoid_configuration'
-require 'jiji/model/trading/brokers/abstract_broker'
+require 'thread'
 require 'jiji/errors/errors'
 
 module Jiji::Model::Trading::Brokers
@@ -11,12 +10,13 @@ module Jiji::Model::Trading::Brokers
     include Jiji::Errors
     include Jiji::Model::Trading
 
-    needs :rmt_broker_setting
     needs :time_source
 
     def initialize
       super()
       @back_test_id = nil
+      @securities   = nil
+      @mutex = Mutex.new
     end
 
     def next?
@@ -40,6 +40,18 @@ module Jiji::Model::Trading::Brokers
 
     def destroy
       securities.destroy_plugin if securities
+    end
+
+    def securities
+      @mutex.synchronize do
+        @securities
+      end
+    end
+
+    def securities=(securities)
+      @mutex.synchronize do
+        @securities = securities
+      end
     end
 
     private
@@ -69,10 +81,6 @@ module Jiji::Model::Trading::Brokers
 
     def check_setting_finished
       fail Jiji::Errors::NotInitializedException unless securities
-    end
-
-    def securities
-      @rmt_broker_setting.active_securities
     end
 
     def convert_rates(rate, timestamp)

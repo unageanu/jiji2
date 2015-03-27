@@ -12,7 +12,7 @@ module Jiji::Security
 
     MAIL_TITLE = 'パスワードの再設定'
 
-    needs :security_setting
+    needs :setting_repository
     needs :session_store
     needs :authenticator
     needs :mail_composer
@@ -59,12 +59,17 @@ module Jiji::Security
     end
 
     def change_password(new_password)
-      security_setting.password = new_password
-      security_setting.save
+      setting = security_setting
+      setting.password = new_password
+      setting.save
     end
 
     def expiration_date
       time_source.now + 2 * 60 * 60
+    end
+
+    def security_setting
+      setting_repository.security_setting
     end
 
   end

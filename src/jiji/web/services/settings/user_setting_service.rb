@@ -7,11 +7,12 @@ module Jiji::Web
   class UserSettingService < Jiji::Web::AuthenticationRequiredService
 
     get '/mailaddress' do
-      ok(setting.mail_address)
+      ok(security_setting.mail_address)
     end
 
     put '/mailaddress' do
       body = load_body
+      setting = security_setting
       setting.mail_address = body['mail_address']
       setting.save
       no_content
@@ -19,6 +20,7 @@ module Jiji::Web
 
     put '/password' do
       body = load_body
+      setting = security_setting
       if authenticator.validate_password(body['old_password'])
         setting.password = body['password']
         setting.save
@@ -28,8 +30,8 @@ module Jiji::Web
       end
     end
 
-    def setting
-      lookup(:security_setting)
+    def security_setting
+      lookup(:setting_repository).security_setting
     end
 
     def authenticator

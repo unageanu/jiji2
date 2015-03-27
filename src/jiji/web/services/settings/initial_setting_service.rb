@@ -7,10 +7,11 @@ module Jiji::Web
   class InitialSettingService < Jiji::Web::AbstractService
 
     get '/initialized' do
-      ok(initialized: setting.password_setted?)
+      ok(initialized: security_setting.password_setted?)
     end
 
     put '/mailaddress-and-password' do
+      setting = security_setting
       illegal_state if setting.password_setted?
 
       body = load_body
@@ -20,8 +21,8 @@ module Jiji::Web
       no_content
     end
 
-    def setting
-      lookup(:security_setting)
+    def security_setting
+      lookup(:setting_repository).security_setting
     end
 
   end

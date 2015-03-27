@@ -39,10 +39,6 @@ module Jiji::Model::Settings
       self.category = :security
     end
 
-    def self.load_or_create
-      find(:security) || SecuritySetting.new
-    end
-
     def password_setted?
       !(salt && hashed_password).nil?
     end

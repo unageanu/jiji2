@@ -29,4 +29,11 @@ describe 'ユーザー情報の設定' do
     })
     expect(r.status).to eq 204
   end
+
+  it 'メールアドレスが不正な場合、エラーになる' do
+    r = @client.put('/setting/user/mailaddress', {
+      'mail_address' => ''
+    })
+    expect(r.status).to eq 400
+  end
 end

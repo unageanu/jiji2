@@ -7,9 +7,7 @@ module Jiji::Composing::Configurators
 
     def configure(container)
       container.configure do
-        object :mail_composer_setting, MailComposerSetting.load_or_create
-        object :security_setting,      SecuritySetting.load_or_create
-        object :rmt_broker_setting,    RMTBrokerSetting.load_or_create
+        object :setting_repository, SettingRepository.new
       end
     end
 

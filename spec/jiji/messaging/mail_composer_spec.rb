@@ -7,9 +7,11 @@ describe Jiji::Messaging::MailComposer do
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
 
-    @container = Jiji::Composing::ContainerFactory.instance.new_container
-    @composer  = @container.lookup(:mail_composer)
-    @setting   = @container.lookup(:mail_composer_setting)
+    @container  = Jiji::Composing::ContainerFactory.instance.new_container
+    @composer   = @container.lookup(:mail_composer)
+    @repository = @container.lookup(:setting_repository)
+
+    @setting    = @repository.mail_composer_setting
   end
 
   after(:example) do
@@ -24,6 +26,7 @@ describe Jiji::Messaging::MailComposer do
     @setting.smtp_port = 588
     @setting.user_name = 'aaa'
     @setting.password  = 'bbb'
+    @setting.save
 
     server_setting = @composer.smtp_server.setting
     expect(server_setting[:address]).to eq 'foo.com'

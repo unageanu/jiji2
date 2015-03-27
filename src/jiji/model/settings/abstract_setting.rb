@@ -29,10 +29,6 @@ module Jiji::Model::Settings
 
     private
 
-    def self.find(category)
-      AbstractSetting.find_by(category: category)
-    end
-
     def fire_setting_changed_event(key, event)
       @setting_changed_listener.each do |l|
         l.call(key, event)

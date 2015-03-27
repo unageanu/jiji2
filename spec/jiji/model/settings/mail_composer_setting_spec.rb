@@ -8,7 +8,9 @@ describe Jiji::Model::Settings::MailComposerSetting do
     @data_builder = Jiji::Test::DataBuilder.new
 
     @container = Jiji::Composing::ContainerFactory.instance.new_container
-    @setting   = @container.lookup(:mail_composer_setting)
+    @repository = @container.lookup(:setting_repository)
+
+    @setting    = @repository.mail_composer_setting
   end
 
   after(:example) do
@@ -98,7 +100,6 @@ describe Jiji::Model::Settings::MailComposerSetting do
   end
 
   def recreate_setting
-    @container = Jiji::Composing::ContainerFactory.instance.new_container
-    @container.lookup(:security_setting)
+    @setting    = @repository.mail_composer_setting
   end
 end

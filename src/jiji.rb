@@ -15,7 +15,7 @@ module Jiji
 
   module Model
     module Agents       end
-    module Graph        end
+    module Graphing     end
     module Settings     end
     module Trading
       module Brokers    end

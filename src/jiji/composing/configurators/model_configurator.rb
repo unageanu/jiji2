@@ -15,6 +15,7 @@ module Jiji::Composing::Configurators
     def configurators
       [
         AgentConfigurator.new,
+        GraphConfigurator.new,
         SettingsConfigurator.new,
         TradingConfigurator.new
       ]

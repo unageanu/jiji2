@@ -2,10 +2,10 @@ inherit_from:
   - ./base.yml
 
 Metrics/AbcSize:
-  Max: 20
+  Max: 50
 
 Metrics/ClassLength:
   Max: 200
 
 Metrics/MethodLength:
-  Max: 20
+  Max: 50

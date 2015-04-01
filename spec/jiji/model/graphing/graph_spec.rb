@@ -102,6 +102,14 @@ describe Jiji::Model::Graphing::Graph do
   end
 
   it 'バックテストIDを指定してグラフを削除できる' do
+    graph1 = @repository.find(@backtest1.id)[0]
+    graph2 = @repository.find(@backtest2.id)[0]
+    start_time  = Time.new(2015, 4, 1)
+    end_time    = Time.new(2015, 4, 2)
+
+    expect(graph1.fetch_data(start_time, end_time).length).not_to eq 0
+    expect(graph2.fetch_data(start_time, end_time).length).not_to eq 0
+
     @repository.delete_backtest_graphs(@backtest1.id)
 
     graphs = @repository.find(@backtest1.id)
@@ -110,6 +118,9 @@ describe Jiji::Model::Graphing::Graph do
     graphs = @repository.find(@backtest2.id)
     expect(graphs.length).to eq 1
 
+    expect(graph1.fetch_data(start_time, end_time).length).to eq 0
+    expect(graph2.fetch_data(start_time, end_time).length).not_to eq 0
+
     @repository.delete_backtest_graphs(@backtest2.id)
 
     graphs = @repository.find(@backtest1.id)
@@ -117,13 +128,24 @@ describe Jiji::Model::Graphing::Graph do
 
     graphs = @repository.find(@backtest2.id)
     expect(graphs.length).to eq 0
+
+    expect(graph1.fetch_data(start_time, end_time).length).to eq 0
+    expect(graph2.fetch_data(start_time, end_time).length).to eq 0
   end
 
   it '期間を指定してリアルトレードのグラフを削除できる' do
+    graph = @repository.find[0]
+    start_time  = Time.new(2015, 4, 1)
+    end_time    = Time.new(2015, 4, 1, 0, 0, 2)
+
+    expect(graph.fetch_data(start_time, end_time).length).to eq 1
+
     @repository.delete_rmt_graphs(Time.new(2015, 4, 1, 0, 0, 2))
 
     graphs = @repository.find
     expect(graphs.length).to eq 2
+
+    expect(graph.fetch_data(start_time, end_time).length).to eq 0
   end
 
   def register_graphs

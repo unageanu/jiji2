@@ -45,6 +45,11 @@ module Jiji::Model::Graphing
       update_time(now)
     end
 
+    def fetch_data(start_time, end_time, interval = :one_minute)
+      Internal::GraphDataFetcher.new.fetch(
+        id, start_time, end_time, interval)
+    end
+
     private
 
     def update_time(now)

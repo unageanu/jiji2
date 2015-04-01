@@ -1,7 +1,9 @@
 # coding: utf-8
 
+require 'jiji/utils/abstract_historical_data_fetcher'
+
 module Jiji::Model::Trading::Internal
-  class RateFetcher
+  class RateFetcher < Jiji::Utils::AbstractHistoricalDataFetcher
 
     include Jiji::Errors
 
@@ -10,7 +12,8 @@ module Jiji::Model::Trading::Internal
       swaps = Swaps.create(start_time, end_time)
       interval = resolve_collecting_interval(interval)
       q = fetch_ticks_within(start_time, end_time)
-      q = aggregate_by_interval(q, pair, interval, swaps)
+      q = aggregate_by_interval(q, binding)
+      q = convert_results(q, interval, pair, swaps)
       q.sort_by(&:timestamp)
     end
 
@@ -23,45 +26,31 @@ module Jiji::Model::Trading::Internal
       )
     end
 
-    def aggregate_by_interval(q, pair, interval, swaps)
-      q.map_reduce(
-        MAP_TEMPLATE_FOR_FETCH.result(binding),
-        REDUCE_TEMPLATE_FOR_FETCH.result(binding)
-      ).out(inline: true).map do |r|
-        convert_rate(r, swaps, pair, interval)
+    def convert_results(q, interval, pair, swaps)
+      q.map do |fetched_value|
+        convert_rate(fetched_value, swaps, pair, interval)
       end
     end
 
-    MAP_TEMPLATE_FOR_FETCH = ERB.new %{
-      function() {
-        var partition = Math.floor(
-          this.timestamp.getTime() / (<%= interval %>)) * (<%= interval %>);
-        emit( partition,{
-            bid: this.values["<%= pair.pair_id %>"][0],
-            ask: this.values["<%= pair.pair_id %>"][1],
-            timestamp:this.timestamp
-        });
-      }
-    }
+    def map_function(context)
+      pair = context.local_variable_get('pair')
+      context.local_variable_set('required_values', %(
+        bid: this.values["#{pair.pair_id}"][0],
+        ask: this.values["#{pair.pair_id}"][1]
+            ))
+      MAP_TEMPLATE.result(context)
+    end
 
-    REDUCE_TEMPLATE_FOR_FETCH = ERB.new %{
-      function(key, values) {
-        var result = values[0].open ? values[0] : {
-          open:values[0], close:values[0],
-          high:values[0],low:values[0],
-          timestamp:key
-        };
-        for(var i=0;i<values.length;i++ ) {
-          if (values[0].open && i==0) continue;
-          var t = values[i];
-          if (t.timestamp < result.open.timestamp)  result.open  = t ;
-          if (t.timestamp > result.close.timestamp) result.close = t ;
-          if (result.high.bid < t.bid) result.high  = t ;
-          if (result.low.bid  > t.bid) result.low   = t ;
-        }
-        return result;
-      }
-    }
+    def reduce_function(context)
+      context.local_variable_set('check', 'values[0].open')
+      context.local_variable_set('default_value', %({
+        open:values[0], close:values[0],
+        high:values[0], low:values[0],
+        timestamp:key
+      }))
+      context.local_variable_set('reducer', REDUCER)
+      REDUCE_TEMPLATE.result(context)
+    end
 
     def convert_rate(fetched_value, swaps, pair, interval)
       v = fetched_value['value']
@@ -79,32 +68,13 @@ module Jiji::Model::Trading::Internal
       Jiji::Model::Trading::Tick.create_from_hash(pair, hash || v, swaps)
     end
 
-    def calcurate_partition_start_time(time, interval)
-      (time.to_i / (interval / 1000)).floor * (interval / 1000)
-    end
-
-    def resolve_timestamp(v, interval)
-      if v['open']
-        Time.at(v['timestamp'] / 1000)
-      else
-        Time.at(calcurate_partition_start_time(v['timestamp'], interval))
-      end
-    end
-
-    # rubocop:disable Metrics/CyclomaticComplexity
-    def resolve_collecting_interval(interval)
-      m = 60 * 1000
-      case interval
-      when :one_minute      then       1 * m
-      when :fifteen_minutes then      15 * m
-      when :thirty_minutes  then      30 * m
-      when :one_hour        then      60 * m
-      when :six_hours       then  6 * 60 * m
-      when :one_day         then 24 * 60 * m
-      else not_found('interval', interval: interval)
-      end
-    end
-    # rubocop:enable Metrics/CyclomaticComplexity
+    REDUCER = %{
+      var t = item;
+      if (t.timestamp < result.open.timestamp)  result.open  = t ;
+      if (t.timestamp > result.close.timestamp) result.close = t ;
+      if (result.high.bid < t.bid) result.high  = t ;
+      if (result.low.bid  > t.bid) result.low   = t ;
+    }
 
   end
 end

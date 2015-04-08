@@ -14,7 +14,8 @@ module Jiji::Model::Settings
       @categories = {
         mail_composer: MailComposerSetting,
         rmt_broker:    RMTBrokerSetting,
-        security:      SecuritySetting
+        security:      SecuritySetting,
+        device:        DeviceSetting
       }
     end
 
@@ -28,6 +29,10 @@ module Jiji::Model::Settings
 
     def security_setting
       load_or_create(:security)
+    end
+
+    def device_setting
+      load_or_create(:device)
     end
 
     private

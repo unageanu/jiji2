@@ -10,6 +10,9 @@ module Jiji::Composing::Configurators
         object :mail_composer,         MailComposer.new
         object :userSettingSMTPServer, MailComposer::UserSettingSMTPServer.new
         object :postmarkSMTPServer,    MailComposer::PostmarkSMTPServer.new
+
+        object :device_register,    DeviceRegister.new
+        object :push_notifier,      PushNotifier.new
       end
     end
 

@@ -21,7 +21,8 @@ gem 'mongoid',   '4.0.0'
 gem 'clickclient_scrap', '0.1.13'
 gem 'sbiclient',         '0.1.5'
 
-gem 'mail', '2.6.3'
+gem 'mail',    '2.6.3'
+gem 'aws-sdk', '2.0.37'
 
 gem 'newrelic_rpm', '3.9.9.275'
 

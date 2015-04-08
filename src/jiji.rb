@@ -28,7 +28,9 @@ module Jiji
 
   module Plugin         end
   module Security       end
-  module Services       end
+  module Services
+    module AWS          end
+  end
   module Utils          end
   module Web
     module Transport    end

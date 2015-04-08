@@ -52,6 +52,10 @@ module Jiji::Errors
       "#{type || 'entity'} already exists. #{to_string(param)}"
   end
 
+  def internal_server_error(exception)
+    fail InternalServerError, exception.to_s
+  end
+
   def to_string(param)
     return '' if param.nil?
     param.map { |v| v.join('=') }.join(' ')

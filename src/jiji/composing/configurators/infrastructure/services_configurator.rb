@@ -8,6 +8,7 @@ module Jiji::Composing::Configurators
     def configure(container)
       container.configure do
         object :cryptographic_service, CryptographicService.new
+        object :sns_service,           AWS::SNSService.new
       end
     end
 

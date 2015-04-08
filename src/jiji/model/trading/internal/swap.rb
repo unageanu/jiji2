@@ -18,7 +18,7 @@ module Jiji::Model::Trading::Internal
     field :pair_id,       type: Integer
     field :sell_swap,     type: Integer
     field :buy_swap,      type: Integer
-    field :timestamp,      type: Time
+    field :timestamp,     type: Time
 
     index({ timestamp: 1 }, name: 'swaps_timestamp_index')
 

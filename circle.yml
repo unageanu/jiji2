@@ -1,7 +1,17 @@
 machine:
   ruby:
     version: 2.2.1
+  node:
+    version: 0.10.34
 
+dependencies:
+  override:
+    - npm install
+        pwd:
+          sites
 test:
   override:
     - bundle exec rake
+    - gulp spec:
+        pwd:
+          sites

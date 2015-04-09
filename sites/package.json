@@ -26,7 +26,8 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "build": "gulp"
+    "build": "gulp",
+    "spec": "gulp spec"
   },
   "author": "masaya yamauchi <masaya.yamauchi@gmail.com>",
   "repository": {

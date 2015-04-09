@@ -5,13 +5,13 @@ machine:
     version: 0.10.34
 
 dependencies:
-  override:
+  post:
     - npm install:
         pwd:
           sites
 test:
   override:
     - bundle exec rake
-    - gulp spec:
+    - npm run-script build:
         pwd:
           sites

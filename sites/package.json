@@ -1,0 +1,36 @@
+{
+  "name": "jiji2",
+  "version": "1.0.0",
+  "description": "FX auto trading system.",
+  "main": "",
+  "dependencies": {
+    "react": "^0.13.1",
+    "material-ui": "^0.7.3",
+    "react-tap-event-plugin": "^0.1.3",
+    "container-js": "^1.0.5"
+  },
+  "devDependencies": {
+    "babel-core": "^4.7.12",
+    "babel-loader": "^4.1.0",
+    "del": "^1.1.1",
+    "gulp": "^3.8.11",
+    "gulp-autoprefixer": "^2.0.0",
+    "gulp-eslint": "^0.8.0",
+    "gulp-less": "^3.0.0",
+    "gulp-uglify": "^1.1.0",
+    "gulp-webpack": "^1.3.0",
+    "require-dir": "^0.1.0",
+    "webpack": "^1.7.3"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "scripts": {
+    "build": "gulp"
+  },
+  "author": "masaya yamauchi <masaya.yamauchi@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unageanu/jiji2"
+  }
+}

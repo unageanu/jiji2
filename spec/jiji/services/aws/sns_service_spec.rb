@@ -6,6 +6,7 @@ require 'jiji/composing/container_factory'
 describe Jiji::Services::AWS::SNSService do
   before do
     @service = Jiji::Services::AWS::SNSService.new
+    @service.cryptographic_service = Jiji::Services::CryptographicService.new
   end
 
   it 'デバイスを登録して、Push通知ができる' do

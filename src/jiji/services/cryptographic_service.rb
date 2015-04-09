@@ -5,21 +5,21 @@ module Jiji::Services
 
     include Jiji::Errors
 
-    def encrypt(text)
-      new_encryptor.encrypt_and_sign(text)
+    def encrypt(text, secret = default_secret)
+      new_encryptor(secret).encrypt_and_sign(text)
     end
 
-    def decrypt(encrypted_text)
-      new_encryptor.decrypt_and_verify(encrypted_text)
+    def decrypt(encrypted_text, secret = default_secret)
+      new_encryptor(secret).decrypt_and_verify(encrypted_text)
     end
 
     private
 
-    def new_encryptor
+    def new_encryptor(secret)
       ActiveSupport::MessageEncryptor.new(secret)
     end
 
-    def secret
+    def default_secret
       ENV['SECRET'] \
       || illegal_state('environment variable $SECRET is not set.')
     end

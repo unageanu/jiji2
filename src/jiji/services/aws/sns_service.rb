@@ -6,7 +6,10 @@ require 'jiji/errors/errors'
 module Jiji::Services::AWS
   class SNSService
 
+    include Encase
     include Jiji::Errors
+
+    needs :cryptographic_service
 
     def register_platform_endpoint(type, token)
       run do
@@ -41,13 +44,25 @@ module Jiji::Services::AWS
     end
 
     def credentials
-      Aws::Credentials.new(ACCESS_KEY, SECRET_KEY)
+      @credentials ||= Aws::Credentials.new(
+        decrypt(ACCESS_KEY), decrypt(SECRET_KEY))
+    end
+
+    def decrypt(src)
+      @cryptographic_service.decrypt(src, SECRET)
     end
 
     REGION     = 'ap-northeast-1'
 
-    ACCESS_KEY = 'AKIAJQWUGPKGTGCLLTOA'
-    SECRET_KEY = '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'
+    SECRET     = '49+$sAa87fLLcU6x)(MNi|WC3C725_G/tP5tfStU' \
+                 + 'cz6$)R/*!Li2v4XVcSt-hA#B*-)%tL9N'
+    ACCESS_KEY = 'QzJyQjBrbHVpNmRwdVM4bTRDbzBLQXZCVlNET0lkOXhwNWxIOWt1NGl6T' \
+                 + 'T0tLVRqcGk4UFgxZHRDUG1Gd3U0a0lSR1E9PQ==--caa3b860a406ef' \
+                 + '7c4e0ab44dcfaea57b85760d9c'
+    SECRET_KEY = 'QTBteWwxOHo5NXQ5NG0rZ3lNNEJlWlRIS3hIcVVxaG14TGd2Qk9RcHptc' \
+                 + 'GtxLzVPbmZiNEJpV2RtZTl5NFc0MXk1a2Ura1pHeXgyWWh4YS9XMTR0' \
+                 + 'alE9PS0ta0IxWmhpRXdpazZoRm1ISW5ZblVBdz09--0ac7362604ddb' \
+                 + 'e30c782b9e1ddec55edb9a48617'
     GCM_ARN    = 'arn:aws:sns:ap-northeast-1:452935723537:app/GCM/jiji2-gcm'
 
   end

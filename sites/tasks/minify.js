@@ -2,4 +2,7 @@
 
 var gulp    = require('gulp');
 
-gulp.task('minify', ['minify-js','minify-css','minify-html']);
+gulp.task('minify', [
+  'minify-js',  'minify-css',
+  'minify-html','minify-images'
+]);

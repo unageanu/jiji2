@@ -2,4 +2,4 @@
 
 var gulp = require('gulp');
 
-gulp.task('default', ['build', 'spec', 'lint']);
+gulp.task('default', ['minify', 'spec', 'lint']);

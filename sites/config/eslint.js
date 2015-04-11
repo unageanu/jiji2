@@ -26,13 +26,15 @@
   env: {
     browser : true,
     amd     : true,
-    es6     : true
+    es6     : true,
+    jasmine : true
   },
   rules: {
     key-spacing        : 0,
     no-trailing-spaces : 0,
     space-infix-ops    : 0,
     eol-last           : 0,
+    no-multi-spaces    : 0,
 
     curly : 0,
 

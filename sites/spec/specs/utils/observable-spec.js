@@ -1,4 +1,4 @@
-import Observable from "../../../src/js/utils/observable"
+import Observable from "src/utils/observable"
 
 describe("Observable", () => {
 

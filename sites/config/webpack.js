@@ -36,7 +36,10 @@ module.exports = {
             filename: 'all-specs.js'
         },
         resolve: {
-            root: __dirname + '/spec'
+            root: __dirname + '/spec',
+            alias : {
+              src: __dirname + '/../src/js'
+            }
         },
         module: base.module
     }

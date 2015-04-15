@@ -1,1 +1,1 @@
-import "./specs/sample-spec";
+import "./specs/utils/observable-spec";

@@ -1,0 +1,13 @@
+export default {
+    Code: {
+        CANCELED: "CANCELED",
+
+        SERVER_BUSY: "SERVER_BUSY",
+
+        UNAUTHORIZED: "UNAUTHORIZED",
+        OPERATION_NOT_ALLOWD: "OPERATION_NOT_ALLOWD",
+
+        NOT_FOUND: "NOT_FOUND",
+        INVALID_VALUE: "INVALID_VALUE"
+    }
+}

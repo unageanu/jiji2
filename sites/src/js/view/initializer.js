@@ -21,7 +21,7 @@ export default class Initializer {
   }
   initializeView(application) {
       try {
-          Router.run(this.routes(), function (Handler) {
+          Router.run(this.routes(), (Handler) => {
               const element = document.getElementById("main");
               React.render(<Handler application={application} />, element);
           });

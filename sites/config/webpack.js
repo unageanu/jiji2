@@ -1,11 +1,16 @@
 "use strict";
 
+var webpack = require("webpack");
+
 var base = {
     module: {
         loaders: [{
             test:     /\.js$/,
-            exclude:  /node_modules/,
+            exclude:  /(node_modules|lib)/,
             loader:  'babel-loader'
+        },{
+            test:     /msgpack\.codec\.js$/,
+            loader:  'exports-loader'
         }],
 
         exprContextRecursive : true,
@@ -18,6 +23,14 @@ var base = {
     }
 };
 
+var alias = {
+  src:     __dirname + '/../src/js',
+  msgpack: __dirname + '/../lib/msgpack.codec.js'
+};
+var plugins =  [
+    new webpack.IgnorePlugin(/vertx/)
+];
+
 module.exports = {
     src : {
         entry: './src/js/main.js',
@@ -26,8 +39,10 @@ module.exports = {
         },
         resolve: {
             root: __dirname + '/src/js',
+            alias: alias
         },
-        module: base.module
+        module: base.module,
+        plugins: plugins
     },
 
     spec: {
@@ -37,10 +52,9 @@ module.exports = {
         },
         resolve: {
             root: __dirname + '/spec',
-            alias : {
-              src: __dirname + '/../src/js'
-            }
+            alias: alias
         },
-        module: base.module
+        module: base.module,
+        plugins: plugins
     }
 }

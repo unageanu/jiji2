@@ -15,6 +15,7 @@ module Jiji::Web
     include Jiji::Errors
 
     use Rack::Deflater
+    use SecurityFilter
 
     set :sessions, false
 

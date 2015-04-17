@@ -28,6 +28,8 @@ module Jiji::Web
       register_services(builder)
       register_setting_services(builder)
       register_testing_services(builder)
+      register_static_files(builder)
+      register_root(builder)
       builder
     end
 
@@ -52,6 +54,14 @@ module Jiji::Web
     def register_testing_services(builder)
       return unless (ENV['RACK_ENV'] == 'test')
       builder.map('/api/testing/mail') { run Test::MailService  }
+    end
+
+    def register_static_files(builder)
+      builder.map('/static/')          { run StaticFileService }
+    end
+
+    def register_root(builder)
+      builder.map('/') { run RootService }
     end
 
   end

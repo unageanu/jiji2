@@ -55,16 +55,20 @@ export default class XhrRequest {
             method: this.method,
             params: this.params,
             timeout: 1000*60*3,
-            transformRequest:  [Msgpack.pack],
-            transformResponse: [Msgpack.unpack],
+            transformRequest:  [Msgpack.msgpack.pack],
+            transformResponse: [this.transformResponse],
             data: this.body,
-            responseType: "arrayBuffer",
+            responseType: "arraybuffer",
             headers: {
               "Content-Type": "application/x-msgpack"
             }
         };
         this.addAuthorizationHeader(base.headers);
         return base;
+    }
+
+    transformResponse(arrayBuffer) {
+      return Msgpack.msgpack.unpack(new Uint8Array(arrayBuffer));
     }
 
     cancel() {
@@ -84,10 +88,10 @@ export default class XhrRequest {
     }
 
     convertError(response) {
-        return {
-          response : response,
-          code:      this.convertErrorCode(response)
-        };
+        return Error.create({
+          response: response,
+          code:     this.convertErrorCode(response)
+        });
     }
 
     convertErrorCode(response) {

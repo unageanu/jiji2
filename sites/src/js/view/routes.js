@@ -11,10 +11,10 @@ const Route        = Router.Route;
 const DefaultRoute = Router.DefaultRoute;
 
 export default (
-    <Route handler={MainView} path="/">
-        <DefaultRoute           handler={Home} />
-        <Route name="backtests" handler={BackTest} />
-        <Route name="agents"    handler={Agents} />
-        <Route name="settings"  handler={Settings} />
-    </Route>
+  <Route handler={MainView} path="/">
+    <DefaultRoute           handler={Home} />
+    <Route name="backtests" handler={BackTest} />
+    <Route name="agents"    handler={Agents} />
+    <Route name="settings"  handler={Settings} />
+  </Route>
 );

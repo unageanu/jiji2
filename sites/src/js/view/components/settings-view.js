@@ -3,10 +3,10 @@ import MUI        from "material-ui";
 
 export default React.createClass({
   render() {
-      return (
-          <div>
-            設定
-          </div>
-      );
+    return (
+      <div>
+        設定
+      </div>
+    );
   }
 });

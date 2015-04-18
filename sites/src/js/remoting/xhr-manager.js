@@ -61,8 +61,8 @@ export default class XhrManager extends Observable {
         this.loaderCount = 0;
     }
 
-    xhr( url, method, body, avoidBlocking) {
-        const request = new XhrRequest(this, url, method, body);
+    xhr( url, method, body=null, params={}) {
+        const request = new XhrRequest(this, url, method, body, params);
         return this.handleRequest(request);
     }
     handleRequest(request) {

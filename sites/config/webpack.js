@@ -8,9 +8,6 @@ var base = {
             test:     /\.js$/,
             exclude:  /(node_modules|lib)/,
             loader:  'babel-loader'
-        },{
-            test:     /msgpack\.codec\.js$/,
-            loader:  'exports-loader'
         }],
 
         exprContextRecursive : true,

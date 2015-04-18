@@ -10,7 +10,7 @@ describe 'パスワードの再設定' do
   it 'パスワードを変更できる' do
     r = nil
     do_request_using(nil) do
-      r = @client.post('setting/password-resetter', {
+      r = @client.post('settings/password-resetter', {
         'mail_address' => 'foo2@var.com'
       })
       expect(r.status).to eq 204
@@ -23,7 +23,7 @@ describe 'パスワードの再設定' do
     token = r.body[0]['body'].scan(/トークン\: ([a-zA-Z0-9]+)/)[0][0]
 
     do_request_using(nil) do
-      r = @client.put('setting/password-resetter', {
+      r = @client.put('settings/password-resetter', {
         'token'    => token,
         'password' => 'foo'
       })
@@ -36,7 +36,7 @@ describe 'パスワードの再設定' do
 
   it 'メールアドレスが一致しない場合、エラーになる' do
     do_request_using(nil) do
-      r = @client.post('setting/password-resetter', {
+      r = @client.post('settings/password-resetter', {
         'mail_address' => 'missmatch@var.com'
       })
       expect(r.status).to eq 400
@@ -45,7 +45,7 @@ describe 'パスワードの再設定' do
 
   it '存在しないトークンを指定した場合、エラーになる' do
     do_request_using(nil) do
-      r = @client.put('setting/password-resetter', {
+      r = @client.put('settings/password-resetter', {
         'token'    => 'unknown',
         'password' => 'foo'
       })

@@ -44,7 +44,7 @@ module Jiji::Web
     end
 
     def register_setting_services(builder)
-      base = '/api/setting'
+      base = '/api/settings'
       builder.map("#{base}/initialization")    { run InitialSettingService }
       builder.map("#{base}/rmt-broker")        { run RMTBrokerSettingService }
       builder.map("#{base}/user")              { run UserSettingService }

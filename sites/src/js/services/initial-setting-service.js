@@ -15,7 +15,7 @@ export default class InitialSettingService extends AbstractService {
   }
 
   serviceUrl(path) {
-    return this.urlResolver.resolveServiceUrl("setting/initialization")
+    return this.urlResolver.resolveServiceUrl("settings/initialization")
            + "/" + path;
   }
 }

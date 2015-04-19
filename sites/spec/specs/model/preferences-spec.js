@@ -20,7 +20,7 @@ describe("Preferences", () => {
   it("最近見た通貨ペアを設定できる", () => {
 
     var pairs = null;
-    preferences.addObserver("changed", (n, ev) => pairs = ev.value );
+    preferences.addObserver("propertyChanged", (n, ev) => pairs = ev.newValue );
 
     preferences.preferredPair = "EURUSD";
     expect(preferences.preferredPairs.length).toBe(1);

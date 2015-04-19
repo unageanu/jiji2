@@ -3,42 +3,50 @@ import Observable   from "../utils/observable";
 
 export default class Preferences extends Observable {
   constructor() {
+    super({
+      preferredPairs: [],
+      chartInterval:  "one_minute"
+    });
     this.localStorage = ContainerJS.Inject;
   }
 
   restoreState() {
     const data = this.localStorage.get("preferences") || {};
 
-    this.preferredPairs = data.preferredPairs || [];
-    this.chartInterval  = data.chartInterval || "one_minute";
+    this.setProperty("preferredPairs", data.preferredPairs || []);
+    this.setProperty("chartInterval",  data.chartInterval || "one_minute");
   }
 
   get preferredPair() {
     return this.preferredPairs[0];
   }
   set preferredPair(pairName) {
-    this.preferredPairs =
+    let preferredPairs =
       this.preferredPairs.filter((item) => item !== pairName );
-    this.preferredPairs.unshift(pairName);
-
+    preferredPairs.unshift(pairName);
+    this.setProperty("preferredPairs", preferredPairs);
     this.saveState();
-    this.fire("changed", {key:"preferredPairs", value:this.preferredPairs});
   }
-
+  get preferredPairs() {
+    return this.getProperty("preferredPairs");
+  }
+  set preferredPairs(pairs) {
+    this.setProperty("preferredPairs", pairs);
+    this.saveState();
+  }
   get chartInterval() {
-    return this._chartInterval;
+    return this.getProperty("chartInterval");
   }
 
   set chartInterval(interval) {
-    this._chartInterval = interval;
+    this.setProperty("chartInterval", interval);
     this.saveState();
-    this.fire("changed", {key:"chartInterval", value:this._chartInterval});
   }
 
   saveState() {
     this.localStorage.set("preferences", {
       preferredPairs : this.preferredPairs,
-      chartInterval :  this._chartInterval
+      chartInterval :  this.chartInterval
     });
   }
 }

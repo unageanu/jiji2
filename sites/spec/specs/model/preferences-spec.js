@@ -22,22 +22,22 @@ describe("Preferences", () => {
     var pairs = null;
     preferences.addObserver("changed", (n, ev) => pairs = ev.value );
 
-    preferences.setPair("EURUSD");
+    preferences.preferredPair = "EURUSD";
     expect(preferences.preferredPairs.length).toBe(1);
     expect(pairs[0]).toBe("EURUSD");
 
-    preferences.setPair("EURJPY");
+    preferences.preferredPair = "EURJPY";
     expect(preferences.preferredPairs.length).toBe(2);
     expect(pairs[0]).toBe("EURJPY");
     expect(pairs[1]).toBe("EURUSD");
 
-    preferences.setPair("USDJPY");
+    preferences.preferredPair = "USDJPY";
     expect(preferences.preferredPairs.length).toBe(3);
     expect(pairs[0]).toBe("USDJPY");
     expect(pairs[1]).toBe("EURJPY");
     expect(pairs[2]).toBe("EURUSD");
 
-    preferences.setPair("EURJPY");
+    preferences.preferredPair = "EURJPY";
     expect(preferences.preferredPairs.length).toBe(3);
     expect(pairs[0]).toBe("EURJPY");
     expect(pairs[1]).toBe("USDJPY");
@@ -45,15 +45,15 @@ describe("Preferences", () => {
   });
 
   it("チャートの集計期間を設定できる", () => {
-    preferences.setChartInterval("one_hours");
+    preferences.chartInterval = "one_hours";
     expect(preferences.chartInterval).toBe("one_hours");
   });
 
   it("設定値を永続化できる", () => {
-    preferences.setPair("EURUSD");
-    preferences.setPair("EURJPY");
-    preferences.setPair("EURUSD");
-    preferences.setChartInterval("one_hours");
+    preferences.preferredPair = "EURUSD";
+    preferences.preferredPair = "EURJPY";
+    preferences.preferredPair = "EURUSD";
+    preferences.chartInterval = "one_hours";
 
     preferences.restoreState();
     expect(preferences.preferredPairs.length).toBe(2);

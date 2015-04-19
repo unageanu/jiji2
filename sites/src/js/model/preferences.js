@@ -13,24 +13,32 @@ export default class Preferences extends Observable {
     this.chartInterval  = data.chartInterval || "one_minute";
   }
 
-  setPair(pairName) {
+  get preferredPair() {
+    return this.preferredPairs[0];
+  }
+  set preferredPair(pairName) {
     this.preferredPairs =
       this.preferredPairs.filter((item) => item !== pairName );
     this.preferredPairs.unshift(pairName);
 
     this.saveState();
-    this.fire("changed", {key:"pair", value:this.preferredPairs});
+    this.fire("changed", {key:"preferredPairs", value:this.preferredPairs});
   }
-  setChartInterval(interval) {
-    this.chartInterval = interval;
+
+  get chartInterval() {
+    return this._chartInterval;
+  }
+
+  set chartInterval(interval) {
+    this._chartInterval = interval;
     this.saveState();
-    this.fire("changed", {key:"chartInterval", value:this.chartInterval});
+    this.fire("changed", {key:"chartInterval", value:this._chartInterval});
   }
 
   saveState() {
     this.localStorage.set("preferences", {
       preferredPairs : this.preferredPairs,
-      chartInterval : this.chartInterval
+      chartInterval :  this._chartInterval
     });
   }
 }

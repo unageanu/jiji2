@@ -3,6 +3,7 @@ import axios           from "axios"
 import Msgpack         from "msgpack"
 import HTTPHeaderField from "./http-header-field";
 import Error           from "../model/error";
+import Transformer     from "./transformer";
 
 export default class XhrRequest {
 
@@ -68,7 +69,8 @@ export default class XhrRequest {
   }
 
   transformResponse(arrayBuffer) {
-    return Msgpack.msgpack.unpack(new Uint8Array(arrayBuffer));
+    let data = Msgpack.msgpack.unpack(new Uint8Array(arrayBuffer));
+    return new Transformer().transformResponse(data);
   }
 
   cancel() {

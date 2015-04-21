@@ -6,11 +6,15 @@ var merge   = require('deepmerge')
 var base = {
   resolve: {
     alias: {
-      msgpack: __dirname + '/../lib/msgpack.codec.js'
+      msgpack: __dirname + '/../lib/msgpack.codec.js',
+      easeljs: __dirname + '/../lib/easeljs-0.8.0.combined.js'
     }
   },
   plugins:  [
-    new webpack.IgnorePlugin(/vertx/)
+    new webpack.IgnorePlugin(/vertx/),
+    new webpack.ProvidePlugin({
+      createjs: "easeljs"
+    })
   ],
   module: {
     loaders: [{

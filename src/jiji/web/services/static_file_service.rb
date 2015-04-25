@@ -15,8 +15,9 @@ module Jiji::Web
     set :public_folder, StaticFileService.static_file_dir
     set :static_cache_control, [:public, max_age: 60 * 60 * 24 * 365]
 
-    get %r{/v([a-zA-Z0-9\-\_\.]+)/(.*)} do
-      redirect to(params['captures'][1])
+    get %r{(.*/)v([a-zA-Z0-9\-\_\.]+)/(.*)} do
+      path = params['captures'][0] + params['captures'][2]
+      call env.merge('PATH_INFO' => path)
     end
 
   end

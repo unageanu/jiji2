@@ -6,6 +6,7 @@
   "dependencies": {
     "axios": "^0.5.4",
     "container-js": "^1.0.5",
+    "date-format": "0.0.2",
     "deepmerge": "^0.2.7",
     "material-ui": "^0.7.3",
     "react": "^0.13.1",

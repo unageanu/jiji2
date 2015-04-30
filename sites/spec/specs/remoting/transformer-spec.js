@@ -1,5 +1,4 @@
 import Transformer from "src/remoting/transformer"
-import _           from "underscore";
 
 describe("Transformer", () => {
 
@@ -19,7 +18,7 @@ describe("Transformer", () => {
       }
     });
 
-    expect(_.isEqual(transformed, {
+    expect(transformed).toEqual({
       timestamp:           new Date( 1429498940001 ),
       "start_at":          new Date( 1429531340002 ),
       string:              "2015-04-20T12:02:20.002Z",
@@ -30,7 +29,7 @@ describe("Transformer", () => {
         string:              "2015-04-20T12:02:20-06:00",
         "illegal_format_at": "2015-04-20T12:02:20X"
       }
-    })).toBe(true);
+    });
 
   });
 

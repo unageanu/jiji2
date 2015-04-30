@@ -1,6 +1,5 @@
 import ContainerJS      from "container-js";
 import ContainerFactory from "../../../utils/test-container-factory";
-import _                from "underscore";
 
 describe("Pairs", () => {
 
@@ -25,11 +24,11 @@ describe("Pairs", () => {
       {"pair_id": 2, "name": "EURUSD"}
     ]);
 
-    expect(_.isEqual(pairs.pairs, [
+    expect(pairs.pairs).toEqual([
       {"pair_id": 0, "name": "USDJPY"},
       {"pair_id": 1, "name": "EURJPY"},
       {"pair_id": 2, "name": "EURUSD"}
-    ])).toBe(true);
+    ]);
 
   });
 
@@ -48,10 +47,10 @@ describe("Pairs", () => {
       {"pair_id": 1, "name": "EURJPY"}
     ]);
 
-    expect(_.isEqual(pairs.pairs, [
+    expect(pairs.pairs).toEqual([
       {"pair_id": 0, "name": "USDJPY"},
       {"pair_id": 1, "name": "EURJPY"}
-    ])).toBe(true);
+    ]);
 
   });
 });

@@ -1,5 +1,4 @@
 import Objects from "src/utils/objects"
-import _       from "underscore";
 
 describe("Objects", () => {
 
@@ -16,9 +15,9 @@ describe("Objects", () => {
       return v;
     });
 
-    expect(_.isEqual(object, createTestOjbect())).toBe(true);
+    expect(object).toEqual(createTestOjbect());
 
-    expect(_.isEqual(converted, {
+    expect(converted).toEqual({
       string : "converted",
       number: 20,
       date: new Date(10),
@@ -38,7 +37,7 @@ describe("Objects", () => {
         number: 20,
         date: new Date(10)
       }
-    })).toBe(true);
+    });
   });
 
   it("traverseValuesでオブジェクトの値をスキャンできる", () => {

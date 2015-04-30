@@ -9,6 +9,7 @@ function model(binder) {
 function viewModel(binder) {
   binder.bind("application").to("viewmodel.Application");
   binder.bind("navigator").to("viewmodel.Navigator");
+  binder.bind("viewModelFactory").to("viewmodel.ViewModelFactory");
 }
 
 function remoting(binder) {

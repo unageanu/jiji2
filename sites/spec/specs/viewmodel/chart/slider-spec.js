@@ -28,14 +28,14 @@ describe("Slider", () => {
     initialize();
 
     expect(slider.normalizedRange).toEqual({
-      start: new Date(2015, 4,  1,  0, 0, 0),
-      end:   new Date(2015, 4, 10,  1, 0, 0)
+      start: new Date("2015-05-01T00:00:00Z"),
+      end:   new Date("2015-05-10T01:00:00Z")
     });
     expect(slider.width).toBe(100);
     expect(slider.pageWidth).toBe(30);
     expect(slider.currentRange).toEqual({
-      start: new Date(2015, 4,  9,  5,  0,  0),
-      end:   new Date(2015, 4, 10,  1,  0,  0)
+      start: new Date("2015-05-09T05:00:00Z"),
+      end:   new Date("2015-05-10T01:00:00Z")
     });
     expect(slider.positionX).toBe(70);
   });
@@ -46,19 +46,19 @@ describe("Slider", () => {
       initialize();
       slider.rates.reload();
       slider.rates.rateService.xhrManager.requests[1].resolve({
-        start: new Date(2015, 3, 30,  0, 1, 10),
-        end:   new Date(2015, 4, 11,  0, 2, 20)
+        start: new Date("2015-04-30T00:01:10Z"),
+        end:   new Date("2015-05-11T00:02:20Z")
       });
 
       expect(slider.normalizedRange).toEqual({
-        start: new Date(2015, 3, 30,  0, 0, 0),
-        end:   new Date(2015, 4, 11,  1, 0, 0)
+        start: new Date("2015-04-30T00:00:00Z"),
+        end:   new Date("2015-05-11T01:00:00Z")
       });
       expect(slider.width).toBe(100);
       expect(slider.pageWidth).toBe(30);
       expect(slider.currentRange).toEqual({
-        start: new Date(2015, 4, 10,  5,  0,  0),
-        end:   new Date(2015, 4, 11,  1,  0,  0)
+        start: new Date("2015-05-10T05:00:00Z"),
+        end:   new Date("2015-05-11T01:00:00Z")
       });
       expect(slider.positionX).toBe(70);
     });
@@ -68,26 +68,26 @@ describe("Slider", () => {
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(92);
       expect(slider.currentRange).toEqual({
-        start: new Date(2015, 4,  9,  5,  0,  0),
-        end:   new Date(2015, 4, 10,  1,  0,  0)
+        start: new Date("2015-05-09T05:00:00Z"),
+        end:   new Date("2015-05-10T01:00:00Z")
       });
       expect(slider.positionX).toBe(908);
 
       slider.rates.reload();
       slider.rates.rateService.xhrManager.requests[1].resolve({
-        start: new Date(2015, 3, 30,  0, 1, 10),
-        end:   new Date(2015, 4, 11,  0, 2, 20)
+        start: new Date("2015-04-30T00:01:10Z"),
+        end:   new Date("2015-05-11T00:02:20Z")
       });
 
       expect(slider.normalizedRange).toEqual({
-        start: new Date(2015, 4,  0,  0, 0, 0),
-        end:   new Date(2015, 4, 11,  1, 0, 0)
+        start: new Date("2015-04-30T00:00:00Z"),
+        end:   new Date("2015-05-11T01:00:00Z")
       });
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(75);
       expect(slider.currentRange).toEqual({
-        start: new Date(2015, 4, 10, 5,  0,  0),
-        end:   new Date(2015, 4, 11, 1,  0,  0)
+        start: new Date("2015-05-10T05:00:00Z"),
+        end:   new Date("2015-05-11T01:00:00Z")
       });
       expect(slider.positionX).toBe(925);
     });
@@ -97,8 +97,8 @@ describe("Slider", () => {
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(92);
       expect(slider.currentRange).toEqual({
-        start: new Date(2015, 4,  9,  5,  0,  0),
-        end:   new Date(2015, 4, 10,  1,  0,  0)
+        start: new Date("2015-05-09T05:00:00Z"),
+        end:   new Date("2015-05-10T01:00:00Z")
       });
       expect(slider.positionX).toBe(908);
 
@@ -106,26 +106,26 @@ describe("Slider", () => {
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(92);
       expect(slider.currentRange).toEqual({
-        start: new Date(2015, 4,  9,  3,  0,  0),
-        end:   new Date(2015, 4,  9, 23,  0,  0)
+        start: new Date("2015-05-09T03:00:00Z"),
+        end:   new Date("2015-05-09T23:00:00Z")
       });
       expect(slider.positionX).toBe(900);
 
       slider.rates.reload();
       slider.rates.rateService.xhrManager.requests[1].resolve({
-        start: new Date(2015, 3, 30,  0, 1, 10),
-        end:   new Date(2015, 4, 11,  0, 2, 20)
+        start: new Date("2015-04-30T00:01:10Z"),
+        end:   new Date("2015-05-11T00:02:20Z")
       });
 
       expect(slider.normalizedRange).toEqual({
-        start: new Date(2015, 4,  0,  0, 0, 0),
-        end:   new Date(2015, 4, 11,  1, 0, 0)
+        start: new Date("2015-04-30T00:00:00Z"),
+        end:   new Date("2015-05-11T01:00:00Z")
       });
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(75);
       expect(slider.currentRange).toEqual({
-        start: new Date(2015, 4,  9,  2,  0,  0),
-        end:   new Date(2015, 4,  9, 22,  0,  0)
+        start: new Date("2015-05-09T02:00:00Z"),
+        end:   new Date("2015-05-09T22:00:00Z")
       });
       expect(slider.positionX).toBe(826);
     });
@@ -136,42 +136,42 @@ describe("Slider", () => {
     slider.preferences.chartInterval = "fifteen_minutes";
 
     expect(slider.normalizedRange).toEqual({
-      start: new Date(2015, 4,  1,  0,  0, 0),
-      end:   new Date(2015, 4, 10,  0, 15, 0)
+      start: new Date("2015-05-01T00:00:00Z"),
+      end:   new Date("2015-05-10T00:15:00Z")
     });
     expect(slider.width).toBe(1000);
     expect(slider.pageWidth).toBe(30);
     expect(slider.currentRange).toEqual({
-      start: new Date(2015, 4,  9, 19, 15,  0),
-      end:   new Date(2015, 4, 10,  0, 15,  0)
+      start: new Date("2015-05-09T19:15:00Z"),
+      end:   new Date("2015-05-10T00:15:00Z")
     });
     expect(slider.positionX).toBe(970);
 
     slider.preferences.chartInterval = "one_minute";
 
     expect(slider.normalizedRange).toEqual({
-      start: new Date(2015, 4,  1,  0, 1, 0),
-      end:   new Date(2015, 4, 10,  0, 3, 0)
+      start: new Date("2015-05-01T00:01:00Z"),
+      end:   new Date("2015-05-10T00:03:00Z")
     });
     expect(slider.width).toBe(1000);
     expect(slider.pageWidth).toBe(30);
     expect(slider.currentRange).toEqual({
-      start: new Date(2015, 4,  9, 23, 43,  0),
-      end:   new Date(2015, 4, 10,  0,  3,  0)
+      start: new Date("2015-05-09T23:43:00Z"),
+      end:   new Date("2015-05-10T00:03:00Z")
     });
     expect(slider.positionX).toBe(970);
 
     slider.preferences.chartInterval = "one_day";
 
     expect(slider.normalizedRange).toEqual({
-      start: new Date(2015, 3, 30,  9, 0, 0),
-      end:   new Date(2015, 4, 10,  9, 0, 0)
+      start: new Date("2015-05-01T00:00:00Z"),
+      end:   new Date("2015-05-11T00:00:00Z")
     });
     expect(slider.width).toBe(1000);
     expect(slider.pageWidth).toBe(2000);
     expect(slider.currentRange).toEqual({
-      start: new Date(2015, 3, 20, 9,  0,  0),
-      end:   new Date(2015, 4, 10, 9,  0,  0)
+      start: new Date("2015-04-21T00:00:00Z"),
+      end:   new Date("2015-05-11T00:00:00Z")
     });
     expect(slider.positionX).toBe(-1000);
   });
@@ -184,8 +184,8 @@ describe("Slider", () => {
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(92);
       expect(slider.currentRange).toEqual({
-        start: new Date(2015, 4,  9,  3,  0,  0),
-        end:   new Date(2015, 4,  9, 23,  0,  0)
+        start: new Date("2015-05-09T03:00:00Z"),
+        end:   new Date("2015-05-09T23:00:00Z")
       });
       expect(slider.positionX).toBe(900);
 
@@ -193,8 +193,8 @@ describe("Slider", () => {
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(92);
       expect(slider.currentRange).toEqual({
-        start: new Date(2015, 4,  1,  0,  0,  0),
-        end:   new Date(2015, 4,  1, 20,  0,  0)
+        start: new Date("2015-05-01T00:00:00Z"),
+        end:   new Date("2015-05-01T20:00:00Z")
       });
       expect(slider.positionX).toBe(0);
 
@@ -202,8 +202,8 @@ describe("Slider", () => {
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(92);
       expect(slider.currentRange).toEqual({
-        start: new Date(2015, 4,  1, 21,  0,  0),
-        end:   new Date(2015, 4,  2, 17,  0,  0)
+        start: new Date("2015-05-01T21:00:00Z"),
+        end:   new Date("2015-05-02T17:00:00Z")
       });
       expect(slider.positionX).toBe(100);
     });
@@ -214,8 +214,8 @@ describe("Slider", () => {
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(92);
       expect(slider.currentRange).toEqual({
-        start: new Date(2015, 4,  9,  5,  0,  0),
-        end:   new Date(2015, 4, 10,  1,  0,  0)
+        start: new Date("2015-05-09T05:00:00Z"),
+        end:   new Date("2015-05-10T01:00:00Z")
       });
       expect(slider.positionX).toBe(908);
 
@@ -224,8 +224,8 @@ describe("Slider", () => {
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(92);
       expect(slider.currentRange).toEqual({
-        start: new Date(2015, 4,  1,  0,  0,  0),
-        end:   new Date(2015, 4,  1, 20,  0,  0)
+        start: new Date("2015-05-01T00:00:00Z"),
+        end:   new Date("2015-05-01T20:00:00Z")
       });
       expect(slider.positionX).toBe(0);
     });
@@ -234,12 +234,12 @@ describe("Slider", () => {
   it("goToで任意の日付に移動できる", () => {
     initialize(1000);
 
-    slider.goTo( new Date(2015, 4, 6,  5,  0,  0));
+    slider.goTo( new Date("2015-05-06T05:00:00Z"));
     expect(slider.width).toBe(1000);
     expect(slider.pageWidth).toBe(92);
     expect(slider.currentRange).toEqual({
-      start: new Date(2015, 4,  5, 19,  0,  0),
-      end:   new Date(2015, 4,  6, 15,  0,  0)
+      start: new Date("2015-05-05T19:00:00Z"),
+      end:   new Date("2015-05-06T15:00:00Z")
     });
     expect(slider.positionX).toBe(530);
   });
@@ -249,8 +249,8 @@ describe("Slider", () => {
     slider.width = width;
     slider.rates.initialize();
     slider.rates.rateService.xhrManager.requests[0].resolve({
-      start: new Date(2015, 4,  1,  0, 1, 10),
-      end:   new Date(2015, 4, 10,  0, 2, 20)
+      start: new Date("2015-05-01T00:01:10Z"),
+      end:   new Date("2015-05-10T00:02:20Z")
     });
     slider.candleSticks.stageSize = {w:candleStickPadding+6*candleCount, h:100};
     slider.preferences.chartInterval = interval;

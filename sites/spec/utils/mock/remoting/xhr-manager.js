@@ -34,4 +34,7 @@ export default class MockXhrManager extends XhrManager {
     this.state.send(request, this);
     return request.result();
   }
+  clear() {
+    this.requests = [];
+  }
 }

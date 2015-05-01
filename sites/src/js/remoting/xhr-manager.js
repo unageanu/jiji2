@@ -51,6 +51,7 @@ function isRetryable(manager, request, error) {
 export default class XhrManager extends Observable {
 
   constructor() {
+    super();
     this.sessionManager = ContainerJS.Inject;
 
     this.supportRelogin = false;

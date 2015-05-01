@@ -2,18 +2,19 @@ export default class Observable {
 
   constructor(properties={}) {
     this.properties = properties;
+    this.observers  = {};
   }
 
   addObserver(eventName, observer) {
-    this.observers(eventName).push(observer);
+    this.getObservers(eventName).push(observer);
   }
 
   fire( eventName, event={} ) {
-    this.observers(eventName)
+    this.getObservers(eventName)
       .forEach(( o )=> o(eventName, event) );
   }
 
-  observers(eventName) {
+  getObservers(eventName) {
     return this.observers[eventName]
         || (this.observers[eventName] = []);
   }

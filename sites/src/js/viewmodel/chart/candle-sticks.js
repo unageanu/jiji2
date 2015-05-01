@@ -1,9 +1,60 @@
 import ContainerJS  from "container-js";
 import Observable   from "../../utils/observable";
 
+const padding           = 8 * 2;
+const sideLabelWidth    = 48;
+const bottomLabelheight = 16;
+const stickWidth = 5;
+const stickGap   = 1;
+
 export default class CandleSticks extends Observable {
-  constructor() {
+  constructor(rates, preferences) {
     super();
+    this.rates       = rates;
+    this.preferences = preferences;
+
+    this.registerObservers();
+  }
+
+  static totalPaddingWidth() {
+    return padding + sideLabelWidth;
+  }
+  static totalPaddingHeight() {
+    return padding + bottomLabelheight;
+  }
+
+  registerObservers() {
+    this.preferences.addObserver("propertyChanged", (n, e) => {
+      if (e.key === "preferredPairs") {
+        this.preferredPair = this.preferences.preferredPair;
+        this.update();
+      }
+    });
+
+    this.preferredPair = this.preferences.preferredPair;
+    this.update();
+  }
+
+  attachSlider(slider) {
+    slider.addObserver("propertyChanged", (n, e) => {
+      if (e.key === "currentRange") {
+        this.currentRange = e.newValue;
+        this.update();
+      }
+    });
+
+    this.currentRange = slider.currentRange;
+    this.update();
+  }
+
+  update() {
+    if (!this.currentRange || !this.preferredPair) return;
+    this.rates.fetchRates(
+      this.preferredPair,
+      this.preferences.chartInterval,
+      this.currentRange.start,
+      this.currentRange.end
+    ).then((data) => this.rateData = data );
   }
 
   set stageSize( size ) {
@@ -68,7 +119,7 @@ export default class CandleSticks extends Observable {
   }
 
   calculateSticks(data) {
-    const height        = this.stageSize.h - (8*2);
+    const height        = this.stageSize.h - CandleSticks.totalPaddingHeight();
     const pricePerPixel = (this.highestRate - this.lowestRate) / height;
     return data.map((item, i) =>{
       return {
@@ -77,7 +128,7 @@ export default class CandleSticks extends Observable {
         open:  this.calculateY(pricePerPixel, item.open),
         close: this.calculateY(pricePerPixel, item.close),
         isUp:  item.open < item.close,
-        x:     i*12 + 6
+        x:     i*6 + 3
       };
     });
   }
@@ -87,11 +138,7 @@ export default class CandleSticks extends Observable {
   }
 
   calculateDisplayableCandleCount( stageWidth ) {
-    const padding    = 8 * 2;
-    const labelWidth = 40;
-    const stickWidth = 5;
-    const stickGap   = 1;
-    return Math.floor((stageWidth - padding - labelWidth)
+    return Math.floor((stageWidth - CandleSticks.totalPaddingWidth() )
                     / (stickWidth + stickGap));
   }
 }

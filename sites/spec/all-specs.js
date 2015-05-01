@@ -7,6 +7,7 @@ import "./specs/remoting/xhr-manager-spec";
 import "./specs/utils/observable-spec";
 import "./specs/utils/objects-spec";
 import "./specs/viewmodel/chart/slider-spec";
+import "./specs/viewmodel/chart/candle-sticks-spec";
 import "./specs/viewmodel/utils/date-formatter-spec";
 import "./specs/viewmodel/utils/string-formatter-spec";
 import "./specs/viewmodel/utils/number-formatter-spec";

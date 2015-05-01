@@ -1,18 +1,19 @@
 import ContainerJS      from "container-js";
 import ContainerFactory from "../../../utils/test-container-factory";
 import Slider           from "src/viewmodel/chart/slider";
+import CandleSticks     from "src/viewmodel/chart/candle-sticks";
 import _                from "underscore";
 
 describe("Slider", () => {
 
-  const candleStickPadding = 56;
+  const candleStickPadding = CandleSticks.totalPaddingWidth();
   var slider;
 
   beforeEach(() => {
     let container = new ContainerFactory().createContainer();
     let d = container.get("viewModelFactory");
     const factory = ContainerJS.utils.Deferred.unpack(d);
-    slider = factory.createSlider();
+    slider = factory.createChart().slider;
   });
 
 

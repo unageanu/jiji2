@@ -1,7 +1,5 @@
-import Slider       from "./chart/slider";
-import CandleSticks from "./chart/candle-sticks";
-
 import ContainerJS  from "container-js";
+import Chart       from "./chart/chart";
 
 export default class ViewModelFactory {
 
@@ -10,9 +8,9 @@ export default class ViewModelFactory {
     this.preferences = ContainerJS.Inject;
     this.rateService = ContainerJS.Inject;
   }
-  createSlider() {
-    const candleSticks = new CandleSticks();
-    return new Slider(candleSticks, this.rates, this.preferences);
+  createChart() {
+    return new Chart(
+      this.rates, this.preferences );
   }
 
 }

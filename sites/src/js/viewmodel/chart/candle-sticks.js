@@ -1,26 +1,15 @@
 import ContainerJS  from "container-js";
 import Observable   from "../../utils/observable";
 
-const padding           = 8 * 2;
-const sideLabelWidth    = 48;
-const bottomLabelheight = 16;
-const stickWidth = 5;
-const stickGap   = 1;
-
 export default class CandleSticks extends Observable {
-  constructor(rates, preferences) {
+
+  constructor(coordinateCalculator, rates, preferences) {
     super();
-    this.rates       = rates;
-    this.preferences = preferences;
+    this.rates                = rates;
+    this.preferences          = preferences;
+    this.coordinateCalculator = coordinateCalculator;
 
     this.registerObservers();
-  }
-
-  static totalPaddingWidth() {
-    return padding + sideLabelWidth;
-  }
-  static totalPaddingHeight() {
-    return padding + bottomLabelheight;
   }
 
   registerObservers() {
@@ -35,7 +24,7 @@ export default class CandleSticks extends Observable {
     this.update();
   }
 
-  attachSlider(slider) {
+  attach(slider) {
     slider.addObserver("propertyChanged", (n, e) => {
       if (e.key === "currentRange") {
         this.currentRange = e.newValue;
@@ -57,35 +46,6 @@ export default class CandleSticks extends Observable {
     ).then((data) => this.rateData = data );
   }
 
-  set stageSize( size ) {
-    this.displayableCandleCount = this.calculateDisplayableCandleCount(size.w);
-    return this.setProperty("stageSize", size);
-  }
-  get stageSize() {
-    return this.getProperty("stageSize");
-  }
-
-  set displayableCandleCount( displayableCandleCount ) {
-    return this.setProperty("displayableCandleCount", displayableCandleCount);
-  }
-  get displayableCandleCount() {
-    return this.getProperty("displayableCandleCount");
-  }
-
-
-  set highestRate(value) {
-    this.setProperty("highestRate", value);
-  }
-  get highestRate() {
-    return this.getProperty("highestRate");
-  }
-  set lowestRate(value) {
-    this.setProperty("lowestRate", value);
-  }
-  get lowestRate() {
-    return this.getProperty("lowestRate");
-  }
-
   set sticks(sticks) {
     this.setProperty("sticks", sticks);
   }
@@ -94,10 +54,7 @@ export default class CandleSticks extends Observable {
   }
 
   set rateData(data) {
-    const result = this.calculateHighAndLow(data);
-    this.highestRate = result.highest;
-    this.lowestRate  = result.lowest;
-
+    this.coordinateCalculator.rateRange = this.calculateHighAndLow(data);
     this.sticks      = this.calculateSticks(data);
     this.getProperty("rateData", data);
   }
@@ -119,26 +76,16 @@ export default class CandleSticks extends Observable {
   }
 
   calculateSticks(data) {
-    const height        = this.stageSize.h - CandleSticks.totalPaddingHeight();
-    const pricePerPixel = (this.highestRate - this.lowestRate) / height;
     return data.map((item, i) =>{
       return {
-        high:  this.calculateY(pricePerPixel, item.high),
-        low:   this.calculateY(pricePerPixel, item.low),
-        open:  this.calculateY(pricePerPixel, item.open),
-        close: this.calculateY(pricePerPixel, item.close),
+        high:  this.coordinateCalculator.calculateY(item.high),
+        low:   this.coordinateCalculator.calculateY(item.low),
+        open:  this.coordinateCalculator.calculateY(item.open),
+        close: this.coordinateCalculator.calculateY(item.close),
         isUp:  item.open < item.close,
-        x:     i*6 + 3
+        x:     i*6+3 //this.coordinateCalculator.calculateX(item.timestamp)
       };
     });
   }
 
-  calculateY( pricePerPixel, price ) {
-    return Math.floor( (this.highestRate - price) / pricePerPixel );
-  }
-
-  calculateDisplayableCandleCount( stageWidth ) {
-    return Math.floor((stageWidth - CandleSticks.totalPaddingWidth() )
-                    / (stickWidth + stickGap));
-  }
 }

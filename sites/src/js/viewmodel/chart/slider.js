@@ -1,14 +1,15 @@
-import ContainerJS   from "container-js";
-import Observable    from "../../utils/observable";
-import DateFormatter from "../utils/date-formatter";
+import ContainerJS           from "container-js";
+import Observable            from "../../utils/observable";
+import DateFormatter         from "../utils/date-formatter";
+import  CoordinateCalculator from "./coordinate-calculator";
 
 export default class Slider extends Observable {
 
-  constructor(candleSticks, rates, preferences) {
+  constructor(coordinateCalculator, rates, preferences) {
     super();
-    this.rates        = rates;
-    this.preferences  = preferences;
-    this.candleSticks = candleSticks;
+    this.rates                = rates;
+    this.preferences          = preferences;
+    this.coordinateCalculator = coordinateCalculator;
 
     this.initialize();
   }
@@ -24,7 +25,7 @@ export default class Slider extends Observable {
       this.chartInterval = e.newValue;
       this.update();
     });
-    this.candleSticks.addObserver("propertyChanged", (n, e) => {
+    this.coordinateCalculator.addObserver("propertyChanged", (n, e) => {
       if (e.key !== "displayableCandleCount") return;
       this.displayableCandleCount = e.newValue;
       this.update();
@@ -32,7 +33,7 @@ export default class Slider extends Observable {
 
     this.range = this.rates.range;
     this.chartInterval = this.preferences.chartInterval;
-    this.displayableCandleCount = this.candleSticks.displayableCandleCount;
+    this.displayableCandleCount = this.coordinateCalculator.displayableCandleCount;
 
     if (this.existRequiredData()) this.update();
   }
@@ -49,7 +50,7 @@ export default class Slider extends Observable {
     if ( !this.existRequiredData() ) return;
 
     const candleCount = this.displayableCandleCount;
-    this.intervalMs = Slider.resolveCollectingInterval(this.chartInterval);
+    this.intervalMs = CoordinateCalculator.resolveCollectingInterval(this.chartInterval);
     this.calculateNormalizedRange(this.intervalMs);
 
     const ms = this.normalizedRange.end.getTime() - this.normalizedRange.start.getTime();
@@ -123,17 +124,6 @@ export default class Slider extends Observable {
         && this.chartInterval;
   }
 
-  static resolveCollectingInterval(interval) {
-    const m = 60 * 1000;
-    switch(interval) {
-      case "fifteen_minutes" : return      15 * m;
-      case "thirty_minutes"  : return      30 * m;
-      case "one_hour"        : return      60 * m;
-      case "six_hours"       : return  6 * 60 * m;
-      case "one_day"         : return 24 * 60 * m;
-      default                : return       1 * m;
-    }
-  }
   static calcuratePartitionStartTime(time, intervalMs) {
     return Math.floor(time / intervalMs ) * intervalMs;
   }

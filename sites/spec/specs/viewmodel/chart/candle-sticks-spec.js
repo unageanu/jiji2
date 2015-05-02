@@ -8,31 +8,32 @@ describe("CandleSticks", () => {
   var candleSticks;
   var chart;
   var slider;
+  var coordinateCalculator;
 
   beforeEach(() => {
     let container = new ContainerFactory().createContainer();
     let d = container.get("viewModelFactory");
     const factory = ContainerJS.utils.Deferred.unpack(d);
-    chart        = factory.createChart();
-    candleSticks = chart.candleSticks;
-    slider       = chart.slider;
+    chart                = factory.createChart();
+    candleSticks         = chart.candleSticks;
+    slider               = chart.slider;
+    coordinateCalculator = chart.coordinateCalculator;
   });
 
   it("必要なデータが揃うと、レートの取得が行われsticksが更新される", () => {
     // 最初は未初期化
     expect(candleSticks.stageSize).toEqual(undefined);
-    expect(candleSticks.displayableCandleCount).toEqual(undefined);
-    expect(candleSticks.highestRate).toEqual(undefined);
-    expect(candleSticks.lowestRate).toEqual(undefined);
+    expect(coordinateCalculator.displayableCandleCount).toEqual(undefined);
+    expect(coordinateCalculator.rateRange).toEqual(undefined);
     expect(candleSticks.sticks).toEqual(undefined);
 
     // データを設定
     initialize();
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
-    expect(candleSticks.displayableCandleCount).toEqual(39);
-    expect(candleSticks.highestRate).toEqual(180.03);
-    expect(candleSticks.lowestRate).toEqual(177.27);
+    expect(coordinateCalculator.displayableCandleCount).toEqual(39);
+    expect(coordinateCalculator.rateRange.highest).toEqual(180.03);
+    expect(coordinateCalculator.rateRange.lowest).toEqual(177.27);
     expect(candleSticks.sticks).toEqual([
       { high: 62, low: 123, open: 111, close: 93,  isUp: true,  x:  3 },
       { high: 32, low: 111, open: 93,  close: 32,  isUp: true,  x:  9 },
@@ -55,9 +56,9 @@ describe("CandleSticks", () => {
     ]);
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
-    expect(candleSticks.displayableCandleCount).toEqual(39);
-    expect(candleSticks.highestRate).toEqual(179.96);
-    expect(candleSticks.lowestRate).toEqual(178.04);
+    expect(coordinateCalculator.displayableCandleCount).toEqual(39);
+    expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
+    expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
     expect(candleSticks.sticks).toEqual([
       { high: 84, low: 101, open: 101, close: 101, isUp: false, x:  3 },
       { high: 84, low: 154, open: 127, close:  84, isUp:  true, x:  9 },
@@ -78,9 +79,9 @@ describe("CandleSticks", () => {
     ]);
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
-    expect(candleSticks.displayableCandleCount).toEqual(39);
-    expect(candleSticks.highestRate).toEqual(179.96);
-    expect(candleSticks.lowestRate).toEqual(178.04);
+    expect(coordinateCalculator.displayableCandleCount).toEqual(39);
+    expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
+    expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
     expect(candleSticks.sticks).toEqual([
       { high: 84, low: 101, open: 101, close: 101, isUp: false, x:  3 },
       { high: 84, low: 154, open: 127, close:  84, isUp:  true, x:  9 },
@@ -101,9 +102,9 @@ describe("CandleSticks", () => {
     ]);
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
-    expect(candleSticks.displayableCandleCount).toEqual(39);
-    expect(candleSticks.highestRate).toEqual(179.96);
-    expect(candleSticks.lowestRate).toEqual(178.04);
+    expect(coordinateCalculator.displayableCandleCount).toEqual(39);
+    expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
+    expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
     expect(candleSticks.sticks).toEqual([
       { high: 84, low: 101, open: 101, close: 101, isUp: false, x:  3 },
       { high: 84, low: 154, open: 127, close:  84, isUp:  true, x:  9 },

@@ -1,12 +1,12 @@
-import ContainerJS      from "container-js";
-import ContainerFactory from "../../../utils/test-container-factory";
-import Slider           from "src/viewmodel/chart/slider";
-import CandleSticks     from "src/viewmodel/chart/candle-sticks";
-import _                from "underscore";
+import ContainerJS          from "container-js";
+import ContainerFactory     from "../../../utils/test-container-factory";
+import Slider               from "src/viewmodel/chart/slider";
+import CoordinateCalculator from "src/viewmodel/chart/coordinate-calculator";
+import _                    from "underscore";
 
 describe("Slider", () => {
 
-  const candleStickPadding = CandleSticks.totalPaddingWidth();
+  const candleStickPadding = CoordinateCalculator.totalPaddingWidth();
   var slider;
 
   beforeEach(() => {
@@ -253,7 +253,7 @@ describe("Slider", () => {
       start: new Date("2015-05-01T00:01:10Z"),
       end:   new Date("2015-05-10T00:02:20Z")
     });
-    slider.candleSticks.stageSize = {w:candleStickPadding+6*candleCount, h:100};
+    slider.coordinateCalculator.stageSize = {w:candleStickPadding+6*candleCount, h:100};
     slider.preferences.chartInterval = interval;
   }
 

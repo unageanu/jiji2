@@ -1,6 +1,7 @@
 import ContainerJS      from "container-js";
 import ContainerFactory from "../../../utils/test-container-factory";
 import CandleSticks     from "src/viewmodel/chart/candle-sticks";
+import NumberUtils      from "src/viewmodel/utils/number-utils";
 import _                from "underscore";
 
 describe("CandleSticks", () => {
@@ -34,6 +35,11 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.displayableCandleCount).toEqual(39);
     expect(coordinateCalculator.rateRange.highest).toEqual(180.03);
     expect(coordinateCalculator.rateRange.lowest).toEqual(177.27);
+    expect(candleSticks.axisLabels).toEqual([
+      {value:178, y:123},
+      {value:179, y:62},
+      {value:180, y:1}
+    ]);
     expect(candleSticks.sticks).toEqual([
       { high: 62, low: 123, open: 111, close: 93,  isUp: true,  x:   3 },
       { high: 32, low: 111, open: 93,  close: 32,  isUp: true,  x:   9 },
@@ -58,6 +64,9 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.displayableCandleCount).toEqual(39);
     expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
     expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
+    expect(candleSticks.axisLabels).toEqual([
+      {value:179, y:84}
+    ]);
     expect(candleSticks.sticks).toEqual([
       { high: 84, low: 101, open: 101, close: 101, isUp: false, x: 27 },
       { high: 84, low: 154, open: 127, close:  84, isUp:  true, x: 21 },
@@ -81,6 +90,9 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.displayableCandleCount).toEqual(39);
     expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
     expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
+    expect(candleSticks.axisLabels).toEqual([
+      {value:179, y:84}
+    ]);
     expect(candleSticks.sticks).toEqual([
       { high: 84, low: 101, open: 101, close: 101, isUp: false, x: 219 },
       { high: 84, low: 154, open: 127, close:  84, isUp:  true, x: 225 },
@@ -104,6 +116,9 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.displayableCandleCount).toEqual(39);
     expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
     expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
+    expect(candleSticks.axisLabels).toEqual([
+      {value:179, y:84}
+    ]);
     expect(candleSticks.sticks).toEqual([
       { high: 84, low: 101, open: 101, close: 101, isUp: false, x:   3 },
       { high: 84, low: 154, open: 127, close:  84, isUp:  true, x: 201 },
@@ -111,6 +126,153 @@ describe("CandleSticks", () => {
     ]);
   });
 
+  describe( "axisLabelsのパターン", () => {
+    it("レートがすべて同一の場合も、一定値以上のrangeが確保される。axisLabelsも正しく取得できる", () => {
+      initialize();
+      slider.positionX = 90;
+      expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
+      slider.rates.rateService.xhrManager.requests[0].resolve([
+        {high:179.0, low:179.0, open:179.0, close:179.0, timestamp:new Date("2015-05-03T20:00:00Z")}
+      ]);
+
+      expect(coordinateCalculator.rateRange.highest).toEqual(179.01);
+      expect(coordinateCalculator.rateRange.lowest).toEqual(178.99);
+      expect(candleSticks.axisLabels).toEqual([
+        {value:179, y:84}
+      ]);
+      expect(candleSticks.sticks).toEqual([
+        { high: 84, low: 84, open: 84, close: 84, isUp: false, x:  27 }
+      ]);
+
+
+      slider.positionX = 84;
+      expect(slider.rates.rateService.xhrManager.requests.length).toEqual(2);
+      slider.rates.rateService.xhrManager.requests[1].resolve([
+        {high:179.222, low:179.222, open:179.222, close:179.222, timestamp:new Date("2015-05-03T20:00:00Z")}
+      ]);
+
+      expect(coordinateCalculator.rateRange.highest).toEqual(179.232);
+      expect(Math.round(coordinateCalculator.rateRange.lowest*10000)).toEqual(1792120);
+      expect(candleSticks.axisLabels).toEqual([
+        {value:179.22, y:100},
+        {value:179.23, y:16}
+      ]);
+      expect(candleSticks.sticks).toEqual([
+        { high: 84, low: 84, open: 84, close: 84, isUp: false, x:   51 }
+      ]);
+
+
+      slider.positionX = 90;
+      slider.rates.rateService.xhrManager.requests[2].resolve([
+        {high:1.79222, low:1.79222, open:1.79222, close:1.79222, timestamp:new Date("2015-05-03T20:00:00Z")}
+      ]);
+
+      expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1792320);
+      expect(Math.round(coordinateCalculator.rateRange.lowest *1000000)).toEqual(1792120);
+      expect(candleSticks.axisLabels).toEqual([
+        {value:1.7922, y:100},
+        {value:1.7923, y:16}
+      ]);
+      expect(candleSticks.sticks).toEqual([
+        { high: 84, low: 84, open: 84, close: 84, isUp: false, x:   27 }
+      ]);
+    });
+    it("レートの範囲が狭い場合も、axisLabelsを正しく取得できる", () => {
+      initialize();
+      slider.positionX = 90;
+      expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
+      slider.rates.rateService.xhrManager.requests[0].resolve([
+        {high:179.002, low:179.000, open:179.0, close:179.002, timestamp:new Date("2015-05-03T20:00:00Z")}
+      ]);
+
+      expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1790120);
+      expect(Math.round(coordinateCalculator.rateRange.lowest*10000) ).toEqual(1789900);
+      expect(candleSticks.axisLabels).toEqual([
+        {value:179,    y:91},
+        {value:179.01, y:15}
+      ]);
+      expect(candleSticks.sticks).toEqual([
+        { high: 76, low: 91, open: 91, close: 76, isUp: true, x:   27 }
+      ]);
+
+
+      slider.positionX = 84;
+      slider.rates.rateService.xhrManager.requests[1].resolve([
+        {high:179.025, low:179.013, open:179.02, close:179.02, timestamp:new Date("2015-05-03T20:00:00Z")}
+      ]);
+
+      expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1790262);
+      expect(Math.round(coordinateCalculator.rateRange.lowest*10000) ).toEqual(1790118);
+      expect(candleSticks.axisLabels).toEqual([
+        {value:179.02, y:72}
+      ]);
+      expect(candleSticks.sticks).toEqual([
+        { high: 14, low: 153, open: 72, close: 72, isUp: false, x:   51 }
+      ]);
+
+
+      slider.positionX = 90;
+      slider.rates.rateService.xhrManager.requests[2].resolve([
+        {high:1.79223, low:1.79222, open:1.79222, close:1.79222, timestamp:new Date("2015-05-03T20:00:00Z")}
+      ]);
+
+      expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1792330);
+      expect(Math.round(coordinateCalculator.rateRange.lowest *1000000)).toEqual(1792120);
+      expect(candleSticks.axisLabels).toEqual([
+        {value:1.7922, y:103},
+        {value:1.7923, y:23}
+      ]);
+      expect(candleSticks.sticks).toEqual([
+        { high: 79, low: 88, open: 88, close: 88, isUp: false, x:   27 }
+      ]);
+    });
+    it("レートの範囲が広い場合も、axisLabelsを正しく取得できる", () => {
+      initialize();
+      slider.positionX = 90;
+      expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
+      slider.rates.rateService.xhrManager.requests[0].resolve([
+        {high:190.002, low:179.000, open:179.0, close:179.002, timestamp:new Date("2015-05-03T20:00:00Z")}
+      ]);
+
+      expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1911022);
+      expect(Math.round(coordinateCalculator.rateRange.lowest*10000) ).toEqual(1778998);
+      expect(candleSticks.axisLabels).toEqual([
+        {value:180, y:141},
+        {value:190, y:14}
+      ]);
+      expect(candleSticks.sticks).toEqual([
+        { high: 14, low: 154, open: 154, close: 153, isUp: true, x:   27 }
+      ]);
+
+
+      slider.positionX = 86;
+      slider.rates.rateService.xhrManager.requests[1].resolve([
+        {high:1.82223, low:1.79222, open:1.79222, close:1.79222, timestamp:new Date("2015-05-03T20:00:00Z")}
+      ]);
+
+      expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1825231);
+      expect(Math.round(coordinateCalculator.rateRange.lowest *1000000)).toEqual(1789219);
+      expect(candleSticks.axisLabels).toEqual([
+        {value:1.79, y:164},
+        {value:1.8,  y:117},
+        {value:1.81, y:71},
+        {value:1.82, y:24}
+      ]);
+      expect(candleSticks.sticks).toEqual([
+        { high: 14, low: 153, open: 153, close: 153, isUp: false, x:   45 }
+      ]);
+    });
+  });
+
+  it("calculateStep でラベルのメモリを計算できる", () => {
+    expect(CandleSticks.calculateStep(121.123456)).toEqual(0.01);
+    expect(CandleSticks.calculateStep(100.123456)).toEqual(0.01);
+    expect(CandleSticks.calculateStep( 99.123456)).toEqual(0.001);
+    expect(CandleSticks.calculateStep( 21.123456)).toEqual(0.001);
+    expect(CandleSticks.calculateStep(  9.123456)).toEqual(0.0001);
+    expect(CandleSticks.calculateStep(  1.123456)).toEqual(0.0001);
+    expect(CandleSticks.calculateStep(  0.123456)).toEqual(0.0001);
+  });
 
   function initialize(width=1000, candleCount=20, interval="one_hour") {
     chart.stageSize = {w:300, h:200};

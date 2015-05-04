@@ -35,24 +35,23 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.rateRange.highest).toEqual(180.03);
     expect(coordinateCalculator.rateRange.lowest).toEqual(177.27);
     expect(candleSticks.sticks).toEqual([
-      { high: 62, low: 123, open: 111, close: 93,  isUp: true,  x:  3 },
-      { high: 32, low: 111, open: 93,  close: 32,  isUp: true,  x:  9 },
-      { high: 13, low: 62,  open: 32,  close: 62,  isUp: false, x: 15 },
-      { high: 62, low: 123, open: 62,  close: 93,  isUp: false, x: 21 },
-      { high: 80, low: 154, open: 93,  close: 154, isUp: false, x: 27 },
-      { high: 62, low: 141, open: 141, close: 93,  isUp: true,  x: 33 }
+      { high: 62, low: 123, open: 111, close: 93,  isUp: true,  x:   3 },
+      { high: 32, low: 111, open: 93,  close: 32,  isUp: true,  x:   9 },
+      { high: 13, low: 62,  open: 32,  close: 62,  isUp: false, x:  15 },
+      { high: 62, low: 123, open: 62,  close: 93,  isUp: false, x:  21 },
+      { high: 80, low: 154, open: 93,  close: 154, isUp: false, x: 171 },
+      { high: 62, low: 141, open: 141, close: 93,  isUp: true,  x: 231 }
     ]);
   });
 
   it("rangeが更新されると、それに応じてデータの再取得が行われる", () => {
     initialize();
-
-    slider.positionX = 900;
+    slider.positionX = 90;
     expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
     slider.rates.rateService.xhrManager.requests[0].resolve([
-      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:new Date("2015-05-01T20:00:00Z")},
-      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:new Date("2015-05-01T19:00:00Z")},
-      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-01T18:00:00Z")}
+      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:new Date("2015-05-03T20:00:00Z")},
+      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:new Date("2015-05-03T19:00:00Z")},
+      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-03T18:00:00Z")}
     ]);
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
@@ -60,8 +59,8 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
     expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
     expect(candleSticks.sticks).toEqual([
-      { high: 84, low: 101, open: 101, close: 101, isUp: false, x:  3 },
-      { high: 84, low: 154, open: 127, close:  84, isUp:  true, x:  9 },
+      { high: 84, low: 101, open: 101, close: 101, isUp: false, x: 27 },
+      { high: 84, low: 154, open: 127, close:  84, isUp:  true, x: 21 },
       { high: 13, low:  84, open:  40, close:  84, isUp: false, x: 15 }
     ]);
   });
@@ -73,9 +72,9 @@ describe("CandleSticks", () => {
 
     expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
     slider.rates.rateService.xhrManager.requests[0].resolve([
-      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:new Date("2015-05-01T20:00:00Z")},
-      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:new Date("2015-05-01T19:00:00Z")},
-      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-01T18:00:00Z")}
+      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:new Date("2015-05-09T23:30:00Z")},
+      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:new Date("2015-05-09T23:45:00Z")},
+      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-10T00:00:00Z")}
     ]);
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
@@ -83,9 +82,9 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
     expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
     expect(candleSticks.sticks).toEqual([
-      { high: 84, low: 101, open: 101, close: 101, isUp: false, x:  3 },
-      { high: 84, low: 154, open: 127, close:  84, isUp:  true, x:  9 },
-      { high: 13, low:  84, open:  40, close:  84, isUp: false, x: 15 }
+      { high: 84, low: 101, open: 101, close: 101, isUp: false, x: 219 },
+      { high: 84, low: 154, open: 127, close:  84, isUp:  true, x: 225 },
+      { high: 13, low:  84, open:  40, close:  84, isUp: false, x: 231 }
     ]);
   });
 
@@ -96,9 +95,9 @@ describe("CandleSticks", () => {
 
     expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
     slider.rates.rateService.xhrManager.requests[0].resolve([
-      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:new Date("2015-05-01T20:00:00Z")},
-      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:new Date("2015-05-01T19:00:00Z")},
-      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-01T18:00:00Z")}
+      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:new Date("2015-05-08T10:00:00Z")},
+      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:new Date("2015-05-09T19:00:00Z")},
+      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-10T00:00:00Z")}
     ]);
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
@@ -106,9 +105,9 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
     expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
     expect(candleSticks.sticks).toEqual([
-      { high: 84, low: 101, open: 101, close: 101, isUp: false, x:  3 },
-      { high: 84, low: 154, open: 127, close:  84, isUp:  true, x:  9 },
-      { high: 13, low:  84, open:  40, close:  84, isUp: false, x: 15 }
+      { high: 84, low: 101, open: 101, close: 101, isUp: false, x:   3 },
+      { high: 84, low: 154, open: 127, close:  84, isUp:  true, x: 201 },
+      { high: 13, low:  84, open:  40, close:  84, isUp: false, x: 231 }
     ]);
   });
 
@@ -123,12 +122,12 @@ describe("CandleSticks", () => {
     slider.preferences.chartInterval = interval;
     slider.preferences.preferredPair = "USDJPY";
     slider.rates.rateService.xhrManager.requests[1].resolve([
-      {high:179.0, low:178.0, open:178.2, close:178.5, timestamp:new Date("2015-05-01T20:00:00Z")},
-      {high:179.5, low:178.2, open:178.5, close:179.5, timestamp:new Date("2015-05-01T19:00:00Z")},
-      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-01T18:00:00Z")},
-      {high:179.0, low:178.0, open:179.0, close:178.5, timestamp:new Date("2015-05-01T17:00:00Z")},
-      {high:178.7, low:177.5, open:178.5, close:177.5, timestamp:new Date("2015-05-01T16:00:00Z")},
-      {high:179.0, low:177.7, open:177.7, close:178.5, timestamp:new Date("2015-05-01T15:00:00Z")}
+      {high:179.0, low:178.0, open:178.2, close:178.5, timestamp:new Date("2015-05-08T10:00:00Z")},
+      {high:179.5, low:178.2, open:178.5, close:179.5, timestamp:new Date("2015-05-08T11:00:00Z")},
+      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-08T12:00:00Z")},
+      {high:179.0, low:178.0, open:179.0, close:178.5, timestamp:new Date("2015-05-08T13:00:00Z")},
+      {high:178.7, low:177.5, open:178.5, close:177.5, timestamp:new Date("2015-05-09T14:00:00Z")},
+      {high:179.0, low:177.7, open:177.7, close:178.5, timestamp:new Date("2015-05-10T00:00:00Z")}
     ]);
     slider.rates.rateService.xhrManager.clear();
   }

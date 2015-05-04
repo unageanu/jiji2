@@ -39,7 +39,7 @@ export default class CoordinateCalculator extends Observable {
       throw new Error("illegalState");
     }
     const intervalMs =  CoordinateCalculator.resolveCollectingInterval(chartInterval);
-    const index = Math.floor(currentRange.start.getTime() - date.getTime() / intervalMs);
+    const index = Math.floor( (date.getTime() - currentRange.start.getTime()) / intervalMs);
     return (stickWidth + stickGap) * index + ((stickWidth +  stickGap) / 2);
   }
   calculateY(rate) {

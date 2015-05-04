@@ -83,7 +83,7 @@ export default class CandleSticks extends Observable {
         open:  this.coordinateCalculator.calculateY(item.open),
         close: this.coordinateCalculator.calculateY(item.close),
         isUp:  item.open < item.close,
-        x:     i*6+3 //this.coordinateCalculator.calculateX(item.timestamp)
+        x:     this.coordinateCalculator.calculateX(item.timestamp)
       };
     });
   }

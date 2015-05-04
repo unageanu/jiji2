@@ -125,7 +125,7 @@ export default class Slider extends Observable {
   }
 
   static calcuratePartitionStartTime(time, intervalMs) {
-    return Math.floor(time / intervalMs ) * intervalMs;
+    return Math.floor( time / intervalMs ) * intervalMs;
   }
 
 

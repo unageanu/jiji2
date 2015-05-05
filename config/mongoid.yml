@@ -7,10 +7,17 @@ default:
   options: &options
     raise_not_found_error: false
 
-development:
+production:
   sessions:
     default:
       database: jiji
+      hosts:   *hosts
+  options: *options
+
+development:
+  sessions:
+    default:
+      database: jiji_dev
       hosts:   *hosts
   options: *options
 

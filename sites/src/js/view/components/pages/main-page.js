@@ -9,7 +9,9 @@ export default React.createClass({
   propTypes: {
     application: React.PropTypes.object.isRequired
   },
-
+  childContextTypes: {
+    application: React.PropTypes.object.isRequired
+  },
   render() {
     return (
       <div>
@@ -22,7 +24,9 @@ export default React.createClass({
       </div>
     );
   },
-
+  getChildContext: function() {
+      return { application: this.props.application };
+  },
   navigatorElements() {
     return this.props.application.navigator.menuItems().map((item) => {
       return <Link key={item.route} to={item.route}>{item.text}</Link>;

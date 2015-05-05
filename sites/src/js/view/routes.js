@@ -1,11 +1,11 @@
 import React      from "react";
 import Router     from "react-router";
 
-import MainView     from "./components/main-view";
-import Home         from "./components/home-view";
-import BackTest     from "./components/backtest-view";
-import Agents       from "./components/agents-view";
-import Settings     from "./components/settings-view";
+import MainView     from "./components/pages/main-page";
+import Home         from "./components/pages/home-page";
+import BackTest     from "./components/pages/backtest-page";
+import Agents       from "./components/pages/agents-page";
+import Settings     from "./components/pages/settings-page";
 
 const Route        = Router.Route;
 const DefaultRoute = Router.DefaultRoute;

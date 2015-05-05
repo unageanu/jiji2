@@ -1,32 +1,47 @@
 # coding: utf-8
 
 module Jiji::Errors
-  class AuthFailedException < Exception
 
+  class AuthFailedException < Exception
+    def http_status
+      401
+    end
   end
 
   class NotFoundException < Exception
-
+    def http_status
+      404
+    end
   end
 
   class UnauthorizedException < Exception
-
+    def http_status
+      401
+    end
   end
 
   class NotInitializedException < Exception
-
+    def http_status
+      400
+    end
   end
 
   class IllegalStateException < Exception
-
+    def http_status
+      400
+    end
   end
 
   class InternalServerError < Exception
-
+    def http_status
+      500
+    end
   end
 
   class AlreadyExistsException < Exception
-
+    def http_status
+      400
+    end
   end
 
   def auth_failed

@@ -27,6 +27,7 @@
     browser : true,
     amd     : true,
     es6     : true,
+    node    : true,
     jasmine : true
   },
   rules: {

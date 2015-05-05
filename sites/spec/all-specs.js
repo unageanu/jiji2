@@ -1,3 +1,5 @@
+
+global._babelPolyfill = false;
 import "babel-core/polyfill";
 
 import "./specs/model/preferences-spec";

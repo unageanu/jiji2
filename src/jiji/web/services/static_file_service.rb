@@ -8,7 +8,7 @@ module Jiji::Web
   class StaticFileService < Jiji::Web::AbstractService
 
     def self.static_file_dir
-      dir = (ENV['RACK_ENV'] == 'test') ? '/apps' : '/minified'
+      dir = (ENV['RACK_ENV'] == 'production') ? '/minified' : '/apps'
       Jiji::Utils::Requires.root + '/sites/build' + dir
     end
 

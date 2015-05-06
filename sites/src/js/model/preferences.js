@@ -4,7 +4,7 @@ import Observable   from "../utils/observable";
 export default class Preferences extends Observable {
   constructor() {
     super({
-      preferredPairs: [],
+      preferredPairs: ["USDJPY"],
       chartInterval:  "one_minute"
     });
     this.localStorage = ContainerJS.Inject;
@@ -13,7 +13,7 @@ export default class Preferences extends Observable {
   restoreState() {
     const data = this.localStorage.get("preferences") || {};
 
-    this.setProperty("preferredPairs", data.preferredPairs || []);
+    this.setProperty("preferredPairs", data.preferredPairs || ["USDJPY"]);
     this.setProperty("chartInterval",  data.chartInterval || "one_minute");
   }
 

@@ -12,8 +12,9 @@ export default class CandleSticks extends AbstractChartComponent {
     this.chartModel.candleSticks.addObserver(
       "propertyChanged", this.onPropertyChanged.bind(this));
   }
-  attache( stage ) {
-    stage.addChild(this.sticksShape);
+  attach( stage ) {
+    this.stage = stage;
+    this.stage.addChild(this.sticksShape);
   }
 
   onPropertyChanged(name, event) {
@@ -32,12 +33,12 @@ export default class CandleSticks extends AbstractChartComponent {
     const g = this.sticksShape.graphics;
     sticks.reduce( (g, s)=>{
       g = g.beginFill("#bbbbbb")
-           .drawRect( s.x-4, s.open, 10, s.close - s.open )
-           .drawRect( s.x,   s.high, 2, Math.min(s.open, s.close) - s.high)
-           .drawRect( s.x,   Math.max(s.open, s.close), 2, s.low - Math.max(s.open, s.close))
+           .drawRect( (s.x*2)-4, s.open*2, 10, s.close*2 - s.open*2 )
+           .drawRect( (s.x*2),   s.high*2, 2, Math.min(s.open*2, s.close*2) - s.high*2)
+           .drawRect( (s.x*2),   Math.max(s.open*2, s.close*2), 2, s.low*2 - Math.max(s.open*2, s.close*2))
            .endFill();
       if ( s.isUp ) {
-        g = g.beginFill("#FFFFFF").drawRect( s.x-2, s.close+2, 6, (s.open - s.close)-4 ).endFill();
+        g = g.beginFill("#FFFFFF").drawRect( s.x*2-2, s.close*2+2, 6, (s.open*2 - s.close*2)-4 ).endFill();
       }
       return g;
     }, g);

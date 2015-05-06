@@ -4,8 +4,7 @@ import CandleSticks from "./candle-sticks";
 export default class Chart {
 
   constructor( canvas, scale, stageSize, viewModelFactory ) {
-
-    this.buildStage(scale);
+    this.buildStage(canvas, scale);
     this.buildChartModel(stageSize, viewModelFactory);
     this.buildViewComponents();
 

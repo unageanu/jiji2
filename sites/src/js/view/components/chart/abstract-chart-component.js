@@ -2,9 +2,9 @@ export default class AbstractChartComponent {
 
   constructor( chartModel ) {
     this.chartModel = chartModel;
-    this.addObserver();
+    this.addObservers();
   }
 
   addObservers() {}
-  attache( stage ) {}
+  attach( stage ) {}
 }

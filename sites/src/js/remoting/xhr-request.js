@@ -35,7 +35,7 @@ export default class XhrRequest {
   onSuccess(response) {
     if (this.canceled) return;
     this.manager.endLoading();
-    this.manager.handleResponse(this, response);
+    this.manager.handleResponse(this, response.data);
   }
 
   onFail(response) {
@@ -47,7 +47,7 @@ export default class XhrRequest {
   addAuthorizationHeader(headers) {
     if (!this.manager.sessionManager.isLoggedIn()) return;
     headers[HTTPHeaderField.AUTHORIZATION] =
-      "X-JIJI-AUTHENTICATE " + this.manager.sessionManager.getTicket();
+      "X-JIJI-AUTHENTICATE " + this.manager.sessionManager.getToken();
   }
 
   buildConfig() {
@@ -56,7 +56,7 @@ export default class XhrRequest {
       method: this.method,
       params: this.params,
       timeout: 1000 * 60 * 3,
-      transformRequest: [Msgpack.msgpack.pack],
+      transformRequest: [this.transformRequest],
       transformResponse: [this.transformResponse],
       data: this.body,
       responseType: "arraybuffer",
@@ -68,6 +68,10 @@ export default class XhrRequest {
     return base;
   }
 
+  transformRequest(data) {
+    const bytes = Msgpack.msgpack.pack(data);
+    return new Uint8Array(bytes);
+  }
   transformResponse(arrayBuffer) {
     let data = Msgpack.msgpack.unpack(new Uint8Array(arrayBuffer));
     return new Transformer().transformResponse(data);

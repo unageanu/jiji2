@@ -6,51 +6,33 @@ export default class Authenticator {
 
   constructor() {
     this.sessionManager = ContainerJS.Inject;
-    this.xhrManager = ContainerJS.Inject;
+    this.xhrManager     = ContainerJS.Inject;
+    this.urlResolver    = ContainerJS.Inject;
   }
 
-  serviceUrl() {
-    return this.urlResolver.resolveRESTUrl("/sessions");
-  }
-
-  authenticate(userId, password) {
-    return this.doAuthenticate({
-      "mode": "default",
-      "username": userId,
-      "password": password
-    }, Error.Code.LOGIN_FAILED);
-  }
-
-  doAuthenticate(param, authErrorCode) {
+  login(password) {
     var d = new Deferred();
+    const serviceUrl = this.urlResolver.resolveServiceUrl("authenticator");
     this.xhrManager.xhr(
-      this.serviceUrl(), "POST", param
-    ).then(function(ticket) {
-      this.sessionManager.setTicket(ticket);
-      d.resolve(ticket);
-    }.bind(this), function(error) {
-      if (error.param.httpStatusCode === 401) {
-        error.code = authErrorCode;
-      }
-      d.reject(error);
+      serviceUrl, "POST", {password:password}
+    ).then((result) => {
+      this.sessionManager.setToken(result.token);
+      d.resolve(result.token);
     });
     return d;
   }
 
   logout() {
     var d = new Deferred();
-    var ticket = this.sessionManager.getTicket();
-    if (ticket) {
+    const token = this.sessionManager.getToken();
+    const serviceUrl = this.urlResolver.resolveServiceUrl("sessions");
+    if (token) {
       this.xhrManager.xhr(
-        this.serviceUrl() + "/" + ticket, "DELETE"
-      ).then(function(result) {
-        this.sessionManager.deleteTicket();
+        serviceUrl, "DELETE", {token: token}
+      ).both((result) => {
+        this.sessionManager.deleteToken();
         d.resolve();
-      }.bind(this), function(error) {
-        this.sessionManager.deleteTicket();
-        error.processed = true;
-        d.resolve();
-      }.bind(this));
+      });
     } else {
       d.resolve();
     }

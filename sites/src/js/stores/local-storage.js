@@ -6,6 +6,9 @@ export default class LocalStorage {
   set( key, data ) {
     this.save(key, data ? JSON.stringify(data) : null);
   }
+  delete( key ) {
+    localStorage.removeItem(key); 
+  }
   load( key ) {
     return localStorage.getItem(key);
   }

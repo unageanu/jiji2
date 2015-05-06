@@ -42,7 +42,7 @@ describe("XhrManager", () => {
       expect(ajaxSettings.url).toBe("/test");
 
       // ログインしてPOSTリクエストを発行
-      manager.sessionManager.setTicket("dummyTicket");
+      manager.sessionManager.setToken("dummyToken");
       manager.xhr("/test", "POST", ["a", "b"]);
 
       expect(manager.isLoading()).toBe(true);
@@ -51,7 +51,7 @@ describe("XhrManager", () => {
 
       ajaxSettings = manager.requests[1].ajaxRequests[0].settings;
       expect(ajaxSettings.method).toBe("POST");
-      expect(ajaxSettings.headers[HTTPHeaderField.AUTHORIZATION]).toBe("X-JIJI-AUTHENTICATE dummyTicket");
+      expect(ajaxSettings.headers[HTTPHeaderField.AUTHORIZATION]).toBe("X-JIJI-AUTHENTICATE dummyToken");
       expect(ajaxSettings.data.length).toBe(2);
       expect(ajaxSettings.url).toBe("/test");
     });

@@ -8,12 +8,19 @@ export default class Chart extends Observable {
   constructor( rates, preferences ) {
     super();
 
+    this.rates       = rates;
+    this.preferences = preferences;
+
     this.coordinateCalculator = new CoordinateCalculator();
     this.slider               = new Slider(this.coordinateCalculator, rates, preferences);
     this.candleSticks         = new CandleSticks(this.coordinateCalculator, rates, preferences);
 
     this.coordinateCalculator.attach(this.slider, preferences);
     this.candleSticks.attach(this.slider);
+  }
+
+  initialize( ) {
+    this.rates.initialize();
   }
 
   set stageSize(size) {

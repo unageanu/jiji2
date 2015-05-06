@@ -6,6 +6,7 @@ const MENU_ITEMS = [
   { route: "/backtests", text: "バックテスト" },
   { route: "/agents",    text: "エージェント" },
 
+  { route: "/login",     text: "ログイン" },
   { route: "/settings",  text: "設定" }
 ];
 

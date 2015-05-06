@@ -1,18 +1,26 @@
+import ContainerJS  from "container-js";
 
 export default class SessionManager {
   constructor() {
-    this.ticket = null;
+    this.localStorage = ContainerJS.Inject;
   }
   isLoggedIn() {
-    return !!this.ticket;
+    return !!this.getToken();
   }
-  setTicket(ticket) {
-    this.ticket = ticket;
+  setToken(token) {
+    this.localStorage.set("session", {
+      token : token
+    });
   }
-  getTicket() {
-    return this.ticket;
+  getToken() {
+    const session = this.localStorage.get("session");
+    if (session) {
+      return session.token;
+    } else {
+      return null;
+    }
   }
-  deleteTicket() {
-    this.ticket = null;
+  deleteToken() {
+    this.localStorage.delete("session");
   }
 }

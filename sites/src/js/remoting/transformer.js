@@ -6,7 +6,7 @@ export default class Transformaer {
 
   transformResponse(data) {
     return Objects.convert(data, (v, k)=> {
-      if (/^(timestamp|.*\_at)$/.test(k) && ISO8601.test(v) ) {
+      if (/^(timestamp|.*\_at|start|end)$/.test(k) && ISO8601.test(v) ) {
         const ms = Date.parse(v);
         if (ms) {
           return new Date(ms);

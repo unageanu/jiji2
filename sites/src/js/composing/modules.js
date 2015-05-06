@@ -19,6 +19,7 @@ function remoting(binder) {
 
 function security(binder) {
   binder.bind("sessionManager").to("security.SessionManager");
+  binder.bind("authenticator").to("security.Authenticator");
 }
 
 function services(binder) {

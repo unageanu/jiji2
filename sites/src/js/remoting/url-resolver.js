@@ -1,6 +1,6 @@
 export default class UrlResolver {
   resolveServiceUrl( serviceName, parameters={} ) {
-    return "../../api/" + serviceName + this.createParameterString(parameters);
+    return "/api/" + serviceName + this.createParameterString(parameters);
   }
   createParameterString( parameters ) {
       var params = [];

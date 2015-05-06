@@ -13,7 +13,8 @@ describe("Preferences", () => {
   });
 
   it("初期値", () => {
-    expect(preferences.preferredPairs.length).toBe(0);
+    expect(preferences.preferredPairs.length).toBe(1);
+    expect(preferences.preferredPairs[0]).toBe("USDJPY");
     expect(preferences.chartInterval).toBe("one_minute");
   });
 
@@ -23,13 +24,15 @@ describe("Preferences", () => {
     preferences.addObserver("propertyChanged", (n, ev) => pairs = ev.newValue );
 
     preferences.preferredPair = "EURUSD";
-    expect(preferences.preferredPairs.length).toBe(1);
+    expect(preferences.preferredPairs.length).toBe(2);
     expect(pairs[0]).toBe("EURUSD");
+    expect(pairs[1]).toBe("USDJPY");
 
     preferences.preferredPair = "EURJPY";
-    expect(preferences.preferredPairs.length).toBe(2);
+    expect(preferences.preferredPairs.length).toBe(3);
     expect(pairs[0]).toBe("EURJPY");
     expect(pairs[1]).toBe("EURUSD");
+    expect(pairs[2]).toBe("USDJPY");
 
     preferences.preferredPair = "USDJPY";
     expect(preferences.preferredPairs.length).toBe(3);
@@ -56,9 +59,10 @@ describe("Preferences", () => {
     preferences.chartInterval = "one_hours";
 
     preferences.restoreState();
-    expect(preferences.preferredPairs.length).toBe(2);
+    expect(preferences.preferredPairs.length).toBe(3);
     expect(preferences.preferredPairs[0]).toBe("EURUSD");
     expect(preferences.preferredPairs[1]).toBe("EURJPY");
+    expect(preferences.preferredPairs[2]).toBe("USDJPY");
     expect(preferences.chartInterval).toBe("one_hours");
   });
 

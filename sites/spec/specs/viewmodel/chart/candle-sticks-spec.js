@@ -54,11 +54,11 @@ describe("CandleSticks", () => {
     initialize();
     slider.positionX = 90;
     expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-    slider.rates.rateService.xhrManager.requests[0].resolve([
+    slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
       {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:new Date("2015-05-03T20:00:00Z")},
       {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:new Date("2015-05-03T19:00:00Z")},
       {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-03T18:00:00Z")}
-    ]);
+    ]));
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
     expect(coordinateCalculator.displayableCandleCount).toEqual(39);
@@ -80,11 +80,11 @@ describe("CandleSticks", () => {
     slider.preferences.chartInterval = "fifteen_minutes";
 
     expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-    slider.rates.rateService.xhrManager.requests[0].resolve([
+    slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
       {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:new Date("2015-05-09T23:30:00Z")},
       {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:new Date("2015-05-09T23:45:00Z")},
       {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-10T00:00:00Z")}
-    ]);
+    ]));
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
     expect(coordinateCalculator.displayableCandleCount).toEqual(39);
@@ -106,11 +106,11 @@ describe("CandleSticks", () => {
     slider.preferences.preferredPair = "EURUSD";
 
     expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-    slider.rates.rateService.xhrManager.requests[0].resolve([
+    slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
       {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:new Date("2015-05-08T10:00:00Z")},
       {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:new Date("2015-05-09T19:00:00Z")},
       {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-10T00:00:00Z")}
-    ]);
+    ]));
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
     expect(coordinateCalculator.displayableCandleCount).toEqual(39);
@@ -131,9 +131,9 @@ describe("CandleSticks", () => {
       initialize();
       slider.positionX = 90;
       expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-      slider.rates.rateService.xhrManager.requests[0].resolve([
+      slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
         {high:179.0, low:179.0, open:179.0, close:179.0, timestamp:new Date("2015-05-03T20:00:00Z")}
-      ]);
+      ]));
 
       expect(coordinateCalculator.rateRange.highest).toEqual(179.01);
       expect(coordinateCalculator.rateRange.lowest).toEqual(178.99);
@@ -147,9 +147,9 @@ describe("CandleSticks", () => {
 
       slider.positionX = 84;
       expect(slider.rates.rateService.xhrManager.requests.length).toEqual(2);
-      slider.rates.rateService.xhrManager.requests[1].resolve([
+      slider.rates.rateService.xhrManager.requests[1].resolve(createRates([
         {high:179.222, low:179.222, open:179.222, close:179.222, timestamp:new Date("2015-05-03T20:00:00Z")}
-      ]);
+      ]));
 
       expect(coordinateCalculator.rateRange.highest).toEqual(179.232);
       expect(Math.round(coordinateCalculator.rateRange.lowest*10000)).toEqual(1792120);
@@ -163,9 +163,9 @@ describe("CandleSticks", () => {
 
 
       slider.positionX = 90;
-      slider.rates.rateService.xhrManager.requests[2].resolve([
+      slider.rates.rateService.xhrManager.requests[2].resolve(createRates([
         {high:1.79222, low:1.79222, open:1.79222, close:1.79222, timestamp:new Date("2015-05-03T20:00:00Z")}
-      ]);
+      ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1792320);
       expect(Math.round(coordinateCalculator.rateRange.lowest *1000000)).toEqual(1792120);
@@ -181,9 +181,9 @@ describe("CandleSticks", () => {
       initialize();
       slider.positionX = 90;
       expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-      slider.rates.rateService.xhrManager.requests[0].resolve([
+      slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
         {high:179.002, low:179.000, open:179.0, close:179.002, timestamp:new Date("2015-05-03T20:00:00Z")}
-      ]);
+      ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1790120);
       expect(Math.round(coordinateCalculator.rateRange.lowest*10000) ).toEqual(1789900);
@@ -197,9 +197,9 @@ describe("CandleSticks", () => {
 
 
       slider.positionX = 84;
-      slider.rates.rateService.xhrManager.requests[1].resolve([
+      slider.rates.rateService.xhrManager.requests[1].resolve(createRates([
         {high:179.025, low:179.013, open:179.02, close:179.02, timestamp:new Date("2015-05-03T20:00:00Z")}
-      ]);
+      ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1790262);
       expect(Math.round(coordinateCalculator.rateRange.lowest*10000) ).toEqual(1790118);
@@ -212,9 +212,9 @@ describe("CandleSticks", () => {
 
 
       slider.positionX = 90;
-      slider.rates.rateService.xhrManager.requests[2].resolve([
+      slider.rates.rateService.xhrManager.requests[2].resolve(createRates([
         {high:1.79223, low:1.79222, open:1.79222, close:1.79222, timestamp:new Date("2015-05-03T20:00:00Z")}
-      ]);
+      ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1792330);
       expect(Math.round(coordinateCalculator.rateRange.lowest *1000000)).toEqual(1792120);
@@ -230,9 +230,9 @@ describe("CandleSticks", () => {
       initialize();
       slider.positionX = 90;
       expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-      slider.rates.rateService.xhrManager.requests[0].resolve([
+      slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
         {high:190.002, low:179.000, open:179.0, close:179.002, timestamp:new Date("2015-05-03T20:00:00Z")}
-      ]);
+      ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1911022);
       expect(Math.round(coordinateCalculator.rateRange.lowest*10000) ).toEqual(1778998);
@@ -246,9 +246,9 @@ describe("CandleSticks", () => {
 
 
       slider.positionX = 86;
-      slider.rates.rateService.xhrManager.requests[1].resolve([
+      slider.rates.rateService.xhrManager.requests[1].resolve(createRates([
         {high:1.82223, low:1.79222, open:1.79222, close:1.79222, timestamp:new Date("2015-05-03T20:00:00Z")}
-      ]);
+      ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1825231);
       expect(Math.round(coordinateCalculator.rateRange.lowest *1000000)).toEqual(1789219);
@@ -283,15 +283,25 @@ describe("CandleSticks", () => {
     });
     slider.preferences.chartInterval = interval;
     slider.preferences.preferredPair = "USDJPY";
-    slider.rates.rateService.xhrManager.requests[1].resolve([
+    slider.rates.rateService.xhrManager.requests[1].resolve(createRates([
       {high:179.0, low:178.0, open:178.2, close:178.5, timestamp:new Date("2015-05-08T10:00:00Z")},
       {high:179.5, low:178.2, open:178.5, close:179.5, timestamp:new Date("2015-05-08T11:00:00Z")},
       {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-08T12:00:00Z")},
       {high:179.0, low:178.0, open:179.0, close:178.5, timestamp:new Date("2015-05-08T13:00:00Z")},
       {high:178.7, low:177.5, open:178.5, close:177.5, timestamp:new Date("2015-05-09T14:00:00Z")},
       {high:179.0, low:177.7, open:177.7, close:178.5, timestamp:new Date("2015-05-10T00:00:00Z")}
-    ]);
+    ]));
     slider.rates.rateService.xhrManager.clear();
   }
-
+  function createRates(seed) {
+    return seed.map((item) => {
+      return {
+        high:  { ask: item.high  + 0.003, bid: item.high  },
+        low:   { ask: item.low   + 0.003, bid: item.low   },
+        open:  { ask: item.open  + 0.003, bid: item.open  },
+        close: { ask: item.close + 0.003, bid: item.close },
+        timestamp: item.timestamp
+      };
+    });
+  }
 });

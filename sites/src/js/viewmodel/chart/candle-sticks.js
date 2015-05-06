@@ -88,10 +88,10 @@ export default class CandleSticks extends Observable {
 
   calculateHighAndLow(data) {
     const result = data.reduce((r, v) => {
-      if (r.highest < v.high) r.highest = v.high;
-      if (r.lowest  > v.low ) r.lowest = v.low;
+      if (r.highest < v.high.bid) r.highest = v.high.bid;
+      if (r.lowest  > v.low.bid ) r.lowest = v.low.bid;
       return r;
-    }, {highest:data[0].high, lowest:data[0].low});
+    }, {highest:data[0].high.bid, lowest:data[0].low.bid});
     const margin = this.calculateMargin(result);
     return {
       highest: result.highest + margin,
@@ -116,11 +116,11 @@ export default class CandleSticks extends Observable {
   calculateSticks(data) {
     return data.map((item, i) =>{
       return {
-        high:  this.coordinateCalculator.calculateY(item.high),
-        low:   this.coordinateCalculator.calculateY(item.low),
-        open:  this.coordinateCalculator.calculateY(item.open),
-        close: this.coordinateCalculator.calculateY(item.close),
-        isUp:  item.open < item.close,
+        high:  this.coordinateCalculator.calculateY(item.high.bid),
+        low:   this.coordinateCalculator.calculateY(item.low.bid),
+        open:  this.coordinateCalculator.calculateY(item.open.bid),
+        close: this.coordinateCalculator.calculateY(item.close.bid),
+        isUp:  item.open.bid < item.close.bid,
         x:     this.coordinateCalculator.calculateX(item.timestamp)
       };
     });

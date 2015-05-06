@@ -65,7 +65,7 @@ describe("XhrManager", () => {
 
       expect(manager.isLoading()).toBe(true);
 
-      manager.requests[0].ajaxRequests[0].d.resolve({
+      manager.requests[0].resolve({
         foo: "foo"
       });
 

@@ -16,7 +16,7 @@ class MockXhrRequest extends XhrRequest {
     return ajax;
   }
   resolve(result) {
-    this.ajaxRequests.shift().d.resolve(result);
+    this.ajaxRequests.shift().d.resolve({data:result});
   }
   reject(error) {
     this.ajaxRequests.shift().d.reject(error);

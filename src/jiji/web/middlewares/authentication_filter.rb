@@ -9,6 +9,7 @@ module Jiji::Web
     include Jiji::Errors
 
     before do
+      return if request.request_method == 'OPTIONS'
       unauthorized unless auth_success?
     end
 

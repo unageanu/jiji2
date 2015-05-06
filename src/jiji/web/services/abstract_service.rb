@@ -16,8 +16,23 @@ module Jiji::Web
 
     use Rack::Deflater
     use SecurityFilter
+    use AllowCrossDomainRequestFilter
 
     set :sessions, false
+
+    options '*' do
+      if AllowCrossDomainRequestFilter.allow_cross_domain_request?
+        headers({
+          'Allow' => 'GET,PUT,POST,DELETE,OPTIONS',
+          'Access-Control-Allow-Headers' =>
+            'X-Requested-With, X-HTTP-Method-Override, ' \
+            + 'Content-Type, Cache-Control, Accept, Authorization'
+        })
+        return 200
+      else
+        return 404
+      end
+    end
 
     private
 

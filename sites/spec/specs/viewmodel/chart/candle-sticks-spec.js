@@ -253,9 +253,7 @@ describe("CandleSticks", () => {
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1825231);
       expect(Math.round(coordinateCalculator.rateRange.lowest *1000000)).toEqual(1789219);
       expect(candleSticks.axisLabels).toEqual([
-        {value:1.79, y:164},
         {value:1.8,  y:117},
-        {value:1.81, y:71},
         {value:1.82, y:24}
       ]);
       expect(candleSticks.sticks).toEqual([

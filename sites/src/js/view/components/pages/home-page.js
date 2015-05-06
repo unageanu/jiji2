@@ -9,8 +9,6 @@ export default React.createClass({
   },
   propTypes: {
     devicePixelRatio: React.PropTypes.number.isRequired,
-    scale: React.PropTypes.number.isRequired,
-    virtualCanvasSize: React.PropTypes.object.isRequired,
     canvasSize: React.PropTypes.object.isRequired
   },
 
@@ -19,18 +17,13 @@ export default React.createClass({
     const canvasSize       = {w:300, h:200};
     return {
       devicePixelRatio: devicePixelRatio,
-      scale: window.devicePixelRatio / 2,
-      virtualCanvasSize: {
-        w: canvasSize.w*2,
-        h: canvasSize.h*2
-      },
       canvasSize: canvasSize
     };
   },
 
   componentDidMount() {
     const canvas = React.findDOMNode(this.refs.canvas);
-    const chart  = new Chart( canvas, this.props.scale,
+    const chart  = new Chart( canvas, this.props.devicePixelRatio,
       this.props.canvasSize, this.context.application.viewModelFactory );
   },
 

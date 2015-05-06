@@ -64,23 +64,20 @@ export default class CandleSticks extends Observable {
   }
 
   get axisLabels() {
-    let range = this.coordinateCalculator.rateRange;
+    let range  = this.coordinateCalculator.rateRange;
     const diff = (range.highest - range.lowest);
     let step   = CandleSticks.calculateStep( range.highest );
-    while ( diff/step > 5 ) {
-      if ( diff/step > 10 ) {
-        step = step * 10;
-      } else {
-        step = step * 5;
-      }
-    }
+    step       = CandleSticks.adjustStep( step, diff );
+    return this.createAxisLabels(step, range);
+  }
+  createAxisLabels(step, range) {
     const start = (Math.ceil((range.lowest * 10000) / (step*10000)) * (step*10000))/10000;
     const results = [];
     for( let i=start; i < range.highest; i+=step ) {
       if (i <= range.lowest) continue;
       results.push({
-        value:i,
-        y:this.coordinateCalculator.calculateY(i)
+        value: i,
+        y:     this.coordinateCalculator.calculateY(i)
       });
     }
     return results;
@@ -108,6 +105,24 @@ export default class CandleSticks extends Observable {
       return (highAndLow.highest - highAndLow.lowest) * 0.1;
     }
   }
+
+  /**
+   * 軸ラベルが3以下になるように、調整する。
+   */
+  static adjustStep( step, diff ) {
+    let s     = step;
+    for (let count = diff/s; count > 3; count = diff/s) {
+      if ( count > 10 ) {
+        s = s * 10;
+      } else if ( count > 5 ) {
+        s = s * 5;
+      } else {
+        s = s * 2;
+      }
+    }
+    return s;
+  }
+
   static calculateStep( rate ) {
     const positiveDigit = Math.max(NumberUtils.getPositiveDigits(rate), 1);
     return Math.pow(10, positiveDigit-5);

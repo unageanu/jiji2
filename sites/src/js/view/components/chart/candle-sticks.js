@@ -26,32 +26,21 @@ export default class CandleSticks extends AbstractChartComponent {
 
   initSprite() {
     this.sticksShape = new CreateJS.Shape();
-    this.sticksShape.x = this.sticksShape.y = 8;
+    this.sticksShape.x = this.sticksShape.y = 0;
   }
 
   renderSticks( sticks ) {
     const g = this.sticksShape.graphics;
     sticks.reduce( (g, s)=>{
       g = g.beginFill("#bbbbbb")
-           .drawRect( (s.x*2)-4, s.open*2, 10, s.close*2 - s.open*2 )
-           .drawRect( (s.x*2),   s.high*2, 2, Math.min(s.open*2, s.close*2) - s.high*2)
-           .drawRect( (s.x*2),   Math.max(s.open*2, s.close*2), 2, s.low*2 - Math.max(s.open*2, s.close*2))
+           .drawRect( s.x-2, s.open, 5, s.close - s.open || 1 )
+           .drawRect( s.x,   s.high, 1, Math.min(s.open, s.close) - s.high)
+           .drawRect( s.x,   Math.max(s.open, s.close), 1, s.low - Math.max(s.open, s.close))
            .endFill();
-      if ( s.isUp ) {
-        g = g.beginFill("#FFFFFF").drawRect( s.x*2-2, s.close*2+2, 6, (s.open*2 - s.close*2)-4 ).endFill();
+      if ( s.isUp && (s.open-s.close) > 2) {
+        g = g.beginFill("#FFFFFF").drawRect( s.x-1, s.close+1, 3, (s.open-s.close)-2 ).endFill();
       }
       return g;
     }, g);
-
-    // const g = this.sticksShape.graphics.setStrokeStyle(2, 0, 0, 0, true).beginStroke("#bbbbbb");
-    // sticks.reduce( (g, s)=>{
-    //   let g = s.isUp ? g.beginFill("#FFFFFF") : g.beginFill("#bbbbbb");
-    //   return g.drawRect( s.x-3, s.open, 6, s.close - s.open )
-    //           .moveTo( s.x+1, s.high  )
-    //           .lineTo( s.x+1, s.isUp ? s.close : s.open )
-    //           .moveTo( s.x+1, s.low  )
-    //           .lineTo( s.x+1, s.isUp ? s.open : s.close );
-    //
-    // }, g);
   }
 }

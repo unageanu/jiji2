@@ -61,6 +61,10 @@ module Jiji::Errors
     fail Jiji::Errors::AuthFailedException
   end
 
+  def unauthorized
+    fail Jiji::Errors::UnauthorizedException
+  end
+
   def not_found(type = nil, param = nil)
     fail Jiji::Errors::NotFoundException,
       "#{type || 'entity'} is not found. #{to_string(param)}"

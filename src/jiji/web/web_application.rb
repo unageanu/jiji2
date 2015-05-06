@@ -41,6 +41,7 @@ module Jiji::Web
       builder.map('/api/echo')          { run EchoService }
       builder.map('/api/rates')         { run RateService }
       builder.map('/api/authenticator') { run AuthenticationService }
+      builder.map('/api/sessions')      { run SessionService }
     end
 
     def register_setting_services(builder)

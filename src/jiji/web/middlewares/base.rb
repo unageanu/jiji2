@@ -19,6 +19,15 @@ module Jiji::Web
       @cache[id] ||= WebApplication.instance.container.lookup(id)
     end
 
+    def extract_token
+      a = request.env['HTTP_AUTHORIZATION']
+      if  a =~ /X\-JIJI\-AUTHENTICATE\s+([a-f0-9]+)$/
+        return Regexp.last_match(1)
+      else
+        unauthorized
+      end
+    end
+
     error Jiji::Errors::UnauthorizedException do
       print_as_warning
       401

@@ -6,6 +6,8 @@ require 'jiji/web/middlewares/base'
 module Jiji::Web
   class AuthenticationFilter < Base
 
+    include Jiji::Errors
+
     before do
       unauthorized unless auth_success?
     end
@@ -16,21 +18,8 @@ module Jiji::Web
       session_store.valid_token?(extract_token, :user)
     end
 
-    def extract_token
-      a = request.env['HTTP_AUTHORIZATION']
-      if  a =~ /X\-JIJI\-AUTHENTICATE\s+([a-f0-9]+)$/
-        return Regexp.last_match(1)
-      else
-        unauthorized
-      end
-    end
-
     def session_store
       lookup(:session_store)
-    end
-
-    def unauthorized
-      fail Jiji::Errors::UnauthorizedException
     end
 
   end

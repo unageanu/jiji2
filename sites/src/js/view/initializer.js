@@ -16,7 +16,7 @@ export default class Initializer {
   }
   createContainer() {
     this.container = new ContainerJS.Container(
-      modules,
+      this.modules(),
       ContainerJS.PackagingPolicy.COMMON_JS_MODULE_PER_CLASS,
       ContainerJS.Loaders.COMMON_JS
     );
@@ -37,5 +37,8 @@ export default class Initializer {
   }
   routes() {
     return routes;
+  }
+  modules() {
+    return modules;
   }
 }

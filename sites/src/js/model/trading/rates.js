@@ -17,8 +17,8 @@ export default class Rates extends Observable {
       .then((range) => this.range = range );
   }
 
-  fetchRates( pairName, interval, start, end ) {
-    return this.rateService.fetchRates( pairName, interval, start, end )
+  fetchRates( name, interval, start, end ) {
+    return this.rateService.fetchRates( name, interval, start, end )
       .then( this.updateRange.bind(this) );
   }
 

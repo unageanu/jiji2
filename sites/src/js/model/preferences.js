@@ -28,13 +28,13 @@ export default class Preferences extends Observable {
     this.usingFirstPairsIfPreferredPairIsNotSet(pairs);
   }
   removeIllegalPreferredPairs(pairs) {
-    const validPairs = new Set( pairs.map((p) => p.pairName ) );
+    const validPairs = new Set( pairs.map((p) => p.name ) );
     this.preferredPairs =  this.preferredPairs
       .filter((p) => validPairs.has(p) );
   }
   usingFirstPairsIfPreferredPairIsNotSet(pairs) {
     if (!this.preferredPair && pairs.length > 0) {
-      this.preferredPair = pairs[0].pairName;
+      this.preferredPair = pairs[0].name;
     }
   }
 
@@ -48,10 +48,10 @@ export default class Preferences extends Observable {
   get preferredPair() {
     return this.preferredPairs[0];
   }
-  set preferredPair(pairName) {
+  set preferredPair(name) {
     let preferredPairs =
-      this.preferredPairs.filter((item) => item !== pairName );
-    preferredPairs.unshift(pairName);
+      this.preferredPairs.filter((item) => item !== name );
+    preferredPairs.unshift(name);
     this.setProperty("preferredPairs", preferredPairs);
     this.saveState();
   }

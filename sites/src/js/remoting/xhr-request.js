@@ -14,6 +14,8 @@ export default class XhrRequest {
     this.method = method;
     this.params = params;
     this.deferred = new Deferred();
+
+    this.transformer = new Transformer();
   }
 
   result() {
@@ -56,8 +58,8 @@ export default class XhrRequest {
       method: this.method,
       params: this.params,
       timeout: 1000 * 60 * 3,
-      transformRequest: [this.transformRequest],
-      transformResponse: [this.transformResponse],
+      transformRequest: [this.transformRequest.bind(this)],
+      transformResponse: [this.transformResponse.bind(this)],
       data: this.body,
       responseType: "arraybuffer",
       headers: {
@@ -69,12 +71,12 @@ export default class XhrRequest {
   }
 
   transformRequest(data) {
-    const bytes = Msgpack.msgpack.pack(data);
-    return new Uint8Array(bytes);
+    let transformed = this.transformer.transformRequest(data);
+    return new Uint8Array(Msgpack.msgpack.pack(transformed));
   }
   transformResponse(arrayBuffer) {
     let data = Msgpack.msgpack.unpack(new Uint8Array(arrayBuffer));
-    return new Transformer().transformResponse(data);
+    return this.transformer.transformResponse(data);
   }
 
   cancel() {

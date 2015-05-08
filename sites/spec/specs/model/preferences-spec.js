@@ -13,9 +13,9 @@ describe("Preferences", () => {
 
     preferences.pairs.initialize();
     preferences.pairs.rateService.xhrManager.requests[0].resolve([
-      {pairName:"USDJPY", pairId:1},
-      {pairName:"EURUSD", pairId:2},
-      {pairName:"EURJPY", pairId:3}
+      {name:"USDJPY", pairId:1},
+      {name:"EURUSD", pairId:2},
+      {name:"EURJPY", pairId:3}
     ]);
   });
 
@@ -83,8 +83,8 @@ describe("Preferences", () => {
 
     preferences.pairs.reload();
     preferences.pairs.rateService.xhrManager.requests[1].resolve([
-      {pairName:"USDJPY", pairId:1},
-      {pairName:"EURUSD", pairId:2}
+      {name:"USDJPY", pairId:1},
+      {name:"EURUSD", pairId:2}
     ]);
     expect(preferences.preferredPairs.length).toBe(2);
     expect(preferences.preferredPairs[0]).toBe("EURUSD");

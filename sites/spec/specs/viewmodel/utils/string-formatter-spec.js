@@ -61,5 +61,16 @@ describe("StringFormatter", () => {
     });
   });
 
-
+  describe("snakeCaseToCamelCase", () => {
+    it("foo_var_hoge", () => {
+      expect( StringFormatter.snakeCaseToCamelCase("foo_var_hoge"))
+          .toBe( "fooVarHoge");
+    });
+  });
+  describe("snakeCaseToCamelCase", () => {
+    it("fooVarHoge", () => {
+      expect( StringFormatter.camelCaseToSnakeCase("fooVarHoge"))
+          .toBe( "foo_var_hoge");
+    });
+  });
 });

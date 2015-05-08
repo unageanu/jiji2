@@ -3,19 +3,19 @@ import DateFormat from "date-format"
 export default class DateFormatter {
 
   static formatDateMMDD(date) {
-      return DateFormatter.format(date, "MM-dd");
+    return DateFormatter.format(date, "MM-dd");
   }
   static formatDateYYYYMMDD(date) {
-      return DateFormatter.format(date, "yyyy-MM-dd");
+    return DateFormatter.format(date, "yyyy-MM-dd");
   }
   static formatTimeHHMM(date) {
-      return DateFormatter.format(date, "hh:mm");
+    return DateFormatter.format(date, "hh:mm");
   }
   static formatTimeHHMMSS(date) {
-      return DateFormatter.format(date, "hh:mm:ss");
+    return DateFormatter.format(date, "hh:mm:ss");
   }
 
   static format(date, format="yyyy-MM-dd hh:mm:ss") {
-      return DateFormat.asString(format, date);
+    return DateFormat.asString(format, date);
   }
 }

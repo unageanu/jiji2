@@ -1,3 +1,4 @@
+import ChangeCase from "change-case"
 
 export default class StringFormatter {
 
@@ -32,7 +33,14 @@ export default class StringFormatter {
    * 文字列中の全角英数字を半角に変換します。
    */
   static toAscii(value) {
-      return value.replace(/[Ａ-Ｚａ-ｚ０-９]/g, (s) =>
-          String.fromCharCode(s.charCodeAt(0)-0xFEE0));
+    return value.replace(/[Ａ-Ｚａ-ｚ０-９]/g, (s) =>
+        String.fromCharCode(s.charCodeAt(0)-0xFEE0));
+  }
+
+  static snakeCaseToCamelCase( str ) {
+    return ChangeCase.camelCase(str);
+  }
+  static camelCaseToSnakeCase( str ) {
+    return ChangeCase.snakeCase(str);
   }
 }

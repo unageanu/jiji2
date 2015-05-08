@@ -1,3 +1,5 @@
+import _               from "underscore"
+
 export default class UrlResolver {
   resolveServiceUrl( serviceName, parameters={} ) {
     return "/api/" + serviceName + this.createParameterString(parameters);
@@ -11,6 +13,13 @@ export default class UrlResolver {
       return params.length > 0 ? "?" + params.join("&") : "";
   }
   concatKeyValue(key, value) {
-      return encodeURIComponent(key) + "=" + encodeURIComponent(value);
+    return encodeURIComponent(key) + "="
+      + encodeURIComponent(this.convertValue(value));
+  }
+  convertValue( value ) {
+    if (_.isDate(value)) {
+      return value.toISOString();
+    }
+    return value;
   }
 }

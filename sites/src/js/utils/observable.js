@@ -1,3 +1,5 @@
+import _ from "underscore"
+
 export default class Observable {
 
   constructor(properties={}) {
@@ -19,7 +21,7 @@ export default class Observable {
         || (this.observers[eventName] = []);
   }
 
-  setProperty(key, value, comparator=(a, b) => a === b) {
+  setProperty(key, value, comparator=_.isEqual) {
     const current = this.getProperty(key);
     if (!comparator.call(this, current, value)) {
       this.properties[key] = value;

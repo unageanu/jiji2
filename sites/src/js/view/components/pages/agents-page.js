@@ -1,7 +1,7 @@
 import React      from "react";
 import MUI        from "material-ui";
 
-export default React.createClass({
+export default class AgentsPage extends React.Component {
   render() {
     return (
       <div>
@@ -9,4 +9,4 @@ export default React.createClass({
       </div>
     );
   }
-});
+}

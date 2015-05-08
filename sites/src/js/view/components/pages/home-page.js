@@ -2,30 +2,18 @@ import React      from "react";
 import MUI        from "material-ui";
 import Chart      from "../chart/chart";
 
-export default React.createClass({
+export default class HomePage extends React.Component {
 
-  contextTypes: {
-    application: React.PropTypes.object.isRequired
-  },
-  propTypes: {
-    devicePixelRatio: React.PropTypes.number.isRequired,
-    canvasSize: React.PropTypes.object.isRequired
-  },
-
-  getDefaultProps() {
-    const devicePixelRatio = window.devicePixelRatio || 1;
-    const canvasSize       = {w:300, h:200};
-    return {
-      devicePixelRatio: devicePixelRatio,
-      canvasSize: canvasSize
-    };
-  },
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
   componentDidMount() {
     const canvas = React.findDOMNode(this.refs.canvas);
     const chart  = new Chart( canvas, this.props.devicePixelRatio,
       this.props.canvasSize, this.context.application.viewModelFactory );
-  },
+  }
 
   render() {
     const r = this.props.devicePixelRatio;
@@ -42,4 +30,16 @@ export default React.createClass({
       </div>
     );
   }
-});
+}
+
+HomePage.contextTypes = {
+  application: React.PropTypes.object.isRequired
+};
+HomePage.propTypes = {
+  devicePixelRatio: React.PropTypes.number.isRequired,
+  canvasSize: React.PropTypes.object.isRequired
+};
+HomePage.defaultProps = {
+  devicePixelRatio: window.devicePixelRatio || 1,
+  canvasSize: {w:300, h:200}
+};

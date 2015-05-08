@@ -1,7 +1,7 @@
 import React      from "react";
 import Router     from "react-router";
 
-import MainView     from "./components/pages/main-page";
+import Frame        from "./components/frame";
 import Home         from "./components/pages/home-page";
 import BackTest     from "./components/pages/backtest-page";
 import Agents       from "./components/pages/agents-page";
@@ -12,7 +12,7 @@ const Route        = Router.Route;
 const DefaultRoute = Router.DefaultRoute;
 
 export default (
-  <Route handler={MainView} path="/">
+  <Route handler={Frame} path="/">
     <DefaultRoute           handler={Home} />
     <Route name="backtests" handler={BackTest} />
     <Route name="agents"    handler={Agents} />

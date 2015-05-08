@@ -5,13 +5,12 @@ import Router     from "react-router";
 const RouteHandler = Router.RouteHandler;
 const Link         = Router.Link;
 
-export default React.createClass({
-  propTypes: {
-    application: React.PropTypes.object.isRequired
-  },
-  childContextTypes: {
-    application: React.PropTypes.object.isRequired
-  },
+export default class Frame extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
   render() {
     return (
       <div>
@@ -23,13 +22,19 @@ export default React.createClass({
         </div>
       </div>
     );
-  },
-  getChildContext: function() {
+  }
+  getChildContext() {
       return { application: this.props.application };
-  },
+  }
   navigatorElements() {
     return this.props.application.navigator.menuItems().map((item) => {
       return <Link key={item.route} to={item.route}>{item.text}</Link>;
     });
   }
-});
+}
+Frame.propTypes =  {
+  application: React.PropTypes.object.isRequired
+};
+Frame.childContextTypes = {
+  application: React.PropTypes.object.isRequired
+};

@@ -1,15 +1,12 @@
 import React      from "react";
 import MUI        from "material-ui";
 
-export default React.createClass({
+export default class LoginPage extends React.Component {
 
-  contextTypes: {
-    application: React.PropTypes.object.isRequired
-  },
-
-  getInitialState(){
-      return { error: "", title:"" };
-  },
+  constructor(props) {
+    super(props);
+    this.state = { error: "", title:"" };
+  }
 
   render() {
     return (
@@ -19,20 +16,20 @@ export default React.createClass({
         <input
           type="password"
           value={this.state.password}
-          onChange={this.onChange}
+          onChange={this.onChange.bind(this)}
         ></input>
         &nbsp;&nbsp;
-        <button onClick={this.login}>
+        <button onClick={this.login.bind(this)}>
           ログイン
         </button>
         <div className="error">{this.state.error}</div>
       </div>
     );
-  },
+  }
 
   onChange(event) {
     this.setState({error:"", password: event.target.value});
-  },
+  }
 
   login(event) {
     const authenticator = this.context.application.authenticator;
@@ -40,4 +37,8 @@ export default React.createClass({
       (error) => this.setState({error:"ログイン失敗 : " + error.message, title:""}));
     this.setState({error:"", title:""});
   }
-});
+}
+
+LoginPage.contextTypes = {
+  application: React.PropTypes.object.isRequired
+};

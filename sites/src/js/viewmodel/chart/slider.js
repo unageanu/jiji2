@@ -1,7 +1,7 @@
 import ContainerJS           from "container-js";
 import Observable            from "../../utils/observable";
 import DateFormatter         from "../utils/date-formatter";
-import  CoordinateCalculator from "./coordinate-calculator";
+import CoordinateCalculator  from "./coordinate-calculator";
 
 export default class Slider extends Observable {
 

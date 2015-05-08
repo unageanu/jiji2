@@ -10,6 +10,13 @@ describe("Preferences", () => {
     let container = new ContainerFactory().createContainer();
     let d = container.get("preferences");
     preferences = ContainerJS.utils.Deferred.unpack(d);
+
+    preferences.pairs.initialize();
+    preferences.pairs.rateService.xhrManager.requests[0].resolve([
+      {pairName:"USDJPY", pairId:1},
+      {pairName:"EURUSD", pairId:2},
+      {pairName:"EURJPY", pairId:3}
+    ]);
   });
 
   it("初期値", () => {
@@ -63,6 +70,25 @@ describe("Preferences", () => {
     expect(preferences.preferredPairs[0]).toBe("EURUSD");
     expect(preferences.preferredPairs[1]).toBe("EURJPY");
     expect(preferences.preferredPairs[2]).toBe("USDJPY");
+    expect(preferences.chartInterval).toBe("one_hours");
+  });
+
+  it("存在しない通貨ペアが使われていた場合、pairsの取得後に削除される", () => {
+    preferences.preferredPair = "EURUSD";
+    preferences.preferredPair = "UNKNOWN1";
+    preferences.preferredPair = "EURJPY";
+    preferences.preferredPair = "UNKNOWN2";
+    preferences.chartInterval = "one_hours";
+    expect(preferences.preferredPairs.length).toBe(5);
+
+    preferences.pairs.reload();
+    preferences.pairs.rateService.xhrManager.requests[1].resolve([
+      {pairName:"USDJPY", pairId:1},
+      {pairName:"EURUSD", pairId:2}
+    ]);
+    expect(preferences.preferredPairs.length).toBe(2);
+    expect(preferences.preferredPairs[0]).toBe("EURUSD");
+    expect(preferences.preferredPairs[1]).toBe("USDJPY");
     expect(preferences.chartInterval).toBe("one_hours");
   });
 

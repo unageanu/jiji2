@@ -1,7 +1,7 @@
 function model(binder) {
   binder.bind("preferences")
     .to("model.Preferences")
-    .onInitialize("restoreState");
+    .onInitialize("initialize");
   binder.bind("pairs").to("model.trading.Pairs");
   binder.bind("rates").to("model.trading.Rates");
 }

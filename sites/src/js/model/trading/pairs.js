@@ -8,10 +8,13 @@ export default class Pairs extends Observable {
     this.pairs = [];
   }
   initialize() {
-    this.reload();
+    if (!this.initializedDeferred) {
+      this.initializedDeferred = this.reload();
+    }
+    return this.initializedDeferred;
   }
   reload() {
-    this.rateService.getPairs()
+    return this.rateService.getPairs()
       .then( (pairs) => this.pairs = pairs );
   }
   get pairs() {

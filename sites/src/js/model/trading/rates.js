@@ -7,10 +7,13 @@ export default class Rates extends Observable {
     this.rateService = ContainerJS.Inject;
   }
   initialize() {
-    this.reload();
+    if (!this.initializedDeferred) {
+      this.initializedDeferred = this.reload();
+    }
+    return this.initializedDeferred;
   }
   reload() {
-    this.rateService.getRange()
+    return this.rateService.getRange()
       .then((range) => this.range = range );
   }
 

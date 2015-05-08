@@ -13,6 +13,7 @@ export default class HomePage extends React.Component {
     const canvas = React.findDOMNode(this.refs.canvas);
     const chart  = new Chart( canvas, this.props.devicePixelRatio,
       this.props.canvasSize, this.context.application.viewModelFactory );
+    this.context.application.initialize().then( () => chart.initModel() );
   }
 
   render() {

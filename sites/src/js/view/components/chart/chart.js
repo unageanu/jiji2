@@ -9,7 +9,6 @@ export default class Chart {
     this.buildViewComponents();
 
     this.initViewComponents();
-    this.initModel();
   }
 
   buildStage(canvas, scale) {

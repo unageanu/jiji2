@@ -1,6 +1,4 @@
 import Observable    from "../../utils/observable";
-import CandleSticks  from "./candle-sticks";
-import Slider        from "./slider";
 
 const padding           = 8 * 2;
 const sideLabelWidth    = 48;
@@ -73,6 +71,14 @@ export default class CoordinateCalculator extends Observable {
   set rateRange(rateRange) {
     this._rateRange = rateRange;
     this.update();
+  }
+
+  get axisPosition() {
+    const range  = this.rateRange;
+    return {
+      vertical:   this.calculateY(range.lowest),
+      horizontal: this.stageSize.w - (sideLabelWidth - padding/2)
+    };
   }
 
   static calculateDisplayableCandleCount( stageWidth ) {

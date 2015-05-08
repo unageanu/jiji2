@@ -1,6 +1,8 @@
-import ContainerJS  from "container-js";
-import Observable   from "../../utils/observable";
-import NumberUtils  from "../utils/number-utils";
+import ContainerJS          from "container-js"
+import Observable           from "../../utils/observable"
+import NumberUtils          from "../utils/number-utils"
+import DateFormatter        from "../utils/date-formatter"
+import CoordinateCalculator from "./coordinate-calculator"
 
 export default class CandleSticks extends Observable {
 
@@ -63,14 +65,25 @@ export default class CandleSticks extends Observable {
     return this.getProperty("rateData");
   }
 
-  get axisLabels() {
+  get verticalAxisLabels() {
     let range  = this.coordinateCalculator.rateRange;
     const diff = (range.highest - range.lowest);
     let step   = CandleSticks.calculateStep( range.highest );
     step       = CandleSticks.adjustStep( step, diff );
-    return this.createAxisLabels(step, range);
+    return this.createVerticalAxisLabels(step, range);
   }
-  createAxisLabels(step, range) {
+
+  get horizontalAxisLabels() {
+    const intervalMs = CoordinateCalculator.resolveCollectingInterval(
+      this.preferences.chartInterval) * 8;
+    return this.createHorizontalAxisLabels(intervalMs, this.currentRange);
+  }
+
+  get axisPosition() {
+    return this.coordinateCalculator.axisPosition;
+  }
+
+  createVerticalAxisLabels(step, range) {
     const start = (Math.ceil((range.lowest * 10000) / (step*10000)) * (step*10000))/10000;
     const results = [];
     for( let i=start; i < range.highest; i+=step ) {
@@ -81,6 +94,32 @@ export default class CandleSticks extends Observable {
       });
     }
     return results;
+  }
+  createHorizontalAxisLabels(step, range) {
+    const start = Math.ceil(range.start.getTime() / step) * step;
+    const results = [];
+    for( let i=start; i < range.end.getTime(); i+=step ) {
+      if (i <= range.start.getTime()) continue;
+      const date = new Date(i);
+      results.push({
+        value: this.formatHorizontalAxisLAbel(date, step),
+        x:     this.coordinateCalculator.calculateX(date)
+      });
+    }
+    return results;
+  }
+
+  formatHorizontalAxisLAbel(date, step) {
+    const day = 24 * 60 * 60 * 1000;
+    if (step >= day) {
+      return DateFormatter.formatDateMMDD(date);
+    } else {
+      let result = DateFormatter.formatTimeHHMM(date);
+      if ( date.getDate() !== new Date(date.getTime()-step).getDate() ) {
+        result = DateFormatter.formatDateMMDD(date) + " " + result;
+      }
+      return result;
+    }
   }
 
   calculateHighAndLow(data) {

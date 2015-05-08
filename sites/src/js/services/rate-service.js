@@ -10,9 +10,9 @@ export default class RateService extends AbstractService {
     return this.xhrManager.xhr( this.serviceUrl("pairs"), "GET" );
   }
 
-  fetchRates( pairName, interval, start, end ) {
+  fetchRates( name, interval, start, end ) {
     return this.xhrManager.xhr(
-      this.serviceUrl(pairName +"/"+interval), "GET", null, {
+      this.serviceUrl(name +"/"+interval), "GET", null, {
         start : start,
         end   : end
       });

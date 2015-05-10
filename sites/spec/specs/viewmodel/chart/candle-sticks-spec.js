@@ -1,8 +1,12 @@
-import ContainerJS      from "container-js";
-import ContainerFactory from "../../../utils/test-container-factory";
-import CandleSticks     from "src/viewmodel/chart/candle-sticks";
-import NumberUtils      from "src/viewmodel/utils/number-utils";
-import _                from "underscore";
+import ContainerJS      from "container-js"
+import DateWithOffset   from "date-with-offset"
+import _                from "underscore"
+
+import CandleSticks     from "src/viewmodel/chart/candle-sticks"
+import NumberUtils      from "src/viewmodel/utils/number-utils"
+import Dates            from "src/utils/dates"
+
+import ContainerFactory from "../../../utils/test-container-factory"
 
 describe("CandleSticks", () => {
 
@@ -19,7 +23,11 @@ describe("CandleSticks", () => {
     candleSticks         = chart.candleSticks;
     slider               = chart.slider;
     coordinateCalculator = chart.coordinateCalculator;
+
+    Dates.setTimezoneOffset(540);
   });
+
+  afterEach( ()=> Dates.resetTimezoneOffset() );
 
   it("必要なデータが揃うと、レートの取得が行われsticksが更新される", () => {
     // 最初は未初期化
@@ -65,9 +73,9 @@ describe("CandleSticks", () => {
     slider.positionX = 90;
     expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
     slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
-      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:new Date("2015-05-03T20:00:00Z")},
-      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:new Date("2015-05-03T19:00:00Z")},
-      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-03T18:00:00Z")}
+      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:date("2015-05-03T20:00:00Z")},
+      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:date("2015-05-03T19:00:00Z")},
+      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:date("2015-05-03T18:00:00Z")}
     ]));
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
@@ -100,9 +108,9 @@ describe("CandleSticks", () => {
 
     expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
     slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
-      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:new Date("2015-05-09T23:30:00Z")},
-      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:new Date("2015-05-09T23:45:00Z")},
-      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-10T00:00:00Z")}
+      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:date("2015-05-09T23:30:00Z")},
+      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:date("2015-05-09T23:45:00Z")},
+      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:date("2015-05-10T00:00:00Z")}
     ]));
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
@@ -136,9 +144,9 @@ describe("CandleSticks", () => {
 
     expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
     slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
-      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:new Date("2015-05-08T10:00:00Z")},
-      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:new Date("2015-05-09T19:00:00Z")},
-      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-10T00:00:00Z")}
+      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:date("2015-05-08T10:00:00Z")},
+      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:date("2015-05-09T19:00:00Z")},
+      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:date("2015-05-10T00:00:00Z")}
     ]));
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
@@ -171,7 +179,7 @@ describe("CandleSticks", () => {
       slider.positionX = 90;
       expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
       slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
-        {high:179.0, low:179.0, open:179.0, close:179.0, timestamp:new Date("2015-05-03T20:00:00Z")}
+        {high:179.0, low:179.0, open:179.0, close:179.0, timestamp:date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(coordinateCalculator.rateRange.highest).toEqual(179.01);
@@ -187,7 +195,7 @@ describe("CandleSticks", () => {
       slider.positionX = 84;
       expect(slider.rates.rateService.xhrManager.requests.length).toEqual(2);
       slider.rates.rateService.xhrManager.requests[1].resolve(createRates([
-        {high:179.222, low:179.222, open:179.222, close:179.222, timestamp:new Date("2015-05-03T20:00:00Z")}
+        {high:179.222, low:179.222, open:179.222, close:179.222, timestamp:date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(coordinateCalculator.rateRange.highest).toEqual(179.232);
@@ -203,7 +211,7 @@ describe("CandleSticks", () => {
 
       slider.positionX = 90;
       slider.rates.rateService.xhrManager.requests[2].resolve(createRates([
-        {high:1.79222, low:1.79222, open:1.79222, close:1.79222, timestamp:new Date("2015-05-03T20:00:00Z")}
+        {high:1.79222, low:1.79222, open:1.79222, close:1.79222, timestamp:date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1792320);
@@ -221,7 +229,7 @@ describe("CandleSticks", () => {
       slider.positionX = 90;
       expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
       slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
-        {high:179.002, low:179.000, open:179.0, close:179.002, timestamp:new Date("2015-05-03T20:00:00Z")}
+        {high:179.002, low:179.000, open:179.0, close:179.002, timestamp:date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1790120);
@@ -237,7 +245,7 @@ describe("CandleSticks", () => {
 
       slider.positionX = 84;
       slider.rates.rateService.xhrManager.requests[1].resolve(createRates([
-        {high:179.025, low:179.013, open:179.02, close:179.02, timestamp:new Date("2015-05-03T20:00:00Z")}
+        {high:179.025, low:179.013, open:179.02, close:179.02, timestamp:date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1790262);
@@ -252,7 +260,7 @@ describe("CandleSticks", () => {
 
       slider.positionX = 90;
       slider.rates.rateService.xhrManager.requests[2].resolve(createRates([
-        {high:1.79223, low:1.79222, open:1.79222, close:1.79222, timestamp:new Date("2015-05-03T20:00:00Z")}
+        {high:1.79223, low:1.79222, open:1.79222, close:1.79222, timestamp:date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1792330);
@@ -270,7 +278,7 @@ describe("CandleSticks", () => {
       slider.positionX = 90;
       expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
       slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
-        {high:190.002, low:179.000, open:179.0, close:179.002, timestamp:new Date("2015-05-03T20:00:00Z")}
+        {high:190.002, low:179.000, open:179.0, close:179.002, timestamp:date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1911022);
@@ -286,7 +294,7 @@ describe("CandleSticks", () => {
 
       slider.positionX = 86;
       slider.rates.rateService.xhrManager.requests[1].resolve(createRates([
-        {high:1.82223, low:1.79222, open:1.79222, close:1.79222, timestamp:new Date("2015-05-03T20:00:00Z")}
+        {high:1.82223, low:1.79222, open:1.79222, close:1.79222, timestamp:date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1825231);
@@ -339,18 +347,18 @@ describe("CandleSticks", () => {
     chart.stageSize = {w:300, h:200};
     slider.rates.initialize();
     slider.rates.rateService.xhrManager.requests[0].resolve({
-      start: new Date("2015-05-01T00:01:10Z"),
-      end:   new Date("2015-05-10T00:02:20Z")
+      start: date("2015-05-01T00:01:10Z"),
+      end:   date("2015-05-10T00:02:20Z")
     });
     slider.preferences.chartInterval = interval;
     slider.preferences.preferredPair = "USDJPY";
     slider.rates.rateService.xhrManager.requests[1].resolve(createRates([
-      {high:179.0, low:178.0, open:178.2, close:178.5, timestamp:new Date("2015-05-08T10:00:00Z")},
-      {high:179.5, low:178.2, open:178.5, close:179.5, timestamp:new Date("2015-05-08T11:00:00Z")},
-      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:new Date("2015-05-08T12:00:00Z")},
-      {high:179.0, low:178.0, open:179.0, close:178.5, timestamp:new Date("2015-05-08T13:00:00Z")},
-      {high:178.7, low:177.5, open:178.5, close:177.5, timestamp:new Date("2015-05-09T14:00:00Z")},
-      {high:179.0, low:177.7, open:177.7, close:178.5, timestamp:new Date("2015-05-10T00:00:00Z")}
+      {high:179.0, low:178.0, open:178.2, close:178.5, timestamp:date("2015-05-08T10:00:00Z")},
+      {high:179.5, low:178.2, open:178.5, close:179.5, timestamp:date("2015-05-08T11:00:00Z")},
+      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:date("2015-05-08T12:00:00Z")},
+      {high:179.0, low:178.0, open:179.0, close:178.5, timestamp:date("2015-05-08T13:00:00Z")},
+      {high:178.7, low:177.5, open:178.5, close:177.5, timestamp:date("2015-05-09T14:00:00Z")},
+      {high:179.0, low:177.7, open:177.7, close:178.5, timestamp:date("2015-05-10T00:00:00Z")}
     ]));
     slider.rates.rateService.xhrManager.clear();
   }
@@ -365,4 +373,8 @@ describe("CandleSticks", () => {
       };
     });
   }
+  function date( str ) {
+    return Dates.date(str);
+  }
+
 });

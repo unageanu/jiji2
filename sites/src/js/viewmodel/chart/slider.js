@@ -1,5 +1,6 @@
 import ContainerJS           from "container-js";
 import Observable            from "../../utils/observable";
+import Dates                 from "../../utils/dates"
 import DateFormatter         from "../utils/date-formatter";
 import CoordinateCalculator  from "./coordinate-calculator";
 
@@ -71,8 +72,8 @@ export default class Slider extends Observable {
     const start = Slider.calcuratePartitionStartTime(this.range.start.getTime(), intervalMs);
     const end   = Slider.calcuratePartitionStartTime(this.range.end.getTime() + intervalMs, intervalMs);
     this.setProperty("normalizedRange", {
-      start: new Date(start),
-      end:   new Date(end)
+      start: Dates.date(start),
+      end:   Dates.date(end)
     });
   }
 
@@ -85,7 +86,7 @@ export default class Slider extends Observable {
       // そうでない場合、現在の中心位置を維持する。
       const centerMs = this.currentRange.start.getTime()
                      + (this.intervalMs * Math.ceil(this.displayableCandleCount / 2));
-      return () => this.calculatePositionXFromDate(new Date(centerMs));
+      return () => this.calculatePositionXFromDate(Dates.date(centerMs));
     }
   }
 
@@ -102,8 +103,8 @@ export default class Slider extends Observable {
     const startPartitionMs =
       Slider.calcuratePartitionStartTime(startMs, this.intervalMs);
     this.setProperty("currentRange", {
-      start : new Date(startPartitionMs),
-      end   : new Date(startPartitionMs  + this.pageMs)
+      start : Dates.date(startPartitionMs),
+      end   : Dates.date(startPartitionMs  + this.pageMs)
     });
   }
 

@@ -1,4 +1,5 @@
-import _ from "underscore"
+import _     from "underscore"
+import Dates from "./dates"
 
 export default class Objects {
 
@@ -13,7 +14,8 @@ export default class Objects {
     } else if (_.isFunction(object)
             || _.isDate(object)
             || _.isRegExp(object)
-            || !_.isObject(object) ) {
+            || !_.isObject(object)
+            || Dates.isDateLikeObject(object) ) {
       return converter(object, key);
     } else {
       return _.keys(object).reduce( (r, k) => {

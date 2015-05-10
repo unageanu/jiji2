@@ -1,5 +1,6 @@
 import ContainerJS          from "container-js"
 import Observable           from "../../utils/observable"
+import Dates                from "../../utils/dates"
 import NumberUtils          from "../utils/number-utils"
 import DateFormatter        from "../utils/date-formatter"
 import CoordinateCalculator from "./coordinate-calculator"
@@ -100,7 +101,7 @@ export default class CandleSticks extends Observable {
     const results = [];
     for( let i=start; i < range.end.getTime(); i+=step ) {
       if (i <= range.start.getTime()) continue;
-      const date = new Date(i);
+      const date = Dates.date(i);
       results.push({
         value: this.formatHorizontalAxisLAbel(date, step),
         x:     this.coordinateCalculator.calculateX(date)
@@ -115,7 +116,7 @@ export default class CandleSticks extends Observable {
       return DateFormatter.formatDateMMDD(date);
     } else {
       let result = DateFormatter.formatTimeHHMM(date);
-      if ( date.getDate() !== new Date(date.getTime()-step).getDate() ) {
+      if ( date.getDate() !== Dates.date(date.getTime()-step).getDate() ) {
         result = DateFormatter.formatDateMMDD(date) + " " + result;
       }
       return result;

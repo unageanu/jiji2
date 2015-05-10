@@ -1,6 +1,10 @@
-import Transformer from "src/remoting/transformer"
+import Transformer    from "src/remoting/transformer"
+import Dates          from "src/utils/dates"
+import CustomMatchers from "../../utils/custom-matchers"
 
 describe("Transformer", () => {
+
+  beforeEach(() => jasmine.addMatchers(CustomMatchers) );
 
   it("transformResponse", () => {
     const t = new Transformer();
@@ -18,15 +22,15 @@ describe("Transformer", () => {
       }
     });
 
-    expect(transformed).toEqual({
-      timestamp:           new Date( 1429498940001 ),
-      "startAt":          new Date( 1429531340002 ),
+    expect(transformed).toEq({
+      timestamp:           Dates.date( 1429498940001 ),
+      "startAt":           Dates.date( 1429531340002 ),
       string:              "2015-04-20T12:02:20.002Z",
-      "illegalFormatAt": "2015-04-20T12:02:20.002X",
+      "illegalFormatAt":   "2015-04-20T12:02:20.002X",
       object: {
-        timestamp:           new Date( 1429552940000 ),
-        "endAt":            new Date( 1429531340000 ),
-        string:              "2015-04-20T12:02:20-06:00",
+        timestamp:         Dates.date( 1429552940000 ),
+        "endAt":           Dates.date( 1429531340000 ),
+        string:            "2015-04-20T12:02:20-06:00",
         "illegalFormatAt": "2015-04-20T12:02:20X"
       }
     });
@@ -38,17 +42,17 @@ describe("Transformer", () => {
     const t = new Transformer();
 
     const transformed = t.transformRequest({
-      startAt:   new Date( "2015-04-20T12:02:20+09:00" ),
+      startAt:   Dates.date( "2015-04-20T12:02:20+09:00" ),
       arrayValue: [
-        new Date( "2015-04-20T12:02:20.001+09:00" ),
-        new Date( "2015-04-20T12:02:20.001Z" )
+        Dates.date( "2015-04-20T12:02:20.001+09:00" ),
+        Dates.date( "2015-04-20T12:02:20.001Z" )
       ],
       objectValue: {
-        startAt: new Date( "2015-04-20T12:02:20+09:00" )
+        startAt: Dates.date( "2015-04-20T12:02:20+09:00" )
       }
     });
 
-    expect(transformed).toEqual({
+    expect(transformed).toEq({
       "start_at":   "2015-04-20T03:02:20.000Z",
       "array_value": [
         "2015-04-20T03:02:20.001Z",

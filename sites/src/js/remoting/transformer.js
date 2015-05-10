@@ -1,4 +1,5 @@
 import Objects         from "../utils/objects"
+import Dates           from "../utils/dates"
 import StringFormatter from "../viewmodel/utils/string-formatter"
 import _               from "underscore"
 
@@ -11,7 +12,7 @@ export default class Transformaer {
       if (/^(timestamp|.*\_at|start|end)$/.test(k) && ISO8601.test(v) ) {
         const ms = Date.parse(v);
         if (ms) {
-          return new Date(ms);
+          return Dates.date(ms);
         } else {
           throw new Error("illegal date fromat. key=" + k + " value=" + v);
         }
@@ -22,7 +23,7 @@ export default class Transformaer {
 
   transformRequest(data) {
     return Objects.convert(data, (v, k)=> {
-      if (_.isDate(v)) {
+      if (Dates.isDateLikeObject(v)) {
         return v.toISOString();
       }
       return v;

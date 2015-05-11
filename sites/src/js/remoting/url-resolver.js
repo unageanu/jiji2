@@ -1,4 +1,5 @@
 import _               from "underscore"
+import Dates           from "../utils/dates"
 
 export default class UrlResolver {
   resolveServiceUrl( serviceName, parameters={} ) {
@@ -17,7 +18,7 @@ export default class UrlResolver {
       + encodeURIComponent(this.convertValue(value));
   }
   convertValue( value ) {
-    if (_.isDate(value)) {
+    if (Dates.isDateLikeObject(value)) {
       return value.toISOString();
     }
     return value;

@@ -6,9 +6,9 @@ export default class AbstractService {
     this.xhrManager  = ContainerJS.Inject;
   }
 
-  serviceUrl(path=null) {
-    let url = this.urlResolver.resolveServiceUrl(this.endpoint());
-    if (path) url = url + "/" + path;
-    return url;
+  serviceUrl(path=null, params={}) {
+    let base = this.endpoint();
+    if (path) base = base + "/" + path;
+    return this.urlResolver.resolveServiceUrl(base, params);
   }
 }

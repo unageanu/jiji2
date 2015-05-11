@@ -1,6 +1,6 @@
 import Observable    from "../../utils/observable";
 
-const padding           = 8 * 2;
+const padding           = 8;
 const sideLabelWidth    = 48;
 const bottomLabelheight = 16;
 const stickWidth = 5;
@@ -13,10 +13,19 @@ export default class CoordinateCalculator extends Observable {
   }
 
   static totalPaddingWidth() {
-    return padding + sideLabelWidth;
+    return padding*2 + sideLabelWidth;
   }
   static totalPaddingHeight() {
-    return padding + bottomLabelheight;
+    return padding*2 + bottomLabelheight;
+  }
+  static padding() {
+    return padding;
+  }
+  static sideLabelWidth() {
+    return sideLabelWidth;
+  }
+  static bottomLabelheight() {
+    return bottomLabelheight;
   }
 
   attach( slider, preferences ) {
@@ -38,13 +47,13 @@ export default class CoordinateCalculator extends Observable {
     }
     const intervalMs =  CoordinateCalculator.resolveCollectingInterval(chartInterval);
     const index = Math.floor( (date.getTime() - currentRange.start.getTime()) / intervalMs);
-    return (stickWidth + stickGap) * index + ((stickWidth +  stickGap) / 2);
+    return (stickWidth + stickGap) * index + ((stickWidth +  stickGap) / 2) + padding;
   }
   calculateY(rate) {
     if (!this.rateRange || !this.ratePerPixel) {
       throw new Error("illegalState");
     }
-    return Math.floor( (this.rateRange.highest - rate) / this.ratePerPixel );
+    return Math.floor( (this.rateRange.highest - rate) / this.ratePerPixel ) + padding;
   }
 
   set stageSize( size ) {
@@ -77,7 +86,7 @@ export default class CoordinateCalculator extends Observable {
     const range  = this.rateRange;
     return {
       vertical:   this.calculateY(range.lowest),
-      horizontal: this.stageSize.w - (sideLabelWidth - padding/2)
+      horizontal: this.stageSize.w - (sideLabelWidth + padding)
     };
   }
 

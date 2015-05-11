@@ -44,27 +44,27 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.rateRange.highest).toEqual(180.03);
     expect(coordinateCalculator.rateRange.lowest).toEqual(177.27);
     expect(candleSticks.verticalAxisLabels).toEqual([
-      {value:178, y:123},
-      {value:179, y:62},
-      {value:180, y:1}
+      {value:178, y:131},
+      {value:179, y:70},
+      {value:180, y:9}
     ]);
     expect(candleSticks.horizontalAxisLabels).toEqual([
-      {value:"05-09 01:00", x:39},
-      {value:"09:00",       x:87},
-      {value:"17:00",       x:135},
-      {value:"05-10 01:00", x:183},
-      {value:"09:00",       x:231}
+      {value:"05-09 01:00", x:47},
+      {value:"09:00",       x:95},
+      {value:"17:00",       x:143},
+      {value:"05-10 01:00", x:191},
+      {value:"09:00",       x:239}
     ]);
     expect(candleSticks.axisPosition).toEqual({
-      vertical: 168, horizontal: 260
+      vertical: 176, horizontal: 244
     });
     expect(candleSticks.sticks).toEqual([
-      { high: 62, low: 123, open: 111, close: 93,  isUp: true,  x:   3 },
-      { high: 32, low: 111, open: 93,  close: 32,  isUp: true,  x:   9 },
-      { high: 13, low: 62,  open: 32,  close: 62,  isUp: false, x:  15 },
-      { high: 62, low: 123, open: 62,  close: 93,  isUp: false, x:  21 },
-      { high: 80, low: 154, open: 93,  close: 154, isUp: false, x: 171 },
-      { high: 62, low: 141, open: 141, close: 93,  isUp: true,  x: 231 }
+      { high: 70, low: 131, open: 119, close: 101, isUp:  true, x:  11 },
+      { high: 40, low: 119, open: 101, close:  40, isUp:  true, x:  17 },
+      { high: 21, low:  70, open:  40, close:  70, isUp: false, x:  23 },
+      { high: 70, low: 131, open:  70, close: 101, isUp: false, x:  29 },
+      { high: 88, low: 162, open: 101, close: 162, isUp: false, x: 179 },
+      { high: 70, low: 149, open: 149, close: 101, isUp:  true, x: 239 }
     ]);
   });
 
@@ -83,21 +83,21 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
     expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
     expect(candleSticks.verticalAxisLabels).toEqual([
-      {value:179, y:84}
+      {value:179, y:92}
     ]);
     expect(candleSticks.horizontalAxisLabels).toEqual([
-      {value:"09:00",       x:51},
-      {value:"17:00",       x:99},
-      {value:"05-05 01:00", x:147},
-      {value:"09:00",       x:195}
+      {value:"09:00",       x:59},
+      {value:"17:00",       x:107},
+      {value:"05-05 01:00", x:155},
+      {value:"09:00",       x:203}
     ]);
     expect(candleSticks.axisPosition).toEqual({
-      vertical: 168, horizontal: 260
+      vertical: 176, horizontal: 244
     });
     expect(candleSticks.sticks).toEqual([
-      { high: 84, low: 101, open: 101, close: 101, isUp: false, x: 27 },
-      { high: 84, low: 154, open: 127, close:  84, isUp:  true, x: 21 },
-      { high: 13, low:  84, open:  40, close:  84, isUp: false, x: 15 }
+      { high: 92, low: 109, open: 109, close: 109, isUp: false, x: 35 },
+      { high: 92, low: 162, open: 135, close:  92, isUp: true,  x: 29 },
+      { high: 21, low:  92, open:  48, close:  92, isUp: false, x: 23 }
     ]);
   });
 
@@ -118,22 +118,22 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
     expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
     expect(candleSticks.verticalAxisLabels).toEqual([
-      {value:179, y:84}
+      {value:179, y:92}
     ]);
     expect(candleSticks.horizontalAxisLabels).toEqual([
-      {value:"05-10 01:00", x:39},
-      {value:"03:00",       x:87},
-      {value:"05:00",       x:135},
-      {value:"07:00",       x:183},
-      {value:"09:00",       x:231}
+      {value:"05-10 01:00", x:47},
+      {value:"03:00",       x:95},
+      {value:"05:00",       x:143},
+      {value:"07:00",       x:191},
+      {value:"09:00",       x:239}
     ]);
     expect(candleSticks.axisPosition).toEqual({
-      vertical: 168, horizontal: 260
+      vertical: 176, horizontal: 244
     });
     expect(candleSticks.sticks).toEqual([
-      { high: 84, low: 101, open: 101, close: 101, isUp: false, x: 219 },
-      { high: 84, low: 154, open: 127, close:  84, isUp:  true, x: 225 },
-      { high: 13, low:  84, open:  40, close:  84, isUp: false, x: 231 }
+      { high: 92, low: 109, open: 109, close: 109, isUp: false, x: 227 },
+      { high: 92, low: 162, open: 135, close:  92, isUp: true,  x: 233 },
+      { high: 21, low:  92, open:  48, close:  92, isUp: false, x: 239 }
     ]);
   });
 
@@ -154,22 +154,22 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
     expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
     expect(candleSticks.verticalAxisLabels).toEqual([
-      {value:179, y:84}
+      {value:179, y:92}
     ]);
     expect(candleSticks.horizontalAxisLabels).toEqual([
-      {value:"05-09 01:00", x:39},
-      {value:"09:00",       x:87},
-      {value:"17:00",       x:135},
-      {value:"05-10 01:00", x:183},
-      {value:"09:00",       x:231}
+      {value:"05-09 01:00", x:47},
+      {value:"09:00",       x:95},
+      {value:"17:00",       x:143},
+      {value:"05-10 01:00", x:191},
+      {value:"09:00",       x:239}
     ]);
     expect(candleSticks.axisPosition).toEqual({
-      vertical: 168, horizontal: 260
+      vertical: 176, horizontal: 244
     });
     expect(candleSticks.sticks).toEqual([
-      { high: 84, low: 101, open: 101, close: 101, isUp: false, x:   3 },
-      { high: 84, low: 154, open: 127, close:  84, isUp:  true, x: 201 },
-      { high: 13, low:  84, open:  40, close:  84, isUp: false, x: 231 }
+      { high: 92, low: 109, open: 109, close: 109, isUp: false, x:  11 },
+      { high: 92, low: 162, open: 135, close:  92, isUp: true,  x: 209 },
+      { high: 21, low:  92, open:  48, close:  92, isUp: false, x: 239 }
     ]);
   });
 
@@ -185,10 +185,10 @@ describe("CandleSticks", () => {
       expect(coordinateCalculator.rateRange.highest).toEqual(179.01);
       expect(coordinateCalculator.rateRange.lowest).toEqual(178.99);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:179, y:84}
+        {value:179, y:92}
       ]);
       expect(candleSticks.sticks).toEqual([
-        { high: 84, low: 84, open: 84, close: 84, isUp: false, x:  27 }
+        { high: 92, low: 92, open: 92, close: 92, isUp: false, x:  35 }
       ]);
 
 
@@ -201,11 +201,11 @@ describe("CandleSticks", () => {
       expect(coordinateCalculator.rateRange.highest).toEqual(179.232);
       expect(Math.round(coordinateCalculator.rateRange.lowest*10000)).toEqual(1792120);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:179.22, y:100},
-        {value:179.23, y:16}
+        {value:179.22, y:108},
+        {value:179.23, y:24}
       ]);
       expect(candleSticks.sticks).toEqual([
-        { high: 84, low: 84, open: 84, close: 84, isUp: false, x:   51 }
+        { high: 92, low: 92, open: 92, close: 92, isUp: false, x:   59 }
       ]);
 
 
@@ -217,11 +217,11 @@ describe("CandleSticks", () => {
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1792320);
       expect(Math.round(coordinateCalculator.rateRange.lowest *1000000)).toEqual(1792120);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:1.7922, y:100},
-        {value:1.7923, y:16}
+        {value:1.7922, y:108},
+        {value:1.7923, y:24}
       ]);
       expect(candleSticks.sticks).toEqual([
-        { high: 84, low: 84, open: 84, close: 84, isUp: false, x:   27 }
+        { high: 92, low: 92, open: 92, close: 92, isUp: false, x:   35 }
       ]);
     });
     it("レートの範囲が狭い場合も、verticalAxisLabelsを正しく取得できる", () => {
@@ -235,11 +235,11 @@ describe("CandleSticks", () => {
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1790120);
       expect(Math.round(coordinateCalculator.rateRange.lowest*10000) ).toEqual(1789900);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:179,    y:91},
-        {value:179.01, y:15}
+        {value:179,    y:99},
+        {value:179.01, y:23}
       ]);
       expect(candleSticks.sticks).toEqual([
-        { high: 76, low: 91, open: 91, close: 76, isUp: true, x:   27 }
+        { high: 84, low: 99, open: 99, close: 84, isUp: true, x:   35 }
       ]);
 
 
@@ -251,10 +251,10 @@ describe("CandleSticks", () => {
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1790262);
       expect(Math.round(coordinateCalculator.rateRange.lowest*10000) ).toEqual(1790118);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:179.02, y:72}
+        {value:179.02, y:80}
       ]);
       expect(candleSticks.sticks).toEqual([
-        { high: 14, low: 153, open: 72, close: 72, isUp: false, x:   51 }
+        { high: 22, low: 161, open: 80, close: 80, isUp: false, x:   59 }
       ]);
 
 
@@ -266,11 +266,11 @@ describe("CandleSticks", () => {
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1792330);
       expect(Math.round(coordinateCalculator.rateRange.lowest *1000000)).toEqual(1792120);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:1.7922, y:103},
-        {value:1.7923, y:23}
+        {value:1.7922, y:111},
+        {value:1.7923, y:31}
       ]);
       expect(candleSticks.sticks).toEqual([
-        { high: 79, low: 88, open: 88, close: 88, isUp: false, x:   27 }
+        { high: 87, low: 96, open: 96, close: 96, isUp: false, x:   35 }
       ]);
     });
     it("レートの範囲が広い場合も、verticalAxisLabelsを正しく取得できる", () => {
@@ -284,11 +284,11 @@ describe("CandleSticks", () => {
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1911022);
       expect(Math.round(coordinateCalculator.rateRange.lowest*10000) ).toEqual(1778998);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:180, y:141},
-        {value:190, y:14}
+        {value:180, y:149},
+        {value:190, y:22}
       ]);
       expect(candleSticks.sticks).toEqual([
-        { high: 14, low: 154, open: 154, close: 153, isUp: true, x:   27 }
+        { high: 22, low: 162, open: 162, close: 161, isUp: true, x:   35 }
       ]);
 
 
@@ -300,11 +300,11 @@ describe("CandleSticks", () => {
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1825231);
       expect(Math.round(coordinateCalculator.rateRange.lowest *1000000)).toEqual(1789219);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:1.8,  y:117},
-        {value:1.82, y:24}
+        {value:1.8,  y:125},
+        {value:1.82, y:32}
       ]);
       expect(candleSticks.sticks).toEqual([
-        { high: 14, low: 153, open: 153, close: 153, isUp: false, x:   45 }
+        { high: 22, low: 161, open: 161, close: 161, isUp: false, x:   53 }
       ]);
     });
   });
@@ -315,20 +315,20 @@ describe("CandleSticks", () => {
 
       slider.preferences.chartInterval = "six_hours";
       expect(candleSticks.horizontalAxisLabels).toEqual([
-        {value:"05-01", x:15},
-        {value:"05-03", x:63},
-        {value:"05-05", x:111},
-        {value:"05-07", x:159},
-        {value:"05-09", x:207}
+        {value:"05-01", x:23},
+        {value:"05-03", x:71},
+        {value:"05-05", x:119},
+        {value:"05-07", x:167},
+        {value:"05-09", x:215}
       ]);
 
       slider.preferences.chartInterval = "one_day";
       expect(candleSticks.horizontalAxisLabels).toEqual([
-        {value:"04-03", x:9},
-        {value:"04-11", x:57},
-        {value:"04-19", x:105},
-        {value:"04-27", x:153},
-        {value:"05-05", x:201}
+        {value:"04-03", x:17},
+        {value:"04-11", x:65},
+        {value:"04-19", x:113},
+        {value:"04-27", x:161},
+        {value:"05-05", x:209}
       ]);
     });
   });

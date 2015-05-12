@@ -18,6 +18,7 @@ export default class CandleSticks extends AbstractChartComponent {
   attach( stage ) {
     this.stage = stage;
     this.stage.addChild(this.sticksShape);
+    this.stage.addChild(this.axisLabelContainer);
   }
 
   onPropertyChanged(name, event) {
@@ -29,9 +30,12 @@ export default class CandleSticks extends AbstractChartComponent {
   initSprite() {
     this.sticksShape = new CreateJS.Shape();
     this.sticksShape.x = this.sticksShape.y = 0;
+    this.axisLabelContainer = new CreateJS.Container();
+    this.axisLabelContainer.x = this.axisLabelContainer.y = 0;
 
     const stageSize = this.chartModel.candleSticks.stageSize;
     this.sticksShape.setBounds( 0, 0, stageSize.w, stageSize.h );
+    this.axisLabelContainer.setBounds( 0, 0, stageSize.w, stageSize.h );
   }
 
   update() {
@@ -48,6 +52,7 @@ export default class CandleSticks extends AbstractChartComponent {
         .beginFill("#F0F0F0")
         .drawRect( 0, 0, stageSize.w, stageSize.h )
         .endFill();
+    this.axisLabelContainer.removeAllChildren();
   }
 
   renderSticks( sticks ) {
@@ -107,7 +112,7 @@ export default class CandleSticks extends AbstractChartComponent {
       const text = this.createAxisLabelText( label.value );
       text.x = label.x - text.getMeasuredWidth() / 2;
       text.y = axisPosition.vertical + 2;
-      this.stage.addChild(text);
+      this.axisLabelContainer.addChild(text);
     });
   }
   renderVerticalAxisLabels(axisPosition, verticalAxisLabels) {
@@ -115,7 +120,7 @@ export default class CandleSticks extends AbstractChartComponent {
       const text = this.createAxisLabelText( label.value );
       text.x = axisPosition.horizontal + 4;
       text.y = label.y - text.getMeasuredHeight() / 2 -1;
-      this.stage.addChild(text);
+      this.axisLabelContainer.addChild(text);
     });
   }
 

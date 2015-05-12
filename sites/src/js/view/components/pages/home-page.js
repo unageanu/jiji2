@@ -1,6 +1,7 @@
 import React      from "react";
 import MUI        from "material-ui";
 import Chart      from "../chart/chart";
+import Slider     from "../chart/slider";
 
 export default class HomePage extends React.Component {
 
@@ -9,11 +10,17 @@ export default class HomePage extends React.Component {
     this.state = {};
   }
 
+  componentWillMount() {
+    this.chartModel = this.context.application.viewModelFactory.createChart();
+    this.chartModel.stageSize = this.props.canvasSize;
+  }
+
   componentDidMount() {
     const canvas = React.findDOMNode(this.refs.canvas);
-    const chart  = new Chart( canvas, this.props.devicePixelRatio,
-      this.props.canvasSize, this.context.application.viewModelFactory );
-    this.context.application.initialize().then( () => chart.initModel() );
+    this.chart  = new Chart(
+      canvas, this.props.devicePixelRatio, this.chartModel );
+    this.context.application.initialize()
+      .then( () => this.chartModel.initialize() );
   }
 
   render() {
@@ -28,6 +35,7 @@ export default class HomePage extends React.Component {
             height: this.props.canvasSize.h+"px"
         }}>
         </canvas>
+        <Slider chartModel={this.chartModel}></Slider>
       </div>
     );
   }

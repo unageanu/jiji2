@@ -3,9 +3,11 @@ import CandleSticks from "./candle-sticks";
 
 export default class Chart {
 
-  constructor( canvas, scale, stageSize, viewModelFactory ) {
+  constructor( canvas, scale, viewModel ) {
+
+    this.chartModel = viewModel;
+
     this.buildStage(canvas, scale);
-    this.buildChartModel(stageSize, viewModelFactory);
     this.buildViewComponents();
 
     this.initViewComponents();
@@ -16,18 +18,11 @@ export default class Chart {
     this.stage.scaleX = scale;
     this.stage.scaleY = scale;
   }
-  buildChartModel(stageSize, viewModelFactory) {
-    this.chartModel = viewModelFactory.createChart();
-    this.chartModel.stageSize = stageSize;
-  }
   buildViewComponents() {
     this.candleSticks = new CandleSticks( this.chartModel );
   }
   initViewComponents() {
     this.candleSticks.attach( this.stage );
-  }
-  initModel() {
-    this.chartModel.initialize();
   }
 
 }

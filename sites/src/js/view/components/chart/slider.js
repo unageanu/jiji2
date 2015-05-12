@@ -3,6 +3,22 @@ import MUI           from "material-ui"
 import Draggable     from "react-draggable2"
 import DateFormatter from "../../../viewmodel/utils/date-formatter"
 
+class RangeView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      range: {}
+    };
+  }
+  render() {
+    const displayRange = DateFormatter.format(this.state.range.start)
+              + " ～ " + DateFormatter.format(this.state.range.end);
+    return (
+      <div className="range">{displayRange}</div>
+    );
+  }
+}
+
 export default class Slider extends React.Component {
 
   constructor(props) {
@@ -10,8 +26,7 @@ export default class Slider extends React.Component {
     this.state = {
       handlePosition : 0,
       handleWidth: 0,
-      barWidth: 0,
-      range: {}
+      barWidth: 0
     };
   }
 
@@ -24,18 +39,18 @@ export default class Slider extends React.Component {
       this.setState({
         handlePosition : this.props.chartModel.slider.positionX,
         handleWidth: this.props.chartModel.slider.pageWidth,
-        barWidth: this.props.chartModel.slider.width,
+        barWidth: this.props.chartModel.slider.width
+      });
+      this.refs.rangeView.setState({
         range: this.props.chartModel.slider.currentRange || {}
       });
     });
   }
 
   render() {
-    const displayRange = DateFormatter.format(this.state.range.start)
-              + " ～ " + DateFormatter.format(this.state.range.end);
     return (
       <div className="slider">
-        <div className="range">{displayRange}</div>
+        <RangeView ref="rangeView" />
         <div className="bar" style={{
           width: this.state.barWidth+"px"
         }}>
@@ -43,7 +58,7 @@ export default class Slider extends React.Component {
             axis="x"
             handle=".handle"
             start={{x: this.state.handlePosition, y: 0}}
-            bound="point"
+            bound="box all"
             onStart={this.handleStart.bind(this)}
             onDrag={this.handleDrag.bind(this)}
             onStop={this.handleStop.bind(this)}>
@@ -62,9 +77,8 @@ export default class Slider extends React.Component {
   }
   handleDrag(event, ui) {
     const result = this.props.chartModel.slider.calculateCurrentRange(ui.position.left);
-    this.setState({
-      range: result.range,
-      handlePosition: ui.position.left
+    this.refs.rangeView.setState({
+      range: result.range
     });
   }
   handleStop(event, ui) {

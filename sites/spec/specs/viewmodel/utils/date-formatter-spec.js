@@ -9,6 +9,8 @@ describe("DateFormatter", () => {
       expect(DateFormatter.formatDateMMDD(d)).toBe( "03-02" );
       expect(DateFormatter.formatTimeHHMM(d)).toBe( "10:02" );
       expect(DateFormatter.formatTimeHHMMSS(d)).toBe( "10:02:10" );
+
+      expect(DateFormatter.format(null)).toBe( "-" );
   });
 
 });

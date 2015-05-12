@@ -16,6 +16,7 @@ export default class DateFormatter {
   }
 
   static format(date, format="yyyy-MM-dd hh:mm:ss") {
+    if (!date) return "-";
     return DateFormat.asString(format, date);
   }
 }

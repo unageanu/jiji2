@@ -42,17 +42,17 @@ export default class Slider extends Observable {
   update() {
     const showLatest = this.scrollableWidth === this.positionX;
     const positionXResolver = this.createPositionXResolver(showLatest);
-    this.calculateRange();
+    this.updateRange();
     this.setProperty("positionX", positionXResolver());
-    this.calculateCurrentRange();
+    this.updateCurrentRange();
   }
 
-  calculateRange() {
+  updateRange() {
     if ( !this.existRequiredData() ) return;
 
     const candleCount = this.displayableCandleCount;
     this.intervalMs = CoordinateCalculator.resolveCollectingInterval(this.chartInterval);
-    this.calculateNormalizedRange(this.intervalMs);
+    this.updateNormalizedRange(this.intervalMs);
 
     const ms = this.normalizedRange.end.getTime() - this.normalizedRange.start.getTime();
     const msPerPixel = ms  / this.width;
@@ -68,7 +68,7 @@ export default class Slider extends Observable {
       // それを引いた残りのスクロール領域での1pxあたりのmsを再計算する
   }
 
-  calculateNormalizedRange(intervalMs) {
+  updateNormalizedRange(intervalMs) {
     const start = Slider.calcuratePartitionStartTime(this.range.start.getTime(), intervalMs);
     const end   = Slider.calcuratePartitionStartTime(this.range.end.getTime() + intervalMs, intervalMs);
     this.setProperty("normalizedRange", {
@@ -90,22 +90,34 @@ export default class Slider extends Observable {
     }
   }
 
-  calculateCurrentRange() {
+  updateCurrentRange() {
     if ( !this.existRequiredData() ) return;
 
+    const result = this.calculateCurrentRange(this.positionX);
+    if ( this.positionX !== result.x ) this.setProperty("positionX", result.x);
+
+    this.setProperty("currentRange", result.range);
+  }
+
+  calculateCurrentRange(x) {
+    if ( !this.existRequiredData() ) throw new Error("illegal state.");
+
     // 左端or右端にする
-    if (this.scrollableWidth <= this.positionX) {
-      this.setProperty("positionX", this.scrollableWidth);
+    if (this.scrollableWidth <= x) {
+      x = this.scrollableWidth;
     } else if (this.positionX < 0) {
-      this.setProperty("positionX", 0);
+      x = 0;
     }
-    const startMs = (this.positionX * this.msPerPixel) + this.range.start.getTime();
+    const startMs = (x * this.msPerPixel) + this.range.start.getTime();
     const startPartitionMs =
       Slider.calcuratePartitionStartTime(startMs, this.intervalMs);
-    this.setProperty("currentRange", {
-      start : Dates.date(startPartitionMs),
-      end   : Dates.date(startPartitionMs  + this.pageMs)
-    });
+    return {
+      range : {
+        start : Dates.date(startPartitionMs),
+        end   : Dates.date(startPartitionMs  + this.pageMs)
+      },
+      x     : x
+    };
   }
 
   calculatePositionXFromDate(date) {
@@ -115,7 +127,7 @@ export default class Slider extends Observable {
 
   goTo( date ) {
     this.setProperty("positionX", this.calculatePositionXFromDate(date));
-    this.calculateCurrentRange();
+    this.updateCurrentRange();
   }
 
   existRequiredData() {
@@ -177,7 +189,7 @@ export default class Slider extends Observable {
   }
   set positionX(positionX) {
     this.setProperty("positionX", positionX);
-    this.calculateCurrentRange();
+    this.updateCurrentRange();
   }
 
 }

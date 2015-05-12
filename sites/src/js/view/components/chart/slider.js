@@ -11,11 +11,15 @@ class RangeView extends React.Component {
     };
   }
   render() {
-    const displayRange = DateFormatter.format(this.state.range.start)
-              + " ～ " + DateFormatter.format(this.state.range.end);
+    const displayRange = this.format(this.state.range.start)
+              + " ～ " + this.format(this.state.range.end);
     return (
       <div className="range">{displayRange}</div>
     );
+  }
+  format(date) {
+    return DateFormatter.formatDateYYYYMMDD(date)
+       + " " + DateFormatter.formatTimeHHMM(date);
   }
 }
 

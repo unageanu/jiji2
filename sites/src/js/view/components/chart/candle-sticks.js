@@ -78,14 +78,14 @@ export default class CandleSticks extends AbstractChartComponent {
 
   renderAxisLines(axisPosition, verticalAxisLabels, horizontalAxisLabels) {
     let g = this.sticksShape.graphics;
-    g = this.drowLine(g, "#DDDDDD", horizontalAxisLabels.map((l)=>{
+    g = this.drowLine(g, "#E5E5E5", horizontalAxisLabels.map((l)=>{
       return {
         x: l.x,
         y: padding,
         h: axisPosition.vertical - padding
       };
     }));
-    g = this.drowLine(g, "#DDDDDD", verticalAxisLabels.map((l)=>{
+    g = this.drowLine(g, "#E0E0E0", verticalAxisLabels.map((l)=>{
       return {
         x: padding,
         y: l.y,
@@ -135,7 +135,7 @@ export default class CandleSticks extends AbstractChartComponent {
     return g.endFill();
   }
   createAxisLabelText( text ) {
-    return new CreateJS.Text(text, "10px Roboto Condensed", "#AAAAAA");
+    return new CreateJS.Text(text, "11px Roboto Condensed", "#999999");
   }
 
 }

@@ -83,7 +83,9 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
     expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
     expect(candleSticks.verticalAxisLabels).toEqual([
-      {value:179, y:92}
+      {value:178.5, y:135},
+      {value:179,   y:92},
+      {value:179.5, y:48}
     ]);
     expect(candleSticks.horizontalAxisLabels).toEqual([
       {value:"09:00",       x:59},
@@ -118,7 +120,9 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
     expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
     expect(candleSticks.verticalAxisLabels).toEqual([
-      {value:179, y:92}
+      {value:178.5, y:135},
+      {value:179,   y:92},
+      {value:179.5, y:48}
     ]);
     expect(candleSticks.horizontalAxisLabels).toEqual([
       {value:"05-10 01:00", x:47},
@@ -154,7 +158,9 @@ describe("CandleSticks", () => {
     expect(coordinateCalculator.rateRange.highest).toEqual(179.96);
     expect(coordinateCalculator.rateRange.lowest).toEqual(178.04);
     expect(candleSticks.verticalAxisLabels).toEqual([
-      {value:179, y:92}
+      {value:178.5, y:135},
+      {value:179,   y:92},
+      {value:179.5, y:48}
     ]);
     expect(candleSticks.horizontalAxisLabels).toEqual([
       {value:"05-09 01:00", x:47},
@@ -185,7 +191,9 @@ describe("CandleSticks", () => {
       expect(coordinateCalculator.rateRange.highest).toEqual(179.01);
       expect(coordinateCalculator.rateRange.lowest).toEqual(178.99);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:179, y:92}
+        {value:178.995, y:134},
+        {value:179,     y: 92},
+        {value:179.005, y: 50}
       ]);
       expect(candleSticks.sticks).toEqual([
         { high: 92, low: 92, open: 92, close: 92, isUp: false, x:  35 }
@@ -201,8 +209,10 @@ describe("CandleSticks", () => {
       expect(coordinateCalculator.rateRange.highest).toEqual(179.232);
       expect(Math.round(coordinateCalculator.rateRange.lowest*10000)).toEqual(1792120);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:179.22, y:108},
-        {value:179.23, y:24}
+        {value:179.215, y:150},
+        {value:179.22,  y:108},
+        {value:179.225, y: 66},
+        {value:179.23,  y: 24}
       ]);
       expect(candleSticks.sticks).toEqual([
         { high: 92, low: 92, open: 92, close: 92, isUp: false, x:   59 }
@@ -217,8 +227,10 @@ describe("CandleSticks", () => {
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1792320);
       expect(Math.round(coordinateCalculator.rateRange.lowest *1000000)).toEqual(1792120);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:1.7922, y:108},
-        {value:1.7923, y:24}
+        {value:1.79215, y:150},
+        {value:1.7922,  y:108},
+        {value:1.79225, y: 66},
+        {value:1.7923,  y: 24}
       ]);
       expect(candleSticks.sticks).toEqual([
         { high: 92, low: 92, open: 92, close: 92, isUp: false, x:   35 }
@@ -235,8 +247,8 @@ describe("CandleSticks", () => {
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1790120);
       expect(Math.round(coordinateCalculator.rateRange.lowest*10000) ).toEqual(1789900);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:179,    y:99},
-        {value:179.01, y:23}
+        {value:179,     y:99},
+        {value:179.01,  y:23}
       ]);
       expect(candleSticks.sticks).toEqual([
         { high: 84, low: 99, open: 99, close: 84, isUp: true, x:   35 }
@@ -251,7 +263,9 @@ describe("CandleSticks", () => {
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1790262);
       expect(Math.round(coordinateCalculator.rateRange.lowest*10000) ).toEqual(1790118);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:179.02, y:80}
+        {value:179.015, y:138},
+        {value:179.019, y: 80},
+        {value:179.024, y: 22}
       ]);
       expect(candleSticks.sticks).toEqual([
         { high: 22, low: 161, open: 80, close: 80, isUp: false, x:   59 }
@@ -285,6 +299,7 @@ describe("CandleSticks", () => {
       expect(Math.round(coordinateCalculator.rateRange.lowest*10000) ).toEqual(1778998);
       expect(candleSticks.verticalAxisLabels).toEqual([
         {value:180, y:149},
+        {value:185, y:85},
         {value:190, y:22}
       ]);
       expect(candleSticks.sticks).toEqual([
@@ -300,8 +315,10 @@ describe("CandleSticks", () => {
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1825231);
       expect(Math.round(coordinateCalculator.rateRange.lowest *1000000)).toEqual(1789219);
       expect(candleSticks.verticalAxisLabels).toEqual([
-        {value:1.8,  y:125},
-        {value:1.82, y:32}
+        {value:1.79,  y:172},
+        {value:1.8,   y:125},
+        {value:1.81,  y:79},
+        {value:1.82,  y:32}
       ]);
       expect(candleSticks.sticks).toEqual([
         { high: 22, low: 161, open: 161, close: 161, isUp: false, x:   53 }
@@ -334,13 +351,13 @@ describe("CandleSticks", () => {
   });
 
   it("calculateStep でラベルのメモリを計算できる", () => {
-    expect(CandleSticks.calculateStep(121.123456)).toEqual(0.01);
-    expect(CandleSticks.calculateStep(100.123456)).toEqual(0.01);
-    expect(CandleSticks.calculateStep( 99.123456)).toEqual(0.001);
-    expect(CandleSticks.calculateStep( 21.123456)).toEqual(0.001);
-    expect(CandleSticks.calculateStep(  9.123456)).toEqual(0.0001);
-    expect(CandleSticks.calculateStep(  1.123456)).toEqual(0.0001);
-    expect(CandleSticks.calculateStep(  0.123456)).toEqual(0.0001);
+    expect(CandleSticks.calculateStep(121.123456)).toEqual(0.001);
+    expect(CandleSticks.calculateStep(100.123456)).toEqual(0.001);
+    expect(CandleSticks.calculateStep( 99.123456)).toEqual(0.0001);
+    expect(CandleSticks.calculateStep( 21.123456)).toEqual(0.0001);
+    expect(CandleSticks.calculateStep(  9.123456)).toEqual(0.00001);
+    expect(CandleSticks.calculateStep(  1.123456)).toEqual(0.00001);
+    expect(CandleSticks.calculateStep(  0.123456)).toEqual(0.00001);
   });
 
   function initialize(width=1000, candleCount=20, interval="one_hour") {

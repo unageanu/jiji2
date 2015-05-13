@@ -3,7 +3,7 @@ export default class NumberUtils {
 
   static round(number, digit) {
     const positiveDigits = NumberUtils.getPositiveDigits(number);
-    const x  = Math.pow(10, 5-Math.max(positiveDigits, 1));
+    const x  = Math.pow(10, digit-Math.max(positiveDigits, 1));
     return Math.floor(number * x) / x;
   }
 

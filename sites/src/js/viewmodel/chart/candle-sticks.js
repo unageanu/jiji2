@@ -90,7 +90,7 @@ export default class CandleSticks extends Observable {
     for( let i=start; i < range.highest; i+=step ) {
       if (i <= range.lowest) continue;
       results.push({
-        value: i,
+        value: NumberUtils.round(i, 6),
         y:     this.coordinateCalculator.calculateY(i)
       });
     }
@@ -138,7 +138,7 @@ export default class CandleSticks extends Observable {
 
   calculateMargin(highAndLow) {
     const diff = (highAndLow.highest - highAndLow.lowest);
-    const step = CandleSticks.calculateStep( highAndLow.highest );
+    const step = CandleSticks.calculateStep( highAndLow.highest )*10;
     if ( diff <= step ) {
       return step;
     } else {
@@ -160,12 +160,15 @@ export default class CandleSticks extends Observable {
         s = s * 2;
       }
     }
+    if ( diff/s < 2 ) {
+      s = s / 2;
+    }
     return s;
   }
 
   static calculateStep( rate ) {
     const positiveDigit = Math.max(NumberUtils.getPositiveDigits(rate), 1);
-    return Math.pow(10, positiveDigit-5);
+    return Math.pow(10, positiveDigit-6);
   }
 
   calculateSticks(data) {

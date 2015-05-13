@@ -18,7 +18,6 @@ export default class CandleSticks extends AbstractChartComponent {
   attach( stage ) {
     this.stage = stage;
     this.stage.addChild(this.sticksShape);
-    this.stage.addChild(this.axisLabelContainer);
   }
 
   onPropertyChanged(name, event) {
@@ -28,19 +27,12 @@ export default class CandleSticks extends AbstractChartComponent {
   }
 
   initSprite() {
-    this.sticksShape = new CreateJS.Shape();
-    this.sticksShape.x = this.sticksShape.y = 0;
-    this.axisLabelContainer = new CreateJS.Container();
-    this.axisLabelContainer.x = this.axisLabelContainer.y = 0;
-
     const stageSize = this.chartModel.candleSticks.stageSize;
-    this.sticksShape.setBounds( 0, 0, stageSize.w, stageSize.h );
-    this.axisLabelContainer.setBounds( 0, 0, stageSize.w, stageSize.h );
+    this.sticksShape = this.initializeElement(new CreateJS.Shape(), stageSize);
   }
 
   update() {
     this.clearScreen();
-    this.renderAxises();
     this.renderSticks( this.chartModel.candleSticks.sticks );
     this.stage.update();
     this.cache();
@@ -48,11 +40,7 @@ export default class CandleSticks extends AbstractChartComponent {
 
   clearScreen() {
     const stageSize = this.chartModel.candleSticks.stageSize;
-    this.sticksShape.graphics
-        .beginFill("#F0F0F0")
-        .drawRect( 0, 0, stageSize.w, stageSize.h )
-        .endFill();
-    this.axisLabelContainer.removeAllChildren();
+    this.sticksShape.graphics.clear();
   }
 
   renderSticks( sticks ) {
@@ -69,78 +57,7 @@ export default class CandleSticks extends AbstractChartComponent {
       return g;
     }, g);
   }
-  renderAxises() {
-    const candleSticks = this.chartModel.candleSticks;
-    const axisPosition         = candleSticks.axisPosition;
-    const verticalAxisLabels   = candleSticks.verticalAxisLabels;
-    const horizontalAxisLabels = candleSticks.horizontalAxisLabels;
-
-    this.renderAxisLines(axisPosition,
-      verticalAxisLabels, horizontalAxisLabels);
-    this.renderHorizontalAxisLabels(axisPosition, horizontalAxisLabels);
-    this.renderVerticalAxisLabels(axisPosition, verticalAxisLabels);
-  }
-
-  renderAxisLines(axisPosition, verticalAxisLabels, horizontalAxisLabels) {
-    let g = this.sticksShape.graphics;
-    g = this.drowLine(g, "#E5E5E5", horizontalAxisLabels.map((l)=>{
-      return {
-        x: l.x,
-        y: padding,
-        h: axisPosition.vertical - padding
-      };
-    }));
-    g = this.drowLine(g, "#E0E0E0", verticalAxisLabels.map((l)=>{
-      return {
-        x: padding,
-        y: l.y,
-        w: axisPosition.horizontal - padding
-      };
-    }));
-    g = this.drowLine(g, "#CCCCCC", [{
-      x: padding,
-      y: axisPosition.vertical,
-      w: axisPosition.horizontal - padding + 1
-    }, {
-      x: axisPosition.horizontal,
-      y: padding,
-      h: axisPosition.vertical - padding
-    }]);
-  }
-  renderHorizontalAxisLabels(axisPosition, horizontalAxisLabels) {
-    horizontalAxisLabels.forEach((label) => {
-      const text = this.createAxisLabelText( label.value );
-      text.x = label.x - text.getMeasuredWidth() / 2;
-      text.y = axisPosition.vertical + 2;
-      this.axisLabelContainer.addChild(text);
-    });
-  }
-  renderVerticalAxisLabels(axisPosition, verticalAxisLabels) {
-    verticalAxisLabels.forEach((label) => {
-      const text = this.createAxisLabelText( label.value );
-      text.x = axisPosition.horizontal + 4;
-      text.y = label.y - text.getMeasuredHeight() / 2 -1;
-      this.axisLabelContainer.addChild(text);
-    });
-  }
 
   cache() {
-
   }
-
-  drowLine( g, color, lines ) {
-    g = g.beginFill(color);
-    lines.forEach( (line) => {
-      if (line.w) {
-        g = g.drawRect( line.x, line.y, line.w, 1 );
-      } else if (line.h) {
-        g = g.drawRect( line.x, line.y, 1, line.h );
-      }
-    });
-    return g.endFill();
-  }
-  createAxisLabelText( text ) {
-    return new CreateJS.Text(text, "11px Roboto Condensed", "#999999");
-  }
-
 }

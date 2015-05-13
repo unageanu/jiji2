@@ -83,9 +83,8 @@ export default class CoordinateCalculator extends Observable {
   }
 
   get axisPosition() {
-    const range  = this.rateRange;
     return {
-      vertical:   this.calculateY(range.lowest),
+      vertical:   this.stageSize.h - (bottomLabelheight + padding),
       horizontal: this.stageSize.w - (sideLabelWidth + padding)
     };
   }

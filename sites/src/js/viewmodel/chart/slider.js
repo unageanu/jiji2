@@ -125,20 +125,22 @@ export default class Slider extends Observable {
   }
 
   calculateCurrentRangeBySlideStep(step) {
-    let ms = this.intervalMs * step * -1;
+    const ms = this.intervalMs * step * -1;
     let startMs = ms + this.currentRange.start.getTime();
+    let x = this.positionX + Math.round(ms / this.msPerPixel);
     if (startMs < this.normalizedRange.start.getTime()) {
       startMs = this.normalizedRange.start.getTime();
+      x = 0;
     } else if ( startMs + this.pageMs > this.normalizedRange.end.getTime() ) {
       startMs = this.normalizedRange.end.getTime() - this.pageMs;
+      x = this.scrollableWidth;
     }
-    ms = startMs - this.currentRange.start.getTime();
     return  {
       range : {
         start : Dates.date(startMs),
         end   : Dates.date(startMs  + this.pageMs)
       },
-      x : this.positionX + Math.floor(ms / this.msPerPixel)
+      x : x
     };
   }
 

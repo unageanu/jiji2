@@ -2,26 +2,7 @@ import React         from "react"
 import MUI           from "material-ui"
 import Draggable     from "react-draggable2"
 import DateFormatter from "../../../viewmodel/utils/date-formatter"
-
-class RangeView extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      range: {}
-    };
-  }
-  render() {
-    const displayRange = this.format(this.state.range.start)
-              + " ～ " + this.format(this.state.range.end);
-    return (
-      <div className="range">{displayRange}</div>
-    );
-  }
-  format(date) {
-    return DateFormatter.formatDateYYYYMMDD(date)
-       + " " + DateFormatter.formatTimeHHMM(date);
-  }
-}
+import RangeView     from "./range-view"
 
 export default class Slider extends React.Component {
 
@@ -36,28 +17,23 @@ export default class Slider extends React.Component {
 
   componentWillMount() {
     this.props.chartModel.slider.addObserver("propertyChanged", (n, e) => {
-      if (e.key !== "width"     && e.key !== "pageWidth"
-       && e.key !== "positionX" && e.key !== "currentRange" ) {
-        return;
+      if ( e.key === "pageWidth" ) {
+        this.setState({ handleWidth: e.newValue});
+      } else if ( e.key === "positionX" || e.key === "temporaryPositionX") {
+        this.setState({ handlePosition: e.newValue});
       }
-      this.setState({
-        handlePosition : this.props.chartModel.slider.positionX,
-        handleWidth: this.props.chartModel.slider.pageWidth,
-        barWidth: this.props.chartModel.slider.width
-      });
-      this.refs.rangeView.setState({
-        range: this.props.chartModel.slider.currentRange || {}
-      });
+    });
+    this.setState({
+      handlePosition : this.props.chartModel.slider.positionX,
+      handleWidth:     this.props.chartModel.slider.pageWidth
     });
   }
 
   render() {
     return (
       <div className="slider">
-        <RangeView ref="rangeView" />
-        <div className="bar" style={{
-          width: this.state.barWidth+"px"
-        }}>
+        <RangeView ref="rangeView" chartModel={this.props.chartModel} />
+        <div className="bar">
           <Draggable
             axis="x"
             handle=".handle"
@@ -78,15 +54,14 @@ export default class Slider extends React.Component {
   }
 
   handleStart(event, ui) {
+    this.props.chartModel.slider.slideStart();
   }
   handleDrag(event, ui) {
-    const result = this.props.chartModel.slider.calculateCurrentRange(ui.position.left);
-    this.refs.rangeView.setState({
-      range: result.range
-    });
+    this.props.chartModel.slider.slideByHandle(ui.position.left);
   }
   handleStop(event, ui) {
-    this.props.chartModel.slider.positionX = ui.position.left;
+    this.props.chartModel.slider.slideByHandle(ui.position.left);
+    this.props.chartModel.slider.slideEnd();
   }
 }
 Slider.propTypes = {

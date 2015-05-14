@@ -1,34 +1,44 @@
 import CreateJS               from "easeljs";
 import AbstractChartComponent from "./abstract-chart-component"
-import CoordinateCalculator   from "../../../viewmodel/chart/coordinate-calculator"
-
-const padding = CoordinateCalculator.padding();
 
 export default class CandleSticks extends AbstractChartComponent {
 
-  constructor( chartModel ) {
+  constructor( chartModel, slidableMask ) {
     super(chartModel);
-    this.initSprite();
+    this.initSprite(slidableMask);
   }
 
   addObservers() {
     this.chartModel.candleSticks.addObserver(
-      "propertyChanged", this.onPropertyChanged.bind(this));
+      "propertyChanged", this.onCandlePropertyChanged.bind(this));
+    this.chartModel.slider.addObserver(
+      "propertyChanged", this.onSliderPropertyChanged.bind(this));
   }
   attach( stage ) {
     this.stage = stage;
     this.stage.addChild(this.sticksShape);
   }
 
-  onPropertyChanged(name, event) {
+  onCandlePropertyChanged(name, event) {
     if (event.key === "sticks") {
       this.update();
     }
   }
+  onSliderPropertyChanged(name, event) {
+    if (event.key === "temporaryCurrentRange") {
+      if (!event.newValue || !event.newValue.start) return;
+      this.slideTo(event.newValue.start);
+    }
+  }
+  slideTo( temporaryStart ) {
+    const x = this.calculateSlideX( temporaryStart );
+    this.sticksShape.x = x;
+    this.stage.update();
+  }
 
-  initSprite() {
-    const stageSize = this.chartModel.candleSticks.stageSize;
-    this.sticksShape = this.initializeElement(new CreateJS.Shape(), stageSize);
+  initSprite(slidableMask) {
+    this.sticksShape      = this.initializeElement(new CreateJS.Shape());
+    this.sticksShape.mask = slidableMask;
   }
 
   update() {
@@ -41,6 +51,7 @@ export default class CandleSticks extends AbstractChartComponent {
   clearScreen() {
     const stageSize = this.chartModel.candleSticks.stageSize;
     this.sticksShape.graphics.clear();
+    this.sticksShape.x = this.sticksShape.y = 0;
   }
 
   renderSticks( sticks ) {

@@ -1,3 +1,5 @@
+import CreateJS             from "easeljs";
+
 export default class AbstractChartComponent {
 
   constructor( chartModel ) {
@@ -8,9 +10,14 @@ export default class AbstractChartComponent {
   addObservers() {}
   attach( stage ) {}
 
-  initializeElement(element, stageSize) {
+  initializeElement(element) {
     element.x = element.y = 0;
-    element.setBounds( 0, 0, stageSize.w, stageSize.h );
     return element;
+  }
+
+  calculateSlideX( temporaryStart ) {
+    const slider = this.chartModel.slider;
+    const diffMs = slider.currentRange.start.getTime() - temporaryStart.getTime();
+    return ( diffMs / slider.intervalMs ) * 6;
   }
 }

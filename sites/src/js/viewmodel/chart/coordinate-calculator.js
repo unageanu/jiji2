@@ -39,8 +39,8 @@ export default class CoordinateCalculator extends Observable {
     this.ratePerPixel = (this.rateRange.highest - this.rateRange.lowest) / height;
   }
 
-  calculateX(date) {
-    const currentRange  = this.slider.currentRange;
+  calculateX(date, range=null) {
+    const currentRange  = range || this.slider.currentRange;
     const chartInterval = this.preferences.chartInterval;
     if (!currentRange || !chartInterval) {
       throw new Error("illegalState");

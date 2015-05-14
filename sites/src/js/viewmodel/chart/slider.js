@@ -93,13 +93,56 @@ export default class Slider extends Observable {
   updateCurrentRange() {
     if ( !this.existRequiredData() ) return;
 
-    const result = this.calculateCurrentRange(this.positionX);
+    const result = this.calculateCurrentRangeByHanldePosition(this.positionX);
     if ( this.positionX !== result.x ) this.setProperty("positionX", result.x);
 
     this.setProperty("currentRange", result.range);
   }
 
-  calculateCurrentRange(x) {
+  slideStart() {
+    this.temporaryPositionX = this.positionX;
+  }
+  slideByChart(step) {
+    if ( !this.existRequiredData() ) return 0;
+
+    const result =   this.calculateCurrentRangeBySlideStep(step);
+    this.setProperty("temporaryCurrentRange", result.range);
+    this.setProperty("temporaryPositionX",    result.x);
+  }
+  slideByHandle(x) {
+    if ( !this.existRequiredData() ) return;
+    if ( x === this.temporaryPositionX ) return;
+
+    const result = this.calculateCurrentRangeByHanldePosition(x);
+    if ( this.temporaryPositionX !== result.x ) {
+      this.setProperty("temporaryPositionX", result.x);
+    }
+    this.setProperty("temporaryCurrentRange", result.range);
+  }
+  slideEnd() {
+    this.setProperty("currentRange", this.temporaryCurrentRange);
+    this.setProperty("positionX",    this.temporaryPositionX);
+  }
+
+  calculateCurrentRangeBySlideStep(step) {
+    let ms = this.intervalMs * step * -1;
+    let startMs = ms + this.currentRange.start.getTime();
+    if (startMs < this.normalizedRange.start.getTime()) {
+      startMs = this.normalizedRange.start.getTime();
+    } else if ( startMs + this.pageMs > this.normalizedRange.end.getTime() ) {
+      startMs = this.normalizedRange.end.getTime() - this.pageMs;
+    }
+    ms = startMs - this.currentRange.start.getTime();
+    return  {
+      range : {
+        start : Dates.date(startMs),
+        end   : Dates.date(startMs  + this.pageMs)
+      },
+      x : this.positionX + Math.floor(ms / this.msPerPixel)
+    };
+  }
+
+  calculateCurrentRangeByHanldePosition(x) {
     if ( !this.existRequiredData() ) throw new Error("illegal state.");
 
     // 左端or右端にする
@@ -190,6 +233,18 @@ export default class Slider extends Observable {
   set positionX(positionX) {
     this.setProperty("positionX", positionX);
     this.updateCurrentRange();
+  }
+
+
+  get temporaryCurrentRange() {
+    return this.getProperty("temporaryCurrentRange");
+  }
+  // スライダーの左端のx座標
+  get temporaryPositionX() {
+    return this.getProperty("temporaryPositionX");
+  }
+  set temporaryPositionX(positionX) {
+    this.setProperty("temporaryPositionX", positionX);
   }
 
 }

@@ -7,14 +7,16 @@ const padding = CoordinateCalculator.padding();
 
 export default class Axises extends AbstractChartComponent {
 
-  constructor( chartModel ) {
+  constructor( chartModel, slidableMask ) {
     super(chartModel);
-    this.initSprite();
+    this.initSprite(slidableMask);
   }
 
   addObservers() {
     this.chartModel.candleSticks.addObserver(
-      "propertyChanged", this.onPropertyChanged.bind(this));
+      "propertyChanged", this.onCandlePropertyChanged.bind(this));
+    this.chartModel.slider.addObserver(
+      "propertyChanged", this.onSliderPropertyChanged.bind(this));
   }
   attach( stage ) {
     this.stage = stage;
@@ -25,28 +27,47 @@ export default class Axises extends AbstractChartComponent {
     this.stage.addChild(this.baseLineShape);
   }
 
-  onPropertyChanged(name, event) {
+  onCandlePropertyChanged(name, event) {
     if (event.key === "sticks") {
       this.update();
     }
   }
-
-  initSprite() {
-    const stageSize = this.chartModel.candleSticks.stageSize;
-    this.verticalLineShape   = this.initializeElement(new CreateJS.Shape(), stageSize);
-    this.horizontalLineShape = this.initializeElement(new CreateJS.Shape(), stageSize);
-    this.baseLineShape       = this.initializeElement(new CreateJS.Shape(), stageSize);
-
-    this.verticalAxisLabelContainer   = this.initializeElement(new CreateJS.Container(), stageSize);
-    this.horizontalAxisLabelContainer = this.initializeElement(new CreateJS.Container(), stageSize);
-
-    this.renderBaseLine();
+  onSliderPropertyChanged(name, event) {
+    if (event.key === "temporaryCurrentRange") {
+      if (!event.newValue || !event.newValue.start) return;
+      this.slideTo(event.newValue);
+    }
   }
 
-  initializeElement(element, stageSize) {
-    element.x = element.y = 0;
-    element.setBounds( 0, 0, stageSize.w, stageSize.h );
-    return element;
+  slideTo( temporaryCurrentRange ) {
+    //const x = this.calculateSlideX( temporaryStart );
+
+    const candleSticks = this.chartModel.candleSticks;
+    const axisPosition = candleSticks.axisPosition;
+    const horizontalAxisLabels =
+      candleSticks.createHorizontalAxisLabelsByTemporaryRange(temporaryCurrentRange);
+
+    this.horizontalLineShape.graphics.clear();
+    this.horizontalAxisLabelContainer.removeAllChildren();
+    this.renderHorizontalAxisLines( axisPosition, horizontalAxisLabels);
+    this.renderHorizontalAxisLabels(axisPosition, horizontalAxisLabels);
+
+    // this.fillHorizontalAxis();
+    // this.horizontalLineShape.x = x;
+    // this.horizontalAxisLabelContainer.x = x;
+  }
+
+  initSprite(slidableMask) {
+    this.verticalLineShape   = this.initializeElement(new CreateJS.Shape());
+    this.horizontalLineShape = this.initializeElement(new CreateJS.Shape());
+    this.baseLineShape       = this.initializeElement(new CreateJS.Shape());
+
+    this.verticalAxisLabelContainer   = this.initializeElement(new CreateJS.Container());
+    this.horizontalAxisLabelContainer = this.initializeElement(new CreateJS.Container());
+
+    this.horizontalLineShape.mask = slidableMask;
+    this.horizontalAxisLabelContainer.mask = slidableMask;
+    this.renderBaseLine();
   }
 
   renderBaseLine() {
@@ -75,6 +96,9 @@ export default class Axises extends AbstractChartComponent {
 
     this.verticalAxisLabelContainer.removeAllChildren();
     this.horizontalAxisLabelContainer.removeAllChildren();
+
+    this.horizontalLineShape.x = this.horizontalLineShape.y = 0;
+    this.horizontalAxisLabelContainer.x = this.horizontalAxisLabelContainer.y = 0;
   }
 
   renderAxises() {

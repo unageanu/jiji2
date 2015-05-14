@@ -104,10 +104,16 @@ export default class CandleSticks extends Observable {
       const date = Dates.date(i);
       results.push({
         value: this.formatHorizontalAxisLAbel(date, step),
-        x:     this.coordinateCalculator.calculateX(date)
+        x:     this.coordinateCalculator.calculateX(date, range)
       });
     }
     return results;
+  }
+
+  createHorizontalAxisLabelsByTemporaryRange(range) {
+    const intervalMs = CoordinateCalculator.resolveCollectingInterval(
+      this.preferences.chartInterval) * 8;
+    return this.createHorizontalAxisLabels(intervalMs, range);
   }
 
   formatHorizontalAxisLAbel(date, step) {

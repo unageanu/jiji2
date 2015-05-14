@@ -22,6 +22,7 @@ export default class Chart {
     this.stage = new CreateJS.Stage(canvas);
     this.stage.scaleX = scale;
     this.stage.scaleY = scale;
+    CreateJS.Touch.enable(this.stage);
 
     this.registerSlideAction();
   }

@@ -7,7 +7,8 @@ gulp.task('minify-css', ['build-less'], function () {
   return gulp.src("./build/apps/css/**/*.css")
       .pipe(minifyCSS({
         keepBreaks: true,
-        keepSpecialComments: true
+        keepSpecialComments: true,
+        processImport: false
       }))
       .pipe(gulp.dest("./build/minified/css"));
 });

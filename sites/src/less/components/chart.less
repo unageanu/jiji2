@@ -1,7 +1,10 @@
+@import "../colors.less";
+@import "../size.less";
+
 .slider {
   .bar {
     position: relative;
-    background-color: #F0F0F0;
+    background-color: @background-color-dark;
     height: 30px;
     line-height: 0px;
     width: 300px;
@@ -10,6 +13,10 @@
     position: relative;
     display: none;
     height: 30px;
-    background-color: #407F7F;
+    background-color: @primary-color-dark;
+  }
+  .range {
+    font-size: @font-size-small;
+    color: @font-color-demilight;
   }
 }

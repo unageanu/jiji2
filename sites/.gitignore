@@ -1,4 +1,5 @@
 /node_modules
 /build/apps/css
 /build/apps/js
+/build/apps/fonts
 /build/spec/js

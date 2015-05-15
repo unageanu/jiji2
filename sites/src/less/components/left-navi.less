@@ -1,0 +1,23 @@
+@import "../colors.less";
+@import "../sizes.less";
+
+.left-navi {
+  .mui-menu-item {
+    color:        @font-color-normal;
+    font-size:    14px;
+    padding-left:  @grid*2;
+    padding-right: @grid*2;
+  }
+  .mui-menu-item.mui-is-selected {
+    color:            @font-color-vivid;
+    background-color: @background-color-dark;
+  }
+  .mui-subheader {
+    color:         @font-color-light;
+    font-size:     14px;
+    padding-left:  @grid*2;
+    padding-right: @grid*2;
+    line-height:   14px + (@grid*2*2);
+    height:        auto;
+  }
+}

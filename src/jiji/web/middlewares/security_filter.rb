@@ -10,7 +10,9 @@ module Jiji::Web
       headers(@headers ||= {
         'X-Frame-Options'                   => 'SAMEORIGIN',
         'X-Content-Type-Options'            => 'nosniff',
-        'Content-Security-Policy'           => 'default-src \'self\'',
+        'Content-Security-Policy'           => 'default-src \'self\'; ' \
+            + 'style-src \'self\' fonts.googleapis.com maxcdn.bootstrapcdn.com \'unsafe-inline\'; ' \
+            + 'font-src  \'self\' fonts.googleapis.com maxcdn.bootstrapcdn.com fonts.gstatic.com;',
         'X-Download-Options'                => 'noopen',
         'X-Permitted-Cross-Domain-Policies' => 'master-only',
         'X-XSS-Protection'                  => '1; mode=block'

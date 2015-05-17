@@ -31,4 +31,14 @@ export default class Navigator extends Observable {
     return MENU_ITEMS;
   }
 
+  get activeRoute() {
+    return this.menuItems[this.activeRouteIndex];
+  }
+
+  get activeRouteIndex() {
+    return this.getProperty("activeRouteIndex");
+  }
+  set activeRouteIndex(index) {
+    this.setProperty("activeRouteIndex", index);
+  }
 }

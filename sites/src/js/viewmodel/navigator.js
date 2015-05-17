@@ -25,20 +25,22 @@ const MENU_ITEMS = [
 export default class Navigator extends Observable {
 
   show() {
-    this.fire("request_show");
+    this.fire("requestShow");
   }
   menuItems() {
     return MENU_ITEMS;
   }
 
-  get activeRoute() {
-    return this.menuItems[this.activeRouteIndex];
+  getSelectedIndex(matcher) {
+    const menuItems = this.menuItems();
+    var current = null;
+    for (let i = 0; i < menuItems.length; i++) {
+      current = menuItems[i];
+      if (!current.route) continue;
+      if (matcher(current.route)) return i;
+    }
   }
-
-  get activeRouteIndex() {
-    return this.getProperty("activeRouteIndex");
-  }
-  set activeRouteIndex(index) {
-    this.setProperty("activeRouteIndex", index);
+  getSelectedRoute(matcher) {
+    return this.menuItems()[this.getSelectedIndex(matcher)];
   }
 }

@@ -14,32 +14,22 @@ export default class LeftNavi extends React.Component {
   }
 
   render() {
-    const selectedIndex = this.getSelectedIndex();
-    this.updateActiveRoute(selectedIndex);
     return (
       <Menu
         ref="leftNav"
         className="left-navi"
         zDepth={0}
         menuItems={this.navigator().menuItems()}
-        selectedIndex={selectedIndex}
+        selectedIndex={this.getSelectedIndex()}
         onItemClick={this.onLeftNavChange.bind(this)}
         onItemTap={this.onLeftNavChange.bind(this)}
       />
     );
   }
 
-  updateActiveRoute(selectedIndex) {
-    this.navigator().activeRouteIndex = selectedIndex;
-  }
   getSelectedIndex() {
-    const menuItems = this.navigator().menuItems();
-    var current = null;
-    for (let i = 0; i < menuItems.length; i++) {
-      current = menuItems[i];
-      if (!current.route) continue;
-      if (this.router().isActive(current.route)) return i;
-    }
+    return this.navigator().getSelectedIndex(
+      (route) => this.router().isActive(route));
   }
 
   onLeftNavChange(e, key, payload) {

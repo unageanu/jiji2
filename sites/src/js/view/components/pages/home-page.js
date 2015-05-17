@@ -1,9 +1,10 @@
-import React      from "react";
-import MUI        from "material-ui";
-import Chart      from "../chart/chart";
-import Slider     from "../chart/slider";
+import React        from "react"
+import MUI          from "material-ui"
+import AbstractPage from "./abstract-page"
+import Chart        from "../chart/chart"
+import Slider       from "../chart/slider"
 
-export default class HomePage extends React.Component {
+export default class HomePage extends AbstractPage {
 
   constructor(props) {
     super(props);

@@ -1,7 +1,8 @@
-import React      from "react";
-import MUI        from "material-ui";
+import React        from "react"
+import MUI          from "material-ui"
+import AbstractPage from "./abstract-page"
 
-export default class LoginPage extends React.Component {
+export default class LoginPage extends AbstractPage {
 
   constructor(props) {
     super(props);

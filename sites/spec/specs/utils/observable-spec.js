@@ -38,6 +38,76 @@ describe("Observable", () => {
     expect(log[2]).toBe("bb");
   });
 
+  it("removeObserverでobserverを削除できる", () => {
+    const log = [];
+    const observer1 = (n, e) => log.push(e.value);
+    const observer2 = (n, e) => log.push(e.value+"2");
+    target.addObserver("a", observer1);
+    target.addObserver("a", observer2);
+    target.addObserver("b", observer1);
+
+    target.removeObserver( "a", observer1 );
+
+    target.fire("a", {
+      value: "aa"
+    });
+    expect(log.length).toBe(1);
+    expect(log[0]).toBe("aa2");
+
+    target.fire("b", {
+      value: "bb"
+    });
+    expect(log.length).toBe(2);
+    expect(log[0]).toBe("aa2");
+    expect(log[1]).toBe("bb");
+
+    target.removeObserver( "a", observer2 );
+    target.removeObserver( "b", observer1 );
+
+    target.fire("a", {
+      value: "aa"
+    });
+    target.fire("b", {
+      value: "bb"
+    });
+    expect(log.length).toBe(2);
+  });
+
+  it("receiverを指定して登録すると、removeAllObserversでreceiverに関連したObserverをまとめて削除できる", () => {
+
+    const receiver1 = {};
+    const receiver2 = {};
+
+    const log = [];
+    target.addObserver("a", (n, e) => log.push(e.value+"1"), receiver1);
+    target.addObserver("a", (n, e) => log.push(e.value+"2"), receiver2);
+    target.addObserver("a", (n, e) => log.push(e.value));
+    target.addObserver("b", (n, e) => log.push(e.value+"1"), receiver1);
+
+    target.removeAllObservers(receiver1);
+
+    target.fire("a", {
+      value: "aa"
+    });
+    expect(log.length).toBe(2);
+    expect(log[0]).toBe("aa2");
+    expect(log[1]).toBe("aa");
+
+    target.fire("b", {
+      value: "bb"
+    });
+    expect(log.length).toBe(2);
+
+    target.removeAllObservers(receiver2);
+    target.fire("a", {
+      value: "aa"
+    });
+    expect(log.length).toBe(3);
+    expect(log[0]).toBe("aa2");
+    expect(log[1]).toBe("aa");
+    expect(log[2]).toBe("aa");
+  });
+
   describe("setProperty/getProperty", () => {
 
     it("プロパティを更新できる", () => {

@@ -21,9 +21,12 @@ export default class Slider extends React.Component {
         this.setState({ handleWidth: e.newValue});
       } else if ( e.key === "positionX" || e.key === "temporaryPositionX") {
         this.setState({ handlePosition: e.newValue});
+      } else if ( e.key === "width") {
+        this.setState({ barWidth: e.newValue});
       }
     });
     this.setState({
+      barWidth       : this.props.chartModel.slider.width,
       handlePosition : this.props.chartModel.slider.positionX,
       handleWidth:     this.props.chartModel.slider.pageWidth
     });
@@ -33,7 +36,9 @@ export default class Slider extends React.Component {
     return (
       <div className="slider">
         <RangeView ref="rangeView" chartModel={this.props.chartModel} />
-        <div className="bar">
+        <div className="bar" style={{
+          width:   this.state.barWidth+"px"
+        }} >
           <Draggable
             axis="x"
             handle=".handle"

@@ -1,21 +1,54 @@
+import React                from "react";
+
 import CreateJS             from "easeljs"
 import CandleSticks         from "./candle-sticks"
 import Background           from "./background"
 import Axises               from "./axises"
+import Slider               from "./slider"
 import CoordinateCalculator from "../../../viewmodel/chart/coordinate-calculator"
 
 const padding = CoordinateCalculator.padding();
 
-export default class Chart {
+export default class Chart extends React.Component {
 
-  constructor( canvas, scale, viewModel ) {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
 
-    this.chartModel = viewModel;
+  componentWillMount() {
+    this.chartModel = this.context.application.viewModelFactory.createChart();
+    this.chartModel.stageSize = this.props.size;
+  }
 
-    this.buildStage(canvas, scale);
+  componentDidMount() {
+    const canvas = React.findDOMNode(this.refs.canvas);
+
+    this.buildStage(canvas, this.props.devicePixelRatio);
     this.buildViewComponents();
 
     this.initViewComponents();
+    this.context.application.initialize()
+      .then( () => this.chartModel.initialize() );
+  }
+
+  render() {
+    const r = this.props.devicePixelRatio;
+    const slider = this.props.enableSlider ?
+      <Slider chartModel={this.chartModel}></Slider> : null;
+    return (
+      <div>
+        <canvas ref="canvas"
+          width={this.props.size.w*r}
+          height={this.props.size.h*r}
+          style={{
+            width: this.props.size.w+"px",
+            height: this.props.size.h+"px"
+        }}>
+        </canvas>
+        {slider}
+      </div>
+    );
   }
 
   buildStage(canvas, scale) {
@@ -72,3 +105,16 @@ export default class Chart {
     return mask;
   }
 }
+Chart.contextTypes = {
+  application: React.PropTypes.object.isRequired
+};
+Chart.propTypes = {
+  enableSlider : React.PropTypes.bool.isRequired,
+  devicePixelRatio: React.PropTypes.number.isRequired,
+  size: React.PropTypes.object.isRequired
+};
+Chart.defaultProps = {
+  enableSlider : true,
+  devicePixelRatio: window.devicePixelRatio || 1,
+  size: {w:600, h:500}
+};

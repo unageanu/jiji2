@@ -10,13 +10,18 @@ export default class CandleSticks extends AbstractChartComponent {
 
   addObservers() {
     this.chartModel.candleSticks.addObserver(
-      "propertyChanged", this.onCandlePropertyChanged.bind(this));
+      "propertyChanged", this.onCandlePropertyChanged.bind(this), this);
     this.chartModel.slider.addObserver(
-      "propertyChanged", this.onSliderPropertyChanged.bind(this));
+      "propertyChanged", this.onSliderPropertyChanged.bind(this), this);
   }
   attach( stage ) {
     this.stage = stage;
     this.stage.addChild(this.sticksShape);
+  }
+
+  unregisterObservers() {
+    this.chartModel.candleSticks.removeAllObservers(this);
+    this.chartModel.slider.removeAllObservers(this);
   }
 
   onCandlePropertyChanged(name, event) {

@@ -32,6 +32,12 @@ export default class Chart extends React.Component {
       .then( () => this.chartModel.initialize() );
   }
 
+  componentWillUnmount() {
+    this.chartModel.destroy();
+    this.axises.unregisterObservers();
+    this.candleSticks.unregisterObservers();
+  }
+
   render() {
     const r = this.props.devicePixelRatio;
     const slider = this.props.enableSlider ?

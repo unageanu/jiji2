@@ -24,12 +24,16 @@ export default class Slider extends React.Component {
       } else if ( e.key === "width") {
         this.setState({ barWidth: e.newValue});
       }
-    });
+    }, this);
     this.setState({
       barWidth       : this.props.chartModel.slider.width,
       handlePosition : this.props.chartModel.slider.positionX,
       handleWidth:     this.props.chartModel.slider.pageWidth
     });
+  }
+
+  componentWillUnmount() {
+    this.props.chartModel.slider.unregisterObservers(this);
   }
 
   render() {

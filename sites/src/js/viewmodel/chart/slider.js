@@ -20,23 +20,29 @@ export default class Slider extends Observable {
       if (e.key !== "range") return;
       this.range = e.newValue;
       this.update();
-    });
+    }, this);
     this.preferences.addObserver("propertyChanged", (n, e) => {
       if (e.key !== "chartInterval") return;
       this.chartInterval = e.newValue;
       this.update();
-    });
+    }, this);
     this.coordinateCalculator.addObserver("propertyChanged", (n, e) => {
       if (e.key !== "displayableCandleCount") return;
       this.displayableCandleCount = e.newValue;
       this.update();
-    });
+    }, this);
 
     this.range = this.rates.range;
     this.chartInterval = this.preferences.chartInterval;
     this.displayableCandleCount = this.coordinateCalculator.displayableCandleCount;
 
     if (this.existRequiredData()) this.update();
+  }
+
+  unregisterObservers() {
+    this.preferences.removeAllObservers(this);
+    this.rates.removeAllObservers(this);
+    this.coordinateCalculator.removeAllObservers(this);
   }
 
   update() {

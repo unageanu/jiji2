@@ -14,9 +14,9 @@ export default class Axises extends AbstractChartComponent {
 
   addObservers() {
     this.chartModel.candleSticks.addObserver(
-      "propertyChanged", this.onCandlePropertyChanged.bind(this));
+      "propertyChanged", this.onCandlePropertyChanged.bind(this), this);
     this.chartModel.slider.addObserver(
-      "propertyChanged", this.onSliderPropertyChanged.bind(this));
+      "propertyChanged", this.onSliderPropertyChanged.bind(this), this);
   }
   attach( stage ) {
     this.stage = stage;
@@ -25,6 +25,10 @@ export default class Axises extends AbstractChartComponent {
     this.stage.addChild(this.verticalAxisLabelContainer);
     this.stage.addChild(this.horizontalAxisLabelContainer);
     this.stage.addChild(this.baseLineShape);
+  }
+  unregisterObservers() {
+    this.chartModel.candleSticks.removeAllObservers(this);
+    this.chartModel.slider.removeAllObservers(this);
   }
 
   onCandlePropertyChanged(name, event) {
@@ -40,8 +44,6 @@ export default class Axises extends AbstractChartComponent {
   }
 
   slideTo( temporaryCurrentRange ) {
-    //const x = this.calculateSlideX( temporaryStart );
-
     const candleSticks = this.chartModel.candleSticks;
     const axisPosition = candleSticks.axisPosition;
     const horizontalAxisLabels =
@@ -51,10 +53,6 @@ export default class Axises extends AbstractChartComponent {
     this.horizontalAxisLabelContainer.removeAllChildren();
     this.renderHorizontalAxisLines( axisPosition, horizontalAxisLabels);
     this.renderHorizontalAxisLabels(axisPosition, horizontalAxisLabels);
-
-    // this.fillHorizontalAxis();
-    // this.horizontalLineShape.x = x;
-    // this.horizontalAxisLabelContainer.x = x;
   }
 
   initSprite(slidableMask) {

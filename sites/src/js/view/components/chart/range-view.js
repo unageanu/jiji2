@@ -18,8 +18,15 @@ export default class RangeView extends React.Component {
       this.setState({
         range: e.newValue || {}
       });
+    }, this);
+    this.setState({
+      range: this.props.chartModel.slider.currentRange || {}
     });
   }
+  componentWillUnmount() {
+    this.props.chartModel.slider.unregisterObservers(this);
+  }
+
   render() {
     const displayRange = this.format(this.state.range.start)
               + " ～ " + this.format(this.state.range.end);

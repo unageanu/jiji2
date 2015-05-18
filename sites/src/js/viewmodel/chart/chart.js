@@ -22,6 +22,10 @@ export default class Chart extends Observable {
   initialize( ) {
     this.rates.initialize();
   }
+  destroy() {
+    this.slider.unregisterObservers();
+    this.candleSticks.unregisterObservers();
+  }
 
   set stageSize(size) {
     this.candleSticks.stageSize = size;

@@ -22,22 +22,28 @@ export default class CandleSticks extends Observable {
         this.preferredPair = this.preferences.preferredPair;
         this.update();
       }
-    });
+    }, this);
 
     this.preferredPair = this.preferences.preferredPair;
     this.update();
   }
 
   attach(slider) {
-    slider.addObserver("propertyChanged", (n, e) => {
+    this.slider = slider;
+    this.slider.addObserver("propertyChanged", (n, e) => {
       if (e.key === "currentRange") {
         this.currentRange = e.newValue;
         this.update();
       }
-    });
+    }, this);
 
     this.currentRange = slider.currentRange;
     this.update();
+  }
+
+  unregisterObservers() {
+    this.preferences.removeAllObservers(this);
+    this.slider.removeAllObservers(this);
   }
 
   update() {

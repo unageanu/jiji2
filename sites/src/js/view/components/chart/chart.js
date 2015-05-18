@@ -97,7 +97,7 @@ export default class Chart extends React.Component {
   }
 
   doSlide(x) {
-    x = Math.ceil((this.slideStart - x) / 6) * -6;
+    x = Math.ceil((this.slideStart - x) / (6*this.props.devicePixelRatio)) * -6;
     this.chartModel.slider.slideByChart(x/6);
   }
 

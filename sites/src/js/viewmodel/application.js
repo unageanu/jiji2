@@ -8,8 +8,9 @@ export default class Application {
     this.viewModelFactory = ContainerJS.Inject;
     this.authenticator    = ContainerJS.Inject;
 
-    this.pairs = ContainerJS.Inject;
-    this.rates = ContainerJS.Inject;
+    this.pairs       = ContainerJS.Inject;
+    this.rates       = ContainerJS.Inject;
+    this.preferences = ContainerJS.Inject;
   }
 
   initialize() {

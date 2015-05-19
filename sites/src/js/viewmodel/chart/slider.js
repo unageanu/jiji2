@@ -1,8 +1,8 @@
-import ContainerJS           from "container-js";
-import Observable            from "../../utils/observable";
+import ContainerJS           from "container-js"
+import Observable            from "../../utils/observable"
 import Dates                 from "../../utils/dates"
-import DateFormatter         from "../utils/date-formatter";
-import CoordinateCalculator  from "./coordinate-calculator";
+import DateFormatter         from "../utils/date-formatter"
+import Intervals             from "../../model/trading/intervals"
 
 export default class Slider extends Observable {
 
@@ -57,7 +57,7 @@ export default class Slider extends Observable {
     if ( !this.existRequiredData() ) return;
 
     const candleCount = this.displayableCandleCount;
-    this.intervalMs = CoordinateCalculator.resolveCollectingInterval(this.chartInterval);
+    this.intervalMs =  Intervals.resolveCollectingInterval(this.chartInterval);
     this.updateNormalizedRange(this.intervalMs);
 
     const ms = this.normalizedRange.end.getTime() - this.normalizedRange.start.getTime();

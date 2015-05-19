@@ -3,7 +3,7 @@ import Observable           from "../../utils/observable"
 import Dates                from "../../utils/dates"
 import NumberUtils          from "../utils/number-utils"
 import DateFormatter        from "../utils/date-formatter"
-import CoordinateCalculator from "./coordinate-calculator"
+import Intervals            from "../../model/trading/intervals"
 
 export default class CandleSticks extends Observable {
 
@@ -81,7 +81,7 @@ export default class CandleSticks extends Observable {
   }
 
   get horizontalAxisLabels() {
-    const intervalMs = CoordinateCalculator.resolveCollectingInterval(
+    const intervalMs = Intervals.resolveCollectingInterval(
       this.preferences.chartInterval) * 8;
     return this.createHorizontalAxisLabels(intervalMs, this.currentRange);
   }
@@ -117,7 +117,7 @@ export default class CandleSticks extends Observable {
   }
 
   createHorizontalAxisLabelsByTemporaryRange(range) {
-    const intervalMs = CoordinateCalculator.resolveCollectingInterval(
+    const intervalMs = Intervals.resolveCollectingInterval(
       this.preferences.chartInterval) * 8;
     return this.createHorizontalAxisLabels(intervalMs, range);
   }

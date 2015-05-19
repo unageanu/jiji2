@@ -1,4 +1,5 @@
-import Observable    from "../../utils/observable";
+import Observable   from "../../utils/observable"
+import Intervals    from "../../model/trading/intervals"
 
 const padding           = 8;
 const sideLabelWidth    = 48;
@@ -45,7 +46,7 @@ export default class CoordinateCalculator extends Observable {
     if (!currentRange || !chartInterval) {
       throw new Error("illegalState");
     }
-    const intervalMs =  CoordinateCalculator.resolveCollectingInterval(chartInterval);
+    const intervalMs =  Intervals.resolveCollectingInterval(chartInterval);
     const index = Math.floor( (date.getTime() - currentRange.start.getTime()) / intervalMs);
     return (stickWidth + stickGap) * index + ((stickWidth +  stickGap) / 2) + padding;
   }
@@ -92,17 +93,5 @@ export default class CoordinateCalculator extends Observable {
   static calculateDisplayableCandleCount( stageWidth ) {
     return Math.floor((stageWidth - CoordinateCalculator.totalPaddingWidth() )
                     / (stickWidth + stickGap));
-  }
-
-  static resolveCollectingInterval(interval) {
-    const m = 60 * 1000;
-    switch(interval) {
-      case "fifteen_minutes" : return      15 * m;
-      case "thirty_minutes"  : return      30 * m;
-      case "one_hour"        : return      60 * m;
-      case "six_hours"       : return  6 * 60 * m;
-      case "one_day"         : return 24 * 60 * m;
-      default                : return       1 * m;
-    }
   }
 }

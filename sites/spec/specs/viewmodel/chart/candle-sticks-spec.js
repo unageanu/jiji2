@@ -7,9 +7,11 @@ import NumberUtils      from "src/viewmodel/utils/number-utils"
 import Dates            from "src/utils/dates"
 
 import ContainerFactory from "../../../utils/test-container-factory"
+import ChartOperator    from "./chart-operator"
 
 describe("CandleSticks", () => {
 
+  var operator;
   var candleSticks;
   var chart;
   var slider;
@@ -20,6 +22,7 @@ describe("CandleSticks", () => {
     let d = container.get("viewModelFactory");
     const factory = ContainerJS.utils.Deferred.unpack(d);
     chart                = factory.createChart();
+    operator             = new ChartOperator(chart);
     candleSticks         = chart.candleSticks;
     slider               = chart.slider;
     coordinateCalculator = chart.coordinateCalculator;
@@ -37,7 +40,7 @@ describe("CandleSticks", () => {
     expect(candleSticks.sticks).toEqual(undefined);
 
     // データを設定
-    initialize();
+    operator.initialize(300, 300);
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
     expect(coordinateCalculator.displayableCandleCount).toEqual(39);
@@ -69,13 +72,13 @@ describe("CandleSticks", () => {
   });
 
   it("rangeが更新されると、それに応じてデータの再取得が行われる", () => {
-    initialize();
+    operator.initialize(300, 300);
     slider.positionX = 90;
     expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-    slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
-      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:date("2015-05-03T20:00:00Z")},
-      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:date("2015-05-03T19:00:00Z")},
-      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:date("2015-05-03T18:00:00Z")}
+    slider.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
+      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:Dates.date("2015-05-03T20:00:00Z")},
+      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:Dates.date("2015-05-03T19:00:00Z")},
+      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:Dates.date("2015-05-03T18:00:00Z")}
     ]));
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
@@ -104,15 +107,15 @@ describe("CandleSticks", () => {
   });
 
   it("集計期間を変更すると、状態が更新される", () => {
-    initialize();
+    operator.initialize(300, 300);
 
     slider.preferences.chartInterval = "fifteen_minutes";
 
     expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-    slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
-      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:date("2015-05-09T23:30:00Z")},
-      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:date("2015-05-09T23:45:00Z")},
-      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:date("2015-05-10T00:00:00Z")}
+    slider.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
+      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:Dates.date("2015-05-09T23:30:00Z")},
+      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:Dates.date("2015-05-09T23:45:00Z")},
+      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:Dates.date("2015-05-10T00:00:00Z")}
     ]));
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
@@ -142,15 +145,15 @@ describe("CandleSticks", () => {
   });
 
   it("通貨ペアを変更すると、状態が更新される", () => {
-    initialize();
+    operator.initialize(300, 300);
 
     slider.preferences.preferredPair = "EURUSD";
 
     expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-    slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
-      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:date("2015-05-08T10:00:00Z")},
-      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:date("2015-05-09T19:00:00Z")},
-      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:date("2015-05-10T00:00:00Z")}
+    slider.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
+      {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:Dates.date("2015-05-08T10:00:00Z")},
+      {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:Dates.date("2015-05-09T19:00:00Z")},
+      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:Dates.date("2015-05-10T00:00:00Z")}
     ]));
 
     expect(candleSticks.stageSize).toEqual({w:300, h:200});
@@ -181,11 +184,11 @@ describe("CandleSticks", () => {
 
   describe( "verticalAxisLabelsのパターン", () => {
     it("レートがすべて同一の場合も、一定値以上のrangeが確保される。verticalAxisLabelsも正しく取得できる", () => {
-      initialize();
+      operator.initialize(300, 300);
       slider.positionX = 90;
       expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-      slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
-        {high:179.0, low:179.0, open:179.0, close:179.0, timestamp:date("2015-05-03T20:00:00Z")}
+      slider.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
+        {high:179.0, low:179.0, open:179.0, close:179.0, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(coordinateCalculator.rateRange.highest).toEqual(179.01);
@@ -202,8 +205,8 @@ describe("CandleSticks", () => {
 
       slider.positionX = 84;
       expect(slider.rates.rateService.xhrManager.requests.length).toEqual(2);
-      slider.rates.rateService.xhrManager.requests[1].resolve(createRates([
-        {high:179.222, low:179.222, open:179.222, close:179.222, timestamp:date("2015-05-03T20:00:00Z")}
+      slider.rates.rateService.xhrManager.requests[1].resolve(operator.createRates([
+        {high:179.222, low:179.222, open:179.222, close:179.222, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(coordinateCalculator.rateRange.highest).toEqual(179.232);
@@ -220,8 +223,8 @@ describe("CandleSticks", () => {
 
 
       slider.positionX = 90;
-      slider.rates.rateService.xhrManager.requests[2].resolve(createRates([
-        {high:1.79222, low:1.79222, open:1.79222, close:1.79222, timestamp:date("2015-05-03T20:00:00Z")}
+      slider.rates.rateService.xhrManager.requests[2].resolve(operator.createRates([
+        {high:1.79222, low:1.79222, open:1.79222, close:1.79222, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1792320);
@@ -237,11 +240,11 @@ describe("CandleSticks", () => {
       ]);
     });
     it("レートの範囲が狭い場合も、verticalAxisLabelsを正しく取得できる", () => {
-      initialize();
+      operator.initialize(300, 300);
       slider.positionX = 90;
       expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-      slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
-        {high:179.002, low:179.000, open:179.0, close:179.002, timestamp:date("2015-05-03T20:00:00Z")}
+      slider.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
+        {high:179.002, low:179.000, open:179.0, close:179.002, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1790120);
@@ -256,8 +259,8 @@ describe("CandleSticks", () => {
 
 
       slider.positionX = 84;
-      slider.rates.rateService.xhrManager.requests[1].resolve(createRates([
-        {high:179.025, low:179.013, open:179.02, close:179.02, timestamp:date("2015-05-03T20:00:00Z")}
+      slider.rates.rateService.xhrManager.requests[1].resolve(operator.createRates([
+        {high:179.025, low:179.013, open:179.02, close:179.02, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1790262);
@@ -273,8 +276,8 @@ describe("CandleSticks", () => {
 
 
       slider.positionX = 90;
-      slider.rates.rateService.xhrManager.requests[2].resolve(createRates([
-        {high:1.79223, low:1.79222, open:1.79222, close:1.79222, timestamp:date("2015-05-03T20:00:00Z")}
+      slider.rates.rateService.xhrManager.requests[2].resolve(operator.createRates([
+        {high:1.79223, low:1.79222, open:1.79222, close:1.79222, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1792330);
@@ -288,11 +291,11 @@ describe("CandleSticks", () => {
       ]);
     });
     it("レートの範囲が広い場合も、verticalAxisLabelsを正しく取得できる", () => {
-      initialize();
+      operator.initialize(300, 300);
       slider.positionX = 90;
       expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-      slider.rates.rateService.xhrManager.requests[0].resolve(createRates([
-        {high:190.002, low:179.000, open:179.0, close:179.002, timestamp:date("2015-05-03T20:00:00Z")}
+      slider.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
+        {high:190.002, low:179.000, open:179.0, close:179.002, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*10000)).toEqual(1911022);
@@ -308,8 +311,8 @@ describe("CandleSticks", () => {
 
 
       slider.positionX = 86;
-      slider.rates.rateService.xhrManager.requests[1].resolve(createRates([
-        {high:1.82223, low:1.79222, open:1.79222, close:1.79222, timestamp:date("2015-05-03T20:00:00Z")}
+      slider.rates.rateService.xhrManager.requests[1].resolve(operator.createRates([
+        {high:1.82223, low:1.79222, open:1.79222, close:1.79222, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
       expect(Math.round(coordinateCalculator.rateRange.highest*1000000)).toEqual(1825231);
@@ -328,7 +331,7 @@ describe("CandleSticks", () => {
 
   describe( "horizontalAxisLabelsのパターン", () => {
     it("stepが1日以上になる場合、mm:dd形式になる", () => {
-      initialize();
+      operator.initialize(300, 300);
 
       slider.preferences.chartInterval = "six_hours";
       expect(candleSticks.horizontalAxisLabels).toEqual([
@@ -359,39 +362,5 @@ describe("CandleSticks", () => {
     expect(CandleSticks.calculateStep(  1.123456)).toEqual(0.00001);
     expect(CandleSticks.calculateStep(  0.123456)).toEqual(0.00001);
   });
-
-  function initialize(width=1000, candleCount=20, interval="one_hour") {
-    chart.stageSize = {w:300, h:200};
-    slider.rates.initialize();
-    slider.rates.rateService.xhrManager.requests[0].resolve({
-      start: date("2015-05-01T00:01:10Z"),
-      end:   date("2015-05-10T00:02:20Z")
-    });
-    slider.preferences.chartInterval = interval;
-    slider.preferences.preferredPair = "USDJPY";
-    slider.rates.rateService.xhrManager.requests[1].resolve(createRates([
-      {high:179.0, low:178.0, open:178.2, close:178.5, timestamp:date("2015-05-08T10:00:00Z")},
-      {high:179.5, low:178.2, open:178.5, close:179.5, timestamp:date("2015-05-08T11:00:00Z")},
-      {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:date("2015-05-08T12:00:00Z")},
-      {high:179.0, low:178.0, open:179.0, close:178.5, timestamp:date("2015-05-08T13:00:00Z")},
-      {high:178.7, low:177.5, open:178.5, close:177.5, timestamp:date("2015-05-09T14:00:00Z")},
-      {high:179.0, low:177.7, open:177.7, close:178.5, timestamp:date("2015-05-10T00:00:00Z")}
-    ]));
-    slider.rates.rateService.xhrManager.clear();
-  }
-  function createRates(seed) {
-    return seed.map((item) => {
-      return {
-        high:  { ask: item.high  + 0.003, bid: item.high  },
-        low:   { ask: item.low   + 0.003, bid: item.low   },
-        open:  { ask: item.open  + 0.003, bid: item.open  },
-        close: { ask: item.close + 0.003, bid: item.close },
-        timestamp: item.timestamp
-      };
-    });
-  }
-  function date( str ) {
-    return Dates.date(str);
-  }
 
 });

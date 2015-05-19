@@ -5,13 +5,13 @@ import ContainerFactory     from "../../../utils/test-container-factory"
 import CustomMatchers       from "../../../utils/custom-matchers"
 
 import Slider               from "src/viewmodel/chart/slider"
-import CoordinateCalculator from "src/viewmodel/chart/coordinate-calculator"
 import Dates                from "src/utils/dates"
+import ChartOperator        from "./chart-operator"
 
 describe("Slider", () => {
 
-  const candleStickPadding = CoordinateCalculator.totalPaddingWidth();
   var slider;
+  var operator;
 
   beforeEach(() => {
     jasmine.addMatchers(CustomMatchers);
@@ -19,7 +19,9 @@ describe("Slider", () => {
     let container = new ContainerFactory().createContainer();
     let d = container.get("viewModelFactory");
     const factory = ContainerJS.utils.Deferred.unpack(d);
-    slider = factory.createChart().slider;
+    const chart   = factory.createChart();
+    slider = chart.slider;
+    operator = new ChartOperator(chart);
   });
 
 
@@ -32,7 +34,7 @@ describe("Slider", () => {
     expect(slider.positionX).toBe(undefined);
 
     // データを設定
-    initialize();
+    operator.initialize(100);
 
     expect(slider.normalizedRange).toEq({
       start: Dates.date("2015-05-01T00:00:00Z"),
@@ -50,7 +52,7 @@ describe("Slider", () => {
 
   describe("rangeの更新", () => {
     it("rangeが更新されると、状態が更新される", () => {
-      initialize();
+      operator.initialize(100);
       slider.rates.rateService.xhrManager.clear();
 
       slider.rates.reload();
@@ -73,7 +75,7 @@ describe("Slider", () => {
     });
 
     it("最新のレートを表示している場合、rangeが変更となっても最新のレートが表示されたままになる。",  () => {
-      initialize(1000);
+      operator.initialize(1000);
       slider.rates.rateService.xhrManager.clear();
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(92);
@@ -103,7 +105,7 @@ describe("Slider", () => {
     });
 
     it("古いレートを表示中の場合、スクロール位置はそのまま維持される",  () => {
-      initialize(1000);
+      operator.initialize(1000);
       slider.rates.rateService.xhrManager.clear();
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(92);
@@ -144,7 +146,7 @@ describe("Slider", () => {
   });
 
   it("集計期間を変更すると、状態が更新される", () => {
-    initialize(1000);
+    operator.initialize(1000);
     slider.preferences.chartInterval = "fifteen_minutes";
 
     expect(slider.normalizedRange).toEq({
@@ -190,7 +192,7 @@ describe("Slider", () => {
 
   describe("スライダーを移動すると、表示範囲が更新される", () => {
     it("スライダーの移動で、現在の表示範囲が更新される", () => {
-      initialize(1000);
+      operator.initialize(1000);
 
       slider.positionX = 900;
       expect(slider.width).toBe(1000);
@@ -220,7 +222,7 @@ describe("Slider", () => {
       expect(slider.positionX).toBe(100);
     });
     it("0以下 or スライド可能な最大幅以上には移動できない", () => {
-      initialize(1000);
+      operator.initialize(1000);
 
       slider.positionX = 1000;
       expect(slider.width).toBe(1000);
@@ -244,7 +246,7 @@ describe("Slider", () => {
   });
 
   it("goToで任意の日付に移動できる", () => {
-    initialize(1000);
+    operator.initialize(1000);
 
     slider.goTo( Dates.date("2015-05-06T05:00:00Z"));
     expect(slider.width).toBe(1000);
@@ -255,17 +257,5 @@ describe("Slider", () => {
     });
     expect(slider.positionX).toBe(530);
   });
-
-
-  function initialize(width=100, candleCount=20, interval="one_hour") {
-    slider.width = width;
-    slider.rates.initialize();
-    slider.rates.rateService.xhrManager.requests[0].resolve({
-      start: Dates.date("2015-05-01T00:01:10Z"),
-      end:   Dates.date("2015-05-10T00:02:20Z")
-    });
-    slider.coordinateCalculator.stageSize = {w:candleStickPadding+6*candleCount, h:100};
-    slider.preferences.chartInterval = interval;
-  }
 
 });

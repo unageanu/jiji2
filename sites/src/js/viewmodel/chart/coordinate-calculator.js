@@ -1,4 +1,5 @@
 import Observable   from "../../utils/observable"
+import Dates        from "../../utils/dates"
 import Intervals    from "../../model/trading/intervals"
 
 const padding           = 8;
@@ -55,6 +56,15 @@ export default class CoordinateCalculator extends Observable {
       throw new Error("illegalState");
     }
     return Math.floor( (this.rateRange.highest - rate) / this.ratePerPixel ) + padding;
+  }
+
+  normalizeDate(date) {
+    const chartInterval = this.preferences.chartInterval;
+    if (!chartInterval) {
+      throw new Error("illegalState");
+    }
+    const intervalMs =  Intervals.resolveCollectingInterval(chartInterval);
+    return Dates.date(Math.floor( date.getTime() / intervalMs) * intervalMs);
   }
 
   set stageSize( size ) {

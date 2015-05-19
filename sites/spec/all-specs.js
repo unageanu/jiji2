@@ -13,6 +13,7 @@ import "./specs/utils/dates-spec";
 import "./specs/utils/observable-spec";
 import "./specs/utils/objects-spec";
 import "./specs/viewmodel/chart/slider-spec";
+import "./specs/viewmodel/chart/positions-spec";
 import "./specs/viewmodel/chart/candle-sticks-spec";
 import "./specs/viewmodel/utils/date-formatter-spec";
 import "./specs/viewmodel/utils/string-formatter-spec";

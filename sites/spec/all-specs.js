@@ -18,4 +18,4 @@ import "./specs/viewmodel/chart/candle-sticks-spec";
 import "./specs/viewmodel/utils/date-formatter-spec";
 import "./specs/viewmodel/utils/string-formatter-spec";
 import "./specs/viewmodel/utils/number-formatter-spec";
-import "./specs/viewmodel/utils/number-utils-spec";
+import "./specs/utils/number-utils-spec";

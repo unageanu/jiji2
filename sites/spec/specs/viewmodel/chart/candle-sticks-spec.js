@@ -3,7 +3,7 @@ import DateWithOffset   from "date-with-offset"
 import _                from "underscore"
 
 import CandleSticks     from "src/viewmodel/chart/candle-sticks"
-import NumberUtils      from "src/viewmodel/utils/number-utils"
+import NumberUtils      from "src/utils/number-utils"
 import Dates            from "src/utils/dates"
 
 import ContainerFactory from "../../../utils/test-container-factory"

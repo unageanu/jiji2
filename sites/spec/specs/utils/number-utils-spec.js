@@ -1,4 +1,4 @@
-import NumberUtils from "src/viewmodel/utils/number-utils";
+import NumberUtils from "src/utils/number-utils";
 
 describe("NumberUtils", () => {
 

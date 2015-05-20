@@ -37,7 +37,7 @@ export default class CoordinateCalculator extends Observable {
 
   update() {
     if (!this.rateRange || !this.stageSize) return;
-    const height        = this.stageSize.h - CoordinateCalculator.totalPaddingHeight();
+    const height      = this.rateAreaHeight;
     this.ratePerPixel = (this.rateRange.highest - this.rateRange.lowest) / height;
   }
 
@@ -98,6 +98,19 @@ export default class CoordinateCalculator extends Observable {
       vertical:   this.stageSize.h - (bottomLabelheight + padding),
       horizontal: this.stageSize.w - (sideLabelWidth + padding)
     };
+  }
+
+  get rateAreaHeight() {
+    return this.stageSize.h
+      - this.profitAreaHeight
+      - this.graphAreaHeight
+      - (bottomLabelheight + padding*2);
+  }
+  get profitAreaHeight() {
+    return this.stageSize.profitAreaHeight || 0;
+  }
+  get graphAreaHeight() {
+    return this.stageSize.graphAreaHeight || 0;
   }
 
   static calculateDisplayableCandleCount( stageWidth ) {

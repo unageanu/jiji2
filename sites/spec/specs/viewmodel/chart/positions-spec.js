@@ -7,7 +7,7 @@ import Numbers          from "src/utils/numbers"
 import Dates            from "src/utils/dates"
 
 import ContainerFactory from "../../../utils/test-container-factory"
-import CustomMatchers       from "../../../utils/custom-matchers"
+import CustomMatchers   from "../../../utils/custom-matchers"
 import ChartOperator    from "./chart-operator"
 
 describe("Positions", () => {

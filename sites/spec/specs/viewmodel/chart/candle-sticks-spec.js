@@ -3,7 +3,7 @@ import DateWithOffset   from "date-with-offset"
 import _                from "underscore"
 
 import CandleSticks     from "src/viewmodel/chart/candle-sticks"
-import NumberUtils      from "src/utils/number-utils"
+import Numbers      from "src/utils/numbers"
 import Dates            from "src/utils/dates"
 
 import ContainerFactory from "../../../utils/test-container-factory"
@@ -239,7 +239,7 @@ describe("CandleSticks", () => {
         { high: 92, low: 92, open: 92, close: 92, isUp: false, x:   35 }
       ]);
     });
-    it("レートの範囲が狭い場合も、verticalAxisLabelsを正しく取得できる", () => {
+    it("レートの範囲が狭い場合���、verticalAxisLabelsを正しく取得できる", () => {
       operator.initialize(300, 300);
       slider.positionX = 90;
       expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);

@@ -1,7 +1,7 @@
 import ContainerJS          from "container-js"
 import Observable           from "../../utils/observable"
 import Dates                from "../../utils/dates"
-import NumberUtils          from "../../utils/number-utils"
+import Numbers              from "../../utils/numbers"
 import DateFormatter        from "../utils/date-formatter"
 import Intervals            from "../../model/trading/intervals"
 
@@ -96,7 +96,7 @@ export default class CandleSticks extends Observable {
     for( let i=start; i < range.highest; i+=step ) {
       if (i <= range.lowest) continue;
       results.push({
-        value: NumberUtils.round(i, 6),
+        value: Numbers.round(i, 6),
         y:     this.coordinateCalculator.calculateY(i)
       });
     }
@@ -179,7 +179,7 @@ export default class CandleSticks extends Observable {
   }
 
   static calculateStep( rate ) {
-    const positiveDigit = Math.max(NumberUtils.getPositiveDigits(rate), 1);
+    const positiveDigit = Math.max(Numbers.getPositiveDigits(rate), 1);
     return Math.pow(10, positiveDigit-6);
   }
 

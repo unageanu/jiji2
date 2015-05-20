@@ -1,7 +1,7 @@
 import ContainerJS          from "container-js"
 import Observable           from "../../utils/observable"
 import Dates                from "../../utils/dates"
-import NumberUtils          from "../../utils/number-utils"
+import Numbers              from "../../utils/numbers"
 import DateFormatter        from "../utils/date-formatter"
 import Intervals            from "../../model/trading/intervals"
 

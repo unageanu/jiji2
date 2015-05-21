@@ -9,11 +9,25 @@ export default class ChartOperator {
     this.chart = chart;
   }
 
-  initialize(width=1000, chartWidth=20*6+candleStickPadding, interval="one_hour") {
+  initialize(width=1000, chartWidth=20*6+candleStickPadding, interval="one_hour", graphAreaHeight=null) {
     const requests = this.chart.slider.rates.rateService.xhrManager.requests;
     this.chart.slider.width = width;
-    this.chart.candleSticks.stageSize = {w:chartWidth, h:200};
-    this.chart.coordinateCalculator.stageSize = {w:chartWidth, h:200};
+    let stageSize = null;
+    if (graphAreaHeight) {
+      stageSize = {
+        w:chartWidth,
+        h:200 + graphAreaHeight*2,
+        profitAreaHeight: graphAreaHeight,
+        graphAreaHeight:  graphAreaHeight
+      };
+    } else {
+      stageSize = {
+        w:chartWidth,
+        h:200
+      };
+    }
+    this.chart.candleSticks.stageSize = stageSize;
+    this.chart.coordinateCalculator.stageSize = stageSize;
     this.chart.slider.preferences.chartInterval = interval;
     this.chart.slider.preferences.preferredPair = "USDJPY";
     this.chart.slider.rates.initialize();
@@ -34,7 +48,24 @@ export default class ChartOperator {
       {enteredAt:this.date("2015-05-08T11:30:10Z"), exitedAt:this.date("2015-05-08T12:00:01Z")},
       {enteredAt:this.date("2015-05-08T18:30:10Z"), exitedAt:this.date("2015-05-08T18:26:01Z")}
     ]);
-
+    if (requests.length >= 4) requests[3].resolve([
+      {id:"a", data: [
+          { values:[ 178.2,  null], timestamp:this.date("2015-05-08T15:00:00Z") },
+          { values:[  null, 178.4], timestamp:this.date("2015-05-08T16:00:00Z") },
+          { values:[ 178.3, 178.2], timestamp:this.date("2015-05-08T17:00:00Z") }
+      ]},
+      {id:"b", data: [
+          { values:[  null,    30], timestamp:this.date("2015-05-08T15:00:00Z") },
+          { values:[    20,    10], timestamp:this.date("2015-05-08T16:00:00Z") },
+          { values:[   -10,     3], timestamp:this.date("2015-05-08T17:00:00Z") }
+      ]},
+      {id:"c", data: [
+          { values:[    0], timestamp:this.date("2015-05-08T15:00:00Z") },
+          { values:[-4720], timestamp:this.date("2015-05-08T16:00:00Z") },
+          { values:[15280], timestamp:this.date("2015-05-08T17:00:00Z") },
+          { values:[ 1234], timestamp:this.date("2015-05-08T18:00:00Z") }
+      ]}
+    ]);
     this.chart.slider.rates.rateService.xhrManager.clear();
   }
   createRates(seed) {

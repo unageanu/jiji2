@@ -22,14 +22,17 @@ export default class GraphType {
   }
 
   calculateHighAndLow(allValues) {
+    const initialValue =
+      allValues.length > 0 && allValues[0].values.length > 0
+      ? allValues[0].values[0] : 0;
     const result = allValues.reduce((r, values) => {
-      values.forEach((v) => {
+      values.values.forEach((v) => {
         if (v === null || v === undefined) return;
         if (r.highest < v) r.highest = v;
         if (r.lowest  > v) r.lowest  = v;
       });
       return r;
-    }, {highest:allValues[0][0], lowest:allValues[0][0]});
+    }, {highest:initialValue, lowest:initialValue});
     const margin = this.calculateMargin(result);
     return {
       highest: result.highest + margin,
@@ -57,20 +60,20 @@ class Line extends GraphType {
   }
   calculateRange(allValues, axises) {
     this.range = this.calculateHighAndLow(
-      axises ? allValues.concat([axises]) : allValues );
+      axises ? allValues.concat([{values:axises}]) : allValues );
     this.valuesPerPixel =
       (this.range.highest - this.range.lowest) / this.getAreaHeight();
     this.bottom = this.getAreaBottom();
   }
   calculateY(value) {
     if (value === null || value === undefined) return null;
-    return this.bottom - ((value - this.range.lowest) / this.valuesPerPixel );
+    return Math.round(this.bottom - ((value - this.range.lowest) / this.valuesPerPixel ));
   }
   calculateAxises(axises) {
     return axises.map((axis)=>{
       return {
         value : axis,
-        y: Math.round(this.calculateY(axis))
+        y: this.calculateY(axis)
       };
     });
   }
@@ -110,7 +113,7 @@ class ProfitOrLoss extends Line {
       if (i >= this.range.highest) continue;
       results.push({
         value: i,
-        y:     Math.round(this.calculateY(i))
+        y: this.calculateY(i)
       });
     }
     return results;

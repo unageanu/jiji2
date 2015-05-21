@@ -49,12 +49,12 @@ describe("GraphType", () => {
     describe("値にばらつきがある場合", ()=> {
       beforeEach(() => {
         type.calculateRange([
-          [1, 10, 20], [-10, 3, null]
+          {values:[1, 10, 20]}, {values:[-10, 3, null]}
         ], [20, 70]);
       });
       it("calculateY は 値に対応する座標を返す", () => {
-        expect(type.calculateY(12)).toEqual(376.75);
-        expect(type.calculateY(48)).toEqual(339.25);
+        expect(type.calculateY(12)).toEqual(377);
+        expect(type.calculateY(48)).toEqual(339);
         expect(type.calculateY(null)).toEqual(null);
       });
       it("getAxises は axisesの値を座標系に変換したものを返す", () => {
@@ -63,10 +63,27 @@ describe("GraphType", () => {
         ]);
       });
     });
+    describe("値が少数の場合", ()=> {
+      beforeEach(() => {
+        type.calculateRange([
+          {values:[0.61, 0.102, 0.20]}, {values:[-0.35, 0.03, null]}
+        ], [0.5, -0.5]);
+      });
+      it("calculateY は 値に対応する座標を返す", () => {
+        expect(type.calculateY(0.23)).toEqual(345);
+        expect(type.calculateY(-0.21)).toEqual(378);
+        expect(type.calculateY(null)).toEqual(null);
+      });
+      it("getAxises は axisesの値を座標系に変換したものを返す", () => {
+        expect(type.calculateAxises([0.5, 0.6])).toEqual([
+          {value: 0.5, y:325}, {value:0.6, y:317}
+        ]);
+      });
+    });
     describe("値がすべて同じ場合", ()=> {
       beforeEach(() => {
         type.calculateRange([
-          [10], [10, null]
+          {values:[10]}, {values:[10, null]}
         ], null);
       });
       it("calculateY は 値に対応する座標を返す", () => {
@@ -82,7 +99,7 @@ describe("GraphType", () => {
     describe("値がすべてnullの場合", ()=> {
       beforeEach(() => {
         type.calculateRange([
-          [null], [null]
+          {values:[null]}, {values:[null]}
         ], null);
       });
       it("calculateY は 値に対応する座標を返す", () => {
@@ -102,13 +119,13 @@ describe("GraphType", () => {
     describe("値にばらつきがある場合", ()=> {
       beforeEach(() => {
         type.calculateRange([
-          [0, 100, 15280], [-4720, 1234, null]
+          {values:[0, 100, 15280]}, {values:[-4720, 1234, null]}
         ], []);
       });
       it("calculateY は 値に対応する座標を返す", () => {
         expect(type.calculateY(0)).toEqual(280);
-        expect(type.calculateY(13248)).toEqual(224.8);
-        expect(type.calculateY(-3312)).toEqual(293.8);
+        expect(type.calculateY(13248)).toEqual(225);
+        expect(type.calculateY(-3312)).toEqual(294);
         expect(type.calculateY(null)).toEqual(null);
       });
       it("getAxises は 金額に応じた座標系を返す", () => {
@@ -117,10 +134,28 @@ describe("GraphType", () => {
         ]);
       });
     });
+    describe("値が4桁の場合", ()=> {
+      beforeEach(() => {
+        type.calculateRange([
+          {values:[0, 100, 1528]}, {values:[-4720, 1234, null]}
+        ], []);
+      });
+      it("calculateY は 値に対応する座標を返す", () => {
+        expect(type.calculateY(0)).toEqual(237);
+        expect(type.calculateY(3248)).toEqual(193);
+        expect(type.calculateY(-3312)).toEqual(281);
+        expect(type.calculateY(null)).toEqual(null);
+      });
+      it("getAxises は 金額に応じた座標系を返す", () => {
+        expect(type.calculateAxises([])).toEqual([
+          {value: 0, y: 237}, {value:-2500, y:270}, {value:-5000, y:303}
+        ]);
+      });
+    });
     describe("値がすべて同じ場合", ()=> {
       beforeEach(() => {
         type.calculateRange([
-          [0], [0, null]
+          {values:[0]}, {values:[0, null]}
         ], null);
       });
       it("calculateY は 値に対応する座標を返す", () => {
@@ -136,7 +171,7 @@ describe("GraphType", () => {
     describe("値がすべてnullの場合", ()=> {
       beforeEach(() => {
         type.calculateRange([
-          [null], [null]
+          {values:[null]}, {values:[null]}
         ], null);
       });
       it("calculateY は 値に対応する座標を返す", () => {

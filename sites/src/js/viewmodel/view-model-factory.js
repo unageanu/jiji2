@@ -8,10 +8,11 @@ export default class ViewModelFactory {
     this.preferences     = ContainerJS.Inject;
     this.rateService     = ContainerJS.Inject;
     this.positionService = ContainerJS.Inject;
+    this.graphService    = ContainerJS.Inject;
   }
-  createChart(displayPositions=false, backtestId=null) {
+  createChart(displayPositionsAndGraphs=false, backtestId=null, graphs=[]) {
     return new Chart( this.rates, this.preferences,
-      this.positionService, displayPositions, backtestId );
+      this.positionService, this.graphService, displayPositionsAndGraphs, backtestId, graphs );
   }
 
 }

@@ -16,6 +16,7 @@ import "./specs/viewmodel/chart/slider-spec";
 import "./specs/viewmodel/chart/positions-spec";
 import "./specs/viewmodel/chart/candle-sticks-spec";
 import "./specs/viewmodel/chart/graph-type-spec";
+import "./specs/viewmodel/chart/graphs-spec";
 import "./specs/viewmodel/utils/date-formatter-spec";
 import "./specs/viewmodel/utils/string-formatter-spec";
 import "./specs/viewmodel/utils/number-formatter-spec";

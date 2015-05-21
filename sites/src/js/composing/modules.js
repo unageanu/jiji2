@@ -26,6 +26,7 @@ function services(binder) {
   binder.bind("initialSettingService").to("services.InitialSettingService");
   binder.bind("rateService").to("services.RateService");
   binder.bind("positionService").to("services.PositionService");
+  binder.bind("graphService").to("services.GraphService");
 }
 
 function stores(binder) {

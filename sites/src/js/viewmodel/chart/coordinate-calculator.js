@@ -1,5 +1,6 @@
 import Observable   from "../../utils/observable"
 import Dates        from "../../utils/dates"
+import Deferred     from "../../utils/deferred"
 import Intervals    from "../../model/trading/intervals"
 
 const padding           = 8;
@@ -35,10 +36,15 @@ export default class CoordinateCalculator extends Observable {
     this.preferences = preferences;
   }
 
+  prepareUpdate() {
+    this.updateDeferred = new Deferred();
+  }
+
   update() {
     if (!this.rateRange || !this.stageSize) return;
     const height      = this.rateAreaHeight;
     this.ratePerPixel = (this.rateRange.highest - this.rateRange.lowest) / height;
+    this.updateDeferred.resolve();
   }
 
   calculateX(date, range=null) {

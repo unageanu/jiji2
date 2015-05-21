@@ -48,6 +48,7 @@ export default class CandleSticks extends Observable {
 
   update() {
     if (!this.currentRange || !this.preferredPair) return;
+    this.coordinateCalculator.prepareUpdate();
     this.rates.fetchRates(
       this.preferredPair,
       this.preferences.chartInterval,

@@ -3,7 +3,7 @@ import Numbers              from "../../utils/numbers"
 import CandleSticks         from "./candle-sticks"
 import CoordinateCalculator from "./coordinate-calculator"
 
-export default class GraphType {
+export default class GraphCoordinateCalculator {
   constructor(coordinateCalculator) {
     this.coordinateCalculator = coordinateCalculator;
   }
@@ -45,7 +45,7 @@ export default class GraphType {
   }
 }
 
-class Rate extends GraphType {
+class Rate extends GraphCoordinateCalculator {
   constructor(coordinateCalculator) {
     super(coordinateCalculator);
   }
@@ -54,7 +54,7 @@ class Rate extends GraphType {
   }
 }
 
-class Line extends GraphType {
+class Line extends GraphCoordinateCalculator {
   constructor(coordinateCalculator) {
     super(coordinateCalculator);
   }

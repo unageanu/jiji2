@@ -2,9 +2,9 @@ import ContainerJS      from "container-js"
 import DateWithOffset   from "date-with-offset"
 import _                from "underscore"
 
-import GraphType        from "src/viewmodel/chart/graph-type"
-import Numbers          from "src/utils/numbers"
-import Dates            from "src/utils/dates"
+import GraphCoordinateCalculator from "src/viewmodel/chart/graph-coordinate-calculator"
+import Numbers                   from "src/utils/numbers"
+import Dates                     from "src/utils/dates"
 
 import CustomMatchers   from "../../../utils/custom-matchers"
 
@@ -29,7 +29,7 @@ describe("GraphType", () => {
   });
 
   describe("Rate", () => {
-    beforeEach(() => type = GraphType.create("rate", coordinateCalculator) );
+    beforeEach(() => type = GraphCoordinateCalculator.create("rate", coordinateCalculator) );
 
     it("calculateY は coordinateCalculator.calculateY()の値をそのまま返す", () => {
       expect(type.calculateY(10)).toEqual(10);
@@ -43,7 +43,7 @@ describe("GraphType", () => {
 
   describe("Line", () => {
     beforeEach(() => {
-      type = GraphType.create("line", coordinateCalculator);
+      type = GraphCoordinateCalculator.create("line", coordinateCalculator);
     });
 
     describe("値にばらつきがある場合", ()=> {
@@ -113,7 +113,7 @@ describe("GraphType", () => {
 
   describe("ProfitOrLoss", () => {
     beforeEach(() => {
-      type = GraphType.create("profitOrLoss", coordinateCalculator);
+      type = GraphCoordinateCalculator.create("profitOrLoss", coordinateCalculator);
     });
 
     describe("値にばらつきがある場合", ()=> {

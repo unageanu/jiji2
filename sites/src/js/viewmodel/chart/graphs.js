@@ -1,10 +1,30 @@
-import ContainerJS          from "container-js"
-import Observable           from "../../utils/observable"
-import Numbers              from "../../utils/numbers"
-import Deferred             from "../../utils/deferred"
-import GraphType            from "./graph-type"
+import ContainerJS               from "container-js"
+import Observable                from "../../utils/observable"
+import Numbers                   from "../../utils/numbers"
+import Deferred                  from "../../utils/deferred"
+import GraphCoordinateCalculator from "./graph-coordinate-calculator"
 
 const defaultColor = "#999";
+
+
+class Graph {
+  constructor(src, coordinateCalculator) {
+    this.id     = src.id;
+    this.colors = src.colors || [];
+    this.type   = src.type;
+    this.axises = src.axises || [];
+
+    this.coordinateCalculator =
+      GraphCoordinateCalculator.create(this.type, coordinateCalculator);
+  }
+  resolveColor(index) {
+    if ( this.colors.length <= index
+      || !this.colors[index]) {
+      return defaultColor;
+    }
+    return this.colors[index];
+  }
+}
 
 class GraphDataConverter {
 
@@ -13,10 +33,9 @@ class GraphDataConverter {
 
     this.graph = graph;
     this.coordinateCalculator = coordinateCalculator;
-    this.type  = GraphType.create(graph.type, coordinateCalculator);
   }
   prepare( allValues ) {
-    this.type.calculateRange(allValues);
+    this.graph.coordinateCalculator.calculateRange(allValues);
   }
   push(values, timestamp) {
     const x = this.coordinateCalculator.calculateX(timestamp);
@@ -27,7 +46,7 @@ class GraphDataConverter {
         timestamp: timestamp,
         value: v,
         x: x,
-        y: this.type.calculateY( v )
+        y: this.graph.coordinateCalculator.calculateY( v )
       });
     });
   }
@@ -35,21 +54,13 @@ class GraphDataConverter {
     return this.lines.map((line, index) => {
       return {
         type:  this.graph.type,
-        color: this.resolveColor(index),
+        color: this.graph.resolveColor(index),
         line:  line
       };
     });
   }
   getAxises() {
-    return this.type.calculateAxises(this.graph.axises);
-  }
-  resolveColor(index) {
-    if ( !this.graph.colors
-      || this.graph.colors.length <= index
-      || !this.graph.colors[index]) {
-      return defaultColor;
-    }
-    return this.graph.colors[index];
+    return this.graph.coordinateCalculator.calculateAxises(this.graph.axises);
   }
 }
 
@@ -116,9 +127,11 @@ export default class Graphs extends Observable {
     return this.getProperty("axises");
   }
   updateGraphs( graphs ) {
-    this.graphs = graphs.reduce((p, c, i) => p.set(c.id, c), new Map());
+    this.graphs = graphs.reduce(
+      (p, c, i) => p.set(c.id, new Graph(c, this.coordinateCalculator)), new Map());
   }
   updateGraphData( data ) {
+    try {
     var lines  = [];
     var axises = [];
     data.forEach((graphData) => {
@@ -134,5 +147,9 @@ export default class Graphs extends Observable {
     });
     this.setProperty("lines", lines);
     this.setProperty("axises", axises);
+    } catch (error) {
+      console.log(error);
+      console.log(error.stack);
+    }
   }
 }

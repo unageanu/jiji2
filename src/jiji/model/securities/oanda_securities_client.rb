@@ -43,7 +43,7 @@ module Jiji::Model::Securities
     private
 
     def retrive_all_pairs
-      @all_pairs ||= get_pairs.map { |v| v.instrument }
+      @all_pairs ||= pairs.map { |v| v.instrument }
     end
 
   end

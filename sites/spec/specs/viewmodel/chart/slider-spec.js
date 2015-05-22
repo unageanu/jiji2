@@ -53,10 +53,10 @@ describe("Slider", () => {
   describe("rangeの更新", () => {
     it("rangeが更新されると、状態が更新される", () => {
       operator.initialize(100);
-      slider.rates.rateService.xhrManager.clear();
+      slider.context.rates.rateService.xhrManager.clear();
 
-      slider.rates.reload();
-      slider.rates.rateService.xhrManager.requests[0].resolve({
+      slider.context.rates.reload();
+      slider.context.rates.rateService.xhrManager.requests[0].resolve({
         start: Dates.date("2015-04-30T00:01:10Z"),
         end:   Dates.date("2015-05-11T00:02:20Z")
       });
@@ -76,7 +76,7 @@ describe("Slider", () => {
 
     it("最新のレートを表示している場合、rangeが変更となっても最新のレートが表示されたままになる。",  () => {
       operator.initialize(1000);
-      slider.rates.rateService.xhrManager.clear();
+      slider.context.rates.rateService.xhrManager.clear();
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(92);
       expect(slider.currentRange).toEq({
@@ -85,8 +85,8 @@ describe("Slider", () => {
       });
       expect(slider.positionX).toBe(908);
 
-      slider.rates.reload();
-      slider.rates.rateService.xhrManager.requests[0].resolve({
+      slider.context.rates.reload();
+      slider.context.rates.rateService.xhrManager.requests[0].resolve({
         start: Dates.date("2015-04-30T00:01:10Z"),
         end:   Dates.date("2015-05-11T00:02:20Z")
       });
@@ -106,7 +106,7 @@ describe("Slider", () => {
 
     it("古いレートを表示中の場合、スクロール位置はそのまま維持される",  () => {
       operator.initialize(1000);
-      slider.rates.rateService.xhrManager.clear();
+      slider.context.rates.rateService.xhrManager.clear();
       expect(slider.width).toBe(1000);
       expect(slider.pageWidth).toBe(92);
       expect(slider.currentRange).toEq({
@@ -124,9 +124,9 @@ describe("Slider", () => {
       });
       expect(slider.positionX).toBe(900);
 
-      slider.rates.rateService.xhrManager.clear();
-      slider.rates.reload();
-      slider.rates.rateService.xhrManager.requests[0].resolve({
+      slider.context.rates.rateService.xhrManager.clear();
+      slider.context.rates.reload();
+      slider.context.rates.rateService.xhrManager.requests[0].resolve({
         start: Dates.date("2015-04-30T00:01:10Z"),
         end:   Dates.date("2015-05-11T00:02:20Z")
       });

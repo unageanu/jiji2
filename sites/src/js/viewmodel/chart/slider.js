@@ -6,17 +6,17 @@ import Intervals             from "../../model/trading/intervals"
 
 export default class Slider extends Observable {
 
-  constructor(coordinateCalculator, rates, preferences) {
+  constructor(context, coordinateCalculator, preferences) {
     super();
-    this.rates                = rates;
+    this.context              = context;
     this.preferences          = preferences;
     this.coordinateCalculator = coordinateCalculator;
 
-    this.initialize();
+    this.registerObservers();
   }
 
-  initialize() {
-    this.rates.addObserver("propertyChanged", (n, e) => {
+  registerObservers() {
+    this.context.addObserver("propertyChanged", (n, e) => {
       if (e.key !== "range") return;
       this.range = e.newValue;
       this.update();
@@ -32,7 +32,7 @@ export default class Slider extends Observable {
       this.update();
     }, this);
 
-    this.range = this.rates.range;
+    this.range = this.context.range;
     this.chartInterval = this.preferences.chartInterval;
     this.displayableCandleCount = this.coordinateCalculator.displayableCandleCount;
 
@@ -41,7 +41,7 @@ export default class Slider extends Observable {
 
   unregisterObservers() {
     this.preferences.removeAllObservers(this);
-    this.rates.removeAllObservers(this);
+    this.context.removeAllObservers(this);
     this.coordinateCalculator.removeAllObservers(this);
   }
 

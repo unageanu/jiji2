@@ -9,46 +9,72 @@ export default class ChartOperator {
     this.chart = chart;
   }
 
-  initialize(width=1000, chartWidth=20*6+candleStickPadding, interval="one_hour", graphAreaHeight=null) {
-    const requests = this.chart.slider.rates.rateService.xhrManager.requests;
+  initialize(width=1000, chartWidth=20*6+candleStickPadding,
+    interval="one_hour", graphAreaHeight=null) {
+    const requests = this.chart.rates.rateService.xhrManager.requests;
     this.chart.slider.width = width;
-    let stageSize = null;
+    let stageSize = this.createStageSize(chartWidth, graphAreaHeight);
+    this.chart.candleSticks.stageSize = stageSize;
+    this.chart.coordinateCalculator.stageSize = stageSize;
+    this.chart.slider.preferences.chartInterval = interval;
+    this.chart.slider.preferences.preferredPair = "USDJPY";
+    this.chart.initialize();
+    requests[0].resolve({
+      start: this.date("2015-05-01T00:01:10Z"),
+      end:   this.date("2015-05-10T00:02:20Z")
+    });
+    requests[1].resolve(this.createDefaultRateResponse());
+    if (requests.length >= 3) requests[2].resolve(this.createDefaultPositionsResponse());
+    if (requests.length >= 4) requests[3].resolve(this.createDefaultGraphResponse());
+    if (requests.length >= 5) requests[4].resolve(this.createDefaultGraphDataResponse());
+    this.chart.rates.rateService.xhrManager.clear();
+  }
+
+  createStageSize(chartWidth, graphAreaHeight) {
     if (graphAreaHeight) {
-      stageSize = {
+      return {
         w:chartWidth,
         h:200 + graphAreaHeight*2,
         profitAreaHeight: graphAreaHeight,
         graphAreaHeight:  graphAreaHeight
       };
     } else {
-      stageSize = {
+      return {
         w:chartWidth,
         h:200
       };
     }
-    this.chart.candleSticks.stageSize = stageSize;
-    this.chart.coordinateCalculator.stageSize = stageSize;
-    this.chart.slider.preferences.chartInterval = interval;
-    this.chart.slider.preferences.preferredPair = "USDJPY";
-    this.chart.slider.rates.initialize();
-    requests[0].resolve({
-      start: this.date("2015-05-01T00:01:10Z"),
-      end:   this.date("2015-05-10T00:02:20Z")
-    });
-    requests[1].resolve(this.createRates([
+  }
+
+  createDefaultRateResponse() {
+    return this.createRates([
       {high:179.0, low:178.0, open:178.2, close:178.5, timestamp:this.date("2015-05-08T10:00:00Z")},
       {high:179.5, low:178.2, open:178.5, close:179.5, timestamp:this.date("2015-05-08T11:00:00Z")},
       {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:this.date("2015-05-08T12:00:00Z")},
       {high:179.0, low:178.0, open:179.0, close:178.5, timestamp:this.date("2015-05-08T13:00:00Z")},
       {high:178.7, low:177.5, open:178.5, close:177.5, timestamp:this.date("2015-05-09T14:00:00Z")},
       {high:179.0, low:177.7, open:177.7, close:178.5, timestamp:this.date("2015-05-10T00:00:00Z")}
-    ]));
-    if (requests.length >= 3) requests[2].resolve([
+    ]);
+  }
+
+  createDefaultPositionsResponse() {
+    return [
       {enteredAt:this.date("2015-05-08T09:00:10Z"), exitedAt:this.date("2015-05-08T15:30:00Z")},
       {enteredAt:this.date("2015-05-08T11:30:10Z"), exitedAt:this.date("2015-05-08T12:00:01Z")},
       {enteredAt:this.date("2015-05-08T18:30:10Z"), exitedAt:this.date("2015-05-08T18:26:01Z")}
-    ]);
-    if (requests.length >= 4) requests[3].resolve([
+    ];
+  }
+
+  createDefaultGraphResponse() {
+    return [
+      {id:"a", type:"rate", label:"aaa", colors:["#aaa", "#bbb"]},
+      {id:"b", type:"line", label:"bbb", colors:["#ccc"], axises:[30, 70]},
+      {id:"c", type:"profitOrLoss"}
+    ];
+  }
+
+  createDefaultGraphDataResponse() {
+    return [
       {id:"a", data: [
           { values:[ 178.2,  null], timestamp:this.date("2015-05-08T15:00:00Z") },
           { values:[  null, 178.4], timestamp:this.date("2015-05-08T16:00:00Z") },
@@ -65,9 +91,9 @@ export default class ChartOperator {
           { values:[15280], timestamp:this.date("2015-05-08T17:00:00Z") },
           { values:[ 1234], timestamp:this.date("2015-05-08T18:00:00Z") }
       ]}
-    ]);
-    this.chart.slider.rates.rateService.xhrManager.clear();
+    ];
   }
+
   createRates(seed) {
     return seed.map((item) => {
       return {

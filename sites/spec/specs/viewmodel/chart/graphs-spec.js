@@ -20,11 +20,8 @@ describe("Graphs", () => {
     let container = new ContainerFactory().createContainer();
     let d = container.get("viewModelFactory");
     const factory = ContainerJS.utils.Deferred.unpack(d);
-    chart                = factory.createChart(true, null, [
-      {id:"a", type:"rate", label:"aaa", colors:["#aaa", "#bbb"]},
-      {id:"b", type:"line", label:"bbb", colors:["#ccc"], axises:[30, 70]},
-      {id:"c", type:"profitOrLoss"}
-    ]);
+
+    chart                = factory.createChart(null, {displayPositonsAndGraphs:true});
     operator             = new ChartOperator(chart);
     slider               = chart.slider;
     graphs               = chart.graphs;
@@ -94,8 +91,9 @@ describe("Graphs", () => {
     operator.initialize(1000, 300, "fifteen_minutes", 100);
     chart.slider.preferences.chartInterval = "one_hour";
 
-    const requests = chart.slider.rates.rateService.xhrManager.requests;
-    requests[2].resolve([{
+    const requests = chart.context.rates.rateService.xhrManager.requests;
+    requests[2].resolve(operator.createDefaultGraphResponse());
+    requests[3].resolve([{
       id:"b", data: [
         { values:[30], timestamp:Dates.date("2015-05-08T15:00:00Z") },
         { values:[10], timestamp:Dates.date("2015-05-08T16:00:00Z") },

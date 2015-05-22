@@ -23,7 +23,7 @@ describe("Positions", () => {
     let container = new ContainerFactory().createContainer();
     let d = container.get("viewModelFactory");
     const factory = ContainerJS.utils.Deferred.unpack(d);
-    chart                = factory.createChart(true);
+    chart                = factory.createChart(null, {displayPositonsAndGraphs:true});
     operator             = new ChartOperator(chart);
     slider               = chart.slider;
     positions            = chart.positions;
@@ -73,7 +73,7 @@ describe("Positions", () => {
     operator.initialize(1000, 300, "fifteen_minutes");
     chart.slider.preferences.chartInterval = "one_hour";
 
-    const requests = chart.slider.rates.rateService.xhrManager.requests;
+    const requests = chart.slider.context.rates.rateService.xhrManager.requests;
     requests[0].resolve(operator.createRates([
       {high:179.0, low:178.0, open:178.2, close:178.5, timestamp:Dates.date("2015-05-08T10:00:00Z")}
     ]));
@@ -127,7 +127,7 @@ describe("Positions", () => {
     operator.initialize(1000, 300, "fifteen_minutes");
     chart.slider.preferences.chartInterval = "one_hour";
 
-    const requests = chart.slider.rates.rateService.xhrManager.requests;
+    const requests = chart.slider.context.rates.rateService.xhrManager.requests;
     requests[0].resolve(operator.createRates([
       {high:179.0, low:178.0, open:178.2, close:178.5, timestamp:Dates.date("2015-05-08T10:00:00Z")}
     ]));

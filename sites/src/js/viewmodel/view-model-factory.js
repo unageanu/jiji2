@@ -1,5 +1,5 @@
-import ContainerJS  from "container-js";
-import Chart       from "./chart/chart";
+import ContainerJS from "container-js"
+import Chart       from "./chart/chart"
 
 export default class ViewModelFactory {
 
@@ -10,9 +10,8 @@ export default class ViewModelFactory {
     this.positionService = ContainerJS.Inject;
     this.graphService    = ContainerJS.Inject;
   }
-  createChart(displayPositionsAndGraphs=false, backtestId=null, graphs=[]) {
-    return new Chart( this.rates, this.preferences,
-      this.positionService, this.graphService, displayPositionsAndGraphs, backtestId, graphs );
+  createChart(backtestId=null, config={displayPositionsAndGraphs:false}) {
+    return new Chart( backtestId, config, this );
   }
 
 }

@@ -1,6 +1,7 @@
 import ContainerJS          from "container-js"
 import Observable           from "../../utils/observable"
 import Numbers              from "../../utils/numbers"
+import Deferred             from "../../utils/deferred"
 import GraphType            from "./graph-type"
 
 const defaultColor = "#999";
@@ -54,12 +55,10 @@ class GraphDataConverter {
 
 export default class Graphs extends Observable {
 
-  constructor(coordinateCalculator,
-    preferences, graphService, backtestId, graphs) {
+  constructor( context,
+    coordinateCalculator, preferences, graphService) {
     super();
-    this.backtestId           = backtestId;
-    this.graphs               =
-      graphs.reduce((p, c, i) => p.set(c.id, c), new Map());
+    this.context = context;
 
     this.preferences          = preferences;
     this.graphService         = graphService;
@@ -85,15 +84,29 @@ export default class Graphs extends Observable {
 
   update() {
     if (!this.currentRange) return;
-    this.graphService.fetchGraphData(
-      this.currentRange.start,
-      this.currentRange.end,
-      this.preferences.chartInterval,
-      this.backtestId
-    ).then((data) => {
+    Deferred.when([
+      this.fetchGraphs(this.currentRange),
+      this.fetchGraphData(this.currentRange)
+    ]).then( (results) => {
+      this.updateGraphs(results[0]);
       this.coordinateCalculator.updateDeferred.then(
-        () => this.updateGraphData(data));
+        () => this.updateGraphData(results[1]));
     });
+  }
+  fetchGraphs(range) {
+    return this.graphService.fetchGraphs(
+      range.start,
+      range.end,
+      this.context.backtestId
+    );
+  }
+  fetchGraphData(range) {
+    return this.graphService.fetchGraphData(
+      range.start,
+      range.end,
+      this.preferences.chartInterval,
+      this.context.backtestId
+    );
   }
 
   get lines() {
@@ -102,7 +115,9 @@ export default class Graphs extends Observable {
   get axises() {
     return this.getProperty("axises");
   }
-
+  updateGraphs( graphs ) {
+    this.graphs = graphs.reduce((p, c, i) => p.set(c.id, c), new Map());
+  }
   updateGraphData( data ) {
     var lines  = [];
     var axises = [];

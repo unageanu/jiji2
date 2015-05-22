@@ -3,7 +3,7 @@ import DateWithOffset   from "date-with-offset"
 import _                from "underscore"
 
 import CandleSticks     from "src/viewmodel/chart/candle-sticks"
-import Numbers      from "src/utils/numbers"
+import Numbers          from "src/utils/numbers"
 import Dates            from "src/utils/dates"
 
 import ContainerFactory from "../../../utils/test-container-factory"
@@ -74,8 +74,8 @@ describe("CandleSticks", () => {
   it("rangeが更新されると、それに応じてデータの再取得が行われる", () => {
     operator.initialize(300, 300);
     slider.positionX = 90;
-    expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-    slider.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
+    expect(slider.context.rates.rateService.xhrManager.requests.length).toEqual(1);
+    slider.context.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
       {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:Dates.date("2015-05-03T20:00:00Z")},
       {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:Dates.date("2015-05-03T19:00:00Z")},
       {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:Dates.date("2015-05-03T18:00:00Z")}
@@ -111,8 +111,8 @@ describe("CandleSticks", () => {
 
     slider.preferences.chartInterval = "fifteen_minutes";
 
-    expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-    slider.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
+    expect(slider.context.rates.rateService.xhrManager.requests.length).toEqual(1);
+    slider.context.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
       {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:Dates.date("2015-05-09T23:30:00Z")},
       {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:Dates.date("2015-05-09T23:45:00Z")},
       {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:Dates.date("2015-05-10T00:00:00Z")}
@@ -149,8 +149,8 @@ describe("CandleSticks", () => {
 
     slider.preferences.preferredPair = "EURUSD";
 
-    expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-    slider.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
+    expect(slider.context.rates.rateService.xhrManager.requests.length).toEqual(1);
+    slider.context.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
       {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:Dates.date("2015-05-08T10:00:00Z")},
       {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:Dates.date("2015-05-09T19:00:00Z")},
       {high:179.8, low:179.0, open:179.5, close:179.0, timestamp:Dates.date("2015-05-10T00:00:00Z")}
@@ -186,8 +186,8 @@ describe("CandleSticks", () => {
     it("レートがすべて同一の場合も、一定値以上のrangeが確保される。verticalAxisLabelsも正しく取得できる", () => {
       operator.initialize(300, 300);
       slider.positionX = 90;
-      expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-      slider.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
+      expect(slider.context.rates.rateService.xhrManager.requests.length).toEqual(1);
+      slider.context.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
         {high:179.0, low:179.0, open:179.0, close:179.0, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
@@ -204,8 +204,8 @@ describe("CandleSticks", () => {
 
 
       slider.positionX = 84;
-      expect(slider.rates.rateService.xhrManager.requests.length).toEqual(2);
-      slider.rates.rateService.xhrManager.requests[1].resolve(operator.createRates([
+      expect(slider.context.rates.rateService.xhrManager.requests.length).toEqual(2);
+      slider.context.rates.rateService.xhrManager.requests[1].resolve(operator.createRates([
         {high:179.222, low:179.222, open:179.222, close:179.222, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
@@ -223,7 +223,7 @@ describe("CandleSticks", () => {
 
 
       slider.positionX = 90;
-      slider.rates.rateService.xhrManager.requests[2].resolve(operator.createRates([
+      slider.context.rates.rateService.xhrManager.requests[2].resolve(operator.createRates([
         {high:1.79222, low:1.79222, open:1.79222, close:1.79222, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
@@ -242,8 +242,8 @@ describe("CandleSticks", () => {
     it("レートの範囲が狭い場合���、verticalAxisLabelsを正しく取得できる", () => {
       operator.initialize(300, 300);
       slider.positionX = 90;
-      expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-      slider.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
+      expect(slider.context.rates.rateService.xhrManager.requests.length).toEqual(1);
+      slider.context.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
         {high:179.002, low:179.000, open:179.0, close:179.002, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
@@ -259,7 +259,7 @@ describe("CandleSticks", () => {
 
 
       slider.positionX = 84;
-      slider.rates.rateService.xhrManager.requests[1].resolve(operator.createRates([
+      slider.context.rates.rateService.xhrManager.requests[1].resolve(operator.createRates([
         {high:179.025, low:179.013, open:179.02, close:179.02, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
@@ -276,7 +276,7 @@ describe("CandleSticks", () => {
 
 
       slider.positionX = 90;
-      slider.rates.rateService.xhrManager.requests[2].resolve(operator.createRates([
+      slider.context.rates.rateService.xhrManager.requests[2].resolve(operator.createRates([
         {high:1.79223, low:1.79222, open:1.79222, close:1.79222, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
@@ -293,8 +293,8 @@ describe("CandleSticks", () => {
     it("レートの範囲が広い場合も、verticalAxisLabelsを正しく取得できる", () => {
       operator.initialize(300, 300);
       slider.positionX = 90;
-      expect(slider.rates.rateService.xhrManager.requests.length).toEqual(1);
-      slider.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
+      expect(slider.context.rates.rateService.xhrManager.requests.length).toEqual(1);
+      slider.context.rates.rateService.xhrManager.requests[0].resolve(operator.createRates([
         {high:190.002, low:179.000, open:179.0, close:179.002, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 
@@ -311,7 +311,7 @@ describe("CandleSticks", () => {
 
 
       slider.positionX = 86;
-      slider.rates.rateService.xhrManager.requests[1].resolve(operator.createRates([
+      slider.context.rates.rateService.xhrManager.requests[1].resolve(operator.createRates([
         {high:1.82223, low:1.79222, open:1.79222, close:1.79222, timestamp:Dates.date("2015-05-03T20:00:00Z")}
       ]));
 

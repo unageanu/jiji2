@@ -43,9 +43,9 @@ class Slot {
 
 export default class Positions extends Observable {
 
-  constructor(coordinateCalculator, positionService, backtestId) {
+  constructor(context, coordinateCalculator, positionService) {
     super();
-    this.backtestId           = backtestId;
+    this.context              = context;
     this.positionService      = positionService;
     this.coordinateCalculator = coordinateCalculator;
 
@@ -81,7 +81,7 @@ export default class Positions extends Observable {
     this.positionService.fetchPositions(
       this.currentRange.start,
       this.currentRange.end,
-      this.backtestId
+      this.context.backtestId
     ).then((data) => this.positions = data );
   }
 

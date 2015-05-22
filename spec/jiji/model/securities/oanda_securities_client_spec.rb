@@ -36,9 +36,9 @@ describe Jiji::Model::Securities::OandaSecuritiesClient do
     end
   end
 
-  describe 'get_pairs' do
+  describe 'pairs' do
     it '通貨ペアの一覧を取得できる。' do
-      pairs = @client.get_pairs
+      pairs = @client.pairs
       # p pairs
       expect(pairs.length).to be > 0
       pairs.each do |pair|
@@ -52,7 +52,7 @@ describe Jiji::Model::Securities::OandaSecuritiesClient do
 
   describe 'get_current_ticks' do
     it '通貨ペアごとの現在価格を取得できる。' do
-      ticks = @client.get_current_ticks
+      ticks = @client.current_ticks
       # p ticks
       expect(ticks.length).to be > 0
       ticks.each do |tick|

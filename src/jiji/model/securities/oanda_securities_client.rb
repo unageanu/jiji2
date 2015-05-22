@@ -20,12 +20,12 @@ module Jiji::Model::Securities
     def destroy
     end
 
-    def get_pairs
+    def pairs
       @client.instruments(account_id: @account.account_id).get
     end
 
-    def get_current_ticks
-      @client.prices(instruments: get_all_pairs).get
+    def current_ticks
+      @client.prices(instruments: retrive_all_pairs).get
     end
 
     def order(_pair, sell_or_buy, count)
@@ -37,12 +37,12 @@ module Jiji::Model::Securities
     def find_account(account_name)
       accounts = @client.accounts.get
       accounts.find { |a| a.account_name == account_name } \
-        || not_found(OandaAPI::Resource::Account, { account_name: account_name })
+        || not_found(OandaAPI::Resource::Account, account_name: account_name)
     end
 
     private
 
-    def get_all_pairs
+    def retrive_all_pairs
       @all_pairs ||= get_pairs.map { |v| v.instrument }
     end
 

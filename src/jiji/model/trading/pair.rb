@@ -12,12 +12,16 @@ module Jiji::Model::Trading
     include Jiji::Web::Transport::Transportable
 
     attr_reader :name, :internal_id, :pip, :max_trade_units
+    attr_reader :precision, :margin_rate
 
-    def initialize(name, internal_id, pip, max_trade_units)
+    def initialize(name, internal_id, pip,
+      max_trade_units, precision, margin_rate)
       @name            = name
       @internal_id     = internal_id
       @pip             = pip
       @max_trade_units = max_trade_units
+      @precision       = precision
+      @margin_rate     = margin_rate
     end
 
   end

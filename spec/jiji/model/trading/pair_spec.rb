@@ -35,7 +35,8 @@ describe Jiji::Model::Trading::Pairs do
     it '一覧を再読み込みできる' do
       @pairs.all
       @provider.get.pairs = [
-        Jiji::Model::Trading::Pair.new(:EURJPY, 'EUR_JPY', 0.01,   10_000_000)
+        Jiji::Model::Trading::Pair.new(
+          :EURJPY, 'EUR_JPY', 0.01, 10_000_000, 0.001, 0.04)
       ]
       expect(@pairs.all.size).to eq(3)
 
@@ -57,7 +58,8 @@ describe Jiji::Model::Trading::Pairs do
   it '証券会社が変更されると、一覧が再読み込みされる' do
     securities = @factory.create(:MOCK)
     securities.pairs = [
-      Jiji::Model::Trading::Pair.new(:EURJPY, 'EUR_JPY', 0.01,   10_000_000)
+      Jiji::Model::Trading::Pair.new(
+        :EURJPY, 'EUR_JPY', 0.01, 10_000_000, 0.001, 0.04)
     ]
     expect(@pairs.all.size).to eq(3)
 

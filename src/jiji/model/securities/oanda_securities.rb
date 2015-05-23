@@ -26,9 +26,16 @@ module Jiji::Model::Securities
     end
 
     def retrieve_pairs
-      @client.instruments(account_id: @account.account_id).get.map do|item|
+      @client.instruments({
+        account_id: @account.account_id,
+        fields: [
+          "displayName", "pip", "maxTradeUnits",
+          "precision", "marginRate"
+        ]
+      }).get.map do|item|
         Pair.new(convert_pair_name(item.instrument),
-          item.instrument, item.pip.to_f, item.max_trade_units.to_i)
+          item.instrument, item.pip.to_f, item.max_trade_units.to_i,
+          item.precision.to_f, item.margin_rate.to_f )
       end
     end
 
@@ -51,7 +58,7 @@ module Jiji::Model::Securities
     private
 
     def retrieve_all_pairs
-      @all_pairs ||= pairs.map { |v| v.instrument }
+      @all_pairs ||= retrieve_pairs.map { |v| v.internal_id }
     end
 
     def create_client(token)

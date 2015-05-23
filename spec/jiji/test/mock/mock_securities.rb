@@ -18,9 +18,9 @@ module Jiji::Test::Mock
 
     def retrieve_pairs
       @pairs ||= [
-        Pair.new(:EURJPY, 'EUR_JPY', 0.01,   10_000_000),
-        Pair.new(:EURUSD, 'EUR_USD', 0.0001, 10_000_000),
-        Pair.new(:USDJPY, 'USD_JPY', 0.01,   10_000_000)
+        Pair.new(:EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04),
+        Pair.new(:EURUSD, 'EUR_USD', 0.0001, 10_000_000, 0.00001, 0.04),
+        Pair.new(:USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04)
       ]
     end
 

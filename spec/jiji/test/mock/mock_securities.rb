@@ -34,8 +34,12 @@ module Jiji::Test::Mock
     end
 
     def self.register_securities_to(factory)
-      factory.register_securities(:MOCK, 'モック', [], self)
+      factory.register_securities(:MOCK,  'モック',  [], self)
+      factory.register_securities(:MOCK2, 'モック2', [], MockSecurities2)
     end
 
+  end
+
+  class MockSecurities2 < MockSecurities
   end
 end

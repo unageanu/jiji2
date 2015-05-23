@@ -31,6 +31,10 @@ describe Jiji::Model::Securities::SecuritiesFactory do
       id:                       :MOCK,
       display_name:             'モック',
       configuration_definition: []
+    }, {
+      id:                       :MOCK2,
+      display_name:             'モック2',
+      configuration_definition: []
     }])
   end
 

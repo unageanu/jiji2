@@ -43,6 +43,38 @@ describe Jiji::Utils::ValueObject do
   end
 
   shared_examples 'valueオブジェクトの仕様' do
+    it 'to_h ですべてのインスタンス変数を保持するハッシュに変換できる' do
+      object = @cl.new('o', 100, nil, [1, 2, 3], a: 'b', b: 10)
+      hash   = object.to_h
+
+      expect(hash).to eq({
+        string: 'o',
+        number: 100,
+        object: nil,
+        array:  [1, 2, 3],
+        hash:   {
+          a: 'b',
+          b: 10
+        }
+      })
+    end
+
+    it 'from_h でハッシュから値を読み込める' do
+      object = @cl.new('', 99, nil, [3, 2, 3], a: 'x', b: 10)
+      object.from_h({
+        string: 'o',
+        number: 100,
+        object: nil,
+        array:  [1, 2, 3],
+        hash:   {
+          a: 'b',
+          b: 10
+        }
+      })
+      expect(object).to eq(
+        @cl.new('o', 100, nil, [1, 2, 3], a: 'b', b: 10))
+    end
+
     it '同じオブジェクトの場合、 ==, eql, hash は同じになる' do
       object1 = @cl.new('o', 100, nil, [1, 2, 3], a: 'b', b: 10)
       object2 = @cl.new('o', 100, nil, [1, 2, 3], a: 'b', b: 10)

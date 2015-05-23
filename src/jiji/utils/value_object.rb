@@ -16,6 +16,19 @@ module Jiji::Utils::ValueObject
     hash
   end
 
+  def to_h
+    instance_variables.each_with_object({}) do |name, obj|
+      obj[name[1..-1].to_sym] = instance_variable_get(name)
+    end
+  end
+
+  def from_h(hash)
+    hash.each do|k, v|
+      key = '@' + k.to_s
+      instance_variable_set(key, v) if instance_variable_defined?(key)
+    end
+  end
+
   protected
 
   def values

@@ -4,10 +4,9 @@ require 'jiji/test/test_configuration'
 require 'jiji/model/securities/oanda_securities'
 
 describe Jiji::Model::Securities::OandaSecurities do
-
   before(:example) do
     @client = Jiji::Model::Securities::OandaDemoSecurities.new(
-      access_token: ENV['OANDA_API_ACCESS_TOKEN'] )
+      access_token: ENV['OANDA_API_ACCESS_TOKEN'])
   end
 
   after(:example) do
@@ -16,7 +15,7 @@ describe Jiji::Model::Securities::OandaSecurities do
   it '不正なトークンを指定した場合、エラー' do
     expect do
       Jiji::Model::Securities::OandaDemoSecurities.new(
-        access_token:'illegal_token')
+        access_token: 'illegal_token')
     end.to raise_exception(OandaAPI::RequestError)
   end
 
@@ -40,7 +39,7 @@ describe Jiji::Model::Securities::OandaSecurities do
   describe 'pairs' do
     it '通貨ペアの一覧を取得できる。' do
       pairs = @client.retrieve_pairs
-      #p pairs
+      # p pairs
       expect(pairs.length).to be > 0
       pairs.each do |pair|
         expect(pair.name).not_to be nil

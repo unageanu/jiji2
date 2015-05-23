@@ -5,7 +5,6 @@ require 'jiji/model/securities/securities_factory'
 require 'jiji/test/mock/mock_securities'
 
 describe Jiji::Model::Securities::SecuritiesFactory do
-
   before(:example) do
     @factory = Jiji::Model::Securities::SecuritiesFactory.new
     Jiji::Test::Mock::MockSecurities.register_securities_to @factory
@@ -17,20 +16,20 @@ describe Jiji::Model::Securities::SecuritiesFactory do
   it '利用可能な証券会社の一覧を取得できる' do
     securities = @factory.available_securities
     expect(securities).to eq([{
-      id: :OANDA_JAPAN,
-      display_name: 'OANDA Japan',
+      id:                       :OANDA_JAPAN,
+      display_name:             'OANDA Japan',
       configuration_definition: [
-        { id: :access_token, description: "アクセストークン" }
+        { id: :access_token, description: 'アクセストークン' }
       ]
     }, {
-      id: :OANDA_JAPAN_DEMO,
-      display_name: 'OANDA Japan DEMO',
+      id:                       :OANDA_JAPAN_DEMO,
+      display_name:             'OANDA Japan DEMO',
       configuration_definition: [
-        { id: :access_token, description: "アクセストークン" }
+        { id: :access_token, description: 'アクセストークン' }
       ]
     }, {
-      id: :MOCK,
-      display_name: 'モック',
+      id:                       :MOCK,
+      display_name:             'モック',
       configuration_definition: []
     }])
   end
@@ -39,10 +38,10 @@ describe Jiji::Model::Securities::SecuritiesFactory do
     it 'idを指定して、証券会社の情報を取得できる' do
       info = @factory.get(:OANDA_JAPAN)
       expect(info).to eq({
-        id: :OANDA_JAPAN,
-        display_name: 'OANDA Japan',
+        id:                       :OANDA_JAPAN,
+        display_name:             'OANDA Japan',
         configuration_definition: [
-          { id: :access_token, description: "アクセストークン" }
+          { id: :access_token, description: 'アクセストークン' }
         ]
       })
     end
@@ -55,7 +54,7 @@ describe Jiji::Model::Securities::SecuritiesFactory do
 
   describe 'create' do
     it 'idを指定して、インスタンスを生成できる' do
-      securities = @factory.create(:MOCK, {aa:'bb'})
+      securities = @factory.create(:MOCK, { aa: 'bb' })
       expect(securities).not_to be nil
       expect(securities.config[:aa]).to eq 'bb'
     end
@@ -65,5 +64,4 @@ describe Jiji::Model::Securities::SecuritiesFactory do
       end.to raise_exception(Jiji::Errors::NotFoundException)
     end
   end
-
 end

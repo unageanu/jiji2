@@ -1,105 +1,77 @@
 # coding: utf-8
 
+require 'encase'
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
-require 'thread'
-require 'singleton'
 require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
   class Pair
 
-    include Mongoid::Document
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
-    store_in collection: 'pairs'
+    attr_reader :name, :internal_id, :pip, :max_trade_units
 
-    field :pair_id,       type: Integer
-    field :name,          type: Symbol
-
-    index({ pair_id: 1 }, unique: true, name: 'pairs_pair_id_index')
-    index({ name: 1 }, unique: true, name: 'pairs_name_index')
-
-    def to_h
-      { pair_id: pair_id, name: name }
+    def initialize(name, internal_id, pip, max_trade_units)
+      @name            = name
+      @internal_id     = internal_id
+      @pip             = pip
+      @max_trade_units = max_trade_units
     end
-
-    attr_readonly :pair_id, :name
 
   end
 
   class Pairs
 
-    include Singleton
+    include Encase
     include Jiji::Errors
+
+    needs :securities_provider
 
     def initialize
       @lock = Mutex.new
-      load
     end
 
-    def register(name)
-      name = name.to_sym
-      @lock.synchronize do
-        unless @by_name.include?(name)
-          pair = register_new_pair(name)
-          @by_name[name]       = pair
-          @by_id[pair.pair_id.to_s] = pair
-        end
-        @by_name[name]
-      end
+    def on_inject
+      securities_provider.add_observer self
     end
 
-    def create_or_get(name)
-      register(name)
-    end
-
-    def get_by_id(id)
-      @lock.synchronize do
-        @by_id[id.to_s] || not_found('pair', id: id)
-      end
+    def update(ev)
+      reload
     end
 
     def get_by_name(name)
       @lock.synchronize do
+        load_if_required
         @by_name[name] || not_found('pair', name: name)
       end
     end
 
     def all
       @lock.synchronize do
-        @by_id.values.sort_by(&:id)
+        load_if_required
+        @by_name.values.sort_by(&:name)
       end
     end
 
     def reload
-      load
+      @lock.synchronize do
+        load
+      end
     end
 
     private
 
+    def load_if_required
+      load unless @by_name
+    end
+
     def load
-      @by_name = {}
-      @by_id   = {}
-      Pair.each do |pair|
-        @by_name[pair.name]  = pair
-        @by_id[pair.pair_id.to_s] = pair
+      securities = securities_provider.get
+      @by_name = securities.retrieve_pairs.each_with_object({}) do|pair, r|
+        r[pair.name] = pair
       end
-    end
-
-    def register_new_pair(name)
-      pair = Pair.new do |p|
-        p.name    = name
-        p.pair_id = new_id
-      end
-      pair.save
-      pair
-    end
-
-    def new_id
-      max = @by_name.values.max_by(&:pair_id)
-      max ? max.pair_id + 1 : 0
     end
 
   end

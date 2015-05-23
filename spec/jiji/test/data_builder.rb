@@ -125,7 +125,6 @@ BODY
 
     def clean
       Tick.delete_all
-      Pair.delete_all
       Internal::Swap.delete_all
       Internal::TradingUnit.delete_all
       BackTest.delete_all

@@ -17,6 +17,7 @@ module Jiji::Composing::Configurators
         AgentConfigurator.new,
         GraphConfigurator.new,
         SettingsConfigurator.new,
+        SecuritiesConfigurator.new,
         TradingConfigurator.new
       ]
     end

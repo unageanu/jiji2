@@ -3,7 +3,6 @@
 require 'oanda_api'
 
 module Jiji::Model::Securities
-
   OandaAPI.configure do |config|
     config.use_compression = true
     config.use_request_throttling = true
@@ -15,11 +14,11 @@ module Jiji::Model::Securities
     include Jiji::Model::Trading
 
     def self.configuration_definition
-      [{ id: :access_token, description: "アクセストークン" }]
+      [{ id: :access_token, description: 'アクセストークン' }]
     end
 
-    def initialize( config )
-      @client  = create_client( config[:access_token] )
+    def initialize(config)
+      @client  = create_client(config[:access_token])
       @account = find_account(config[:account_name] || 'Primary')
     end
 
@@ -27,14 +26,14 @@ module Jiji::Model::Securities
     end
 
     def retrieve_pairs
-      @client.instruments(account_id: @account.account_id).get.map {|item|
+      @client.instruments(account_id: @account.account_id).get.map do|item|
         Pair.new(convert_pair_name(item.instrument),
           item.instrument, item.pip.to_f, item.max_trade_units.to_i)
-      }
+      end
     end
 
     def retrieve_current_ticks
-      @client.prices(instruments: retrive_all_pairs).get
+      @client.prices(instruments: retrieve_all_pairs).get
     end
 
     def order(_pair, sell_or_buy, count)
@@ -51,7 +50,7 @@ module Jiji::Model::Securities
 
     private
 
-    def retrive_all_pairs
+    def retrieve_all_pairs
       @all_pairs ||= pairs.map { |v| v.instrument }
     end
 
@@ -66,9 +65,10 @@ module Jiji::Model::Securities
   end
 
   class OandaDemoSecurities < OandaSecurities
+
     def create_client(token)
       @client  = OandaAPI::Client::TokenClient.new(:practice, token)
     end
-  end
 
+  end
 end

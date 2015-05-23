@@ -6,66 +6,64 @@ require 'jiji/test/data_builder'
 describe Jiji::Model::Trading::Pairs do
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
+    @container    = Jiji::Test::TestContainerFactory.instance.new_container
+    @pairs        = @container.lookup(:pairs)
+    @provider     = @container.lookup(:securities_provider)
+    @factory      = @container.lookup(:securities_factory)
   end
 
   after(:example) do
     @data_builder.clean
   end
 
-  it '通貨ペアの取得、参照ができる' do
-    instance = Jiji::Model::Trading::Pairs.instance
+  describe 'get_by_name' do
+    it '名前に対応する通貨ペアを取得できる' do
+      pair = @pairs.get_by_name(:EURJPY)
+      expect(pair.name).to eq(:EURJPY)
+      pair = @pairs.get_by_name(:EURUSD)
+      expect(pair.name).to eq(:EURUSD)
+    end
 
-    pair1 = instance.create_or_get(:EURJPY)
-    pair2 = instance.create_or_get(:USDJPY)
-    pair3 = instance.create_or_get(:EURJPY)
-
-    expect(pair1.name).to eq(:EURJPY)
-    expect(pair2.name).to eq(:USDJPY)
-    expect(pair3.name).to eq(:EURJPY)
-
-    expect(pair1.pair_id == pair2.pair_id).to eq(false)
-    expect(pair1.pair_id == pair3.pair_id).to eq(true)
-    expect(pair3.pair_id == pair2.pair_id).to eq(false)
-
-    pair10 = instance.get_by_id(pair1.pair_id)
-    expect(pair10.name).to eq(:EURJPY)
-    expect(pair10.pair_id == pair1.pair_id).to eq(true)
-
-    expect do
-      instance.get_by_id(9999)
-    end.to raise_error(Errors::NotFoundException)
-
-    instance.reload
-    pair4 = instance.create_or_get(:EURJPY)
-    pair5 = instance.create_or_get(:EURUSD)
-
-    expect(pair4.name).to eq(:EURJPY)
-    expect(pair5.name).to eq(:EURUSD)
-
-    expect(pair1.pair_id == pair4.pair_id).to eq(true)
-    expect(pair1.pair_id == pair5.pair_id).to eq(false)
-
-    pair10 = instance.get_by_id(pair1.pair_id)
-    expect(pair10.name).to eq(:EURJPY)
-    expect(pair10.pair_id == pair1.pair_id).to eq(true)
-
-    expect do
-      instance.get_by_id(9999)
-    end.to raise_error(Errors::NotFoundException)
+    it '名前に対応する通貨ペアが存在しない場合エラー' do
+      expect do
+        @pairs.get_by_name(:NOT_FOUND)
+      end.to raise_error(Errors::NotFoundException)
+    end
   end
 
-  it 'allで登録済みの通貨ペアを取得できる' do
-    instance = Jiji::Model::Trading::Pairs.instance
-    instance.reload
+  describe 'reload' do
+    it '一覧を再読み込みできる' do
+      @pairs.all
+      @provider.get.pairs = [
+        Jiji::Model::Trading::Pair.new(:EURJPY, 'EUR_JPY', 0.01,   10_000_000)
+      ]
+      expect(@pairs.all.size).to eq(3)
 
-    expect(instance.all.size).to eq(0)
+      @pairs.reload
+      all = @pairs.all
+      expect(all.size).to eq(1)
+      expect(all[0].name).to eq(:EURJPY)
+    end
+  end
 
-    instance.create_or_get(:EURJPY)
-    instance.create_or_get(:USDJPY)
-
-    all = instance.all
-    expect(all.size).to eq(2)
+  it 'allで通貨ペア一覧を取得できる' do
+    all = @pairs.all
+    expect(all.size).to eq(3)
     expect(all[0].name).to eq(:EURJPY)
-    expect(all[1].name).to eq(:USDJPY)
+    expect(all[1].name).to eq(:EURUSD)
+    expect(all[2].name).to eq(:USDJPY)
+  end
+
+  it '証券会社が変更されると、一覧が再読み込みされる' do
+    securities = @factory.create(:MOCK)
+    securities.pairs = [
+      Jiji::Model::Trading::Pair.new(:EURJPY, 'EUR_JPY', 0.01,   10_000_000)
+    ]
+    expect(@pairs.all.size).to eq(3)
+
+    @provider.set securities
+    all = @pairs.all
+    expect(all.size).to eq(1)
+    expect(all[0].name).to eq(:EURJPY)
   end
 end

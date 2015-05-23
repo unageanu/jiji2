@@ -1,7 +1,6 @@
 # coding: utf-8
 
 module Jiji::Model::Securities
-
   class NilSecurities
 
     include Jiji::Errors

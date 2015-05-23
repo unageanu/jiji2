@@ -57,6 +57,10 @@ module Jiji::Errors
 
   end
 
+  def not_iinitialized
+    fail Jiji::Errors::NotInitializedException
+  end
+
   def auth_failed
     fail Jiji::Errors::AuthFailedException
   end

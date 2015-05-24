@@ -52,17 +52,17 @@ describe Jiji::Model::Securities::OandaSecurities do
     end
   end
 
-  # describe 'get_current_ticks' do
-  #   it '通貨ペアごとの現在価格を取得できる。' do
-  #     ticks = @client.current_ticks
-  #     # p ticks
-  #     expect(ticks.length).to be > 0
-  #     ticks.each do |tick|
-  #       expect(tick.instrument).not_to be nil
-  #       expect(tick.time).not_to be nil
-  #       expect(tick.bid).to be > 0
-  #       expect(tick.ask).to be > 0
-  #     end
-  #   end
-  # end
+  describe 'retrieve_current_tick' do
+    it '通貨ペアごとの現在価格を取得できる。' do
+      tick = @client.retrieve_current_tick
+      #p tick
+      expect(tick.length).to be > 0
+      expect(tick.timestamp).not_to be nil
+      expect(tick.timestamp.class).to be Time
+      tick.each do |k, v|
+        expect(v.bid).to be > 0
+        expect(v.ask).to be > 0
+      end
+    end
+  end
 end

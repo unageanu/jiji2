@@ -39,7 +39,18 @@ module Jiji::Model::Securities
       end
     end
 
-    def retrieve_current_ticks
+    def retrieve_current_tick
+      prices = @client.prices(instruments: retrieve_all_pairs).get
+      timestamp = nil
+      values = prices.each_with_object({}) do |p,r|
+        timestamp ||= p.time
+        r[convert_pair_name(p.instrument)] =
+          Tick::Value.new( p.ask.to_f, p.bid.to_f )
+      end
+      Tick.new( values, timestamp )
+    end
+
+    def retrieve_rate_history
       @client.prices(instruments: retrieve_all_pairs).get
     end
 

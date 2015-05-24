@@ -124,7 +124,6 @@ BODY
     end
 
     def clean
-      Tick.delete_all
       Internal::Swap.delete_all
       Internal::TradingUnit.delete_all
       BackTest.delete_all

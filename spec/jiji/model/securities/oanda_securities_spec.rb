@@ -46,6 +46,8 @@ describe Jiji::Model::Securities::OandaSecurities do
         expect(pair.internal_id).not_to be nil
         expect(pair.pip).to be > 0
         expect(pair.max_trade_units).to be > 0
+        expect(pair.precision).to be > 0
+        expect(pair.margin_rate).to be > 0
       end
     end
   end

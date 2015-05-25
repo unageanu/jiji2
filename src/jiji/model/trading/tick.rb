@@ -10,6 +10,7 @@ module Jiji::Model::Trading
 
     include Enumerable
     include Jiji::Utils::ValueObject
+    include Jiji::Errors
 
     attr_reader :values, :timestamp
 
@@ -28,6 +29,20 @@ module Jiji::Model::Trading
 
     def length
       values.length
+    end
+
+    def +(other)
+      illegal_argument unless self.timestamp == other.timestamp
+      Tick.new( other.values.merge(self.values), timestamp )
+    end
+
+    def self.merge(a, b)
+      hash = a.each_with_object({}) {|tick,r| r[tick.timestamp.to_i] = tick }
+      b.each do |tick|
+        key = tick.timestamp.to_i
+        hash[key] = hash[key] ? hash[key] + tick : tick
+      end
+      hash.values.sort_by {|tick| tick.timestamp}
     end
 
     class Value

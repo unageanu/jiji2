@@ -65,4 +65,41 @@ describe Jiji::Model::Securities::OandaSecurities do
       end
     end
   end
+
+  describe 'retrieve_tick_history' do
+    it '通貨ペアの価格履歴を取得できる。' do
+      ticks = @client.retrieve_tick_history(:EURJPY,
+        Time.utc(2015,5,22,12,00,00), Time.utc(2015,5,22,12,15,00))
+      #p ticks
+      expect(ticks.length).to be 15*4
+      time = Time.utc(2015,5,22,12,00,00)
+      ticks.each do |tick|
+        expect(tick.timestamp).to eq time
+        expect(tick.length).to be 1
+        v = tick[:EURJPY]
+        expect(v.bid).to be > 0
+        expect(v.ask).to be > 0
+        time = Time.at(time.to_i + 15).utc
+      end
+    end
+  end
+
+  describe 'retrieve_rate_history' do
+    it '通貨ペアの4本値の履歴を取得できる。' do
+      rates = @client.retrieve_rate_history(:EURJPY, :one_hour,
+        Time.utc(2015,5,21,12,00,00), Time.utc(2015,5,22,12,00,00))
+      #p ticks
+      expect(rates.length).to be 24
+      time = Time.utc(2015,5,21,12,00,00)
+      rates.each do |rate|
+        expect(rate.timestamp).to eq time
+        expect(rate.open).to be > 0
+        expect(rate.close).to be > 0
+        expect(rate.high).to be > 0
+        expect(rate.low).to be > 0
+        time = Time.at(time.to_i + 60*60).utc
+      end
+    end
+  end
+
 end

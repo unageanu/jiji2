@@ -26,7 +26,7 @@ module Jiji::Test
 
     def new_tick_value(seed)
       Tick::Value.new(
-        100.00 + seed, 100.003 + seed, 2 + seed, 20 + seed)
+        100.00 + seed, 100.003 + seed)
     end
 
     def new_swap(seed, pair_id = 1, timestamp = Time.at(0))

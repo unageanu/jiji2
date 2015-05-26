@@ -29,8 +29,8 @@ module Jiji::Test
     end
 
     def new_position(seed, back_test_id = nil,
-        pair_id = 1, timestamp = Time.at(seed))
-      Position.create(back_test_id, nil, pair_id,
+        pair_name = :EURJPY, timestamp = Time.at(seed))
+      Position.create(back_test_id, nil, pair_name,
         seed, 10_000, seed.even? ? :buy : :sell, new_tick(seed, timestamp))
     end
 
@@ -65,7 +65,9 @@ BODY
         'name'       => "テスト#{seed}",
         'start_time' => Time.at(seed * 100),
         'end_time'   => Time.at((seed + 1) * 200),
-        'memo'       => "メモ#{seed}")
+        'memo'       => "メモ#{seed}",
+        'pairs'      => [:EURJPY, :EURUSD]
+      )
     end
 
     def register_agent(seed)

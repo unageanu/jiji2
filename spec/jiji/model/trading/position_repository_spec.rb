@@ -13,8 +13,6 @@ describe Jiji::Model::Trading::PositionRepository do
     @position_repository  = @container.lookup(:position_repository)
     @time_source          = @container.lookup(:time_source)
 
-    @data_builder.register_ticks(5, 60)
-
     @test1 = @data_builder.register_back_test(1, @back_test_repository)
     @test2 = @data_builder.register_back_test(2, @back_test_repository)
     @test3 = @data_builder.register_back_test(3, @back_test_repository)

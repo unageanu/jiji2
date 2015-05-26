@@ -11,6 +11,7 @@ module Jiji::Model::Trading
     needs :securities_provider
 
     def fetch(pairs, start_time, end_time)
+      illegal_argument('illegal pairs') if pairs.blank? || pairs.empty?
       pairs.reduce([]) do |ticks, pair|
         Tick.merge(ticks, securities_provider.get.retrieve_tick_history(
           pair, start_time, end_time))

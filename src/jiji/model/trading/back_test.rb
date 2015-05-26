@@ -49,6 +49,9 @@ module Jiji::Model::Trading
       presence: { strict: true }
     validates :end_time,
       presence: { strict: true }
+    validates :pairs,
+      presence: { strict: true },
+      length:   { minimum: 1 }
 
     index(
       { created_at: 1, id: 1 },

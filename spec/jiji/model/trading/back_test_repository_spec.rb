@@ -17,7 +17,6 @@ describe Jiji::Model::Trading::BackTestRepository do
   end
 
   it 'テストを追加できる' do
-    @data_builder.register_ticks(5, 60)
 
     expect(@repository.all.length).to be 0
 
@@ -25,7 +24,8 @@ describe Jiji::Model::Trading::BackTestRepository do
       'name'       => 'テスト',
       'start_time' => Time.at(100),
       'end_time'   => Time.at(200),
-      'memo'       => 'メモ'
+      'memo'       => 'メモ',
+      'pairs'      => [:EURJPY, :EURUSD]
     })
 
     expect(test.name).to eq 'テスト'
@@ -39,7 +39,8 @@ describe Jiji::Model::Trading::BackTestRepository do
     test2 = @repository.register({
       'name'       => 'テスト2',
       'start_time' => Time.at(100),
-      'end_time'   => Time.at(300)
+      'end_time'   => Time.at(300),
+      'pairs'      => [:EURJPY, :EURUSD]
     })
 
     expect(test2.name).to eq 'テスト2'
@@ -54,7 +55,6 @@ describe Jiji::Model::Trading::BackTestRepository do
 
   context 'テストが3つ登録されている場合' do
     before(:example) do
-      @data_builder.register_ticks(5, 60)
 
       3.times do |i|
         @time_source.set(Time.at(i))
@@ -63,7 +63,8 @@ describe Jiji::Model::Trading::BackTestRepository do
           'name'       => "テスト#{i}",
           'start_time' => Time.at(100),
           'end_time'   => Time.at(200),
-          'memo'       => 'メモ'
+          'memo'       => 'メモ',
+          'pairs'      => [:EURJPY, :EURUSD]
         })
       end
     end
@@ -103,7 +104,8 @@ describe Jiji::Model::Trading::BackTestRepository do
           'name'       => nil,
           'start_time' => Time.at(100),
           'end_time'   => Time.at(200),
-          'memo'       => 'メモ'
+          'memo'       => 'メモ',
+          'pairs'      => [:EURJPY, :EURUSD]
         })
       end.to raise_exception(ActiveModel::StrictValidationFailed)
 
@@ -112,7 +114,8 @@ describe Jiji::Model::Trading::BackTestRepository do
           'name'       => '',
           'start_time' => Time.at(100),
           'end_time'   => Time.at(200),
-          'memo'       => 'メモ'
+          'memo'       => 'メモ',
+          'pairs'      => [:EURJPY, :EURUSD]
         })
       end.to raise_exception(ActiveModel::StrictValidationFailed)
 
@@ -121,7 +124,8 @@ describe Jiji::Model::Trading::BackTestRepository do
           'name'       => 'a' * 201,
           'start_time' => Time.at(100),
           'end_time'   => Time.at(200),
-          'memo'       => 'メモ'
+          'memo'       => 'メモ',
+          'pairs'      => [:EURJPY, :EURUSD]
         })
       end.to raise_exception(ActiveModel::StrictValidationFailed)
     end
@@ -132,7 +136,8 @@ describe Jiji::Model::Trading::BackTestRepository do
           'name'       => '名前',
           'start_time' => Time.at(100),
           'end_time'   => Time.at(200),
-          'memo'       => 'a' * 2001
+          'memo'       => 'a' * 2001,
+          'pairs'      => [:EURJPY, :EURUSD]
         })
       end.to raise_exception(ActiveModel::StrictValidationFailed)
     end
@@ -143,7 +148,8 @@ describe Jiji::Model::Trading::BackTestRepository do
           'name'       => '名前',
           'start_time' => nil,
           'end_time'   => Time.at(200),
-          'memo'       => 'メモ'
+          'memo'       => 'メモ',
+          'pairs'      => [:EURJPY, :EURUSD]
         })
       end.to raise_exception(ArgumentError)
 
@@ -152,6 +158,28 @@ describe Jiji::Model::Trading::BackTestRepository do
           'name'       => '名前',
           'start_time' => Time.at(100),
           'end_time'   => nil,
+          'memo'       => 'メモ',
+          'pairs'      => [:EURJPY, :EURUSD]
+        })
+      end.to raise_exception(ArgumentError)
+    end
+
+    it '通貨ペアが不正な場合エラーになる' do
+      expect do
+        @repository.register({
+          'name'       => '名前',
+          'start_time' => Time.at(100),
+          'end_time'   => Time.at(200),
+          'memo'       => 'メモ',
+          'pairs'      => []
+        })
+      end.to raise_exception(ArgumentError)
+
+      expect do
+        @repository.register({
+          'name'       => '名前',
+          'start_time' => Time.at(100),
+          'end_time'   => Time.at(200),
           'memo'       => 'メモ'
         })
       end.to raise_exception(ArgumentError)

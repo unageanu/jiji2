@@ -20,9 +20,9 @@ module Jiji::Test::Mock
 
     def retrieve_pairs
       [
-        Pair.new(:EURJPY, 10_000),
-        Pair.new(:EURUSD, 10_000),
-        Pair.new(:USDJPY, 10_000)
+        Pair.new(:EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04),
+        Pair.new(:EURUSD, 'EUR_USD', 0.0001, 10_000_000, 0.00001, 0.04),
+        Pair.new(:USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04)
       ]
     end
 
@@ -37,12 +37,12 @@ module Jiji::Test::Mock
         r[pair_name] = new_tick_value(now.sec % 10)
         r
       end
-      Tick.create(values, now)
+      Tick.new(values, now)
     end
 
     def new_tick_value(seed)
       Tick::Value.new(
-        100.00 + seed, 100.003 + seed, 2 + seed, 20 + seed)
+        100.00 + seed, 100.003 + seed)
     end
 
   end

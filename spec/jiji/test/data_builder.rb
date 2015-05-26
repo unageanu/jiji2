@@ -21,29 +21,11 @@ module Jiji::Test
         r[pair_name] = new_tick_value(seed)
         r
       end
-      Tick.create(values, timestamp)
+      Tick.new(values, timestamp)
     end
 
     def new_tick_value(seed)
-      Tick::Value.new(
-        100.00 + seed, 100.003 + seed)
-    end
-
-    def new_swap(seed, pair_id = 1, timestamp = Time.at(0))
-      Internal::Swap.new do |s|
-        s.pair_id   = pair_id
-        s.buy_swap  =  2 + seed
-        s.sell_swap = 20 + seed
-        s.timestamp = timestamp
-      end
-    end
-
-    def new_trading_unit(seed, pair_id = 1, timestamp = Time.at(0))
-      Internal::TradingUnit.new do |s|
-        s.pair_id    = pair_id
-        s.trading_unit = 10_000 * seed
-        s.timestamp  = timestamp
-      end
+      Tick::Value.new( 100.00 + seed, 100.003 + seed)
     end
 
     def new_position(seed, back_test_id = nil,
@@ -78,18 +60,6 @@ BODY
       TradingContext.new(nil, broker, time_source, logger)
     end
 
-    def register_ticks(count, interval = 20)
-      count.times do |i|
-        t = new_tick(i % 10, Time.at(interval * i))
-        t.save
-
-        t.each do |v|
-          register_swap(v[0], v[1], t.timestamp)
-          register_trading_unit(v[0], t.timestamp)
-        end
-      end
-    end
-
     def register_back_test(seed, repository)
       repository.register(
         'name'       => "テスト#{seed}",
@@ -104,28 +74,7 @@ BODY
         "class Foo#{seed}; def to_s; return \"xxx#{seed}\"; end; end")
     end
 
-    def register_swap(pair_id, tick, timestamp)
-      swap = Internal::Swap.new do |s|
-        s.pair_id   = Pairs.instance.create_or_get(pair_id).pair_id
-        s.buy_swap  = tick.buy_swap
-        s.sell_swap = tick.sell_swap
-        s.timestamp = timestamp
-      end
-      swap.save
-    end
-
-    def register_trading_unit(pair_id, timestamp)
-      trading_unit = Internal::TradingUnit.new do |s|
-        s.pair_id      = Pairs.instance.create_or_get(pair_id).pair_id
-        s.trading_unit = 10_000
-        s.timestamp    = timestamp
-      end
-      trading_unit.save
-    end
-
     def clean
-      Internal::Swap.delete_all
-      Internal::TradingUnit.delete_all
       BackTest.delete_all
       Position.delete_all
       Jiji::Model::Agents::AgentSource.delete_all

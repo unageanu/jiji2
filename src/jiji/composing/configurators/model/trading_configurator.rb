@@ -16,7 +16,6 @@ module Jiji::Composing::Configurators
         object :position_repository,         Trading::PositionRepository.new
         object :pairs,                       Trading::Pairs.new
         object :tick_repository,             Trading::TickRepository.new
-        object :rate_fetcher,                Trading::Internal::RateFetcher.new
       end
     end
 

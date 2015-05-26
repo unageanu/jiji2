@@ -21,23 +21,11 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
       context.time_source.set(Time.new(2014, 1, 1, 0, 0, 0))
       job.exec(context, queue)
 
-      expect(context[:rate_saver]).not_to be nil
-      expect(context[:trading_unit_saver]).not_to be nil
-      expect(context[:next_save_point]).to eq Time.new(2014, 1, 1, 1, 0, 0)
-
       context.time_source.set(Time.new(2014, 1, 1, 0, 59, 59))
       job.exec(context, queue)
 
-      expect(context[:rate_saver]).not_to be nil
-      expect(context[:trading_unit_saver]).not_to be nil
-      expect(context[:next_save_point]).to eq Time.new(2014, 1, 1, 1, 0, 0)
-
       context.time_source.set(Time.new(2014, 1, 1, 1, 0, 0))
       job.exec(context, queue)
-
-      expect(context[:rate_saver]).not_to be nil
-      expect(context[:trading_unit_saver]).not_to be nil
-      expect(context[:next_save_point]).to eq Time.new(2014, 1, 1, 2, 0, 0)
     end
   end
 

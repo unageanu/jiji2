@@ -8,7 +8,8 @@ module Jiji::Model::Graphing::Internal
     include Jiji::Errors
 
     def fetch(graph_id, start_time, end_time, interval = :one_minute)
-      interval = resolve_collecting_interval(interval)
+      interval = Jiji::Utils::AbstractHistoricalDataFetcher \
+        .resolve_collecting_interval(interval)
       q = fetch_data(graph_id, start_time, end_time)
       q = aggregate_by_interval(q, binding)
       q = convert_results(q, interval)

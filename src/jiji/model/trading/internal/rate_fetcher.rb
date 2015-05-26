@@ -10,7 +10,8 @@ module Jiji::Model::Trading::Internal
     def fetch(pair_name, start_time, end_time, interval = :one_minute)
       pair = Jiji::Model::Trading::Pairs.instance.get_by_name(pair_name)
       swaps = Swaps.create(start_time, end_time)
-      interval = resolve_collecting_interval(interval)
+      interval = Jiji::Utils::AbstractHistoricalDataFetcher \
+        .resolve_collecting_interval(interval)
       q = fetch_ticks_within(start_time, end_time)
       q = aggregate_by_interval(q, binding)
       q = convert_results(q, interval, pair, swaps)

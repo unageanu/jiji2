@@ -49,7 +49,7 @@ module Jiji::Utils
     end
 
     # rubocop:disable Metrics/CyclomaticComplexity
-    def resolve_collecting_interval(interval)
+    def self.resolve_collecting_interval(interval)
       m = 60 * 1000
       case interval
       when :one_minute      then       1 * m

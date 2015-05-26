@@ -33,7 +33,8 @@ module Jiji::Model::Securities
           "precision", "marginRate"
         ]
       }).get.map do|item|
-        Pair.new(convert_instrument_to_pair_name(item.instrument),
+        Pair.new(
+        OandaSecurities.convert_instrument_to_pair_name(item.instrument),
           item.instrument, item.pip.to_f, item.max_trade_units.to_i,
           item.precision.to_f, item.margin_rate.to_f )
       end
@@ -44,8 +45,9 @@ module Jiji::Model::Securities
       timestamp = nil
       values = prices.each_with_object({}) do |p,r|
         timestamp ||= p.time
-        r[convert_instrument_to_pair_name(p.instrument)] =
-          Tick::Value.new( p.ask.to_f, p.bid.to_f )
+        pair_name = OandaSecurities.convert_instrument_to_pair_name(
+          p.instrument)
+        r[pair_name] = Tick::Value.new( p.ask.to_f, p.bid.to_f )
       end
       Tick.new( values, timestamp )
     end
@@ -61,11 +63,11 @@ module Jiji::Model::Securities
     end
 
     def retrieve_rate_history( pair_name, interval, start_time, end_time )
-      granularity = convert_interval_to_granularity(interval)
+      granularity = OandaSecurities.convert_interval_to_granularity(interval)
       retrieve_candles( pair_name,
         granularity, start_time, end_time, "midpoint" ).get.map do |item|
         Rate.new( pair_name, item.time, item.open_mid.to_f,
-          item.close_mid.to_f, item.high_mid.to_f, item.low_mid.to_f, )
+          item.close_mid.to_f, item.high_mid.to_f, item.low_mid.to_f )
       end
     end
 
@@ -90,7 +92,7 @@ module Jiji::Model::Securities
     def retrieve_candles( pair_name, interval,
       start_time, end_time, candle_format="bidask" )
       @client.candles({
-        instrument: convert_pair_name_to_instrument(pair_name),
+        instrument: OandaSecurities.convert_pair_name_to_instrument(pair_name),
         granularity: interval,
         candle_format: candle_format,
         start: start_time.utc.to_datetime.rfc3339,
@@ -102,14 +104,14 @@ module Jiji::Model::Securities
       @client  = OandaAPI::Client::TokenClient.new(:live, token)
     end
 
-    def convert_instrument_to_pair_name(instrument)
+    def self.convert_instrument_to_pair_name(instrument)
       instrument.gsub(/\_/, '').to_sym
     end
-    def convert_pair_name_to_instrument(pair_name)
+    def self.convert_pair_name_to_instrument(pair_name)
       "#{pair_name.to_s[0..2]}_#{pair_name.to_s[3..-1]}"
     end
 
-    def convert_interval_to_granularity(interval)
+    def self.convert_interval_to_granularity(interval)
       case interval
       when :one_minute      then 'M1'
       when :fifteen_minutes then 'M15'

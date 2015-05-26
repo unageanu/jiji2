@@ -14,11 +14,11 @@ describe Jiji::Model::Trading::Position do
 
   it 'バックテスト向け設定でPositionを作成できる' do
     position = Jiji::Model::Trading::Position.create(
-      'test', nil, 1, 1, 10_000, :buy, @data_builder.new_tick(1))
+      'test', nil, :EURJPY, 1, 10_000, :buy, @data_builder.new_tick(1))
 
     expect(position.back_test_id).to eq('test')
     expect(position.external_position_id).to eq(nil)
-    expect(position.pair_id).to eq(1)
+    expect(position.pair_name).to eq(:EURJPY)
     expect(position.lot).to eq(1)
     expect(position.trading_unit).to eq(10_000)
     expect(position.sell_or_buy).to eq(:buy)
@@ -33,11 +33,11 @@ describe Jiji::Model::Trading::Position do
     expect(Jiji::Model::Trading::Position.count).to eq(1)
 
     position = Jiji::Model::Trading::Position.create(
-      'test', nil, 2, 2, 10_000, :sell, @data_builder.new_tick(1))
+      'test', nil, :EURUSD, 2, 10_000, :sell, @data_builder.new_tick(1))
 
     expect(position.back_test_id).to eq('test')
     expect(position.external_position_id).to eq(nil)
-    expect(position.pair_id).to eq(2)
+    expect(position.pair_name).to eq(:EURUSD)
     expect(position.lot).to eq(2)
     expect(position.trading_unit).to eq(10_000)
     expect(position.sell_or_buy).to eq(:sell)
@@ -54,11 +54,11 @@ describe Jiji::Model::Trading::Position do
 
   it 'RMT向け設定でPositionを作成できる' do
     position = Jiji::Model::Trading::Position.create(
-      nil, '1', 2, 100, 10_000, :sell, @data_builder.new_tick(2))
+      nil, '1', :EURUSD, 100, 10_000, :sell, @data_builder.new_tick(2))
 
     expect(position.back_test_id).to eq(nil)
     expect(position.external_position_id).to eq('1')
-    expect(position.pair_id).to eq(2)
+    expect(position.pair_name).to eq(:EURUSD)
     expect(position.lot).to eq(100)
     expect(position.trading_unit).to eq(10_000)
     expect(position.sell_or_buy).to eq(:sell)
@@ -75,7 +75,7 @@ describe Jiji::Model::Trading::Position do
 
   it 'update で現在価値を更新できる' do
     position = Jiji::Model::Trading::Position.create(
-      'test', nil, '1', 1, 10_000, :buy, @data_builder.new_tick(1))
+      'test', nil, :EURUSD, 1, 10_000, :buy, @data_builder.new_tick(1))
 
     expect(position.profit_or_loss).to eq(-30)
 
@@ -92,7 +92,7 @@ describe Jiji::Model::Trading::Position do
     expect(position.profit_or_loss).to eq(19_970)
 
     position = Jiji::Model::Trading::Position.create(
-      nil, 1, 1, 10, 10_000, :sell, @data_builder.new_tick(1))
+      nil, 1, :EURUSD, 10, 10_000, :sell, @data_builder.new_tick(1))
 
     expect(position.profit_or_loss).to eq(-300)
 
@@ -117,12 +117,12 @@ describe Jiji::Model::Trading::Position do
 
   it 'close で約定済み状態にできる' do
     position = Jiji::Model::Trading::Position.create(
-      nil, '1', 2, 1, 10_000, :buy, @data_builder.new_tick(1))
+      nil, '1', :EURUSD, 1, 10_000, :buy, @data_builder.new_tick(1))
 
     position.close
     expect(position.back_test_id).to eq(nil)
     expect(position.external_position_id).to eq('1')
-    expect(position.pair_id).to eq(2)
+    expect(position.pair_name).to eq(:EURUSD)
     expect(position.lot).to eq(1)
     expect(position.trading_unit).to eq(10_000)
     expect(position.sell_or_buy).to eq(:buy)
@@ -135,14 +135,14 @@ describe Jiji::Model::Trading::Position do
     expect(position.status).to eq(:closed)
 
     position = Jiji::Model::Trading::Position.create(
-      'test', nil, 1, 1, 10_000, :sell, @data_builder.new_tick(1))
+      'test', nil, :EURUSD, 1, 10_000, :sell, @data_builder.new_tick(1))
 
     position.update(@data_builder.new_tick(2, Time.at(100)))
 
     position.close
     expect(position.back_test_id).to eq('test')
     expect(position.external_position_id).to eq(nil)
-    expect(position.pair_id).to eq(1)
+    expect(position.pair_name).to eq(:EURUSD)
     expect(position.lot).to eq(1)
     expect(position.trading_unit).to eq(10_000)
     expect(position.sell_or_buy).to eq(:sell)
@@ -157,13 +157,13 @@ describe Jiji::Model::Trading::Position do
 
   it 'to_hでハッシュに変換できる' do
     position = Jiji::Model::Trading::Position.create(
-      nil, '1', 2, 100, 10_000, :sell, @data_builder.new_tick(2))
+      nil, '1', :EURUSD, 100, 10_000, :sell, @data_builder.new_tick(2))
 
     hash = position.to_h
 
     expect(hash[:back_test_id]).to eq(nil)
     expect(hash[:external_position_id]).to eq('1')
-    expect(hash[:pair_id]).to eq(2)
+    expect(hash[:pair_name]).to eq(:EURUSD)
     expect(hash[:lot]).to eq(100)
     expect(hash[:trading_unit]).to eq(10_000)
     expect(hash[:sell_or_buy]).to eq(:sell)

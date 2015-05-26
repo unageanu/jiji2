@@ -33,8 +33,7 @@ module Jiji::Model::Trading
     end
 
     def self.create_from_tick(pair_name, *ticks)
-      pair = Pairs.instance.create_or_get(pair_name)
-      rate = Rate.new(pair, ticks[0].timestamp, ticks[0][pair_name])
+      rate = Rate.new(pair_name, ticks[0].timestamp, ticks[0][pair_name])
       ticks.each_with_object(rate) do |n, r|
         r << n
       end
@@ -56,7 +55,7 @@ module Jiji::Model::Trading
     end
 
     def <<(tick)
-      value = tick[pair.name]
+      value = tick[pair]
       update_open(value, tick.timestamp)
       update_close(value, tick.timestamp)
       update_high(value)

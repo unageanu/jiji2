@@ -21,7 +21,7 @@ describe Jiji::Model::Trading::Rate do
       @data_builder.new_tick(-10, Time.new(2014, 1, 21, 0, 0, 0))
     )
 
-    expect(rate1.pair.name).to eq(:EURJPY)
+    expect(rate1.pair).to eq(:EURJPY)
     expect(rate1.open.bid).to eq(101)
     expect(rate1.open.ask).to eq(101.003)
     expect(rate1.close.bid).to eq(102)
@@ -31,8 +31,6 @@ describe Jiji::Model::Trading::Rate do
     expect(rate1.low.bid).to eq(90)
     expect(rate1.low.ask).to eq(90.003)
     expect(rate1.timestamp).to eq(Time.new(2014, 1, 1, 0, 0, 0))
-    expect(rate1.buy_swap).to eq(3)
-    expect(rate1.sell_swap).to eq(21)
   end
 
   it 'すべての値が同一である場合、同一とみなされる' do
@@ -75,7 +73,7 @@ describe Jiji::Model::Trading::Rate do
     )
 
     rate = Jiji::Model::Trading::Rate.union(rate1, rate2, rate3)
-    expect(rate.pair.name).to eq(:USDJPY)
+    expect(rate.pair).to eq(:USDJPY)
     expect(rate.open.bid).to eq(104)
     expect(rate.open.ask).to eq(104.003)
     expect(rate.close.bid).to eq(106)
@@ -85,7 +83,5 @@ describe Jiji::Model::Trading::Rate do
     expect(rate.low.bid).to eq(101)
     expect(rate.low.ask).to eq(101.003)
     expect(rate.timestamp).to eq(Time.new(2014, 1, 1, 0, 0, 0))
-    expect(rate.buy_swap).to eq(6)
-    expect(rate.sell_swap).to eq(24)
   end
 end

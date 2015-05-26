@@ -20,6 +20,7 @@ module Jiji::Model::Trading
     needs :time_source
     needs :back_test_thread_pool
     needs :tick_repository
+    needs :securities_provider
     # needs :agents_factory
 
     store_in collection: 'backtests'
@@ -31,6 +32,7 @@ module Jiji::Model::Trading
     field :start_time,    type: Time
     field :end_time,      type: Time
     field :agent_setting, type: Hash
+    field :pairs,         type: Array
 
     validates :name,
       length:   { maximum: 200, strict: true },
@@ -59,6 +61,7 @@ module Jiji::Model::Trading
         id:         _id,
         name:       name,
         memo:       memo,
+        pairs:      pairs,
         created_at: created_at,
         start_time: start_time,
         end_time:   end_time
@@ -67,8 +70,9 @@ module Jiji::Model::Trading
 
     def self.create_from_hash(hash)
       BackTest.new do |b|
-        b.name = hash['name']
-        b.memo = hash['memo']
+        b.name       = hash['name']
+        b.memo       = hash['memo']
+        b.pairs      = hash['pairs']
         b.start_time = hash['start_time']
         b.end_time   = hash['end_time']
       end
@@ -94,8 +98,8 @@ module Jiji::Model::Trading
     private
 
     def create_broker
-      Brokers::BackTestBroker.new(
-        _id, start_time, end_time, @tick_repository)
+      Brokers::BackTestBroker.new( _id, start_time, end_time, 
+        @pairs,  @tick_repository, @securities_provider)
     end
 
     def create_trading_context(broker)

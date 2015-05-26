@@ -14,6 +14,8 @@ module Jiji::Test::Mock
       @config = config
       @serial = 0
       @seed   = 0
+
+      @data_builder = Jiji::Test::DataBuilder.new
     end
 
     def destroy
@@ -36,10 +38,9 @@ module Jiji::Test::Mock
     end
 
     def retrieve_tick_history( pair_name, start_time, end_time )
+      i=-1
       create_timestamps( 15, start_time, end_time ).map do |time|
-        values = {}
-        values[pair_name] = Tick::Value.new( 112, 112.10 )
-        Tick.new( values, time )
+        @data_builder.new_tick((i+=1) % 10, Time.at(time))
       end
     end
 

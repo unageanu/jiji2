@@ -12,7 +12,8 @@ module Jiji::Model::Trading::Brokers
 
     attr_reader :start, :end
 
-    def initialize(back_test_id, start_time, end_time, tick_repository)
+    def initialize(back_test_id, start_time, end_time,
+      pairs, tick_repository, securities_provider)
       super()
 
       check_period(start_time, end_time)
@@ -21,10 +22,11 @@ module Jiji::Model::Trading::Brokers
       @current    = start_time
 
       @back_test_id = back_test_id
+      @pairs        = pairs
 
-      @buffer          = []
-      @trading_units   = TradingUnits.create(start_time, end_time)
-      @tick_repository = tick_repository
+      @buffer              = []
+      @tick_repository     = tick_repository
+      @securities_provider = securities_provider
     end
 
     def buy(pair_name, count)
@@ -51,15 +53,7 @@ module Jiji::Model::Trading::Brokers
     private
 
     def retrieve_pairs
-      instance = Jiji::Model::Trading::Pairs.instance
-      rates = tick || []
-      rates.map do |v|
-        pair = instance.create_or_get(v[0])
-        trading_unit = @trading_units.get_trading_unit_at(
-          pair.pair_id, rates.timestamp)
-        JIJI::Plugin::SecuritiesPlugin::Pair.new(
-          pair.name, trading_unit.trading_unit)
-      end
+      @securities_provider.get.retrieve_pairs
     end
 
     def retrieve_tick
@@ -82,7 +76,7 @@ module Jiji::Model::Trading::Brokers
       start_time  = @current
       next_period = @current + (60 * 60 * 2)
       end_time    = @end_time > next_period ? next_period : @end_time
-      @buffer += @tick_repository.fetch(start_time, end_time)
+      @buffer += @tick_repository.fetch(@pairs, start_time, end_time)
 
       @current = end_time
     end

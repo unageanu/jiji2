@@ -6,9 +6,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
-
-    @mock_plugin =  Jiji::Test::Mock::MockSecuritiesPlugin.instance
-    @mock_plugin.seed = 0
+    @provider     = @container.lookup(:securities_provider)
   end
 
   after(:example) do
@@ -17,6 +15,10 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
   context 'プラグインが未設定の場合' do
     let(:broker) { @container.lookup(:rmt_broker) }
+
+    before(:example) do
+      @provider.set nil
+    end
 
     it '売買はできない' do
       expect do
@@ -41,31 +43,22 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         pairs = broker.pairs
         expect(pairs.length).to eq 3
         expect(pairs[0].name).to eq :EURJPY
-        expect(pairs[0].trade_unit).to eq 10_000
         expect(pairs[1].name).to eq :EURUSD
-        expect(pairs[1].trade_unit).to eq 10_000
         expect(pairs[2].name).to eq :USDJPY
-        expect(pairs[2].trade_unit).to eq 10_000
 
         rates = broker.tick
-        expect(rates[:EURJPY].bid).to eq 145.000
-        expect(rates[:EURJPY].ask).to eq 145.003
-        expect(rates[:EURJPY].sell_swap).to eq 10
-        expect(rates[:EURJPY].buy_swap).to eq(-20)
+        expect(rates[:EURJPY].bid).to eq 135.3
+        expect(rates[:EURJPY].ask).to eq 135.33
 
-        @mock_plugin.seed = 1
+        @provider.get.seed = 1
         rates = broker.tick
-        expect(rates[:EURJPY].bid).to eq 145.000
-        expect(rates[:EURJPY].ask).to eq 145.003
-        expect(rates[:EURJPY].sell_swap).to eq 10
-        expect(rates[:EURJPY].buy_swap).to eq(-20)
+        expect(rates[:EURJPY].bid).to eq 135.3
+        expect(rates[:EURJPY].ask).to eq 135.33
 
         broker.refresh
         rates = broker.tick
-        expect(rates[:EURJPY].bid).to eq 146.000
-        expect(rates[:EURJPY].ask).to eq 146.003
-        expect(rates[:EURJPY].sell_swap).to eq 10
-        expect(rates[:EURJPY].buy_swap).to eq(-20)
+        expect(rates[:EURJPY].bid).to eq 136.3
+        expect(rates[:EURJPY].ask).to eq 136.33
       end
 
       it '売買ができる' do
@@ -77,42 +70,42 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       end
 
       it '売買していても既定のレートを取得できる' do
-        buy_position = broker.buy(:EURJPY, 1)
-        expect(buy_position.profit_or_loss).to eq(-30)
+        buy_position = broker.buy(:EURJPY, 10000)
+        expect(buy_position.profit_or_loss).to eq(-300)
 
         expect(broker.next?).to eq true
-        expect(broker.tick[:EURJPY].bid).to eq 145.00
+        expect(broker.tick[:EURJPY].bid).to eq 135.30
 
-        @mock_plugin.seed += 0.26
+        @provider.get.seed += 0.26
         broker.refresh
 
-        expect(buy_position.profit_or_loss).to eq 2570
+        expect(buy_position.profit_or_loss).to eq 2300
 
         expect(broker.next?).to eq true
-        expect(broker.tick[:EURJPY].bid).to eq 145.26
+        expect(broker.tick[:EURJPY].bid).to eq 135.56
 
-        sell_position = broker.sell(:EURUSD, 2)
+        sell_position = broker.sell(:EURUSD, 10000)
         expect(sell_position.profit_or_loss).to eq(-2)
 
         broker.close(buy_position._id)
 
-        @mock_plugin.seed += 0.04
+        @provider.get.seed += 0.04
         broker.refresh
 
-        expect(buy_position.profit_or_loss).to eq 2570
-        expect(sell_position.profit_or_loss).to eq(-802)
+        expect(buy_position.profit_or_loss).to eq 2300
+        expect(sell_position.profit_or_loss).to eq(-402)
 
-        @mock_plugin.seed += 0.003
+        @provider.get.seed += 0.003
         broker.refresh
 
-        expect(buy_position.profit_or_loss).to eq 2570
-        expect(sell_position.profit_or_loss).to eq(-862)
+        expect(buy_position.profit_or_loss).to eq 2300
+        expect(sell_position.profit_or_loss).to eq(-432)
 
-        @mock_plugin.seed -= 0.002
+        @provider.get.seed -= 0.002
         broker.refresh
 
-        expect(buy_position.profit_or_loss).to eq 2570
-        expect(sell_position.profit_or_loss).to eq(-822)
+        expect(buy_position.profit_or_loss).to eq 2300
+        expect(sell_position.profit_or_loss).to eq(-412)
       end
 
       it '破棄操作ができる' do
@@ -122,10 +115,10 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
     context 'プラグインをAPI呼び出しで設定した場合' do
       let(:broker) do
-        setting = @container.lookup(:setting_repository).rmt_broker_setting
+        setting = @container.lookup(:setting_repository).securities_setting
         broker  = @container.lookup(:rmt_broker)
 
-        setting.set_active_securities(:mock, {})
+        setting.set_active_securities(:MOCK, {})
         broker
       end
 
@@ -134,12 +127,13 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
     context '設定情報からプラグインを読み込んだ場合' do
       let(:broker) do
-        setting = @container.lookup(:setting_repository).rmt_broker_setting
-        setting.set_active_securities(:mock, {})
+        setting = @container.lookup(:setting_repository).securities_setting
+        setting.set_active_securities(:MOCK, {})
 
         # 永続化された設定から再構築する
         @container    = Jiji::Test::TestContainerFactory.instance.new_container
-        setting = @container.lookup(:setting_repository).rmt_broker_setting
+        @provider     = @container.lookup(:securities_provider)
+        setting = @container.lookup(:setting_repository).securities_setting
         setting.setup
         broker = @container.lookup(:rmt_broker)
         broker

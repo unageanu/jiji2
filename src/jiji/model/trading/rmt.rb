@@ -23,7 +23,7 @@ module Jiji::Model::Trading
     attr_reader :process, :trading_context
 
     def setup
-      @setting_repository.rmt_broker_setting.setup
+      @setting_repository.securities_setting.setup
       setup_rmt_process
     end
 

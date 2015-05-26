@@ -11,6 +11,7 @@ module Jiji::Model::Trading::Brokers
     include Jiji::Model::Trading
 
     needs :time_source
+    needs :securities_provider
 
     def initialize
       super()
@@ -39,33 +40,21 @@ module Jiji::Model::Trading::Brokers
     end
 
     def destroy
-      securities.destroy_plugin if securities
+      securities.destroy if securities
     end
 
     def securities
-      @mutex.synchronize do
-        @securities
-      end
-    end
-
-    def securities=(securities)
-      @mutex.synchronize do
-        @securities = securities
-      end
+      securities_provider.get
     end
 
     private
 
     def retrieve_pairs
-      securities ? securities.list_pairs : []
+      securities.retrieve_pairs
     end
 
     def retrieve_tick
-      if securities
-        convert_rates(securities.list_rates, time_source.now)
-      else
-        Jiji::Model::Trading::NilTick.new
-      end
+      securities.retrieve_current_tick
     end
 
     def order(pair_id, type, count)
@@ -81,18 +70,6 @@ module Jiji::Model::Trading::Brokers
 
     def check_setting_finished
       fail Jiji::Errors::NotInitializedException unless securities
-    end
-
-    def convert_rates(rate, timestamp)
-      values = rate.each_with_object({}) do |p, r|
-        r[p[0]] = convert_rate_to_tick(p[1])
-        r
-      end
-      Tick.create(values, timestamp)
-    end
-
-    def convert_rate_to_tick(r)
-      Tick::Value.new(r.bid, r.ask, r.buy_swap, r.sell_swap)
     end
 
   end

@@ -20,7 +20,7 @@ module Jiji::Model::Trading
     field :external_position_id,  type: String
     # 接続先証券会社でpositionを識別するためのID。バックテストの場合nil
 
-    field :pair_id,       type: Integer
+    field :pair_name,     type: Symbol
     field :lot,           type: Integer
     field :trading_unit,  type: Integer
     field :sell_or_buy,   type: Symbol
@@ -38,7 +38,7 @@ module Jiji::Model::Trading
       { back_test_id: 1, entered_at: 1 },
       name: 'positions_back_test_id_entered_at_index')
 
-    attr_readonly :back_test_id, :external_position_id, :pair_id
+    attr_readonly :back_test_id, :external_position_id, :pair_name
     attr_readonly :lot, :sell_or_buy, :entry_price, :entered_at
     attr_readonly :trading_unit
 
@@ -50,11 +50,11 @@ module Jiji::Model::Trading
     end
 
     def self.create(back_test_id, external_position_id,
-        pair_id, lot, trading_unit, sell_or_buy, tick)
+        pair_name, lot, trading_unit, sell_or_buy, tick)
       position = Position.new do |p|
         p.initialize_trading_information(back_test_id,
-          external_position_id, pair_id, lot, trading_unit, sell_or_buy)
-        p.initialize_price_and_time(tick, pair_id, sell_or_buy)
+          external_position_id, pair_name, lot, trading_unit, sell_or_buy)
+        p.initialize_price_and_time(tick, pair_name, sell_or_buy)
       end
       position.save
       position
@@ -77,23 +77,23 @@ module Jiji::Model::Trading
     def update(tick)
       return if status == :closed
       self.current_price = PricingUtils.calculate_current_price(
-        tick, pair_id, sell_or_buy)
+        tick, pair_name, sell_or_buy)
       self.updated_at    = tick.timestamp
     end
 
-    def initialize_price_and_time(tick, pair_id, sell_or_buy)
+    def initialize_price_and_time(tick, pair_name, sell_or_buy)
       self.entry_price   = PricingUtils.calculate_entry_price(
-        tick, pair_id, sell_or_buy)
+        tick, pair_name, sell_or_buy)
       self.current_price = PricingUtils.calculate_current_price(
-        tick, pair_id, sell_or_buy)
+        tick, pair_name, sell_or_buy)
       self.entered_at    = tick.timestamp
       self.updated_at    = tick.timestamp
     end
 
     def initialize_trading_information(back_test_id,
-        external_position_id, pair_id, lot, trading_unit, sell_or_buy)
+        external_position_id, pair_name, lot, trading_unit, sell_or_buy)
       self.back_test_id         = back_test_id
-      self.pair_id              = pair_id
+      self.pair_name            = pair_name
       self.lot                  = lot
       self.trading_unit         = trading_unit
       self.sell_or_buy          = sell_or_buy
@@ -110,7 +110,7 @@ module Jiji::Model::Trading
     def insert_trading_information_to_hash(h)
       h[:back_test_id]         = back_test_id
       h[:external_position_id] = external_position_id
-      h[:pair_id]              = pair_id
+      h[:pair_name]            = pair_name
       h[:lot]                  = lot
       h[:trading_unit]         = trading_unit
       h[:sell_or_buy]          = sell_or_buy

@@ -47,18 +47,13 @@ module Jiji::Model::Trading::Brokers
 
     def create_position(pair_name, count, sell_or_buy, external_position_id)
       illegal_state('tick is not exists.') unless tick
-      pair = Pairs.instance.create_or_get(pair_name)
       position = Position.create(@back_test_id, external_position_id,
-        pair.pair_id, count, resolve_trading_unit(pair_name), sell_or_buy, tick)
+        pair_name, count, 1, sell_or_buy, tick)
       @positions[position._id] = position
       position
     end
 
     def do_close(_position)
-    end
-
-    def resolve_trading_unit(pair_name)
-      pairs.find { |p| p.name.to_sym == pair_name.to_sym }.trade_unit
     end
 
     def check_position_exists(id)

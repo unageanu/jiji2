@@ -6,11 +6,14 @@ module Jiji::Test::Mock
     include Jiji::Errors
     include Jiji::Model::Trading
 
-    attr_reader :config
-    attr_writer :pairs
+    attr_reader   :config
+    attr_writer   :pairs
+    attr_accessor :seed
 
     def initialize(config)
       @config = config
+      @serial = 0
+      @seed   = 0
     end
 
     def destroy
@@ -25,10 +28,10 @@ module Jiji::Test::Mock
     end
 
     def retrieve_current_tick
-      @current_tick ||= Tick.new( {
-        EURUSD: Tick::Value.new(1.1234, 1.1235),
-        USDJPY: Tick::Value.new(112.10, 112.12),
-        EURJPY: Tick::Value.new(135.30, 135.30)
+      Tick.new( {
+        EURUSD: Tick::Value.new(1.1234 + @seed, 1.1236 + @seed),
+        USDJPY: Tick::Value.new(112.10 + @seed, 112.12 + @seed),
+        EURJPY: Tick::Value.new(135.30 + @seed, 135.33 + @seed)
       }, Time.utc(2015, 5, 1) )
     end
 
@@ -49,6 +52,8 @@ module Jiji::Test::Mock
     end
 
     def order(_pair, sell_or_buy, count)
+      @serial += 1
+      Position.new(@serial)
     end
 
     def commit(_position_id, count)
@@ -64,6 +69,8 @@ module Jiji::Test::Mock
     def create_timestamps( interval, start_time, end_time )
       start_time.to_i.step(end_time.to_i-1, interval).map {|t| Time.at(t) }
     end
+
+    Position = Struct.new(:position_id)
 
   end
 

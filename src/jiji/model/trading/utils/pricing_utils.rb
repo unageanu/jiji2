@@ -11,9 +11,8 @@ module Jiji::Model::Trading::Utils
       calculate_price(tick, pair_id,
         sell_or_buy == :buy ? :sell : :buy)
     end
-    def self.calculate_price(tick, pair_id, sell_or_buy)
-      pair =  Jiji::Model::Trading::Pairs.instance.get_by_id(pair_id)
-      value = tick[pair.name]
+    def self.calculate_price(tick, pair_name, sell_or_buy)
+      value = tick[pair_name]
       sell_or_buy == :buy ? value.ask : value.bid
     end
   end

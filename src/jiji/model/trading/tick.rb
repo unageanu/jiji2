@@ -60,5 +60,5 @@ module Jiji::Model::Trading
     end
 
   end
-
+  
 end

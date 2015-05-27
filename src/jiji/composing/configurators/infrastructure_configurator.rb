@@ -10,7 +10,6 @@ module Jiji::Composing::Configurators
         SecurityConfigurator.new,
         ServicesConfigurator.new,
         UtilsConfigurator.new,
-        PluginsConfigurator.new,
         LoggingConfigurator.new
       ]
     end

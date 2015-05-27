@@ -1,11 +1,8 @@
 # coding: utf-8
 
-require 'jiji/plugin/securities_plugin'
-
 module Jiji::Test::Mock
   class MockBroker < Jiji::Model::Trading::Brokers::AbstractBroker
 
-    include JIJI::Plugin::SecuritiesPlugin
     include Jiji::Model::Trading
     include Jiji::Utils
 

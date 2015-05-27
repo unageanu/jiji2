@@ -9,14 +9,12 @@ module Jiji::Model
 
     include Encase
 
-    needs :plugin_loader
     needs :rmt
     needs :back_test_repository
     needs :index_builder
 
     def setup
       @index_builder.create_indexes
-      @plugin_loader.load
       @rmt.setup
     end
 

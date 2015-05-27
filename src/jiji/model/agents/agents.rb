@@ -6,30 +6,31 @@ require 'jiji/utils/value_object'
 module Jiji::Model::Agents
   class Agents
 
-    def initialize(agents = [])
+    def initialize(agents = {}, logger=nil)
       @agents = agents
+      @logger = logger
     end
 
     def next_tick(tick, broker)
-      @agents.each do |a|
+      @agents.values.each do |a|
         begin
-          a.next_tick(tick, broker)
+          a.next_tick(tick)
         rescue => e
-          @logger.error(e)
+          @logger.error(e) if @logger
         end
       end
     end
 
-    def <<(agent)
-      @agents << agent
+    def [](key)
+      @agents[key]
     end
 
     def save_state
       @agents.each do |a|
         begin
-          a.save_state
+          a.state
         rescue => e
-          @logger.error(e)
+          @logger.error(e)  if @logger
         end
       end
     end

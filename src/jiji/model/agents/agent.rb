@@ -7,7 +7,7 @@ require 'jiji/web/transport/transportable'
 module Jiji::Model::Agents::Agent
   #====設定可能なプロパティの一覧を返します。
   # 必要に応じてオーバーライドしてください。
-  # 戻り値:: JIJI::Agent::Propertyの配列
+  # 戻り値:: Jiji::Agent::Propertyの配列
   def self.property_infos
     []
   end
@@ -20,18 +20,24 @@ module Jiji::Model::Agents::Agent
 
   #====設定されたプロパティを取得します。
   attr_reader :properties
+
   #====プロパティを設定します。
   def properties=(properties)
     @properties = properties
-    properties.each_pair do |k, v|
+    properties.each do |k, v|
       instance_variable_set("@#{k}", v)
     end
   end
 
+  attr_accessor :broker
+  attr_accessor :graph_factory
+  attr_accessor :notifier
+  attr_accessor :logger
+
   #====エージェントの登録後に1度だけ呼び出される関数。
   # 必要に応じてオーバーライドしてください。コンストラクタと違い、
-  # このメソッドではoperatorやoutput,loggerが使用可能です。
-  def init
+  # このメソッド内ではbrokerやgraph_factory,logger等が使用可能です。
+  def post_create
   end
 
   #====レート情報が通知されるメソッドです。
@@ -39,12 +45,20 @@ module Jiji::Model::Agents::Agent
   # このメソッドをオーバーライドして、シグナルの計算や
   # 取り引きを行うロジックを実装してください
   # tick:: Jiji::Model::Trading::Tick
-  def next_tick(_tick, broker)
+  def next_tick(_tick)
   end
 
-  def save_state
+  #====アクションを実行します。
+  # 必要に応じてオーバーライドしてください。
+  def do_action(action_name)
   end
 
+
+  #====エージェントの状態を返します。
+  def state
+  end
+
+  #====保存された状態から、リストアします。
   def restore_state(_state)
   end
 

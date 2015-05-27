@@ -5,7 +5,7 @@ module Jiji::Model::Securities
 
     include Jiji::Errors
 
-    def method_missing(method_name, args)
+    def method_missing(method_name)
       not_initialized
     end
 

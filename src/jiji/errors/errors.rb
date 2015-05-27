@@ -57,7 +57,7 @@ module Jiji::Errors
 
   end
 
-  def not_iinitialized
+  def not_initialized
     fail Jiji::Errors::NotInitializedException
   end
 

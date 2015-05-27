@@ -93,10 +93,14 @@ describe Jiji::Model::Securities::OandaSecurities do
       time = Time.utc(2015, 5, 21, 12, 00, 00)
       rates.each do |rate|
         expect(rate.timestamp).to eq time
-        expect(rate.open).to be > 0
-        expect(rate.close).to be > 0
-        expect(rate.high).to be > 0
-        expect(rate.low).to be > 0
+        expect(rate.open.bid).to be > 0
+        expect(rate.open.ask).to be > 0
+        expect(rate.close.bid).to be > 0
+        expect(rate.close.ask).to be > 0
+        expect(rate.high.bid).to be > 0
+        expect(rate.high.ask).to be > 0
+        expect(rate.low.bid).to be > 0
+        expect(rate.low.ask).to be > 0
         time = Time.at(time.to_i + 60 * 60).utc
       end
     end

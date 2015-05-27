@@ -42,7 +42,7 @@ module Jiji::Model::Securities
         'S15', start_time, end_time).get.map do |item|
         values = {}
         values[pair_name] = Tick::Value.new(
-          item.open_ask.to_f, item.open_bid.to_f)
+          item.open_bid.to_f, item.open_ask.to_f)
         Tick.new(values, item.time)
       end
     end
@@ -50,9 +50,12 @@ module Jiji::Model::Securities
     def retrieve_rate_history(pair_name, interval, start_time, end_time)
       granularity = OandaSecurities.convert_interval_to_granularity(interval)
       retrieve_candles(pair_name,
-        granularity, start_time, end_time, 'midpoint').get.map do |item|
-        Rate.new(pair_name, item.time, item.open_mid.to_f,
-          item.close_mid.to_f, item.high_mid.to_f, item.low_mid.to_f)
+        granularity, start_time, end_time).get.map do |item|
+        Rate.new(pair_name, item.time,
+          Tick::Value.new(item.open_bid.to_f, item.open_ask.to_f),
+          Tick::Value.new(item.close_bid.to_f, item.close_ask.to_f),
+          Tick::Value.new(item.high_bid.to_f, item.high_ask.to_f),
+          Tick::Value.new(item.low_bid.to_f, item.low_ask.to_f))
       end
     end
 

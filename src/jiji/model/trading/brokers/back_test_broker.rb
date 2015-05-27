@@ -17,9 +17,8 @@ module Jiji::Model::Trading::Brokers
       super()
 
       check_period(start_time, end_time)
-      @start_time = start_time
+      @current = @start_time = start_time
       @end_time   = end_time
-      @current    = start_time
 
       @back_test_id = back_test_id
       @pairs        = pairs

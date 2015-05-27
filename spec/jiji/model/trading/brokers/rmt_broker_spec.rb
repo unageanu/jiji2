@@ -70,7 +70,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       end
 
       it '売買していても既定のレートを取得できる' do
-        buy_position = broker.buy(:EURJPY, 10000)
+        buy_position = broker.buy(:EURJPY, 10_000)
         expect(buy_position.profit_or_loss).to eq(-300)
 
         expect(broker.next?).to eq true
@@ -84,7 +84,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         expect(broker.next?).to eq true
         expect(broker.tick[:EURJPY].bid).to eq 135.56
 
-        sell_position = broker.sell(:EURUSD, 10000)
+        sell_position = broker.sell(:EURUSD, 10_000)
         expect(sell_position.profit_or_loss).to eq(-2)
 
         broker.close(buy_position._id)

@@ -5,7 +5,6 @@ require 'jiji/utils/value_object'
 require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
-
   class Tick
 
     include Enumerable
@@ -32,17 +31,17 @@ module Jiji::Model::Trading
     end
 
     def +(other)
-      illegal_argument unless self.timestamp == other.timestamp
-      Tick.new( other.values.merge(self.values), timestamp )
+      illegal_argument unless timestamp == other.timestamp
+      Tick.new(other.values.merge(values), timestamp)
     end
 
     def self.merge(a, b)
-      hash = a.each_with_object({}) {|tick,r| r[tick.timestamp.to_i] = tick }
+      hash = a.each_with_object({}) { |tick, r| r[tick.timestamp.to_i] = tick }
       b.each do |tick|
         key = tick.timestamp.to_i
         hash[key] = hash[key] ? hash[key] + tick : tick
       end
-      hash.values.sort_by {|tick| tick.timestamp}
+      hash.values.sort_by { |tick| tick.timestamp }
     end
 
     class Value
@@ -60,5 +59,4 @@ module Jiji::Model::Trading
     end
 
   end
-  
 end

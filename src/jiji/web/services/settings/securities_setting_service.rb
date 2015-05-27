@@ -2,7 +2,6 @@
 
 require 'sinatra/base'
 require 'jiji/web/services/abstract_service'
-require 'jiji/model/settings/securities_setting'
 
 module Jiji::Web
   class SecuritiesSettingService < Jiji::Web::AuthenticationRequiredService
@@ -11,14 +10,14 @@ module Jiji::Web
 
     get '/available-securities' do
       available_securities = securities_factory.available_securities.map do |p|
-        { securities_id: p.plugin_id, name: p.display_name }
+        { securities_id: p[:id], name: p[:display_name] }
       end
       ok(available_securities)
     end
 
     get '/available-securities/:securities_id/configuration_definitions' do
       config = securities_factory.get(params['securities_id'].to_sym)
-      ok(config[:configuration_definitions])
+      ok(config[:configuration_definition])
     end
 
     get '/available-securities/:securities_id/configurations' do
@@ -44,8 +43,10 @@ module Jiji::Web
     def securities_setting
       lookup(:setting_repository).securities_setting
     end
+
     def securities_factory
       lookup(:securities_factory)
     end
+
   end
 end

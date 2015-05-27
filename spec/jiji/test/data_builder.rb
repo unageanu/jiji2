@@ -25,7 +25,7 @@ module Jiji::Test
     end
 
     def new_tick_value(seed)
-      Tick::Value.new( 100.00 + seed, 100.003 + seed)
+      Tick::Value.new(100.00 + seed, 100.003 + seed)
     end
 
     def new_position(seed, back_test_id = nil,

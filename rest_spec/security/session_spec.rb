@@ -15,14 +15,14 @@ describe '初期化' do
       token = r.body['token']
       @client.token = token
 
-      r = @client.get('/settings/rmt-broker/available-securities')
+      r = @client.get('/settings/securities/available-securities')
       expect(r.status).to eq 200
 
       # ログアウト
       r = @client.delete('/sessions')
       expect(r.status).to eq 204
 
-      r = @client.get('/settings/rmt-broker/available-securities')
+      r = @client.get('/settings/securities/available-securities')
       expect(r.status).to eq 401
 
       # 再ログインしておく

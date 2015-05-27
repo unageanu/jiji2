@@ -58,7 +58,7 @@ module Jiji::Utils
       when :one_hour        then      60 * m
       when :six_hours       then  6 * 60 * m
       when :one_day         then 24 * 60 * m
-      else not_found('interval', interval: interval)
+      else fail Jiji::Errors::NotFoundException
       end
     end
     # rubocop:enable Metrics/CyclomaticComplexity

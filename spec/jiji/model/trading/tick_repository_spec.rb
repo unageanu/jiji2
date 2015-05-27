@@ -12,9 +12,8 @@ describe Jiji::Model::Trading::TickRepository do
     @factory    = @container.lookup(:securities_factory)
   end
 
-
   it 'fetch で tickの一覧を取得できる' do
-    ticks = @repository.fetch([:EURJPY,:USDJPY], Time.at(0), Time.at(75))
+    ticks = @repository.fetch([:EURJPY, :USDJPY], Time.at(0), Time.at(75))
 
     expect(ticks.length).to eq(5)
     expect(ticks[0][:EURJPY].bid).to eq(100)
@@ -59,5 +58,4 @@ describe Jiji::Model::Trading::TickRepository do
     expect(range[:start]).not_to be nil
     expect(range[:end]).not_to be nil
   end
-
 end

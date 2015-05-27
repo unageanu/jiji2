@@ -2,6 +2,11 @@
 
 require 'thread'
 
+begin
+  require 'jiji/test/mock/mock_securities'
+rescue LoadError
+end
+
 module Jiji::Model::Securities
   class SecuritiesFactory
 
@@ -11,10 +16,8 @@ module Jiji::Model::Securities
       @available_securities = {}
       @classes = {}
 
-      register_securities(:OANDA_JAPAN, 'OANDA Japan',
-        OandaSecurities.configuration_definition, OandaSecurities)
-      register_securities(:OANDA_JAPAN_DEMO, 'OANDA Japan DEMO',
-        OandaSecurities.configuration_definition, OandaDemoSecurities)
+      register_base_securities
+      register_mock_securities if ENV['RACK_ENV'] == 'test'
     end
 
     def available_securities
@@ -40,6 +43,24 @@ module Jiji::Model::Securities
         configuration_definition: configuration_definition || {}
       }
       @classes[id] = clazz
+    end
+
+    def register_base_securities
+      register_securities(:OANDA_JAPAN, 'OANDA Japan',
+        OandaSecurities.configuration_definition, OandaSecurities)
+      register_securities(:OANDA_JAPAN_DEMO, 'OANDA Japan DEMO',
+        OandaSecurities.configuration_definition, OandaDemoSecurities)
+    end
+
+    def register_mock_securities
+      config = [
+        { 'key' => 'a', 'description' => 'aaa' },
+        { 'key' => 'b', 'description' => 'bbb' }
+      ]
+      register_securities(:MOCK, 'MOCK',
+        config, Jiji::Test::Mock::MockSecurities)
+      register_securities(:MOCK2, 'MOCK2',
+        config, Jiji::Test::Mock::MockSecurities2)
     end
 
   end

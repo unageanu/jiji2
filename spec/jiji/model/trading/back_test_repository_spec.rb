@@ -17,7 +17,6 @@ describe Jiji::Model::Trading::BackTestRepository do
   end
 
   it 'テストを追加できる' do
-
     expect(@repository.all.length).to be 0
 
     test = @repository.register({
@@ -55,7 +54,6 @@ describe Jiji::Model::Trading::BackTestRepository do
 
   context 'テストが3つ登録されている場合' do
     before(:example) do
-
       3.times do |i|
         @time_source.set(Time.at(i))
 

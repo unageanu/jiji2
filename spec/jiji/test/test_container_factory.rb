@@ -29,7 +29,7 @@ module Jiji::Test
       factory  = container.lookup(:securities_factory)
       provider = container.lookup(:securities_provider)
 
-      Mock::MockSecurities.register_securities_to factory 
+      Mock::MockSecurities.register_securities_to factory
       provider.set(factory.create(:MOCK))
     end
 

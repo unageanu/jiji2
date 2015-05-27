@@ -3,7 +3,6 @@
 require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Settings::SecuritiesSetting do
-
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
@@ -23,7 +22,7 @@ describe Jiji::Model::Settings::SecuritiesSetting do
       plugin = event[:value]
     end
 
-    expect(@provider.get.class).to be  Jiji::Test::Mock::MockSecurities
+    expect(@provider.get.class).to be Jiji::Test::Mock::MockSecurities
 
     @setting.set_active_securities(:MOCK,  'a' => 'aa', 'b' => 'bb')
 
@@ -61,7 +60,6 @@ describe Jiji::Model::Settings::SecuritiesSetting do
   end
 
   context 'プラグインが存在しない場合' do
-
     it '設定値取得はエラー' do
       expect do
         @setting.get_configurations(:not_found)

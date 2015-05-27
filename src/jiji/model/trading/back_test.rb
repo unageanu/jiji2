@@ -101,7 +101,7 @@ module Jiji::Model::Trading
     private
 
     def create_broker
-      Brokers::BackTestBroker.new( _id, start_time, end_time,
+      Brokers::BackTestBroker.new(_id, start_time, end_time,
         pairs,  @tick_repository, @securities_provider)
     end
 

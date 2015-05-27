@@ -23,6 +23,7 @@ module Jiji::Model::Trading::Jobs
   end
 
   class NotifyNextTickJobForRMT < NotifyNextTickJob
+
   end
 
   class NotifyNextTickJobForBackTest < NotifyNextTickJob

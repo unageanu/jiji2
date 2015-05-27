@@ -9,7 +9,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     @securities_provider = Jiji::Model::Securities::SecuritiesProvider.new
 
     @repository.securities_provider = @securities_provider
-    @securities_provider.set  Jiji::Test::Mock::MockSecurities.new({})
+    @securities_provider.set Jiji::Test::Mock::MockSecurities.new({})
     @pairs = [:EURUSD, :USDJPY, :EURJPY]
   end
 
@@ -19,7 +19,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
 
   let(:broker) do
     Jiji::Model::Trading::Brokers::BackTestBroker.new('test',
-      Time.at(0), Time.at(15*30),
+      Time.at(0), Time.at(15 * 30),
       @pairs, @repository, @securities_provider)
   end
 
@@ -74,7 +74,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   end
 
   it '売買していても既定のレートを取得できる' do
-    buy_position = broker.buy(:EURJPY, 10000)
+    buy_position = broker.buy(:EURJPY, 10_000)
     expect(buy_position.profit_or_loss).to eq(-30)
 
     expect(broker.next?).to be true
@@ -87,7 +87,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     expect(broker.next?).to be true
     expect(broker.tick[:EURJPY].bid).to eq 101
 
-    sell_position = broker.sell(:USDJPY, 20000)
+    sell_position = broker.sell(:USDJPY, 20_000)
     expect(sell_position.profit_or_loss).to eq(-60)
 
     broker.close(buy_position._id)

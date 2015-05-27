@@ -8,36 +8,43 @@ describe 'レート取得' do
   end
 
   it 'GET /rates/range で保持しているレートの範囲を取得できる' do
-    sleep 6 # レート取得が走るのを待つ
-
     r = @client.get('/rates/range')
     expect(r.status).to eq 200
     expect(r.body['start']).not_to be nil
     expect(r.body['end']).not_to be nil
-
-    first = r.body
-
-    sleep 6
-    r = @client.get('/rates/range')
-    expect(r.status).to eq 200
-    expect(r.body['start']).to eq first['start']
-    expect(r.body['end']).not_to eq first['end'] # 次のレートが取得されている
   end
 
   it 'GET /rates/pairs で通貨ペアの一覧を取得できる' do
     r = @client.get('/rates/pairs')
     expect(r.status).to eq 200
-    expect(r.body).to eq([
-      { 'pair_id' => 0, 'name' => 'EURJPY' },
-      { 'pair_id' => 1, 'name' => 'EURUSD' },
-      { 'pair_id' => 2, 'name' => 'USDJPY' }
-    ])
+    expect(r.body).to eq([{
+      'name' => 'EURJPY',
+      'internal_id' => 'EUR_JPY',
+      'pip' => 0.01,
+      'max_trade_units' => 10_000_000,
+      'precision' => 0.001,
+      'margin_rate' => 0.04
+    }, {
+      'name' => 'EURUSD',
+      'internal_id' => 'EUR_USD',
+      'pip' => 0.0001,
+      'max_trade_units' => 10_000_000,
+      'precision' => 1.0e-05,
+      'margin_rate' => 0.04
+    }, {
+      'name' => 'USDJPY',
+      'internal_id' => 'USD_JPY',
+      'pip' => 0.01,
+      'max_trade_units' => 10_000_000,
+      'precision' => 0.001,
+      'margin_rate' => 0.04
+    }])
   end
 
   it 'GET /rates/$pair_name/$interval でレートを取得できる' do
     r = @client.get('/rates/range')
-    start_time = Time.iso8601(r.body['start'])
-    end_time   = Time.iso8601(r.body['end'])
+    start_time = Time.now - 60 * 60 * 24 * 10
+    end_time   = Time.now
 
     %w(EURJPY EURUSD).each do |pair|
       %w(one_minute one_hour one_day).each do |interval|
@@ -51,17 +58,11 @@ describe 'レート取得' do
     end
 
     r = @client.get('/rates/EURJPY/one_minute', {
-      'start' => (start_time - 60 * 2).iso8601,
-      'end'   => (start_time - 60 * 1).iso8601
-    })
-    expect(r.status).to eq 400
-
-    r = @client.get('/rates/EURJPY/one_minute', {
       'start' => (end_time + 60 * 2).iso8601,
       'end'   => (end_time + 60 * 3).iso8601
     })
     expect(r.status).to eq 200
-    expect(r.body.length).to be 0
+    expect(r.body.length).to be > 0
 
     r = @client.get('/rates/EURJPY/one_minute', {
       'start' => (start_time).iso8601,
@@ -80,21 +81,5 @@ describe 'レート取得' do
 
     r = @client.get('/rates/EURUSD/unknown_interval', range)
     expect(r.status).to eq 404
-  end
-
-  it 'DELETE /rates でレートを削除できる' do
-    r = @client.get('/rates/range')
-    start_time = Time.iso8601(r.body['start'])
-    end_time   = Time.iso8601(r.body['end'])
-
-    r = @client.delete('/rates', {
-      'start' => (start_time - 1).iso8601,
-      'end'   => (start_time + 3).iso8601
-    })
-    expect(r.status).to eq 204
-
-    r = @client.get('/rates/range')
-    expect(Time.iso8601(r.body['start'])).not_to eq start_time
-    expect(Time.iso8601(r.body['end'])).to eq end_time
   end
 end

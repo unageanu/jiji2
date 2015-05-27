@@ -13,13 +13,14 @@ module Jiji::Model::Trading
     def fetch(pairs, start_time, end_time)
       illegal_argument('illegal pairs') if pairs.blank? || pairs.empty?
       pairs.reduce([]) do |ticks, pair|
-        Tick.merge(ticks, securities_provider.get.retrieve_tick_history(
-          pair, start_time, end_time))
+        ts = securities_provider.get.retrieve_tick_history(
+          pair, start_time, end_time)
+        Tick.merge(ticks, ts)
       end
     end
 
     def range
-      { start: Time.now - 60*60*24*365*10, end: Time.now }
+      { start: Time.now - 60 * 60 * 24 * 365 * 10, end: Time.now }
     end
 
   end

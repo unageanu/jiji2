@@ -8,32 +8,28 @@ module Jiji::Web
 
     include Jiji::Model::Trading::Internal
 
-    delete '/' do
-      range = retrieve_range
-      tick_repository.delete(range[:start], range[:end])
-      Swap.delete(range[:start], range[:end])
-      TradingUnit.delete(range[:start], range[:end])
-      no_content
-    end
-
     get '/range' do
       ok(tick_repository.range)
     end
 
     get '/pairs' do
-      ok(Jiji::Model::Trading::Pairs.instance.all)
+      ok(pairs.all)
     end
 
     get '/:pair_name/:interval' do
       range = retrieve_range
       pair_name = params['pair_name'].to_sym
       interval  = params['interval'].to_sym
-      ok(fetcher.fetch(pair_name,
-        range[:start], range[:end], interval))
+      ok(securities.retrieve_rate_history(pair_name,
+        interval, range[:start], range[:end]))
     end
 
-    def fetcher
-      lookup(:rate_fetcher)
+    def pairs
+      lookup(:pairs)
+    end
+
+    def securities
+      lookup(:securities_provider).get
     end
 
     def tick_repository

@@ -7,12 +7,11 @@ describe Jiji::Model::Graphing::Graph do
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
 
-    @container = Jiji::Composing::ContainerFactory.instance.new_container
+    @container = Jiji::Test::TestContainerFactory.instance.new_container
     @repository         = @container.lookup(:graph_repository)
     @time_srouce        = @container.lookup(:time_source)
     backtest_repository = @container.lookup(:back_test_repository)
 
-    @data_builder.register_ticks(5, 60)
     @backtest1 = @data_builder.register_back_test(1, backtest_repository)
     @backtest2 = @data_builder.register_back_test(2, backtest_repository)
 

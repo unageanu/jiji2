@@ -72,7 +72,7 @@ module Jiji::Test::Mock
     end
 
     Position = Struct.new(:position_id)
-
+    
   end
 
   class MockSecurities2 < MockSecurities

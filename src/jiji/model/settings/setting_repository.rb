@@ -15,7 +15,8 @@ module Jiji::Model::Settings
         mail_composer: MailComposerSetting,
         securities:    SecuritiesSetting,
         security:      SecuritySetting,
-        device:        DeviceSetting
+        device:        DeviceSetting,
+        rmt:           RMTSetting
       }
     end
 
@@ -33,6 +34,10 @@ module Jiji::Model::Settings
 
     def device_setting
       load_or_create(:device)
+    end
+
+    def rmt_setting
+      load_or_create(:rmt)
     end
 
     private

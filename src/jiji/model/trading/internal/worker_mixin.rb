@@ -20,14 +20,21 @@ module Jiji::Model::Trading::Internal
     private
 
     def create_agents(broker, backtest_id=nil)
+      normalized_agent_setting
       graph_factory = create_graph_factory(backtest_id)
       @agents_builder = Jiji::Model::Agents::AgentsBuilder.new(
         agent_registry, broker, graph_factory, nil, logger)
-      @agents_builder.build(agent_setting || [])
+      @agents_builder.build(agent_setting)
     end
 
     def create_graph_factory(id)
       Jiji::Model::Graphing::GraphFactory.new(time_source, id)
+    end
+
+    def normalized_agent_setting
+      self.agent_setting = (agent_setting || []).map do |item|
+        item.with_indifferent_access
+      end
     end
 
   end

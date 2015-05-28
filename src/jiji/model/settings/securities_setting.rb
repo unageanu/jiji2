@@ -12,7 +12,6 @@ module Jiji::Model::Settings
 
     field :active_securities_id,      type: Symbol,  default: nil
     field :securities_configurations, type: Hash,    default: {}
-    field :is_trade_enabled,          type: Boolean, default: true
 
     needs :logger
     needs :securities_factory
@@ -52,8 +51,6 @@ module Jiji::Model::Settings
 
       fire_setting_changed_event(:active_securities, value: securities)
     end
-
-    attr_writer :is_trade_enabled
 
     private
 

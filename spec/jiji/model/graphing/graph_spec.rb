@@ -10,8 +10,11 @@ describe Jiji::Model::Graphing::Graph do
     @container = Jiji::Test::TestContainerFactory.instance.new_container
     @repository         = @container.lookup(:graph_repository)
     @time_srouce        = @container.lookup(:time_source)
-    backtest_repository = @container.lookup(:back_test_repository)
+    @registory          = @container.lookup(:agent_registry)
 
+    @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))
+
+    backtest_repository = @container.lookup(:back_test_repository)
     @backtest1 = @data_builder.register_back_test(1, backtest_repository)
     @backtest2 = @data_builder.register_back_test(2, backtest_repository)
 

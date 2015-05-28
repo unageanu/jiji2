@@ -21,8 +21,8 @@ module Jiji::Model::Agents
       end
     end
 
-    def [](key)
-      @agents[key]
+    def [](uuid)
+      @agents[uuid]
     end
 
     def save_state

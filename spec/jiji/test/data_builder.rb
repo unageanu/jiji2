@@ -57,16 +57,20 @@ BODY
 
     def new_trading_context(broker = Mock::MockBroker.new,
       time_source = Jiji::Utils::TimeSource.new, logger = Logger.new(STDOUT))
-      TradingContext.new(nil, broker, time_source, logger)
+      agents = Jiji::Model::Agents::Agents.new
+      TradingContext.new(agents, broker, time_source, logger)
     end
 
     def register_back_test(seed, repository)
       repository.register(
-        'name'       => "テスト#{seed}",
-        'start_time' => Time.at(seed * 100),
-        'end_time'   => Time.at((seed + 1) * 200),
-        'memo'       => "メモ#{seed}",
-        'pairs'      => [:EURJPY, :EURUSD]
+        'name'          => "テスト#{seed}",
+        'start_time'    => Time.at(seed * 100),
+        'end_time'      => Time.at((seed + 1) * 200),
+        'memo'          => "メモ#{seed}",
+        'pairs'         => [:EURJPY, :EURUSD],
+        'agent_setting' => [
+          { name:'TestAgent1@aaa', properties: {"a" => 100, "b" => 'bb'}}
+        ]
       )
     end
 

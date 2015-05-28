@@ -17,7 +17,7 @@ module Jiji::Model::Trading
     def initialize(agents, broker, time_source, logger)
       @logger      = logger
       @time_source = time_source
-      @agents      = agents || Jiji::Model::Agents::Agents.new # TODO
+      @agents      = agents
       @broker      = broker
       @status      = :wait_for_start
       @error       = nil

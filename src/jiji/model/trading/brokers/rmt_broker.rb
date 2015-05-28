@@ -47,6 +47,11 @@ module Jiji::Model::Trading::Brokers
       securities_provider.get
     end
 
+    def refresh
+      @pairs_cache = nil
+      super
+    end
+
     private
 
     def retrieve_pairs

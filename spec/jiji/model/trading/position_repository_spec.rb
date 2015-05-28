@@ -12,6 +12,9 @@ describe Jiji::Model::Trading::PositionRepository do
     @back_test_repository = @container.lookup(:back_test_repository)
     @position_repository  = @container.lookup(:position_repository)
     @time_source          = @container.lookup(:time_source)
+    @registory            = @container.lookup(:agent_registry)
+
+    @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))
 
     @test1 = @data_builder.register_back_test(1, @back_test_repository)
     @test2 = @data_builder.register_back_test(2, @back_test_repository)

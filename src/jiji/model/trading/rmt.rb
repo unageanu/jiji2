@@ -1,10 +1,7 @@
 # coding: utf-8
 
 require 'jiji/configurations/mongoid_configuration'
-require 'jiji/utils/value_object'
-require 'thread'
-require 'singleton'
-require 'jiji/web/transport/transportable'
+require 'jiji/model/trading/internal/worker_mixin'
 
 module Jiji::Model::Trading
   class RMT
@@ -12,13 +9,11 @@ module Jiji::Model::Trading
     include Encase
     include Jiji::Errors
     include Jiji::Model::Trading
+    include Jiji::Model::Trading::Internal::WorkerMixin
 
-    needs :logger
-    needs :time_source
     needs :setting_repository
     needs :rmt_broker
     needs :rmt_next_tick_job_generator
-    # needs :agents_factory
 
     attr_reader :process, :trading_context
 
@@ -34,7 +29,7 @@ module Jiji::Model::Trading
     private
 
     def setup_rmt_process
-      # @agents        = agents_factory.create(agent_setting)
+      @agents          = create_agents(@broker)
       @trading_context = create_trading_context
       @process         = create_process(trading_context)
 

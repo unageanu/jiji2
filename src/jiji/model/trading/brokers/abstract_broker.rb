@@ -32,7 +32,6 @@ module Jiji::Model::Trading::Brokers
     end
 
     def refresh
-      @pairs_cache = nil
       @rates_cache = nil
       update_positions if next?
     end

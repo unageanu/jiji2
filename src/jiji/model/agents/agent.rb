@@ -53,7 +53,6 @@ module Jiji::Model::Agents::Agent
   def do_action(action_name)
   end
 
-
   #====エージェントの状態を返します。
   def state
   end

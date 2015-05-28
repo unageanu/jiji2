@@ -69,7 +69,7 @@ BODY
         'memo'          => "メモ#{seed}",
         'pairs'         => [:EURJPY, :EURUSD],
         'agent_setting' => [
-          { name:'TestAgent1@aaa', properties: {"a" => 100, "b" => 'bb'}}
+          { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
         ]
       )
     end

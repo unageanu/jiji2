@@ -16,16 +16,16 @@ module Jiji::Model::Agents
       @logger          = logger
     end
 
-    def build( agent_setting )
+    def build(agent_setting)
       agents = agent_setting.each_with_object({}) do |setting, r|
         create_and_insert_new_agent(r, setting)
       end
-      Agents.new( agents, @logger )
+      Agents.new(agents, @logger)
     end
 
-    def update( agents, agent_setting )
+    def update(agents, agent_setting)
       new_agents = agent_setting.each_with_object({}) do |setting, r|
-        if (setting[:uuid].nil?)
+        if setting[:uuid].nil? || !agents.include?(setting[:uuid])
           create_and_insert_new_agent(r, setting)
         else
           update_agent(r, agents, setting)
@@ -39,7 +39,6 @@ module Jiji::Model::Agents
     def update_agent(r, agents, setting)
       uuid = setting[:uuid]
       agent = agents[uuid]
-      return unless agent
 
       agent.properties = setting[:properties]
       r[uuid] = agent
@@ -54,7 +53,7 @@ module Jiji::Model::Agents
     def create_agent(setting)
       agent = @agent_registory.create_agent(
         setting[:name], setting[:properties] || {})
-      inject_components_to( agent )
+      inject_components_to(agent)
       agent
     end
 
@@ -70,5 +69,4 @@ module Jiji::Model::Agents
     end
 
   end
-
 end

@@ -25,9 +25,9 @@ describe Jiji::Model::Agents::AgentsBuilder do
   describe '#build' do
     it 'エージェントを作成できる' do
       settings = [
-        { name:'TestAgent1@aaa', properties: {a: 100, b:'bb'}},
-        { name:'TestAgent1@aaa', properties: {}},
-        { name:'TestAgent2@bbb'}
+        { name: 'TestAgent1@aaa', properties: { a: 100, b: 'bb' } },
+        { name: 'TestAgent1@aaa', properties: {} },
+        { name: 'TestAgent2@bbb' }
       ]
       agents = @agents_builder.build(settings)
 
@@ -37,7 +37,7 @@ describe Jiji::Model::Agents::AgentsBuilder do
 
       agent1 = agents[settings[0][:uuid]]
       expect(agent1).not_to be nil
-      expect(agent1.properties).to eq( {a: 100, b:'bb'} )
+      expect(agent1.properties).to eq({ a: 100, b: 'bb' })
       expect(agent1.broker).to eq :broker
       expect(agent1.graph_factory).to eq :graph_factory
       expect(agent1.notifier).to eq :notifier
@@ -63,7 +63,7 @@ describe Jiji::Model::Agents::AgentsBuilder do
     it 'エージェントが見つからない場合エラー' do
       expect do
         @agents_builder.build([
-          { name:'UnknownAgent1@unknown', properties: {}}
+          { name: 'UnknownAgent1@unknown', properties: {} }
         ])
       end.to raise_exception(Jiji::Errors::NotFoundException)
     end
@@ -72,16 +72,16 @@ describe Jiji::Model::Agents::AgentsBuilder do
   describe '#update' do
     it 'エージェントを追加/更新/削除できる' do
       settings = [
-        { name:'TestAgent1@aaa', properties: {a: 100, b:'bb'}},
-        { name:'TestAgent1@aaa', properties: {}},
-        { name:'TestAgent2@bbb'}
+        { name: 'TestAgent1@aaa', properties: { a: 100, b: 'bb' } },
+        { name: 'TestAgent1@aaa', properties: {} },
+        { name: 'TestAgent2@bbb' }
       ]
       agents = @agents_builder.build(settings)
 
       new_settings = [
-        { uuid:settings[1][:uuid], properties: {a: 200, b:'xx'}},
-        { uuid:settings[2][:uuid], properties: {a: 10 }},
-        { name:'TestAgent2@bbb',   properties: {a: 20 }}
+        { uuid: settings[1][:uuid], properties: { a: 200, b: 'xx' } },
+        { uuid: settings[2][:uuid], properties: { a: 10 } },
+        { name: 'TestAgent2@bbb',   properties: { a: 20 } }
       ]
       @agents_builder.update(agents, new_settings)
 
@@ -90,7 +90,7 @@ describe Jiji::Model::Agents::AgentsBuilder do
 
       agent2 = agents[settings[1][:uuid]]
       expect(agent2).not_to be nil
-      expect(agent2.properties).to eq({a: 200, b:'xx'})
+      expect(agent2.properties).to eq({ a: 200, b: 'xx' })
       expect(agent2.broker).to eq :broker
       expect(agent2.graph_factory).to eq :graph_factory
       expect(agent2.notifier).to eq :notifier
@@ -98,7 +98,7 @@ describe Jiji::Model::Agents::AgentsBuilder do
 
       agent3 = agents[settings[2][:uuid]]
       expect(agent3).not_to be nil
-      expect(agent3.properties).to eq({a: 10 })
+      expect(agent3.properties).to eq({ a: 10 })
       expect(agent3.broker).to eq :broker
       expect(agent3.graph_factory).to eq :graph_factory
       expect(agent3.notifier).to eq :notifier
@@ -106,7 +106,7 @@ describe Jiji::Model::Agents::AgentsBuilder do
 
       agent4 = agents[new_settings[2][:uuid]]
       expect(agent4).not_to be nil
-      expect(agent4.properties).to eq({a: 20 })
+      expect(agent4.properties).to eq({ a: 20 })
       expect(agent4.broker).to eq :broker
       expect(agent4.graph_factory).to eq :graph_factory
       expect(agent4.notifier).to eq :notifier

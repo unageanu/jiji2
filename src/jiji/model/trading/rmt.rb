@@ -15,10 +15,13 @@ module Jiji::Model::Trading
     needs :rmt_broker
     needs :rmt_next_tick_job_generator
 
-    attr_reader :process, :trading_context
+    attr_reader :process, :trading_context, :agents
+    attr_accessor :agent_setting
 
     def setup
       @setting_repository.securities_setting.setup
+      @agents_builder = create_agents_builder(rmt_broker)
+
       setup_rmt_process
     end
 
@@ -26,10 +29,19 @@ module Jiji::Model::Trading
       stop_rmt_process
     end
 
+    def update_agent_setting(new_setting)
+      @agents_builder.update(@agents, new_setting)
+      rmt_setting = @setting_repository.rmt_setting
+      rmt_setting.agent_setting = new_setting
+      rmt_setting.save
+    end
+
     private
 
     def setup_rmt_process
-      @agents          = create_agents(@broker)
+      @agents         = Jiji::Model::Agents::Agents.new({}, logger)
+      update_agent_setting(@setting_repository.rmt_setting.agent_setting)
+
       @trading_context = create_trading_context
       @process         = create_process(trading_context)
 
@@ -39,7 +51,7 @@ module Jiji::Model::Trading
 
     def stop_rmt_process
       @rmt_next_tick_job_generator.stop
-      @process.stop
+      @process.stop if @process
     end
 
     def create_trading_context

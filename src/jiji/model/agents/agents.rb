@@ -8,7 +8,7 @@ module Jiji::Model::Agents
 
     attr_accessor :agents
 
-    def initialize(agents = {}, logger=nil)
+    def initialize(agents = {}, logger = nil)
       @agents = agents
       @logger = logger
     end
@@ -25,6 +25,14 @@ module Jiji::Model::Agents
 
     def [](uuid)
       @agents[uuid]
+    end
+
+    def include?(uuid)
+      @agents.include? uuid
+    end
+
+    def keys
+      @agents.keys
     end
 
     def save_state

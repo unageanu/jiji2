@@ -22,7 +22,7 @@ describe Jiji::Model::Agents::AgentsBuilder do
     @data_builder.clean
   end
 
-  describe '新規作成' do
+  describe '#build' do
     it 'エージェントを作成できる' do
       settings = [
         { name:'TestAgent1@aaa', properties: {a: 100, b:'bb'}},
@@ -69,8 +69,8 @@ describe Jiji::Model::Agents::AgentsBuilder do
     end
   end
 
-  describe '更新' do
-    it 'エージェントのプロパティを更新できる' do
+  describe '#update' do
+    it 'エージェントを追加/更新/削除できる' do
       settings = [
         { name:'TestAgent1@aaa', properties: {a: 100, b:'bb'}},
         { name:'TestAgent1@aaa', properties: {}},
@@ -79,19 +79,14 @@ describe Jiji::Model::Agents::AgentsBuilder do
       agents = @agents_builder.build(settings)
 
       new_settings = [
-        {uuid:settings[1][:uuid], properties: {a: 200, b:'xx'} },
-        {uuid:settings[2][:uuid], properties: {a: 10 } },
-        {uuid:'Unknown',          properties: {a: 20 } }
+        { uuid:settings[1][:uuid], properties: {a: 200, b:'xx'}},
+        { uuid:settings[2][:uuid], properties: {a: 10 }},
+        { name:'TestAgent2@bbb',   properties: {a: 20 }}
       ]
       @agents_builder.update(agents, new_settings)
 
       agent1 = agents[settings[0][:uuid]]
-      expect(agent1).not_to be nil
-      expect(agent1.properties).to eq({a: 100, b:'bb'})
-      expect(agent1.broker).to eq :broker
-      expect(agent1.graph_factory).to eq :graph_factory
-      expect(agent1.notifier).to eq :notifier
-      expect(agent1.logger).to eq :logger
+      expect(agent1).to be nil
 
       agent2 = agents[settings[1][:uuid]]
       expect(agent2).not_to be nil
@@ -108,6 +103,14 @@ describe Jiji::Model::Agents::AgentsBuilder do
       expect(agent3.graph_factory).to eq :graph_factory
       expect(agent3.notifier).to eq :notifier
       expect(agent3.logger).to eq :logger
+
+      agent4 = agents[new_settings[2][:uuid]]
+      expect(agent4).not_to be nil
+      expect(agent4.properties).to eq({a: 20 })
+      expect(agent4.broker).to eq :broker
+      expect(agent4.graph_factory).to eq :graph_factory
+      expect(agent4.notifier).to eq :notifier
+      expect(agent4.logger).to eq :logger
     end
   end
 

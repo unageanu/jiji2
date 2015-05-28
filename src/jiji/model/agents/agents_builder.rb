@@ -2,6 +2,7 @@
 
 require 'encase'
 require 'securerandom'
+require 'set'
 
 module Jiji::Model::Agents
   class AgentsBuilder
@@ -17,22 +18,38 @@ module Jiji::Model::Agents
 
     def build( agent_setting )
       agents = agent_setting.each_with_object({}) do |setting, r|
-        uuid = create_uuid
-        r[uuid] = create_agent(setting)
-        setting[:uuid] = uuid
+        create_and_insert_new_agent(r, setting)
       end
       Agents.new( agents, @logger )
     end
 
     def update( agents, agent_setting )
-      agent_setting.each do |setting|
-        uuid = setting[:uuid]
-        agent = agents[uuid]
-        agent.properties = setting[:properties] if agent
+      new_agents = agent_setting.each_with_object({}) do |setting, r|
+        if (setting[:uuid].nil?)
+          create_and_insert_new_agent(r, setting)
+        else
+          update_agent(r, agents, setting)
+        end
       end
+      agents.agents = new_agents
     end
 
     private
+
+    def update_agent(r, agents, setting)
+      uuid = setting[:uuid]
+      agent = agents[uuid]
+      return unless agent
+
+      agent.properties = setting[:properties]
+      r[uuid] = agent
+    end
+
+    def create_and_insert_new_agent(r, setting)
+      uuid = create_uuid
+      r[uuid] = create_agent(setting)
+      setting[:uuid] = uuid
+    end
 
     def create_agent(setting)
       agent = @agent_registory.create_agent(

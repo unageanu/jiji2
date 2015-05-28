@@ -6,6 +6,8 @@ require 'jiji/utils/value_object'
 module Jiji::Model::Agents
   class Agents
 
+    attr_accessor :agents
+
     def initialize(agents = {}, logger=nil)
       @agents = agents
       @logger = logger

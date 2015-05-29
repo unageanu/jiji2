@@ -86,9 +86,10 @@ module Jiji::Model::Trading
 
     def setup
       self.created_at = time_source.now
+      generate_uuid(self.agent_setting)
 
       broker           = create_broker
-      @agents          = create_agents(broker, id)
+      @agents          = create_agents(self.agent_setting, broker, id)
       trading_context  = create_trading_context(broker, @agents)
       @process         = create_process(trading_context)
 

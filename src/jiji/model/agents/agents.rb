@@ -2,15 +2,37 @@
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
+require 'forwardable'
 
 module Jiji::Model::Agents
   class Agents
 
+    include Mongoid::Document
+    include Jiji::Errors
+    extend Forwardable
+
+    def_delegators :@agents, :[], :include?, :each, :keys, :values
+
+    store_in collection: 'agent_states'
+
+    field :backtest_id,  type: BSON::ObjectId
+    field :states,       type: Hash
+
+    index({ backtest_id: 1 }, { unique: true, name: "backtest_id_index" })
+
     attr_accessor :agents
 
-    def initialize(agents = {}, logger = nil)
+    def initialize(backtest_id = nil, agents = {}, logger = nil)
+      super()
       @agents = agents
       @logger = logger
+
+      self.backtest_id = backtest_id
+    end
+
+    def self.get_or_create( backtest_id, logger )
+      Agents.find_by(back_test_id: backtest_id) \
+        || Agents.new(backtest_id, {}, logger)
     end
 
     def next_tick(tick, broker)
@@ -23,24 +45,25 @@ module Jiji::Model::Agents
       end
     end
 
-    def [](uuid)
-      @agents[uuid]
-    end
-
-    def include?(uuid)
-      @agents.include? uuid
-    end
-
-    def keys
-      @agents.keys
-    end
-
     def save_state
-      @agents.each do |a|
+      self.states = @agents.each_with_object({}) do |pair, r|
         begin
-          a.state
+          r[pair[0]] = pair[1].state
         rescue => e
           @logger.error(e)  if @logger
+        end
+      end
+      save
+    end
+
+    def restore_state
+      return unless self.states
+      self.states.each do |k, v|
+        begin
+          agent = @agents[k]
+          agent.restore_state v if @agent
+        rescue => e
+          @logger.error(e) if @logger
         end
       end
     end

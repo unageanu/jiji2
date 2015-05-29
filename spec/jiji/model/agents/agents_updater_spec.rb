@@ -2,8 +2,9 @@
 
 require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
+require 'securerandom'
 
-describe Jiji::Model::Agents::AgentsBuilder do
+describe Jiji::Model::Agents::AgentsUpdater do
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
 
@@ -11,7 +12,7 @@ describe Jiji::Model::Agents::AgentsBuilder do
     @repository   = @container.lookup(:agent_source_repository)
     @registory    = @container.lookup(:agent_registry)
 
-    @agents_builder = Jiji::Model::Agents::AgentsBuilder.new(
+    @agents_builder = Jiji::Model::Agents::AgentsUpdater.new(
       @registory, :broker, :graph_factory, :notifier, :logger)
 
     @registory.add_source('aaa', '', :agent, new_body(1))
@@ -25,11 +26,12 @@ describe Jiji::Model::Agents::AgentsBuilder do
   describe '#build' do
     it 'エージェントを作成できる' do
       settings = [
-        { name: 'TestAgent1@aaa', properties: { a: 100, b: 'bb' } },
-        { name: 'TestAgent1@aaa', properties: {} },
-        { name: 'TestAgent2@bbb' }
+        { uuid: uuid, name: 'TestAgent1@aaa', properties: { a: 100, b: 'bb' } },
+        { uuid: uuid, name: 'TestAgent1@aaa', properties: {} },
+        { uuid: uuid, name: 'TestAgent2@bbb' }
       ]
-      agents = @agents_builder.build(settings)
+      agents = Jiji::Model::Agents::Agents.new
+      @agents_builder.update(agents, settings)
 
       expect(settings[0][:uuid]).not_to be nil
       expect(settings[1][:uuid]).not_to be nil
@@ -61,8 +63,9 @@ describe Jiji::Model::Agents::AgentsBuilder do
     end
 
     it 'エージェントが見つからない場合エラー' do
+      agents = Jiji::Model::Agents::Agents.new
       expect do
-        @agents_builder.build([
+        @agents_builder.update(agents,[
           { name: 'UnknownAgent1@unknown', properties: {} }
         ])
       end.to raise_exception(Jiji::Errors::NotFoundException)
@@ -71,18 +74,28 @@ describe Jiji::Model::Agents::AgentsBuilder do
 
   describe '#update' do
     it 'エージェントを追加/更新/削除できる' do
-      settings = [
-        { name: 'TestAgent1@aaa', properties: { a: 100, b: 'bb' } },
-        { name: 'TestAgent1@aaa', properties: {} },
-        { name: 'TestAgent2@bbb' }
-      ]
-      agents = @agents_builder.build(settings)
+      agents = Jiji::Model::Agents::Agents.new
 
-      new_settings = [
-        { uuid: settings[1][:uuid], properties: { a: 200, b: 'xx' } },
-        { uuid: settings[2][:uuid], properties: { a: 10 } },
-        { name: 'TestAgent2@bbb',   properties: { a: 20 } }
+      settings = [
+        { uuid: uuid, name: 'TestAgent1@aaa', properties: { a: 100, b: 'bb' } },
+        { uuid: uuid, name: 'TestAgent1@aaa', properties: {} },
+        { uuid: uuid, name: 'TestAgent2@bbb' }
       ]
+      @agents_builder.update(agents, settings)
+
+      new_settings = [{
+        uuid:       settings[1][:uuid],
+        name:       'TestAgent1@aaa',
+        properties: { a: 200, b: 'xx' }
+      }, {
+        uuid:       settings[2][:uuid],
+        name:       'TestAgent1@aaa',
+        properties: { a: 10 }
+      }, {
+        uuid:       uuid,
+        name:       'TestAgent2@bbb',
+        properties: { a: 20 }
+      }]
       @agents_builder.update(agents, new_settings)
 
       agent1 = agents[settings[0][:uuid]]
@@ -116,5 +129,9 @@ describe Jiji::Model::Agents::AgentsBuilder do
 
   def new_body(seed, parent = nil)
     @data_builder.new_agent_body(seed, parent)
+  end
+
+  def uuid
+    SecureRandom.uuid
   end
 end

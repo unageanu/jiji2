@@ -55,9 +55,11 @@ module Jiji::Model::Agents::Agent
 
   #====エージェントの状態を返します。
   def state
+    {}
   end
 
-  #====保存された状態から、リストアします。
+  #====保存された状態データから、状態を復元します。
+  # 必要に応じてオーバーライドしてください。
   def restore_state(_state)
   end
 

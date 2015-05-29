@@ -30,6 +30,7 @@ module Jiji::Model::Trading
     end
 
     def update_agent_setting(new_setting)
+      generate_uuid(new_setting)
       @agents_builder.update(@agents, new_setting)
       rmt_setting = @setting_repository.rmt_setting
       rmt_setting.agent_setting = new_setting
@@ -39,8 +40,9 @@ module Jiji::Model::Trading
     private
 
     def setup_rmt_process
-      @agents         = Jiji::Model::Agents::Agents.new({}, logger)
-      update_agent_setting(@setting_repository.rmt_setting.agent_setting)
+      agent_setting = @setting_repository.rmt_setting.agent_setting
+
+      @agents          = create_agents(agent_setting, rmt_broker)
 
       @trading_context = create_trading_context
       @process         = create_process(trading_context)

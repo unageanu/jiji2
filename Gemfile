@@ -18,8 +18,6 @@ gem 'puma',      '2.11.1'
 
 gem 'mongoid',   '4.0.0'
 
-gem 'clickclient_scrap', '0.1.13'
-gem 'sbiclient',         '0.1.5'
 gem 'oanda_api',         '0.9.0'
 
 gem 'mail',    '2.6.3'

@@ -16,9 +16,11 @@ module Jiji::Model::Agents
     store_in collection: 'agent_states'
 
     field :backtest_id,  type: BSON::ObjectId
-    field :states,       type: Hash
+    field :states,       type: Hash, default: {}
 
-    index({ backtest_id: 1 }, { unique: true, name: "backtest_id_index" })
+    index(
+      { backtest_id: 1 },
+      unique: true, name: 'agent_states_backtest_id_index')
 
     attr_accessor :agents
 
@@ -30,12 +32,12 @@ module Jiji::Model::Agents
       self.backtest_id = backtest_id
     end
 
-    def self.get_or_create( backtest_id, logger )
-      Agents.find_by(back_test_id: backtest_id) \
+    def self.get_or_create(backtest_id, logger)
+      Agents.find_by(backtest_id: backtest_id) \
         || Agents.new(backtest_id, {}, logger)
     end
 
-    def next_tick(tick, broker)
+    def next_tick(tick)
       @agents.values.each do |a|
         begin
           a.next_tick(tick)
@@ -57,11 +59,11 @@ module Jiji::Model::Agents
     end
 
     def restore_state
-      return unless self.states
-      self.states.each do |k, v|
+      return unless states
+      states.each do |k, v|
         begin
           agent = @agents[k]
-          agent.restore_state v if @agent
+          agent.restore_state(v) if agent
         rescue => e
           @logger.error(e) if @logger
         end

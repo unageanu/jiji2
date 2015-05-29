@@ -8,8 +8,7 @@ module Jiji::Model::Trading::Jobs
 
     def exec(trading_context, queue)
       before_do_next(trading_context, queue)
-      trading_context.agents.next_tick(
-        trading_context.broker.tick,  trading_context.broker)
+      trading_context.agents.next_tick(trading_context.broker.tick)
       after_do_next(trading_context, queue)
     end
 

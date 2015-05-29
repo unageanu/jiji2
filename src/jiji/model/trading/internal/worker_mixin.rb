@@ -16,7 +16,7 @@ module Jiji::Model::Trading::Internal
     private
 
     def create_agents(agent_setting, broker, backtest_id = nil)
-      agents = Jiji::Model::Agents::Agents.get_or_create( backtest_id, logger )
+      agents = Jiji::Model::Agents::Agents.get_or_create(backtest_id, logger)
       create_agents_builder(broker, backtest_id) \
         .update(agents, agent_setting || [])
       agents.restore_state
@@ -43,6 +43,5 @@ module Jiji::Model::Trading::Internal
     def create_uuid
       SecureRandom.uuid
     end
-
   end
 end

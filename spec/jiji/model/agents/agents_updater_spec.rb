@@ -65,7 +65,7 @@ describe Jiji::Model::Agents::AgentsUpdater do
     it 'エージェントが見つからない場合エラー' do
       agents = Jiji::Model::Agents::Agents.new
       expect do
-        @agents_builder.update(agents,[
+        @agents_builder.update(agents, [
           { name: 'UnknownAgent1@unknown', properties: {} }
         ])
       end.to raise_exception(Jiji::Errors::NotFoundException)

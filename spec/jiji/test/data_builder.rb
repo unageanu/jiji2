@@ -84,6 +84,7 @@ BODY
       BackTest.delete_all
       Position.delete_all
       Jiji::Model::Agents::AgentSource.delete_all
+      Jiji::Model::Agents::Agents.delete_all
       Jiji::Model::Settings::AbstractSetting.delete_all
       Jiji::Model::Graphing::GraphData.delete_all
       Jiji::Model::Graphing::Graph.delete_all

@@ -19,6 +19,11 @@ module Jiji::Model::Trading
       @id = id
       @ms = ms
     end
+
+    def calcurate_interval_start_time(time)
+      Time.at((time.to_i / (@ms / 1000)).floor * (@ms / 1000))
+    end
+
   end
 
   class Intervals

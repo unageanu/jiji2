@@ -36,8 +36,9 @@ module Jiji::Utils
       }
     }
 
-    def calcurate_partition_start_time(time, interval)
-      (time.to_i / (interval / 1000)).floor * (interval / 1000)
+    def calcurate_partition_start_time(time, interval_id)
+      interval = Jiji::Model::Trading::Intervals.get(interval_id)
+      interval.calcurate_interval_start_time(time)
     end
 
     def resolve_timestamp(v, interval)

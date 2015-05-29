@@ -48,20 +48,5 @@ module Jiji::Utils
       end
     end
 
-    # rubocop:disable Metrics/CyclomaticComplexity
-    def self.resolve_collecting_interval(interval)
-      m = 60 * 1000
-      case interval
-      when :one_minute      then       1 * m
-      when :fifteen_minutes then      15 * m
-      when :thirty_minutes  then      30 * m
-      when :one_hour        then      60 * m
-      when :six_hours       then  6 * 60 * m
-      when :one_day         then 24 * 60 * m
-      else fail Jiji::Errors::NotFoundException
-      end
-    end
-    # rubocop:enable Metrics/CyclomaticComplexity
-
   end
 end

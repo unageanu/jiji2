@@ -4,7 +4,6 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::Intervals do
-
   before(:example) do
     @intervals = Jiji::Model::Trading::Intervals.instance
   end
@@ -13,11 +12,11 @@ describe Jiji::Model::Trading::Intervals do
     it 'idに対応するIntervalを取得できる' do
       interval = @intervals.get(:one_minute)
       expect(interval.id).to eq(:one_minute)
-      expect(interval.ms).to eq(60*1000)
+      expect(interval.ms).to eq(60 * 1000)
 
       interval = @intervals.get(:thirty_minutes)
       expect(interval.id).to eq(:thirty_minutes)
-      expect(interval.ms).to eq(30*60*1000)
+      expect(interval.ms).to eq(30 * 60 * 1000)
     end
 
     it 'idに対応するIntervalが存在しない場合エラー' do
@@ -37,10 +36,10 @@ describe Jiji::Model::Trading::Intervals do
   describe '#resolve_collecting_interval' do
     it 'idに対応するIntervalのミリ秒値を取得できる' do
       interval_ms = @intervals.resolve_collecting_interval(:one_minute)
-      expect(interval_ms).to eq(60*1000)
+      expect(interval_ms).to eq(60 * 1000)
 
       interval_ms = @intervals.resolve_collecting_interval(:thirty_minutes)
-      expect(interval_ms).to eq(30*60*1000)
+      expect(interval_ms).to eq(30 * 60 * 1000)
     end
 
     it 'idに対応するIntervalが存在しない場合エラー' do
@@ -53,34 +52,44 @@ describe Jiji::Model::Trading::Intervals do
   describe '#calcurate_interval_start_time' do
     it '集計期間の開始時刻を計算できる' do
       interval = @intervals.get(:fifteen_minutes)
-      expect(interval.calcurate_interval_start_time(Time.utc(2015,5,1,12,10,32)))
-        .to eq Time.utc(2015,5,1,12,0,0)
-      expect(interval.calcurate_interval_start_time(Time.utc(2015,5,1,12,0,0)))
-        .to eq Time.utc(2015,5,1,12,0,0)
-      expect(interval.calcurate_interval_start_time(Time.utc(2015,5,1,12,14,59)))
-        .to eq Time.utc(2015,5,1,12,0,0)
-      expect(interval.calcurate_interval_start_time(Time.utc(2015,5,1,12,15,00)))
-        .to eq Time.utc(2015,5,1,12,15,0)
-      expect(interval.calcurate_interval_start_time(Time.utc(2015,5,1,12,15,01)))
-        .to eq Time.utc(2015,5,1,12,15,0)
-      expect(interval.calcurate_interval_start_time(Time.utc(2015,5,1,13,15,01)))
-        .to eq Time.utc(2015,5,1,13,15,0)
+      expect(
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 12, 10, 32))
+      ).to eq Time.utc(2015, 5, 1, 12, 0, 0)
+      expect(
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 12, 0, 0))
+      ).to eq Time.utc(2015, 5, 1, 12, 0, 0)
+      expect(
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 12, 14, 59))
+      ).to eq Time.utc(2015, 5, 1, 12, 0, 0)
+      expect(
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 12, 15, 0))
+      ).to eq Time.utc(2015, 5, 1, 12, 15, 0)
+      expect(
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 12, 15, 01))
+      ).to eq Time.utc(2015, 5, 1, 12, 15, 0)
+      expect(
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 13, 15, 01))
+      ).to eq Time.utc(2015, 5, 1, 13, 15, 0)
 
       interval = @intervals.get(:one_day)
-      expect(interval.calcurate_interval_start_time(Time.utc(2015,5,1,12,10,32)))
-        .to eq Time.utc(2015,5,1,0,0,0)
-      expect(interval.calcurate_interval_start_time(Time.utc(2015,5,1,12,0,0)))
-        .to eq Time.utc(2015,5,1,0,0,0)
-      expect(interval.calcurate_interval_start_time(Time.utc(2015,5,1,12,14,59)))
-        .to eq Time.utc(2015,5,1,0,0,0)
-      expect(interval.calcurate_interval_start_time(Time.utc(2015,5,1,20,15,00)))
-        .to eq Time.utc(2015,5,1,0,0,0)
-      expect(interval.calcurate_interval_start_time(Time.utc(2015,5,1,23,59,59)))
-        .to eq Time.utc(2015,5,1,0,0,0)
-      expect(interval.calcurate_interval_start_time(Time.utc(2015,5,2, 0, 0, 1)))
-        .to eq Time.utc(2015,5,2,0,0,0)
+      expect(
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 12, 10, 32))
+      ).to eq Time.utc(2015, 5, 1, 0, 0, 0)
+      expect(
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 12, 0, 0))
+      ).to eq Time.utc(2015, 5, 1, 0, 0, 0)
+      expect(
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 12, 14, 59))
+      ).to eq Time.utc(2015, 5, 1, 0, 0, 0)
+      expect(
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 20, 15, 00))
+      ).to eq Time.utc(2015, 5, 1, 0, 0, 0)
+      expect(
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 23, 59, 59))
+      ).to eq Time.utc(2015, 5, 1, 0, 0, 0)
+      expect(
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 2, 0, 0, 1))
+      ).to eq Time.utc(2015, 5, 2, 0, 0, 0)
     end
   end
-
-
 end

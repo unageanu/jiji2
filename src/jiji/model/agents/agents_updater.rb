@@ -17,11 +17,8 @@ module Jiji::Model::Agents
 
     def update(agents, agent_setting)
       new_agents = agent_setting.each_with_object({}) do |setting, r|
-        uuid = setting[:uuid]
         begin
-          r[uuid] = agents.include?(uuid) \
-            ? update_agent(agents[uuid], setting) \
-            : create_agent(setting)
+          create_or_update_agent(r, setting, agents)
         rescue => e
           @logger.error(e) if @logger
         end
@@ -30,6 +27,15 @@ module Jiji::Model::Agents
     end
 
     private
+
+    def create_or_update_agent(r, setting, agents)
+      uuid = setting[:uuid]
+      if agents.include?(uuid)
+        r[uuid] = update_agent(agents[uuid], setting)
+      else
+        r[uuid] = create_agent(setting)
+      end
+    end
 
     def update_agent(agent, setting)
       agent.properties = setting[:properties]

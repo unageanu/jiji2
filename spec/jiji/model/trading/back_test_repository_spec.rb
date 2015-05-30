@@ -30,7 +30,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       'memo'          => 'メモ',
       'pairs'         => [:EURJPY, :EURUSD],
       'agent_setting' => [
-        { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } },
+        { name: 'TestAgent1@aaa', properties: { 'a' => 1, 'b' => 'bb' } },
         { name: 'TestAgent1@aaa', properties: {} },
         { name: 'TestAgent2@bbb' }
       ]
@@ -43,7 +43,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(test.pairs).to eq [:EURJPY, :EURUSD]
     expect(test.agent_setting[0][:uuid]).not_to be nil
     expect(test.agent_setting[0][:name]).to eq 'TestAgent1@aaa'
-    expect(test.agent_setting[0][:properties]).to eq({ 'a' => 100, 'b' => 'bb' })
+    expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'bb' })
     expect(test.agents[test.agent_setting[0][:uuid]]).not_to be nil
     expect(test.agent_setting[1][:uuid]).not_to be nil
     expect(test.agent_setting[1][:name]).to eq 'TestAgent1@aaa'
@@ -63,7 +63,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       'end_time'      => Time.at(300),
       'pairs'         => [:EURJPY, :EURUSD],
       'agent_setting' => [
-        { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
+        { name: 'TestAgent1@aaa', properties: { 'a' => 1, 'b' => 'bb' } }
       ]
     })
 
@@ -74,7 +74,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(test2.pairs).to eq [:EURJPY, :EURUSD]
     expect(test2.agent_setting[0][:uuid]).not_to be nil
     expect(test2.agent_setting[0][:name]).to eq 'TestAgent1@aaa'
-    expect(test2.agent_setting[0][:properties]).to eq({ 'a' => 100, 'b' => 'bb' })
+    expect(test2.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'bb' })
     expect(test2.agents[test2.agent_setting[0][:uuid]]).not_to be nil
 
     expect(@repository.all.length).to be 2
@@ -94,7 +94,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'memo'          => 'メモ',
           'pairs'         => [:EURJPY, :EURUSD],
           'agent_setting' => [
-            { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
+            { name: 'TestAgent1@aaa', properties: { 'a' => 1, 'b' => 'b' } }
           ]
         })
       end
@@ -115,7 +115,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.pairs).to eq [:EURJPY, :EURUSD]
       expect(test.agent_setting[0][:uuid]).not_to be nil
       expect(test.agent_setting[0][:name]).to eq 'TestAgent1@aaa'
-      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 100, 'b' => 'bb' })
+      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
       expect(test.agents[test.agent_setting[0][:uuid]]).not_to be nil
 
       test = @repository.all[1]
@@ -125,7 +125,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.pairs).to eq [:EURJPY, :EURUSD]
       expect(test.agent_setting[0][:uuid]).not_to be nil
       expect(test.agent_setting[0][:name]).to eq 'TestAgent1@aaa'
-      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 100, 'b' => 'bb' })
+      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
       expect(test.agents[test.agent_setting[0][:uuid]]).not_to be nil
 
       test = @repository.all[2]
@@ -135,7 +135,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.pairs).to eq [:EURJPY, :EURUSD]
       expect(test.agent_setting[0][:uuid]).not_to be nil
       expect(test.agent_setting[0][:name]).to eq 'TestAgent1@aaa'
-      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 100, 'b' => 'bb' })
+      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
       expect(test.agents[test.agent_setting[0][:uuid]]).not_to be nil
     end
 

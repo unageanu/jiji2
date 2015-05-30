@@ -23,14 +23,14 @@ describe Jiji::Model::Settings::RMTSetting do
 
   it '設定を永続化できる' do
     @setting.agent_setting = [
-      { 'name' => 'TestAgent1@aaa', 'properties' => { 'a' => 100, 'b' => 'bb' } },
+      { 'name' => 'TestAgent1@aaa', 'properties' => { 'a' => 1, 'b' => 'bb' } },
       { 'name' => 'TestAgent1@aaa', 'properties' => {} },
       { 'name' => 'TestAgent2@bbb' }
     ]
     @setting.is_trade_enabled = false
 
     expect(@setting.agent_setting).to eq [
-      { 'name' => 'TestAgent1@aaa', 'properties' => { 'a' => 100, 'b' => 'bb' } },
+      { 'name' => 'TestAgent1@aaa', 'properties' => { 'a' => 1, 'b' => 'bb' } },
       { 'name' => 'TestAgent1@aaa', 'properties' => {} },
       { 'name' => 'TestAgent2@bbb' }
     ]
@@ -39,7 +39,7 @@ describe Jiji::Model::Settings::RMTSetting do
     @setting.save
 
     expect(@setting.agent_setting).to eq [
-      { 'name' => 'TestAgent1@aaa', 'properties' => { 'a' => 100, 'b' => 'bb' } },
+      { 'name' => 'TestAgent1@aaa', 'properties' => { 'a' => 1, 'b' => 'bb' } },
       { 'name' => 'TestAgent1@aaa', 'properties' => {} },
       { 'name' => 'TestAgent2@bbb' }
     ]
@@ -47,7 +47,7 @@ describe Jiji::Model::Settings::RMTSetting do
 
     recreate_setting
     expect(@setting.agent_setting).to eq [
-      { 'name' => 'TestAgent1@aaa', 'properties' => { 'a' => 100, 'b' => 'bb' } },
+      { 'name' => 'TestAgent1@aaa', 'properties' => { 'a' => 1, 'b' => 'bb' } },
       { 'name' => 'TestAgent1@aaa', 'properties' => {} },
       { 'name' => 'TestAgent2@bbb' }
     ]

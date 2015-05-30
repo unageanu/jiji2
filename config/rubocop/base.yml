@@ -47,3 +47,7 @@ Style/BracesAroundHashParameters:
 Metrics/ParameterLists:
   Max: 8
   CountKeywordArgs: false
+
+# 別名にマッピングしたい場合がある
+Style/TrivialAccessors:
+  ExactNameMatch:	true

@@ -2,10 +2,12 @@
 
 require 'thread'
 
+# rubocop:disable Lint/HandleExceptions
 begin
   require 'jiji/test/mock/mock_securities'
 rescue LoadError
 end
+# rubocop:enable Lint/HandleExceptions
 
 module Jiji::Model::Securities
   class SecuritiesFactory

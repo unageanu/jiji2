@@ -17,6 +17,9 @@ module Jiji
     module Agents       end
     module Graphing     end
     module Settings     end
+    module Securities
+      module Internal   end
+    end
     module Trading
       module Brokers    end
       module Internal   end
@@ -26,7 +29,6 @@ module Jiji
     end
   end
 
-  module Plugin         end
   module Security       end
   module Services
     module AWS          end

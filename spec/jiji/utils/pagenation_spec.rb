@@ -8,14 +8,19 @@ describe Jiji::Utils::Pagenation::Query do
     @data_builder = Jiji::Test::DataBuilder.new
 
     @time_srouce = Jiji::Utils::TimeSource.new
-    factory = Jiji::Model::Graphing::GraphFactory.new(@time_srouce)
+    factory = Jiji::Model::Graphing::GraphFactory.new
     @graph1 = factory.create('test1', :chart)
     @graph2 = factory.create('test2', :chart)
 
-    100.times do |i|
-      @time_srouce.set(Time.at(i))
-      @graph1 << [i]
-      @graph2 << [i]
+    interval = Jiji::Model::Trading::Intervals.instance.get(:one_minute)
+    saver1 = Jiji::Model::Graphing::Internal::GraphDataSaver.new(
+      @graph1.id, interval)
+    saver2 = Jiji::Model::Graphing::Internal::GraphDataSaver.new(
+      @graph2.id, interval)
+
+    101.times do |i|
+      saver1.save_data_if_required([i], Time.at(i * 60))
+      saver2.save_data_if_required([i], Time.at(i * 60))
     end
   end
 
@@ -25,72 +30,78 @@ describe Jiji::Utils::Pagenation::Query do
 
   it '絞り込み条件あり、ソート条件あり、0～10件取得' do
     q = Jiji::Utils::Pagenation::Query.new(
-      { graph_id: @graph1.id }, { timestamp: :asc }, 0, 10)
+      { graph_id: @graph1.id, interval: :one_minute },
+      { timestamp: :asc }, 0, 10)
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(10)
     expect(data[0].values).to eq([0])
     expect(data[0].timestamp).to eq(Time.at(0))
     expect(data[9].values).to eq([9])
-    expect(data[9].timestamp).to eq(Time.at(9))
+    expect(data[9].timestamp).to eq(Time.at(9 * 60))
   end
 
   it '絞り込み条件あり、ソート条件あり、10～20件取得' do
     q = Jiji::Utils::Pagenation::Query.new(
-      { graph_id: @graph1.id }, { timestamp: :asc }, 10, 10)
+      { graph_id: @graph1.id, interval: :one_minute  },
+      { timestamp: :asc }, 10, 10)
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(10)
     expect(data[0].values).to eq([10])
-    expect(data[0].timestamp).to eq(Time.at(10))
+    expect(data[0].timestamp).to eq(Time.at(10 * 60))
     expect(data[9].values).to eq([19])
-    expect(data[9].timestamp).to eq(Time.at(19))
+    expect(data[9].timestamp).to eq(Time.at(19 * 60))
   end
 
   it '絞り込み条件あり、ソート条件あり、95～100件取得' do
     q = Jiji::Utils::Pagenation::Query.new(
-      { graph_id: @graph1.id }, { timestamp: :asc }, 95, 10)
+      { graph_id: @graph1.id, interval: :one_minute },
+      { timestamp: :asc }, 95, 10)
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(5)
     expect(data[0].values).to eq([95])
-    expect(data[0].timestamp).to eq(Time.at(95))
+    expect(data[0].timestamp).to eq(Time.at(95 * 60))
     expect(data[4].values).to eq([99])
-    expect(data[4].timestamp).to eq(Time.at(99))
+    expect(data[4].timestamp).to eq(Time.at(99 * 60))
   end
 
   it '絞り込み条件あり、ソート条件あり(逆順)、0～10件取得' do
     q = Jiji::Utils::Pagenation::Query.new(
-      { graph_id: @graph1.id }, { timestamp: :desc }, 0, 10)
+      { graph_id: @graph1.id, interval: :one_minute },
+      { timestamp: :desc }, 0, 10)
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(10)
     expect(data[0].values).to eq([99])
-    expect(data[0].timestamp).to eq(Time.at(99))
+    expect(data[0].timestamp).to eq(Time.at(99 * 60))
     expect(data[9].values).to eq([90])
-    expect(data[9].timestamp).to eq(Time.at(90))
+    expect(data[9].timestamp).to eq(Time.at(90 * 60))
   end
 
   it '絞り込み条件あり、ソート条件あり(逆順)、10～20件取得' do
     q = Jiji::Utils::Pagenation::Query.new(
-      { graph_id: @graph1.id }, { timestamp: :desc }, 10, 10)
+      { graph_id: @graph1.id, interval: :one_minute },
+      { timestamp: :desc }, 10, 10)
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(10)
     expect(data[0].values).to eq([89])
-    expect(data[0].timestamp).to eq(Time.at(89))
+    expect(data[0].timestamp).to eq(Time.at(89 * 60))
     expect(data[9].values).to eq([80])
-    expect(data[9].timestamp).to eq(Time.at(80))
+    expect(data[9].timestamp).to eq(Time.at(80 * 60))
   end
 
   it '絞り込み条件あり、ソート条件あり(逆順)、95～100件取得' do
     q = Jiji::Utils::Pagenation::Query.new(
-      { graph_id: @graph1.id }, { timestamp: :desc }, 95, 10)
+      { graph_id: @graph1.id, interval: :one_minute },
+      { timestamp: :desc }, 95, 10)
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(5)
     expect(data[0].values).to eq([4])
-    expect(data[0].timestamp).to eq(Time.at(4))
+    expect(data[0].timestamp).to eq(Time.at(4 * 60))
     expect(data[4].values).to eq([0])
     expect(data[4].timestamp).to eq(Time.at(0))
   end
@@ -104,7 +115,7 @@ describe Jiji::Utils::Pagenation::Query do
     expect(data[0].values).to eq([0])
     expect(data[0].timestamp).to eq(Time.at(0))
     expect(data[9].values).to eq([9])
-    expect(data[9].timestamp).to eq(Time.at(9))
+    expect(data[9].timestamp).to eq(Time.at(9 * 60))
   end
 
   it '絞り込み条件なし、ソート条件あり(逆順)、0～10件取得' do
@@ -114,9 +125,9 @@ describe Jiji::Utils::Pagenation::Query do
 
     expect(data.length).to eq(10)
     expect(data[0].values).to eq([99])
-    expect(data[0].timestamp).to eq(Time.at(99))
+    expect(data[0].timestamp).to eq(Time.at(99 * 60))
     expect(data[9].values).to eq([90])
-    expect(data[9].timestamp).to eq(Time.at(90))
+    expect(data[9].timestamp).to eq(Time.at(90 * 60))
   end
 
   it '絞り込み条件なし、ソート条件なし、0～10件取得' do
@@ -135,13 +146,13 @@ describe Jiji::Utils::Pagenation::Query do
 
   it '絞り込み条件あり、ソート条件あり、全件取得' do
     q = Jiji::Utils::Pagenation::Query.new(
-      { graph_id: @graph1.id }, timestamp: :asc)
+      { graph_id: @graph1.id, interval: :one_minute }, timestamp: :asc)
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(100)
     expect(data[0].values).to eq([0])
     expect(data[0].timestamp).to eq(Time.at(0))
     expect(data[99].values).to eq([99])
-    expect(data[99].timestamp).to eq(Time.at(99))
+    expect(data[99].timestamp).to eq(Time.at(99 * 60))
   end
 end

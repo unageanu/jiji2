@@ -13,13 +13,17 @@ module Jiji::Model::Graphing
 
     field :graph_id,  type: BSON::ObjectId
     field :values,    type: Array
+    field :interval,  type: Symbol
     field :timestamp, type: Time
 
-    index({ id: 1, timestamp: 1 }, name: 'graph-data_id_timestamp_index')
+    index(
+      { id: 1, interval: 1, timestamp: 1 },
+      { name: 'graph-data_id_interval_timestamp_index' })
 
-    def self.create(graph_id, values, time = Time.now)
+    def self.create(graph_id, values, interval, time = Time.now)
       GraphData.new do |d|
         d.graph_id  = graph_id
+        d.interval  = interval
         d.values    = values
         d.timestamp = time
       end

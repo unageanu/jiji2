@@ -20,7 +20,6 @@ module Jiji::Model::Trading
 
     def setup
       @setting_repository.securities_setting.setup
-      @agents_builder = create_agents_builder(rmt_broker)
 
       setup_rmt_process
     end
@@ -42,9 +41,12 @@ module Jiji::Model::Trading
     def setup_rmt_process
       agent_setting = @setting_repository.rmt_setting.agent_setting
 
-      @agents          = create_agents(agent_setting, rmt_broker)
+      graph_factory    = create_graph_factory
+      @agents_builder  = create_agents_builder(graph_factory, rmt_broker)
+      @agents          = create_agents(
+        agent_setting, rmt_broker, graph_factory)
 
-      @trading_context = create_trading_context
+      @trading_context = create_trading_context(graph_factory)
       @process         = create_process(trading_context)
 
       @process.start
@@ -56,8 +58,9 @@ module Jiji::Model::Trading
       @process.stop if @process
     end
 
-    def create_trading_context
-      TradingContext.new(@agents, rmt_broker, time_source, logger)
+    def create_trading_context(graph_factory)
+      TradingContext.new(@agents, rmt_broker,
+        graph_factory, time_source, logger)
     end
 
     def create_process(trading_context)

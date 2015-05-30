@@ -13,15 +13,17 @@ module Jiji::Model::Trading
     attr_reader :error
     attr_reader :variables
     attr_reader :time_source
+    attr_reader :graph_factory
 
-    def initialize(agents, broker, time_source, logger)
-      @logger      = logger
-      @time_source = time_source
-      @agents      = agents
-      @broker      = broker
-      @status      = :wait_for_start
-      @error       = nil
-      @variables   = {}
+    def initialize(agents, broker, graph_factory, time_source, logger)
+      @logger        = logger
+      @time_source   = time_source
+      @agents        = agents
+      @broker        = broker
+      @graph_factory = graph_factory
+      @status        = :wait_for_start
+      @error         = nil
+      @variables     = {}
     end
 
     def prepare_running

@@ -3,14 +3,23 @@
 module Jiji::Model::Graphing
   class GraphFactory
 
-    def initialize(time_source, back_test_id = nil)
-      @time_source  = time_source
+    def initialize(back_test_id = nil)
       @back_test_id = back_test_id
+      @graphs = {}
     end
 
     def create(label, type, *colors)
-      Graph.create(
-        label, type, colors, @time_source, @back_test_id)
+      return @graphs[label] if @graphs.include?(label)
+
+      graph = Graph.get_or_create(label, type, colors, @back_test_id)
+      @graphs[label] = graph
+      graph
+    end
+
+    def save_data(time)
+      @graphs.values.each do |g|
+        g.save_data(time)
+      end
     end
 
   end

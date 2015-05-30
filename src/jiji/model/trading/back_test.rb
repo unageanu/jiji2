@@ -88,10 +88,7 @@ module Jiji::Model::Trading
       self.created_at = time_source.now
       generate_uuid(agent_setting)
 
-      broker           = create_broker
-      @agents          = create_agents(agent_setting, broker, id)
-      trading_context  = create_trading_context(broker, @agents)
-      @process         = create_process(trading_context)
+      create_components
 
       @process.start
       @process.post_job(Jobs::NotifyNextTickJobForBackTest.new)
@@ -104,13 +101,23 @@ module Jiji::Model::Trading
 
     private
 
+    def create_components
+      graph_factory    = create_graph_factory
+      broker           = create_broker
+      @agents          = create_agents(
+        agent_setting, graph_factory, broker, id)
+      trading_context  = create_trading_context(broker, @agents, graph_factory)
+      @process         = create_process(trading_context)
+    end
+
     def create_broker
       Brokers::BackTestBroker.new(_id, start_time, end_time,
         pairs,  @tick_repository, @securities_provider)
     end
 
-    def create_trading_context(broker, agents)
-      TradingContext.new(agents, broker, time_source, @logger)
+    def create_trading_context(broker, agents, graph_factory)
+      TradingContext.new(agents,
+        broker, graph_factory, time_source, @logger)
     end
 
     def create_process(trading_context)

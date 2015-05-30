@@ -50,7 +50,7 @@ module Jiji::Test::Mock
       if pair_name != :EURJPY && pair_name != :EURUSD && pair_name != :USDJPY
         not_found
       end
-      interval_ms = Jiji::Utils::AbstractHistoricalDataFetcher \
+      interval_ms = Jiji::Model::Trading::Intervals.instance \
                     .resolve_collecting_interval(interval)
       create_timestamps(interval_ms / 1000, start_time, end_time).map do |time|
         Rate.new(pair_name, time, 112, 112.10, 113, 111)

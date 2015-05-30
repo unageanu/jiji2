@@ -7,7 +7,6 @@ require 'jiji/web/transport/transportable'
 require 'singleton'
 
 module Jiji::Model::Trading
-
   class Interval
 
     include Jiji::Utils::ValueObject
@@ -32,11 +31,12 @@ module Jiji::Model::Trading
     include Singleton
 
     def initialize
+      @intervals = {}
       register_intervals
     end
 
     def all
-      @intervals.values.sort_by {|i| i.ms}
+      @intervals.values.sort_by { |i| i.ms }
     end
 
     def get(id)
@@ -50,18 +50,16 @@ module Jiji::Model::Trading
     private
 
     def register_intervals
-      @intervals = {}
-      m = 60 * 1000
-      register_interval(:one_minute,            1 * m)
-      register_interval(:fifteen_minutes,      15 * m)
-      register_interval(:thirty_minutes,       30 * m)
-      register_interval(:one_hour,             60 * m)
-      register_interval(:six_hours,        6 * 60 * m)
-      register_interval(:one_day,         24 * 60 * m)
+      register_interval(:one_minute,            1)
+      register_interval(:fifteen_minutes,      15)
+      register_interval(:thirty_minutes,       30)
+      register_interval(:one_hour,             60)
+      register_interval(:six_hours,        6 * 60)
+      register_interval(:one_day,         24 * 60)
     end
 
-    def register_interval(id, ms)
-      @intervals[id] = Interval.new(id, ms)
+    def register_interval(id, m)
+      @intervals[id] = Interval.new(id, m * 60 * 1000)
     end
 
   end

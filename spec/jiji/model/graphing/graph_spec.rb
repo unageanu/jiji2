@@ -33,13 +33,13 @@ describe Jiji::Model::Graphing::Graph do
     expect(rmt_graphs[0].type).to eq :chart
     expect(rmt_graphs[0].colors).to eq ['#333', '#666', '#999']
     expect(rmt_graphs[0].start_time).to eq Time.new(2015, 4, 1)
-    expect(rmt_graphs[0].end_time).to eq Time.new(2015, 4, 1, 0, 0, 1)
+    expect(rmt_graphs[0].end_time).to eq Time.new(2015, 4, 1, 0, 1, 0)
 
     expect(rmt_graphs[1].label).to eq 'test2'
     expect(rmt_graphs[1].type).to eq :zero_base
     expect(rmt_graphs[1].colors).to eq ['#333', '#666', '#999']
     expect(rmt_graphs[1].start_time).to eq Time.new(2015, 4, 1)
-    expect(rmt_graphs[1].end_time).to eq Time.new(2015, 4, 1, 0, 0, 2)
+    expect(rmt_graphs[1].end_time).to eq Time.new(2015, 4, 1, 0, 2, 0)
 
     graphs = @repository.find(@backtest1.id)
     expect(graphs.length).to eq 1
@@ -47,7 +47,7 @@ describe Jiji::Model::Graphing::Graph do
     expect(graphs[0].type).to eq :chart
     expect(graphs[0].colors).to eq ['#444']
     expect(graphs[0].start_time).to eq Time.new(2015, 4, 1)
-    expect(graphs[0].end_time).to eq Time.new(2015, 4, 1, 0, 0, 2)
+    expect(graphs[0].end_time).to eq Time.new(2015, 4, 1, 0, 2, 0)
 
     graphs = @repository.find(@backtest2.id)
     expect(graphs.length).to eq 1
@@ -55,7 +55,7 @@ describe Jiji::Model::Graphing::Graph do
     expect(graphs[0].type).to eq :zero_base
     expect(graphs[0].colors).to eq []
     expect(graphs[0].start_time).to eq Time.new(2015, 4, 1)
-    expect(graphs[0].end_time).to eq Time.new(2015, 4, 1, 0, 0, 1)
+    expect(graphs[0].end_time).to eq Time.new(2015, 4, 1, 0, 1, 0)
   end
 
   it '期間を指定して期間内にデータがあるグラフを取り出せる' do
@@ -66,22 +66,22 @@ describe Jiji::Model::Graphing::Graph do
     expect(graphs[1].label).to eq 'test2'
 
     graphs = @repository.find(nil,
-      Time.new(2015, 4, 1), Time.new(2015, 4, 1, 0, 0, 1))
+      Time.new(2015, 4, 1), Time.new(2015, 4, 1, 0, 1, 0))
     expect(graphs.length).to eq 2
     expect(graphs[0].label).to eq 'test1'
     expect(graphs[1].label).to eq 'test2'
 
     graphs = @repository.find(nil,
-      Time.new(2015, 4, 1, 0, 0, 2), Time.new(2015, 4, 1, 0, 0, 3))
+      Time.new(2015, 4, 1, 0, 2, 0), Time.new(2015, 4, 1, 0, 3, 0))
     expect(graphs.length).to eq 1
     expect(graphs[0].label).to eq 'test2'
 
     graphs = @repository.find(nil,
-      Time.new(2015, 3, 31, 0, 0, 2), Time.new(2015, 4, 1))
+      Time.new(2015, 3, 31, 0, 2, 0), Time.new(2015, 4, 1))
     expect(graphs.length).to eq 0
 
     graphs = @repository.find(nil,
-      Time.new(2015, 4, 1, 0, 0, 3), Time.new(2015, 4, 1, 0, 1))
+      Time.new(2015, 4, 1, 0, 3, 0), Time.new(2015, 4, 1, 0, 1))
     expect(graphs.length).to eq 0
 
     graphs = @repository.find(@backtest1.id,
@@ -94,12 +94,12 @@ describe Jiji::Model::Graphing::Graph do
     expect(graphs.length).to eq 0
 
     graphs = @repository.find(@backtest1.id,
-      Time.new(2015, 4, 1, 0, 0, 2), Time.new(2015, 4, 1, 0, 0, 3))
+      Time.new(2015, 4, 1, 0, 2, 0), Time.new(2015, 4, 1, 0, 3, 0))
     expect(graphs.length).to eq 1
     expect(graphs[0].label).to eq 'backtest1'
 
     graphs = @repository.find(@backtest1.id,
-      Time.new(2015, 4, 1, 0, 0, 3), Time.new(2015, 4, 1, 0, 0, 4))
+      Time.new(2015, 4, 1, 0, 3, 0), Time.new(2015, 4, 1, 0, 4))
     expect(graphs.length).to eq 0
   end
 
@@ -152,12 +152,11 @@ describe Jiji::Model::Graphing::Graph do
 
   def register_graphs
     factory_for_rmt =
-      Jiji::Model::Graphing::GraphFactory.new(@time_srouce)
+      Jiji::Model::Graphing::GraphFactory.new
     factory_for_backtest1 =
-      Jiji::Model::Graphing::GraphFactory.new(@time_srouce, @backtest1.id)
+      Jiji::Model::Graphing::GraphFactory.new(@backtest1.id)
     factory_for_backtest2 =
-      Jiji::Model::Graphing::GraphFactory.new(@time_srouce, @backtest2.id)
-    @time_srouce.set(Time.new(2015, 4, 1))
+      Jiji::Model::Graphing::GraphFactory.new(@backtest2.id)
 
     graph1 = factory_for_rmt.create(
       'test1', :chart,     '#333', '#666', '#999')
@@ -172,13 +171,29 @@ describe Jiji::Model::Graphing::Graph do
     graph3 << [-1,  10, 0]
     graph4 << [0.1,  0.2, 0.3]
 
-    @time_srouce.set(Time.new(2015, 4, 1, 0, 0, 1))
+    time = Time.new(2015, 4, 1)
+    graph1.save_data(time)
+    graph2.save_data(time)
+    graph3.save_data(time)
+    graph4.save_data(time)
+
     graph1 << [20, 21, 22]
     graph2 << [21]
     graph4 << [0.4,  0.2, -0.3]
 
-    @time_srouce.set(Time.new(2015, 4, 1, 0, 0, 2))
+    time = Time.new(2015, 4, 1, 0, 1, 0)
+    graph1.save_data(time)
+    graph2.save_data(time)
+    graph3.save_data(time)
+    graph4.save_data(time)
+
     graph2 << [31, nil, 32]
     graph3 << [-10,  0, 20]
+
+    time = Time.new(2015, 4, 1, 0, 2, 0)
+    graph1.save_data(time)
+    graph2.save_data(time)
+    graph3.save_data(time)
+    graph4.save_data(time)
   end
 end

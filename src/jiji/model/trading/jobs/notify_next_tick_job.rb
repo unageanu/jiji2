@@ -16,7 +16,9 @@ module Jiji::Model::Trading::Jobs
       trading_context.broker.refresh
     end
 
-    def after_do_next(_trading_context, queue)
+    def after_do_next(trading_context, queue)
+      time = trading_context.broker.tick.timestamp
+      trading_context.graph_factory.save_data(time)
     end
 
   end

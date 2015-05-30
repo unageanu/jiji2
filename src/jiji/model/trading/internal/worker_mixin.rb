@@ -15,22 +15,21 @@ module Jiji::Model::Trading::Internal
 
     private
 
-    def create_agents(agent_setting, broker, backtest_id = nil)
+    def create_agents(agent_setting, broker, graph_factory, backtest_id = nil)
       agents = Jiji::Model::Agents::Agents.get_or_create(backtest_id, logger)
-      create_agents_builder(broker, backtest_id) \
+      create_agents_builder(graph_factory, broker, backtest_id) \
         .update(agents, agent_setting || [])
       agents.restore_state
       agents
     end
 
-    def create_agents_builder(broker, backtest_id = nil)
-      graph_factory = create_graph_factory(backtest_id)
+    def create_agents_builder(graph_factory, broker, backtest_id = nil)
       Jiji::Model::Agents::AgentsUpdater.new(
         agent_registry, broker, graph_factory, nil, logger)
     end
 
-    def create_graph_factory(id)
-      Jiji::Model::Graphing::GraphFactory.new(time_source, id)
+    def create_graph_factory(id = nil)
+      Jiji::Model::Graphing::GraphFactory.new(id)
     end
 
     def generate_uuid(agent_setting)

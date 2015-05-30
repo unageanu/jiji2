@@ -1,21 +1,18 @@
 # coding: utf-8
 
-require 'jiji/utils/abstract_historical_data_fetcher'
-
 module Jiji::Model::Graphing::Internal
-
   class GraphDataSaver
 
-    def initialize( graph_id, interval )
+    def initialize(graph_id, interval)
       @graph_id        = graph_id
       @interval        = interval
       @values          = nil
       @current         = nil
     end
 
-    def save_data_if_required( values, time )
+    def save_data_if_required(values, time)
       recreate_graph_data(time) if !@current || time >= @next_recreate_point
-      updata( values )
+      updata(values)
       save_data if time >= @next_save_point
     end
 
@@ -33,15 +30,23 @@ module Jiji::Model::Graphing::Internal
     end
 
     def updata(values)
+      merge(values)
+      @current.values = calculate_average
+    end
+
+    def merge(values)
       values.each_with_index do |item, index|
         h = @values[index] \
-        || (@values[index] = {count:0, sum:BigDecimal.new(0, 10)})
+        || (@values[index] = { count: 0, sum: BigDecimal.new(0, 10) })
         unless values[index].nil?
           h[:sum]   += item
           h[:count] += 1
         end
       end
-      @current.values = @values.map do |h|
+    end
+
+    def calculate_average
+      @values.map do |h|
         h && h[:count] > 0 ? (h[:sum] / h[:count]).to_f : 0
       end
     end
@@ -52,5 +57,4 @@ module Jiji::Model::Graphing::Internal
     end
 
   end
-
 end

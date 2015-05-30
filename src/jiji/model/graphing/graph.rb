@@ -17,40 +17,67 @@ module Jiji::Model::Graphing
     field :end_time,     type: Time
 
     index(
+      { back_test_id: 1, label: 1 },
+      { unique: true, name: 'graph_back_test_id_label_index' })
+    index(
       { back_test_id: 1, start_time: 1 },
       name: 'graph_back_test_id_start_time_index')
     index(
       { back_test_id: 1, end_time: 1 },
       name: 'graph_back_test_id_end_time_index')
 
-    def self.create(label, type, colors, time_source, back_test_id)
-      Graph.new(time_source) do |g|
-        g.back_test_id = back_test_id
-        g.type         = type
-        g.label        = label
-        g.colors       = colors
-      end
+    attr_accessor :values
+
+    def self.get_or_create(label, type, colors, back_test_id = nil)
+      graph = Graph.find_by({ back_test_id: back_test_id, label: label })
+      return graph if graph
+
+      graph = Graph.new(back_test_id, type, label, colors)
+      graph.save
+      graph
     end
 
-    def initialize(time_source, &block)
-      @time_source = time_source
-      super(&block)
+    def initialize(back_test_id, type, label, colors)
+      super()
+      self.back_test_id = back_test_id
+      self.type         = type
+      self.label        = label
+      self.colors       = colors
+
+      setup_data_savers
     end
 
     def <<(values)
-      now = @time_source.now
-      data = GraphData.create(id, values, now)
-      data.save
+      @current_values = values
+    end
 
-      update_time(now)
+    def save_data(time)
+      return unless @current_values
+
+      @savers.each do |saver|
+        saver.save_data_if_required(@current_values, time)
+      end
+      @current_values = nil
+
+      update_time(time)
     end
 
     def fetch_data(start_time, end_time, interval = :one_minute)
-      Internal::GraphDataFetcher.new.fetch(
-        id, start_time, end_time, interval)
+      GraphData.where(
+        :graph_id      => id,
+        :interval      => interval,
+        :timestamp.gte => start_time,
+        :timestamp.lt  => end_time
+      )
     end
 
     private
+
+    def setup_data_savers
+      @savers = Jiji::Model::Trading::Intervals.instance.all.map do |i|
+        Internal::GraphDataSaver.new(id, i)
+      end
+    end
 
     def update_time(now)
       self.start_time = now unless start_time

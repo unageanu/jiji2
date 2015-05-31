@@ -138,7 +138,7 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :buy
       expect(order.units).to be 1
       expect(order.type).to be :limit
-      expect(order.price).to eq (ask + 1).to_f
+      expect(order.price).to eq((ask + 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
 
       @orders <<  @client.order(:EURJPY, :sell, 2, :limit, {
@@ -156,12 +156,12 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :sell
       expect(order.units).to be 2
       expect(order.type).to be :limit
-      expect(order.price).to eq (bid - 1).to_f
+      expect(order.price).to eq((bid - 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
-      expect(order.lower_bound).to eq (bid + 0.05).to_f
-      expect(order.upper_bound).to eq (bid - 0.05).to_f
-      expect(order.stop_loss).to eq (bid).to_f
-      expect(order.take_profit).to eq (bid - 2).to_f
+      expect(order.lower_bound).to eq((bid + 0.05).to_f)
+      expect(order.upper_bound).to eq((bid - 0.05).to_f)
+      expect(order.stop_loss).to eq((bid).to_f)
+      expect(order.take_profit).to eq((bid - 2).to_f)
       expect(order.trailing_stop).to eq 5
 
       orders = @client.retrieve_orders
@@ -172,7 +172,7 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :buy
       expect(order.units).to be 1
       expect(order.type).to be :limit
-      expect(order.price).to eq (ask + 1).to_f
+      expect(order.price).to eq((ask + 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
       order = orders[0]
       expect(order.internal_id).not_to be nil
@@ -180,12 +180,12 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :sell
       expect(order.units).to be 2
       expect(order.type).to be :limit
-      expect(order.price).to eq (bid - 1).to_f
+      expect(order.price).to eq((bid - 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
-      expect(order.lower_bound).to eq (bid + 0.05).to_f
-      expect(order.upper_bound).to eq (bid - 0.05).to_f
-      expect(order.stop_loss).to eq (bid).to_f
-      expect(order.take_profit).to eq (bid - 2).to_f
+      expect(order.lower_bound).to eq((bid + 0.05).to_f)
+      expect(order.upper_bound).to eq((bid - 0.05).to_f)
+      expect(order.stop_loss).to eq(bid.to_f)
+      expect(order.take_profit).to eq((bid - 2).to_f)
       expect(order.trailing_stop).to eq 5
 
       order = @client.retrieve_order_by_id(orders[1].internal_id)
@@ -194,7 +194,7 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :buy
       expect(order.units).to be 1
       expect(order.type).to be :limit
-      expect(order.price).to eq (ask + 1).to_f
+      expect(order.price).to eq((ask + 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
 
       order = @client.retrieve_order_by_id(orders[0].internal_id)
@@ -203,12 +203,12 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :sell
       expect(order.units).to be 2
       expect(order.type).to be :limit
-      expect(order.price).to eq (bid - 1).to_f
+      expect(order.price).to eq((bid - 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
-      expect(order.lower_bound).to eq (bid + 0.05).to_f
-      expect(order.upper_bound).to eq (bid - 0.05).to_f
-      expect(order.stop_loss).to eq (bid).to_f
-      expect(order.take_profit).to eq (bid - 2).to_f
+      expect(order.lower_bound).to eq((bid + 0.05).to_f)
+      expect(order.upper_bound).to eq((bid - 0.05).to_f)
+      expect(order.stop_loss).to eq(bid.to_f)
+      expect(order.take_profit).to eq((bid - 2).to_f)
       expect(order.trailing_stop).to eq 5
     end
 
@@ -226,7 +226,7 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :sell
       expect(order.units).to be 10
       expect(order.type).to be :stop
-      expect(order.price).to eq (bid + 1).to_f
+      expect(order.price).to eq((bid + 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
 
       @orders <<  @client.order(:USDJPY, :buy, 11, :stop, {
@@ -244,12 +244,12 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :buy
       expect(order.units).to be 11
       expect(order.type).to be :stop
-      expect(order.price).to eq (ask - 1).to_f
+      expect(order.price).to eq((ask - 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
-      expect(order.lower_bound).to eq (ask + 0.05).to_f
-      expect(order.upper_bound).to eq (ask - 0.05).to_f
-      expect(order.stop_loss).to eq (ask - 2).to_f
-      expect(order.take_profit).to eq (ask).to_f
+      expect(order.lower_bound).to eq((ask + 0.05).to_f)
+      expect(order.upper_bound).to eq((ask - 0.05).to_f)
+      expect(order.stop_loss).to eq((ask - 2).to_f)
+      expect(order.take_profit).to eq(ask.to_f)
       expect(order.trailing_stop).to eq 5
 
       orders = @client.retrieve_orders
@@ -260,7 +260,7 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :sell
       expect(order.units).to be 10
       expect(order.type).to be :stop
-      expect(order.price).to eq (bid + 1).to_f
+      expect(order.price).to eq((bid + 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
       order = orders[0]
       expect(order.internal_id).not_to be nil
@@ -268,12 +268,12 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :buy
       expect(order.units).to be 11
       expect(order.type).to be :stop
-      expect(order.price).to eq (ask - 1).to_f
+      expect(order.price).to eq((ask - 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
-      expect(order.lower_bound).to eq (ask + 0.05).to_f
-      expect(order.upper_bound).to eq (ask - 0.05).to_f
-      expect(order.stop_loss).to eq (ask - 2).to_f
-      expect(order.take_profit).to eq (ask).to_f
+      expect(order.lower_bound).to eq((ask + 0.05).to_f)
+      expect(order.upper_bound).to eq((ask - 0.05).to_f)
+      expect(order.stop_loss).to eq((ask - 2).to_f)
+      expect(order.take_profit).to eq(ask.to_f)
       expect(order.trailing_stop).to eq 5
 
       order = @client.retrieve_order_by_id(orders[1].internal_id)
@@ -282,7 +282,7 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :sell
       expect(order.units).to be 10
       expect(order.type).to be :stop
-      expect(order.price).to eq (bid + 1).to_f
+      expect(order.price).to eq((bid + 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
 
       order = @client.retrieve_order_by_id(orders[0].internal_id)
@@ -291,12 +291,12 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :buy
       expect(order.units).to be 11
       expect(order.type).to be :stop
-      expect(order.price).to eq (ask - 1).to_f
+      expect(order.price).to eq((ask - 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
-      expect(order.lower_bound).to eq (ask + 0.05).to_f
-      expect(order.upper_bound).to eq (ask - 0.05).to_f
-      expect(order.stop_loss).to eq (ask - 2).to_f
-      expect(order.take_profit).to eq (ask).to_f
+      expect(order.lower_bound).to eq((ask + 0.05).to_f)
+      expect(order.upper_bound).to eq((ask - 0.05).to_f)
+      expect(order.stop_loss).to eq((ask - 2).to_f)
+      expect(order.take_profit).to eq(ask.to_f)
       expect(order.trailing_stop).to eq 5
     end
 
@@ -314,7 +314,7 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :buy
       expect(order.units).to be 1
       expect(order.type).to be :marketIfTouched
-      expect(order.price).to eq (ask + 1).to_f
+      expect(order.price).to eq((ask + 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
 
       @orders <<  @client.order(:EURJPY, :sell, 2, :marketIfTouched, {
@@ -332,12 +332,12 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :sell
       expect(order.units).to be 2
       expect(order.type).to be :marketIfTouched
-      expect(order.price).to eq (bid - 1).to_f
+      expect(order.price).to eq((bid - 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
-      expect(order.lower_bound).to eq (bid + 0.05).to_f
-      expect(order.upper_bound).to eq (bid - 0.05).to_f
-      expect(order.stop_loss).to eq (bid).to_f
-      expect(order.take_profit).to eq (bid - 2).to_f
+      expect(order.lower_bound).to eq((bid + 0.05).to_f)
+      expect(order.upper_bound).to eq((bid - 0.05).to_f)
+      expect(order.stop_loss).to eq(bid.to_f)
+      expect(order.take_profit).to eq((bid - 2).to_f)
       expect(order.trailing_stop).to eq 5
 
       orders = @client.retrieve_orders
@@ -348,7 +348,7 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :buy
       expect(order.units).to be 1
       expect(order.type).to be :marketIfTouched
-      expect(order.price).to eq (ask + 1).to_f
+      expect(order.price).to eq((ask + 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
       order = orders[0]
       expect(order.internal_id).not_to be nil
@@ -356,12 +356,12 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :sell
       expect(order.units).to be 2
       expect(order.type).to be :marketIfTouched
-      expect(order.price).to eq (bid - 1).to_f
+      expect(order.price).to eq((bid - 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
-      expect(order.lower_bound).to eq (bid + 0.05).to_f
-      expect(order.upper_bound).to eq (bid - 0.05).to_f
-      expect(order.stop_loss).to eq (bid).to_f
-      expect(order.take_profit).to eq (bid - 2).to_f
+      expect(order.lower_bound).to eq((bid + 0.05).to_f)
+      expect(order.upper_bound).to eq((bid - 0.05).to_f)
+      expect(order.stop_loss).to eq(bid.to_f)
+      expect(order.take_profit).to eq((bid - 2).to_f)
       expect(order.trailing_stop).to eq 5
 
       order = @client.retrieve_order_by_id(orders[1].internal_id)
@@ -370,7 +370,7 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :buy
       expect(order.units).to be 1
       expect(order.type).to be :marketIfTouched
-      expect(order.price).to eq (ask + 1).to_f
+      expect(order.price).to eq((ask + 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
 
       order = @client.retrieve_order_by_id(orders[0].internal_id)
@@ -379,12 +379,12 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :sell
       expect(order.units).to be 2
       expect(order.type).to be :marketIfTouched
-      expect(order.price).to eq (bid - 1).to_f
+      expect(order.price).to eq((bid - 1).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
-      expect(order.lower_bound).to eq (bid + 0.05).to_f
-      expect(order.upper_bound).to eq (bid - 0.05).to_f
-      expect(order.stop_loss).to eq (bid).to_f
-      expect(order.take_profit).to eq (bid - 2).to_f
+      expect(order.lower_bound).to eq((bid + 0.05).to_f)
+      expect(order.upper_bound).to eq((bid - 0.05).to_f)
+      expect(order.stop_loss).to eq(bid.to_f)
+      expect(order.take_profit).to eq((bid - 2).to_f)
       expect(order.trailing_stop).to eq 5
     end
 
@@ -392,7 +392,6 @@ describe Jiji::Model::Securities::OandaSecurities do
     end
 
     it '指値注文を変更できる' do
-      bid = BigDecimal.new(tick[:EURJPY].bid, 4)
       ask = BigDecimal.new(tick[:EURJPY].ask, 4)
 
       @orders <<  @client.order(:EURJPY, :buy, 1, :limit, {
@@ -416,12 +415,12 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :buy
       expect(order.units).to be 2
       expect(order.type).to be :limit
-      expect(order.price).to eq (ask + 1.5).to_f
+      expect(order.price).to eq((ask + 1.5).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 20)).utc)
-      expect(order.lower_bound).to eq (ask - 0.05).to_f
-      expect(order.upper_bound).to eq (ask + 0.05).to_f
-      expect(order.stop_loss).to eq (ask).to_f
-      expect(order.take_profit).to eq (ask + 2).to_f
+      expect(order.lower_bound).to eq((ask - 0.05).to_f)
+      expect(order.upper_bound).to eq((ask + 0.05).to_f)
+      expect(order.stop_loss).to eq(ask.to_f)
+      expect(order.take_profit).to eq((ask + 2).to_f)
       expect(order.trailing_stop).to eq 5
 
       order = @client.retrieve_order_by_id(order.internal_id)
@@ -430,18 +429,17 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :buy
       expect(order.units).to be 2
       expect(order.type).to be :limit
-      expect(order.price).to eq (ask + 1.5).to_f
+      expect(order.price).to eq((ask + 1.5).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 20)).utc)
-      expect(order.lower_bound).to eq (ask - 0.05).to_f
-      expect(order.upper_bound).to eq (ask + 0.05).to_f
-      expect(order.stop_loss).to eq (ask).to_f
-      expect(order.take_profit).to eq (ask + 2).to_f
+      expect(order.lower_bound).to eq((ask - 0.05).to_f)
+      expect(order.upper_bound).to eq((ask + 0.05).to_f)
+      expect(order.stop_loss).to eq(ask.to_f)
+      expect(order.take_profit).to eq((ask + 2).to_f)
       expect(order.trailing_stop).to eq 5
     end
 
     it '逆指値注文を変更できる' do
       bid = BigDecimal.new(tick[:USDJPY].bid, 4)
-      ask = BigDecimal.new(tick[:USDJPY].ask, 4)
 
       @orders <<  @client.order(:USDJPY, :sell, 10, :stop, {
         price:  (bid + 1).to_f,
@@ -464,12 +462,12 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :sell
       expect(order.units).to be 5
       expect(order.type).to be :stop
-      expect(order.price).to eq (bid + 1.5).to_f
+      expect(order.price).to eq((bid + 1.5).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 20)).utc)
-      expect(order.lower_bound).to eq (bid - 0.05).to_f
-      expect(order.upper_bound).to eq (bid + 0.05).to_f
-      expect(order.stop_loss).to eq (bid + 2).to_f
-      expect(order.take_profit).to eq (bid).to_f
+      expect(order.lower_bound).to eq((bid - 0.05).to_f)
+      expect(order.upper_bound).to eq((bid + 0.05).to_f)
+      expect(order.stop_loss).to eq((bid + 2).to_f)
+      expect(order.take_profit).to eq(bid.to_f)
       expect(order.trailing_stop).to eq 6
 
       order = @client.retrieve_order_by_id(order.internal_id)
@@ -478,17 +476,16 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :sell
       expect(order.units).to be 5
       expect(order.type).to be :stop
-      expect(order.price).to eq (bid + 1.5).to_f
+      expect(order.price).to eq((bid + 1.5).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 20)).utc)
-      expect(order.lower_bound).to eq (bid - 0.05).to_f
-      expect(order.upper_bound).to eq (bid + 0.05).to_f
-      expect(order.stop_loss).to eq (bid + 2).to_f
-      expect(order.take_profit).to eq (bid).to_f
+      expect(order.lower_bound).to eq((bid - 0.05).to_f)
+      expect(order.upper_bound).to eq((bid + 0.05).to_f)
+      expect(order.stop_loss).to eq((bid + 2).to_f)
+      expect(order.take_profit).to eq(bid.to_f)
       expect(order.trailing_stop).to eq 6
     end
 
     it 'Market if touched注文を変更できる' do
-      bid = BigDecimal.new(tick[:EURJPY].bid, 4)
       ask = BigDecimal.new(tick[:EURJPY].ask, 4)
 
       @orders <<  @client.order(:EURJPY, :buy, 1, :marketIfTouched, {
@@ -512,12 +509,12 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :buy
       expect(order.units).to be 2
       expect(order.type).to be :marketIfTouched
-      expect(order.price).to eq (ask + 1.5).to_f
+      expect(order.price).to eq((ask + 1.5).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 20)).utc)
-      expect(order.lower_bound).to eq (ask - 0.05).to_f
-      expect(order.upper_bound).to eq (ask + 0.05).to_f
-      expect(order.stop_loss).to eq (ask).to_f
-      expect(order.take_profit).to eq (ask + 2).to_f
+      expect(order.lower_bound).to eq((ask - 0.05).to_f)
+      expect(order.upper_bound).to eq((ask + 0.05).to_f)
+      expect(order.stop_loss).to eq(ask.to_f)
+      expect(order.take_profit).to eq((ask + 2).to_f)
       expect(order.trailing_stop).to eq 5
 
       order = @client.retrieve_order_by_id(order.internal_id)
@@ -526,12 +523,12 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(order.sell_or_buy).to be :buy
       expect(order.units).to be 2
       expect(order.type).to be :marketIfTouched
-      expect(order.price).to eq (ask + 1.5).to_f
+      expect(order.price).to eq((ask + 1.5).to_f)
       expect(order.expiry).to eq((now + (60 * 60 * 20)).utc)
-      expect(order.lower_bound).to eq (ask - 0.05).to_f
-      expect(order.upper_bound).to eq (ask + 0.05).to_f
-      expect(order.stop_loss).to eq (ask).to_f
-      expect(order.take_profit).to eq (ask + 2).to_f
+      expect(order.lower_bound).to eq((ask - 0.05).to_f)
+      expect(order.upper_bound).to eq((ask + 0.05).to_f)
+      expect(order.stop_loss).to eq(ask.to_f)
+      expect(order.take_profit).to eq((ask + 2).to_f)
       expect(order.trailing_stop).to eq 5
     end
 

@@ -66,6 +66,11 @@ module Jiji::Model::Securities::Internal
       order = Order.new(pair_name, detail.id,
         detail.side.to_sym, type || detail.type.to_sym, item.time)
       order.price         = item.price
+      copy_options(order, detail)
+      order
+    end
+
+    def copy_options(order, detail)
       order.units         = detail.units
       order.expiry        = detail.expiry
       order.lower_bound   = detail.lower_bound
@@ -73,7 +78,6 @@ module Jiji::Model::Securities::Internal
       order.stop_loss     = detail.stop_loss
       order.take_profit   = detail.take_profit
       order.trailing_stop = detail.trailing_stop
-      order
     end
   end
 end

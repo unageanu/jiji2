@@ -1,7 +1,6 @@
 
 module Jiji::Model::Securities::Internal
   module Converter
-    
     include Jiji::Model::Trading
 
     def self.convert_instrument_to_pair_name(instrument)

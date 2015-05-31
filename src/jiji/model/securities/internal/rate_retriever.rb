@@ -4,9 +4,7 @@ require 'oanda_api'
 require 'jiji/model/securities/internal/converter'
 
 module Jiji::Model::Securities::Internal
-
   module RateRetriever
-
     include Jiji::Errors
     include Jiji::Model::Trading
 
@@ -87,6 +85,5 @@ module Jiji::Model::Securities::Internal
         item.method("#{id}_bid").call.to_f,
         item.method("#{id}_ask").call.to_f)
     end
-
   end
 end

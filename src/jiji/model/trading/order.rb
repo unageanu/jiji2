@@ -6,7 +6,6 @@ require 'jiji/utils/value_object'
 require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
-
   #== 注文
   class Order
 
@@ -26,9 +25,9 @@ module Jiji::Model::Trading
     attr_reader :last_modified
 
     #=== 注文数
-    attr_accessor  :units
+    attr_accessor :units
     #=== 執行価格(type)
-    attr_accessor  :price
+    attr_accessor :price
     #=== 有効期限
     attr_accessor :expiry
     #=== 許容するスリッページの下限価格
@@ -60,12 +59,12 @@ module Jiji::Model::Trading
 
     def save
       illegal_state unless @broker
-      @broker.modify_order( self )
+      @broker.modify_order(self)
     end
 
     def cancel
       illegal_state unless @broker
-      @broker.cancel_order( self )
+      @broker.cancel_order(self)
     end
 
     private

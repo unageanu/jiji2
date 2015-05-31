@@ -4,25 +4,24 @@ require 'oanda_api'
 require 'jiji/model/securities/internal/converter'
 
 module Jiji::Model::Securities::Internal
-
   module Ordering
-
     include Jiji::Errors
     include Jiji::Model::Trading
 
-    def order(pair_name, sell_or_buy, units, type=:market, options={})
+    def order(pair_name, sell_or_buy, units, type = :market, options = {})
+      convert_expiry_date(options)
       response = @client.account(@account.account_id).order({
           instrument: Converter.convert_pair_name_to_instrument(pair_name),
-          type: type.to_s,
-          side: sell_or_buy.to_s,
-          units: units
+          type:       type.to_s,
+          side:       sell_or_buy.to_s,
+          units:      units
       }.merge(options)).create
-      convert_response_to_order( response,
-        type == :market ? response.trade_opened : response.order_opened, type )
+      convert_response_to_order(response,
+        type == :market ? response.trade_opened : response.order_opened, type)
     end
 
-    def retrieve_orders(count=500, pair_name=nil, max_id=nil)
-      param = {count: count}
+    def retrieve_orders(count = 500, pair_name = nil, max_id = nil)
+      param = { count: count }
       if pair_name
         param[:instrument] =
           Converter.convert_pair_name_to_instrument(pair_name)
@@ -30,34 +29,42 @@ module Jiji::Model::Securities::Internal
       param[:max_id] = max_id if max_id
       @client.account(@account.account_id)
         .orders(param).get.map do |item|
-        convert_response_to_order( item, item )
+        convert_response_to_order(item, item)
       end
     end
 
     def retrieve_order_by_id(internal_id)
       response = @client.account(@account.account_id)
-        .order(internal_id).get
-      convert_response_to_order( response, response )
+                 .order(internal_id).get
+      convert_response_to_order(response, response)
     end
 
-    def modify_order(internal_id, options={})
+    def modify_order(internal_id, options = {})
+      convert_expiry_date(options)
       response = @client.account(@account.account_id)
-        .order(id, options).update
-      convert_response_to_order( response, response )
+                 .order({ id: internal_id }.merge(options)).update
+      convert_response_to_order(response, response)
     end
 
     def cancel_order(internal_id)
       response = @client.account(@account.account_id)
-        .order(internal_id).close
-      convert_response_to_order( response, response )
+                 .order(internal_id).close
+      convert_response_to_order(response, response)
     end
 
     private
 
-    def convert_response_to_order(item, detail, type=nil)
+    def convert_expiry_date(options)
+      return unless options[:expiry]
+      if options[:expiry].is_a?(Time)
+        options[:expiry] = options[:expiry].utc.to_datetime.rfc3339
+      end
+    end
+
+    def convert_response_to_order(item, detail, type = nil)
       pair_name = Converter.convert_instrument_to_pair_name(item.instrument)
-      order = Order.new( pair_name, detail.id,
-        detail.side.to_sym, type || detail.type.to_sym, item.time )
+      order = Order.new(pair_name, detail.id,
+        detail.side.to_sym, type || detail.type.to_sym, item.time)
       order.price         = item.price
       order.units         = detail.units
       order.expiry        = detail.expiry
@@ -68,7 +75,5 @@ module Jiji::Model::Securities::Internal
       order.trailing_stop = detail.trailing_stop
       order
     end
-
   end
-
 end

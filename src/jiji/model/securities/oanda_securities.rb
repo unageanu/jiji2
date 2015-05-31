@@ -13,7 +13,8 @@ module Jiji::Model::Securities
 
     include Jiji::Errors
     include Jiji::Model::Trading
-    include Internal::Converter
+    include Internal::Ordering
+    include Internal::RateRetriever
 
     def self.configuration_definition
       [{ id: :access_token, description: 'アクセストークン' }]
@@ -27,40 +28,6 @@ module Jiji::Model::Securities
     def destroy
     end
 
-    def retrieve_pairs
-      @client.instruments({
-        account_id: @account.account_id,
-        fields:     %w(displayName pip maxTradeUnits precision marginRate)
-      }).get.map { |item| convert_response_to_pair(item) }
-    end
-
-    def retrieve_current_tick
-      prices = @client.prices(instruments: retrieve_all_pairs).get
-      convert_response_to_tick(prices)
-    end
-
-    def retrieve_tick_history(pair_name, start_time, end_time)
-      retrieve_candles(pair_name,
-        'S15', start_time, end_time).get.map do |item|
-        values = {}
-        values[pair_name] = Tick::Value.new(
-          item.open_bid.to_f, item.open_ask.to_f)
-        Tick.new(values, item.time)
-      end
-    end
-
-    def retrieve_rate_history(pair_name, interval, start_time, end_time)
-      granularity =
-        Internal::Converter.convert_interval_to_granularity(interval)
-      retrieve_candles(pair_name,
-        granularity, start_time, end_time).get.map do |item|
-        convert_response_to_rate(pair_name, item)
-      end
-    end
-
-    def order(_pair, sell_or_buy, count)
-    end
-
     def commit(_position_id, count)
     end
 
@@ -71,22 +38,6 @@ module Jiji::Model::Securities
     end
 
     private
-
-    def retrieve_all_pairs
-      @all_pairs ||= retrieve_pairs.map { |v| v.internal_id }
-    end
-
-    def retrieve_candles(pair_name, interval,
-      start_time, end_time, candle_format = 'bidask')
-      @client.candles({
-        instrument:    Internal::Converter
-          .convert_pair_name_to_instrument(pair_name),
-        granularity:   interval,
-        candle_format: candle_format,
-        start:         start_time.utc.to_datetime.rfc3339,
-        end:           end_time.utc.to_datetime.rfc3339
-      })
-    end
 
     def create_client(token)
       @client  = OandaAPI::Client::TokenClient.new(:live, token)

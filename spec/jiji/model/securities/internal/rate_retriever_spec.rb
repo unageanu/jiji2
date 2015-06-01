@@ -81,5 +81,4 @@ describe Jiji::Model::Securities::Internal::RateRetriever do
       end
     end
   end
-
 end

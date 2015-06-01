@@ -35,5 +35,4 @@ describe Jiji::Model::Securities::OandaSecurities do
       end.to raise_exception(Jiji::Errors::NotFoundException)
     end
   end
-
 end

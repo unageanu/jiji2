@@ -31,7 +31,7 @@ module Jiji::Test
     def new_position(seed, back_test_id = nil,
         pair_name = :EURJPY, timestamp = Time.at(seed))
       Position.create(back_test_id, nil, pair_name,
-        seed, 10_000, seed.even? ? :buy : :sell, new_tick(seed, timestamp))
+        seed * 10_000, seed.even? ? :buy : :sell, new_tick(seed, timestamp))
     end
 
     def new_agent_body(seed, parent = nil)

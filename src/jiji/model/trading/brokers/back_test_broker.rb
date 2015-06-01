@@ -28,12 +28,12 @@ module Jiji::Model::Trading::Brokers
       @securities_provider = securities_provider
     end
 
-    def buy(pair_name, count)
-      create_position(pair_name, count, :buy, nil)
+    def buy(pair_name, units)
+      create_position(pair_name, units, :buy, nil)
     end
 
-    def sell(pair_name, count)
-      create_position(pair_name, count, :sell, nil)
+    def sell(pair_name, units)
+      create_position(pair_name, units, :sell, nil)
     end
 
     def destroy

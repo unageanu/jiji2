@@ -44,10 +44,10 @@ module Jiji::Model::Trading::Brokers
       end
     end
 
-    def create_position(pair_name, count, sell_or_buy, external_position_id)
+    def create_position(pair_name, units, sell_or_buy, internal_id)
       illegal_state('tick is not exists.') unless tick
-      position = Position.create(@back_test_id, external_position_id,
-        pair_name, count, 1, sell_or_buy, tick)
+      position = Position.create(@back_test_id, internal_id,
+        pair_name, units, sell_or_buy, tick)
       @positions[position._id] = position
       position
     end

@@ -13,8 +13,10 @@ module Jiji::Model::Securities
 
     include Jiji::Errors
     include Jiji::Model::Trading
-    include Internal::Ordering
+
     include Internal::RateRetriever
+    include Internal::Ordering
+    include Internal::Trading
 
     def self.configuration_definition
       [{ id: :access_token, description: 'アクセストークン' }]

@@ -63,21 +63,27 @@ module Jiji::Model::Securities::Internal
 
     def convert_response_to_order(item, detail, type = nil)
       pair_name = Converter.convert_instrument_to_pair_name(item.instrument)
+      t = type || detail.type.to_sym
       order = Order.new(pair_name, detail.id,
-        detail.side.to_sym, type || detail.type.to_sym, item.time)
-      order.price         = item.price
-      copy_options(order, detail)
+        detail.side.to_sym, t, item.time)
+      order.price = item.price
+      copy_options(order, detail, t)
       order
     end
 
-    def copy_options(order, detail)
+    def copy_options(order, detail, type)
       order.units         = detail.units
-      order.expiry        = detail.expiry
-      order.lower_bound   = detail.lower_bound
-      order.upper_bound   = detail.upper_bound
       order.stop_loss     = detail.stop_loss
       order.take_profit   = detail.take_profit
       order.trailing_stop = detail.trailing_stop
+
+      copy_reservation_order_options(order, detail) unless type == :market
+    end
+
+    def copy_reservation_order_options(order, detail)
+      order.expiry        = detail.expiry
+      order.lower_bound   = detail.lower_bound
+      order.upper_bound   = detail.upper_bound
     end
   end
 end

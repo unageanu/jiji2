@@ -24,12 +24,54 @@ describe Jiji::Model::Securities::Internal::Ordering do
 
     after(:example) do
       @orders.each do |o|
+        sleep wait
         begin
           @client.cancel_order(o.internal_id)
         rescue
           p $ERROR_INFO
         end
       end
+      sleep wait
+      @client.retrieve_trades.each do |t|
+        sleep wait
+        begin
+          @client.close_trade(t.internal_id)
+        rescue
+          p $ERROR_INFO
+        end
+      end
+    end
+
+    it '成行で注文ができる' do
+      bid = BigDecimal.new(tick[:USDJPY].bid, 4)
+
+      order = @client.order(:EURJPY, :buy, 1)
+      expect(order.internal_id).not_to be nil
+      expect(order.pair_name).to be :EURJPY
+      expect(order.sell_or_buy).to be :buy
+      expect(order.units).to be 1
+      expect(order.type).to be :market
+
+      sleep wait
+
+      order = @client.order(:USDJPY, :sell, 2, :market, {
+        stop_loss:     (bid + 2).to_f,
+        take_profit:   (bid - 2).to_f,
+        trailing_stop: 5
+      })
+      expect(order.internal_id).not_to be nil
+      expect(order.pair_name).to be :USDJPY
+      expect(order.sell_or_buy).to be :sell
+      expect(order.units).to be 2
+      expect(order.type).to be :market
+      expect(order.stop_loss).to eq((bid + 2).to_f)
+      expect(order.take_profit).to eq((bid - 2).to_f)
+      expect(order.trailing_stop).to eq 5
+
+      sleep wait
+
+      orders = @client.retrieve_orders
+      expect(orders.length).to be 0
     end
 
     it '指値で注文ができる' do
@@ -304,9 +346,6 @@ describe Jiji::Model::Securities::Internal::Ordering do
       expect(order.stop_loss).to eq((bid + 2).to_f)
       expect(order.take_profit).to eq((bid - 2).to_f)
       expect(order.trailing_stop).to eq 5
-    end
-
-    it '成行きで注文ができる' do
     end
 
     it '指値注文を変更できる' do

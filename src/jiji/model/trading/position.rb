@@ -39,7 +39,7 @@ module Jiji::Model::Trading
       { back_test_id: 1, entered_at: 1 },
       name: 'positions_back_test_id_entered_at_index')
 
-    attr_readonly :back_test_id, :internal_id, :pair_name
+    attr_readonly :internal_id, :pair_name
     attr_readonly :units, :sell_or_buy, :entry_price, :entered_at
 
     def to_h

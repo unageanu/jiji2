@@ -30,12 +30,14 @@ module Jiji::Model::Securities::Internal
     def modify_trade(internal_id, options = {})
       response = @client.account(@account.account_id)
                  .trade({ id: internal_id }.merge(options)).update
-      convert_response_to_trade(response, response)
+      convert_response_to_position(response)
     end
 
     def close_trade(internal_id)
-      @client.account(@account.account_id)
-        .trade(internal_id).close
+      response = @client.account(@account.account_id)
+                 .trade(internal_id).close
+      ClosedPosition.new(response.id.to_s, -1,
+        response.price, response.time)
     end
 
     private

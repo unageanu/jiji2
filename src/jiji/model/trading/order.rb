@@ -78,4 +78,27 @@ module Jiji::Model::Trading
     end
 
   end
+
+  # 注文結果
+  class OrderResult
+
+    #=== 新規作成された注文
+    # 注文が約定しなかった場合に返される
+    attr_reader :order_opened
+
+    #=== 新規建玉となった注文
+    # 注文が約定し新しい建玉が生成された場合に返される
+    attr_reader :trade_opened
+
+    attr_reader :trade_reduced
+    attr_reader :trades_closed
+
+    def initialize(order_opened, trade_opened, trade_reduced, trades_closed)
+      @order_opened  = order_opened
+      @trade_opened  = trade_opened
+      @trade_reduced = trade_reduced
+      @trades_closed = trades_closed
+    end
+
+  end
 end

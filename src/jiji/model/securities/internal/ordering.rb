@@ -16,8 +16,7 @@ module Jiji::Model::Securities::Internal
           side:       sell_or_buy.to_s,
           units:      units
       }.merge(options)).create
-      convert_response_to_order(response,
-        type == :market ? response.trade_opened : response.order_opened, type)
+      convert_response_to_order_result(response, type)
     end
 
     def retrieve_orders(count = 500, pair_name = nil, max_id = nil)
@@ -59,6 +58,17 @@ module Jiji::Model::Securities::Internal
       if options[:expiry].is_a?(Time)
         options[:expiry] = options[:expiry].utc.to_datetime.rfc3339
       end
+    end
+
+    def convert_response_to_order_result(res, type)
+      args = [:order_opened, :trade_opened, :trade_reduced].map do |m|
+        value = res.method(m).call
+        value.id ? convert_response_to_order(res, value, type) : nil
+      end
+      args << res.trades_closed.map do |r|
+        convert_response_to_order(res, r, type)
+      end
+      OrderResult.new(*args)
     end
 
     def convert_response_to_order(item, detail, type = nil)

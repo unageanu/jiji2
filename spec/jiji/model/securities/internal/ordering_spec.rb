@@ -45,7 +45,7 @@ describe Jiji::Model::Securities::Internal::Ordering do
     it '成行で注文ができる' do
       bid = BigDecimal.new(tick[:USDJPY].bid, 4)
 
-      order = @client.order(:EURJPY, :buy, 1)
+      order = @client.order(:EURJPY, :buy, 1).trade_opened
       expect(order.internal_id).not_to be nil
       expect(order.pair_name).to be :EURJPY
       expect(order.sell_or_buy).to be :buy
@@ -58,7 +58,7 @@ describe Jiji::Model::Securities::Internal::Ordering do
         stop_loss:     (bid + 2).to_f,
         take_profit:   (bid - 2).to_f,
         trailing_stop: 5
-      })
+      }).trade_opened
       expect(order.internal_id).not_to be nil
       expect(order.pair_name).to be :USDJPY
       expect(order.sell_or_buy).to be :sell
@@ -81,7 +81,7 @@ describe Jiji::Model::Securities::Internal::Ordering do
       @orders <<  @client.order(:EURJPY, :buy, 1, :limit, {
         price:  (ask - 1).to_f,
         expiry: now + (60 * 60 * 24)
-      })
+      }).order_opened
       order = @orders[0]
       expect(order.internal_id).not_to be nil
       expect(order.pair_name).to be :EURJPY
@@ -101,7 +101,7 @@ describe Jiji::Model::Securities::Internal::Ordering do
         stop_loss:     (bid + 2).to_f,
         take_profit:   (bid - 2).to_f,
         trailing_stop: 5
-      })
+      }).order_opened
       order = @orders[1]
       expect(order.internal_id).not_to be nil
       expect(order.pair_name).to be :EURJPY
@@ -173,7 +173,7 @@ describe Jiji::Model::Securities::Internal::Ordering do
       @orders <<  @client.order(:USDJPY, :sell, 10, :stop, {
         price:  (bid - 1).to_f,
         expiry: now + (60 * 60 * 24)
-      })
+      }).order_opened
       order = @orders[0]
       expect(order.internal_id).not_to be nil
       expect(order.pair_name).to be :USDJPY
@@ -193,7 +193,7 @@ describe Jiji::Model::Securities::Internal::Ordering do
         stop_loss:     (ask - 2).to_f,
         take_profit:   (ask + 2).to_f,
         trailing_stop: 5
-      })
+      }).order_opened
       order = @orders[1]
       expect(order.internal_id).not_to be nil
       expect(order.pair_name).to be :USDJPY
@@ -265,7 +265,7 @@ describe Jiji::Model::Securities::Internal::Ordering do
       @orders <<  @client.order(:EURJPY, :buy, 1, :marketIfTouched, {
         price:  (ask - 1).to_f,
         expiry: now + (60 * 60 * 24)
-      })
+      }).order_opened
       order = @orders[0]
       expect(order.internal_id).not_to be nil
       expect(order.pair_name).to be :EURJPY
@@ -284,7 +284,7 @@ describe Jiji::Model::Securities::Internal::Ordering do
         stop_loss:     (bid + 2).to_f,
         take_profit:   (bid - 2).to_f,
         trailing_stop: 5
-      })
+      }).order_opened
       order = @orders[1]
       expect(order.internal_id).not_to be nil
       expect(order.pair_name).to be :EURJPY
@@ -354,7 +354,7 @@ describe Jiji::Model::Securities::Internal::Ordering do
       @orders <<  @client.order(:EURJPY, :buy, 1, :limit, {
         price:  (ask - 1).to_f,
         expiry: now + (60 * 60 * 24)
-      })
+      }).order_opened
       order = @orders[0]
 
       sleep wait
@@ -405,7 +405,7 @@ describe Jiji::Model::Securities::Internal::Ordering do
       @orders <<  @client.order(:USDJPY, :sell, 10, :stop, {
         price:  (bid - 1).to_f,
         expiry: now + (60 * 60 * 24)
-      })
+      }).order_opened
       order = @orders[0]
 
       sleep wait
@@ -456,7 +456,7 @@ describe Jiji::Model::Securities::Internal::Ordering do
       @orders <<  @client.order(:EURJPY, :buy, 1, :marketIfTouched, {
         price:  (ask - 1).to_f,
         expiry: now + (60 * 60 * 24)
-      })
+      }).order_opened
       order = @orders[0]
 
       sleep wait
@@ -506,17 +506,17 @@ describe Jiji::Model::Securities::Internal::Ordering do
       @orders <<  @client.order(:EURJPY, :buy, 1, :limit, {
         price:  (ask - 1).to_f,
         expiry: now + (60 * 60 * 24)
-      })
+      }).order_opened
       sleep wait
       @orders <<  @client.order(:EURJPY, :sell, 10, :stop, {
         price:  (bid - 1).to_f,
         expiry: now + (60 * 60 * 24)
-      })
+      }).order_opened
       sleep wait
       @orders <<  @client.order(:EURJPY, :buy, 1, :marketIfTouched, {
         price:  (ask - 1).to_f,
         expiry: now + (60 * 60 * 24)
-      })
+      }).order_opened
 
       sleep wait
       orders = @client.retrieve_orders

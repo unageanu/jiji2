@@ -43,7 +43,7 @@ describe Jiji::Model::Securities::Internal::Ordering do
     it '逆方向の注文が約定すると、既存のポジジョンが削減される' do
       positions = @client.retrieve_trades
 
-      sleep wait
+      sleep  wait
       result = @client.order(:EURJPY, :sell, 1)
 
       expect(result.order_opened).to be nil

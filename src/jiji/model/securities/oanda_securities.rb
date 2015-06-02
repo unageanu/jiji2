@@ -17,6 +17,7 @@ module Jiji::Model::Securities
     include Internal::RateRetriever
     include Internal::Ordering
     include Internal::Trading
+    include Internal::TransactionRetriever
 
     def self.configuration_definition
       [{ id: :access_token, description: 'アクセストークン' }]

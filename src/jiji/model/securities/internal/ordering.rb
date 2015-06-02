@@ -3,6 +3,20 @@
 require 'oanda_api'
 require 'jiji/model/securities/internal/converter'
 
+module OandaAPI
+  module Resource
+    class Order
+
+      class TradeReduced
+
+        attr_accessor :side
+
+      end
+
+    end
+  end
+end
+
 module Jiji::Model::Securities::Internal
   module Ordering
     include Jiji::Errors
@@ -61,12 +75,13 @@ module Jiji::Model::Securities::Internal
     end
 
     def convert_response_to_order_result(res, type)
-      args = [:order_opened, :trade_opened, :trade_reduced].map do |m|
+      args = [:order_opened, :trade_opened].map do |m|
         value = res.method(m).call
         value.id ? convert_response_to_order(res, value, type) : nil
       end
+      args << convert_response_to_reduced_position(res, res.trade_reduced)
       args << res.trades_closed.map do |r|
-        convert_response_to_order(res, r, type)
+        convert_response_to_closed_position(res, r)
       end
       OrderResult.new(*args)
     end
@@ -74,11 +89,25 @@ module Jiji::Model::Securities::Internal
     def convert_response_to_order(item, detail, type = nil)
       pair_name = Converter.convert_instrument_to_pair_name(item.instrument)
       t = type || detail.type.to_sym
-      order = Order.new(pair_name, detail.id,
+      order = Order.new(pair_name, detail.id.to_s,
         detail.side.to_sym, t, item.time)
       order.price = item.price
       copy_options(order, detail, t)
       order
+    end
+
+    def convert_response_to_reduced_position(item, detail)
+      if detail.id
+        return ReducedPosition.new(detail.id.to_s,
+          detail.units, item.price, item.time)
+      else
+        return nil
+      end
+    end
+
+    def convert_response_to_closed_position(item, detail)
+      ClosedPosition.new(detail[:id].to_s,
+        detail[:units].to_i, item.price, item.time)
     end
 
     def copy_options(order, detail, type)

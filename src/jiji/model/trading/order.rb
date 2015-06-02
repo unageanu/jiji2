@@ -90,6 +90,9 @@ module Jiji::Model::Trading
     # 注文が約定し新しい建玉が生成された場合に返される
     attr_reader :trade_opened
 
+    #=== 注文が約定した結果、既存の建玉の一部が決済された場合の、建玉の情報
+    # 決済された注文があれば、その情報が ReducedPosition オブジェクトの形
+    # で格納されます。
     attr_reader :trade_reduced
     attr_reader :trades_closed
 
@@ -98,6 +101,48 @@ module Jiji::Model::Trading
       @trade_opened  = trade_opened
       @trade_reduced = trade_reduced
       @trades_closed = trades_closed
+    end
+
+  end
+
+  #== 部分的に決済された建玉の情報
+  class ReducedPosition
+
+    #=== 決済された建玉の内部ID
+    attr_reader :internal_id
+    #=== 決済後の取引数
+    attr_reader :units
+    #=== 決済価格
+    attr_reader :price
+    #=== 決済時刻
+    attr_reader :timestamp
+
+    def initialize(internal_id, units, price, timestamp)
+      @internal_id  = internal_id
+      @units        = units
+      @price        = price
+      @timestamp    = timestamp
+    end
+
+  end
+
+  #== すべて決済された建玉の情報
+  class ClosedPosition
+
+    #=== 決済された建玉の内部ID
+    attr_reader :internal_id
+    #=== 決済された取引数
+    attr_reader :units
+    #=== 決済価格
+    attr_reader :price
+    #=== 決済時刻
+    attr_reader :timestamp
+
+    def initialize(internal_id, units, price, timestamp)
+      @internal_id  = internal_id
+      @units        = units
+      @price        = price
+      @timestamp    = timestamp
     end
 
   end

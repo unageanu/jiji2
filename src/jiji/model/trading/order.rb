@@ -11,6 +11,7 @@ module Jiji::Model::Trading
 
     include Jiji::Errors
     include Jiji::Utils::ValueObject
+    include Jiji::Web::Transport::Transportable
 
     #=== 通貨ペア
     # 例) :EURUSD
@@ -67,7 +68,25 @@ module Jiji::Model::Trading
       @broker.cancel_order(self)
     end
 
+    def extract_options_for_modify
+      options = {
+        units:         units,
+        stop_loss:     stop_loss,
+        take_profit:   take_profit,
+        trailing_stop: trailing_stop
+      }
+      insert_reservation_order_options(option) if type != :market
+      options
+    end
+
     private
+
+    def insert_reservation_order_options(option)
+      options[:price] = price
+      options[:expiry] = expiry
+      options[:lower_bound] = lower_bound
+      options[:upper_bound] = upper_bound
+    end
 
     def values
       [
@@ -82,6 +101,9 @@ module Jiji::Model::Trading
   # 注文結果
   class OrderResult
 
+    include Jiji::Utils::ValueObject
+    include Jiji::Web::Transport::Transportable
+
     #=== 新規作成された注文
     # 注文が約定しなかった場合に返される
     attr_reader :order_opened
@@ -90,10 +112,11 @@ module Jiji::Model::Trading
     # 注文が約定し新しい建玉が生成された場合に返される
     attr_reader :trade_opened
 
-    #=== 注文が約定した結果、既存の建玉の一部が決済された場合の、建玉の情報
-    # 決済された注文があれば、その情報が ReducedPosition オブジェクトの形
-    # で格納されます。
+    #=== 注文が約定した結果、既存の建玉の一部が決済された場合の建玉の情報
+    # 決済された建玉の情報が ReducedPosition オブジェクトの形で格納されます。
     attr_reader :trade_reduced
+    #=== 注文が約定した結果、既存の建玉が決済された場合の建玉の情報
+    # 決済された建玉の情報が ClosedPosition オブジェクトの形で格納されます。
     attr_reader :trades_closed
 
     def initialize(order_opened, trade_opened, trade_reduced, trades_closed)
@@ -107,6 +130,9 @@ module Jiji::Model::Trading
 
   #== 部分的に決済された建玉の情報
   class ReducedPosition
+
+    include Jiji::Utils::ValueObject
+    include Jiji::Web::Transport::Transportable
 
     #=== 決済された建玉の内部ID
     attr_reader :internal_id
@@ -126,8 +152,11 @@ module Jiji::Model::Trading
 
   end
 
-  #== すべて決済された建玉の情報
+  #== 全決済された建玉の情報
   class ClosedPosition
+
+    include Jiji::Utils::ValueObject
+    include Jiji::Web::Transport::Transportable
 
     #=== 決済された建玉の内部ID
     attr_reader :internal_id

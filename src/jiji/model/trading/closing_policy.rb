@@ -37,6 +37,14 @@ module Jiji::Model::Trading
       end
     end
 
+    def extract_options_for_modify
+      {
+        stop_loss:     stop_loss,
+        take_profit:   take_profit,
+        trailing_stop: trailing_stop
+      }
+    end
+
     def close?(position)
       false # TODO
     end

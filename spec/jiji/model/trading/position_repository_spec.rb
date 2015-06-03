@@ -40,6 +40,7 @@ describe Jiji::Model::Trading::PositionRepository do
   def register_positions(back_test_id)
     100.times do |i|
       position = @data_builder.new_position(i, back_test_id)
+      position.save
       position.close if i < 50
     end
   end

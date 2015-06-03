@@ -50,29 +50,26 @@ module Jiji::Model::Trading
       h
     end
 
-    def self.create(back_test_id, internal_id,
-        pair_name, units, sell_or_buy, tick, options = {})
-      position = Position.new do |p|
-        p.initialize_trading_information(back_test_id,
-          internal_id, pair_name, units, sell_or_buy)
-        p.initialize_price_and_time(tick, pair_name, sell_or_buy)
-        p.closing_policy = ClosingPolicy.create(options)
-      end
-      position.save
-      position
-    end
-
     def profit_or_loss
       current = actual_amount_of(current_price)
       entry   = actual_amount_of(entry_price)
       (current - entry) * (sell_or_buy == :buy ? 1 : -1)
     end
 
-    def close
+    def reduce(units, time)
       return if status == :closed
-      self.exit_price = current_price
-      self.status     = :closed
-      self.exited_at  = updated_at
+      self.units = self.units - units
+      self.updated_at = time
+      save
+    end
+
+    def close(price = current_price, time = updated_at)
+      return if status == :closed
+      self.exit_price    = price
+      self.current_price = price
+      self.status        = :closed
+      self.exited_at     = time
+      self.updated_at    = time
       save
     end
 
@@ -81,25 +78,6 @@ module Jiji::Model::Trading
       self.current_price = PricingUtils.calculate_current_price(
         tick, pair_name, sell_or_buy)
       self.updated_at    = tick.timestamp
-    end
-
-    def initialize_price_and_time(tick, pair_name, sell_or_buy)
-      self.entry_price   = PricingUtils.calculate_entry_price(
-        tick, pair_name, sell_or_buy)
-      self.current_price = PricingUtils.calculate_current_price(
-        tick, pair_name, sell_or_buy)
-      self.entered_at    = tick.timestamp
-      self.updated_at    = tick.timestamp
-    end
-
-    def initialize_trading_information(back_test_id,
-        internal_id, pair_name, units, sell_or_buy)
-      self.back_test_id         = back_test_id
-      self.pair_name            = pair_name
-      self.units                = units
-      self.sell_or_buy          = sell_or_buy
-      self.internal_id          = internal_id
-      self.status               = :live
     end
 
     private

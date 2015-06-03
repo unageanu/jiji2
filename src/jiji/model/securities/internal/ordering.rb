@@ -3,20 +3,6 @@
 require 'oanda_api'
 require 'jiji/model/securities/internal/converter'
 
-module OandaAPI
-  module Resource
-    class Order
-
-      class TradeReduced
-
-        attr_accessor :side
-
-      end
-
-    end
-  end
-end
-
 module Jiji::Model::Securities::Internal
   module Ordering
     include Jiji::Errors

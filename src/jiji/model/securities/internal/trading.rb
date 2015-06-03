@@ -36,34 +36,13 @@ module Jiji::Model::Securities::Internal
     def close_trade(internal_id)
       response = @client.account(@account.account_id)
                  .trade(internal_id).close
-      ClosedPosition.new(response.id.to_s, -1,
-        response.price, response.time)
+      ClosedPosition.new(response.id.to_s, -1, response.price, response.time)
     end
 
     private
 
-    def convert_response_to_position(item)
-      pair_name = Converter.convert_instrument_to_pair_name(item.instrument)
-      Position.new do |p|
-        p.initialize_trading_information(nil, item.id,
-          pair_name, item.units, item.side.to_sym)
-        initialize_price_information(p, item)
-        p.closing_policy = ClosingPolicy.create(extract_options(item))
-      end
-    end
-
-    def initialize_price_information(p, item)
-      p.entry_price = item.price.to_f
-      p.entered_at  = item.time
-    end
-
-    def extract_options(item)
-      {
-        stop_loss:       item.stop_loss,
-        take_profit:     item.take_profit,
-        trailing_stop:   item.trailing_stop,
-        trailing_amount: item.trailing_amount
-      }
+    def convert_response_to_position(trade)
+      @position_builder.build_from_trade(trade)
     end
   end
 end

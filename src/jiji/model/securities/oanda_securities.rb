@@ -26,6 +26,7 @@ module Jiji::Model::Securities
     def initialize(config)
       @client  = create_client(config[:access_token])
       @account = find_account(config[:account_name] || 'Primary')
+      @position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
     end
 
     def destroy

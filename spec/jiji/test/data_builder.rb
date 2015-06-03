@@ -8,6 +8,10 @@ module Jiji::Test
 
     include Jiji::Model::Trading
 
+    def initialize
+      @position_builder = Internal::PositionBuilder.new
+    end
+
     def new_rate(seed, pair_name = :EURJPY)
       Rate.create_from_tick(
         pair_name, new_tick(seed), new_tick(seed + 1),
@@ -30,7 +34,7 @@ module Jiji::Test
 
     def new_position(seed, back_test_id = nil,
         pair_name = :EURJPY, timestamp = Time.at(seed))
-      Position.create(back_test_id, nil, pair_name,
+      @position_builder.build_from_tick(back_test_id, nil, pair_name,
         seed * 10_000, seed.even? ? :buy : :sell, new_tick(seed, timestamp))
     end
 

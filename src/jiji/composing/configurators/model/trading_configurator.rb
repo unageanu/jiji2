@@ -4,6 +4,8 @@ module Jiji::Composing::Configurators
   class TradingConfigurator < AbstractConfigurator
 
     include Jiji::Model
+    include Jiji::Model::Trading
+    include Jiji::Model::Trading::Internal
 
     def configure(container)
       configure_base_components(container)
@@ -13,25 +15,25 @@ module Jiji::Composing::Configurators
 
     def configure_base_components(container)
       container.configure do
-        object :position_repository,         Trading::PositionRepository.new
-        object :pairs,                       Trading::Pairs.new
-        object :tick_repository,             Trading::TickRepository.new
+        object :position_repository,         PositionRepository.new
+        object :position_builder,            PositionBuilder.new
+        object :pairs,                       Pairs.new
+        object :tick_repository,             TickRepository.new
       end
     end
 
     def configure_rmt_components(container)
       container.configure do
-        object :rmt,                         Trading::RMT.new
-        object :rmt_broker,                  Trading::Brokers::RMTBroker.new
-        object :rmt_next_tick_job_generator,
-          Trading::Internal::RMTNextTickJobGenerator.new
+        object :rmt,                         RMT.new
+        object :rmt_broker,                  Brokers::RMTBroker.new
+        object :rmt_next_tick_job_generator, RMTNextTickJobGenerator.new
       end
     end
 
     def configure_backtest_components(container)
       container.configure do
         object :back_test_thread_pool,       Thread.pool(2)
-        object :back_test_repository,        Trading::BackTestRepository.new
+        object :back_test_repository,        BackTestRepository.new
       end
     end
 

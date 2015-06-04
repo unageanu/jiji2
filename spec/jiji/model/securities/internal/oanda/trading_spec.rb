@@ -3,7 +3,7 @@
 require 'jiji/test/test_configuration'
 require 'jiji/model/securities/oanda_securities'
 
-describe Jiji::Model::Securities::Internal::Trading do
+describe Jiji::Model::Securities::Internal::Oanda::Trading do
   let(:wait) { 1 }
   let(:tick) { @client.retrieve_current_tick }
   let(:now)  {  Time.now.round }

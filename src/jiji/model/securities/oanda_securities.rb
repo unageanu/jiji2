@@ -1,7 +1,7 @@
 # coding: utf-8
 
 require 'oanda_api'
-require 'jiji/model/securities/internal/converter'
+require 'jiji/model/securities/internal/oanda/converter'
 
 module Jiji::Model::Securities
   OandaAPI.configure do |config|
@@ -14,10 +14,10 @@ module Jiji::Model::Securities
     include Jiji::Errors
     include Jiji::Model::Trading
 
-    include Internal::RateRetriever
-    include Internal::Ordering
-    include Internal::Trading
-    include Internal::TransactionRetriever
+    include Internal::Oanda::RateRetriever
+    include Internal::Oanda::Ordering
+    include Internal::Oanda::Trading
+    include Internal::Oanda::TransactionRetriever
 
     def self.configuration_definition
       [{ id: :access_token, description: 'アクセストークン' }]
@@ -30,9 +30,6 @@ module Jiji::Model::Securities
     end
 
     def destroy
-    end
-
-    def commit(_position_id, count)
     end
 
     def find_account(account_name)

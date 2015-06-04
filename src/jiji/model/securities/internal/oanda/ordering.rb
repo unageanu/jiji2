@@ -1,9 +1,9 @@
 # coding: utf-8
 
 require 'oanda_api'
-require 'jiji/model/securities/internal/converter'
+require 'jiji/model/securities/internal/oanda/converter'
 
-module Jiji::Model::Securities::Internal
+module Jiji::Model::Securities::Internal::Oanda
   module Ordering
     include Jiji::Errors
     include Jiji::Model::Trading

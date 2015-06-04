@@ -3,7 +3,7 @@
 require 'jiji/test/test_configuration'
 require 'jiji/model/securities/oanda_securities'
 
-describe Jiji::Model::Securities::Internal::RateRetriever do
+describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
   before(:example) do
     @client = Jiji::Model::Securities::OandaDemoSecurities.new(
       access_token: ENV['OANDA_API_ACCESS_TOKEN'])

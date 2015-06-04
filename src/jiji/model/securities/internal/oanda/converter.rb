@@ -1,5 +1,5 @@
 
-module Jiji::Model::Securities::Internal
+module Jiji::Model::Securities::Internal::Oanda
   module Converter
     include Jiji::Model::Trading
 

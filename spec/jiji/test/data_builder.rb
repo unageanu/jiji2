@@ -34,7 +34,7 @@ module Jiji::Test
 
     def new_position(seed, back_test_id = nil,
         pair_name = :EURJPY, timestamp = Time.at(seed))
-      @position_builder.build_from_tick(back_test_id, nil, pair_name,
+      @position_builder.build_from_tick(back_test_id, seed, pair_name,
         seed * 10_000, seed.even? ? :buy : :sell, new_tick(seed, timestamp))
     end
 
@@ -64,6 +64,39 @@ BODY
       agents = Jiji::Model::Agents::Agents.new
       graph_factory = Jiji::Model::Graphing::GraphFactory.new
       TradingContext.new(agents, broker, graph_factory, time_source, logger)
+    end
+
+    def new_order(seed, internal_id=seed.to_s,
+      pair_name = :EURJPY, type=:market, timestamp = Time.at(seed))
+      order = Jiji::Model::Trading::Order.new(
+        pair_name, internal_id, seed.even? ? :buy : :sell, type, timestamp)
+      order.units         = seed * 10000
+      order.price         = 100 + seed
+      order.expiry        = timestamp + 10
+      order.lower_bound   = 99 + seed
+      order.upper_bound   = 101 + seed
+      order.stop_loss     = (seed.even? ? 98 : 102) + seed
+      order.take_profit   = (seed.even? ? 102 : 98) + seed
+      order.trailing_stop = seed
+      order
+    end
+
+    def new_closed_position(seed, internal_id=seed.to_s,
+      units=seed*10000, price=100+seed, timestamp = Time.at(seed))
+      Jiji::Model::Trading::ClosedPosition.new(
+        internal_id, units, price, timestamp )
+    end
+
+    def new_reduced_position(seed, internal_id=seed.to_s,
+      units=seed*1000, price=100+seed, timestamp = Time.at(seed))
+      Jiji::Model::Trading::ReducedPosition.new(
+        internal_id, units, price, timestamp )
+    end
+
+    def new_order_result(order_opened,
+      trade_opened=nil, trade_reduced=nil, trades_closed=[])
+      Jiji::Model::Trading::OrderResult.new(
+        order_opened, trade_opened, trade_reduced, trades_closed)
     end
 
     def register_back_test(seed, repository)

@@ -9,7 +9,7 @@ module Jiji::Model::Trading
     include Jiji::Errors
 
     def retrieve_positions(back_test_id = nil,
-      sort_order = { entered_at: :asc }, offset = 0, limit = 20)
+      sort_order = { entered_at: :asc, id: :asc }, offset = 0, limit = 20)
       query = Jiji::Utils::Pagenation::Query.new(
         { back_test_id: back_test_id }, sort_order, offset, limit)
       query.execute(Position).map { |x| x }

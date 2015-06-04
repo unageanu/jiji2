@@ -26,7 +26,7 @@ module Jiji::Model::Trading::Internal
       position = Position.new do |p|
         initialize_trading_information(p, nil, order.internal_id,
           order.pair_name, order.units, order.sell_or_buy)
-        initialize_price_and_time(p, order_price, order.last_modified)
+        initialize_price_and_time(p, order.price, order.last_modified)
         p.closing_policy = ClosingPolicy.create(order.extract_options)
       end
       position.update(tick)
@@ -83,7 +83,7 @@ module Jiji::Model::Trading::Internal
       position.updated_at    = tick.timestamp
     end
 
-    def initialize_trading_information_from_position(position, from, unit)
+    def initialize_trading_information_from_position(position, from, units)
       initialize_trading_information(position, from.back_test_id,
         from.internal_id + '_', from.pair_name, units, from.sell_or_buy)
     end

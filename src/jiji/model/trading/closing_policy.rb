@@ -49,5 +49,14 @@ module Jiji::Model::Trading
       false # TODO
     end
 
+    private
+
+    def values
+      [
+        take_profit,   stop_loss,
+        trailing_stop, trailing_amount
+      ]
+    end
+
   end
 end

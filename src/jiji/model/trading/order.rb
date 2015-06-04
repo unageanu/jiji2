@@ -69,14 +69,18 @@ module Jiji::Model::Trading
     end
 
     def extract_options_for_modify
-      options = {
+      options = extract_options
+      insert_reservation_order_options(option) if type != :market
+      options
+    end
+
+    def extract_options
+      {
         units:         units,
         stop_loss:     stop_loss,
         take_profit:   take_profit,
         trailing_stop: trailing_stop
       }
-      insert_reservation_order_options(option) if type != :market
-      options
     end
 
     private

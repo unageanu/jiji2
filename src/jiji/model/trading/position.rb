@@ -77,6 +77,7 @@ module Jiji::Model::Trading
       self.current_price = PricingUtils.calculate_current_price(
         tick, pair_name, sell_or_buy)
       self.updated_at    = tick.timestamp
+      save
     end
 
     private

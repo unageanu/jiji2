@@ -10,22 +10,22 @@ module Jiji::Model::Trading
     def_delegators :@map, :[], :include?
     def_delegators :@positions, :each, :length, :size
 
-    def initialize( positions, position_builder )
+    def initialize(positions, position_builder)
       @position_builder =  position_builder
 
       @positions = positions
       @map = to_map(positions)
     end
 
-    def update( new_positions )
+    def update(new_positions)
       @positions = new_positions.map do |p|
-        sync_or_save_position(@map.delete( p.internal_id ), p)
+        sync_or_save_position(@map.delete(p.internal_id), p)
       end
       mark_as_closed(@map.values)
       @map = to_map(@positions)
     end
 
-    def update_price( tick )
+    def update_price(tick)
       @positions.each do |p|
         p.update(tick)
       end
@@ -49,8 +49,8 @@ module Jiji::Model::Trading
 
     def sync_or_save_position(original, new_position)
       if original
-        unless are_equals?( original, new_position )
-          sync_position( original, new_position )
+        unless are_equals?(original, new_position)
+          sync_position(original, new_position)
         end
         return original
       else
@@ -59,27 +59,26 @@ module Jiji::Model::Trading
       end
     end
 
-    def are_equals?( position, new_position )
-      position.pair_name      == new_position.pair_name \
-      && position.units          == new_position.units \
-      && position.sell_or_buy    == new_position.sell_or_buy \
-      && position.entry_price    == new_position.entry_price \
-      && position.entered_at     == new_position.entered_at \
-      && position.closing_policy == new_position.closing_policy
+    def are_equals?(position, new_position)
+      SYNCHRONIZE_PROPERTIES.all? do |key|
+        position.method(key).call == new_position.method(key).call
+      end
     end
 
-    def sync_position( position, new_position )
-      position.pair_name      = new_position.pair_name
-      position.units          = new_position.units
-      position.sell_or_buy    = new_position.sell_or_buy
-      position.entry_price    = new_position.entry_price
-      position.entered_at     = new_position.entered_at
-      position.closing_policy = new_position.closing_policy
+    def sync_position(position, new_position)
+      SYNCHRONIZE_PROPERTIES.each do |key|
+        position.method("#{key}=").call(new_position.method(key).call)
+      end
       position.save
     end
 
+    SYNCHRONIZE_PROPERTIES = [
+      :pair_name, :units, :sell_or_buy,
+      :entry_price, :entered_at, :closing_policy
+    ]
+
     def mark_as_closed(positions)
-      positions.each do |p| p.close end
+      positions.each { |p| p.close }
     end
 
     def add(order, tick)

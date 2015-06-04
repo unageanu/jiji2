@@ -145,7 +145,7 @@ describe Jiji::Model::Trading::Position do
     position = position_builder.build_from_tick(
       nil, '1', :EURUSD, 10_000, :buy, @data_builder.new_tick(1))
 
-    position.reduce( 1000, Time.at(100) )
+    position.reduce(1000, Time.at(100))
     expect(position.back_test_id).to eq(nil)
     expect(position.internal_id).to eq('1')
     expect(position.pair_name).to eq(:EURUSD)
@@ -183,7 +183,7 @@ describe Jiji::Model::Trading::Position do
 
     position.update(@data_builder.new_tick(2, Time.at(100)))
 
-    position.close( 103, Time.at(300) )
+    position.close(103, Time.at(300))
     expect(position.back_test_id).to eq('test')
     expect(position.internal_id).to eq(nil)
     expect(position.pair_name).to eq(:EURUSD)
@@ -199,13 +199,12 @@ describe Jiji::Model::Trading::Position do
   end
 
   it 'close後は、updateやreduceを行うことはできない' do
-
     position = position_builder.build_from_tick(
       nil, '1', :EURUSD, 10_000, :buy, @data_builder.new_tick(1))
 
     position.close
     position.update(@data_builder.new_tick(2, Time.at(100)))
-    position.reduce( 1000, Time.at(100) )
+    position.reduce(1000, Time.at(100))
 
     expect(position.back_test_id).to eq(nil)
     expect(position.internal_id).to eq('1')

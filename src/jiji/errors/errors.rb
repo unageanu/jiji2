@@ -57,6 +57,14 @@ module Jiji::Errors
 
   end
 
+  class UnsupportedOperationException < Exception
+
+    def http_status
+      500
+    end
+
+  end
+
   def not_initialized
     fail Jiji::Errors::NotInitializedException
   end
@@ -86,6 +94,10 @@ module Jiji::Errors
   def already_exists(type = nil, param = nil)
     fail AlreadyExistsException,
       "#{type || 'entity'} already exists. #{to_string(param)}"
+  end
+
+  def unsupported
+    fail UnsupportedOperationException
   end
 
   def internal_server_error(exception)

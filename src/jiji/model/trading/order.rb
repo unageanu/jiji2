@@ -48,8 +48,6 @@ module Jiji::Model::Trading
     #=== トレーリングストップのディスタンス（pipsで小数第一位まで）
     attr_accessor :trailing_stop
 
-    attr_accessor :broker
-
     def initialize(pair_name, internal_id, sell_or_buy, type, last_modified)
       @pair_name     = pair_name
       @internal_id   = internal_id
@@ -58,7 +56,11 @@ module Jiji::Model::Trading
       @last_modified = last_modified
     end
 
-    def save
+    def attach_broker(broker)
+      @broker = broker
+    end
+
+    def modify
       illegal_state unless @broker
       @broker.modify_order(self)
     end
@@ -81,6 +83,18 @@ module Jiji::Model::Trading
         take_profit:   take_profit,
         trailing_stop: trailing_stop
       }
+    end
+
+    def carried_out?(tick)
+      current_price = Utils::PricingUtils
+                      .calculate_entry_price(tick, pair_name, sell_or_buy)
+      is_buying = sell_or_buy == :buy
+      is_lower  = current_price < (price || 0)
+      case @type
+      when :market     then true
+      when :stop       then is_buying ? !is_lower : is_lower
+      else                  is_buying ? is_lower : !is_lower
+      end
     end
 
     private

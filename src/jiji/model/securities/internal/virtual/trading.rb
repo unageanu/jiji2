@@ -32,12 +32,12 @@ module Jiji::Model::Securities::Internal::Virtual
     def close_trade(internal_id)
       position = find_position_by_internal_id(internal_id)
       @positions = @positions.reject { |o| o.internal_id == internal_id }
-      position.clone
+      convert_to_closed_position(position)
     end
 
     private
 
-    def find_trade_by_internal_id(internal_id)
+    def find_position_by_internal_id(internal_id)
       @positions.find { |o| o.internal_id == internal_id } \
       || error('order not found')
     end

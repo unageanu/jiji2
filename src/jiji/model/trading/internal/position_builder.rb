@@ -11,10 +11,14 @@ module Jiji::Model::Trading::Internal
     include Jiji::Model::Trading
     include Jiji::Model::Trading::Utils
 
-    def build_from_tick(back_test_id, internal_id,
+    def initialize(backtest_id = nil)
+      @backtest_id = backtest_id
+    end
+
+    def build_from_tick(internal_id,
         pair_name, units, sell_or_buy, tick, options = {})
       position = Position.new do |p|
-        initialize_trading_information(p, back_test_id,
+        initialize_trading_information(p, @backtest_id,
           internal_id, pair_name, units, sell_or_buy)
         initialize_price_and_time_from_tick(p, tick, pair_name, sell_or_buy)
         p.closing_policy = ClosingPolicy.create(options)
@@ -24,12 +28,12 @@ module Jiji::Model::Trading::Internal
 
     def build_from_order(order, tick)
       position = Position.new do |p|
-        initialize_trading_information(p, nil, order.internal_id,
+        initialize_trading_information(p, @backtest_id, order.internal_id,
           order.pair_name, order.units, order.sell_or_buy)
         initialize_price_and_time(p, order.price, order.last_modified)
         p.closing_policy = ClosingPolicy.create(order.extract_options)
       end
-      position.update(tick)
+      position.update_price(tick)
       position
     end
 
@@ -43,7 +47,7 @@ module Jiji::Model::Trading::Internal
     end
 
     def split_and_close(position, units, price, time)
-      position.reduce(units, time)
+      position.update_state_for_reduce(units, time)
       create_splited_position(position, units, price, time)
     end
 
@@ -64,7 +68,7 @@ module Jiji::Model::Trading::Internal
         initialize_price_and_time(p, position.entry_price, position.entered_at)
         p.closing_policy = ClosingPolicy.create(position.closing_policy.to_h)
       end
-      new_position.close(price, time)
+      new_position.update_state_to_closed(price, time)
       new_position
     end
 
@@ -84,20 +88,20 @@ module Jiji::Model::Trading::Internal
     end
 
     def initialize_trading_information_from_position(position, from, units)
-      initialize_trading_information(position, from.back_test_id,
+      initialize_trading_information(position, from.backtest_id,
         from.internal_id + '_', from.pair_name, units, from.sell_or_buy)
     end
 
     def initialize_trading_information_from_trade(position, trade)
       pair_name = Jiji::Model::Securities::Internal::Oanda::Converter\
                   .convert_instrument_to_pair_name(trade.instrument)
-      initialize_trading_information(position, nil, trade.id,
-        pair_name, trade.units, trade.side.to_sym)
+      initialize_trading_information(position, @backtest_idl,
+        trade.id, pair_name, trade.units, trade.side.to_sym)
     end
 
     def initialize_trading_information(position,
-        back_test_id, internal_id, pair_name, units, sell_or_buy)
-      position.back_test_id         = back_test_id
+        backtest_id, internal_id, pair_name, units, sell_or_buy)
+      position.backtest_id         = backtest_id
       position.pair_name            = pair_name
       position.units                = units
       position.sell_or_buy          = sell_or_buy

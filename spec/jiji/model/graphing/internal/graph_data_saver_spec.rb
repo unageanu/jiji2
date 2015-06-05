@@ -13,8 +13,8 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
 
     @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))
 
-    backtest_repository = @container.lookup(:back_test_repository)
-    @backtest1 = @data_builder.register_back_test(1, backtest_repository)
+    backtest_repository = @container.lookup(:backtest_repository)
+    @backtest1 = @data_builder.register_backtest(1, backtest_repository)
 
     factory = Jiji::Model::Graphing::GraphFactory.new(@backtest1.id)
     @graph = factory.create('test1', :chart, '#333', '#666', '#999')
@@ -471,7 +471,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
     expect(data[1].timestamp).to eq Time.utc(2015, 4, 2, 0,  0, 0)
   end
 
-  it 'nilのデータは集計対象から除外される' do
+  it 'nilのデータは集計対象から除���される' do
     @graph << [10, -1,  1.2]
     @graph.save_data(Time.utc(2015, 4, 1, 0, 0, 0))
 

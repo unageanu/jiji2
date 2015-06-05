@@ -10,17 +10,17 @@ module Jiji::Web
       ok(repository.all)
     end
 
-    get '/:back_test_id' do
-      ok(repository.get(param[:back_test_id]))
+    get '/:backtest_id' do
+      ok(repository.get(param[:backtest_id]))
     end
 
-    delete '/:back_test_id' do
-      repository.delete(param[:back_test_id])
+    delete '/:backtest_id' do
+      repository.delete(param[:backtest_id])
       no_content
     end
 
     def repository
-      lookup(:back_test_repository)
+      lookup(:backtest_repository)
     end
 
   end

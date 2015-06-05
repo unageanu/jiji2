@@ -4,10 +4,6 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::Position do
-  let(:position_builder) do
-    Jiji::Model::Trading::Internal::PositionBuilder.new
-  end
-
   before(:example) do
     @data_builder = Jiji::Test::DataBuilder.new
   end
@@ -17,8 +13,10 @@ describe Jiji::Model::Trading::Position do
   end
 
   it 'バックテスト向け設定でPositionを作成できる' do
+    position_builder =
+      Jiji::Model::Trading::Internal::PositionBuilder.new('test')
     position = position_builder.build_from_tick(
-      'test', nil, :EURJPY, 10_000, :buy, @data_builder.new_tick(1), {
+      nil, :EURJPY, 10_000, :buy, @data_builder.new_tick(1), {
         take_profit:     102,
         stop_loss:       100,
         trailing_stop:   5,
@@ -26,7 +24,7 @@ describe Jiji::Model::Trading::Position do
     })
     position.save
 
-    expect(position.back_test_id).to eq('test')
+    expect(position.backtest_id).to eq('test')
     expect(position.internal_id).to eq(nil)
     expect(position.pair_name).to eq(:EURJPY)
     expect(position.units).to eq(10_000)
@@ -46,10 +44,10 @@ describe Jiji::Model::Trading::Position do
     expect(Jiji::Model::Trading::Position.count).to eq(1)
 
     position = position_builder.build_from_tick(
-      'test', nil, :EURUSD, 20_000, :sell, @data_builder.new_tick(1))
+      nil, :EURUSD, 20_000, :sell, @data_builder.new_tick(1))
     position.save
 
-    expect(position.back_test_id).to eq('test')
+    expect(position.backtest_id).to eq('test')
     expect(position.internal_id).to eq(nil)
     expect(position.pair_name).to eq(:EURUSD)
     expect(position.units).to eq(20_000)
@@ -70,8 +68,9 @@ describe Jiji::Model::Trading::Position do
   end
 
   it 'RMT向け設定でPositionを作成できる' do
+    position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
     position = position_builder.build_from_tick(
-      nil, '1', :EURUSD, 1_000_000, :sell, @data_builder.new_tick(2), {
+      '1', :EURUSD, 1_000_000, :sell, @data_builder.new_tick(2), {
         take_profit:     102,
         stop_loss:       100,
         trailing_stop:   5,
@@ -79,7 +78,7 @@ describe Jiji::Model::Trading::Position do
     })
     position.save
 
-    expect(position.back_test_id).to eq(nil)
+    expect(position.backtest_id).to eq(nil)
     expect(position.internal_id).to eq('1')
     expect(position.pair_name).to eq(:EURUSD)
     expect(position.units).to eq(1_000_000)
@@ -100,41 +99,42 @@ describe Jiji::Model::Trading::Position do
   end
 
   it 'update で現在価値を更新できる' do
+    position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
     position = position_builder.build_from_tick(
-      'test', nil, :EURUSD, 10_000, :buy, @data_builder.new_tick(1))
+      nil, :EURUSD, 10_000, :buy, @data_builder.new_tick(1))
 
     expect(position.profit_or_loss).to eq(-30)
 
-    position.update(@data_builder.new_tick(2, Time.at(100)))
+    position.update_price(@data_builder.new_tick(2, Time.at(100)))
     expect(position.entry_price).to eq(101.003)
     expect(position.current_price).to eq(102.00)
     expect(position.updated_at).to eq(Time.at(100))
     expect(position.profit_or_loss).to eq(9970)
 
-    position.update(@data_builder.new_tick(3, Time.at(200)))
+    position.update_price(@data_builder.new_tick(3, Time.at(200)))
     expect(position.entry_price).to eq(101.003)
     expect(position.current_price).to eq(103.00)
     expect(position.updated_at).to eq(Time.at(200))
     expect(position.profit_or_loss).to eq(19_970)
 
     position = position_builder.build_from_tick(
-      nil, 1, :EURUSD, 100_000, :sell, @data_builder.new_tick(1))
+      1, :EURUSD, 100_000, :sell, @data_builder.new_tick(1))
 
     expect(position.profit_or_loss).to eq(-300)
 
-    position.update(@data_builder.new_tick(2, Time.at(100)))
+    position.update_price(@data_builder.new_tick(2, Time.at(100)))
     expect(position.entry_price).to eq(101.00)
     expect(position.current_price).to eq(102.003)
     expect(position.updated_at).to eq(Time.at(100))
     expect(position.profit_or_loss).to eq(-100_300)
 
-    position.update(@data_builder.new_tick(3, Time.at(200)))
+    position.update_price(@data_builder.new_tick(3, Time.at(200)))
     expect(position.entry_price).to eq(101.00)
     expect(position.current_price).to eq(103.003)
     expect(position.updated_at).to eq(Time.at(200))
     expect(position.profit_or_loss).to eq(-200_300)
 
-    position.update(@data_builder.new_tick(0, Time.at(100)))
+    position.update_price(@data_builder.new_tick(0, Time.at(100)))
     expect(position.entry_price).to eq(101.00)
     expect(position.current_price).to eq(100.003)
     expect(position.updated_at).to eq(Time.at(100))
@@ -142,11 +142,12 @@ describe Jiji::Model::Trading::Position do
   end
 
   it 'reduce で取引数を削減できる' do
+    position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
     position = position_builder.build_from_tick(
-      nil, '1', :EURUSD, 10_000, :buy, @data_builder.new_tick(1))
+      '1', :EURUSD, 10_000, :buy, @data_builder.new_tick(1))
 
-    position.reduce(1000, Time.at(100))
-    expect(position.back_test_id).to eq(nil)
+    position.update_state_for_reduce(1000, Time.at(100))
+    expect(position.backtest_id).to eq(nil)
     expect(position.internal_id).to eq('1')
     expect(position.pair_name).to eq(:EURUSD)
     expect(position.units).to eq(9_000)
@@ -161,11 +162,12 @@ describe Jiji::Model::Trading::Position do
   end
 
   it 'close で約定済み状態にできる' do
+    position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
     position = position_builder.build_from_tick(
-      nil, '1', :EURUSD, 10_000, :buy, @data_builder.new_tick(1))
+      '1', :EURUSD, 10_000, :buy, @data_builder.new_tick(1))
 
-    position.close
-    expect(position.back_test_id).to eq(nil)
+    position.update_state_to_closed
+    expect(position.backtest_id).to eq(nil)
     expect(position.internal_id).to eq('1')
     expect(position.pair_name).to eq(:EURUSD)
     expect(position.units).to eq(10_000)
@@ -178,13 +180,15 @@ describe Jiji::Model::Trading::Position do
     expect(position.exited_at).to eq(Time.at(0))
     expect(position.status).to eq(:closed)
 
+    position_builder =
+      Jiji::Model::Trading::Internal::PositionBuilder.new('test')
     position = position_builder.build_from_tick(
-      'test', nil, :EURUSD, 10_000, :sell, @data_builder.new_tick(1))
+      nil, :EURUSD, 10_000, :sell, @data_builder.new_tick(1))
 
-    position.update(@data_builder.new_tick(2, Time.at(100)))
+    position.update_price(@data_builder.new_tick(2, Time.at(100)))
 
-    position.close(103, Time.at(300))
-    expect(position.back_test_id).to eq('test')
+    position.update_state_to_closed(103, Time.at(300))
+    expect(position.backtest_id).to eq('test')
     expect(position.internal_id).to eq(nil)
     expect(position.pair_name).to eq(:EURUSD)
     expect(position.units).to eq(10_000)
@@ -199,14 +203,15 @@ describe Jiji::Model::Trading::Position do
   end
 
   it 'close後は、updateやreduceを行うことはできない' do
+    position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
     position = position_builder.build_from_tick(
-      nil, '1', :EURUSD, 10_000, :buy, @data_builder.new_tick(1))
+      '1', :EURUSD, 10_000, :buy, @data_builder.new_tick(1))
 
-    position.close
-    position.update(@data_builder.new_tick(2, Time.at(100)))
-    position.reduce(1000, Time.at(100))
+    position.update_state_to_closed
+    position.update_price(@data_builder.new_tick(2, Time.at(100)))
+    position.update_state_for_reduce(1000, Time.at(100))
 
-    expect(position.back_test_id).to eq(nil)
+    expect(position.backtest_id).to eq(nil)
     expect(position.internal_id).to eq('1')
     expect(position.pair_name).to eq(:EURUSD)
     expect(position.units).to eq(10_000)
@@ -221,8 +226,9 @@ describe Jiji::Model::Trading::Position do
   end
 
   it 'to_hでハッシュに変換できる' do
+    position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
     position = position_builder.build_from_tick(
-      nil, '1', :EURUSD, 1_000_000, :sell, @data_builder.new_tick(2), {
+      '1', :EURUSD, 1_000_000, :sell, @data_builder.new_tick(2), {
         take_profit:     102,
         stop_loss:       100,
         trailing_stop:   5,
@@ -231,7 +237,7 @@ describe Jiji::Model::Trading::Position do
 
     hash = position.to_h
 
-    expect(hash[:back_test_id]).to eq(nil)
+    expect(hash[:backtest_id]).to eq(nil)
     expect(hash[:internal_id]).to eq('1')
     expect(hash[:pair_name]).to eq(:EURUSD)
     expect(hash[:units]).to eq(1_000_000)

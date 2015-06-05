@@ -7,56 +7,90 @@ module Jiji::Model::Trading::Brokers
 
     include Jiji::Model::Trading
 
-    def initialize
-      @positions = {}
-    end
-
     attr_reader :positions
 
+    def initialize
+      @positions_is_dirty = true
+      @orders_is_dirty    = true
+    end
+
     def pairs
-      @pairs_cache ||= retrieve_pairs
+      @pairs_cache ||= securities.retrieve_pairs
     end
 
     def tick
-      @rates_cache ||= retrieve_tick
-    end
-
-    def close(position_id)
-      check_position_exists(position_id)
-
-      position = @positions[position_id]
-      do_close(position)
-      position.close
-
-      @positions.delete position_id
+      @rates_cache ||= securities.retrieve_current_tick
     end
 
     def refresh
       @rates_cache = nil
-      update_positions if next?
+      @positions.update_price(tick) if next?
+    end
+
+    def positions
+      return @positions unless @positions_is_dirty
+
+      positions = securities.retrieve_trades
+      @positions.update(positions)
+      @positions.update_price(tick)
+      @positions_is_dirty = false
+      @positions.each { |p| p.attach_broker(self) }
+      @positions
+    end
+
+    def orders
+      return @orders  if !@orders_is_dirty && @orders
+      @orders = securities.retrieve_orders
+      @orders.each { |o| o.attach_broker(self) }
+      @orders_is_dirty = false
+      @orders
+    end
+
+    def buy(pair_name, units, type = :market, options = {})
+      order(pair_name, :buy, units, type, options)
+    end
+
+    def sell(pair_name, units, type = :market, options = {})
+      order(pair_name, :sell, units, type, options)
+    end
+
+    def modify_order(order)
+      securities.modify_order(
+        order.internal_id, order.extract_options_for_modify)
+    end
+
+    def modify_position(position)
+      result = securities.modify_position(
+        position.internal_id,
+        position.closing_policy.extract_options_for_modify)
+      position.save
+      result
+    end
+
+    def close_position(position)
+      result = securities.close_trade(position.internal_id)
+      @positions.apply_close_result(result)
+      @positions_is_dirty = true
+      ClosedPosition.new(result.internal_id,
+        position.units, result.price, result.timestamp)
+    end
+
+    def destroy
+      securities.destroy if securities
     end
 
     private
 
-    def update_positions
-      @positions.values.each do |p|
-        p.update(tick)
-      end
+    def order(pair_id, sell_or_buy, units, type, options)
+      result = securities.order(pair_id, sell_or_buy, units, type, options)
+      @positions_is_dirty = true
+      @orders_is_dirty    = true
+      @positions.apply_order_result(result, tick)
+      result
     end
 
-    def create_position(pair_name, units, sell_or_buy, internal_id)
-      illegal_state('tick is not exists.') unless tick
-      position = Position.create(@back_test_id, internal_id,
-        pair_name, units, sell_or_buy, tick)
-      @positions[position._id] = position
-      position
-    end
-
-    def do_close(_position)
-    end
-
-    def check_position_exists(id)
-      not_found(Position, id => id) unless @positions.include? id
+    def init_positions(initial_positions = [])
+      @positions = Positions.new(initial_positions, position_builder)
     end
 
   end

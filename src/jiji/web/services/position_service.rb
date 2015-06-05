@@ -17,9 +17,9 @@ module Jiji::Web
       ok(repository.retrieve_positions(nil, query))
     end
 
-    get '/:back_test_id' do
+    get '/:backtest_id' do
       query = get_time_from_query_param
-      ok(repository.retrieve_positions(params['back_test_id'], query))
+      ok(repository.retrieve_positions(params['backtest_id'], query))
     end
 
     def repository

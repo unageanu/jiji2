@@ -9,7 +9,7 @@ module Jiji::Model::Graphing
 
     store_in collection: 'graph'
 
-    field :back_test_id, type: BSON::ObjectId # RMTの場合nil
+    field :backtest_id,  type: BSON::ObjectId # RMTの場合nil
     field :label,        type: String
     field :type,         type: Symbol
     field :colors,       type: Array
@@ -17,29 +17,29 @@ module Jiji::Model::Graphing
     field :end_time,     type: Time
 
     index(
-      { back_test_id: 1, label: 1 },
-      { unique: true, name: 'graph_back_test_id_label_index' })
+      { backtest_id: 1, label: 1 },
+      { unique: true, name: 'graph_backtest_id_label_index' })
     index(
-      { back_test_id: 1, start_time: 1 },
-      name: 'graph_back_test_id_start_time_index')
+      { backtest_id: 1, start_time: 1 },
+      name: 'graph_backtest_id_start_time_index')
     index(
-      { back_test_id: 1, end_time: 1 },
-      name: 'graph_back_test_id_end_time_index')
+      { backtest_id: 1, end_time: 1 },
+      name: 'graph_backtest_id_end_time_index')
 
     attr_accessor :values
 
-    def self.get_or_create(label, type, colors, back_test_id = nil)
-      graph = Graph.find_by({ back_test_id: back_test_id, label: label })
+    def self.get_or_create(label, type, colors, backtest_id = nil)
+      graph = Graph.find_by({ backtest_id: backtest_id, label: label })
       return graph if graph
 
-      graph = Graph.new(back_test_id, type, label, colors)
+      graph = Graph.new(backtest_id, type, label, colors)
       graph.save
       graph
     end
 
-    def initialize(back_test_id, type, label, colors)
+    def initialize(backtest_id, type, label, colors)
       super()
-      self.back_test_id = back_test_id
+      self.backtest_id  = backtest_id
       self.type         = type
       self.label        = label
       self.colors       = colors

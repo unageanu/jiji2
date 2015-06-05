@@ -6,16 +6,20 @@ module Jiji::Test::Mock
     include Jiji::Model::Trading
     include Jiji::Utils
 
+    attr_reader :position_builder
+
     def initialize
       super
       @time_source = TimeSource.new
+      @position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
+      init_positions
     end
 
     def next?
       true
     end
 
-    def retrieve_pairs
+    def pairs
       [
         Pair.new(:EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04),
         Pair.new(:EURUSD, 'EUR_USD', 0.0001, 10_000_000, 0.00001, 0.04),
@@ -23,8 +27,11 @@ module Jiji::Test::Mock
       ]
     end
 
-    def retrieve_tick
+    def tick
       new_tick
+    end
+
+    def refresh
     end
 
     def new_tick

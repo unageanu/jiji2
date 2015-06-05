@@ -16,7 +16,7 @@ module Jiji::Model::Trading
 
     store_in collection: 'positions'
 
-    field :back_test_id,   type: BSON::ObjectId # RMTの場合nil
+    field :backtest_id,   type: BSON::ObjectId # RMTの場合nil
     field :internal_id,    type: String
     # 接続先証券会社でpositionを識別するためのID。バックテストの場合nil
 
@@ -36,10 +36,14 @@ module Jiji::Model::Trading
     embeds_one :closing_policy
 
     index(
-      { back_test_id: 1, entered_at: 1 },
-      name: 'positions_back_test_id_entered_at_index')
+      { backtest_id: 1, entered_at: 1 },
+      name: 'positions_backtest_id_entered_at_index')
 
     attr_readonly :internal_id
+
+    def attach_broker(broker)
+      @broker = broker
+    end
 
     def to_h
       h = {}
@@ -55,14 +59,25 @@ module Jiji::Model::Trading
       (current - entry) * (sell_or_buy == :buy ? 1 : -1)
     end
 
-    def reduce(units, time)
+    def modify
+      @broker.modify_position(self) if @broker
+    end
+
+    def close
+      illegal_state unless @broker
+      @broker.close_position(self)
+    end
+
+    # for internal use.
+    def update_state_for_reduce(units, time)
       return if status == :closed
       self.units = self.units - units
       self.updated_at = time
       save
     end
 
-    def close(price = current_price, time = updated_at)
+    # for internal use.
+    def update_state_to_closed(price = current_price, time = updated_at)
       return if status == :closed
       self.exit_price    = price
       self.current_price = price
@@ -72,7 +87,8 @@ module Jiji::Model::Trading
       save
     end
 
-    def update(tick)
+    # for internal use.
+    def update_price(tick)
       return if status == :closed
       self.current_price = PricingUtils.calculate_current_price(
         tick, pair_name, sell_or_buy)
@@ -87,7 +103,7 @@ module Jiji::Model::Trading
     end
 
     def insert_trading_information_to_hash(h)
-      h[:back_test_id]         = back_test_id
+      h[:backtest_id]         = backtest_id
       h[:internal_id]          = internal_id
       h[:pair_name]            = pair_name
       h[:units]                = units

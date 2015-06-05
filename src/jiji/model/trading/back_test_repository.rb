@@ -12,7 +12,7 @@ module Jiji::Model::Trading
     attr_accessor :container
 
     def initialize
-      @back_tests = {}
+      @backtests = {}
     end
 
     def on_inject
@@ -20,28 +20,28 @@ module Jiji::Model::Trading
     end
 
     def all
-      @back_tests.values
+      @backtests.values
     end
 
     def register(config)
-      back_test = BackTest.create_from_hash(config)
-      setup_back_test(back_test)
-      back_test.save
+      backtest = BackTest.create_from_hash(config)
+      setup_backtest(backtest)
+      backtest.save
 
-      @back_tests[back_test.id] = back_test
-      back_test
+      @backtests[backtest.id] = backtest
+      backtest
     end
 
     def get(id)
-      @back_tests[id] || not_found(id)
+      @backtests[id] || not_found(id)
     end
 
     def delete(id)
-      back_test = get(id)
-      back_test.process.stop
+      backtest = get(id)
+      backtest.process.stop
 
-      back_test.delete
-      @back_tests.delete(id)
+      backtest.delete
+      @backtests.delete(id)
     end
 
     def stop
@@ -51,19 +51,19 @@ module Jiji::Model::Trading
     private
 
     def load
-      @back_tests = BackTest
-                    .order_by(:created_at.asc)
-                    .all.each_with_object(@back_tests) do |t, r|
-        setup_back_test(t)
+      @backtests = BackTest
+                   .order_by(:created_at.asc)
+                   .all.each_with_object(@backtests) do |t, r|
+        setup_backtest(t)
         r[t.id] = t
         r
       end
     end
 
-    def setup_back_test(back_test)
-      container.inject(back_test)
-      back_test.setup
-      back_test
+    def setup_backtest(backtest)
+      container.inject(backtest)
+      backtest.setup
+      backtest
     end
 
   end

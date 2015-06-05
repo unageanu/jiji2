@@ -12,39 +12,20 @@ module Jiji::Model::Trading::Brokers
 
     needs :time_source
     needs :securities_provider
+    needs :position_builder
+    needs :position_repository
 
     def initialize
       super()
-      @back_test_id = nil
-      @securities   = nil
-      @mutex = Mutex.new
+      @backtest_id = nil
+    end
+
+    def on_inject
+      init_positions(position_repository.retrieve_living_positions_of_rmt)
     end
 
     def next?
       true
-    end
-
-    def positions
-      check_setting_finished
-      super
-    end
-
-    def buy(pair_id, units)
-      internal_id = order(pair_id, :buy, units)
-      create_position(pair_id, units, :buy,  internal_id)
-    end
-
-    def sell(pair_id, units)
-      internal_id = order(pair_id, :sell, units)
-      create_position(pair_id, units, :sell,  internal_id)
-    end
-
-    def destroy
-      securities.destroy if securities
-    end
-
-    def securities
-      securities_provider.get
     end
 
     def refresh
@@ -54,27 +35,8 @@ module Jiji::Model::Trading::Brokers
 
     private
 
-    def retrieve_pairs
-      securities.retrieve_pairs
-    end
-
-    def retrieve_tick
-      securities.retrieve_current_tick
-    end
-
-    def order(pair_id, type, units)
-      check_setting_finished
-      position = securities.order(pair_id, type, units)
-      position.position_id
-    end
-
-    def do_close(position)
-      check_setting_finished
-      securities.commit(position.internal_id, position.units)
-    end
-
-    def check_setting_finished
-      fail Jiji::Errors::NotInitializedException unless securities
+    def securities
+      securities_provider.get
     end
 
   end

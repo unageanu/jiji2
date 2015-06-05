@@ -32,8 +32,8 @@ module Jiji::Composing::Configurators
 
     def configure_backtest_components(container)
       container.configure do
-        object :back_test_thread_pool,       Thread.pool(2)
-        object :back_test_repository,        BackTestRepository.new
+        object :backtest_thread_pool,       Thread.pool(2)
+        object :backtest_repository,        BackTestRepository.new
       end
     end
 

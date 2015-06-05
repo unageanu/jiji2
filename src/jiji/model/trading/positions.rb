@@ -17,6 +17,7 @@ module Jiji::Model::Trading
       @map = to_map(positions)
     end
 
+    # for internal use.
     def update(new_positions)
       @positions = new_positions.map do |p|
         sync_or_save_position(@map.delete(p.internal_id), p)
@@ -25,12 +26,14 @@ module Jiji::Model::Trading
       @map = to_map(@positions)
     end
 
+    # for internal use.
     def update_price(tick)
       @positions.each do |p|
-        p.update(tick)
+        p.update_price(tick)
       end
     end
 
+    # for internal use.
     def apply_order_result(result, tick)
       add(result.trade_opened, tick) if result.trade_opened
       split(result.trade_reduced) if result.trade_reduced
@@ -39,10 +42,11 @@ module Jiji::Model::Trading
       end
     end
 
+    # for internal use.
     def apply_close_result(result)
       return unless @map.include?(result.internal_id)
       position = @map[result.internal_id]
-      position.close(result.price, result.timestamp)
+      position.update_state_to_closed(result.price, result.timestamp)
     end
 
     private
@@ -78,7 +82,7 @@ module Jiji::Model::Trading
     ]
 
     def mark_as_closed(positions)
-      positions.each { |p| p.close }
+      positions.each { |p| p.update_state_to_closed }
     end
 
     def add(order, tick)

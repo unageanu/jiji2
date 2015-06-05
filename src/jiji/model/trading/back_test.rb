@@ -17,9 +17,9 @@ module Jiji::Model::Trading
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
-    needs :back_test_thread_pool
+    needs :backtest_thread_pool
     needs :tick_repository
-    needs :securities_provider
+    needs :pairs
 
     store_in collection: 'backtests'
 
@@ -30,7 +30,7 @@ module Jiji::Model::Trading
     field :start_time,    type: Time
     field :end_time,      type: Time
     field :agent_setting, type: Array
-    field :pairs,         type: Array
+    field :pair_names,    type: Array
 
     validates :name,
       length:   { maximum: 200, strict: true },
@@ -47,7 +47,7 @@ module Jiji::Model::Trading
       presence: { strict: true }
     validates :end_time,
       presence: { strict: true }
-    validates :pairs,
+    validates :pair_names,
       presence: { strict: true },
       length:   { minimum: 1 }
     validates :agent_setting,
@@ -65,7 +65,7 @@ module Jiji::Model::Trading
         id:            _id,
         name:          name,
         memo:          memo,
-        pairs:         pairs,
+        pair_names:    pair_names,
         agent_setting: agent_setting,
         created_at:    created_at,
         start_time:    start_time,
@@ -77,7 +77,7 @@ module Jiji::Model::Trading
       BackTest.new do |b|
         b.name          = hash['name']
         b.memo          = hash['memo']
-        b.pairs         = hash['pairs']
+        b.pair_names    = hash['pair_names']
         b.agent_setting = hash['agent_setting']
         b.start_time    = hash['start_time']
         b.end_time      = hash['end_time']
@@ -112,7 +112,7 @@ module Jiji::Model::Trading
 
     def create_broker
       Brokers::BackTestBroker.new(_id, start_time, end_time,
-        pairs,  @tick_repository, @securities_provider)
+        (pair_names || []).map { |p| @pairs.get_by_name(p) },  @tick_repository)
     end
 
     def create_trading_context(broker, agents, graph_factory)
@@ -121,7 +121,7 @@ module Jiji::Model::Trading
     end
 
     def create_process(trading_context)
-      Process.new(trading_context, back_test_thread_pool, true)
+      Process.new(trading_context, backtest_thread_pool, true)
     end
 
   end

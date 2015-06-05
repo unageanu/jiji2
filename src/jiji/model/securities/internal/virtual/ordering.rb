@@ -12,7 +12,7 @@ module Jiji::Model::Securities::Internal::Virtual
       @orders   = []
       @order_id = 1
 
-      @position_builder = PositionBuilder.new
+      @position_builder = Internal::PositionBuilder.new
     end
 
     def order(pair_name, sell_or_buy, units, type = :market, options = {})
@@ -116,14 +116,19 @@ module Jiji::Model::Securities::Internal::Virtual
 
     def create_order(pair_name, sell_or_buy, units, type, options)
       order = Jiji::Model::Trading::Order.new(
-        pair_name, @order_id += 1, sell_or_buy, type, @current_tick.timestamp)
-      order.units         = units
+        pair_name, new_id, sell_or_buy, type, @current_tick.timestamp)
+      order.units   = units
+      order.price   = resolve_price(
+        type, pair_name, sell_or_buy, options, @current_tick)
       init_optional_properties(order, options)
       order
     end
 
+    def new_id
+      (@order_id += 1).to_s
+    end
+
     def init_optional_properties(order, options)
-      order.price         = options[:price]  || nil
       order.expiry        = options[:expiry] || nil
       [:lower_bound, :upper_bound,
        :stop_loss, :take_profit, :trailing_stop].each do |key|
@@ -131,15 +136,20 @@ module Jiji::Model::Securities::Internal::Virtual
       end
     end
 
-    def convert_to_closed_position(position, price, time)
-      price = Utils.PricingUtils.calculate_entry_price(
+    def resolve_price(type, pair_name, sell_or_buy, options, tick)
+      return options[:price]  || nil if type != :market
+      PricingUtils.calculate_entry_price(tick, pair_name, sell_or_buy)
+    end
+
+    def convert_to_closed_position(position)
+      price = PricingUtils.calculate_current_price(
         @current_tick, position.pair_name, position.sell_or_buy)
       ClosedPosition.new(position.internal_id,
         position.units, price, @current_tick.timestamp)
     end
 
-    def convert_to_reduced_position(position, price, time)
-      price = Utils.PricingUtils.calculate_entry_price(
+    def convert_to_reduced_position(position)
+      price = PricingUtils.calculate_current_price(
         @current_tick, position.pair_name, position.sell_or_buy)
       ReducedPosition.new(position.internal_id,
         position.units, price, @current_tick.timestamp)

@@ -7,7 +7,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     @data_builder = Jiji::Test::DataBuilder.new
 
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
-    @repository   = @container.lookup(:back_test_repository)
+    @repository   = @container.lookup(:backtest_repository)
     @time_source  = @container.lookup(:time_source)
     @registory    = @container.lookup(:agent_registry)
 
@@ -28,7 +28,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       'start_time'    => Time.at(100),
       'end_time'      => Time.at(200),
       'memo'          => 'メモ',
-      'pairs'         => [:EURJPY, :EURUSD],
+      'pair_names'    => [:EURJPY, :EURUSD],
       'agent_setting' => [
         { name: 'TestAgent1@aaa', properties: { 'a' => 1, 'b' => 'bb' } },
         { name: 'TestAgent1@aaa', properties: {} },
@@ -40,7 +40,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(test.memo).to eq 'メモ'
     expect(test.start_time).to eq Time.at(100)
     expect(test.end_time).to eq Time.at(200)
-    expect(test.pairs).to eq [:EURJPY, :EURUSD]
+    expect(test.pair_names).to eq [:EURJPY, :EURUSD]
     expect(test.agent_setting[0][:uuid]).not_to be nil
     expect(test.agent_setting[0][:name]).to eq 'TestAgent1@aaa'
     expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'bb' })
@@ -61,7 +61,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       'name'          => 'テスト2',
       'start_time'    => Time.at(100),
       'end_time'      => Time.at(300),
-      'pairs'         => [:EURJPY, :EURUSD],
+      'pair_names'    => [:EURJPY, :EURUSD],
       'agent_setting' => [
         { name: 'TestAgent1@aaa', properties: { 'a' => 1, 'b' => 'bb' } }
       ]
@@ -71,7 +71,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(test2.memo).to eq nil
     expect(test2.start_time).to eq Time.at(100)
     expect(test2.end_time).to eq Time.at(300)
-    expect(test2.pairs).to eq [:EURJPY, :EURUSD]
+    expect(test2.pair_names).to eq [:EURJPY, :EURUSD]
     expect(test2.agent_setting[0][:uuid]).not_to be nil
     expect(test2.agent_setting[0][:name]).to eq 'TestAgent1@aaa'
     expect(test2.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'bb' })
@@ -92,7 +92,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'start_time'    => Time.at(100),
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
-          'pairs'         => [:EURJPY, :EURUSD],
+          'pair_names'    => [:EURJPY, :EURUSD],
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 1, 'b' => 'b' } }
           ]
@@ -104,7 +104,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(@repository.all.length).to be 3
 
       @container    = Jiji::Test::TestContainerFactory.instance.new_container
-      @repository   = @container.lookup(:back_test_repository)
+      @repository   = @container.lookup(:backtest_repository)
 
       expect(@repository.all.length).to be 3
 
@@ -112,7 +112,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト0'
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(200)
-      expect(test.pairs).to eq [:EURJPY, :EURUSD]
+      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       expect(test.agent_setting[0][:uuid]).not_to be nil
       expect(test.agent_setting[0][:name]).to eq 'TestAgent1@aaa'
       expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
@@ -122,7 +122,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト1'
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(200)
-      expect(test.pairs).to eq [:EURJPY, :EURUSD]
+      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       expect(test.agent_setting[0][:uuid]).not_to be nil
       expect(test.agent_setting[0][:name]).to eq 'TestAgent1@aaa'
       expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
@@ -132,7 +132,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト2'
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(200)
-      expect(test.pairs).to eq [:EURJPY, :EURUSD]
+      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       expect(test.agent_setting[0][:uuid]).not_to be nil
       expect(test.agent_setting[0][:name]).to eq 'TestAgent1@aaa'
       expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
@@ -149,7 +149,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(@repository.all[1].name).to eq 'テスト2'
 
       @container    = Jiji::Test::TestContainerFactory.instance.new_container
-      @repository   = @container.lookup(:back_test_repository)
+      @repository   = @container.lookup(:backtest_repository)
 
       expect(@repository.all.length).to be 2
       expect(@repository.all[0].name).to eq 'テスト0'
@@ -163,7 +163,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'start_time'    => Time.at(100),
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
-          'pairs'         => [:EURJPY, :EURUSD],
+          'pair_names'    => [:EURJPY, :EURUSD],
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -176,7 +176,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'start_time'    => Time.at(100),
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
-          'pairs'         => [:EURJPY, :EURUSD],
+          'pair_names'    => [:EURJPY, :EURUSD],
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -189,7 +189,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'start_time'    => Time.at(100),
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
-          'pairs'         => [:EURJPY, :EURUSD],
+          'pair_names'    => [:EURJPY, :EURUSD],
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -204,7 +204,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'start_time'    => Time.at(100),
           'end_time'      => Time.at(200),
           'memo'          => 'a' * 2001,
-          'pairs'         => [:EURJPY, :EURUSD],
+          'pair_names'    => [:EURJPY, :EURUSD],
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -219,7 +219,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'start_time'    => nil,
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
-          'pairs'         => [:EURJPY, :EURUSD],
+          'pair_names'    => [:EURJPY, :EURUSD],
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -232,7 +232,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'start_time'    => Time.at(100),
           'end_time'      => nil,
           'memo'          => 'メモ',
-          'pairs'         => [:EURJPY, :EURUSD],
+          'pair_names'    => [:EURJPY, :EURUSD],
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -247,7 +247,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'start_time'    => Time.at(100),
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
-          'pairs'         => [],
+          'pair_names'    => [],
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -274,7 +274,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'start_time'    => Time.at(100),
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
-          'pairs'         => [:EURJPY, :EURUSD],
+          'pair_names'         => [:EURJPY, :EURUSD],
           'agent_setting' => []
         })
       end.to raise_exception(ActiveModel::StrictValidationFailed)
@@ -285,7 +285,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'start_time' => Time.at(100),
           'end_time'   => Time.at(200),
           'memo'       => 'メモ',
-          'pairs'      => [:EURJPY, :EURUSD]
+          'pair_names' => [:EURJPY, :EURUSD]
         })
       end.to raise_exception(ActiveModel::StrictValidationFailed)
     end

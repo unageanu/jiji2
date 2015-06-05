@@ -35,6 +35,11 @@ module Jiji::Model::Securities::Internal::Virtual
       unsupported
     end
 
+    def next?
+      fill_buffer if @buffer.empty?
+      !@buffer.empty?
+    end
+
     private
 
     def fill_buffer

@@ -10,7 +10,7 @@ module Jiji::Model
     include Encase
 
     needs :rmt
-    needs :back_test_repository
+    needs :backtest_repository
     needs :index_builder
 
     def setup
@@ -20,7 +20,7 @@ module Jiji::Model
 
     def tear_down
       @rmt.tear_down
-      @back_test_repository.stop
+      @backtest_repository.stop
     end
 
   end

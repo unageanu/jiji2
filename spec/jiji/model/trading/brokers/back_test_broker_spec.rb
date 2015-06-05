@@ -10,7 +10,14 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
 
     @repository.securities_provider = @securities_provider
     @securities_provider.set Jiji::Test::Mock::MockSecurities.new({})
-    @pairs = [:EURUSD, :USDJPY, :EURJPY]
+    @pairs = [
+      Jiji::Model::Trading::Pair.new(
+        :EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04),
+      Jiji::Model::Trading::Pair.new(
+        :EURUSD, 'EUR_USD', 0.0001, 10_000_000, 0.00001, 0.04),
+      Jiji::Model::Trading::Pair.new(
+        :USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04)
+    ]
   end
 
   after(:example) do
@@ -19,8 +26,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
 
   let(:broker) do
     Jiji::Model::Trading::Brokers::BackTestBroker.new('test',
-      Time.at(0), Time.at(15 * 30),
-      @pairs, @repository, @securities_provider)
+      Time.at(0), Time.at(15 * 30), @pairs, @repository)
   end
 
   it 'pair が取得できる' do
@@ -32,10 +38,12 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   end
 
   it '売買ができる' do
+    broker.tick
+
     broker.buy(:EURJPY, 1)
     broker.sell(:USDJPY, 2)
-    broker.positions.each do |_k, v|
-      broker.close(v._id)
+    broker.positions.each do |v|
+      broker.close_position(v)
     end
   end
 
@@ -51,30 +59,41 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     expect(rates[:EURJPY].ask).to eq 100.003
     expect(rates[:EURUSD].bid).to eq 100
     expect(rates[:EURUSD].ask).to eq 100.003
+    expect(rates.timestamp).to eq Time.at(0)
 
-    broker.refresh
     expect(broker.next?).to be true
 
+    broker.refresh
     rates = broker.tick
     expect(rates[:EURJPY].bid).to eq 101
     expect(rates[:EURJPY].ask).to eq 101.003
+    expect(rates.timestamp).to eq Time.at(15)
 
-    28.times do |_i|
+    expect(broker.next?).to be true
+
+    27.times do |i|
       broker.refresh
-      expect(broker.next?).to be true
       rates = broker.tick
       expect(rates[:EURJPY].bid).not_to be nil
       expect(rates[:EURJPY].ask).not_to be nil
       expect(rates[:USDJPY].bid).not_to be nil
       expect(rates[:USDJPY].ask).not_to be nil
+      expect(rates.timestamp).to eq Time.at(15 * (i + 2))
+
+      expect(broker.next?).to be true
     end
 
     broker.refresh
+    rates = broker.tick
+    expect(rates.timestamp).to eq Time.at(15 * 29)
     expect(broker.next?).to be false
   end
 
   it '売買していても既定のレートを取得できる' do
-    buy_position = broker.buy(:EURJPY, 10_000)
+    broker.tick
+
+    result = broker.buy(:EURJPY, 10_000)
+    buy_position = broker.positions[result.trade_opened.internal_id]
     expect(buy_position.profit_or_loss).to eq(-30)
 
     expect(broker.next?).to be true
@@ -87,15 +106,16 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     expect(broker.next?).to be true
     expect(broker.tick[:EURJPY].bid).to eq 101
 
-    sell_position = broker.sell(:USDJPY, 20_000)
+    result = broker.sell(:USDJPY, 20_000)
+    sell_position = broker.positions[result.trade_opened.internal_id]
     expect(sell_position.profit_or_loss).to eq(-60)
 
-    broker.close(buy_position._id)
+    broker.close_position(buy_position)
 
-    28.times do |_i|
+    27.times do |_i|
       broker.refresh
-      expect(broker.next?).to be true
       rates = broker.tick
+      expect(broker.next?).to be true
       expect(rates[:EURJPY].bid).not_to be nil
       expect(rates[:EURJPY].ask).not_to be nil
       expect(rates[:USDJPY].bid).not_to be nil
@@ -106,6 +126,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     end
 
     broker.refresh
+    broker.tick
     expect(broker.next?).to be false
   end
 
@@ -128,8 +149,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   it 'start が end よりも未来の場合、エラーになる' do
     expect do
       Jiji::Model::Trading::Brokers::BackTestBroker.new(
-        'test', Time.at(1000), Time.at(500),
-        @pairs, @repository, @securities_provider)
+        'test', Time.at(1000), Time.at(500), @pairs, @repository)
     end.to raise_error(ArgumentError)
   end
 end

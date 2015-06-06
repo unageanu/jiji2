@@ -26,7 +26,7 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def retrieve_orders(count = 500, pair_name = nil, max_id = nil)
-      @orders.map { |o| o.clone }
+      @orders.map { |o| o.clone }.sort_by { |o| o.internal_id.to_i * -1 }
     end
 
     def retrieve_order_by_id(internal_id)
@@ -38,6 +38,7 @@ module Jiji::Model::Securities::Internal::Virtual
       MODIFIABLE_PROPERTIES.each do |key|
         order.method("#{key}=").call(options[key]) if options.include?(key)
       end
+      order.clone
     end
 
     def cancel_order(internal_id)
@@ -59,9 +60,20 @@ module Jiji::Model::Securities::Internal::Virtual
       result = close_or_reduce_reverse_positions(position)
       if position.units > 0
         @positions << position
-        return OrderResult.new(nil, order, nil, result[:closed])
+        order.units = position.units
+      end
+      create_order_result(order, position, result)
+    end
+
+    def create_order_result(order, position, result)
+      if (order.type == :market)
+        if position.units > 0
+          return OrderResult.new(nil, order, nil, result[:closed])
+        else
+          return OrderResult.new(nil, nil, result[:reduced], result[:closed])
+        end
       else
-        return OrderResult.new(nil, nil, result[:reduced], result[:closed])
+        return OrderResult.new(order, nil, nil, [])
       end
     end
 
@@ -71,7 +83,16 @@ module Jiji::Model::Securities::Internal::Virtual
       reverse_positions.each do |r|
         close_or_reduce_reverse_position(result, r, position)
       end
+      remove_closed_positions(result[:closed])
       result
+    end
+
+    def remove_closed_positions(closed)
+      @positions = @positions.reject do |p|
+        !(closed.find do |item|
+          p.internal_id == item.internal_id
+        end.nil?)
+      end
     end
 
     def close_or_reduce_reverse_position(result, reverse_position, position)
@@ -141,11 +162,11 @@ module Jiji::Model::Securities::Internal::Virtual
       PricingUtils.calculate_entry_price(tick, pair_name, sell_or_buy)
     end
 
-    def convert_to_closed_position(position)
+    def convert_to_closed_position(position, units=nil)
       price = PricingUtils.calculate_current_price(
         @current_tick, position.pair_name, position.sell_or_buy)
       ClosedPosition.new(position.internal_id,
-        position.units, price, @current_tick.timestamp)
+        units || position.units, price, @current_tick.timestamp)
     end
 
     def convert_to_reduced_position(position)

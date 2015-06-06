@@ -13,7 +13,7 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def retrieve_trades(count = 500, pair_name = nil, max_id = nil)
-      @positions.map { |o| o.clone }
+      @positions.map { |o| o.clone }.sort_by { |o| o.internal_id.to_i * -1 }
     end
 
     def retrieve_trade_by_id(internal_id)
@@ -32,7 +32,7 @@ module Jiji::Model::Securities::Internal::Virtual
     def close_trade(internal_id)
       position = find_position_by_internal_id(internal_id)
       @positions = @positions.reject { |o| o.internal_id == internal_id }
-      convert_to_closed_position(position)
+      convert_to_closed_position(position, -1)
     end
 
     private

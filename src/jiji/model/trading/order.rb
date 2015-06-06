@@ -171,9 +171,11 @@ module Jiji::Model::Trading
 
   #== 部分的に決済された建玉の情報
   class ReducedPosition < AbstractPositionResult
+
   end
 
   #== 全決済された建玉の情報
   class ClosedPosition < AbstractPositionResult
+
   end
 end

@@ -146,15 +146,14 @@ module Jiji::Model::Trading
 
   end
 
-  #== 部分的に決済された建玉の情報
-  class ReducedPosition
+  class AbstractPositionResult
 
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
     #=== 決済された建玉の内部ID
     attr_reader :internal_id
-    #=== 決済後の取引数
+    #=== 取引数/部分決済の場合は、部分決済後の取引数
     attr_reader :units
     #=== 決済価格
     attr_reader :price
@@ -170,27 +169,11 @@ module Jiji::Model::Trading
 
   end
 
+  #== 部分的に決済された建玉の情報
+  class ReducedPosition < AbstractPositionResult
+  end
+
   #== 全決済された建玉の情報
-  class ClosedPosition
-
-    include Jiji::Utils::ValueObject
-    include Jiji::Web::Transport::Transportable
-
-    #=== 決済された建玉の内部ID
-    attr_reader :internal_id
-    #=== 決済された取引数
-    attr_reader :units
-    #=== 決済価格
-    attr_reader :price
-    #=== 決済時刻
-    attr_reader :timestamp
-
-    def initialize(internal_id, units, price, timestamp)
-      @internal_id  = internal_id
-      @units        = units
-      @price        = price
-      @timestamp    = timestamp
-    end
-
+  class ClosedPosition < AbstractPositionResult
   end
 end

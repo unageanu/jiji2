@@ -62,5 +62,10 @@ module Jiji::Model::Securities::Internal::Virtual
           start_time: start_time, end_time: end_time)
       end
     end
+
+    def retrieve_pair_by_name(name)
+      @pairs.find {|p| p.name == name }
+    end
+
   end
 end

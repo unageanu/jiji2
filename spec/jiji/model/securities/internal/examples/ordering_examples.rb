@@ -30,7 +30,6 @@ RSpec.shared_examples '注文関連の操作' do
     end
 
     it '成行で注文ができる' do
-
       saved_positions = position_repository.retrieve_positions(backtest_id)
       expect(saved_positions.length).to be 0
 

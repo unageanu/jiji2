@@ -10,10 +10,9 @@ describe Jiji::Model::Securities::Internal::Virtual::Ordering do
   let(:container) do
     Jiji::Test::TestContainerFactory.instance.new_container
   end
-  let(:data_builder) do Jiji::Test::DataBuilder.new end
+  let(:data_builder) { Jiji::Test::DataBuilder.new }
   let(:backtest_id) do
     backtest_repository  = container.lookup(:backtest_repository)
-    position_repository  = container.lookup(:position_repository)
     registory            = container.lookup(:agent_registry)
 
     registory.add_source('aaa', '', :agent, data_builder.new_agent_body(1))
@@ -35,27 +34,22 @@ describe Jiji::Model::Securities::Internal::Virtual::Ordering do
   it_behaves_like '注文関連の操作'
   it_behaves_like '注文関連の操作(建玉がある場合のバリエーションパターン)'
 
-
   it 'レート更新時に、注文が条件を満たすと約定する' do
-
     saved_positions = position_repository.retrieve_positions(backtest_id)
     expect(saved_positions.length).to be 0
 
     tick = client.retrieve_current_tick
     now  = tick.timestamp
 
-    bid = BigDecimal.new(tick[:USDJPY].bid, 4)
-    ask = BigDecimal.new(tick[:EURJPY].ask, 4)
-
     order1 = client.order(:EURJPY, :sell, 1, :limit, {
-      price:  128.9,
-      expiry: now + (60 * 60 * 24),
+      price:         128.9,
+      expiry:        now + (60 * 60 * 24),
       trailing_stop: 10
     }).order_opened
     order2 = client.order(:USDJPY, :buy, 10, :stop, {
-      price:  120,
-      expiry: now + (60 * 60 * 24),
-      stop_loss:  119,
+      price:       120,
+      expiry:      now + (60 * 60 * 24),
+      stop_loss:   119,
       take_profit: 121
     }).order_opened
     order3 = client.order(:EURJPY, :sell, 2, :marketIfTouched, {
@@ -101,7 +95,6 @@ describe Jiji::Model::Securities::Internal::Virtual::Ordering do
     expect(order.type).to be :limit
     expect(order.price).to eq(128.9)
     expect(order.expiry).to eq((now + 45).utc)
-
 
     2.times do
       client.retrieve_current_tick
@@ -184,7 +177,7 @@ describe Jiji::Model::Securities::Internal::Virtual::Ordering do
     expect(position.closing_policy.stop_loss).to eq(0)
     expect(position.closing_policy.take_profit).to eq(0)
     expect(position.closing_policy.trailing_stop).to eq(10)
-    expect(position.closing_policy.trailing_amount).to eq(0)
+    expect(position.closing_policy.trailing_amount).to eq(129.031)
 
     position = positions.find { |o| o.internal_id == order3.internal_id }
     expect(position.pair_name).to eq :EURJPY
@@ -199,7 +192,6 @@ describe Jiji::Model::Securities::Internal::Virtual::Ordering do
     expect(position.closing_policy.take_profit).to eq(0)
     expect(position.closing_policy.trailing_stop).to eq(0)
     expect(position.closing_policy.trailing_amount).to eq(0)
-
 
     rates3 = client.retrieve_current_tick
     orders = client.retrieve_orders
@@ -234,7 +226,7 @@ describe Jiji::Model::Securities::Internal::Virtual::Ordering do
     expect(position.closing_policy.stop_loss).to eq(0)
     expect(position.closing_policy.take_profit).to eq(0)
     expect(position.closing_policy.trailing_stop).to eq(10)
-    expect(position.closing_policy.trailing_amount).to eq(0)
+    expect(position.closing_policy.trailing_amount).to eq(129.031)
 
     position = positions.find { |o| o.internal_id == order3.internal_id }
     expect(position.pair_name).to eq :EURJPY
@@ -253,5 +245,4 @@ describe Jiji::Model::Securities::Internal::Virtual::Ordering do
     saved_positions = position_repository.retrieve_positions(backtest_id)
     expect(saved_positions.length).to be 0
   end
-
 end

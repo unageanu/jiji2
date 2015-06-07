@@ -17,15 +17,11 @@ module Jiji::Model::Trading::Brokers
       start_time, end_time, pairs, tick_repository)
       super()
 
+      config = create_securities_configuration(
+        backtest_id, start_time, end_time, pairs)
+      @securities = VirtualSecurities.new(tick_repository, config)
       @backtest_id = backtest_id
-
       @position_builder = PositionBuilder.new(backtest_id)
-      @securities = VirtualSecurities.new(tick_repository, {
-        start_time:  start_time,
-        end_time:    end_time,
-        backtest_id: backtest_id,
-        pairs:       pairs
-      })
 
       init_positions
     end
@@ -35,6 +31,18 @@ module Jiji::Model::Trading::Brokers
 
     def next?
       securities.next?
+    end
+
+    private
+
+    def create_securities_configuration(
+      backtest_id, start_time, end_time, pairs)
+      {
+        start_time:  start_time,
+        end_time:    end_time,
+        backtest_id: backtest_id,
+        pairs:       pairs
+      }
     end
 
   end

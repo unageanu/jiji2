@@ -45,7 +45,9 @@ module Jiji::Model::Securities::Internal::Virtual
 
     def process_position(tick, position)
       position.update_price(tick)
-      if position.closing_policy.close?( position )
+      position.closing_policy.update_price(
+        position, retrieve_pair_by_name(position.pair_name))
+      if position.closing_policy.should_close?(position)
         position.update_state_to_closed
         true
       else

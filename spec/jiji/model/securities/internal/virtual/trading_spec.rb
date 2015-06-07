@@ -8,10 +8,9 @@ describe Jiji::Model::Securities::Internal::Virtual::Trading do
   let(:container) do
     Jiji::Test::TestContainerFactory.instance.new_container
   end
-  let(:data_builder) do Jiji::Test::DataBuilder.new end
+  let(:data_builder) { Jiji::Test::DataBuilder.new }
   let(:backtest_id) do
     backtest_repository  = container.lookup(:backtest_repository)
-    position_repository  = container.lookup(:position_repository)
     registory            = container.lookup(:agent_registry)
 
     registory.add_source('aaa', '', :agent, data_builder.new_agent_body(1))
@@ -31,4 +30,7 @@ describe Jiji::Model::Securities::Internal::Virtual::Trading do
   end
 
   it_behaves_like '建玉関連の操作'
+
+  it 'レート更新時に、建玉が決済条件を満たすと決済される' do
+  end
 end

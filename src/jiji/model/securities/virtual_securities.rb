@@ -15,7 +15,7 @@ module Jiji::Model::Securities
     def initialize(tick_repository, config)
       @tick_repository =  tick_repository
       @position_builder =
-        Trading::Internal::PositionBuilder.new( config[:backtest_id] )
+        Trading::Internal::PositionBuilder.new(config[:backtest_id])
 
       init_rate_retriever_state(
         config[:start_time], config[:end_time], config[:pairs])

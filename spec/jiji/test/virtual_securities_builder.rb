@@ -5,7 +5,7 @@ module Jiji::Test
     def self.build(
         start_time = Time.utc(2015, 4, 1),
         end_time = Time.utc(2015, 4, 1, 6),
-        backtest_id=nil)
+        backtest_id = nil)
       oanda_securities = Jiji::Model::Securities::OandaDemoSecurities.new(
         access_token: ENV['OANDA_API_ACCESS_TOKEN'])
       securities_provider = Jiji::Model::Securities::SecuritiesProvider.new
@@ -15,10 +15,10 @@ module Jiji::Test
       repository.securities_provider = securities_provider
 
       Jiji::Model::Securities::VirtualSecurities.new(repository, {
-        start_time: start_time,
-        end_time:   end_time,
+        start_time:  start_time,
+        end_time:    end_time,
         backtest_id: backtest_id,
-        pairs:      [
+        pairs:       [
           Jiji::Model::Trading::Pair.new(
             :EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04),
           Jiji::Model::Trading::Pair.new(

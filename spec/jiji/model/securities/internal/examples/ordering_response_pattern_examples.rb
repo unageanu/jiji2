@@ -36,7 +36,6 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
       end
 
       it '逆方向の注文が約定すると、既存のポジジョンが削減される' do
-
         saved_positions = position_repository.retrieve_positions(backtest_id)
         expect(saved_positions.length).to be 0
 
@@ -113,7 +112,6 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
       end
 
       it '注文が同じ方向だと、別のポジジョンができる' do
-
         saved_positions = position_repository.retrieve_positions(backtest_id)
         expect(saved_positions.length).to be 0
 
@@ -146,7 +144,6 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
       end
 
       it '複数の建玉があり、合計より大きな数で逆方向に取引すると、建玉がすべて決済される' do
-
         saved_positions = position_repository.retrieve_positions(backtest_id)
         expect(saved_positions.length).to be 0
 
@@ -182,7 +179,6 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
       end
 
       it '即時決済する条件で逆方向の指値注文が約定すると、既存のポジジョンが減る' do
-
         saved_positions = position_repository.retrieve_positions(backtest_id)
         expect(saved_positions.length).to be 0
 

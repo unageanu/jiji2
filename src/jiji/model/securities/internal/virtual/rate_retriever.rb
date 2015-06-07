@@ -48,11 +48,10 @@ module Jiji::Model::Securities::Internal::Virtual
 
     def load_next_ticks
       start_time  = @current_time
-      next_period = @current_time + (60 * 60 * 2)
+      next_period = @current_time + (60 * 60 * 4)
       end_time    = @end_time > next_period ? next_period : @end_time
       pair_names  = @pairs.map { |p| p.name }
       @buffer += @tick_repository.fetch(pair_names, start_time, end_time)
-
       @current_time = end_time
     end
 

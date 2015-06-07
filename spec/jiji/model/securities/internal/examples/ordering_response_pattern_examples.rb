@@ -189,7 +189,6 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         expect(trades[0].units).to eq 4
         expect(trades[0].entry_price).not_to be nil
 
-
         sleep wait
         result = client.order(:EURJPY, :sell, 1, :stop, {
           price:  (bid + 1).to_f,
@@ -215,7 +214,6 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         expect(trades[0].internal_id).not_to be nil
         expect(trades[0].units).to eq 3
         expect(trades[0].entry_price).not_to be nil
-
 
         sleep wait
         result = client.order(:EURJPY, :sell, 1, :marketIfTouched, {

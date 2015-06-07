@@ -17,17 +17,12 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def retrieve_current_tick
       prices = @client.prices(instruments: retrieve_all_pairs).get
-      convert_response_to_tick(prices)
+      convert_response_to_ticks(prices)
     end
 
     def retrieve_tick_history(pair_name, start_time, end_time)
-      retrieve_candles(pair_name,
-        'S15', start_time, end_time).get.map do |item|
-        values = {}
-        values[pair_name] = Tick::Value.new(
-          item.open_bid.to_f, item.open_ask.to_f)
-        Tick.new(values, item.time)
-      end
+      ticks = retrieve_candles(pair_name, 'S15', start_time, end_time).get
+      convert_and_fill_ticks(ticks, pair_name, start_time, end_time)
     end
 
     def retrieve_rate_history(pair_name, interval, start_time, end_time)
@@ -62,7 +57,7 @@ module Jiji::Model::Securities::Internal::Oanda
         item.precision.to_f, item.margin_rate.to_f)
     end
 
-    def convert_response_to_tick(prices)
+    def convert_response_to_ticks(prices)
       timestamp = nil
       values = prices.each_with_object({}) do |p, r|
         timestamp ||= p.time
@@ -80,10 +75,61 @@ module Jiji::Model::Securities::Internal::Oanda
         convert_response_to_tick_value('low',   item))
     end
 
+    def convert_response_to_tick(price, pair_name,
+      bid = price.open_bid, ask = price.open_ask)
+      values = {}
+      values[pair_name] = Tick::Value.new(bid.to_f, ask.to_f)
+      Tick.new(values, price.time)
+    end
+
     def convert_response_to_tick_value(id, item)
       Tick::Value.new(
         item.method("#{id}_bid").call.to_f,
         item.method("#{id}_ask").call.to_f)
+    end
+
+    def convert_and_fill_ticks(ticks, pair_name, start_time, end_time)
+      prev = resolve_latest_tick(ticks, start_time, pair_name)
+      array = ticks.each_with_object([]) do |item, a|
+        fill_ticks(a, prev, pair_name, item.time)
+        prev = item
+        a << create_tick(pair_name, item.open_bid, item.open_ask, item.time)
+      end
+      fill_ticks(array, prev, pair_name, end_time)
+      array
+    end
+
+    def fill_ticks(array, prev, pair_name, to)
+      t = prev.time
+      while (t += 15) < to
+        array << create_tick(pair_name, prev.close_bid, prev.close_ask, t)
+      end
+    end
+
+    def resolve_latest_tick(ticks, start_time, pair_name)
+      if !ticks.empty? && ticks.first.time == start_time
+        ticks.first
+      else
+        latest = retrieve_latest_tick(pair_name, start_time)
+        latest.time = start_time - 15
+        latest
+      end
+    end
+
+    def retrieve_latest_tick(pair_name, start_time)
+      time = start_time - 15
+      loop do
+        ticks = retrieve_candles(
+          pair_name, 'S15', time - (60 * 60 * 12), time).get
+        return ticks.last unless ticks.empty?
+        time -= (60 * 60 * 12)
+      end
+    end
+
+    def create_tick(pair_name, bid, ask, time)
+      values = {}
+      values[pair_name] = Tick::Value.new(bid.to_f, ask.to_f)
+      Tick.new(values, time)
     end
   end
 end

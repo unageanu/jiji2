@@ -5,7 +5,7 @@ require 'jiji/model/securities/oanda_securities'
 require 'jiji/model/securities/internal/examples/ordering_examples'
 require 'jiji/model/securities/internal' \
         + '/examples/ordering_response_pattern_examples'
-        
+
 describe Jiji::Model::Securities::Internal::Oanda::Ordering do
   let(:wait) { 1 }
   let(:client) do

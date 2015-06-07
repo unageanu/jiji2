@@ -162,7 +162,7 @@ module Jiji::Model::Securities::Internal::Virtual
       PricingUtils.calculate_entry_price(tick, pair_name, sell_or_buy)
     end
 
-    def convert_to_closed_position(position, units=nil)
+    def convert_to_closed_position(position, units = nil)
       price = PricingUtils.calculate_current_price(
         @current_tick, position.pair_name, position.sell_or_buy)
       ClosedPosition.new(position.internal_id,

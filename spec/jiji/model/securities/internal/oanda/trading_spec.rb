@@ -10,6 +10,12 @@ describe Jiji::Model::Securities::Internal::Oanda::Trading do
       access_token: ENV['OANDA_API_ACCESS_TOKEN'])
   end
   let(:backtest_id) { nil }
+  let(:container) do
+    Jiji::Test::TestContainerFactory.instance.new_container
+  end
+  let(:position_repository) do
+    container.lookup(:position_repository)
+  end
 
   it_behaves_like '建玉関連の操作'
 end

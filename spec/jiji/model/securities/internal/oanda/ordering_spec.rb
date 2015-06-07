@@ -13,6 +13,12 @@ describe Jiji::Model::Securities::Internal::Oanda::Ordering do
       access_token: ENV['OANDA_API_ACCESS_TOKEN'])
   end
   let(:backtest_id) { nil }
+  let(:container) do
+    Jiji::Test::TestContainerFactory.instance.new_container
+  end
+  let(:position_repository) do
+    container.lookup(:position_repository)
+  end
 
   it_behaves_like '注文関連の操作'
   it_behaves_like '注文関連の操作(建玉がある場合のバリエーションパターン)'

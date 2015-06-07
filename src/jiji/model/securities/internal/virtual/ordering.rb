@@ -11,8 +11,6 @@ module Jiji::Model::Securities::Internal::Virtual
     def init_ordering_state
       @orders   = []
       @order_id = 1
-
-      @position_builder = Internal::PositionBuilder.new
     end
 
     def order(pair_name, sell_or_buy, units, type = :market, options = {})
@@ -122,12 +120,17 @@ module Jiji::Model::Securities::Internal::Virtual
 
     def update_orders(tick)
       @orders = @orders.reject do |order|
-        if order.carried_out?(@current_tick)
-          register_position(order)
-          true
-        else
-          false
-        end
+        process_order(tick, order)
+      end
+    end
+
+    def process_order(tick, order)
+      return true if order.expiry <= tick.timestamp
+      if order.carried_out?(tick)
+        register_position(order)
+        true
+      else
+        false
       end
     end
 

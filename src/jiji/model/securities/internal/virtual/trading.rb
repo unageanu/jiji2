@@ -37,6 +37,22 @@ module Jiji::Model::Securities::Internal::Virtual
 
     private
 
+    def update_positions(tick)
+      @positions = @positions.reject do |position|
+        process_position(tick, position)
+      end
+    end
+
+    def process_position(tick, position)
+      position.update_price(tick)
+      if position.closing_policy.close?( position )
+        position.update_state_to_closed
+        true
+      else
+        false
+      end
+    end
+
     def find_position_by_internal_id(internal_id)
       @positions.find { |o| o.internal_id == internal_id } \
       || error('order not found')

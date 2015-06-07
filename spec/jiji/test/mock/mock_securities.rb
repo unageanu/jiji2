@@ -13,6 +13,9 @@ module Jiji::Test::Mock
     attr_accessor :seed
 
     def initialize(config)
+
+      @position_builder = Internal::PositionBuilder.new
+
       init_ordering_state
       init_trading_state
 

@@ -23,6 +23,7 @@ module Jiji::Model::Securities::Internal::Virtual
       fill_buffer if @buffer.empty?
       @current_tick = @buffer.shift
       update_orders(@current_tick)
+      update_positions(@current_tick)
 
       @current_tick
     end

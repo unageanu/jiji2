@@ -21,9 +21,10 @@ module Jiji::Model::Trading::Brokers
 
       @position_builder = PositionBuilder.new(backtest_id)
       @securities = VirtualSecurities.new(tick_repository, {
-        start_time: start_time,
-        end_time:   end_time,
-        pairs:      pairs
+        start_time:  start_time,
+        end_time:    end_time,
+        backtest_id: backtest_id,
+        pairs:       pairs
       })
 
       init_positions

@@ -12,6 +12,7 @@ describe Jiji::Model::Securities::Internal::Oanda::Ordering do
     Jiji::Model::Securities::OandaDemoSecurities.new(
       access_token: ENV['OANDA_API_ACCESS_TOKEN'])
   end
+  let(:backtest_id) do nil end
 
   it_behaves_like '注文関連の操作'
   it_behaves_like '注文関連の操作(建玉がある場合のバリエーションパターン)'

@@ -9,6 +9,7 @@ describe Jiji::Model::Securities::Internal::Oanda::Trading do
     Jiji::Model::Securities::OandaDemoSecurities.new(
       access_token: ENV['OANDA_API_ACCESS_TOKEN'])
   end
-
+  let(:backtest_id) do nil end
+    
   it_behaves_like '建玉関連の操作'
 end

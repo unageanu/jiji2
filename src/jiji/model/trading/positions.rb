@@ -30,6 +30,7 @@ module Jiji::Model::Trading
     def update_price(tick)
       @positions.each do |p|
         p.update_price(tick)
+        p.save
       end
     end
 
@@ -47,6 +48,7 @@ module Jiji::Model::Trading
       return unless @map.include?(result.internal_id)
       position = @map[result.internal_id]
       position.update_state_to_closed(result.price, result.timestamp)
+      position.save
     end
 
     private
@@ -82,7 +84,10 @@ module Jiji::Model::Trading
     ]
 
     def mark_as_closed(positions)
-      positions.each { |p| p.update_state_to_closed }
+      positions.each do |p|
+        p.update_state_to_closed
+        p.save
+      end
     end
 
     def add(order, tick)

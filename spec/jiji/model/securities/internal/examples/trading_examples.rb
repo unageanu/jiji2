@@ -29,6 +29,9 @@ RSpec.shared_examples '建玉関連の操作' do
     end
 
     it '建玉の情報を取得できる' do
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
+
       ask = BigDecimal.new(tick[:USDJPY].ask, 4)
 
       client.order(:EURJPY, :sell, 1)
@@ -94,9 +97,15 @@ RSpec.shared_examples '建玉関連の操作' do
       expect(trade.closing_policy.take_profit).to eq((ask + 2).to_f)
       expect(trade.closing_policy.trailing_stop).to eq(5)
       expect(trade.closing_policy.trailing_amount).not_to be nil
+
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
     end
 
     it '建玉の内容を変更できる' do
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
+
       bid = BigDecimal.new(tick[:EURJPY].bid, 4)
       ask = BigDecimal.new(tick[:USDJPY].ask, 4)
 
@@ -177,9 +186,15 @@ RSpec.shared_examples '建玉関連の操作' do
       expect(trade.closing_policy.take_profit).to eq((ask + 3).to_f)
       expect(trade.closing_policy.trailing_stop).to eq(7)
       expect(trade.closing_policy.trailing_amount).not_to be nil
+
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
     end
 
     it '建玉をキャンセルできる' do
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
+
       ask = BigDecimal.new(tick[:USDJPY].ask, 4)
 
       client.order(:EURJPY, :sell, 1)
@@ -212,6 +227,9 @@ RSpec.shared_examples '建玉関連の操作' do
       sleep wait
       trades = client.retrieve_trades
       expect(trades.length).to be 0
+
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
     end
   end
 end

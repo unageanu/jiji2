@@ -30,6 +30,10 @@ RSpec.shared_examples '注文関連の操作' do
     end
 
     it '成行で注文ができる' do
+
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
+
       bid = BigDecimal.new(tick[:USDJPY].bid, 4)
 
       order = client.order(:EURJPY, :buy, 1).trade_opened
@@ -59,9 +63,15 @@ RSpec.shared_examples '注文関連の操作' do
 
       orders = client.retrieve_orders
       expect(orders.length).to be 0
+
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
     end
 
     it '指値で注文ができる' do
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
+
       bid = BigDecimal.new(tick[:EURJPY].bid, 4)
       ask = BigDecimal.new(tick[:EURJPY].ask, 4)
 
@@ -151,9 +161,15 @@ RSpec.shared_examples '注文関連の操作' do
       expect(order.stop_loss).to eq((bid + 2).to_f)
       expect(order.take_profit).to eq((bid - 2).to_f)
       expect(order.trailing_stop).to eq 5
+
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
     end
 
     it '逆指値で注文ができる' do
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
+
       bid = BigDecimal.new(tick[:USDJPY].bid, 4)
       ask = BigDecimal.new(tick[:USDJPY].ask, 4)
 
@@ -243,9 +259,15 @@ RSpec.shared_examples '注文関連の操作' do
       expect(order.stop_loss).to eq((ask - 2).to_f)
       expect(order.take_profit).to eq((ask + 2).to_f)
       expect(order.trailing_stop).to eq 5
+
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
     end
 
     it 'Market If Touched　注文ができる' do
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
+
       bid = BigDecimal.new(tick[:EURJPY].bid, 4)
       ask = BigDecimal.new(tick[:EURJPY].ask, 4)
 
@@ -333,9 +355,15 @@ RSpec.shared_examples '注文関連の操作' do
       expect(order.stop_loss).to eq((bid + 2).to_f)
       expect(order.take_profit).to eq((bid - 2).to_f)
       expect(order.trailing_stop).to eq 5
+
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
     end
 
     it '指値注文を変更できる' do
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
+
       ask = BigDecimal.new(tick[:EURJPY].ask, 4)
 
       @orders <<  client.order(:EURJPY, :buy, 1, :limit, {
@@ -384,9 +412,15 @@ RSpec.shared_examples '注文関連の操作' do
       expect(order.stop_loss).to eq((ask - 2).to_f)
       expect(order.take_profit).to eq((ask + 2).to_f)
       expect(order.trailing_stop).to eq 5
+
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
     end
 
     it '逆指値注文を変更できる' do
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
+
       bid = BigDecimal.new(tick[:USDJPY].bid, 4)
 
       @orders <<  client.order(:USDJPY, :sell, 10, :stop, {
@@ -435,9 +469,15 @@ RSpec.shared_examples '注文関連の操作' do
       expect(order.stop_loss).to eq((bid + 2).to_f)
       expect(order.take_profit).to eq((bid - 2).to_f)
       expect(order.trailing_stop).to eq 6
+
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
     end
 
     it 'Market If Touched　注文を変更できる' do
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
+
       ask = BigDecimal.new(tick[:EURJPY].ask, 4)
 
       @orders <<  client.order(:EURJPY, :buy, 1, :marketIfTouched, {
@@ -484,9 +524,15 @@ RSpec.shared_examples '注文関連の操作' do
       expect(order.stop_loss).to eq((ask - 2).to_f)
       expect(order.take_profit).to eq((ask + 2).to_f)
       expect(order.trailing_stop).to eq 5
+
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
     end
 
     it '注文をキャンセルできる' do
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
+
       bid = BigDecimal.new(tick[:EURJPY].bid, 4)
       ask = BigDecimal.new(tick[:EURJPY].ask, 4)
 
@@ -517,6 +563,9 @@ RSpec.shared_examples '注文関連の操作' do
       sleep wait
       orders = client.retrieve_orders
       expect(orders.length).to be 0
+
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
     end
   end
 end

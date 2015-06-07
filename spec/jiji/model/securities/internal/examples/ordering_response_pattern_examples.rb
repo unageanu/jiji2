@@ -36,6 +36,10 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
       end
 
       it '逆方向の注文が約定すると、既存のポジジョンが削減される' do
+
+        saved_positions = position_repository.retrieve_positions(backtest_id)
+        expect(saved_positions.length).to be 0
+
         positions = client.retrieve_trades
 
         sleep wait
@@ -103,9 +107,16 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         sleep wait
         positions = client.retrieve_trades
         expect(positions.length).to be 0
+
+        saved_positions = position_repository.retrieve_positions(backtest_id)
+        expect(saved_positions.length).to be 0
       end
 
       it '注文が同じ方向だと、別のポジジョンができる' do
+
+        saved_positions = position_repository.retrieve_positions(backtest_id)
+        expect(saved_positions.length).to be 0
+
         positions0 = client.retrieve_trades
 
         sleep wait
@@ -129,9 +140,16 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         expect(positions[1].internal_id).not_to be nil
         expect(positions[1].units).to eq 5
         expect(positions[1].entry_price).to eq positions0[0].entry_price
+
+        saved_positions = position_repository.retrieve_positions(backtest_id)
+        expect(saved_positions.length).to be 0
       end
 
       it '複数の建玉があり、合計より大きな数で逆方向に取引すると、建玉がすべて決済される' do
+
+        saved_positions = position_repository.retrieve_positions(backtest_id)
+        expect(saved_positions.length).to be 0
+
         sleep wait
         client.order(:EURJPY, :buy, 1)
 
@@ -158,9 +176,16 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         sleep wait
         positions = client.retrieve_trades
         expect(positions.length).to be 0
+
+        saved_positions = position_repository.retrieve_positions(backtest_id)
+        expect(saved_positions.length).to be 0
       end
 
       it '即時決済する条件で逆方向の指値注文が約定すると、既存のポジジョンが減る' do
+
+        saved_positions = position_repository.retrieve_positions(backtest_id)
+        expect(saved_positions.length).to be 0
+
         bid = BigDecimal.new(tick[:EURJPY].bid, 4)
 
         sleep wait
@@ -240,6 +265,9 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         expect(trades[0].internal_id).not_to be nil
         expect(trades[0].units).to eq 2
         expect(trades[0].entry_price).not_to be nil
+
+        saved_positions = position_repository.retrieve_positions(backtest_id)
+        expect(saved_positions.length).to be 0
       end
     end
   end

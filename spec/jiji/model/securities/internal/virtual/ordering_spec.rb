@@ -7,8 +7,29 @@ require 'jiji/model/securities/internal' \
 
 describe Jiji::Model::Securities::Internal::Virtual::Ordering do
   let(:wait) { 0 }
+  let(:container) do
+    Jiji::Test::TestContainerFactory.instance.new_container
+  end
+  let(:data_builder) do Jiji::Test::DataBuilder.new end
+  let(:backtest_id) do
+    backtest_repository  = container.lookup(:backtest_repository)
+    position_repository  = container.lookup(:position_repository)
+    registory            = container.lookup(:agent_registry)
+
+    registory.add_source('aaa', '', :agent, data_builder.new_agent_body(1))
+
+    data_builder.register_backtest(1, backtest_repository).id
+  end
   let(:client) do
-    Jiji::Test::VirtualSecuritiesBuilder.build
+    Jiji::Test::VirtualSecuritiesBuilder.build(
+      Time.utc(2015, 4, 1), Time.utc(2015, 4, 1, 6), backtest_id)
+  end
+  let(:position_repository) do
+    container.lookup(:position_repository)
+  end
+
+  after(:example) do
+    data_builder.clean
   end
 
   it_behaves_like '注文関連の操作'
@@ -16,6 +37,9 @@ describe Jiji::Model::Securities::Internal::Virtual::Ordering do
 
 
   it 'レート更新時に、注文が条件を満たすと約定する' do
+
+    saved_positions = position_repository.retrieve_positions(backtest_id)
+    expect(saved_positions.length).to be 0
 
     tick = client.retrieve_current_tick
     now  = tick.timestamp
@@ -226,6 +250,8 @@ describe Jiji::Model::Securities::Internal::Virtual::Ordering do
     expect(position.closing_policy.trailing_stop).to eq(0)
     expect(position.closing_policy.trailing_amount).to eq(0)
 
+    saved_positions = position_repository.retrieve_positions(backtest_id)
+    expect(saved_positions.length).to be 0
   end
 
 end

@@ -73,7 +73,6 @@ module Jiji::Model::Trading
       return if status == :closed
       self.units = self.units - units
       self.updated_at = time
-      save
     end
 
     # for internal use.
@@ -84,7 +83,6 @@ module Jiji::Model::Trading
       self.status        = :closed
       self.exited_at     = time
       self.updated_at    = time
-      save
     end
 
     # for internal use.
@@ -93,7 +91,6 @@ module Jiji::Model::Trading
       self.current_price = PricingUtils.calculate_current_price(
         tick, pair_name, sell_or_buy)
       self.updated_at    = tick.timestamp
-      save
     end
 
     private

@@ -86,18 +86,34 @@ module Jiji::Model::Trading
     end
 
     def carried_out?(tick)
-      current_price = Utils::PricingUtils
-                      .calculate_entry_price(tick, pair_name, sell_or_buy)
-      is_buying = sell_or_buy == :buy
-      is_lower  = current_price < (price || 0)
+      current = Utils::PricingUtils
+                .calculate_entry_price(tick, pair_name, sell_or_buy)
       case @type
       when :market     then true
-      when :stop       then is_buying ? !is_lower : is_lower
-      else                  is_buying ? is_lower : !is_lower
+      when :stop       then buying? ? upper?(current) : lower?(current)
+      when :limit      then buying? ? lower?(current) : upper?(current)
+      else market_if_touched?(current)
       end
     end
 
     private
+
+    def buying?
+      sell_or_buy == :buy
+    end
+
+    def lower?(current_price)
+      current_price <= (price || 0)
+    end
+
+    def upper?(current_price)
+      current_price >= (price || 0)
+    end
+
+    def market_if_touched?(curent_price)
+      @initial_price = curent_price unless @initial_price
+      @initial_price < price ? upper?(curent_price) : lower?(curent_price)
+    end
 
     def insert_reservation_order_options(option)
       options[:price] = price

@@ -20,10 +20,14 @@ module Jiji::Test::Mock
 
       @config = config
       @serial = 0
-      @seed   = 0
+      @i = -1
 
       @data_builder = Jiji::Test::DataBuilder.new
-      @current_tick = retrieve_current_tick
+    end
+
+    def reset
+      @i = -1
+      @serial = 0
     end
 
     def destroy
@@ -38,25 +42,18 @@ module Jiji::Test::Mock
     end
 
     def retrieve_current_tick
-      @current_tick = Tick.new({
-        EURUSD: Tick::Value.new(
-          (BigDecimal.new(1.1234, 10) + @seed).to_f,
-          (BigDecimal.new(1.1236, 10) + @seed).to_f),
-        USDJPY: Tick::Value.new(
-          (BigDecimal.new(112.10, 10) + @seed).to_f,
-          (BigDecimal.new(112.12, 10) + @seed).to_f),
-        EURJPY: Tick::Value.new(
-          (BigDecimal.new(135.30, 10) + @seed).to_f,
-          (BigDecimal.new(135.33, 10) + @seed).to_f)
-      }, Time.utc(2015, 5, 1) + @seed * 1000)
+      @current_tick = create_tick(
+        SEEDS[(@i += 1) % SEEDS.length],
+        Time.utc(2015, 5, 1) + @i * 15)
     end
 
     def retrieve_tick_history(pair_name, start_time, end_time)
       i = -1
       create_timestamps(15, start_time, end_time).map do |time|
-        @data_builder.new_tick((i += 1) % 10, Time.at(time))
+        create_tick(SEEDS[(i += 1) % SEEDS.length], time)
       end
     end
+    SEEDS = [0, 0.26, 0.3, 0.303, 0.301, 0.4, 0.35, 0.36, 0.2, 0.1]
 
     def retrieve_rate_history(pair_name, interval, start_time, end_time)
       if pair_name != :EURJPY && pair_name != :EURUSD && pair_name != :USDJPY
@@ -80,7 +77,19 @@ module Jiji::Test::Mock
       start_time.to_i.step(end_time.to_i - 1, interval).map { |t| Time.at(t) }
     end
 
-    Position = Struct.new(:position_id)
+    def create_tick(seed, time = Time.utc(2015, 5, 1) + seed * 1000)
+      Tick.new({
+        EURUSD: Tick::Value.new(
+          (BigDecimal.new(1.1234, 10) + seed).to_f,
+          (BigDecimal.new(1.1236, 10) + seed).to_f),
+        USDJPY: Tick::Value.new(
+          (BigDecimal.new(112.10, 10) + seed).to_f,
+          (BigDecimal.new(112.12, 10) + seed).to_f),
+        EURJPY: Tick::Value.new(
+          (BigDecimal.new(135.30, 10) + seed).to_f,
+          (BigDecimal.new(135.33, 10) + seed).to_f)
+      }, time)
+    end
 
   end
 

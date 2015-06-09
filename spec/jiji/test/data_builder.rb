@@ -25,7 +25,9 @@ module Jiji::Test
     end
 
     def new_tick_value(seed)
-      Tick::Value.new(100.00 + seed, 100.003 + seed)
+      Tick::Value.new(
+        (BigDecimal.new(100,    10) + seed).to_f,
+        (BigDecimal.new(100.003, 10) + seed).to_f)
     end
 
     def new_position(seed, backtest_id = nil,

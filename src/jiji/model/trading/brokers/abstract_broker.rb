@@ -52,14 +52,21 @@ module Jiji::Model::Trading::Brokers
     def modify_order(order)
       securities.modify_order(
         order.internal_id, order.extract_options_for_modify)
+      order
+    end
+
+    def cancel_order(order)
+      result = securities.cancel_order(order.internal_id)
+      @orders_is_dirty    = true
+      result
     end
 
     def modify_position(position)
-      result = securities.modify_position(
+      securities.modify_trade(
         position.internal_id,
         position.closing_policy.extract_options_for_modify)
       position.save
-      result
+      position
     end
 
     def close_position(position)

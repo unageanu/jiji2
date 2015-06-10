@@ -72,7 +72,7 @@ module Jiji::Model::Trading
 
     def extract_options_for_modify
       options = extract_options
-      insert_reservation_order_options(option) if type != :market
+      insert_reservation_order_options(options) if type != :market
       options
     end
 
@@ -123,7 +123,7 @@ module Jiji::Model::Trading
       @initial_price < price ? upper?(curent_price) : lower?(curent_price)
     end
 
-    def insert_reservation_order_options(option)
+    def insert_reservation_order_options(options)
       options[:price] = price
       options[:expiry] = expiry
       options[:lower_bound] = lower_bound

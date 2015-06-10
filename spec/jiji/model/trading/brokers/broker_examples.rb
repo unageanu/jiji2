@@ -461,6 +461,163 @@ shared_examples 'brokerの基本操作ができる' do
     expect(position).to some_position(expected_position3)
   end
 
+  it '建玉を変更できる' do
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 0
+
+    broker.tick
+
+    result = broker.buy(:EURJPY, 10_000, :market, {
+      stop_loss: 130
+    })
+    expected_position = Jiji::Model::Trading::Position.new do |p|
+      p.backtest_id   = backtest_id
+      p.internal_id   = result.trade_opened.internal_id
+      p.pair_name     = :EURJPY
+      p.units         = 10_000
+      p.sell_or_buy   = :buy
+      p.status        = :live
+      p.entry_price   = 135.33
+      p.entered_at    = Time.utc(2015, 5, 1)
+      p.current_price = 135.30
+      p.updated_at    = Time.utc(2015, 5, 1)
+      p.exit_price    = nil
+      p.exited_at     = nil
+      p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
+        stop_loss: 130
+      })
+    end
+
+    expect(broker.positions.length).to be 1
+    expect(broker.positions[result.trade_opened.internal_id]) \
+      .to some_position(expected_position)
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 1
+    expect(find_by_internal_id(positions, expected_position.internal_id)) \
+      .to some_position(expected_position)
+
+    position = broker.positions[result.trade_opened.internal_id]
+    position.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
+      stop_loss:     130,
+      take_profit:   140.5,
+      trailing_stop: 10
+    })
+    position.modify
+
+    expected_position.closing_policy = position.closing_policy
+    expect(broker.positions[result.trade_opened.internal_id]) \
+      .to some_position(expected_position)
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 1
+    expect(find_by_internal_id(positions, expected_position.internal_id)) \
+      .to some_position(expected_position)
+
+
+    position = broker.positions[result.trade_opened.internal_id]
+    position.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
+      stop_loss:     130.01,
+      take_profit:   0,
+      trailing_stop: 0
+    })
+    broker.modify_position(position)
+
+    expected_position.closing_policy = position.closing_policy
+    expect(broker.positions[result.trade_opened.internal_id]) \
+      .to some_position(expected_position)
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 1
+    expect(find_by_internal_id(positions, expected_position.internal_id)) \
+      .to some_position(expected_position)
+  end
+
+  it '注文の変更ができる' do
+    broker.tick
+
+    result = broker.sell(:EURJPY, 10_000, :limit, {
+      price:       135.6,
+      expiry:      Time.utc(2015, 5, 2),
+      lower_bound: 135.59,
+      upper_bound: 135.61,
+      stop_loss:   135.73
+    }).order_opened
+
+    expected_order = Jiji::Model::Trading::Order.new(
+      :EURJPY, result.internal_id, :sell, :limit, Time.new(2015, 5, 1))
+    expected_order.units = 10_000
+    expected_order.price = 135.6
+    expected_order.expiry = Time.utc(2015, 5, 2)
+    expected_order.lower_bound = 135.59
+    expected_order.upper_bound = 135.61
+    expected_order.stop_loss = 135.73
+    expected_order.take_profit = 0
+    expected_order.trailing_stop = 0
+
+    order = find_by_internal_id(broker.orders, result.internal_id)
+    expect(order).to eq(expected_order)
+
+    order.price = 135.7
+    order.expiry = Time.utc(2015, 5, 3)
+    order.lower_bound = 135.69
+    order.upper_bound = 135.71
+    order.stop_loss = 135.83
+    order.take_profit = 135.63
+    order.trailing_stop = 10
+
+    broker.modify_order(order)
+
+    expected_order.price = 135.7
+    expected_order.expiry = Time.utc(2015, 5, 3)
+    expected_order.lower_bound = 135.69
+    expected_order.upper_bound = 135.71
+    expected_order.stop_loss = 135.83
+    expected_order.take_profit = 135.63
+    expected_order.trailing_stop = 10
+
+    order = find_by_internal_id(broker.orders, result.internal_id)
+    expect(order).to eq(expected_order)
+
+    order.expiry = Time.utc(2015, 5, 4)
+    order.modify
+
+    expected_order.expiry = Time.utc(2015, 5, 4)
+
+    order = find_by_internal_id(broker.orders, result.internal_id)
+    expect(order).to eq(expected_order)
+  end
+
+  it '注文のキャンセルができる' do
+    broker.tick
+
+    result1 = broker.sell(:EURJPY, 10_000, :limit, {
+      price:       135.6,
+      expiry:      Time.utc(2015, 5, 2)
+    }).order_opened
+
+    result2 = broker.buy(:EURJPY, 10_000, :limit, {
+      price:       134.6,
+      expiry:      Time.utc(2015, 5, 2)
+    }).order_opened
+
+
+    expect(broker.orders.length).to be 2
+
+    order = find_by_internal_id(broker.orders, result1.internal_id)
+    cancel_result = broker.cancel_order(order)
+    expect(cancel_result).to eq order
+
+    expect(broker.orders.length).to be 1
+
+    order = find_by_internal_id(broker.orders, result2.internal_id)
+    cancel_result = order.cancel
+    expect(cancel_result).to eq order
+
+    expect(broker.orders.length).to be 0
+  end
+
+  it '破棄操作ができる' do
+    broker.destroy
+  end
+
   def sort_by_internal_id(orders_or_positions)
     orders_or_positions.sort_by { |o| o.internal_id }
   end
@@ -469,7 +626,4 @@ shared_examples 'brokerの基本操作ができる' do
     orders_or_positions.find { |o| o.internal_id == internal_id }
   end
 
-  it '破棄操作ができる' do
-    broker.destroy
-  end
 end

@@ -18,7 +18,6 @@ module Jiji::Model::Trading
 
     field :backtest_id,   type: BSON::ObjectId # RMTの場合nil
     field :internal_id,    type: String
-    # 接続先証券会社でpositionを識別するためのID。バックテストの場合nil
 
     field :pair_name,      type: Symbol
     field :units,          type: Integer

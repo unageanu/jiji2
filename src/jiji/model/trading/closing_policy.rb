@@ -14,6 +14,8 @@ module Jiji::Model::Trading
     include Jiji::Web::Transport::Transportable
     include Utils
 
+    embedded_in :position
+
     field :take_profit,     type: Float, default: 0
     field :stop_loss,       type: Float, default: 0
     field :trailing_stop,   type: Float, default: 0

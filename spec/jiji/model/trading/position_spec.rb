@@ -225,6 +225,51 @@ describe Jiji::Model::Trading::Position do
     expect(position.status).to eq(:closed)
   end
 
+  it 'saveで永続化できる' do
+    position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
+    original = position_builder.build_from_tick(
+      '1', :EURUSD, 1_000_000, :sell, @data_builder.new_tick(2), {
+        take_profit:     102,
+        stop_loss:       100,
+        trailing_stop:   5,
+        trailing_amount: 10
+    })
+    original.save
+
+    position = Jiji::Model::Trading::Position.find( original.id )
+    expect(position.backtest_id).to eq(nil)
+    expect(position.internal_id).to eq('1')
+    expect(position.pair_name).to eq(:EURUSD)
+    expect(position.units).to eq(1000_000)
+    expect(position.sell_or_buy).to eq(:sell)
+    expect(position.entry_price).to eq(102.0)
+    expect(position.entered_at).to eq(Time.at(0))
+    expect(position.current_price).to eq(102.003)
+    expect(position.updated_at).to eq(Time.at(0))
+    expect(position.exit_price).to be nil
+    expect(position.exited_at).to be nil
+    expect(position.status).to eq(:live)
+    expect(position.closing_policy).to eq(original.closing_policy)
+
+    original.closing_policy.trailing_amount = 11
+    original.save
+
+    position = Jiji::Model::Trading::Position.find( original.id )
+    expect(position.backtest_id).to eq(nil)
+    expect(position.internal_id).to eq('1')
+    expect(position.pair_name).to eq(:EURUSD)
+    expect(position.units).to eq(1000_000)
+    expect(position.sell_or_buy).to eq(:sell)
+    expect(position.entry_price).to eq(102.0)
+    expect(position.entered_at).to eq(Time.at(0))
+    expect(position.current_price).to eq(102.003)
+    expect(position.updated_at).to eq(Time.at(0))
+    expect(position.exit_price).to be nil
+    expect(position.exited_at).to be nil
+    expect(position.status).to eq(:live)
+    expect(position.closing_policy).to eq(original.closing_policy)
+  end
+
   it 'to_hでハッシュに変換できる' do
     position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
     position = position_builder.build_from_tick(

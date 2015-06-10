@@ -22,17 +22,12 @@ module Jiji::Model::Trading::Brokers
       @rates_cache ||= securities.retrieve_current_tick
     end
 
-    def refresh
-      @rates_cache = nil
-      @positions.update_price(tick) if next?
-    end
-
     def positions
       return @positions unless @positions_is_dirty
 
       positions = securities.retrieve_trades
       @positions.update(positions)
-      @positions.update_price(tick)
+      @positions.update_price(tick, pairs)
       @positions_is_dirty = false
       @positions.each { |p| p.attach_broker(self) }
       @positions
@@ -77,6 +72,18 @@ module Jiji::Model::Trading::Brokers
 
     def destroy
       securities.destroy if securities
+    end
+
+    # for internal use.
+    def refresh
+      @rates_cache = nil
+      @orders_is_dirty = true
+      @positions.update_price(tick, pairs) if next?
+    end
+
+    # for internal use.
+    def refresh_position
+      @positions_is_dirty = true
     end
 
     private

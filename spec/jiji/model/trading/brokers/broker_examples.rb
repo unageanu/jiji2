@@ -21,183 +21,452 @@ shared_examples 'brokerの基本操作ができる' do
     expect(rates[:EURJPY].ask).to eq 135.59
   end
 
-  it '売買ができる' do
+  it '成行きで売り買いができる' do
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 0
+
     broker.tick
-
-    result1 = broker.buy(:EURJPY, 1)
-    expect(result1.order_opened).to be nil
-    expect(result1.trade_opened.pair_name).to be :EURJPY
-    expect(result1.trade_opened.sell_or_buy).to be :buy
-    expect(result1.trade_opened.units).to be 1
-    expect(result1.trade_opened.price).to be > 0
-    expect(result1.trade_opened.last_modified).not_to be nil
-    expect(result1.trade_reduced).to be nil
-    expect(result1.trades_closed).to eq []
-
-    result2 = broker.sell(:USDJPY, 2)
-    expect(result2.order_opened).to be nil
-    expect(result2.trade_opened.pair_name).to be :USDJPY
-    expect(result2.trade_opened.sell_or_buy).to be :sell
-    expect(result2.trade_opened.units).to be 2
-    expect(result2.trade_opened.price).to be > 0
-    expect(result2.trade_opened.last_modified).not_to be nil
-    expect(result2.trade_reduced).to be nil
-    expect(result2.trades_closed).to eq []
-
-    expect(broker.positions.length).to be 2
-    position = broker.positions[result1.trade_opened.internal_id]
-    expect(position.pair_name).to be :EURJPY
-    expect(position.sell_or_buy).to be :buy
-    expect(position.units).to be 1
-    expect(position.status).to be :live
-    expect(position.entry_price).to be > 0
-    expect(position.entered_at).not_to be nil
-    expect(position.current_price).to be > 0
-    expect(position.updated_at).not_to be nil
-    expect(position.exit_price).to be nil
-    expect(position.exited_at).to be nil
-
-    position = broker.positions[result2.trade_opened.internal_id]
-    expect(position.pair_name).to be :USDJPY
-    expect(position.sell_or_buy).to be :sell
-    expect(position.units).to be 2
-    expect(position.status).to be :live
-    expect(position.entry_price).to be > 0
-    expect(position.entered_at).not_to be nil
-    expect(position.current_price).to be > 0
-    expect(position.updated_at).not_to be nil
-    expect(position.exit_price).to be nil
-    expect(position.exited_at).to be nil
-
-    broker.refresh
-    broker.tick
-
-    position1 = broker.positions[result1.trade_opened.internal_id]
-    position2 = broker.positions[result2.trade_opened.internal_id]
-
-    broker.close_position(position1)
-    expect(position1.pair_name).to be :EURJPY
-    expect(position1.sell_or_buy).to be :buy
-    expect(position1.units).to be 1
-    expect(position1.status).to be :closed
-    expect(position1.entry_price).to be > 0
-    expect(position1.entered_at).not_to be nil
-    expect(position1.current_price).to be > 0
-    expect(position1.updated_at).not_to be nil
-    expect(position1.exit_price).to be > 0
-    expect(position1.exited_at).not_to be nil
-
-    position2.close
-    expect(position2.pair_name).to be :USDJPY
-    expect(position2.sell_or_buy).to be :sell
-    expect(position2.units).to be 2
-    expect(position2.status).to be :closed
-    expect(position2.entry_price).to be > 0
-    expect(position2.entered_at).not_to be nil
-    expect(position2.current_price).to be > 0
-    expect(position2.updated_at).not_to be nil
-    expect(position2.exit_price).to be > 0
-    expect(position2.exited_at).not_to be nil
-
-    expect(broker.positions.length).to be 0
-  end
-
-  it '売買していても既定のレートを取得できる' do
-    broker.tick
-
-    result = broker.buy(:EURJPY, 10_000)
-    buy_position = broker.positions[result.trade_opened.internal_id]
-    expect(buy_position.profit_or_loss).to eq(-300)
-    expect(buy_position.entry_price).to eq 135.33
-    expect(buy_position.entered_at).to eq Time.utc(2015, 5, 1)
-    expect(buy_position.current_price).to eq 135.30
-    expect(buy_position.updated_at).to eq Time.utc(2015, 5, 1)
-    expect(buy_position.exit_price).to be nil
-    expect(buy_position.exited_at).to be nil
-
     expect(broker.next?).to eq true
     expect(broker.tick[:EURJPY].bid).to eq 135.30
 
+    result = broker.buy(:EURJPY, 10_000)
+    expected_position1 = Jiji::Model::Trading::Position.new do |p|
+      p.backtest_id   = backtest_id
+      p.internal_id   = result.trade_opened.internal_id
+      p.pair_name     = :EURJPY
+      p.units         = 10_000
+      p.sell_or_buy   = :buy
+      p.status        = :live
+      p.entry_price   = 135.33
+      p.entered_at    = Time.utc(2015, 5, 1)
+      p.current_price = 135.30
+      p.updated_at    = Time.utc(2015, 5, 1)
+      p.exit_price    = nil
+      p.exited_at     = nil
+      p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
+      })
+    end
+
+    expect(broker.positions.length).to be 1
+    expect(broker.positions[result.trade_opened.internal_id]) \
+      .to some_position(expected_position1)
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 1
+    expect(find_by_internal_id(positions, expected_position1.internal_id)) \
+      .to some_position(expected_position1)
+
     broker.refresh
-
-    expect(buy_position.profit_or_loss).to eq 2300
-    expect(buy_position.entry_price).to eq 135.33
-    expect(buy_position.entered_at).to eq Time.utc(2015, 5, 1)
-    expect(buy_position.current_price).to eq 135.56
-    expect(buy_position.updated_at).to eq(Time.utc(2015, 5, 1, 0, 0, 15))
-    expect(buy_position.exit_price).to be nil
-    expect(buy_position.exited_at).to be nil
-
     expect(broker.next?).to eq true
     expect(broker.tick[:EURJPY].bid).to eq 135.56
 
-    result = broker.sell(:EURUSD, 10_000)
-    sell_position = broker.positions[result.trade_opened.internal_id]
-    expect(sell_position.profit_or_loss).to eq(-2)
-    expect(sell_position.entry_price).to eq 1.3834
-    expect(sell_position.entered_at).to eq(Time.utc(2015, 5, 1, 0, 0, 15))
-    expect(sell_position.current_price).to eq 1.3836
-    expect(sell_position.updated_at).to eq(Time.utc(2015, 5, 1, 0, 0, 15))
-    expect(sell_position.exit_price).to be nil
-    expect(sell_position.exited_at).to be nil
+    expected_position1.current_price = 135.56
+    expected_position1.updated_at    = Time.utc(2015, 5, 1, 0, 0, 15)
+    expect(broker.positions.length).to be 1
+    expect(broker.positions[result.trade_opened.internal_id]) \
+      .to some_position(expected_position1)
 
+    result = broker.sell(:EURUSD, 10_000, :market)
+    expected_position2 = Jiji::Model::Trading::Position.new do |p|
+      p.backtest_id   = backtest_id
+      p.internal_id   = result.trade_opened.internal_id
+      p.pair_name     = :EURUSD
+      p.units         = 10_000
+      p.sell_or_buy   = :sell
+      p.status        = :live
+      p.entry_price   = 1.3834
+      p.entered_at    = Time.utc(2015, 5, 1, 0, 0, 15)
+      p.current_price = 1.3836
+      p.updated_at    = Time.utc(2015, 5, 1, 0, 0, 15)
+      p.exit_price    = nil
+      p.exited_at     = nil
+      p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
+      })
+    end
+
+    expect(broker.positions.length).to be 2
+    expect(broker.positions[expected_position1.internal_id]) \
+      .to some_position(expected_position1)
+    expect(broker.positions[expected_position2.internal_id]) \
+      .to some_position(expected_position2)
+
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 2
+    expect(find_by_internal_id(positions, expected_position1.internal_id)) \
+      .to some_position(expected_position1)
+    expect(find_by_internal_id(positions, expected_position2.internal_id)) \
+      .to some_position(expected_position2)
+
+    buy_position = broker.positions[expected_position1.internal_id]
     broker.close_position(buy_position)
-    expect(buy_position.profit_or_loss).to eq 2300
-    expect(buy_position.entry_price).to eq 135.33
-    expect(buy_position.entered_at).to eq(Time.utc(2015, 5, 1))
-    expect(buy_position.current_price).to eq 135.56
-    expect(buy_position.updated_at).to eq(Time.utc(2015, 5, 1, 0, 0, 15))
-    expect(buy_position.exit_price).to eq 135.56
-    expect(buy_position.exited_at).to eq(Time.utc(2015, 5, 1, 0, 0, 15))
+
+    expected_position1.status     = :closed
+    expected_position1.exit_price = 135.56
+    expected_position1.exited_at  = Time.utc(2015, 5, 1, 0, 0, 15)
+
+    expect(buy_position).to some_position(expected_position1)
+
+    expect(broker.positions.length).to be 1
+    expect(broker.positions[expected_position2.internal_id]) \
+      .to some_position(expected_position2)
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 2
+    expect(find_by_internal_id(positions, expected_position1.internal_id)) \
+      .to some_position(expected_position1)
+    expect(find_by_internal_id(positions, expected_position2.internal_id)) \
+      .to some_position(expected_position2)
+
+    broker.refresh
+    expect(broker.next?).to eq true
+
+    expected_position2.current_price = 1.4236
+    expected_position2.updated_at  = Time.utc(2015, 5, 1, 0, 0, 30)
+
+    expect(broker.positions.length).to be 1
+    expect(broker.positions[expected_position2.internal_id]) \
+      .to some_position(expected_position2)
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 2
+    expect(find_by_internal_id(positions, expected_position1.internal_id)) \
+      .to some_position(expected_position1)
+    expect(find_by_internal_id(positions, expected_position2.internal_id)) \
+      .to some_position(expected_position2)
 
     broker.refresh
 
-    expect(buy_position.profit_or_loss).to eq 2300
-    expect(buy_position.entry_price).to eq 135.33
-    expect(buy_position.entered_at).to eq Time.utc(2015, 5, 1)
-    expect(buy_position.current_price).to eq 135.56
-    expect(buy_position.updated_at).to eq(Time.utc(2015, 5, 1, 0, 0, 15))
-    expect(buy_position.exit_price).to eq 135.56
-    expect(buy_position.exited_at).to eq(Time.utc(2015, 5, 1, 0, 0, 15))
+    expected_position2.current_price = 1.4266
+    expected_position2.updated_at  = Time.utc(2015, 5, 1, 0, 0, 45)
 
-    expect(sell_position.profit_or_loss).to eq(-402)
-    expect(sell_position.entry_price).to eq 1.3834
-    expect(sell_position.entered_at).to eq(Time.utc(2015, 5, 1, 0, 0, 15))
-    expect(sell_position.current_price).to eq 1.4236
-    expect(sell_position.updated_at).to eq(Time.utc(2015, 5, 1, 0, 0, 30))
-    expect(sell_position.exit_price).to be nil
-    expect(sell_position.exited_at).to be nil
+    expect(broker.positions.length).to be 1
+    expect(broker.positions[expected_position2.internal_id]) \
+      .to some_position(expected_position2)
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 2
+    expect(find_by_internal_id(positions, expected_position1.internal_id)) \
+      .to some_position(expected_position1)
+    expect(find_by_internal_id(positions, expected_position2.internal_id)) \
+      .to some_position(expected_position2)
+
+    broker.refresh
+    expected_position2.current_price = 1.4246
+    expected_position2.updated_at  = Time.utc(2015, 5, 1, 0, 1, 0)
+
+    expect(broker.positions.length).to be 1
+    expect(broker.positions[expected_position2.internal_id]) \
+      .to some_position(expected_position2)
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 2
+    expect(find_by_internal_id(positions, expected_position1.internal_id)) \
+      .to some_position(expected_position1)
+    expect(find_by_internal_id(positions, expected_position2.internal_id)) \
+      .to some_position(expected_position2)
+
+    broker.positions[expected_position2.internal_id].close
+    broker.refresh
+    expected_position2.status     = :closed
+    expected_position2.exit_price = 1.4246
+    expected_position2.exited_at  = Time.utc(2015, 5, 1, 0, 1, 0)
+
+    expect(broker.positions.length).to be 0
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 2
+    expect(find_by_internal_id(positions, expected_position1.internal_id)) \
+      .to some_position(expected_position1)
+    expect(find_by_internal_id(positions, expected_position2.internal_id)) \
+      .to some_position(expected_position2)
 
     broker.refresh
 
-    expect(buy_position.profit_or_loss).to eq 2300
-    expect(sell_position.profit_or_loss).to eq(-432)
-    expect(sell_position.entry_price).to eq 1.3834
-    expect(sell_position.entered_at).to eq(Time.utc(2015, 5, 1, 0, 0, 15))
-    expect(sell_position.current_price).to eq 1.4266
-    expect(sell_position.updated_at).to eq(Time.utc(2015, 5, 1, 0, 0, 45))
-    expect(sell_position.exit_price).to be nil
-    expect(sell_position.exited_at).to be nil
+    expect(broker.positions.length).to be 0
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 2
+    expect(find_by_internal_id(positions, expected_position1.internal_id)) \
+      .to some_position(expected_position1)
+    expect(find_by_internal_id(positions, expected_position2.internal_id)) \
+      .to some_position(expected_position2)
+  end
 
+  it '指値、逆指値、marketIfTouchedで売り買いができる' do
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 0
+
+    broker.tick
+
+    r1 = broker.sell(:EURJPY, 10_000, :limit, {
+      price:       135.6,
+      expiry:      Time.utc(2015, 5, 2),
+      lower_bound: 135.59,
+      upper_bound: 135.61,
+      stop_loss:   135.73
+    }).order_opened
+    r2 = broker.buy(:USDJPY, 10_000, :stop, {
+      price:       112.404,
+      expiry:      Time.utc(2015, 5, 2),
+      take_profit: 112.6
+    }).order_opened
+    r3 = broker.buy(:EURUSD, 10_000, :marketIfTouched, {
+      price:         1.4325,
+      expiry:        Time.utc(2015, 5, 2),
+      trailing_stop: 5
+    }).order_opened
+    r4 = broker.sell(:EURJPY, 1000, :limit, {
+      price:         136.6,
+      expiry:        Time.utc(2015, 5, 1, 0, 0, 45),
+      take_profit:   134,
+      stop_loss:     140,
+      trailing_stop: 10
+    }).order_opened
+
+    expected_order1 = Jiji::Model::Trading::Order.new(
+      :EURJPY, r1.internal_id, :sell, :limit, Time.new(2015, 5, 1))
+    expected_order1.units = 10_000
+    expected_order1.price = 135.6
+    expected_order1.expiry = Time.utc(2015, 5, 2)
+    expected_order1.lower_bound = 135.59
+    expected_order1.upper_bound = 135.61
+    expected_order1.stop_loss = 135.73
+    expected_order1.take_profit = 0
+    expected_order1.trailing_stop = 0
+
+    expected_order2 = Jiji::Model::Trading::Order.new(
+      :USDJPY, r2.internal_id, :buy, :stop, Time.new(2015, 5, 1))
+    expected_order2.units = 10_000
+    expected_order2.price = 112.404
+    expected_order2.expiry = Time.utc(2015, 5, 2)
+    expected_order2.lower_bound = 0
+    expected_order2.upper_bound = 0
+    expected_order2.stop_loss = 0
+    expected_order2.take_profit = 112.6
+    expected_order2.trailing_stop = 0
+
+    expected_order3 = Jiji::Model::Trading::Order.new(
+      :EURUSD, r3.internal_id, :buy, :marketIfTouched, Time.new(2015, 5, 1))
+    expected_order3.units = 10_000
+    expected_order3.price = 1.4325
+    expected_order3.expiry = Time.utc(2015, 5, 2)
+    expected_order3.lower_bound = 0
+    expected_order3.upper_bound = 0
+    expected_order3.stop_loss = 0
+    expected_order3.take_profit = 0
+    expected_order3.trailing_stop = 5
+
+    expected_order4 = Jiji::Model::Trading::Order.new(
+      :EURJPY, r4.internal_id, :sell, :limit, Time.new(2015, 5, 1))
+    expected_order4.units = 1000
+    expected_order4.price = 136.6
+    expected_order4.expiry = Time.utc(2015, 5, 1, 0, 0, 45)
+    expected_order4.lower_bound = 0
+    expected_order4.upper_bound = 0
+    expected_order4.stop_loss = 140
+    expected_order4.take_profit = 134
+    expected_order4.trailing_stop = 10
+
+    expect(sort_by_internal_id(broker.orders)).to eq([
+      expected_order1, expected_order2, expected_order3, expected_order4
+    ])
+    positions = broker.positions
+    expect(sort_by_internal_id(positions)).to eq([])
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(sort_by_internal_id(positions)).to eq([])
+
+    broker.refresh_position
     broker.refresh
 
-    expect(buy_position.profit_or_loss).to eq 2300
-    expect(sell_position.profit_or_loss).to eq(-412)
-    expect(sell_position.entry_price).to eq 1.3834
-    expect(sell_position.entered_at).to eq(Time.utc(2015, 5, 1, 0, 0, 15))
-    expect(sell_position.current_price).to eq 1.4246
-    expect(sell_position.updated_at).to eq(Time.utc(2015, 5, 1, 0, 1, 0))
-    expect(sell_position.exit_price).to be nil
-    expect(sell_position.exited_at).to be nil
+    expect(sort_by_internal_id(broker.orders)).to eq([
+      expected_order1, expected_order2, expected_order3, expected_order4
+    ])
+    positions = broker.positions
+    expect(sort_by_internal_id(positions)).to eq([])
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(sort_by_internal_id(positions)).to eq([])
 
-    sell_position.close
-    expect(sell_position.profit_or_loss).to eq(-412)
-    expect(sell_position.entry_price).to eq 1.3834
-    expect(sell_position.entered_at).to eq(Time.utc(2015, 5, 1, 0, 0, 15))
-    expect(sell_position.current_price).to eq 1.4246
-    expect(sell_position.updated_at).to eq(Time.utc(2015, 5, 1, 0, 1, 0))
-    expect(sell_position.exit_price).to eq 1.4246
-    expect(sell_position.exited_at).to eq(Time.utc(2015, 5, 1, 0, 1, 0))
+    broker.refresh_position
+    broker.refresh
+
+    expect(sort_by_internal_id(broker.orders)).to eq([
+      expected_order3, expected_order4
+    ])
+
+    expected_position1 = Jiji::Model::Trading::Position.new do |p|
+      p.backtest_id   = backtest_id
+      p.internal_id   = r1.internal_id
+      p.pair_name     = :EURJPY
+      p.units         = 10_000
+      p.sell_or_buy   = :sell
+      p.status        = :live
+      p.entry_price   = 135.6
+      p.entered_at    = Time.utc(2015, 5, 1, 0, 0, 30)
+      p.current_price = 135.63
+      p.updated_at    = Time.utc(2015, 5, 1, 0, 0, 30)
+      p.exit_price    = nil
+      p.exited_at     = nil
+      p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
+        stop_loss: 135.73
+      })
+    end
+    expected_position2 = Jiji::Model::Trading::Position.new do |p|
+      p.backtest_id   = backtest_id
+      p.internal_id   = r2.internal_id
+      p.pair_name     = :USDJPY
+      p.units         = 10_000
+      p.sell_or_buy   = :buy
+      p.status        = :live
+      p.entry_price   = 112.404
+      p.entered_at    = Time.utc(2015, 5, 1, 0, 0, 30)
+      p.current_price = 112.4
+      p.updated_at    = Time.utc(2015, 5, 1, 0, 0, 30)
+      p.exit_price    = nil
+      p.exited_at     = nil
+      p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
+        take_profit: 112.6
+      })
+    end
+
+    positions = broker.positions
+    expect(positions.length).to be 2
+    position = find_by_internal_id(positions, r1.internal_id)
+    expect(position).to some_position(expected_position1)
+    position = find_by_internal_id(positions, r2.internal_id)
+    expect(position).to some_position(expected_position2)
+
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be 2
+    position = find_by_internal_id(positions, r1.internal_id)
+    expect(position).to some_position(expected_position1)
+    position = find_by_internal_id(positions, r2.internal_id)
+    expect(position).to some_position(expected_position2)
+
+    2.times do |_i|
+      broker.refresh_position
+      broker.refresh
+      tick = broker.tick
+
+      expected_position1.current_price = tick[:EURJPY].ask
+      expected_position1.updated_at    = tick.timestamp
+      expected_position2.current_price = tick[:USDJPY].bid
+      expected_position2.updated_at    = tick.timestamp
+
+      expect(sort_by_internal_id(broker.orders)).to eq([
+        expected_order3
+      ])
+      positions = broker.positions
+      expect(positions.length).to be 2
+      position = find_by_internal_id(positions, r1.internal_id)
+      expect(position).to some_position(expected_position1)
+      position = find_by_internal_id(positions, r2.internal_id)
+      expect(position).to some_position(expected_position2)
+
+      positions = position_repository.retrieve_positions(backtest_id)
+      expect(positions.length).to be 2
+      position = find_by_internal_id(positions, r1.internal_id)
+      expect(position).to some_position(expected_position1)
+      position = find_by_internal_id(positions, r2.internal_id)
+      expect(position).to some_position(expected_position2)
+    end
+
+    broker.refresh_position
+    broker.refresh
+    tick = broker.tick
+
+    expected_position1.current_price = tick[:EURJPY].ask
+    expected_position1.updated_at    = tick.timestamp
+    expected_position1.exit_price    = tick[:EURJPY].ask
+    expected_position1.exited_at     = tick.timestamp
+    expected_position1.status        = :closed
+
+    expected_position2.current_price = tick[:USDJPY].bid
+    expected_position2.updated_at    = tick.timestamp
+
+    expect(broker.orders).to eq([])
+
+    expected_position3 = Jiji::Model::Trading::Position.new do |p|
+      p.backtest_id   = backtest_id
+      p.internal_id   = r3.internal_id
+      p.pair_name     = :EURUSD
+      p.units         = 10_000
+      p.sell_or_buy   = :buy
+      p.status        = :live
+      p.entry_price   = 1.4325
+      p.entered_at    = Time.utc(2015, 5, 1, 0, 1, 15)
+      p.current_price = 1.5234
+      p.updated_at    = Time.utc(2015, 5, 1, 0, 1, 15)
+      p.exit_price    = nil
+      p.exited_at     = nil
+      p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
+        trailing_stop:   5,
+        trailing_amount: 1.5229
+      })
+    end
+
+    positions = broker.positions
+    expect(positions.length).to be 2
+    position = find_by_internal_id(positions, r2.internal_id)
+    expect(position).to some_position(expected_position2)
+    position = find_by_internal_id(positions, r3.internal_id)
+    expect(position).to some_position(expected_position3)
+
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be
+    position = find_by_internal_id(positions, r1.internal_id)
+    expect(position).to some_position(expected_position1)
+    position = find_by_internal_id(positions, r2.internal_id)
+    expect(position).to some_position(expected_position2)
+    position = find_by_internal_id(positions, r3.internal_id)
+    expect(position).to some_position(expected_position3)
+
+    positions = broker.positions
+    position = find_by_internal_id(positions, r2.internal_id)
+    position.close
+
+    expected_position2.exit_price    = tick[:USDJPY].bid
+    expected_position2.exited_at     = tick.timestamp
+    expected_position2.status        = :closed
+
+    positions = broker.positions
+    expect(positions.length).to be 1
+    position = find_by_internal_id(positions, r3.internal_id)
+    expect(position).to some_position(expected_position3)
+
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be
+    position = find_by_internal_id(positions, r1.internal_id)
+    expect(position).to some_position(expected_position1)
+    position = find_by_internal_id(positions, r2.internal_id)
+    expect(position).to some_position(expected_position2)
+    position = find_by_internal_id(positions, r3.internal_id)
+    expect(position).to some_position(expected_position3)
+
+    broker.refresh_position
+    broker.refresh
+    tick = broker.tick
+
+    expected_position3.current_price = tick[:EURUSD].bid
+    expected_position3.updated_at    = tick.timestamp
+    expected_position3.closing_policy.trailing_amount = 1.5239
+
+    orders = broker.orders
+    expect(orders.length).to be 0
+
+    positions = broker.positions
+    expect(positions.length).to be 1
+    position = find_by_internal_id(positions, r3.internal_id)
+    expect(position).to some_position(expected_position3)
+
+    positions = position_repository.retrieve_positions(backtest_id)
+    expect(positions.length).to be
+    position = find_by_internal_id(positions, r1.internal_id)
+    expect(position).to some_position(expected_position1)
+    position = find_by_internal_id(positions, r2.internal_id)
+    expect(position).to some_position(expected_position2)
+    position = find_by_internal_id(positions, r3.internal_id)
+    expect(position).to some_position(expected_position3)
+  end
+
+  def sort_by_internal_id(orders_or_positions)
+    orders_or_positions.sort_by { |o| o.internal_id }
+  end
+
+  def find_by_internal_id(orders_or_positions, internal_id)
+    orders_or_positions.find { |o| o.internal_id == internal_id }
   end
 
   it '破棄操作ができる' do

@@ -22,9 +22,9 @@ module Jiji::Model::Trading
     attr_reader :internal_id
     #=== 注文種別
     attr_reader :type
-    #=== 最終更新時刻
-    attr_reader :last_modified
 
+    #=== 最終更新時刻
+    attr_accessor :last_modified
     #=== 注文数
     attr_accessor :units
     #=== 執行価格(type)
@@ -96,6 +96,14 @@ module Jiji::Model::Trading
       end
     end
 
+    def values
+      [
+        @pair_name, @internal_id, @sell_or_buy, @type,
+        @unit, @price, @lower_bound, @upper_bound,
+        @stop_loss, @take_profit, @trailing_stop
+      ]
+    end
+
     private
 
     def buying?
@@ -120,14 +128,6 @@ module Jiji::Model::Trading
       options[:expiry] = expiry
       options[:lower_bound] = lower_bound
       options[:upper_bound] = upper_bound
-    end
-
-    def values
-      [
-        @pair_name, @internal_id, @sell_or_buy, @type,
-        @unit, @price, @lower_bound, @upper_bound,
-        @stop_loss, @take_profit, @trailing_stop
-      ]
     end
 
   end

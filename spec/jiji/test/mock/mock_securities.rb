@@ -45,6 +45,9 @@ module Jiji::Test::Mock
       @current_tick = create_tick(
         SEEDS[(@i += 1) % SEEDS.length],
         Time.utc(2015, 5, 1) + @i * 15)
+      update_orders(@current_tick)
+      update_positions(@current_tick)
+      @current_tick
     end
 
     def retrieve_tick_history(pair_name, start_time, end_time)
@@ -53,7 +56,7 @@ module Jiji::Test::Mock
         create_tick(SEEDS[(i += 1) % SEEDS.length], time)
       end
     end
-    SEEDS = [0, 0.26, 0.3, 0.303, 0.301, 0.4, 0.35, 0.36, 0.2, 0.1]
+    SEEDS = [0, 0.26, 0.3, 0.303, 0.301, 0.4, 0.401, 0.35, 0.36, 0.2, 0.1]
 
     def retrieve_rate_history(pair_name, interval, start_time, end_time)
       if pair_name != :EURJPY && pair_name != :EURUSD && pair_name != :USDJPY

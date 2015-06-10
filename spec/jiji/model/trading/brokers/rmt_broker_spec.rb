@@ -5,6 +5,10 @@ require 'jiji/model/trading/brokers/broker_examples'
 
 describe Jiji::Model::Trading::Brokers::RMTBroker do
   let(:data_builder) { Jiji::Test::DataBuilder.new }
+  let(:position_repository) do
+    @container.lookup(:position_repository)
+  end
+  let(:backtest_id) { nil }
 
   before(:example) do
     @container    = Jiji::Test::TestContainerFactory.instance.new_container

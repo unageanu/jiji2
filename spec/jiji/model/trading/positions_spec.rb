@@ -20,9 +20,22 @@ describe Jiji::Model::Trading::Positions do
   let(:positions) do
     Jiji::Model::Trading::Positions.new(original, builder)
   end
+  let(:pairs) do
+    [
+      Jiji::Model::Trading::Pair.new(
+        :EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04),
+      Jiji::Model::Trading::Pair.new(
+        :EURUSD, 'EUR_USD', 0.0001, 10_000_000, 0.00001, 0.04),
+      Jiji::Model::Trading::Pair.new(
+        :USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04)
+    ]
+  end
 
   before(:example) do
     original.each { |o| o.save }
+    original[2].closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
+      trailing_stop: 10
+    })
   end
 
   after(:example) do
@@ -164,7 +177,7 @@ describe Jiji::Model::Trading::Positions do
         data_builder.new_position(1),
         data_builder.new_position(3)
       ]
-      positions.update_price(data_builder.new_tick(4, Time.at(100)))
+      positions.update_price(data_builder.new_tick(4, Time.at(100)), pairs)
       positions.update(new_positions)
 
       expect(positions.length).to be 2
@@ -234,7 +247,7 @@ describe Jiji::Model::Trading::Positions do
 
   describe '#update_price' do
     it 'すべての建玉の価格が更新される' do
-      positions.update_price(data_builder.new_tick(4, Time.at(100)))
+      positions.update_price(data_builder.new_tick(4, Time.at(100)), pairs)
 
       expect(positions.length).to be 3
       position = positions['1']
@@ -248,6 +261,8 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 104.003
+      expect(position.closing_policy.trailing_stop).to eq 0
+      expect(position.closing_policy.trailing_amount).to eq 0
 
       position = positions['2']
       expect(position._id).to eq original[1]._id
@@ -260,6 +275,8 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 104
+      expect(position.closing_policy.trailing_stop).to eq 0
+      expect(position.closing_policy.trailing_amount).to eq 0
 
       position = positions['3']
       expect(position._id).to eq original[2]._id
@@ -272,6 +289,8 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 104.003
+      expect(position.closing_policy.trailing_stop).to eq 10
+      expect(position.closing_policy.trailing_amount).to eq 104.103
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 3
@@ -286,6 +305,8 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 104.003
+      expect(position.closing_policy.trailing_stop).to eq 0
+      expect(position.closing_policy.trailing_amount).to eq 0
 
       position = loaded[1]
       expect(position._id).to eq original[1]._id
@@ -298,6 +319,8 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 104
+      expect(position.closing_policy.trailing_stop).to eq 0
+      expect(position.closing_policy.trailing_amount).to eq 0
 
       position = loaded[2]
       expect(position._id).to eq original[2]._id
@@ -310,6 +333,8 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 104.003
+      expect(position.closing_policy.trailing_stop).to eq 10
+      expect(position.closing_policy.trailing_amount).to eq 104.103
     end
   end
 
@@ -365,7 +390,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.sell_or_buy).to eq :buy
       expect(position.pair_name).to eq :EURJPY
       expect(position.units).to be 100_000
-      expect(position.entered_at).to eq Time.at(10)
+      expect(position.entered_at).to eq Time.at(100)
       expect(position.updated_at).to eq Time.at(100)
       expect(position.exited_at).to eq nil
       expect(position.exit_price).to eq nil
@@ -417,7 +442,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.sell_or_buy).to eq :buy
       expect(position.pair_name).to eq :EURJPY
       expect(position.units).to be 100_000
-      expect(position.entered_at).to eq Time.at(10)
+      expect(position.entered_at).to eq Time.at(100)
       expect(position.updated_at).to eq Time.at(100)
       expect(position.exited_at).to eq nil
       expect(position.exit_price).to eq nil

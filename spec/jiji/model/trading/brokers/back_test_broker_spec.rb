@@ -4,8 +4,26 @@ require 'jiji/test/test_configuration'
 require 'jiji/model/trading/brokers/broker_examples'
 
 describe Jiji::Model::Trading::Brokers::BackTestBroker do
+  let(:data_builder) { Jiji::Test::DataBuilder.new }
+  let(:container) { Jiji::Test::TestContainerFactory.instance.new_container }
+  let(:position_repository) do
+    container.lookup(:position_repository)
+  end
+  let(:backtest_id) do
+    backtest_repository  = container.lookup(:backtest_repository)
+    registory            = container.lookup(:agent_registry)
+
+    registory.add_source('aaa', '', :agent, data_builder.new_agent_body(1))
+
+    test1 = data_builder.register_backtest(1, backtest_repository)
+    test1.id
+  end
+  let(:broker) do
+    Jiji::Model::Trading::Brokers::BackTestBroker.new(backtest_id,
+      Time.utc(2015, 5, 1), Time.utc(2015, 5, 1, 0, 10), @pairs, @repository)
+  end
+
   before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
     @repository = Jiji::Model::Trading::TickRepository.new
     @securities_provider = Jiji::Model::Securities::SecuritiesProvider.new
 
@@ -22,12 +40,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   end
 
   after(:example) do
-    @data_builder.clean
-  end
-
-  let(:broker) do
-    Jiji::Model::Trading::Brokers::BackTestBroker.new('test',
-      Time.utc(2015, 5, 1), Time.utc(2015, 5, 1, 0, 10), @pairs, @repository)
+    data_builder.clean
   end
 
   it_behaves_like 'brokerの基本操作ができる'

@@ -27,9 +27,11 @@ module Jiji::Model::Trading
     end
 
     # for internal use.
-    def update_price(tick)
+    def update_price(tick, pairs)
       @positions.each do |p|
+        pair = pairs.find { |pa| pa.name == p.pair_name }
         p.update_price(tick)
+        p.closing_policy.update_price(p, pair)
         p.save
       end
     end

@@ -236,11 +236,11 @@ describe Jiji::Model::Trading::Position do
     })
     original.save
 
-    position = Jiji::Model::Trading::Position.find( original.id )
+    position = Jiji::Model::Trading::Position.find(original.id)
     expect(position.backtest_id).to eq(nil)
     expect(position.internal_id).to eq('1')
     expect(position.pair_name).to eq(:EURUSD)
-    expect(position.units).to eq(1000_000)
+    expect(position.units).to eq(1_000_000)
     expect(position.sell_or_buy).to eq(:sell)
     expect(position.entry_price).to eq(102.0)
     expect(position.entered_at).to eq(Time.at(0))
@@ -254,11 +254,11 @@ describe Jiji::Model::Trading::Position do
     original.closing_policy.trailing_amount = 11
     original.save
 
-    position = Jiji::Model::Trading::Position.find( original.id )
+    position = Jiji::Model::Trading::Position.find(original.id)
     expect(position.backtest_id).to eq(nil)
     expect(position.internal_id).to eq('1')
     expect(position.pair_name).to eq(:EURUSD)
-    expect(position.units).to eq(1000_000)
+    expect(position.units).to eq(1_000_000)
     expect(position.sell_or_buy).to eq(:sell)
     expect(position.entry_price).to eq(102.0)
     expect(position.entered_at).to eq(Time.at(0))

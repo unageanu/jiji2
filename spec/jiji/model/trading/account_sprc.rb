@@ -16,7 +16,7 @@ describe Jiji::Model::Trading::Account do
       data_builder.new_position(1),
       data_builder.new_position(2),
       data_builder.new_position(3)
-    ], builder)
+    ], builder, Jiji::Model::Trading::Account.new(1, 10000, 0.04))
   end
   let(:pairs) do
     [
@@ -51,7 +51,7 @@ describe Jiji::Model::Trading::Account do
     it '必要証拠金、合計損益が更新される' do
       account = Jiji::Model::Trading::Account.new(1, 10000, 0.04)
 
-      account.update( data_builder.new_tick(4, Time.at(100)), positions )
+      account.update( positions, Time.at(100) )
 
       expect(account.margin_used).to eq 245602.4
       expect(account.profit_or_loss).to eq -180.0
@@ -59,7 +59,7 @@ describe Jiji::Model::Trading::Account do
 
       tick = data_builder.new_tick(5, Time.at(200))
       positions.update_price(tick, pairs)
-      account.update( tick, positions )
+      account.update( positions, Time.at(200) )
 
       expect(account.margin_used).to eq 245602.4
       expect(account.profit_or_loss).to eq -40180.0
@@ -72,7 +72,7 @@ describe Jiji::Model::Trading::Account do
         data_builder.new_position(2)
       ])
       positions.update_price(tick, pairs)
-      account.update( tick, positions )
+      account.update( positions, Time.at(300) )
 
       expect(account.margin_used).to eq 122002.4
       expect(account.profit_or_loss).to eq 29910.0

@@ -42,8 +42,8 @@ module Jiji::Model::Trading
       self
     end
 
-    def update( tick, positions )
-      self.updated_at = tick.timestamp
+    def update( positions, timestamp )
+      self.updated_at     = timestamp
       total_price         = BigDecimal.new(0, 10)
       self.profit_or_loss = BigDecimal.new(0, 10)
       positions.each do |p|

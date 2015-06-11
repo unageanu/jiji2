@@ -471,7 +471,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
     expect(data[1].timestamp).to eq Time.utc(2015, 4, 2, 0,  0, 0)
   end
 
-  it 'nilのデータは集計対象から除���される' do
+  it 'nilのデータは集計対象から除外される' do
     @graph << [10, -1,  1.2]
     @graph.save_data(Time.utc(2015, 4, 1, 0, 0, 0))
 

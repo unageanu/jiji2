@@ -75,13 +75,6 @@ module Jiji::Model::Securities::Internal::Oanda
         convert_response_to_tick_value('low',   item))
     end
 
-    def convert_response_to_tick(price, pair_name,
-      bid = price.open_bid, ask = price.open_ask)
-      values = {}
-      values[pair_name] = Tick::Value.new(bid.to_f, ask.to_f)
-      Tick.new(values, price.time)
-    end
-
     def convert_response_to_tick_value(id, item)
       Tick::Value.new(
         item.method("#{id}_bid").call.to_f,

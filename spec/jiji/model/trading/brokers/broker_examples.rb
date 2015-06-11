@@ -268,7 +268,7 @@ shared_examples 'brokerの基本操作ができる' do
     positions = position_repository.retrieve_positions(backtest_id)
     expect(sort_by_internal_id(positions)).to eq([])
 
-    broker.refresh_position
+    broker.refresh_positions
     broker.refresh
 
     expect(sort_by_internal_id(broker.orders)).to eq([
@@ -279,7 +279,7 @@ shared_examples 'brokerの基本操作ができる' do
     positions = position_repository.retrieve_positions(backtest_id)
     expect(sort_by_internal_id(positions)).to eq([])
 
-    broker.refresh_position
+    broker.refresh_positions
     broker.refresh
 
     expect(sort_by_internal_id(broker.orders)).to eq([
@@ -336,7 +336,7 @@ shared_examples 'brokerの基本操作ができる' do
     expect(position).to some_position(expected_position2)
 
     2.times do |_i|
-      broker.refresh_position
+      broker.refresh_positions
       broker.refresh
       tick = broker.tick
 
@@ -363,7 +363,7 @@ shared_examples 'brokerの基本操作ができる' do
       expect(position).to some_position(expected_position2)
     end
 
-    broker.refresh_position
+    broker.refresh_positions
     broker.refresh
     tick = broker.tick
 
@@ -435,7 +435,7 @@ shared_examples 'brokerの基本操作ができる' do
     position = find_by_internal_id(positions, r3.internal_id)
     expect(position).to some_position(expected_position3)
 
-    broker.refresh_position
+    broker.refresh_positions
     broker.refresh
     tick = broker.tick
 

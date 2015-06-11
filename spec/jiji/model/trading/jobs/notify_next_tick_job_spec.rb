@@ -21,10 +21,16 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
       context.time_source.set(Time.new(2014, 1, 1, 0, 0, 0))
       job.exec(context, queue)
 
-      context.time_source.set(Time.new(2014, 1, 1, 0, 59, 59))
+      context.time_source.set(Time.new(2014, 1, 1, 0, 0, 15))
       job.exec(context, queue)
 
-      context.time_source.set(Time.new(2014, 1, 1, 1, 0, 0))
+      context.time_source.set(Time.new(2014, 1, 1, 1, 0, 30))
+      job.exec(context, queue)
+
+      context.time_source.set(Time.new(2014, 1, 1, 1, 0, 45))
+      job.exec(context, queue)
+
+      context.time_source.set(Time.new(2014, 1, 1, 1, 1,  0))
       job.exec(context, queue)
     end
   end
@@ -42,7 +48,22 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
 
       expect(queue.empty?).to be false
 
-      context.time_source.set(Time.new(2014, 1, 1, 0, 0, 1))
+      context.time_source.set(Time.new(2014, 1, 1, 0, 0, 15))
+      job.exec(context, queue)
+
+      expect(queue.empty?).to be false
+
+      context.time_source.set(Time.new(2014, 1, 1, 0, 0, 30))
+      job.exec(context, queue)
+
+      expect(queue.empty?).to be false
+
+      context.time_source.set(Time.new(2014, 1, 1, 0, 0, 45))
+      job.exec(context, queue)
+
+      expect(queue.empty?).to be false
+
+      context.time_source.set(Time.new(2014, 1, 1, 0, 1, 0))
       job.exec(context, queue)
 
       expect(queue.empty?).to be false
@@ -50,6 +71,17 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
   end
 
   def create_trading_context
-    @data_builder.new_trading_context
+    broker  = double('mock broker')
+    allow(broker).to receive(:tick) \
+      .at_least(:once) \
+      .and_return(@data_builder.new_tick(1))
+    allow(broker).to receive(:next?)
+      .and_return(true)
+
+    expect(broker).to receive(:refresh).exactly(5).times
+    expect(broker).to receive(:refresh_positions).once
+    expect(broker).to receive(:refresh_account).once
+
+    @data_builder.new_trading_context(broker)
   end
 end

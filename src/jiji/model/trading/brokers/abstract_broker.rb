@@ -80,7 +80,7 @@ module Jiji::Model::Trading::Brokers
     end
 
     # for internal use.
-    def refresh_position
+    def refresh_positions
       @positions_is_dirty = true
     end
 

@@ -12,27 +12,38 @@ describe Jiji::Model::Securities::OandaSecurities do
   after(:example) do
   end
 
-  it '不正なトークンを指定した場合、エラー' do
-    expect do
-      Jiji::Model::Securities::OandaDemoSecurities.new(
-        access_token: 'illegal_token')
-    end.to raise_exception(OandaAPI::RequestError)
-  end
+  # it '不正なトークンを指定した場合、エラー' do
+  #   expect do
+  #     Jiji::Model::Securities::OandaDemoSecurities.new(
+  #       access_token: 'illegal_token')
+  #   end.to raise_exception(OandaAPI::RequestError)
+  # end
 
-  describe 'find_account' do
+  # describe 'find_account' do
+  #   it '名前に対応するアカウントを取得できる。' do
+  #     account = @client.find_account('Primary')
+  #     # p account
+  #     expect(account.account_name).to eq 'Primary'
+  #     expect(account.account_id).to be > 0
+  #     expect(account.account_currency).to eq 'JPY'
+  #     expect(account.margin_rate).not_to be nil
+  #   end
+  #
+  #   it '名前に対応するアカウントが見つからない場合、エラー' do
+  #     expect do
+  #       @client.find_account('not_found')
+  #     end.to raise_exception(Jiji::Errors::NotFoundException)
+  #   end
+  # end
+
+  describe 'retrieve_account' do
     it '名前に対応するアカウントを取得できる。' do
-      account = @client.find_account('Primary')
-      # p account
-      expect(account.account_name).to eq 'Primary'
+      account = @client.retrieve_account
       expect(account.account_id).to be > 0
-      expect(account.account_currency).to eq 'JPY'
       expect(account.margin_rate).not_to be nil
-    end
-
-    it '名前に対応するアカウントが見つからない場合、エラー' do
-      expect do
-        @client.find_account('not_found')
-      end.to raise_exception(Jiji::Errors::NotFoundException)
+      expect(account.balance).to be > 0
+      expect(account.margin_used).to be > 0
+      expect(account.profit_or_loss).not_to be nil
     end
   end
 end

@@ -512,7 +512,6 @@ shared_examples 'brokerの基本操作ができる' do
     expect(find_by_internal_id(positions, expected_position.internal_id)) \
       .to some_position(expected_position)
 
-
     position = broker.positions[result.trade_opened.internal_id]
     position.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
       stop_loss:     130.01,
@@ -589,15 +588,14 @@ shared_examples 'brokerの基本操作ができる' do
     broker.tick
 
     result1 = broker.sell(:EURJPY, 10_000, :limit, {
-      price:       135.6,
-      expiry:      Time.utc(2015, 5, 2)
+      price:  135.6,
+      expiry: Time.utc(2015, 5, 2)
     }).order_opened
 
     result2 = broker.buy(:EURJPY, 10_000, :limit, {
-      price:       134.6,
-      expiry:      Time.utc(2015, 5, 2)
+      price:  134.6,
+      expiry: Time.utc(2015, 5, 2)
     }).order_opened
-
 
     expect(broker.orders.length).to be 2
 
@@ -625,5 +623,4 @@ shared_examples 'brokerの基本操作ができる' do
   def find_by_internal_id(orders_or_positions, internal_id)
     orders_or_positions.find { |o| o.internal_id == internal_id }
   end
-
 end

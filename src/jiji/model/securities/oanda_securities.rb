@@ -32,6 +32,15 @@ module Jiji::Model::Securities
     def destroy
     end
 
+    def retrieve_account
+      response = @client.account(@account.account_id).get
+      Account.new( response.account_id,
+        response.balance, response.margin_rate ) do |a|
+        a.profit_or_loss = response.unrealized_pl
+        a.margin_used    = response.margin_used
+      end
+    end
+
     def find_account(account_name)
       accounts = @client.accounts.get
       accounts.find { |a| a.account_name == account_name } \

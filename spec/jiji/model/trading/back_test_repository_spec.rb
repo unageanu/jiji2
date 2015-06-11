@@ -41,6 +41,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(test.start_time).to eq Time.at(100)
     expect(test.end_time).to eq Time.at(200)
     expect(test.pair_names).to eq [:EURJPY, :EURUSD]
+    expect(test.balance).to eq 0
     expect(test.agent_setting[0][:uuid]).not_to be nil
     expect(test.agent_setting[0][:name]).to eq 'TestAgent1@aaa'
     expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'bb' })
@@ -62,6 +63,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       'start_time'    => Time.at(100),
       'end_time'      => Time.at(300),
       'pair_names'    => [:EURJPY, :EURUSD],
+      'balance'       => 10_000,
       'agent_setting' => [
         { name: 'TestAgent1@aaa', properties: { 'a' => 1, 'b' => 'bb' } }
       ]
@@ -72,6 +74,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(test2.start_time).to eq Time.at(100)
     expect(test2.end_time).to eq Time.at(300)
     expect(test2.pair_names).to eq [:EURJPY, :EURUSD]
+    expect(test2.balance).to eq 10_000
     expect(test2.agent_setting[0][:uuid]).not_to be nil
     expect(test2.agent_setting[0][:name]).to eq 'TestAgent1@aaa'
     expect(test2.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'bb' })
@@ -93,6 +96,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
           'pair_names'    => [:EURJPY, :EURUSD],
+          'balance'       => 100_000,
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 1, 'b' => 'b' } }
           ]
@@ -164,6 +168,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
           'pair_names'    => [:EURJPY, :EURUSD],
+          'balance'       => 100_000,
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -177,6 +182,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
           'pair_names'    => [:EURJPY, :EURUSD],
+          'balance'       => 100_000,
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -190,6 +196,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
           'pair_names'    => [:EURJPY, :EURUSD],
+          'balance'       => 100_000,
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -205,6 +212,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'end_time'      => Time.at(200),
           'memo'          => 'a' * 2001,
           'pair_names'    => [:EURJPY, :EURUSD],
+          'balance'       => 100_000,
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -220,6 +228,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
           'pair_names'    => [:EURJPY, :EURUSD],
+          'balance'       => 100_000,
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -233,6 +242,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'end_time'      => nil,
           'memo'          => 'メモ',
           'pair_names'    => [:EURJPY, :EURUSD],
+          'balance'       => 100_000,
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -248,6 +258,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
           'pair_names'    => [],
+          'balance'       => 100_000,
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -260,6 +271,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'start_time'    => Time.at(100),
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
+          'balance'       => 100_000,
           'agent_setting' => [
             { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
           ]
@@ -274,7 +286,8 @@ describe Jiji::Model::Trading::BackTestRepository do
           'start_time'    => Time.at(100),
           'end_time'      => Time.at(200),
           'memo'          => 'メモ',
-          'pair_names'         => [:EURJPY, :EURUSD],
+          'pair_names'    => [:EURJPY, :EURUSD],
+          'balance'       => 100_000,
           'agent_setting' => []
         })
       end.to raise_exception(ActiveModel::StrictValidationFailed)
@@ -285,7 +298,38 @@ describe Jiji::Model::Trading::BackTestRepository do
           'start_time' => Time.at(100),
           'end_time'   => Time.at(200),
           'memo'       => 'メモ',
-          'pair_names' => [:EURJPY, :EURUSD]
+          'pair_names' => [:EURJPY, :EURUSD],
+          'balance'    => 100_000
+        })
+      end.to raise_exception(ActiveModel::StrictValidationFailed)
+    end
+
+    it '証拠金が不正な場合エラー' do
+      expect do
+        @repository.register({
+          'name'          => '名前',
+          'start_time'    => Time.at(100),
+          'end_time'      => Time.at(200),
+          'memo'          => 'メモ',
+          'pair_names'    => [:EURJPY, :EURUSD],
+          'balance'       => 0.001,
+          'agent_setting' => [
+            { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
+          ]
+        })
+      end.to raise_exception(ActiveModel::StrictValidationFailed)
+
+      expect do
+        @repository.register({
+          'name'       => '名前',
+          'start_time' => Time.at(100),
+          'end_time'   => Time.at(200),
+          'memo'       => 'メモ',
+          'pair_names' => [:EURJPY, :EURUSD],
+          'balance'    => -1,
+          'agent_setting' => [
+            { name: 'TestAgent1@aaa', properties: { 'a' => 100, 'b' => 'bb' } }
+          ]
         })
       end.to raise_exception(ActiveModel::StrictValidationFailed)
     end

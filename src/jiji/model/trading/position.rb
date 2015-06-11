@@ -16,7 +16,7 @@ module Jiji::Model::Trading
 
     store_in collection: 'positions'
 
-    field :backtest_id,   type: BSON::ObjectId # RMTの場合nil
+    field :backtest_id,    type: BSON::ObjectId # RMTの場合nil
     field :internal_id,    type: String
 
     field :pair_name,      type: Symbol

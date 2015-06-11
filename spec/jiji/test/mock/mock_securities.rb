@@ -74,6 +74,10 @@ module Jiji::Test::Mock
       factory.register_securities(:MOCK2, 'モック2', [], MockSecurities2)
     end
 
+    def retrieve_account
+      Account.new(0, 100_000, 0.04)
+    end
+
     private
 
     def create_timestamps(interval, start_time, end_time)

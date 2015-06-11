@@ -10,8 +10,9 @@ module Jiji::Model::Trading
     def_delegators :@map, :[], :include?
     def_delegators :@positions, :each, :length, :size
 
-    def initialize(positions, position_builder)
+    def initialize(positions, position_builder, account)
       @position_builder =  position_builder
+      @account = account
 
       @positions = positions
       @map = to_map(positions)
@@ -24,6 +25,7 @@ module Jiji::Model::Trading
       end
       mark_as_closed(@map.values)
       @map = to_map(@positions)
+      @account.update(self, @account.updated_at)
     end
 
     # for internal use.
@@ -34,6 +36,7 @@ module Jiji::Model::Trading
         p.closing_policy.update_price(p, pair)
         p.save
       end
+      @account.update(self, tick.timestamp)
     end
 
     # for internal use.
@@ -43,6 +46,7 @@ module Jiji::Model::Trading
       result.trades_closed.each do |close_result|
         apply_close_result(close_result)
       end
+      @account.update(self, tick.timestamp)
     end
 
     # for internal use.
@@ -51,6 +55,9 @@ module Jiji::Model::Trading
       position = @map[result.internal_id]
       position.update_state_to_closed(result.price, result.timestamp)
       position.save
+
+      @account += position.profit_or_loss
+      @account.update(self, result.timestamp)
     end
 
     private
@@ -89,6 +96,8 @@ module Jiji::Model::Trading
       positions.each do |p|
         p.update_state_to_closed
         p.save
+
+        @account += p.profit_or_loss
       end
     end
 
@@ -107,6 +116,8 @@ module Jiji::Model::Trading
         position.units - result.units, result.price, result.timestamp)
       position.save
       new_position.save
+
+      @account += new_position.profit_or_loss
     end
 
     def to_map(positions)

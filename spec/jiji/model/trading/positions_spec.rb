@@ -17,8 +17,11 @@ describe Jiji::Model::Trading::Positions do
       data_builder.new_position(3)
     ]
   end
+  let(:account) do
+    Jiji::Model::Trading::Account.new(nil, 1_000_000, 0.04)
+  end
   let(:positions) do
-    Jiji::Model::Trading::Positions.new(original, builder)
+    Jiji::Model::Trading::Positions.new(original, builder, account)
   end
   let(:pairs) do
     [
@@ -44,6 +47,9 @@ describe Jiji::Model::Trading::Positions do
 
   describe '#update' do
     it '新しい建玉がある場合、一覧に追加される' do
+      expect(account.profit_or_loss).to eq 0
+      expect(account.margin_used).to eq 0
+
       new_positions = [
         data_builder.new_position(1),
         data_builder.new_position(2),
@@ -51,6 +57,11 @@ describe Jiji::Model::Trading::Positions do
         data_builder.new_position(3)
       ]
       positions.update(new_positions)
+
+      expect(account.balance).to eq(1_000_000)
+      expect(account.profit_or_loss).to eq(-300)
+      expect(account.margin_used).to eq 412_007.2
+      expect(account.updated_at).to eq nil
 
       expect(positions.length).to be 4
       position = positions['1']
@@ -124,6 +135,10 @@ describe Jiji::Model::Trading::Positions do
 
       positions.update(new_positions)
 
+      expect(account.balance).to eq(1_000_000)
+      expect(account.profit_or_loss).to eq(-150)
+      expect(account.margin_used).to eq 204_801.2
+
       expect(positions.length).to be 3
       position = positions['1']
       expect(position._id).to eq original[0]._id
@@ -173,12 +188,21 @@ describe Jiji::Model::Trading::Positions do
     end
 
     it '建玉が削除された場合、約定状態にする' do
+      positions.update_price(data_builder.new_tick(4, Time.at(100)), pairs)
+      expect(account.balance).to eq(1_000_000)
+      expect(account.profit_or_loss).to eq(-20_180)
+      expect(account.margin_used).to eq 245_602.4
+      expect(account.updated_at).to eq Time.at(100)
+
       new_positions = [
         data_builder.new_position(1),
         data_builder.new_position(3)
       ]
-      positions.update_price(data_builder.new_tick(4, Time.at(100)), pairs)
       positions.update(new_positions)
+      expect(account.balance).to eq(1_039_940)
+      expect(account.profit_or_loss).to eq(-60_120.0)
+      expect(account.margin_used).to eq 164_000.0
+      expect(account.updated_at).to eq Time.at(100)
 
       expect(positions.length).to be 2
       position = positions['1']
@@ -248,6 +272,11 @@ describe Jiji::Model::Trading::Positions do
   describe '#update_price' do
     it 'すべての建玉の価格が更新される' do
       positions.update_price(data_builder.new_tick(4, Time.at(100)), pairs)
+
+      expect(account.balance).to eq(1_000_000)
+      expect(account.profit_or_loss).to eq(-20_180)
+      expect(account.margin_used).to eq 245_602.4
+      expect(account.updated_at).to eq Time.at(100)
 
       expect(positions.length).to be 3
       position = positions['1']
@@ -345,6 +374,11 @@ describe Jiji::Model::Trading::Positions do
       tick = data_builder.new_tick(4, Time.at(100))
 
       positions.apply_order_result(order_result, tick)
+
+      expect(account.balance).to eq(1_000_000)
+      expect(account.profit_or_loss).to eq(-600_180)
+      expect(account.margin_used).to eq 685_602.4
+      expect(account.updated_at).to eq Time.at(100)
 
       expect(positions.length).to be 4
       position = positions['1']
@@ -457,6 +491,11 @@ describe Jiji::Model::Trading::Positions do
 
       positions.apply_order_result(order_result, tick)
 
+      expect(account.balance).to eq(1_076_967)
+      expect(account.profit_or_loss).to eq(-147)
+      expect(account.margin_used).to eq 200_721.08
+      expect(account.updated_at).to eq Time.at(100)
+
       expect(positions.length).to be 3
       position = positions['1']
       expect(position._id).to eq original[0]._id
@@ -554,6 +593,10 @@ describe Jiji::Model::Trading::Positions do
       tick = data_builder.new_tick(4, Time.at(100))
 
       positions.apply_order_result(order_result, tick)
+      expect(account.balance).to eq(176_967.0)
+      expect(account.profit_or_loss).to eq(-27)
+      expect(account.margin_used).to eq 36_721.08
+      expect(account.updated_at).to eq Time.at(100)
 
       expect(positions.length).to be 3
       position = positions['1']
@@ -649,6 +692,10 @@ describe Jiji::Model::Trading::Positions do
       tick = data_builder.new_tick(4, Time.at(100))
 
       positions.apply_order_result(order_result, tick)
+      expect(account.balance).to eq(1_000_000)
+      expect(account.profit_or_loss).to eq(-180)
+      expect(account.margin_used).to eq 245_602.4
+      expect(account.updated_at).to eq Time.at(100)
 
       expect(positions.length).to be 3
       position = positions['1']
@@ -730,6 +777,10 @@ describe Jiji::Model::Trading::Positions do
   describe '#apply_close_result' do
     it '決済された建玉がある場合、決済済み状態になる' do
       positions.apply_close_result(data_builder.new_closed_position(10, '1'))
+      expect(account.balance).to eq(910_000)
+      expect(account.profit_or_loss).to eq(-150)
+      expect(account.margin_used).to eq 205_202.4
+      expect(account.updated_at).to eq Time.at(10)
 
       expect(positions.length).to be 3
       position = positions['1']

@@ -7,7 +7,7 @@ module Jiji::Model::Trading::Brokers
 
     include Jiji::Model::Trading
 
-    attr_reader :positions
+    attr_reader :positions, :account
 
     def initialize
       @positions_is_dirty = true
@@ -24,21 +24,12 @@ module Jiji::Model::Trading::Brokers
 
     def positions
       return @positions unless @positions_is_dirty
-
-      positions = securities.retrieve_trades
-      @positions.update(positions)
-      @positions.update_price(tick, pairs)
-      @positions_is_dirty = false
-      @positions.each { |p| p.attach_broker(self) }
-      @positions
+      load_positions
     end
 
     def orders
       return @orders  if !@orders_is_dirty && @orders
-      @orders = securities.retrieve_orders
-      @orders.each { |o| o.attach_broker(self) }
-      @orders_is_dirty = false
-      @orders
+      load_orders
     end
 
     def buy(pair_name, units, type = :market, options = {})
@@ -93,7 +84,27 @@ module Jiji::Model::Trading::Brokers
       @positions_is_dirty = true
     end
 
+    # for internal use.
+    def refresh_account
+    end
+
     private
+
+    def load_positions
+      positions = securities.retrieve_trades
+      @positions.update(positions)
+      @positions.update_price(tick, pairs)
+      @positions_is_dirty = false
+      @positions.each { |p| p.attach_broker(self) }
+      @positions
+    end
+
+    def load_orders
+      @orders = securities.retrieve_orders
+      @orders.each { |o| o.attach_broker(self) }
+      @orders_is_dirty = false
+      @orders
+    end
 
     def order(pair_id, sell_or_buy, units, type, options)
       result = securities.order(pair_id, sell_or_buy, units, type, options)
@@ -104,7 +115,7 @@ module Jiji::Model::Trading::Brokers
     end
 
     def init_positions(initial_positions = [])
-      @positions = Positions.new(initial_positions, position_builder)
+      @positions = Positions.new(initial_positions, position_builder, account)
     end
 
   end

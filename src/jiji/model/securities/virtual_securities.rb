@@ -26,6 +26,10 @@ module Jiji::Model::Securities
     def destroy
     end
 
+    def retrieve_account
+      unsupported
+    end
+
     def retrieve_transactions(count = 500,
       pair_name = nil, min_id = nil, max_id = nil)
       unsupported

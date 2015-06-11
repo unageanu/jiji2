@@ -103,6 +103,7 @@ BODY
         'name'          => "テスト#{seed}",
         'start_time'    => Time.at(seed * 100),
         'end_time'      => Time.at((seed + 1) * 200),
+        'balance'       => 1_000_000,
         'memo'          => "メモ#{seed}",
         'pair_names'    => [:EURJPY, :EURUSD],
         'agent_setting' => [

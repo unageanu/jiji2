@@ -60,12 +60,24 @@ module Jiji::Model::Trading
       @account.update(self, result.timestamp)
     end
 
+    # for internal use.
+    def replace(new_positions, account)
+      @account = account
+      @positions.each do |p|
+        p.update_state_to_lost
+        p.save
+      end
+      new_positions.each { |p|  p.save }
+      @positions = new_positions
+      @map = to_map(new_positions)
+    end
+
     private
 
     def sync_or_save_position(original, new_position)
       if original
-        unless are_equals?(original, new_position)
-          sync_position(original, new_position)
+        unless PositionSynchronizer.are_equals?(original, new_position)
+          PositionSynchronizer.sync_position(original, new_position)
         end
         return original
       else
@@ -73,24 +85,6 @@ module Jiji::Model::Trading
         return new_position
       end
     end
-
-    def are_equals?(position, new_position)
-      SYNCHRONIZE_PROPERTIES.all? do |key|
-        position.method(key).call == new_position.method(key).call
-      end
-    end
-
-    def sync_position(position, new_position)
-      SYNCHRONIZE_PROPERTIES.each do |key|
-        position.method("#{key}=").call(new_position.method(key).call)
-      end
-      position.save
-    end
-
-    SYNCHRONIZE_PROPERTIES = [
-      :pair_name, :units, :sell_or_buy,
-      :entry_price, :entered_at, :closing_policy
-    ]
 
     def mark_as_closed(positions)
       positions.each do |p|
@@ -124,6 +118,28 @@ module Jiji::Model::Trading
       positions.each_with_object({}) do |p, r|
         r[p.internal_id] = p
       end
+    end
+
+    class PositionSynchronizer
+
+      def self.are_equals?(position, new_position)
+        SYNCHRONIZE_PROPERTIES.all? do |key|
+          position.method(key).call == new_position.method(key).call
+        end
+      end
+
+      def self.sync_position(position, new_position)
+        SYNCHRONIZE_PROPERTIES.each do |key|
+          position.method("#{key}=").call(new_position.method(key).call)
+        end
+        position.save
+      end
+
+      SYNCHRONIZE_PROPERTIES = [
+        :pair_name, :units, :sell_or_buy,
+        :entry_price, :entered_at, :closing_policy
+      ]
+
     end
 
   end

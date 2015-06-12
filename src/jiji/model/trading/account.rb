@@ -56,8 +56,6 @@ module Jiji::Model::Trading
 
     class Aggregator
 
-      attr_reader :profit_or_loss
-
       def initialize(margin_rate)
         @total_price    = BigDecimal.new(0, 10)
         @profit_or_loss = BigDecimal.new(0, 10)
@@ -65,7 +63,7 @@ module Jiji::Model::Trading
       end
 
       def process(position)
-        return if position.status == :closed
+        return if position.status != :live
         @profit_or_loss += position.profit_or_loss
         @total_price    +=
           BigDecimal.new(position.entry_price, 10) * position.units
@@ -73,6 +71,10 @@ module Jiji::Model::Trading
 
       def margin_used
         @total_price * @margin_rate
+      end
+
+      def profit_or_loss
+        @profit_or_loss.to_f
       end
 
     end

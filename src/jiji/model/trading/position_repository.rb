@@ -28,8 +28,14 @@ module Jiji::Model::Trading
     def delete_closed_positions_of_rmt(exited_before)
       Position.where(
         :backtest_id  => nil,
-        :status        => :closed,
-        :exited_at.lt  => exited_before).delete
+        :status       => :closed,
+        :exited_at.lt => exited_before
+      ).delete
+      Position.where(
+        :backtest_id   => nil,
+        :status        => :lost,
+        :updated_at.lt => exited_before
+      ).delete
     end
 
   end

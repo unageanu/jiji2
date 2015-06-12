@@ -40,20 +40,17 @@ module Jiji::Model::Trading::Brokers
     end
 
     # for internal use.
-    def refresh
-      @pairs_cache = nil
-      super
-    end
-
-    # for internal use.
     def refresh_account
       init_account
     end
 
     def update(ev)
+      @pairs_cache = nil
+      @rates_cache = nil
+
       init_account
-      load_positions
-      load_orders
+      reload_positions
+      @orders_is_dirty = true
     end
 
     private
@@ -63,6 +60,17 @@ module Jiji::Model::Trading::Brokers
     rescue Jiji::Errors::NotInitializedException
       @account = Account.new(nil, 0, 0.04)
     end
+
+    # rubocop:disable Lint/HandleExceptions
+    def reload_positions
+      positions = securities.retrieve_trades
+      @positions.replace(positions, @account)
+      @positions.update_price(tick, pairs)
+      @positions_is_dirty = false
+      @positions.each { |p| p.attach_broker(self) }
+    rescue Jiji::Errors::NotInitializedException
+    end
+    # rubocop:enable Lint/HandleExceptions
 
     def securities
       securities_provider.get

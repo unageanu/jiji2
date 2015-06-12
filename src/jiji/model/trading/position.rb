@@ -69,14 +69,14 @@ module Jiji::Model::Trading
 
     # for internal use.
     def update_state_for_reduce(units, time)
-      return if status == :closed
+      return if status != :live
       self.units = self.units - units
       self.updated_at = time
     end
 
     # for internal use.
     def update_state_to_closed(price = current_price, time = updated_at)
-      return if status == :closed
+      return if status != :live
       self.exit_price    = price
       self.current_price = price
       self.status        = :closed
@@ -85,8 +85,16 @@ module Jiji::Model::Trading
     end
 
     # for internal use.
+    def update_state_to_lost(price = current_price, time = updated_at)
+      return if status != :live
+      self.current_price = price
+      self.status        = :lost
+      self.updated_at    = time
+    end
+
+    # for internal use.
     def update_price(tick)
-      return if status == :closed
+      return if status != :live
       self.current_price = PricingUtils.calculate_current_price(
         tick, pair_name, sell_or_buy)
       self.updated_at    = tick.timestamp

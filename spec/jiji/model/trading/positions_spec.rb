@@ -858,4 +858,108 @@ describe Jiji::Model::Trading::Positions do
       expect(position.current_price).to eq 103.003
     end
   end
+
+  describe '#replace' do
+    it '一覧が新しいものに置き換わり、口座情報等が更新される。' \
+       + '既存の建玉はlost状態にされる' do
+      expect(account.profit_or_loss).to eq 0
+      expect(account.margin_used).to eq 0
+
+      new_positions = [
+        data_builder.new_position(1),
+        data_builder.new_position(2),
+        data_builder.new_position(4),
+        data_builder.new_position(3)
+      ]
+
+      account2 = Jiji::Model::Trading::Account.new(nil, 50_000, 0.04)
+      positions.replace(new_positions, account2)
+
+      expect(account2.balance).to eq(50_000)
+      expect(account2.profit_or_loss).to eq(0)
+      expect(account2.margin_used).to eq 0
+      expect(account2.updated_at).to eq nil
+      # accountは、replace後、update_priceで更新する
+
+      expect(positions.length).to be 4
+      position = positions['1']
+      expect(position._id).to eq new_positions[0]._id
+      expect(position.internal_id).to eq '1'
+      expect(position.status).to eq :live
+      expect(position.units).to be 10_000
+      expect(position.updated_at).to eq Time.at(1)
+
+      position = positions['2']
+      expect(position._id).to eq new_positions[1]._id
+      expect(position.internal_id).to eq '2'
+      expect(position.status).to eq :live
+      expect(position.units).to be 20_000
+      expect(position.updated_at).to eq Time.at(2)
+
+      position = positions['3']
+      expect(position._id).to eq new_positions[3]._id
+      expect(position.internal_id).to eq '3'
+      expect(position.status).to eq :live
+      expect(position.units).to be 30_000
+      expect(position.updated_at).to eq Time.at(3)
+
+      position = positions['4']
+      expect(position._id).to eq new_positions[2]._id
+      expect(position.internal_id).to eq '4'
+      expect(position.status).to eq :live
+      expect(position.units).to be 40_000
+      expect(position.updated_at).to eq Time.at(4)
+
+      loaded = repository.retrieve_positions
+      expect(loaded.length).to be 7
+      position = loaded[0]
+      expect(position._id).to eq original[0]._id
+      expect(position.internal_id).to eq '1'
+      expect(position.status).to eq :lost
+      expect(position.units).to be 10_000
+      expect(position.updated_at).to eq Time.at(1)
+
+      position = loaded[1]
+      expect(position._id).to eq new_positions[0]._id
+      expect(position.internal_id).to eq '1'
+      expect(position.status).to eq :live
+      expect(position.units).to be 10_000
+      expect(position.updated_at).to eq Time.at(1)
+
+      position = loaded[2]
+      expect(position._id).to eq original[1]._id
+      expect(position.internal_id).to eq '2'
+      expect(position.status).to eq :lost
+      expect(position.units).to be 20_000
+      expect(position.updated_at).to eq Time.at(2)
+
+      position = loaded[3]
+      expect(position._id).to eq new_positions[1]._id
+      expect(position.internal_id).to eq '2'
+      expect(position.status).to eq :live
+      expect(position.units).to be 20_000
+      expect(position.updated_at).to eq Time.at(2)
+
+      position = loaded[4]
+      expect(position._id).to eq original[2]._id
+      expect(position.internal_id).to eq '3'
+      expect(position.status).to eq :lost
+      expect(position.units).to be 30_000
+      expect(position.updated_at).to eq Time.at(3)
+
+      position = loaded[5]
+      expect(position._id).to eq new_positions[3]._id
+      expect(position.internal_id).to eq '3'
+      expect(position.status).to eq :live
+      expect(position.units).to be 30_000
+      expect(position.updated_at).to eq Time.at(3)
+
+      position = loaded[6]
+      expect(position._id).to eq new_positions[2]._id
+      expect(position.internal_id).to eq '4'
+      expect(position.status).to eq :live
+      expect(position.units).to be 40_000
+      expect(position.updated_at).to eq Time.at(4)
+    end
+  end
 end

@@ -141,7 +141,7 @@ describe Jiji::Model::Trading::Position do
     expect(position.profit_or_loss).to eq(99_700)
   end
 
-  it 'reduce で取引数を削減できる' do
+  it 'update_state_for_reduce で取引数を削減できる' do
     position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
     position = position_builder.build_from_tick(
       '1', :EURUSD, 10_000, :buy, @data_builder.new_tick(1))
@@ -161,7 +161,27 @@ describe Jiji::Model::Trading::Position do
     expect(position.status).to eq(:live)
   end
 
-  it 'close で約定済み状態にできる' do
+  it 'update_state_to_lost でロスト状態にできる' do
+    position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
+    position = position_builder.build_from_tick(
+      '1', :EURUSD, 10_000, :buy, @data_builder.new_tick(1))
+
+    position.update_state_to_lost(103, Time.at(300))
+    expect(position.backtest_id).to eq(nil)
+    expect(position.internal_id).to eq('1')
+    expect(position.pair_name).to eq(:EURUSD)
+    expect(position.units).to eq(10_000)
+    expect(position.sell_or_buy).to eq(:buy)
+    expect(position.entry_price).to eq(101.003)
+    expect(position.entered_at).to eq(Time.at(0))
+    expect(position.current_price).to eq(103.0)
+    expect(position.updated_at).to eq(Time.at(300))
+    expect(position.exit_price).to eq(nil)
+    expect(position.exited_at).to eq(nil)
+    expect(position.status).to eq(:lost)
+  end
+
+  it 'update_state_to_closed で約定済み状態にできる' do
     position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
     position = position_builder.build_from_tick(
       '1', :EURUSD, 10_000, :buy, @data_builder.new_tick(1))

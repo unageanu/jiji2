@@ -10,7 +10,7 @@ module Jiji::Test::Mock
 
     attr_reader :config
     attr_writer :pairs
-    attr_accessor :seed
+    attr_accessor :seed, :positions
 
     def initialize(config)
       @position_builder = Internal::PositionBuilder.new

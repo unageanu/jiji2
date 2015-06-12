@@ -8,8 +8,8 @@ module Jiji::Model::Securities::Internal::Virtual
     include Jiji::Errors
     include Jiji::Model::Trading
 
-    def init_trading_state
-      @positions = []
+    def init_trading_state(positions = [])
+      @positions = positions
     end
 
     def retrieve_trades(count = 500, pair_name = nil, max_id = nil)

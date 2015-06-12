@@ -209,4 +209,161 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       expect(positions[3].exit_price).to be nil
     end
   end
+
+  describe 'RMTの再起動' do
+    it '既存の建玉が証券会社からロードされる' do
+      setting = @container.lookup(:setting_repository).securities_setting
+      setting.set_active_securities(:MOCK, {})
+      securities = @provider.get
+      securities.positions = [
+        data_builder.new_position(10),
+        data_builder.new_position(11)
+      ]
+
+      positions = position_repository.retrieve_positions(nil)
+      expect(positions.length).to be 0
+
+      broker  = @container.lookup(:rmt_broker)
+
+      positions = broker.positions
+      expect(positions.length).to be 2
+      expect(positions['10'].internal_id).to eq '10'
+      expect(positions['10'].entry_price).to eq 110.003
+      expect(positions['10'].current_price).to eq 135.3
+      expect(positions['10'].status).to eq :live
+      expect(positions['11'].internal_id).to eq '11'
+      expect(positions['11'].entry_price).to eq 111.0
+      expect(positions['11'].current_price).to eq 135.33
+      expect(positions['11'].status).to eq :live
+      expect(broker.account.profit_or_loss).to eq(-146_600.0)
+      expect(broker.account.balance).to be 100_000
+
+      positions = position_repository.retrieve_positions(nil)
+      expect(positions.length).to be 2
+      position = positions[0]
+      expect(position.internal_id).to eq '10'
+      expect(position.entry_price).to eq 110.003
+      expect(position.current_price).to eq 135.3
+      expect(position.status).to eq :live
+      position = positions[1]
+      expect(position.internal_id).to eq '11'
+      expect(position.entry_price).to eq 111.0
+      expect(position.current_price).to eq 135.33
+      expect(position.status).to eq :live
+    end
+
+    it '未約定の建玉がある場合、証券会社から取得した一覧に存在しなければ約定済みとされる' do
+      setting = @container.lookup(:setting_repository).securities_setting
+      setting.set_active_securities(:MOCK, {})
+      securities = @provider.get
+      securities.positions = [
+        data_builder.new_position(10),
+        data_builder.new_position(11),
+        data_builder.new_position(12),
+        data_builder.new_position(13)
+      ]
+
+      positions = position_repository.retrieve_positions(nil)
+      expect(positions.length).to be 0
+
+      broker  = @container.lookup(:rmt_broker)
+
+      positions = broker.positions
+      expect(positions.length).to be 4
+      positions['11'].close
+      positions['12'].update_state_to_lost
+      positions['12'].save
+
+      position = positions['10']
+      expect(position.internal_id).to eq '10'
+      expect(position.status).to eq :live
+      position = positions['11']
+      expect(position.internal_id).to eq '11'
+      expect(position.status).to eq :closed
+      position = positions['12']
+      expect(position.internal_id).to eq '12'
+      expect(position.status).to eq :lost
+      position = positions['13']
+      expect(position.internal_id).to eq '13'
+      expect(position.status).to eq :live
+
+      positions = position_repository.retrieve_positions(nil)
+      expect(positions.length).to be 4
+
+      @container    = Jiji::Test::TestContainerFactory.instance.new_container
+      @provider     = @container.lookup(:securities_provider)
+      setting = @container.lookup(:setting_repository).securities_setting
+      setting.setup
+
+      securities = @provider.get
+      securities.positions = [
+        data_builder.new_position(11),
+        data_builder.new_position(12),
+        data_builder.new_position(13),
+        data_builder.new_position(14)
+      ]
+      broker  = @container.lookup(:rmt_broker)
+
+      positions = broker.positions
+      expect(positions.length).to be 4
+      position = positions['11']
+      expect(position.internal_id).to eq '11'
+      expect(position.entry_price).to eq 111.0
+      expect(position.current_price).to eq 135.33
+      expect(position.status).to eq :live
+      position = positions['12']
+      expect(position.internal_id).to eq '12'
+      expect(position.entry_price).to eq 112.003
+      expect(position.current_price).to eq 135.3
+      expect(position.status).to eq :live
+      position = positions['13']
+      expect(position.internal_id).to eq '13'
+      expect(position.entry_price).to eq 113.0
+      expect(position.current_price).to eq 135.33
+      expect(position.status).to eq :live
+      position = positions['14']
+      expect(position.internal_id).to eq '14'
+      expect(position.entry_price).to eq 114.003
+      expect(position.current_price).to eq 135.3
+      expect(position.status).to eq :live
+
+      positions = position_repository.retrieve_positions(nil)
+      expect(positions.length).to be 7
+      position = positions[0]
+      expect(position.internal_id).to eq '10'
+      expect(position.entry_price).to eq 110.003
+      expect(position.current_price).to eq 135.3
+      expect(position.status).to eq :closed
+      position = positions[1]
+      expect(position.internal_id).to eq '11'
+      expect(position.entry_price).to eq 111.0
+      expect(position.current_price).to eq 135.33
+      expect(position.status).to eq :closed
+      position = positions[2]
+      expect(position.internal_id).to eq '11'
+      expect(position.entry_price).to eq 111.0
+      expect(position.current_price).to eq 135.33
+      expect(position.status).to eq :live
+      position = positions[3]
+      expect(position.internal_id).to eq '12'
+      expect(position.entry_price).to eq 112.003
+      expect(position.current_price).to eq 135.3
+      expect(position.status).to eq :lost
+      position = positions[4]
+      expect(position.internal_id).to eq '12'
+      expect(position.entry_price).to eq 112.003
+      expect(position.current_price).to eq 135.3
+      expect(position.status).to eq :live
+      position = positions[5]
+      expect(position.internal_id).to eq '13'
+      expect(position.entry_price).to eq 113.0
+      expect(position.current_price).to eq 135.33
+      expect(position.status).to eq :live
+      position = positions[6]
+      expect(position.internal_id).to eq '14'
+      expect(position.entry_price).to eq 114.003
+      expect(position.current_price).to eq 135.3
+      expect(position.status).to eq :live
+    end
+  end
 end

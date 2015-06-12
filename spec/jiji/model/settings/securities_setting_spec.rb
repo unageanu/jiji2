@@ -8,11 +8,15 @@ describe Jiji::Model::Settings::SecuritiesSetting do
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
     @provider     = @container.lookup(:securities_provider)
     @repository   = @container.lookup(:setting_repository)
+    @rmt          = @container.lookup(:rmt)
+
+    @rmt.setup
 
     @setting      = @repository.securities_setting
   end
 
   after(:example) do
+    @rmt.tear_down
     @data_builder.clean
   end
 

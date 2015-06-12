@@ -25,7 +25,7 @@ describe Jiji::Model::Settings::SecuritySetting do
     expect(@setting.mail_address).to be nil
   end
 
-  it 'パスワードを設定して永続化できる。saltは自動生成される。' do
+  it 'パスワードを設定して永続化できる。saltは自動生成される' do
     @setting.password     = 'aaa'
     @setting.mail_address = 'foo@var.com'
 
@@ -57,7 +57,7 @@ describe Jiji::Model::Settings::SecuritySetting do
     expect(@setting.expiration_days).to eq 12
   end
 
-  it 'メールアドレスを設定して永続化できる。' do
+  it 'メールアドレスを設定して永続化できる' do
     @setting.password     = 'aaa'
     @setting.mail_address = 'foo@var.com'
 
@@ -69,7 +69,7 @@ describe Jiji::Model::Settings::SecuritySetting do
     expect(@setting.mail_address).to eq 'foo@var.com'
   end
 
-  it 'メールアドレスが不正な場合、エラー。' do
+  it 'メールアドレスが不正な場合、エラー' do
     @setting.expiration_days = 12
 
     @setting.mail_address = 'foovar.com'
@@ -88,7 +88,7 @@ describe Jiji::Model::Settings::SecuritySetting do
     end.to raise_exception(ActiveModel::StrictValidationFailed)
   end
 
-  it 'expiration_days が不正な場合、エラー。' do
+  it 'expiration_days が不正な場合、エラー' do
     @setting.mail_address = 'foo@var.com'
 
     @setting.expiration_days = -1

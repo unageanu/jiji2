@@ -16,6 +16,7 @@ module Jiji::Model::Settings
     needs :logger
     needs :securities_factory
     needs :securities_provider
+    needs :rmt
 
     def initialize
       super
@@ -47,7 +48,9 @@ module Jiji::Model::Settings
       securities_configurations[securities_id] = configurations
       save
 
-      securities_provider.set(securities)
+      rmt.process.post_exec do |_context, _queue|
+        securities_provider.set(securities)
+      end.value
 
       fire_setting_changed_event(:active_securities, value: securities)
     end

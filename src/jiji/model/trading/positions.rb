@@ -44,19 +44,15 @@ module Jiji::Model::Trading
       add(result.trade_opened, tick) if result.trade_opened
       split(result.trade_reduced) if result.trade_reduced
       result.trades_closed.each do |close_result|
-        apply_close_result(close_result)
+        close(close_result.internal_id,
+          close_result.price, close_result.timestamp)
       end
       @account.update(self, tick.timestamp)
     end
 
     # for internal use.
     def apply_close_result(result)
-      return unless @map.include?(result.internal_id)
-      position = @map[result.internal_id]
-      position.update_state_to_closed(result.price, result.timestamp)
-      position.save
-
-      @account += position.profit_or_loss
+      close(result.internal_id, result.price, result.timestamp)
       @account.update(self, result.timestamp)
     end
 
@@ -112,6 +108,17 @@ module Jiji::Model::Trading
       new_position.save
 
       @account += new_position.profit_or_loss
+    end
+
+    def close(internal_id, price, timestamp)
+      return unless @map.include?(internal_id)
+      position = @map[internal_id]
+      position.update_state_to_closed(price, timestamp)
+      position.save
+
+      @positions = @positions.reject { |p| p.internal_id == internal_id }
+      @map.delete(internal_id)
+      @account += position.profit_or_loss
     end
 
     def to_map(positions)

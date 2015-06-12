@@ -21,7 +21,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   let(:broker) do
     Jiji::Model::Trading::Brokers::BackTestBroker.new(backtest_id,
       Time.utc(2015, 5, 1), Time.utc(2015, 5, 1, 0, 10),
-      @pairs, 10_000, @repository)
+      @pairs, 100_000, @repository)
   end
 
   before(:example) do

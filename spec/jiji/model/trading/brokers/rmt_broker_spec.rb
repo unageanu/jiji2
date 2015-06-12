@@ -277,9 +277,6 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       position = positions['10']
       expect(position.internal_id).to eq '10'
       expect(position.status).to eq :live
-      position = positions['11']
-      expect(position.internal_id).to eq '11'
-      expect(position.status).to eq :closed
       position = positions['12']
       expect(position.internal_id).to eq '12'
       expect(position.status).to eq :lost

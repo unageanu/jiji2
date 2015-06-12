@@ -598,18 +598,7 @@ describe Jiji::Model::Trading::Positions do
       expect(account.margin_used).to eq 36_721.08
       expect(account.updated_at).to eq Time.at(100)
 
-      expect(positions.length).to be 3
-      position = positions['1']
-      expect(position._id).to eq original[0]._id
-      expect(position.internal_id).to eq '1'
-      expect(position.status).to eq :closed
-      expect(position.units).to be 10_000
-      expect(position.entered_at).to eq Time.at(1)
-      expect(position.updated_at).to eq Time.at(10)
-      expect(position.exited_at).to eq Time.at(10)
-      expect(position.exit_price).to eq 110
-      expect(position.entry_price).to eq 101
-      expect(position.current_price).to eq 110
+      expect(positions.length).to be 1
 
       position = positions['2']
       expect(position._id).to eq original[1]._id
@@ -622,18 +611,6 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
-
-      position = positions['3']
-      expect(position._id).to eq original[2]._id
-      expect(position.internal_id).to eq '3'
-      expect(position.status).to eq :closed
-      expect(position.units).to be 30_000
-      expect(position.entered_at).to eq Time.at(3)
-      expect(position.updated_at).to eq Time.at(30)
-      expect(position.exited_at).to eq Time.at(30)
-      expect(position.exit_price).to eq 130
-      expect(position.entry_price).to eq 103
-      expect(position.current_price).to eq 130
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 4
@@ -782,18 +759,7 @@ describe Jiji::Model::Trading::Positions do
       expect(account.margin_used).to eq 205_202.4
       expect(account.updated_at).to eq Time.at(10)
 
-      expect(positions.length).to be 3
-      position = positions['1']
-      expect(position._id).to eq original[0]._id
-      expect(position.internal_id).to eq '1'
-      expect(position.status).to eq :closed
-      expect(position.units).to be 10_000
-      expect(position.entered_at).to eq Time.at(1)
-      expect(position.updated_at).to eq Time.at(10)
-      expect(position.exited_at).to eq Time.at(10)
-      expect(position.exit_price).to eq 110
-      expect(position.entry_price).to eq 101
-      expect(position.current_price).to eq 110
+      expect(positions.length).to be 2
 
       position = positions['2']
       expect(position._id).to eq original[1]._id

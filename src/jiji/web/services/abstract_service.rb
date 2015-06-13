@@ -20,20 +20,6 @@ module Jiji::Web
 
     set :sessions, false
 
-    options '*' do
-      if AllowCrossDomainRequestFilter.allow_cross_domain_request?
-        headers({
-          'Allow' => 'GET,PUT,POST,DELETE,OPTIONS',
-          'Access-Control-Allow-Headers' =>
-            'X-Requested-With, X-HTTP-Method-Override, ' \
-            + 'Content-Type, Cache-Control, Accept, Authorization'
-        })
-        return 200
-      else
-        return 404
-      end
-    end
-
     private
 
     def load_body
@@ -82,6 +68,22 @@ module Jiji::Web
 
     def no_content
       [204]
+    end
+
+    def allow( allow_methods )
+      publish_access_control_allow_header_if_allow_crossdomain_request
+      headers({
+        'Allow' => allow_methods
+      })
+    end
+
+    def publish_access_control_allow_header_if_allow_crossdomain_request
+      return unless AllowCrossDomainRequestFilter.allow_cross_domain_request?
+      headers({
+        'Access-Control-Allow-Headers' =>
+          'X-Requested-With, X-HTTP-Method-Override, ' \
+          + 'Content-Type, Cache-Control, Accept, Authorization'
+      })
     end
 
     def no_cache

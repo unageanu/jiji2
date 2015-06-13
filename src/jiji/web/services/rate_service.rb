@@ -8,12 +8,26 @@ module Jiji::Web
 
     include Jiji::Model::Trading::Internal
 
+    options '/range' do
+      allow( 'GET,OPTIONS')
+    end
+
     get '/range' do
       ok(tick_repository.range)
     end
 
+
+    options '/pair' do
+      allow( 'GET,OPTIONS')
+    end
+
     get '/pairs' do
       ok(pairs.all)
+    end
+
+
+    options '/:pair_name/:interval' do
+      allow( 'GET,OPTIONS')
     end
 
     get '/:pair_name/:interval' do
@@ -23,6 +37,7 @@ module Jiji::Web
       ok(securities.retrieve_rate_history(pair_name,
         interval, range[:start], range[:end]))
     end
+
 
     def pairs
       lookup(:pairs)

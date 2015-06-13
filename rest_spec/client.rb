@@ -27,34 +27,31 @@ module Jiji
       @client.debug_dev = debug_device
     end
 
-    def get(path, query = nil, header = {})
-      r = @client.get("#{@api_url}/#{path}",
-        query, complement_header(header))
-      Response.new(r, @transport)
+    [:get, :delete, :options].each do |m|
+      define_method(m) do |path, query = nil, header = {}|
+        do_request(m, path, nil, query,  header)
+      end
     end
 
-    def post(path, body, header = {})
-      r = @client.post("#{@api_url}/#{path}",
-        serialize_body(body), complement_header(header))
-      Response.new(r, @transport)
+    [:post, :put].each do |m|
+      define_method(m) do |path, body, header = {}|
+        do_request(m, path, body, nil, header)
+      end
     end
 
-    def put(path, body, header = {})
-      r = @client.put("#{@api_url}/#{path}",
-        serialize_body(body), complement_header(header))
-      Response.new(r, @transport)
-    end
-
-    def delete(path, query = nil, header = {})
-      r = @client.delete("#{@api_url}/#{path}",
-        nil, complement_header(header), query)
+    def do_request(method, path, body = nil,  query = nil, header = {})
+      r = @client.request(method, "#{@api_url}/#{path}", {
+        body:   serialize_body(body),
+        header: complement_header(header),
+        query:  query
+      })
       Response.new(r, @transport)
     end
 
     private
 
     def serialize_body(body)
-      @transport.serialize(body)
+      body ? @transport.serialize(body) : nil
     end
 
     def complement_header(header)

@@ -6,6 +6,10 @@ require 'jiji/web/services/abstract_service'
 module Jiji::Web::Test
   class MailService < Jiji::Web::AuthenticationRequiredService
 
+    options '/' do
+      allow( 'GET,OPTIONS')
+    end
+
     get '/' do
       deliveries = Mail::TestMailer.deliveries.map do |mail|
         {

@@ -6,6 +6,10 @@ require 'jiji/web/services/abstract_service'
 module Jiji::Web
   class UserSettingService < Jiji::Web::AuthenticationRequiredService
 
+    options '/mailaddress' do
+      allow( 'GET,PUT,OPTIONS')
+    end
+
     get '/mailaddress' do
       ok(security_setting.mail_address)
     end
@@ -16,6 +20,11 @@ module Jiji::Web
       setting.mail_address = body['mail_address']
       setting.save
       no_content
+    end
+
+
+    options '/password' do
+      allow( 'GET,PUT,OPTIONS')
     end
 
     put '/password' do
@@ -29,6 +38,7 @@ module Jiji::Web
         auth_failed
       end
     end
+    
 
     def security_setting
       lookup(:setting_repository).security_setting

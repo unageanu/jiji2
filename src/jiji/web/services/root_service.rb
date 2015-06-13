@@ -7,6 +7,10 @@ require 'jiji/utils/requires'
 module Jiji::Web
   class RootService < Jiji::Web::AbstractService
 
+    options '/' do
+      allow( 'GET,OPTIONS')
+    end
+
     get '/' do
       redirect to('/static/html/index.html')
     end

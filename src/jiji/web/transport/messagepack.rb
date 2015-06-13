@@ -16,3 +16,12 @@ class Struct
   end
 
 end
+
+
+class BigDecimal
+
+  def to_msgpack(*a)
+    to_f.to_msgpack(*a)
+  end
+
+end

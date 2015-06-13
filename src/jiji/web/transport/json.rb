@@ -16,3 +16,11 @@ class Struct
   end
 
 end
+
+class BigDecimal
+
+  def to_json(*a)
+    to_f.to_json(*a)
+  end
+
+end

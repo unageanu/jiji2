@@ -64,6 +64,14 @@ module Jiji::Web
       end
     end
 
+    def invoke_on_rmt_process(&block)
+      rmt.process.post_exec(&block).value
+    end
+
+    def rmt
+      lookup(:rmt)
+    end
+
     def ok(body)
       [200, no_cache, serialize(body)]
     end

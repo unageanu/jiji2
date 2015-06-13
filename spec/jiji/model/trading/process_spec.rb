@@ -35,6 +35,12 @@ describe Jiji::Model::Trading::Process do
         expects_process_cancelled(@process)
       end
 
+      it 'start した直後でも停止できる' do
+        @process.start
+        @process.stop
+        expects_process_cancelled(@process)
+      end
+
       it 'メッセージを送信できる' do
         @process.start
         sleep 0.1

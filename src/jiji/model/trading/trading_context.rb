@@ -27,7 +27,7 @@ module Jiji::Model::Trading
     end
 
     def prepare_running
-      @status = :running
+      @status = :running if @status == :wait_for_start
     end
 
     def post_running

@@ -16,7 +16,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
   end
 
   after(:example) do
-    @rmt.tear_down if @rmt
+    @rmt.stop_rmt_process if @rmt
     data_builder.clean
   end
 
@@ -53,7 +53,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
   context 'プラグインが設定されている場合' do
     before(:example) do
       @rmt = @container.lookup(:rmt)
-      @rmt.setup
+      @rmt.setup_rmt_process
 
       @provider.get.reset
     end
@@ -76,11 +76,11 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         setting.set_active_securities(:MOCK, {})
 
         # 永続化された設定から再構築する
-        @rmt.tear_down
+        @rmt.stop_rmt_process
         @container    = Jiji::Test::TestContainerFactory.instance.new_container
         @provider     = @container.lookup(:securities_provider)
         @rmt          = @container.lookup(:rmt)
-        @rmt.setup
+        @rmt.setup_rmt_process
 
         setting = @container.lookup(:setting_repository).securities_setting
         setting.setup
@@ -103,7 +103,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
     before(:example) do
       @rmt = @container.lookup(:rmt)
-      @rmt.setup
+      @rmt.setup_rmt_process
     end
 
     let(:pairs) do

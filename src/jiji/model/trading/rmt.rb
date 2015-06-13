@@ -22,9 +22,11 @@ module Jiji::Model::Trading
       @setting_repository.securities_setting.setup
 
       setup_rmt_process
+      setup_next_tick_job_generator
     end
 
     def tear_down
+      stop_next_tick_job_generator
       stop_rmt_process
     end
 
@@ -35,8 +37,6 @@ module Jiji::Model::Trading
       rmt_setting.agent_setting = new_setting
       rmt_setting.save
     end
-
-    private
 
     def setup_rmt_process
       agent_setting = @setting_repository.rmt_setting.agent_setting
@@ -50,13 +50,21 @@ module Jiji::Model::Trading
       @process         = create_process(trading_context)
 
       @process.start
-      @rmt_next_tick_job_generator.start(@process.job_queue)
     end
 
     def stop_rmt_process
-      @rmt_next_tick_job_generator.stop
       @process.stop if @process
     end
+
+    def setup_next_tick_job_generator
+      @rmt_next_tick_job_generator.start(@process.job_queue)
+    end
+
+    def stop_next_tick_job_generator
+      @rmt_next_tick_job_generator.stop
+    end
+
+    private
 
     def create_trading_context(graph_factory)
       TradingContext.new(@agents, rmt_broker,

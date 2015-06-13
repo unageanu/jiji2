@@ -16,6 +16,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
   end
 
   after(:example) do
+    @rmt.tear_down if @rmt
     data_builder.clean
   end
 
@@ -51,6 +52,9 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
   context 'プラグインが設定されている場合' do
     before(:example) do
+      @rmt = @container.lookup(:rmt)
+      @rmt.setup
+
       @provider.get.reset
     end
 
@@ -72,8 +76,12 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         setting.set_active_securities(:MOCK, {})
 
         # 永続化された設定から再構築する
+        @rmt.tear_down
         @container    = Jiji::Test::TestContainerFactory.instance.new_container
         @provider     = @container.lookup(:securities_provider)
+        @rmt          = @container.lookup(:rmt)
+        @rmt.setup
+
         setting = @container.lookup(:setting_repository).securities_setting
         setting.setup
         broker = @container.lookup(:rmt_broker)
@@ -91,6 +99,11 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
       setting.set_active_securities(:MOCK, {})
       broker
+    end
+
+    before(:example) do
+      @rmt = @container.lookup(:rmt)
+      @rmt.setup
     end
 
     let(:pairs) do
@@ -212,13 +225,12 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
   describe 'RMTの再起動' do
     it '既存の建玉が証券会社からロードされる' do
-      setting = @container.lookup(:setting_repository).securities_setting
-      setting.set_active_securities(:MOCK, {})
-      securities = @provider.get
+      securities = Jiji::Test::Mock::MockSecurities.new({})
       securities.positions = [
         data_builder.new_position(10),
         data_builder.new_position(11)
       ]
+      @provider.set securities
 
       positions = position_repository.retrieve_positions(nil)
       expect(positions.length).to be 0
@@ -253,15 +265,14 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
     end
 
     it '未約定の建玉がある場合、証券会社から取得した一覧に存在しなければ約定済みとされる' do
-      setting = @container.lookup(:setting_repository).securities_setting
-      setting.set_active_securities(:MOCK, {})
-      securities = @provider.get
+      securities = Jiji::Test::Mock::MockSecurities.new({})
       securities.positions = [
         data_builder.new_position(10),
         data_builder.new_position(11),
         data_builder.new_position(12),
         data_builder.new_position(13)
       ]
+      @provider.set securities
 
       positions = position_repository.retrieve_positions(nil)
       expect(positions.length).to be 0
@@ -289,16 +300,16 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
       @container    = Jiji::Test::TestContainerFactory.instance.new_container
       @provider     = @container.lookup(:securities_provider)
-      setting = @container.lookup(:setting_repository).securities_setting
-      setting.setup
 
-      securities = @provider.get
+      securities = Jiji::Test::Mock::MockSecurities.new({})
       securities.positions = [
         data_builder.new_position(11),
         data_builder.new_position(12),
         data_builder.new_position(13),
         data_builder.new_position(14)
       ]
+      @provider.set securities
+
       broker  = @container.lookup(:rmt_broker)
 
       positions = broker.positions

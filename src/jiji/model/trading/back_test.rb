@@ -9,7 +9,7 @@ require 'jiji/model/trading/internal/worker_mixin'
 module Jiji::Model::Trading
   module BackTestFunctions
     def load_broker_setting_from_hash(hash)
-      self.pair_names    = hash['pair_names']
+      self.pair_names    = (hash['pair_names'] || []).map { |n| n.to_sym }
       self.start_time    = hash['start_time']
       self.end_time      = hash['end_time']
       self.balance       = hash['balance'] || 0

@@ -44,6 +44,7 @@ module Jiji::Web
       builder.map('/api/sessions')      { run SessionService }
       builder.map('/api/rmt')           { run RMTService }
       builder.map('/api/agents')        { run AgentService }
+      builder.map('/api/backtests')     { run BacktestService }
     end
 
     def register_setting_services(builder)

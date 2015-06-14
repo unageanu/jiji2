@@ -7,7 +7,7 @@ module Jiji::Web
   class PasswordResettingService < Jiji::Web::AbstractService
 
     options '/' do
-      allow( 'POST,PUT,OPTIONS')
+      allow('POST,PUT,OPTIONS')
     end
 
     post '/' do
@@ -22,7 +22,6 @@ module Jiji::Web
         body['token'], body['new_password'])
       ok(token: token)
     end
-
 
     def resetter
       lookup(:password_resetter)

@@ -7,7 +7,7 @@ module Jiji::Web
   class AuthenticationService < Jiji::Web::AbstractService
 
     options '/' do
-      allow( 'POST,OPTIONS')
+      allow('POST,OPTIONS')
     end
 
     post '/' do

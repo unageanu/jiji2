@@ -17,7 +17,6 @@ class Struct
 
 end
 
-
 class BigDecimal
 
   def to_msgpack(*a)

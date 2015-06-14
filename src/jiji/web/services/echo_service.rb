@@ -7,11 +7,11 @@ module Jiji::Web
   class EchoService < Jiji::Web::AbstractService
 
     options '/' do
-      allow( 'GET,OPTIONS')
+      allow('GET,OPTIONS')
     end
 
     get '/' do
-      ok(message: "ok")
+      ok(message: 'ok')
     end
 
   end

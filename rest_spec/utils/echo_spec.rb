@@ -18,5 +18,4 @@ describe 'Echo' do
     expect(r.status).to eq 200
     expect(r.header['Allow']).to eq(['GET,OPTIONS'])
   end
-
 end

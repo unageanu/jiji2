@@ -7,7 +7,7 @@ module Jiji::Web
   class PositionService < Jiji::Web::AuthenticationRequiredService
 
     options '/rmt' do
-      allow( 'GET,OPTIONS')
+      allow('GET,OPTIONS')
     end
 
     get '/rmt' do
@@ -15,9 +15,8 @@ module Jiji::Web
       ok(repository.retrieve_positions(nil, query))
     end
 
-
     options '/rmt/exited' do
-      allow( 'DELETE,OPTIONS')
+      allow('DELETE,OPTIONS')
     end
 
     delete '/rmt/exited' do
@@ -26,16 +25,14 @@ module Jiji::Web
       no_content
     end
 
-
     options '/:backtest_id' do
-      allow( 'GET,OPTIONS')
+      allow('GET,OPTIONS')
     end
 
     get '/:backtest_id' do
       query = get_time_from_query_param
       ok(repository.retrieve_positions(params['backtest_id'], query))
     end
-
 
     def repository
       lookup(:position_repository)

@@ -7,7 +7,7 @@ module Jiji::Web
   class RMTService < Jiji::Web::AuthenticationRequiredService
 
     options '/account' do
-      allow( 'GET,OPTIONS')
+      allow('GET,OPTIONS')
     end
 
     get '/account' do

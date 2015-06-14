@@ -7,7 +7,7 @@ module Jiji::Web
   class UserSettingService < Jiji::Web::AuthenticationRequiredService
 
     options '/mailaddress' do
-      allow( 'GET,PUT,OPTIONS')
+      allow('GET,PUT,OPTIONS')
     end
 
     get '/mailaddress' do
@@ -22,9 +22,8 @@ module Jiji::Web
       no_content
     end
 
-
     options '/password' do
-      allow( 'GET,PUT,OPTIONS')
+      allow('GET,PUT,OPTIONS')
     end
 
     put '/password' do
@@ -38,7 +37,6 @@ module Jiji::Web
         auth_failed
       end
     end
-    
 
     def security_setting
       lookup(:setting_repository).security_setting

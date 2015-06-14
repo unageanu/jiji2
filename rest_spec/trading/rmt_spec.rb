@@ -16,5 +16,4 @@ describe 'リアルトレード' do
     expect(r.body['margin_used']).to be >= 0
     expect(r.body['profit_or_loss']).to be >= 0
   end
-
 end

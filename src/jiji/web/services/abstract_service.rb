@@ -70,7 +70,7 @@ module Jiji::Web
       [204]
     end
 
-    def allow( allow_methods )
+    def allow(allow_methods)
       publish_access_control_allow_header_if_allow_crossdomain_request
       headers({
         'Allow' => allow_methods

@@ -7,7 +7,7 @@ module Jiji::Web::Test
   class MailService < Jiji::Web::AuthenticationRequiredService
 
     options '/' do
-      allow( 'GET,OPTIONS')
+      allow('GET,OPTIONS')
     end
 
     get '/' do

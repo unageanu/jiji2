@@ -65,7 +65,7 @@ module Jiji::Model::Agents
       save
     end
 
-    def update(name, updated_at, memo, body)
+    def update(name = nil, updated_at = nil, memo = nil, body = nil)
       self.name       = name       || self.name
       self.memo       = memo       || self.memo
       self.body       = body       || self.body

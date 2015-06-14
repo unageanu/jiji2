@@ -61,6 +61,40 @@ describe Jiji::Model::Agents::AgentRegistry do
     end
   end
 
+  describe 'リネーム' do
+    it 'ファイル名を変更できる' do
+      @registory.add_source('aaa', '', :agent, new_body(1))
+
+      expect(@registory.get_agent_class('TestAgent1@aaa')).not_to be nil
+
+      @registory.rename_source('aaa', 'aaa2')
+      expect(@registory.get_agent_class('TestAgent1@aaa2')).not_to be nil
+      expect do
+        @registory.get_agent_class('TestAgent1@aaa')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
+    end
+
+    it '変更前と変更後が同じファイルの場合、何もしない' do
+      @registory.add_source('aaa', '', :agent, new_body(1))
+      @registory.rename_source('aaa', 'aaa')
+      expect(@registory.get_agent_class('TestAgent1@aaa')).not_to be nil
+    end
+
+    it '変更対象がない場合エラー' do
+      expect do
+        @registory.rename_source('aaa', 'aaa2')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
+    end
+
+    it '同名のファイルが既に存在する場合、エラー' do
+      @registory.add_source('aaa', '', :agent, new_body(1))
+      @registory.add_source('bbb', '', :agent, new_body(1))
+      expect do
+        @registory.rename_source('aaa', 'bbb')
+      end.to raise_exception(Jiji::Errors::AlreadyExistsException)
+    end
+  end
+
   describe '更新' do
     it '更新できる' do
       @registory.add_source('aaa', '', :agent,

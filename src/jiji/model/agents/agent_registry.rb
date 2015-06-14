@@ -54,8 +54,19 @@ module Jiji::Model::Agents
     def remove_source(name)
       @mutex.synchronize do
         not_found(AgentSource, name: name) unless @agents[name]
-        @agents[name].delete
         unregister_source(name)
+      end
+    end
+
+    def rename_source(old_name, new_name)
+      return if old_name == new_name
+      @mutex.synchronize do
+        not_found(AgentSource, name: old_name) unless @agents[old_name]
+        already_exists(AgentSource, name: new_name) if @agents[new_name]
+        source = @agents[old_name]
+        unregister_source(old_name)
+        source.update(new_name, @time_source.now)
+        register_source(source)
       end
     end
 

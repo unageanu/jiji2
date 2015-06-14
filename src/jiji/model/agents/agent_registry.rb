@@ -2,6 +2,7 @@
 
 require 'encase'
 require 'jiji/errors/errors'
+require 'forwardable'
 
 module Jiji::Model::Agents
   class AgentRegistry
@@ -9,6 +10,10 @@ module Jiji::Model::Agents
     include Encase
     include Enumerable
     include Jiji::Errors
+    extend Forwardable
+
+    def_delegators :@builder,
+      :create_agent, :get_agent_property_infos, :get_agent_description
 
     needs :agent_source_repository
     needs :time_source
@@ -17,7 +22,8 @@ module Jiji::Model::Agents
       @mutex = Mutex.new
       @agents = {}
       Context._delegates = {}
-      @finder = Internal::AgentFinder.new(@agents)
+      @finder  = Internal::AgentFinder.new(@agents)
+      @builder = Internal::AgentBuilder.new(self)
     end
 
     def on_inject
@@ -26,6 +32,19 @@ module Jiji::Model::Agents
 
     def each(&block)
       @finder.each(&block)
+    end
+
+    def find_agent_source_by_id(id)
+      @mutex.synchronize do
+        @agents.values.find { |a| a._id == id } \
+          || not_found(AgentSource, name: id)
+      end
+    end
+
+    def find_agent_source_by_name(name)
+      @mutex.synchronize do
+        @agents[name] || not_found(AgentSource, name: name)
+      end
     end
 
     def agent_sources
@@ -40,6 +59,7 @@ module Jiji::Model::Agents
         source = AgentSource.create(
           name, type, @time_source.now, memo, body)
         register_source(source)
+        source
       end
     end
 
@@ -70,27 +90,10 @@ module Jiji::Model::Agents
       end
     end
 
-    def create_agent(name, properties = {})
-      cl = get_agent_class(name)
-      agent = cl.new
-      agent.properties = properties
-      agent
-    end
-
     def get_agent_class(name)
       @mutex.synchronize do
         @finder.find_agent_class_by(name)
       end
-    end
-
-    def get_agent_property_infos(name)
-      cl = get_agent_class(name)
-      cl.respond_to?(:property_infos) ? cl.property_infos : []
-    end
-
-    def get_agent_description(name)
-      cl = get_agent_class(name)
-      cl.respond_to?(:description) ? cl.description : nil
     end
 
     private

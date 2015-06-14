@@ -428,4 +428,21 @@ describe Jiji::Model::Agents::AgentSource do
         'a', :agent, nil, nil, nil)
     end.to raise_exception(ActiveModel::StrictValidationFailed)
   end
+
+  it 'to_h で値をハッシュに変換できる' do
+    agent_source = Jiji::Model::Agents::AgentSource.create(
+      'test', :agent, Time.at(100), 'memo', 'class Foo; ')
+
+    hash = agent_source.to_h
+    p hash
+    expect(hash[:id]).not_to be nil
+    expect(hash[:name]).to eq 'test'
+    expect(hash[:type]).to eq :agent
+    expect(hash[:created_at]).to eq Time.at(100)
+    expect(hash[:updated_at]).to eq Time.at(100)
+    expect(hash[:memo]).to eq 'memo'
+    expect(hash[:body]).to eq 'class Foo; '
+    expect(hash[:error]).not_to be nil
+    expect(hash[:status]).to eq :error
+  end
 end

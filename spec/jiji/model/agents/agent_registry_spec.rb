@@ -169,6 +169,36 @@ describe Jiji::Model::Agents::AgentRegistry do
     expect(@registory.agent_sources.length).to be 3
   end
 
+  describe '#find_agent_source_by_name' do
+    it '名前でソースを取得できる' do
+      @registory.add_source('aaa', '', :agent, new_body(1))
+      @registory.add_source('bbb', '', :agent, new_body(2))
+      @registory.add_source('ccc', '', :agent, new_body(3))
+
+      expect(@registory.find_agent_source_by_name('aaa').name).to eq 'aaa'
+    end
+    it '名前に対応するソースが見つからない場合エラー' do
+      expect do
+        @registory.find_agent_source_by_name('aaa')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
+    end
+  end
+
+  describe '#find_agent_source_by_id' do
+    it 'idでソースを取得できる' do
+      agent1 = @registory.add_source('aaa', '', :agent, new_body(1))
+      @registory.add_source('bbb', '', :agent, new_body(2))
+      @registory.add_source('ccc', '', :agent, new_body(3))
+
+      expect(@registory.find_agent_source_by_id(agent1._id).name).to eq 'aaa'
+    end
+    it 'idに対応するソースが見つからない場合エラー' do
+      expect do
+        @registory.find_agent_source_by_id(BSON::ObjectId.new)
+      end.to raise_exception(Jiji::Errors::NotFoundException)
+    end
+  end
+
   describe 'agent生成' do
     before(:example) do
       @registory.add_source('aaa', '', :agent, new_body(1))

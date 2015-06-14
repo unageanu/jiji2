@@ -1,5 +1,6 @@
 # coding: utf-8
 require 'time'
+require 'moped'
 
 class Time
 
@@ -21,6 +22,14 @@ class BigDecimal
 
   def to_msgpack(*a)
     to_f.to_msgpack(*a)
+  end
+
+end
+
+class BSON::ObjectId
+
+  def to_msgpack(*a)
+    to_s.to_msgpack(*a)
   end
 
 end

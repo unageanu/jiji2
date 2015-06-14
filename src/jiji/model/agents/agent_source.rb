@@ -9,6 +9,7 @@ module Jiji::Model::Agents
   class AgentSource
 
     include Mongoid::Document
+    include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
     include Jiji::Errors
 
@@ -85,7 +86,29 @@ module Jiji::Model::Agents
       @context
     end
 
+    def to_h
+      hash = {}
+      insert_file_information_to_hash(hash)
+      insert_status_and_error_information_to_hash(hash)
+      hash
+    end
+
     private
+
+    def insert_file_information_to_hash(hash)
+      hash[:id]         = _id
+      hash[:name]       = name
+      hash[:memo]       = memo
+      hash[:type]       = type
+      hash[:body]       = body
+      hash[:created_at] = created_at
+      hash[:updated_at] = updated_at
+    end
+
+    def insert_status_and_error_information_to_hash(hash)
+      hash[:status] = status
+      hash[:error]  = @error
+    end
 
     def change_state_to_normal
       @error  = nil

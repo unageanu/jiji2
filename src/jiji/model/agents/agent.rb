@@ -82,13 +82,13 @@ module Jiji::Model::Agents::Agent
     end
     # プロパティID。
     # JIJI::Agent#properties=(props)で渡されるハッシュのキーになります。設定必須です。
-    attr_writer :id
+    attr_accessor :id
     # UIでの表示名。設定必須です。
-    attr_writer :name
+    attr_accessor :name
     # プロパティの初期値。
-    attr_writer :default
+    attr_accessor :default
     # 種類。:string or :numberが指定可能。指定しない場合、:stringが指定されたものとみなされます。
-    attr_writer :type
+    attr_accessor :type
 
     def values
       [@id, @name, @type, @default]

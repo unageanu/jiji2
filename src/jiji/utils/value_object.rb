@@ -17,9 +17,7 @@ module Jiji::Utils::ValueObject
   end
 
   def to_h
-    instance_variables.each_with_object({}) do |name, obj|
-      obj[name[1..-1].to_sym] = instance_variable_get(name)
-    end
+    collect_properties
   end
 
   def from_h(hash)
@@ -30,6 +28,12 @@ module Jiji::Utils::ValueObject
   end
 
   protected
+
+  def collect_properties(keys = instance_variables.map { |n| n[1..-1] })
+    keys.each_with_object({}) do |name, obj|
+      obj[name.to_sym] = instance_variable_get('@' + name.to_s)
+    end
+  end
 
   def values
     values = []

@@ -20,7 +20,7 @@ module Jiji::Model::Agents::Internal
     end
 
     def find_agent_class_by(name)
-      not_found(Agent, name => name) unless name =~ /([^@]+)@([^@]+)$/
+      not_found(Agent, name: name) unless name =~ /([^@]+)@([^@]+)$/
 
       class_path = Regexp.last_match(1)
       agent_name = Regexp.last_match(2)

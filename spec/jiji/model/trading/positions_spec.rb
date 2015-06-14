@@ -878,49 +878,49 @@ describe Jiji::Model::Trading::Positions do
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 7
-      position = loaded[0]
+      position = loaded.find { |p| p._id == original[0]._id }
       expect(position._id).to eq original[0]._id
       expect(position.internal_id).to eq '1'
       expect(position.status).to eq :lost
       expect(position.units).to be 10_000
       expect(position.updated_at).to eq Time.at(1)
 
-      position = loaded[1]
+      position = loaded.find { |p| p._id == new_positions[0]._id }
       expect(position._id).to eq new_positions[0]._id
       expect(position.internal_id).to eq '1'
       expect(position.status).to eq :live
       expect(position.units).to be 10_000
       expect(position.updated_at).to eq Time.at(1)
 
-      position = loaded[2]
+      position = loaded.find { |p| p._id == original[1]._id }
       expect(position._id).to eq original[1]._id
       expect(position.internal_id).to eq '2'
       expect(position.status).to eq :lost
       expect(position.units).to be 20_000
       expect(position.updated_at).to eq Time.at(2)
 
-      position = loaded[3]
+      position = loaded.find { |p| p._id == new_positions[1]._id }
       expect(position._id).to eq new_positions[1]._id
       expect(position.internal_id).to eq '2'
       expect(position.status).to eq :live
       expect(position.units).to be 20_000
       expect(position.updated_at).to eq Time.at(2)
 
-      position = loaded[4]
+      position = loaded.find { |p| p._id == original[2]._id }
       expect(position._id).to eq original[2]._id
       expect(position.internal_id).to eq '3'
       expect(position.status).to eq :lost
       expect(position.units).to be 30_000
       expect(position.updated_at).to eq Time.at(3)
 
-      position = loaded[5]
+      position = loaded.find { |p| p._id == new_positions[3]._id }
       expect(position._id).to eq new_positions[3]._id
       expect(position.internal_id).to eq '3'
       expect(position.status).to eq :live
       expect(position.units).to be 30_000
       expect(position.updated_at).to eq Time.at(3)
 
-      position = loaded[6]
+      position = loaded.find { |p| p._id == new_positions[2]._id }
       expect(position._id).to eq new_positions[2]._id
       expect(position.internal_id).to eq '4'
       expect(position.status).to eq :live

@@ -18,54 +18,48 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
       context = create_trading_context
       queue   = Queue.new
 
-      context.time_source.set(Time.new(2014, 1, 1, 0, 0, 0))
       job.exec(context, queue)
-
-      context.time_source.set(Time.new(2014, 1, 1, 0, 0, 15))
       job.exec(context, queue)
-
-      context.time_source.set(Time.new(2014, 1, 1, 1, 0, 30))
       job.exec(context, queue)
-
-      context.time_source.set(Time.new(2014, 1, 1, 1, 0, 45))
       job.exec(context, queue)
-
-      context.time_source.set(Time.new(2014, 1, 1, 1, 1,  0))
       job.exec(context, queue)
     end
   end
 
   describe Jiji::Model::Trading::Jobs::NotifyNextTickJobForBackTest do
     it 'exec で次のtickの処理が行われる' do
-      job = Jiji::Model::Trading::Jobs::NotifyNextTickJobForBackTest.new
+      job = Jiji::Model::Trading::Jobs::NotifyNextTickJobForBackTest.new(
+        Time.new(2014, 1, 1, 0, 0, 0), Time.new(2014, 1, 1, 0, 1, 0))
       context = create_trading_context
       queue   = Queue.new
 
       expect(queue.empty?).to be true
 
-      context.time_source.set(Time.new(2014, 1, 1, 0, 0, 0))
       job.exec(context, queue)
-
+      expect(context[:current_time]).to eq Time.new(2014, 1, 1, 0, 0, 0)
+      expect(context[:progress]).to eq 0
       expect(queue.empty?).to be false
 
-      context.time_source.set(Time.new(2014, 1, 1, 0, 0, 15))
-      job.exec(context, queue)
 
+      job.exec(context, queue)
+      expect(context[:current_time]).to eq Time.new(2014, 1, 1, 0, 0, 15)
+      expect(context[:progress]).to eq 0.25
       expect(queue.empty?).to be false
 
-      context.time_source.set(Time.new(2014, 1, 1, 0, 0, 30))
-      job.exec(context, queue)
 
+      job.exec(context, queue)
+      expect(context[:current_time]).to eq Time.new(2014, 1, 1, 0, 0, 30)
+      expect(context[:progress]).to eq 0.50
       expect(queue.empty?).to be false
 
-      context.time_source.set(Time.new(2014, 1, 1, 0, 0, 45))
       job.exec(context, queue)
-
+      expect(context[:current_time]).to eq Time.new(2014, 1, 1, 0, 0, 45)
+      expect(context[:progress]).to eq 0.75
       expect(queue.empty?).to be false
 
-      context.time_source.set(Time.new(2014, 1, 1, 0, 1, 0))
       job.exec(context, queue)
-
+      expect(context[:current_time]).to eq Time.new(2014, 1, 1, 0, 1, 0)
+      expect(context[:progress]).to eq 1.0
       expect(queue.empty?).to be false
     end
   end
@@ -74,7 +68,17 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
     broker  = double('mock broker')
     allow(broker).to receive(:tick) \
       .at_least(:once) \
-      .and_return(@data_builder.new_tick(1))
+      .and_return(
+        @data_builder.new_tick(1, Time.new(2014, 1, 1, 0, 0,  0)),
+        @data_builder.new_tick(1, Time.new(2014, 1, 1, 0, 0,  0)),
+        @data_builder.new_tick(2, Time.new(2014, 1, 1, 0, 0, 15)),
+        @data_builder.new_tick(2, Time.new(2014, 1, 1, 0, 0, 15)),
+        @data_builder.new_tick(3, Time.new(2014, 1, 1, 0, 0, 30)),
+        @data_builder.new_tick(3, Time.new(2014, 1, 1, 0, 0, 30)),
+        @data_builder.new_tick(4, Time.new(2014, 1, 1, 0, 0, 45)),
+        @data_builder.new_tick(4, Time.new(2014, 1, 1, 0, 0, 45)),
+        @data_builder.new_tick(5, Time.new(2014, 1, 1, 0, 1,  0)),
+        @data_builder.new_tick(5, Time.new(2014, 1, 1, 0, 1,  0)))
     allow(broker).to receive(:next?)
       .and_return(true)
 

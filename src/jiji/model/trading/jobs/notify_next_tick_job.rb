@@ -45,9 +45,32 @@ module Jiji::Model::Trading::Jobs
 
   class NotifyNextTickJobForBackTest < NotifyNextTickJob
 
+    def initialize(start_time, end_time)
+      super()
+      @counter    = 0
+      @start_time = start_time
+      @end_time   = end_time
+      @sec        = @end_time.to_i - @start_time.to_i
+    end
+
     def after_do_next(context, queue)
+      update_progress(context, context.broker.tick.timestamp)
+
       queue << self if context.broker.next?
       sleep 0.01
+    end
+
+    private
+
+    def update_progress(context, timestamp)
+      context[:current_time] = timestamp
+      context[:progress] = calculate_progress(timestamp)
+    end
+
+    def calculate_progress(timestamp)
+      return 0.0 if timestamp <= @start_time
+      return 1.0 if timestamp >= @end_time
+      return (timestamp.to_i - @start_time.to_i).to_f / @sec
     end
 
   end

@@ -56,8 +56,13 @@ module Jiji::Model::Trading::Jobs
     def after_do_next(context, queue)
       update_progress(context, context.broker.tick.timestamp)
 
-      queue << self if context.broker.next?
-      sleep 0.01
+      return unless context.alive?
+      if context.broker.next?
+        queue << self
+        sleep 0.01
+      else
+        context.request_finish
+      end
     end
 
     private
@@ -70,7 +75,7 @@ module Jiji::Model::Trading::Jobs
     def calculate_progress(timestamp)
       return 0.0 if timestamp <= @start_time
       return 1.0 if timestamp >= @end_time
-      return (timestamp.to_i - @start_time.to_i).to_f / @sec
+      (timestamp.to_i - @start_time.to_i).to_f / @sec
     end
 
   end

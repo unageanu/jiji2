@@ -45,7 +45,16 @@ module Jiji::Model::Trading
     end
 
     def stop
-      all.each { |t| t.process.stop }
+      rest = all.reject do |t|
+        status = t.retrieve_process_status
+        if status == :wait_for_start
+          t.stop
+          true
+        else
+          false
+        end
+      end
+      rest.each { |t| t.stop }
     end
 
     private

@@ -29,6 +29,7 @@ module Jiji::Model::Trading
     field :agent_setting, type: Array
     field :pair_names,    type: Array
     field :balance,       type: Integer, default: 0
+    field :status,        type: Symbol,  default: :wait_for_start
 
     validates :name,
       length:   { maximum: 200, strict: true },
@@ -66,13 +67,16 @@ module Jiji::Model::Trading
     attr_reader :process, :agents
 
     def to_h
-      insert_broker_setting_to_hash({
+      hash = {
         id:            _id,
         name:          name,
         memo:          memo,
         agent_setting: agent_setting,
         created_at:    created_at
-      })
+      }
+      insert_broker_setting_to_hash(hash)
+      insert_status_to_hash(hash)
+      hash
     end
 
     def self.create_from_hash(hash)
@@ -92,6 +96,35 @@ module Jiji::Model::Trading
       backtest.balance    = hash['balance'] || 0
     end
 
+    private
+
+    def insert_broker_setting_to_hash(hash)
+      hash.merge!({
+        pair_names: pair_names,
+        start_time: start_time,
+        end_time:   end_time,
+        balance:    balance
+      })
+    end
+
+    def insert_status_to_hash(hash)
+      if status == :running
+        hash.merge!(retrieve_status_from_context)
+      else
+        hash[:status] = status
+      end
+    end
+
+    def retrieve_status_from_context
+      @process.post_exec do |context, _queue|
+        {
+          status:       context.status,
+          progress:     context[:progress],
+          current_time: context[:current_time]
+        }
+      end.value
+    end
+
   end
 
   class BackTest < BackTestProperties
@@ -106,8 +139,12 @@ module Jiji::Model::Trading
 
       create_components
 
-      @process.start
-      @process.post_job(Jobs::NotifyNextTickJobForBackTest.new)
+      return unless status == :wait_for_start
+      @process.start(
+        [Jobs::NotifyNextTickJobForBackTest.new(start_time, end_time)])
+
+      self.status = :running
+      save
     end
 
     def delete
@@ -115,16 +152,19 @@ module Jiji::Model::Trading
       super
     end
 
-    private
-
-    def insert_broker_setting_to_hash(hash)
-      hash.merge({
-        pair_names: pair_names,
-        start_time: start_time,
-        end_time:   end_time,
-        balance:    balance
-      })
+    def stop
+      @process.stop if @process && @process.running?
+      if (status == :running)
+        self.status = retrieve_process_status
+        save
+      end
     end
+
+    def retrieve_process_status
+      @process.post_exec { |context, _queue| context.status }.value
+    end
+
+    private
 
     def create_components
       graph_factory    = create_graph_factory

@@ -14,7 +14,8 @@ module Jiji::Model::Trading
       @job_queue       = Queue.new
     end
 
-    def start
+    def start(initial_job = [])
+      initial_job.each { |j| @job_queue << j }
       @task = @pool.process(@trading_context, @job_queue) do |context, queue|
         run(context, queue)
       end
@@ -22,7 +23,7 @@ module Jiji::Model::Trading
 
     def run(context, queue)
       context.prepare_running
-      do_next_job(context, queue) while  context.alive? || !queue.empty?
+      do_next_job(context, queue) while context.alive? || !queue.empty?
       context.post_running
     rescue StandardError => e
       context.fail(e)

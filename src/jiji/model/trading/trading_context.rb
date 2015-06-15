@@ -43,6 +43,10 @@ module Jiji::Model::Trading
       @status = :wait_for_cancel
     end
 
+    def request_finish
+      @status = :wait_for_finished
+    end
+
     def alive?
       @status == :running
     end

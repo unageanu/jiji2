@@ -2,8 +2,11 @@ function model(binder) {
   binder.bind("preferences")
     .to("model.Preferences")
     .onInitialize("initialize");
+    
   binder.bind("pairs").to("model.trading.Pairs");
   binder.bind("rates").to("model.trading.Rates");
+
+  binder.bind("agentSources").to("model.agents.AgentSources");
 }
 
 function viewModel(binder) {
@@ -27,6 +30,7 @@ function services(binder) {
   binder.bind("rateService").to("services.RateService");
   binder.bind("positionService").to("services.PositionService");
   binder.bind("graphService").to("services.GraphService");
+  binder.bind("agentService").to("services.AgentService");
 }
 
 function stores(binder) {

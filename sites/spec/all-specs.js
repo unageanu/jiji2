@@ -3,6 +3,7 @@ global._babelPolyfill = false;
 import "babel-core/polyfill"
 
 import "./specs/model/preferences-spec"
+import "./specs/model/agents/agent-sources-spec"
 import "./specs/model/trading/intervals-spec"
 import "./specs/model/trading/pairs-spec"
 import "./specs/model/trading/rates-spec"

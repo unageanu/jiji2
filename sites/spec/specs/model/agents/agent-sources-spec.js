@@ -1,7 +1,7 @@
 import ContainerJS      from "container-js";
 import ContainerFactory from "../../../utils/test-container-factory";
 
-describe("Pairs", () => {
+describe("AgentSources", () => {
 
   var target;
 

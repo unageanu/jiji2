@@ -4,13 +4,16 @@ import Deferred     from "../utils/deferred"
 export default class Application {
 
   constructor() {
-    this.navigator        = ContainerJS.Inject;
-    this.viewModelFactory = ContainerJS.Inject;
-    this.authenticator    = ContainerJS.Inject;
+    this.navigator         = ContainerJS.Inject;
+    this.viewModelFactory  = ContainerJS.Inject;
+    this.authenticator     = ContainerJS.Inject;
+    this.agentSourceEditor = ContainerJS.Inject;
+    
+    this.pairs        = ContainerJS.Inject;
+    this.rates        = ContainerJS.Inject;
+    this.preferences  = ContainerJS.Inject;
 
-    this.pairs       = ContainerJS.Inject;
-    this.rates       = ContainerJS.Inject;
-    this.preferences = ContainerJS.Inject;
+
   }
 
   initialize() {

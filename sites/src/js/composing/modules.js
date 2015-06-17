@@ -2,7 +2,7 @@ function model(binder) {
   binder.bind("preferences")
     .to("model.Preferences")
     .onInitialize("initialize");
-    
+
   binder.bind("pairs").to("model.trading.Pairs");
   binder.bind("rates").to("model.trading.Rates");
 
@@ -12,6 +12,11 @@ function model(binder) {
 function viewModel(binder) {
   binder.bind("application").to("viewmodel.Application");
   binder.bind("navigator").to("viewmodel.Navigator");
+
+  binder.bind("agentSourceEditor")
+    .to("viewmodel.agents.AgentSourceEditor")
+    .onInitialize("initialize");
+
   binder.bind("viewModelFactory").to("viewmodel.ViewModelFactory");
 }
 

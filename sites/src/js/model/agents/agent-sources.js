@@ -1,10 +1,11 @@
 import ContainerJS  from "container-js"
 import Observable   from "../../utils/observable"
-import Deferred     from "../../utils/deferred";
+import Deferred     from "../../utils/deferred"
 
 export default class AgentSources extends Observable {
 
   constructor() {
+    super();
     this.agentService = ContainerJS.Inject;
     this.sources = [];
     this.byId    = {};
@@ -16,6 +17,10 @@ export default class AgentSources extends Observable {
       this.byId    = this.createSourceMap(sources);
       this.fire("loaded", {items:this.sources});
     });
+  }
+
+  get(id) {
+    return this.byId[id];
   }
 
   getBody(id) {
@@ -34,29 +39,32 @@ export default class AgentSources extends Observable {
 
 
   add( name, body ) {
-    this.agentService.addSource( name, body ).then( (a) => {
+    return this.agentService.addSource( name, body ).then( (a) => {
       this.sources.push(a);
       this.sortByName( this.sources );
       this.byId[a.id] = a;
       this.fire("added", {item: a});
+      return a;
     });
   }
   remove(id) {
-    this.agentService.deleteSource( id ).then( (a) => {
+    return this.agentService.deleteSource( id ).then( (a) => {
       let item = this.byId[id];
       this.byId[id] = null;
       this.sources = this.sources.filter((s)=> s.id !== id);
       this.fire("removed", {item: item});
+      return a;
     });
   }
 
   update(id, name, body) {
-    this.agentService.updateSource( id, name, body ).then( (a) => {
+    return this.agentService.updateSource( id, name, body ).then( (a) => {
       this.byId[id] = a;
       this.sources = this.sources.filter((s)=> s.id !== id);
       this.sources.push(a);
       this.sortByName( this.sources );
       this.fire("updated", {item: a});
+      return a;
     });
   }
 

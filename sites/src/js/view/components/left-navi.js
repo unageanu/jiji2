@@ -21,7 +21,6 @@ export default class LeftNavi extends React.Component {
         zDepth={0}
         menuItems={this.navigator().menuItems()}
         selectedIndex={this.getSelectedIndex()}
-        onItemClick={this.onLeftNavChange.bind(this)}
         onItemTap={this.onLeftNavChange.bind(this)}
       />
     );

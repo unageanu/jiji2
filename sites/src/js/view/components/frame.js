@@ -11,6 +11,8 @@ export default class Frame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+
+    this.themeManager = new MUI.Styles.ThemeManager();
   }
 
   render() {
@@ -25,7 +27,10 @@ export default class Frame extends React.Component {
     );
   }
   getChildContext() {
-      return { application: this.props.application };
+      return {
+        application: this.props.application,
+        muiTheme   : this.themeManager.getCurrentTheme()
+      };
   }
   navigatorElements() {
     return this.props.application.navigator.menuItems().filter((item)=>{
@@ -39,5 +44,6 @@ Frame.propTypes =  {
   application: React.PropTypes.object.isRequired
 };
 Frame.childContextTypes = {
-  application: React.PropTypes.object.isRequired
+  application: React.PropTypes.object.isRequired,
+  muiTheme:    React.PropTypes.object
 };

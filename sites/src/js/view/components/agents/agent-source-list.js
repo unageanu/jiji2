@@ -37,7 +37,7 @@ export default class AgentSourceList extends React.Component {
       (source) => this.createItemcomponent(source));
     const buttonAction = () => this.editor().newSourceFile();
     return (
-      <div className="agentSourceList">
+      <div className="agent-source-list">
         <div className="buttons">
           <RaisedButton
             label="新規作成"

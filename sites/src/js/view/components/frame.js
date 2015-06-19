@@ -1,7 +1,8 @@
-import React      from "react"
-import MUI        from "material-ui"
-import Router     from "react-router"
-import LeftNavi   from "./left-navi"
+import React               from "react"
+import MUI                 from "material-ui"
+import Router              from "react-router"
+import LeftNavi            from "./left-navi"
+import WindowResizeManager from "../window-resize-manager"
 
 const RouteHandler = Router.RouteHandler;
 const Link         = Router.Link;
@@ -13,6 +14,7 @@ export default class Frame extends React.Component {
     this.state = {};
 
     this.themeManager = new MUI.Styles.ThemeManager();
+    this.windowResizeManager = new WindowResizeManager();
   }
 
   render() {
@@ -28,8 +30,9 @@ export default class Frame extends React.Component {
   }
   getChildContext() {
       return {
-        application: this.props.application,
-        muiTheme   : this.themeManager.getCurrentTheme()
+        application        : this.props.application,
+        muiTheme           : this.themeManager.getCurrentTheme(),
+        windowResizeManager: this.windowResizeManager
       };
   }
   navigatorElements() {
@@ -44,6 +47,7 @@ Frame.propTypes =  {
   application: React.PropTypes.object.isRequired
 };
 Frame.childContextTypes = {
-  application: React.PropTypes.object.isRequired,
-  muiTheme:    React.PropTypes.object
+  application:         React.PropTypes.object.isRequired,
+  windowResizeManager: React.PropTypes.object,
+  muiTheme:            React.PropTypes.object
 };

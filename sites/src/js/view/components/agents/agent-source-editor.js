@@ -20,7 +20,9 @@ export default class AgentSourceEditor extends React.Component {
     this.state = {
       editTarget:  null,
       fileName:    null,
-      targetBody : null
+      targetBody : null,
+      editorWidth: 0,
+      editorHeight: 0
     };
   }
 
@@ -34,12 +36,39 @@ export default class AgentSourceEditor extends React.Component {
           editTarget: e.newValue,
           fileName:   e.newValue ? e.newValue.name : ""
         };
+      } else if (e.key === "sources") {
+        this.updateEditorSize();
       }
       if (newState) this.setState(newState);
     }, this);
+
+    this.context.windowResizeManager.addObserver("windowResized", (n, ev) => {
+      this.updateEditorSize();
+    });
   }
   componentWillUnmount() {
     this.editor().removeAllObservers(this);
+  }
+
+
+  updateEditorSize() {
+    if (this.updateEditorSizerequest) return;
+    setTimeout(()=> {
+      const elm = React.findDOMNode(this.refs.editor);
+      // const w = elm.scrollWidth;
+      // const h = elm.scrollHeight;
+      const wsize = this.context.windowResizeManager.windowSize;
+      const csize = this.context.windowResizeManager.contentSize;
+      // console.log("w:" + wsize.w  + " h:" + wsize.h );
+      // console.log("w:" + csize.w  + " h:" + csize.h );
+      // this.setState({
+      //   editorWidth: (wsize.w - 650) + "px",
+      //   editorHeight: (wsize.h - 220) + "px"
+      // });
+      elm.style.width  = (wsize.w - 650) + "px";
+      elm.style.height = (wsize.h - 220) + "px";
+      this.refs.editor.editor.resize();
+    }, 100);
   }
 
   render() {
@@ -51,7 +80,7 @@ export default class AgentSourceEditor extends React.Component {
     ];
     return (
       <div className="agent-source-editor">
-        <div>
+        <div className="header">
           <TextField
             ref="name"
             hintText="agent.rb"
@@ -79,15 +108,17 @@ export default class AgentSourceEditor extends React.Component {
             modal={true}
           />
         </div>
-        <AceEditor
-          ref="editor"
-          mode="ruby"
-          theme="github"
-          width="auto"
-          height="400px"
-          value={this.state.targetBody}
-          name="agent-source-editor_editor"
-        />
+        <div className="editor">
+          <AceEditor
+            ref="editor"
+            mode="ruby"
+            theme="github"
+            width={this.state.editorWidth}
+            height={this.state.editorHeight}
+            value={this.state.targetBody}
+            name="agent-source-editor_editor"
+          />
+        </div>
       </div>
     );
   }
@@ -129,5 +160,6 @@ export default class AgentSourceEditor extends React.Component {
   }
 }
 AgentSourceEditor.contextTypes = {
-  application: React.PropTypes.object.isRequired
+  application: React.PropTypes.object.isRequired,
+  windowResizeManager: React.PropTypes.object
 };

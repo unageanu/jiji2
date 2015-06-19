@@ -9,7 +9,6 @@
     "container-js": "^1.0.5",
     "date-format": "0.0.2",
     "date-with-offset": "^1.0.1",
-    "deepmerge": "^0.2.7",
     "material-ui": "^0.9.1",
     "react": "^0.13.3",
     "react-router": "^0.13.2",
@@ -19,6 +18,7 @@
     "brace": "^0.5.1"
   },
   "devDependencies": {
+    "deepmerge": "^0.2.7",
     "babel-core": "^4.7.12",
     "babel-loader": "^4.1.0",
     "del": "^1.1.1",

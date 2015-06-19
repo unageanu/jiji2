@@ -107,7 +107,7 @@ describe("AgentSourceEditor", () => {
       name: "axx",
       body: "body"
     });
-    expect(target.targetBody).toEqual("");
+    expect(target.targetBody).toEqual("body");
   });
 
   it("removeでソースを削除できる", () => {

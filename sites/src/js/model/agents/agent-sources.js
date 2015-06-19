@@ -58,7 +58,7 @@ export default class AgentSources extends Observable {
   }
 
   update(id, name, body) {
-    return this.agentService.updateSource( id, name, body ).then( (a) => {
+    return this.agentService.updateSource( id, name, "", body ).then( (a) => {
       this.byId[id] = a;
       this.sources = this.sources.filter((s)=> s.id !== id);
       this.sources.push(a);

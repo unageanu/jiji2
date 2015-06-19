@@ -24,7 +24,7 @@ export default class AgentSourceList extends React.Component {
       } else if (e.key === "editTarget") {
         newState = {editTarget: e.newValue};
       }
-      this.setState(newState);
+      if (newState) this.setState(newState);
     }, this);
     this.editor().load();
   }

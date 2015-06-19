@@ -40,6 +40,7 @@ export default class AgentSourceEditor extends Observable {
 
     this.agentSources.update(target.id, name, body).then((source) => {
       this.setProperty("editTarget", source);
+      this.setProperty("targetBody", body);
     });
   }
 

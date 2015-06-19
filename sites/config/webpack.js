@@ -22,6 +22,9 @@ var base = {
       test:     /\.js$/,
       exclude:  /(node_modules|lib)/,
       loader:  'babel-loader'
+    }, {
+      test:     /\.jsx/,
+      loader: 'jsx'
     }],
 
     exprContextRecursive : true,

@@ -89,7 +89,12 @@ describe 'エージェント' do
     r = @client.put("agents/sources/#{id}", {
       body: @data_builder.new_agent_body(2)
     })
-    expect(r.status).to eq 204
+    expect(r.status).to eq 200
+    expect(r.body['id']).not_to be nil
+    expect(r.body['error']).to be nil
+    expect(r.body['status']).to eq 'normal'
+    expect(r.body['name']).to eq 'テスト/テスト2'
+    expect(r.body['body']).to eq @data_builder.new_agent_body(2)
 
     r = @client.get("agents/sources/#{id}")
     expect(r.status).to eq 200
@@ -105,7 +110,7 @@ describe 'エージェント' do
     r = @client.put("agents/sources/#{id}", {
       body: @data_builder.new_agent_body(4)
     })
-    expect(r.status).to eq 204
+    expect(r.status).to eq 200
   end
 
   it 'PUT /agents/sources/:id でエージェントをリネームできる' do
@@ -116,7 +121,7 @@ describe 'エージェント' do
       name: 'テスト/テスト3',
       body: @data_builder.new_agent_body(3)
     })
-    expect(r.status).to eq 204
+    expect(r.status).to eq 200
 
     r = @client.get("agents/sources/#{id}")
     expect(r.status).to eq 200

@@ -68,6 +68,7 @@ module Jiji::Model::Agents
         not_found(AgentSource, name: name) unless @agents[name]
         @agents[name].update(name, @time_source.now, memo, body)
         Context._delegates[name] = @agents[name].context
+        @agents[name]
       end
     end
 

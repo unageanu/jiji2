@@ -97,13 +97,12 @@ describe Jiji::Model::Agents::AgentRegistry do
 
   describe '更新' do
     it '更新できる' do
-      @registory.add_source('aaa', '', :agent,
-        new_body(1))
+      @registory.add_source('aaa', '', :agent, new_body(1))
 
       expect(@registory.get_agent_class('TestAgent1@aaa')).not_to be nil
 
-      @registory.update_source('aaa', '',
-        new_body(2))
+      result = @registory.update_source('aaa', '', new_body(2))
+      expect(result.name).to eq("aaa")
 
       expect do
         @registory.get_agent_class('TestAgent1@aaa')

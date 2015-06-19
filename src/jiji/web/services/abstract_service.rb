@@ -40,6 +40,10 @@ module Jiji::Web
       Time.parse(request[key])
     end
 
+    def create_id(id)
+      BSON::ObjectId.from_string(id)
+    end
+
     def serialize(body)
       if request.accept? 'application/x-msgpack'
         content_type 'application/x-msgpack;charset=UTF-8'

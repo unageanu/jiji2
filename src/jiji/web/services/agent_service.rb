@@ -28,24 +28,20 @@ module Jiji::Web
       allow('GET,PUT,OPTIONS')
     end
     get '/sources/:id' do
-      id = BSON::ObjectId.from_string(params[:id])
-      ok(registry.find_agent_source_by_id(id))
+      ok(registry.find_agent_source_by_id(create_id(params[:id])))
     end
     put '/sources/:id' do
-      id = BSON::ObjectId.from_string(params[:id])
-      target = registry.find_agent_source_by_id(id)
-
+      target = registry.find_agent_source_by_id(create_id(params[:id]))
       body = load_body
       if body.include?('name') && body['name'] != target.name
         registry.rename_source(target.name, body['name'])
       end
-      registry.update_source(
+      result = registry.update_source(
         body['name'] || target.name, body['memo'] || '', body['body'] || '')
-      no_content
+      ok(result)
     end
     delete '/sources/:id' do
-      id = BSON::ObjectId.from_string(params[:id])
-      target = registry.find_agent_source_by_id(id)
+      target = registry.find_agent_source_by_id(create_id(params[:id]))
       registry.remove_source(target.name)
       no_content
     end

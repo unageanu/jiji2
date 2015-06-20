@@ -12,7 +12,8 @@ module Jiji::Web
       allow('GET,POST,OPTIONS')
     end
     get '/' do
-      ok(repository.all)
+      runnings_only = request['status'] == 'runnings'
+      ok(runnings_only ? repository.runnings : repository.all)
     end
     post '/' do
       created(repository.register(load_body.with_indifferent_access))

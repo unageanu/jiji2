@@ -40,6 +40,18 @@ describe 'バックテスト' do
     end
   end
 
+  it 'GET /backtests?status=runnings で稼働中のバックテストの一覧を取得できる' do
+    r = @client.get('backtests', { "status": 'runnings' })
+    expect(r.status).to eq 200
+
+    expect(r.body.length).to be > 0
+    r.body.each do |b|
+      expect(b['id']).not_to be nil
+      expect(b['name']).not_to be nil
+      expect(b['created_at']).not_to be nil
+    end
+  end
+
   it 'GET /backtests/:id/account でバックテストの口座情報を取得できる' do
     r = @client.get('backtests')
     id = r.body.find { |b| b['name'] == 'テスト' }['id']

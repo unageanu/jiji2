@@ -102,7 +102,7 @@ describe Jiji::Model::Agents::AgentRegistry do
       expect(@registory.get_agent_class('TestAgent1@aaa')).not_to be nil
 
       result = @registory.update_source('aaa', '', new_body(2))
-      expect(result.name).to eq("aaa")
+      expect(result.name).to eq('aaa')
 
       expect do
         @registory.get_agent_class('TestAgent1@aaa')

@@ -23,6 +23,12 @@ module Jiji::Model::Trading
       @backtests.values
     end
 
+    def runnings
+      @backtests.values.reject do |b|
+        b.retrieve_process_status != :running
+      end
+    end
+
     def register(config)
       backtest = BackTest.create_from_hash(config)
       setup_backtest(backtest)

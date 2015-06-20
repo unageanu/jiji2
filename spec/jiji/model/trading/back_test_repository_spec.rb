@@ -248,6 +248,10 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(@repository.all[1].name).to eq 'テスト2'
     end
 
+    it '#runnings で実行中のテストを取得できる' do
+      expect(@repository.runnings.length).to be > 0
+    end
+
     it '名前が不正な場合エラーになる' do
       expect do
         @repository.register({

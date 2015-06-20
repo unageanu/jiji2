@@ -5,6 +5,7 @@ function model(binder) {
 
   binder.bind("pairs").to("model.trading.Pairs");
   binder.bind("rates").to("model.trading.Rates");
+  binder.bind("backtests").to("model.trading.backtests");
 
   binder.bind("agentSources").to("model.agents.AgentSources");
 }
@@ -36,6 +37,7 @@ function services(binder) {
   binder.bind("positionService").to("services.PositionService");
   binder.bind("graphService").to("services.GraphService");
   binder.bind("agentService").to("services.AgentService");
+  binder.bind("backtestService").to("services.BacktestService");
 }
 
 function stores(binder) {

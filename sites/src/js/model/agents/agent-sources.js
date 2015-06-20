@@ -1,6 +1,7 @@
 import ContainerJS  from "container-js"
 import Observable   from "../../utils/observable"
 import Deferred     from "../../utils/deferred"
+import Collections  from "../../utils/collections"
 
 export default class AgentSources extends Observable {
 
@@ -13,8 +14,8 @@ export default class AgentSources extends Observable {
 
   load() {
     this.agentService.getSources().then((sources) => {
-      this.sources = this.sortByName(sources);
-      this.byId    = this.createSourceMap(sources);
+      this.sources = Collections.sortBy(sources, (item) => item.name);
+      this.byId    = Collections.toMap(sources);
       this.fire("loaded", {items:this.sources});
     });
   }
@@ -41,7 +42,7 @@ export default class AgentSources extends Observable {
   add( name, body ) {
     return this.agentService.addSource( name, body ).then( (a) => {
       this.sources.push(a);
-      this.sortByName( this.sources );
+      Collections.sortBy(this.sources, (item) => item.name);
       this.byId[a.id] = a;
       this.fire("added", {item: a});
       return a;
@@ -62,21 +63,10 @@ export default class AgentSources extends Observable {
       this.byId[id] = a;
       this.sources = this.sources.filter((s)=> s.id !== id);
       this.sources.push(a);
-      this.sortByName( this.sources );
+      Collections.sortBy(this.sources, (item) => item.name);
       this.fire("updated", {item: a});
       return a;
     });
-  }
-
-  sortByName( sources ) {
-    sources.sort((a, b) => a.name > b.name ? 1 : -1 );
-    return sources;
-  }
-  createSourceMap() {
-    return this.sources.reduce((r, s) => {
-      r[s.id] = s;
-      return r;
-    }, {});
   }
 
 }

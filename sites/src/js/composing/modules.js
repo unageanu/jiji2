@@ -8,6 +8,7 @@ function model(binder) {
   binder.bind("backtests").to("model.trading.backtests");
 
   binder.bind("agentSources").to("model.agents.AgentSources");
+  binder.bind("agentClasses").to("model.agents.AgentClasses");
 }
 
 function viewModel(binder) {

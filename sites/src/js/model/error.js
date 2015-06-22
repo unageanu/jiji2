@@ -20,6 +20,6 @@ export default {
   },
 
   rise(params={}) {
-    throw self.create(params);
+    throw this.create(params);
   }
 }

@@ -12,6 +12,12 @@ export default {
       noHankakuKana : true,
       maxLength: 200
     }),
+    startTime : builder.build({
+      notNull: true
+    }),
+    endTime : builder.build({
+      notNull: true
+    }),
     memo: builder.build({
       noSpecials : true,
       noExternalCharacters : true,
@@ -21,6 +27,9 @@ export default {
     pairNames: builder.build({
       notEmpty: true,
       size: 5
+    }),
+    agentSetting: builder.build({
+      notEmpty: true
     }),
     balance: builder.build({
       notNull: true,

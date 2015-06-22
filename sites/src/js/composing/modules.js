@@ -5,7 +5,8 @@ function model(binder) {
 
   binder.bind("pairs").to("model.trading.Pairs");
   binder.bind("rates").to("model.trading.Rates");
-  binder.bind("backtests").to("model.trading.backtests");
+  binder.bind("backtests").to("model.trading.Backtests");
+  binder.bind("backtestBuilder").to("model.trading.BacktestBuilder");
 
   binder.bind("agentSources").to("model.agents.AgentSources");
   binder.bind("agentClasses").to("model.agents.AgentClasses");
@@ -44,6 +45,9 @@ function services(binder) {
 function stores(binder) {
   binder.bind("localStorage").to("stores.LocalStorage");
 }
+function utils(binder) {
+  binder.bind("timeSource").to("utils.TimeSource");
+}
 
 export default (binder) => {
   remoting(binder);
@@ -52,4 +56,5 @@ export default (binder) => {
   security(binder);
   services(binder);
   stores(binder);
+  utils(binder);
 }

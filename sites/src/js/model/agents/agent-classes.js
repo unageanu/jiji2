@@ -13,9 +13,9 @@ export default class AgentClasses extends Observable {
   }
 
   load() {
-    this.agentService.getClasses().then((classes) => {
+    return this.agentService.getClasses().then((classes) => {
       this.classes = Collections.sortBy(classes, (item) => item.name);
-      this.byName    = Collections.toMap(classes, (item) => item.name);
+      this.byName  = Collections.toMap(classes, (item) => item.name);
       this.fire("loaded", {items:this.classes});
     });
   }

@@ -148,6 +148,7 @@ describe Jiji::Model::Agents::AgentRegistry do
     @registory.add_source('eee', '', :agent,
       'module Var;  module Var2; class TestAgent2;' \
       + 'include Jiji::Model::Agents::Agent;  end; end; end')
+    @registory.add_source('fff', '', :agent, '')
 
     names = @registory.map { |x| x }
     expect(names.length).to be 5

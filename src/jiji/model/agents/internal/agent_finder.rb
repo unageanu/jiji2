@@ -53,6 +53,7 @@ module Jiji::Model::Agents::Internal
 
     def find_agent(source_name, m, checked, &block)
       return if checked.include? m
+      return unless m
       checked << m
 
       m.constants.each do |name|

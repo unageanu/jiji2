@@ -44,10 +44,11 @@ export default class AgentSourceEditor extends React.Component {
 
     this.context.windowResizeManager.addObserver("windowResized", (n, ev) => {
       this.updateEditorSize();
-    });
+    }, this);
   }
   componentWillUnmount() {
     this.editor().removeAllObservers(this);
+    this.context.windowResizeManager.removeAllObservers(this);
   }
 
 

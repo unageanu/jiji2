@@ -87,7 +87,7 @@ export default class AgentSourceEditor extends React.Component {
             hintText="agent.rb"
             floatingLabelText="名前"
             disabled={!this.state.editTarget}
-            onChange={this.onChangeFileName.bind(this)}
+            onChange={this.onFileNameChanged.bind(this)}
             value={this.state.fileName} />
             &nbsp;
           <RaisedButton
@@ -149,11 +149,8 @@ export default class AgentSourceEditor extends React.Component {
     this.refs.dialog.dismiss();
   }
 
-  onChangeFileName(e, newValue) {
+  onFileNameChanged(event) {
     this.setState({fileName: event.target.value});
-  }
-  onChangeBody(newValue) {
-    this.setState({targetBody: newValue});
   }
 
   editor() {

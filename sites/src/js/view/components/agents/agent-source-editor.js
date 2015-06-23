@@ -20,9 +20,7 @@ export default class AgentSourceEditor extends React.Component {
     this.state = {
       editTarget:  null,
       fileName:    null,
-      targetBody : null,
-      editorWidth: 0,
-      editorHeight: 0
+      targetBody : null
     };
   }
 
@@ -114,8 +112,8 @@ export default class AgentSourceEditor extends React.Component {
             ref="editor"
             mode="ruby"
             theme="github"
-            width={this.state.editorWidth}
-            height={this.state.editorHeight}
+            width="0px"
+            height="0px"
             value={this.state.targetBody}
             name="agent-source-editor_editor"
           />

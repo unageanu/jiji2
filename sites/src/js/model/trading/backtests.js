@@ -38,7 +38,7 @@ export default class Backtests extends Observable {
     this.positionService = ContainerJS.Inject;
 
     this.tests = [];
-    this.byId     = {};
+    this.byId  = {};
   }
 
   load() {

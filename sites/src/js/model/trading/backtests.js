@@ -1,6 +1,7 @@
 import ContainerJS  from "container-js"
 import Observable   from "../../utils/observable"
 import Collections  from "../../utils/collections"
+import Backtest     from "./backtest"
 
 const statusToNumber = function(item) {
   switch( item.status ) {
@@ -33,6 +34,8 @@ export default class Backtests extends Observable {
   constructor() {
     super();
     this.backtestService = ContainerJS.Inject;
+    this.graphService    = ContainerJS.Inject;
+    this.positionService = ContainerJS.Inject;
 
     this.tests = [];
     this.byId     = {};
@@ -40,6 +43,7 @@ export default class Backtests extends Observable {
 
   load() {
     this.backtestService.getAll().then((tests) => {
+      tests = tests.map((test) => this.convertToBacktest(test));
       tests.sort(comparator);
       this.tests  = tests;
       this.byId   = Collections.toMap(tests);
@@ -53,6 +57,7 @@ export default class Backtests extends Observable {
 
   register( testConfig ) {
     return this.backtestService.register( testConfig ).then( (test) => {
+      test = this.convertToBacktest(test);
       this.tests.push(test);
       this.tests.sort(comparator);
       this.byId[test.id] = test;
@@ -82,6 +87,13 @@ export default class Backtests extends Observable {
       this.tests.sort(comparator);
       this.fire("updateStates", {items:this.tests});
     });
+  }
+
+  convertToBacktest(info) {
+    const test = new Backtest(info);
+    test.injectServices(this.graphService,
+      this.positionService, this.backtestService);
+    return test;
   }
 
 }

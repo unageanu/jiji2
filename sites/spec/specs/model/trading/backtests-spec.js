@@ -6,12 +6,52 @@ function date(m) {
   return new Date(2015, 4, 1, 0, 0, m);
 }
 
+function extractProperties(backtest) {
+  return {
+    id:          backtest.id,
+    name:        backtest.name,
+    status:      backtest.status,
+    createdAt:   backtest.createdAt,
+    progress:    backtest.progress,
+    currentTime: backtest.currentTime
+  };
+}
+
+const matchers = {
+  toSomeBacktest(util, customEqualityTesters) {
+    return {
+      compare(actual, expected) {
+        const propertiesOfActual   = extractProperties(actual);
+        const propertiesOfExpected = extractProperties(expected);
+        return {
+          pass: util.equals(
+            propertiesOfActual, propertiesOfExpected, customEqualityTesters)
+        };
+      }
+    };
+  },
+  toSomeBacktests(util, customEqualityTesters) {
+    return {
+      compare(actual, expected) {
+        const propertiesOfActual   = actual.map((a) => extractProperties(a));
+        const propertiesOfExpected = expected.map((e) => extractProperties(e));
+        return {
+          pass: util.equals(
+            propertiesOfActual, propertiesOfExpected, customEqualityTesters)
+        };
+      }
+    };
+  }
+};
+
 describe("Backtests", () => {
 
   var target;
   var xhrManager;
 
   beforeEach(() => {
+    jasmine.addMatchers(matchers);
+
     let container = new ContainerFactory().createContainer();
     let d = container.get("backtests");
     target = ContainerJS.utils.Deferred.unpack(d);
@@ -31,7 +71,7 @@ describe("Backtests", () => {
   });
 
   it("loadでソース一覧をロードできる", () => {
-    expect(target.tests).toEqual([
+    expect(target.tests).toSomeBacktests([
       {id: "5", name:"ee", status: "wait_for_finished", createdAt: date(5)},
       {id: "4", name:"dd", status: "wait_for_cancel",   createdAt: date(4)},
       {id: "2", name:"cc", status: "running",           createdAt: date(2)},
@@ -43,7 +83,7 @@ describe("Backtests", () => {
   });
 
   it("getでテストを取得できる", () => {
-    expect(target.get("2")).toEqual(
+    expect(target.get("2")).toSomeBacktest(
       {id: "2", name:"cc", status: "running", createdAt: date(2)});
   });
 
@@ -55,7 +95,7 @@ describe("Backtests", () => {
       status: "wait_for_start",
       createdAt: date(10)
     });
-    expect(target.tests).toEqual([
+    expect(target.tests).toSomeBacktests([
       {id: "5", name:"ee", status: "wait_for_finished", createdAt: date(5)},
       {id: "4", name:"dd", status: "wait_for_cancel",   createdAt: date(4)},
       {id: "2", name:"cc", status: "running",           createdAt: date(2)},
@@ -71,7 +111,7 @@ describe("Backtests", () => {
     target.remove("3");
     xhrManager.requests[0].resolve({});
 
-    expect(target.tests).toEqual([
+    expect(target.tests).toSomeBacktests([
       {id: "5", name:"ee", status: "wait_for_finished", createdAt: date(5)},
       {id: "4", name:"dd", status: "wait_for_cancel",   createdAt: date(4)},
       {id: "2", name:"cc", status: "running",           createdAt: date(2)},
@@ -90,7 +130,7 @@ describe("Backtests", () => {
         createdAt: date(2), progress:0.2, currentTime: date(200)}
     ]);
 
-    expect(target.tests).toEqual([
+    expect(target.tests).toSomeBacktests([
       {id: "5", name:"ee", status: "wait_for_finished", createdAt: date(5)},
       {id: "2", name:"cc", status: "running",
         createdAt: date(2), progress:0.2, currentTime: date(200)},

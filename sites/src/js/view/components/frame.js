@@ -21,9 +21,11 @@ export default class Frame extends React.Component {
     return (
       <div>
         <div className="topbar"></div>
-        <LeftNavi />
-        <div className="content">
-          <RouteHandler/>
+        <div className="container">
+          <LeftNavi />
+          <div className="content">
+            <RouteHandler/>
+          </div>
         </div>
       </div>
     );

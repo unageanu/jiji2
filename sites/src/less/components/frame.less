@@ -8,14 +8,20 @@
   background-color: @primary-color-dark;
 }
 
-.content {
-  float:left;
-  margin-right:-300px;
+.container {
+  width: 100%;
+  float: right;
+  margin-left: -300px;
+}
 
-  padding: 24px;
+.content {
+  position: relative;
+  margin: 0 0 0 300px;
+  padding: 24px
 }
 
 .left-navi {
   width: 300px;
   float: left;
+  z-index: 100000;
 }

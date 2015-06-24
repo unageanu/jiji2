@@ -54,10 +54,12 @@ export default class BacktestBuilder extends Observable {
       name:       agentClass,
       properties: configuration
     });
+    this.fire("agentAdded", {agents:this.backtest.agentSetting});
     return this.backtest.agentSetting.length -1;
   }
   removeAgent( index ) {
     this.backtest.agentSetting.splice(index, 1);
+    this.fire("agentRemoved", {agents:this.backtest.agentSetting});
   }
   updateAgentConfiguration(index, configuration) {
     this.backtest.agentSetting[index].properties = configuration;

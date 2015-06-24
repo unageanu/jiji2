@@ -99,7 +99,8 @@ describe("BacktestBuiler", () => {
     target.name = "テスト";
     target.addAgent("TestClassA@あ");
     target.pairNames = ["EURJPY", "USDJPY"];
-    expect(target.build()).toEqual({
+    target.build();
+    expect(xhrManager.requests[0].body).toEqual({
       name:         "テスト",
       memo:         "",
       startTime:    new Date(2015, 4, 27),
@@ -119,7 +120,8 @@ describe("BacktestBuiler", () => {
     target.updateAgentConfiguration(1, {c:"cc"});
     target.pairNames = ["EURJPY", "USDJPY", "EURUSD", "AUDJPY", "CADJPY"];
     target.balance   = 2000000;
-    expect(target.build()).toEqual({
+    target.build();
+    expect(xhrManager.requests[1].body).toEqual({
       name:         "テスト",
       memo:         "テストメモ",
       startTime:    new Date(2015, 3, 17),
@@ -131,6 +133,16 @@ describe("BacktestBuiler", () => {
       pairNames:    ["EURJPY", "USDJPY", "EURUSD", "AUDJPY", "CADJPY"],
       balance:      2000000
     });
+  });
+
+  it("getAgentClassでエージェントの定義を取得できる", () => {
+    expect(target.addAgent("TestClassA@あ")).toEqual(0);
+    expect(target.addAgent("TestClassC@い", {b:"bb"})).toEqual(1);
+
+    expect(target.getAgentClass(0)).toEqual(
+      {name:"TestClassA@あ", description:"aaa"});
+    expect(target.getAgentClass(1)).toEqual(
+      {name:"TestClassC@い", description:"ccc"});
   });
 
   it("エージェントが未登録の場合、build時にエラーになる。", () => {

@@ -8,10 +8,11 @@ export default class BacktestBuilder extends Observable {
   constructor() {
     super();
 
-    this.timeSource   = ContainerJS.Inject;
-    this.agentClasses = ContainerJS.Inject;
-    this.rates        = ContainerJS.Inject;
-    this.pairs        = ContainerJS.Inject;
+    this.timeSource      = ContainerJS.Inject;
+    this.agentClasses    = ContainerJS.Inject;
+    this.rates           = ContainerJS.Inject;
+    this.pairs           = ContainerJS.Inject;
+    this.backtestService = ContainerJS.Inject;
   }
 
   initialize(agents=[]) {
@@ -46,7 +47,12 @@ export default class BacktestBuilder extends Observable {
 
   build() {
     this.validateAllProperties();
-    return this.backtest;
+    return this.backtestService.register(this.backtest);
+  }
+
+  getAgentClass(index) {
+    const agentSetting = this.backtest.agentSetting[index];
+    return this.agentClasses.classes.find((a) => a.name === agentSetting.name );
   }
 
   addAgent( agentClass, configuration={} ) {

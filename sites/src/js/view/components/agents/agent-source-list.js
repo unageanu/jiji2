@@ -34,7 +34,7 @@ export default class AgentSourceList extends React.Component {
 
   render() {
     const items = this.state.sources.map(
-      (source) => this.createItemcomponent(source));
+      (source) => this.createItemComponent(source));
     const buttonAction = () => this.editor().newSourceFile();
     return (
       <div className="agent-source-list">
@@ -51,7 +51,7 @@ export default class AgentSourceList extends React.Component {
     );
   }
 
-  createItemcomponent(agentSource) {
+  createItemComponent(agentSource) {
     const tapAction = (e) => this.onItemTapped(e, agentSource);
     const selected  =
       this.state.editTarget && this.state.editTarget.id === agentSource.id;

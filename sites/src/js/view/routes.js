@@ -17,7 +17,7 @@ export default (
     <DefaultRoute                handler={Home} />
     <Route path="backtests/new"  handler={NewBackTest} />
     <Route path="backtests/list" handler={BackTests}>
-      <Route path=":id"          handler={BackTests}>
+      <Route path=":id" handler={BackTests} ignoreScrollBehavior={true}>
       </Route>
     </Route>
     <Route path="agents"         handler={Agents} />

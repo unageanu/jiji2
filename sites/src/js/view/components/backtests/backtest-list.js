@@ -29,7 +29,7 @@ export default class BacktestList extends React.Component {
 
   render() {
     const items = this.state.sources.map(
-      (source) => this.createItemcomponent(source));
+      (source) => this.createItemComponent(source));
     const buttonAction = () => this.editor().newSourceFile();
     return (
       <div className="backtest-list">
@@ -40,15 +40,15 @@ export default class BacktestList extends React.Component {
     );
   }
 
-  createItemcomponent(backtest) {
+  createItemComponent(backtest) {
     const tapAction = (e) => this.onItemTapped(e, backtest);
-    const selected  = this.param.selectedId === backtest.id;
+    const selected  = this.props.selectedId === backtest.id;
     return (
       <ListItem
         key={backtest.id}
         className={selected ? "mui-selected" : ""}
         onTouchTap={tapAction}>
-        {backtest.name}
+        {backtest.name + " " + backtest.status}
       </ListItem>
     );
   }
@@ -57,14 +57,21 @@ export default class BacktestList extends React.Component {
     this.setState({sources:this.backtests().tests});
   }
 
-  onItemTapped(e, source) {
-    // TODO
+  onItemTapped(e, backtest) {
+    this.context.router.transitionTo("/backtests/list/" + backtest.id);
   }
 
   backtests() {
     return this.context.application.backtests;
   }
 }
+BacktestList.propTypes = {
+  selectedId : React.PropTypes.string.isRequired
+};
+BacktestList.defaultProp = {
+  selectedId : null
+};
 BacktestList.contextTypes = {
-  application: React.PropTypes.object.isRequired
+  application: React.PropTypes.object.isRequired,
+  router: React.PropTypes.func
 };

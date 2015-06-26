@@ -6,8 +6,8 @@ import BacktestList from "../backtests/backtest-list"
 export default class BacktestsPage extends AbstractPage {
   render() {
     return (
-      <div>
-        <BacktestList />
+      <div className="backtests">
+        <BacktestList selectedId={this.props.params.id} />
       </div>
     );
   }

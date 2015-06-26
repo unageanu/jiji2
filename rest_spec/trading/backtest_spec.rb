@@ -40,11 +40,12 @@ describe 'バックテスト' do
     end
   end
 
-  it 'GET /backtests?status=runnings で稼働中のバックテストの一覧を取得できる' do
-    r = @client.get('backtests', { "status": 'runnings' })
+  it 'GET /backtests?ids=[] で任意のバックテストの一覧を取得できる' do
+    r = @client.get('backtests')
+    r = @client.get('backtests', { 'ids': "#{r.body[0]['id']}" })
     expect(r.status).to eq 200
 
-    expect(r.body.length).to be > 0
+    expect(r.body.length).to be 1
     r.body.each do |b|
       expect(b['id']).not_to be nil
       expect(b['name']).not_to be nil

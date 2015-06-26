@@ -252,6 +252,28 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(@repository.runnings.length).to be > 0
     end
 
+    describe '#collect_backtests_by_id' do
+      it 'idsに含まれるテストをまとめて取得できる' do
+        all = @repository.all
+        tests = @repository.collect_backtests_by_id([all[0].id, all[2].id])
+        expect(tests.length).to be 2
+        expect(tests[0].id).to eq all[0].id
+        expect(tests[1].id).to eq all[2].id
+      end
+
+      it '存在しないidが指定されてもエラーにはならない' do
+        all = @repository.all
+        tests = @repository.collect_backtests_by_id([
+          all[0].id,
+          'not_found',
+          all[2].id
+        ])
+        expect(tests.length).to be 2
+        expect(tests[0].id).to eq all[0].id
+        expect(tests[1].id).to eq all[2].id
+      end
+    end
+
     it '名前が不正な場合エラーになる' do
       expect do
         @repository.register({

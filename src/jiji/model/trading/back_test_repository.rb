@@ -29,6 +29,18 @@ module Jiji::Model::Trading
       end
     end
 
+    def collect_backtests_by_id(ids)
+      tests = ids.map do |id|
+        begin
+          get(id)
+        rescue Jiji::Errors::NotFoundException
+          # ignore
+          nil
+        end
+      end
+      tests.reject { |test| test.nil? }
+    end
+
     def register(config)
       backtest = BackTest.create_from_hash(config)
       setup_backtest(backtest)

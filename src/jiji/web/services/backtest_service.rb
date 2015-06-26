@@ -12,8 +12,9 @@ module Jiji::Web
       allow('GET,POST,OPTIONS')
     end
     get '/' do
-      runnings_only = request['status'] == 'runnings'
-      ok(runnings_only ? repository.runnings : repository.all)
+      ids = request['ids'] ? request['ids'].split(',') : []
+      ids = ids.map { |id| BSON::ObjectId.from_string(id) }
+      ok(ids.empty? ? repository.all : repository.collect_backtests_by_id(ids))
     end
     post '/' do
       created(repository.register(load_body.with_indifferent_access))

@@ -48,7 +48,7 @@ export default class BacktestList extends React.Component {
         key={backtest.id}
         className={selected ? "mui-selected" : ""}
         onTouchTap={tapAction}>
-        {backtest.name + " " + backtest.status}
+        {backtest.name + " " + backtest.status + " " + (backtest.progress*100)}
       </ListItem>
     );
   }

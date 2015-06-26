@@ -123,6 +123,7 @@ describe("Backtests", () => {
 
   it("updateState で状態を更新できる", () => {
     target.updateState();
+    expect(xhrManager.requests[0].params.ids).toEqual("5,4,2,3");
     xhrManager.requests[0].resolve([
       {id: "4", name:"dd", status: "finished",
         createdAt: date(4), progress:1,   currentTime: date(100)},
@@ -141,6 +142,31 @@ describe("Backtests", () => {
         createdAt: date(4), progress:1,   currentTime: date(100)},
       {id: "1", name:"aa", status: "finished",          createdAt: date(1)}
     ]);
+
+    target.updateState();
+    expect(xhrManager.requests[1].params.ids).toEqual("5,2,3");
+    xhrManager.requests[1].resolve([
+      {id: "2", name:"cc", status: "finished"},
+      {id: "3", name:"bb", status: "cancelled"},
+      {id: "5", name:"ee", status: "error"}
+    ]);
+
+    expect(target.tests).toSomeBacktests([
+      {id: "7", name:"gg", status: "cancelled",         createdAt: date(7)},
+      {id: "6", name:"ff", status: "error",             createdAt: date(6)},
+      {id: "5", name:"ee", status: "error",
+        createdAt: date(5), progress:undefined, currentTime: undefined},
+      {id: "4", name:"dd", status: "finished",
+        createdAt: date(4), progress:1,   currentTime: date(100)},
+      {id: "3", name:"bb", status: "cancelled",
+        createdAt: date(3), progress:undefined, currentTime: undefined},
+      {id: "2", name:"cc", status: "finished",
+        createdAt: date(2), progress:undefined, currentTime: undefined},
+      {id: "1", name:"aa", status: "finished",          createdAt: date(1)}
+    ]);
+
+    target.updateState();
+    expect(xhrManager.requests.length).toEqual(2);
   });
 
 });

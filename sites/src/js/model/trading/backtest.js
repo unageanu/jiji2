@@ -18,6 +18,12 @@ export default class Backtest extends Observable {
     this.backtestService = backtestService;
   }
 
+  isFinished() {
+    return this.status === "finished"
+        || this.status === "cancelled"
+        || this.status === "error";
+  }
+
   loadGraphs() {
   }
 

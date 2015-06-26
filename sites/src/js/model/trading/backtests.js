@@ -49,6 +49,7 @@ export default class Backtests extends Observable {
       this.byId   = Collections.toMap(tests);
       this.fire("loaded", {items:this.tests});
     });
+    if (!this.updater) this.startUpdater();
   }
 
   get(id) {
@@ -77,12 +78,16 @@ export default class Backtests extends Observable {
   }
 
   updateState() {
-    this.backtestService.getRunnings().then((tests) => {
+    const runningTestsIds = this.getRunningTests().map( (test) => test.id );
+    if (runningTestsIds.length <= 0) return;
+    this.backtestService.getAll(runningTestsIds).then((tests) => {
       tests.forEach((test) => {
         const dst = this.byId[test.id];
-        dst.status       = test.status;
-        dst.progress     = test.progress;
-        dst.currentTime = test.currentTime;
+        if (dst) {
+          dst.status       = test.status;
+          dst.progress     = test.progress;
+          dst.currentTime = test.currentTime;
+        }
       });
       this.tests.sort(comparator);
       this.fire("updateStates", {items:this.tests});
@@ -94,6 +99,15 @@ export default class Backtests extends Observable {
     test.injectServices(this.graphService,
       this.positionService, this.backtestService);
     return test;
+  }
+
+  getRunningTests() {
+    return this.tests.filter((test) => !test.isFinished());
+  }
+
+  startUpdater() {
+    if (this.updater) return;
+    this.updater = setInterval(this.updateState.bind(this), 3000);
   }
 
 }

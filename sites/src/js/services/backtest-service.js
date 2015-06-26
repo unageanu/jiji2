@@ -2,13 +2,9 @@ import AbstractService from "./abstract-service"
 
 export default class BacktestService extends AbstractService {
 
-  getAll() {
-    return this.xhrManager.xhr( this.serviceUrl(), "GET");
-  }
-  getRunnings() {
-    return this.xhrManager.xhr( this.serviceUrl(null, {
-      status : "runnings"
-    }), "GET");
+  getAll(ids=null) {
+    return this.xhrManager.xhr( this.serviceUrl(), "GET",
+      null, ids ? {ids: ids.join(",")} : null);
   }
 
   get(id) {

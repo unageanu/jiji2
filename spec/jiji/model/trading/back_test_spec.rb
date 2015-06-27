@@ -10,6 +10,7 @@ describe Jiji::Model::Trading::BackTest do
     @repository   = @container.lookup(:backtest_repository)
     @time_source  = @container.lookup(:time_source)
     @registory    = @container.lookup(:agent_registry)
+    @repository.load
 
     @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))
     @registory.add_source('bbb', '', :agent, @data_builder.new_agent_body(2))
@@ -51,6 +52,7 @@ describe Jiji::Model::Trading::BackTest do
     @repository.stop
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
     @repository   = @container.lookup(:backtest_repository)
+    @repository.load
 
     test = @repository.all[0]
     hash = test.to_h

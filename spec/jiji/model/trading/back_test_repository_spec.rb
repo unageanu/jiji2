@@ -10,6 +10,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     @repository   = @container.lookup(:backtest_repository)
     @time_source  = @container.lookup(:time_source)
     @registory    = @container.lookup(:agent_registry)
+    @repository.load
 
     @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))
     @registory.add_source('bbb', '', :agent, @data_builder.new_agent_body(2))
@@ -148,6 +149,7 @@ describe Jiji::Model::Trading::BackTestRepository do
 
       @container    = Jiji::Test::TestContainerFactory.instance.new_container
       @repository   = @container.lookup(:backtest_repository)
+      @repository.load
 
       expect(@repository.all.length).to be 3
 
@@ -194,6 +196,7 @@ describe Jiji::Model::Trading::BackTestRepository do
 
       @container    = Jiji::Test::TestContainerFactory.instance.new_container
       @repository   = @container.lookup(:backtest_repository)
+      @repository.load
 
       expect(@repository.all.length).to be 3
 
@@ -242,6 +245,7 @@ describe Jiji::Model::Trading::BackTestRepository do
 
       @container    = Jiji::Test::TestContainerFactory.instance.new_container
       @repository   = @container.lookup(:backtest_repository)
+      @repository.load
 
       expect(@repository.all.length).to be 2
       expect(@repository.all[0].name).to eq 'テスト0'

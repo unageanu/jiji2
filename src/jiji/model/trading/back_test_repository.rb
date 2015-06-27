@@ -15,10 +15,6 @@ module Jiji::Model::Trading
       @backtests = {}
     end
 
-    def on_inject
-      load
-    end
-
     def all
       @backtests.values
     end
@@ -75,8 +71,6 @@ module Jiji::Model::Trading
       rest.each { |t| t.stop }
     end
 
-    private
-
     def load
       @backtests = BackTest
                    .order_by(:created_at.asc)
@@ -86,6 +80,8 @@ module Jiji::Model::Trading
         r
       end
     end
+
+    private
 
     def setup_backtest(backtest)
       container.inject(backtest)

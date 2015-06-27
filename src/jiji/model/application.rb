@@ -16,6 +16,7 @@ module Jiji::Model
     def setup
       @index_builder.create_indexes
       @rmt.setup
+      @backtest_repository.load
     end
 
     def tear_down

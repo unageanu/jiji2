@@ -69,6 +69,9 @@ describe("Backtests", () => {
     ]);
     xhrManager.clear();
   });
+  afterEach(() => {
+    target.stopUpdater(); 
+  });
 
   it("loadでソース一覧をロードできる", () => {
     expect(target.tests).toSomeBacktests([

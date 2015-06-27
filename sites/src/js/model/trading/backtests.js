@@ -109,5 +109,7 @@ export default class Backtests extends Observable {
     if (this.updater) return;
     this.updater = setInterval(this.updateState.bind(this), 3000);
   }
-
+  stopUpdater() {
+    clearInterval(this.updater);
+  }
 }

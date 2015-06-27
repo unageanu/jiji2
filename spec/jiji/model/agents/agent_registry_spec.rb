@@ -43,12 +43,21 @@ describe Jiji::Model::Agents::AgentRegistry do
 
   describe '削除' do
     it '削除できる' do
-      @registory.add_source('aaa', '', :agent,
-        new_body(1))
+      @registory.add_source('aaa', '', :agent,new_body(1))
 
       expect(@registory.get_agent_class('TestAgent1@aaa')).not_to be nil
 
       @registory.remove_source('aaa')
+      expect do
+        @registory.get_agent_class('TestAgent1@aaa')
+      end.to raise_exception(Jiji::Errors::NotFoundException)
+
+
+      @container    = Jiji::Test::TestContainerFactory.instance.new_container
+      @repository   = @container.lookup(:agent_source_repository)
+      @registory    = @container.lookup(:agent_registry)
+
+      expect(@registory.agent_sources.length).to be 0
       expect do
         @registory.get_agent_class('TestAgent1@aaa')
       end.to raise_exception(Jiji::Errors::NotFoundException)

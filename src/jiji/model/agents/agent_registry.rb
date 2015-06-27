@@ -48,9 +48,7 @@ module Jiji::Model::Agents
     end
 
     def agent_sources
-      @mutex.synchronize do
-        @agents.values
-      end
+      @mutex.synchronize { @agents.values }
     end
 
     def add_source(name, memo, type, body)
@@ -75,6 +73,7 @@ module Jiji::Model::Agents
     def remove_source(name)
       @mutex.synchronize do
         not_found(AgentSource, name: name) unless @agents[name]
+        @agents[name].delete
         unregister_source(name)
       end
     end

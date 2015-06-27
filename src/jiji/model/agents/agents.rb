@@ -41,7 +41,7 @@ module Jiji::Model::Agents
       @agents.values.each do |a|
         begin
           a.next_tick(tick)
-        rescue => e
+        rescue Exception => e # rubocop:disable Lint/RescueException
           @logger.error(e) if @logger
         end
       end
@@ -51,7 +51,7 @@ module Jiji::Model::Agents
       self.states = @agents.each_with_object({}) do |pair, r|
         begin
           r[pair[0]] = pair[1].state
-        rescue => e
+        rescue Exception => e # rubocop:disable Lint/RescueException
           @logger.error(e)  if @logger
         end
       end
@@ -64,7 +64,7 @@ module Jiji::Model::Agents
         begin
           agent = @agents[k]
           agent.restore_state(v) if agent
-        rescue => e
+        rescue Exception => e # rubocop:disable Lint/RescueException
           @logger.error(e) if @logger
         end
       end

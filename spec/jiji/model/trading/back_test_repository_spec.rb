@@ -234,6 +234,30 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.status).to eq :finished
     end
 
+    it 'テストで利用しているエージェントが削除されていた場合も、正しく起動できる' do
+      @registory.add_source('ccc', '', :agent, @data_builder.new_agent_body(3))
+      @repository.register({
+        'name'          => 'テスト10',
+        'start_time'    => Time.at(100),
+        'end_time'      => Time.at(2000),
+        'memo'          => 'メモ',
+        'pair_names'    => [:EURJPY, :EURUSD],
+        'balance'       => 100_000,
+        'agent_setting' => [
+          { name: 'TestAgent3@ccc', properties: {} }
+        ]
+      })
+
+      @registory.remove_source('ccc')
+      @repository.stop
+
+      @container    = Jiji::Test::TestContainerFactory.instance.new_container
+      @repository   = @container.lookup(:backtest_repository)
+      @repository.load
+
+      expect(@repository.all.length).to be 4
+    end
+
     it 'テストを削除できる' do
       expect(@repository.all.length).to be 3
 

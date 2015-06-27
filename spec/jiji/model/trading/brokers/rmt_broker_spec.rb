@@ -336,7 +336,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       expect(position.status).to eq :live
 
       positions = position_repository.retrieve_positions(nil)
-      positions.sort! {|a, b|
+      positions.sort! do |a, b|
         if a.internal_id != b.internal_id
           a.internal_id > b.internal_id ? 1 : -1
         elsif a.status != b.status
@@ -344,7 +344,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         else
           0
         end
-      }
+      end
       expect(positions.length).to be 7
       position = positions[0]
       expect(position.internal_id).to eq '10'

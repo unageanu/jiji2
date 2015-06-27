@@ -1,7 +1,7 @@
 # coding: utf-8
 
 module Jiji::Errors
-  class AuthFailedException < Exception
+  class AuthFailedException < StandardError
 
     def http_status
       401
@@ -9,7 +9,7 @@ module Jiji::Errors
 
   end
 
-  class NotFoundException < Exception
+  class NotFoundException < StandardError
 
     def http_status
       404
@@ -17,7 +17,7 @@ module Jiji::Errors
 
   end
 
-  class UnauthorizedException < Exception
+  class UnauthorizedException < StandardError
 
     def http_status
       401
@@ -25,7 +25,7 @@ module Jiji::Errors
 
   end
 
-  class NotInitializedException < Exception
+  class NotInitializedException < StandardError
 
     def http_status
       400
@@ -33,7 +33,7 @@ module Jiji::Errors
 
   end
 
-  class IllegalStateException < Exception
+  class IllegalStateException < StandardError
 
     def http_status
       400
@@ -41,7 +41,7 @@ module Jiji::Errors
 
   end
 
-  class InternalServerError < Exception
+  class InternalServerError < StandardError
 
     def http_status
       500
@@ -49,7 +49,7 @@ module Jiji::Errors
 
   end
 
-  class AlreadyExistsException < Exception
+  class AlreadyExistsException < StandardError
 
     def http_status
       400
@@ -57,7 +57,7 @@ module Jiji::Errors
 
   end
 
-  class UnsupportedOperationException < Exception
+  class UnsupportedOperationException < StandardError
 
     def http_status
       500

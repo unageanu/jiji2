@@ -138,8 +138,8 @@ module Jiji::Model::Trading
       generate_uuid(agent_setting)
 
       create_components
-
       return unless status == :wait_for_start
+
       @process.start(
         [Jobs::NotifyNextTickJobForBackTest.new(start_time, end_time)])
 

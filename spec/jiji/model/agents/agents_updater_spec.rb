@@ -12,8 +12,9 @@ describe Jiji::Model::Agents::AgentsUpdater do
     @repository   = @container.lookup(:agent_source_repository)
     @registory    = @container.lookup(:agent_registry)
 
+    @logger = Logger.new(STDOUT)
     @agents_builder = Jiji::Model::Agents::AgentsUpdater.new(
-      @registory, :broker, :graph_factory, :notifier, :logger)
+      @registory, :broker, :graph_factory, :notifier, @logger)
 
     @registory.add_source('aaa', '', :agent, new_body(1))
     @registory.add_source('bbb', '', :agent, new_body(2))
@@ -43,7 +44,7 @@ describe Jiji::Model::Agents::AgentsUpdater do
       expect(agent1.broker).to eq :broker
       expect(agent1.graph_factory).to eq :graph_factory
       expect(agent1.notifier).to eq :notifier
-      expect(agent1.logger).to eq :logger
+      expect(agent1.logger).to be @logger
 
       agent2 = agents[settings[1][:uuid]]
       expect(agent2).not_to be nil
@@ -51,7 +52,7 @@ describe Jiji::Model::Agents::AgentsUpdater do
       expect(agent2.broker).to eq :broker
       expect(agent2.graph_factory).to eq :graph_factory
       expect(agent2.notifier).to eq :notifier
-      expect(agent2.logger).to eq :logger
+      expect(agent2.logger).to be @logger
 
       agent3 = agents[settings[2][:uuid]]
       expect(agent3).not_to be nil
@@ -59,16 +60,30 @@ describe Jiji::Model::Agents::AgentsUpdater do
       expect(agent3.broker).to eq :broker
       expect(agent3.graph_factory).to eq :graph_factory
       expect(agent3.notifier).to eq :notifier
-      expect(agent3.logger).to eq :logger
+      expect(agent3.logger).to be @logger
     end
 
-    it 'エージェントが見つからない場合エラー' do
+    it 'fail_on_error=trueで エージェントが見つからない場合エラー' do
       agents = Jiji::Model::Agents::Agents.new
       expect do
         @agents_builder.update(agents, [
-          { name: 'UnknownAgent1@unknown', properties: {} }
-        ])
+          { uuid: uuid, name: 'UnknownAgent1@unknown', properties: {} }
+        ], true)
       end.to raise_exception(Jiji::Errors::NotFoundException)
+    end
+
+    it 'エージェントが見つからない場合でもfail_on_error=falseの場合エラーにはならない' do
+      agents = Jiji::Model::Agents::Agents.new
+      settings = [
+        { uuid: uuid, name: 'UnknownAgent1@unknown', properties: {} },
+        { uuid: uuid, name: 'TestAgent2@bbb' }
+      ]
+      @agents_builder.update(agents, settings)
+
+      agent1 = agents[settings[0][:uuid]]
+      expect(agent1).to be nil
+      agent2 = agents[settings[1][:uuid]]
+      expect(agent2).not_to be nil
     end
   end
 
@@ -107,7 +122,7 @@ describe Jiji::Model::Agents::AgentsUpdater do
       expect(agent2.broker).to eq :broker
       expect(agent2.graph_factory).to eq :graph_factory
       expect(agent2.notifier).to eq :notifier
-      expect(agent2.logger).to eq :logger
+      expect(agent2.logger).to be @logger
 
       agent3 = agents[settings[2][:uuid]]
       expect(agent3).not_to be nil
@@ -115,7 +130,7 @@ describe Jiji::Model::Agents::AgentsUpdater do
       expect(agent3.broker).to eq :broker
       expect(agent3.graph_factory).to eq :graph_factory
       expect(agent3.notifier).to eq :notifier
-      expect(agent3.logger).to eq :logger
+      expect(agent3.logger).to be @logger
 
       agent4 = agents[new_settings[2][:uuid]]
       expect(agent4).not_to be nil
@@ -123,7 +138,7 @@ describe Jiji::Model::Agents::AgentsUpdater do
       expect(agent4.broker).to eq :broker
       expect(agent4.graph_factory).to eq :graph_factory
       expect(agent4.notifier).to eq :notifier
-      expect(agent4.logger).to eq :logger
+      expect(agent4.logger).to be @logger
     end
   end
 

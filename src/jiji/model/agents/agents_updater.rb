@@ -15,12 +15,13 @@ module Jiji::Model::Agents
       @logger          = logger
     end
 
-    def update(agents, agent_setting)
+    def update(agents, agent_setting, fail_on_error = false)
       new_agents = agent_setting.each_with_object({}) do |setting, r|
         begin
           create_or_update_agent(r, setting, agents)
-        rescue => e
+        rescue Exception => e # rubocop:disable Lint/RescueException
           @logger.error(e) if @logger
+          raise e if fail_on_error
         end
       end
       agents.agents = new_agents

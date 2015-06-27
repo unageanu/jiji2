@@ -336,6 +336,15 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       expect(position.status).to eq :live
 
       positions = position_repository.retrieve_positions(nil)
+      positions.sort! {|a, b|
+        if a.internal_id != b.internal_id
+          a.internal_id > b.internal_id ? 1 : -1
+        elsif a.status != b.status
+          a.status.to_s > b.status.to_s ? 1 : -1
+        else
+          0
+        end
+      }
       expect(positions.length).to be 7
       position = positions[0]
       expect(position.internal_id).to eq '10'
@@ -356,12 +365,12 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       expect(position.internal_id).to eq '12'
       expect(position.entry_price).to eq 112.003
       expect(position.current_price).to eq 135.3
-      expect(position.status).to eq :lost
+      expect(position.status).to eq :live
       position = positions[4]
       expect(position.internal_id).to eq '12'
       expect(position.entry_price).to eq 112.003
       expect(position.current_price).to eq 135.3
-      expect(position.status).to eq :live
+      expect(position.status).to eq :lost
       position = positions[5]
       expect(position.internal_id).to eq '13'
       expect(position.entry_price).to eq 113.0

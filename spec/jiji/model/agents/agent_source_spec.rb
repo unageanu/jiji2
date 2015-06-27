@@ -324,15 +324,44 @@ describe Jiji::Model::Agents::AgentSource do
     Jiji::Model::Agents::Context._delegates = delegate
 
     agent_source = Jiji::Model::Agents::AgentSource.create(
-      'test', :agent, Time.at(100), 'memo',
-      "class Foo; def method_1; return \"xxx\"; end; end;" \
-      "def self.method_a; return \"aaa\"; end")
+      'test', :agent, Time.at(100), 'memo', <<BODY
+      class Foo
+        def method_1
+          return "xxx"
+        end
+      end
+      def self.method_a
+        return "aaa"
+      end
+      module TestModule
+        class TestClass
+          def method_y
+            'yyy'
+          end
+        end
+      end
+BODY
+    )
     delegate[agent_source.name] = agent_source.context
 
     agent_source2 = Jiji::Model::Agents::AgentSource.create(
-      'test2', :agent, Time.at(100), nil,
-      "class Foo2 < Foo; def method_2; return \"yyy\" + method_1; end; end;" \
-      "def self.method_b; return method_a + \"bbb\"; end")
+      'test2', :agent, Time.at(100), nil, <<BODY
+      class Foo2 < Foo
+        extend Jiji::Model::Agents::Context
+        include TestModule
+
+        def method_2
+          return "yyy" + method_1
+        end
+        def method_3
+          return TestModule::TestClass.new.method_y + "bbb"
+        end
+      end
+      def self.method_b
+        return method_a + "bbb"
+      end
+BODY
+    )
     delegate[agent_source2.name] = agent_source2.context
 
     f = agent_source2.context.const_get 'Foo2'
@@ -340,6 +369,10 @@ describe Jiji::Model::Agents::AgentSource do
 
     expect(instance.method_1).to eq 'xxx'
     expect(instance.method_2).to eq 'yyyxxx'
+    expect(instance.method_3).to eq 'yyybbb'
+    expect(agent_source2.context.respond_to?(:method_a)).to be true
+    expect(agent_source2.context.respond_to?(:method_b)).to be true
+    expect(agent_source2.context.respond_to?(:method_x)).to be false
     expect(agent_source2.context.method_a).to eq 'aaa'
     expect(agent_source2.context.method_b).to eq 'aaabbb'
 

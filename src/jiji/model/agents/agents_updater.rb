@@ -46,6 +46,7 @@ module Jiji::Model::Agents
       agent = @agent_registory.create_agent(
         setting[:name], setting[:properties] || {})
       inject_components_to(agent)
+      agent.post_create
       agent
     end
 

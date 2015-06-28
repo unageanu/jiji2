@@ -7,7 +7,7 @@ module Jiji::Model::Agents
   class AgentSourceRepository
 
     def all
-      AgentSource.all.map { |a| a }
+      AgentSource.all.order_by(:name.asc).map { |a| a }
     end
 
     def get_by_type(type)

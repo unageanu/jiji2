@@ -27,7 +27,7 @@ describe Jiji::Model::Graphing::GraphFactory do
     factory_for_rmt =
       Jiji::Model::Graphing::GraphFactory.new
     factory_for_backtest1 =
-      Jiji::Model::Graphing::GraphFactory.new(@backtest1.id)
+      Jiji::Model::Graphing::GraphFactory.new(@backtest1)
 
     graph1 = factory_for_rmt.create(
       'test1', :chart,     '#333', '#666', '#999')
@@ -46,7 +46,7 @@ describe Jiji::Model::Graphing::GraphFactory do
     factory_for_rmt =
       Jiji::Model::Graphing::GraphFactory.new
     factory_for_backtest1 =
-      Jiji::Model::Graphing::GraphFactory.new(@backtest1.id)
+      Jiji::Model::Graphing::GraphFactory.new(@backtest1)
 
     graph10 = factory_for_rmt.create(
       'test1', :chart,     '#133', '#666', '#999')

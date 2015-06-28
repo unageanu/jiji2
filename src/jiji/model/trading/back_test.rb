@@ -19,6 +19,8 @@ module Jiji::Model::Trading
     needs :pairs
 
     store_in collection: 'backtests'
+    has_many :graph,
+      class_name: 'Jiji::Model::Graphing::Graph', dependent: :destroy
 
     field :name,          type: String
     field :created_at,    type: Time
@@ -77,23 +79,6 @@ module Jiji::Model::Trading
       insert_broker_setting_to_hash(hash)
       insert_status_to_hash(hash)
       hash
-    end
-
-    def self.create_from_hash(hash)
-      BackTest.new do |b|
-        b.name          = hash['name']
-        b.memo          = hash['memo']
-        b.agent_setting = hash['agent_setting']
-
-        load_broker_setting_from_hash(b, hash)
-      end
-    end
-
-    def self.load_broker_setting_from_hash(backtest, hash)
-      backtest.pair_names = (hash['pair_names'] || []).map { |n| n.to_sym }
-      backtest.start_time = hash['start_time']
-      backtest.end_time   = hash['end_time']
-      backtest.balance    = hash['balance'] || 0
     end
 
     private
@@ -164,10 +149,27 @@ module Jiji::Model::Trading
       @process.post_exec { |context, _queue| context.status }.value
     end
 
+    def self.create_from_hash(hash)
+      BackTest.new do |b|
+        b.name          = hash['name']
+        b.memo          = hash['memo']
+        b.agent_setting = hash['agent_setting']
+
+        load_broker_setting_from_hash(b, hash)
+      end
+    end
+
+    def self.load_broker_setting_from_hash(backtest, hash)
+      backtest.pair_names = (hash['pair_names'] || []).map { |n| n.to_sym }
+      backtest.start_time = hash['start_time']
+      backtest.end_time   = hash['end_time']
+      backtest.balance    = hash['balance'] || 0
+    end
+
     private
 
     def create_components(ignore_agent_creation_error = false)
-      graph_factory    = create_graph_factory(_id)
+      graph_factory    = create_graph_factory(self)
       broker           = create_broker
       @agents          = create_agents(agent_setting, broker,
         graph_factory, _id, true, ignore_agent_creation_error)

@@ -1,6 +1,7 @@
 # coding: utf-8
 
 require 'jiji/configurations/mongoid_configuration'
+require 'jiji/model/trading/back_test'
 
 module Jiji::Model::Graphing
   class Graph
@@ -8,12 +9,15 @@ module Jiji::Model::Graphing
     include Mongoid::Document
 
     store_in collection: 'graph'
+
+    belongs_to :backtest, {
+      class_name: 'Jiji::Model::Trading::BackTestProperties'
+    }
     has_many :graph_data, {
-      class_name: "Jiji::Model::Graphing::GraphData",
-      dependent: :destroy
+      class_name: 'Jiji::Model::Graphing::GraphData',
+      dependent:  :destroy
     }
 
-    field :backtest_id,  type: BSON::ObjectId # RMTの場合nil
     field :label,        type: String
     field :type,         type: Symbol
     field :colors,       type: Array
@@ -32,21 +36,24 @@ module Jiji::Model::Graphing
 
     attr_accessor :values
 
-    def self.get_or_create(label, type, colors, backtest_id = nil)
-      graph = Graph.find_by({ backtest_id: backtest_id, label: label })
+    def self.get_or_create(label, type, colors, backtest = nil)
+      graph = Graph.find_by({
+        backtest: backtest,
+        label:    label
+      })
       return graph if graph
 
-      graph = Graph.new(backtest_id, type, label, colors)
+      graph = Graph.new(backtest, type, label, colors)
       graph.save
       graph
     end
 
-    def initialize(backtest_id, type, label, colors)
+    def initialize(backtest, type, label, colors)
       super()
-      self.backtest_id  = backtest_id
-      self.type         = type
-      self.label        = label
-      self.colors       = colors
+      self.backtest  = backtest
+      self.type      = type
+      self.label     = label
+      self.colors    = colors
 
       setup_data_savers
     end
@@ -67,7 +74,7 @@ module Jiji::Model::Graphing
     end
 
     def fetch_data(start_time, end_time, interval = :one_minute)
-      self.graph_data.where(
+      graph_data.where(
         :interval      => interval,
         :timestamp.gte => start_time,
         :timestamp.lt  => end_time

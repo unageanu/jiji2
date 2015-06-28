@@ -29,8 +29,8 @@ module Jiji::Model::Trading::Internal
         agent_registry, broker, graph_factory, nil, logger)
     end
 
-    def create_graph_factory(id = nil)
-      Jiji::Model::Graphing::GraphFactory.new(id)
+    def create_graph_factory(backtest = nil)
+      Jiji::Model::Graphing::GraphFactory.new(backtest)
     end
 
     def generate_uuid(agent_setting)

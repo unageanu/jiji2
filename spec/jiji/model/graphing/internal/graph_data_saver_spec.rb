@@ -16,7 +16,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
     backtest_repository = @container.lookup(:backtest_repository)
     @backtest1 = @data_builder.register_backtest(1, backtest_repository)
 
-    factory = Jiji::Model::Graphing::GraphFactory.new(@backtest1.id)
+    factory = Jiji::Model::Graphing::GraphFactory.new(@backtest1)
     @graph = factory.create('test1', :chart, '#333', '#666', '#999')
   end
 

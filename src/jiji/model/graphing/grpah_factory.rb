@@ -3,15 +3,15 @@
 module Jiji::Model::Graphing
   class GraphFactory
 
-    def initialize(backtest_id = nil)
-      @backtest_id = backtest_id
+    def initialize(backtest = nil)
+      @backtest = backtest
       @graphs = {}
     end
 
     def create(label, type, *colors)
       return @graphs[label] if @graphs.include?(label)
 
-      graph = Graph.get_or_create(label, type, colors, @backtest_id)
+      graph = Graph.get_or_create(label, type, colors, @backtest)
       @graphs[label] = graph
       graph
     end

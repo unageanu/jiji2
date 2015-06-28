@@ -154,9 +154,9 @@ describe Jiji::Model::Graphing::Graph do
     factory_for_rmt =
       Jiji::Model::Graphing::GraphFactory.new
     factory_for_backtest1 =
-      Jiji::Model::Graphing::GraphFactory.new(@backtest1.id)
+      Jiji::Model::Graphing::GraphFactory.new(@backtest1)
     factory_for_backtest2 =
-      Jiji::Model::Graphing::GraphFactory.new(@backtest2.id)
+      Jiji::Model::Graphing::GraphFactory.new(@backtest2)
 
     graph1 = factory_for_rmt.create(
       'test1', :chart,     '#333', '#666', '#999')

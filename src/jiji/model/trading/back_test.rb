@@ -170,7 +170,7 @@ module Jiji::Model::Trading
       graph_factory    = create_graph_factory
       broker           = create_broker
       @agents          = create_agents(
-        agent_setting, graph_factory, broker, id)
+        agent_setting, broker, graph_factory, id)
       trading_context  = create_trading_context(broker, @agents, graph_factory)
       @process         = create_process(trading_context)
     end

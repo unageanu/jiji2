@@ -17,14 +17,14 @@ module Jiji::Model::Agents
 
     def const_missing(id)
       target = Delegate.instance.delegates.values.find do |v|
-        v.const_defined?(id)
+        v.const_defined?(id) unless v.nil?
       end
       target ? target.const_get(id) : super
     end
 
     def method_missing(name, *args, &block)
       target = Delegate.instance.delegates.values.find do |v|
-        v.respond_to?(name)
+        v.respond_to?(name) unless v.nil?
       end
       target ? target.send(name, *args, &block) : super
     end
@@ -34,7 +34,7 @@ module Jiji::Model::Agents
       begin
         Thread.current['__prevent__respond_to_missing'] = true
         Delegate.instance.delegates.values.any? do |v|
-          v.respond_to?(symbol, include_private)
+          v.respond_to?(symbol, include_private) unless v.nil?
         end
       ensure
         Thread.current['__prevent__respond_to_missing'] = false

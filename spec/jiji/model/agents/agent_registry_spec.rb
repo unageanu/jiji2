@@ -351,6 +351,56 @@ describe Jiji::Model::Agents::AgentRegistry do
     end
   end
 
+  it '他のソースで定義したクラス/モジュールを利用できる' do
+    @registory.add_source('aaa', '', :agent, <<BODY
+    module TestModule
+      class TestClass
+        def x
+          "xxx"
+        end
+      end
+    end
+BODY
+    )
+    @registory.add_source('bbb', '', :agent, <<BODY
+    module TestModule2
+      class TestAgent2
+        extend Jiji::Model::Agents::Context
+        include Jiji::Model::Agents::Agent
+        def post_create
+          TestModule::TestClass.new
+        end
+      end
+    end
+    class TestAgent1
+      extend Jiji::Model::Agents::Context
+      include Jiji::Model::Agents::Agent
+      def post_create
+        TestModule::TestClass.new
+      end
+    end
+BODY
+    )
+    names = @registory.map { |x| x }
+    expect(names.length).to be 2
+    expect(names.include?('TestModule2::TestAgent2@bbb')).to be true
+    expect(names.include?('TestAgent1@bbb')).to be true
+
+    agent = @registory.create_agent('TestModule2::TestAgent2@bbb')
+    agent.post_create
+    agent = @registory.create_agent('TestAgent1@bbb')
+    agent.post_create
+
+    @container    = Jiji::Test::TestContainerFactory.instance.new_container
+    @repository   = @container.lookup(:agent_source_repository)
+    @registory    = @container.lookup(:agent_registry)
+
+    agent = @registory.create_agent('TestModule2::TestAgent2@bbb')
+    agent.post_create
+    agent = @registory.create_agent('TestAgent1@bbb')
+    agent.post_create
+  end
+
   def new_body(seed, parent = nil)
     @data_builder.new_agent_body(seed, parent)
   end

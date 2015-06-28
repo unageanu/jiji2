@@ -22,19 +22,24 @@ module Jiji::Model::Agents
       { backtest_id: 1 },
       unique: true, name: 'agent_states_backtest_id_index')
 
-    attr_accessor :agents
+    attr_accessor :agents, :logger, :fail_on_error
 
-    def initialize(backtest_id = nil, agents = {}, logger = nil)
+    def initialize(backtest_id = nil, agents = {},
+      logger = nil, fail_on_error = false)
       super()
-      @agents = agents
-      @logger = logger
+      @agents        = agents
+      @logger        = logger
+      @fail_on_error = fail_on_error
 
       self.backtest_id = backtest_id
     end
 
-    def self.get_or_create(backtest_id, logger)
-      Agents.find_by(backtest_id: backtest_id) \
-        || Agents.new(backtest_id, {}, logger)
+    def self.get_or_create(backtest_id, logger, fail_on_error = false)
+      agents = Agents.find_by(backtest_id: backtest_id) \
+             || Agents.new(backtest_id, {}, logger, fail_on_error)
+      agents.logger = logger
+      agents.fail_on_error = fail_on_error
+      agents
     end
 
     def next_tick(tick)
@@ -42,7 +47,7 @@ module Jiji::Model::Agents
         begin
           a.next_tick(tick)
         rescue Exception => e # rubocop:disable Lint/RescueException
-          @logger.error(e) if @logger
+          process_error(e)
         end
       end
     end
@@ -52,7 +57,7 @@ module Jiji::Model::Agents
         begin
           r[pair[0]] = pair[1].state
         rescue Exception => e # rubocop:disable Lint/RescueException
-          @logger.error(e)  if @logger
+          process_error(e)
         end
       end
       save
@@ -65,8 +70,18 @@ module Jiji::Model::Agents
           agent = @agents[k]
           agent.restore_state(v) if agent
         rescue Exception => e # rubocop:disable Lint/RescueException
-          @logger.error(e) if @logger
+          process_error(e)
         end
+      end
+    end
+
+    private
+
+    def process_error(error)
+      if @fail_on_error
+        fail error
+      else
+        @logger.error(error) if @logger
       end
     end
 

@@ -8,6 +8,10 @@ module Jiji::Model::Graphing
     include Mongoid::Document
 
     store_in collection: 'graph'
+    has_many :graph_data, {
+      class_name: "Jiji::Model::Graphing::GraphData",
+      dependent: :destroy
+    }
 
     field :backtest_id,  type: BSON::ObjectId # RMTの場合nil
     field :label,        type: String
@@ -63,8 +67,7 @@ module Jiji::Model::Graphing
     end
 
     def fetch_data(start_time, end_time, interval = :one_minute)
-      GraphData.where(
-        :graph_id      => id,
+      self.graph_data.where(
         :interval      => interval,
         :timestamp.gte => start_time,
         :timestamp.lt  => end_time
@@ -75,7 +78,7 @@ module Jiji::Model::Graphing
 
     def setup_data_savers
       @savers = Jiji::Model::Trading::Intervals.instance.all.map do |i|
-        Internal::GraphDataSaver.new(id, i)
+        Internal::GraphDataSaver.new(self, i)
       end
     end
 

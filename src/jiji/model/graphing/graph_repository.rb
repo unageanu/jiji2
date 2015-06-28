@@ -11,10 +11,7 @@ module Jiji::Model::Graphing
     end
 
     def delete_backtest_graphs(backtest_id)
-      find_by_backtest_id(backtest_id).each do |g|
-        GraphData.where(graph_id: g.id).delete
-      end
-      find_by_backtest_id(backtest_id).delete
+      find_by_backtest_id(backtest_id).destroy
     end
 
     def delete_rmt_graphs(time)
@@ -22,7 +19,7 @@ module Jiji::Model::Graphing
         GraphData.where({
           :graph_id      => g.id,
           :timestamp.lte => time
-        }).delete
+        }).destroy
       end
     end
 

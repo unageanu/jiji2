@@ -10,19 +10,19 @@ module Jiji::Model::Graphing
     include Mongoid::Document
 
     store_in collection: 'graph-data'
+    belongs_to :graph
 
-    field :graph_id,  type: BSON::ObjectId
     field :values,    type: Array
     field :interval,  type: Symbol
     field :timestamp, type: Time
 
     index(
-      { id: 1, interval: 1, timestamp: 1 },
+      { graph_id: 1, interval: 1, timestamp: 1 },
       { name: 'graph-data_id_interval_timestamp_index' })
 
-    def self.create(graph_id, values, interval, time = Time.now)
+    def self.create(graph, values, interval, time = Time.now)
       GraphData.new do |d|
-        d.graph_id  = graph_id
+        d.graph     = graph
         d.interval  = interval
         d.values    = values
         d.timestamp = time

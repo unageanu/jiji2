@@ -3,8 +3,8 @@
 module Jiji::Model::Graphing::Internal
   class GraphDataSaver
 
-    def initialize(graph_id, interval)
-      @graph_id        = graph_id
+    def initialize(graph, interval)
+      @graph           = graph
       @interval        = interval
       @values          = nil
       @current         = nil
@@ -25,7 +25,7 @@ module Jiji::Model::Graphing::Internal
       @next_recreate_point = time + (@interval.ms / 1000)
       @next_save_point     = time + 60
       @current = Jiji::Model::Graphing::GraphData.create(
-        @graph_id, [], @interval.id, time)
+        @graph, [], @interval.id, time)
       @values  = []
     end
 

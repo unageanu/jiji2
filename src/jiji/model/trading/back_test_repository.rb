@@ -75,7 +75,7 @@ module Jiji::Model::Trading
       @backtests = BackTest
                    .order_by(:created_at.asc)
                    .all.each_with_object(@backtests) do |t, r|
-        setup_backtest(t)
+        setup_backtest(t, true)
         r[t.id] = t
         r
       end
@@ -83,9 +83,9 @@ module Jiji::Model::Trading
 
     private
 
-    def setup_backtest(backtest)
+    def setup_backtest(backtest, ignore_agent_creation_error = false)
       container.inject(backtest)
-      backtest.setup
+      backtest.setup(ignore_agent_creation_error)
       backtest
     end
 

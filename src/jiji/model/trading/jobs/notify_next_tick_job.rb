@@ -23,7 +23,7 @@ module Jiji::Model::Trading::Jobs
 
     def after_do_next(trading_context, queue)
       time = trading_context.broker.tick.timestamp
-      trading_context.graph_factory.save_data(time)
+      save_graph_data(trading_context, time)
     end
 
     private
@@ -35,6 +35,10 @@ module Jiji::Model::Trading::Jobs
       trading_context.broker.refresh_positions
       trading_context.broker.refresh_account
       @counter = 0
+    end
+
+    def save_graph_data(trading_context, time)
+      trading_context.graph_factory.save_data(time)
     end
 
   end
@@ -54,7 +58,10 @@ module Jiji::Model::Trading::Jobs
     end
 
     def after_do_next(context, queue)
-      update_progress(context, context.broker.tick.timestamp)
+      tick = context.broker.tick
+
+      save_graph_data(context, tick.timestamp)
+      update_progress(context, tick.timestamp)
 
       return unless context.alive?
       if context.broker.next?

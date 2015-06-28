@@ -40,7 +40,6 @@ module Jiji::Model::Agents
         Thread.current['__prevent__respond_to_missing'] = false
       end
     end
-
   end
 
   class Delegate

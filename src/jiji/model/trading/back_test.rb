@@ -133,11 +133,11 @@ module Jiji::Model::Trading
     include Jiji::Model::Trading
     include Jiji::Model::Trading::Internal::WorkerMixin
 
-    def setup
+    def setup(ignore_agent_creation_error = false)
       self.created_at = time_source.now
       generate_uuid(agent_setting)
 
-      create_components
+      create_components(ignore_agent_creation_error)
       return unless status == :wait_for_start
 
       @process.start(
@@ -166,11 +166,11 @@ module Jiji::Model::Trading
 
     private
 
-    def create_components
-      graph_factory    = create_graph_factory
+    def create_components(ignore_agent_creation_error = false)
+      graph_factory    = create_graph_factory(_id)
       broker           = create_broker
-      @agents          = create_agents(
-        agent_setting, broker, graph_factory, id)
+      @agents          = create_agents(agent_setting, broker,
+        graph_factory, _id, true, ignore_agent_creation_error)
       trading_context  = create_trading_context(broker, @agents, graph_factory)
       @process         = create_process(trading_context)
     end

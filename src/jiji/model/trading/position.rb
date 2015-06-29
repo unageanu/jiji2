@@ -15,8 +15,10 @@ module Jiji::Model::Trading
     include Utils
 
     store_in collection: 'positions'
+    belongs_to :backtest, {
+      class_name: 'Jiji::Model::Trading::BackTestProperties'
+    }
 
-    field :backtest_id,    type: BSON::ObjectId # RMTの場合nil
     field :internal_id,    type: String
 
     field :pair_name,      type: Symbol

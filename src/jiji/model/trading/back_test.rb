@@ -21,6 +21,8 @@ module Jiji::Model::Trading
     store_in collection: 'backtests'
     has_many :graph,
       class_name: 'Jiji::Model::Graphing::Graph', dependent: :destroy
+    has_many :position,
+      class_name: 'Jiji::Model::Trading::Position', dependent: :destroy
 
     field :name,          type: String
     field :created_at,    type: Time

@@ -134,11 +134,6 @@ module Jiji::Model::Trading
       save
     end
 
-    def delete
-      # TODO: delete positions, logs
-      super
-    end
-
     def stop
       @process.stop if @process && @process.running?
       if (status == :running)

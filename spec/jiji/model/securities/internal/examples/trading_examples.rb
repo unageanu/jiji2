@@ -45,6 +45,7 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       trades = client.retrieve_trades
+
       expect(trades.length).to be 2
       trade = trades[1]
       expect(trade.internal_id).not_to be nil

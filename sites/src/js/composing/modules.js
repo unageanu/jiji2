@@ -16,6 +16,10 @@ function viewModel(binder) {
   binder.bind("application").to("viewmodel.Application");
   binder.bind("navigator").to("viewmodel.Navigator");
 
+  binder.bind("backtestsPageModel")
+    .to("viewmodel.pages.BacktestsPageModel")
+    .onInitialize("postCreate");
+
   binder.bind("agentSourceEditor")
     .to("viewmodel.agents.AgentSourceEditor")
     .onInitialize("initialize");

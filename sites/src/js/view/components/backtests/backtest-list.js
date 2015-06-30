@@ -11,26 +11,21 @@ export default class BacktestList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      sources :    []
+      items :    []
     };
   }
 
   componentWillMount() {
-    const backtests = this.backtests();
-    ["loaded", "added", "updated", "removed", "updateStates"].forEach(
-      (e) => backtests.addObserver(e, this.onSourcesChanged.bind(this), this)
-    );
-
-    backtests.load();
+    this.model().addObserver("propertyChanged",
+      this.onPropertyChanged.bind(this), this);
   }
   componentWillUnmount() {
-    this.backtests().removeAllObservers(this);
+    this.model().removeAllObservers(this);
   }
 
   render() {
-    const items = this.state.sources.map(
-      (source) => this.createItemComponent(source));
-    const buttonAction = () => this.editor().newSourceFile();
+    const items = this.state.items.map(
+      (item) => this.createItemComponent(item));
     return (
       <div className="backtest-list">
         <div className="list">
@@ -53,23 +48,27 @@ export default class BacktestList extends React.Component {
     );
   }
 
-  onSourcesChanged(k, ev) {
-    this.setState({sources:this.backtests().tests});
+  onPropertyChanged(k, ev) {
+    const newState = {};
+    newState[ev.key] = ev.newValue;
+    this.setState(newState);
   }
 
   onItemTapped(e, backtest) {
     this.context.router.transitionTo("/backtests/list/" + backtest.id);
   }
 
-  backtests() {
-    return this.context.application.backtests;
+  model() {
+    return this.props.model;
   }
 }
 BacktestList.propTypes = {
-  selectedId : React.PropTypes.string.isRequired
+  selectedId : React.PropTypes.string.isRequired,
+  model: React.PropTypes.object.isRequired
 };
 BacktestList.defaultProp = {
-  selectedId : null
+  selectedId : null,
+  model: null
 };
 BacktestList.contextTypes = {
   application: React.PropTypes.object.isRequired,

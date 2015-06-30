@@ -18,7 +18,7 @@ export default class Chart extends Observable {
 
     this.context         = this.createContext(backtest);
 
-    this.buildViwModels( config );
+    this.buildViewModels( config );
   }
 
   createContext(backtest) {
@@ -27,7 +27,7 @@ export default class Chart extends Observable {
       : Context.createRmtContext(this.rates);
   }
 
-  buildViwModels( config ) {
+  buildViewModels( config ) {
     this.coordinateCalculator = new CoordinateCalculator();
     this.slider               = new Slider(
       this.context, this.coordinateCalculator, this.preferences);

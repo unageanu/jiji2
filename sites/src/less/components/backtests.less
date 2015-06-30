@@ -2,6 +2,10 @@
 @import "../sizes.less";
 
 .backtests {
+  width: 100%;
+  float: right;
+  margin-left: -300px;
+
   .backtest-list {
     width: 300px;
     float: left;
@@ -10,5 +14,11 @@
       color:            @font-color-normal !important;
       background-color: @background-color-dark !important;
     }
+  }
+
+  .details {
+    position: relative;
+    margin: 0 0 0 300px;
+    padding: 24px
   }
 }

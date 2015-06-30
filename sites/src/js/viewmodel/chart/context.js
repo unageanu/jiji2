@@ -56,8 +56,8 @@ class BackTestContext extends Context {
     this.backtest = backtest;
 
     this.setProperty("range", {
-      start: backtest.start_time,
-      end: backtest.end_time
+      start: backtest.startTime,
+      end: backtest.endTime
     });
   }
   initialize() {

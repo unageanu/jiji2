@@ -18,8 +18,8 @@ export default class Chart extends React.Component {
 
   componentWillMount() {
     this.chartModel = this.context.application.viewModelFactory.createChart(
-      this.props.backtest
-    );
+      this.props.backtest,
+      {displayPositionsAndGraphs: this.props.displayPositionsAndGraphs});
     this.chartModel.stageSize = this.props.size;
   }
 
@@ -118,12 +118,14 @@ Chart.contextTypes = {
 };
 Chart.propTypes = {
   enableSlider : React.PropTypes.bool.isRequired,
+  displayPositionsAndGraphs: React.PropTypes.bool.isRequired,
   devicePixelRatio: React.PropTypes.number.isRequired,
   size: React.PropTypes.object.isRequired,
   backtest: React.PropTypes.object
 };
 Chart.defaultProps = {
   enableSlider : true,
+  displayPositionsAndGraphs: false,
   devicePixelRatio: window.devicePixelRatio || 1,
   size: {w:600, h:500},
   backtest: null

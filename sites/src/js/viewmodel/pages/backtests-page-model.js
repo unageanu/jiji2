@@ -13,8 +13,8 @@ export default class BacktestsPageModel extends Observable {
     this.backtestListModel = new BacktestListModel(this.backtests);
   }
 
-  initialize( param ) {
-    this.selectedBacktestId = param.id;
+  initialize( ) {
+    this.selectedBacktestId = null;
     this.selectedBacktest   = null;
 
     this.backtests.initialize().then(
@@ -30,6 +30,8 @@ export default class BacktestsPageModel extends Observable {
   }
   set selectedBacktestId(id) {
     this.setProperty("selectedBacktestId", id);
+    this.backtests.initialize().then(
+      () => this.onBacktestLoaded());
   }
 
   get selectedBacktest() {

@@ -8,22 +8,19 @@ import Intervals            from "../../model/trading/intervals"
 
 export default class Context extends Observable {
 
-  constructor(backtestId) {
+constructor() {
     super();
-    this.backtestId = backtestId;
   }
 
-  initialize() {}
-
   get range() {
-    this.getProperty("range");
+    return this.getProperty("range");
   }
 
   static createRmtContext(rates) {
     return new RmtContext(rates);
   }
-  static createBacktestContext() {
-    return null; // TODO
+  static createBacktestContext(backtest) {
+    return new BackTestContext(backtest);
   }
 }
 
@@ -47,8 +44,29 @@ class RmtContext extends Context{
   unregisterObservers() {
     this.rates.removeAllObservers(this);
   }
+
+  get backtestId() {
+    return null;
+  }
 }
 
 class BackTestContext extends Context {
-  // TODO
+  constructor(backtest) {
+    super(null);
+    this.backtest = backtest;
+
+    this.setProperty("range", {
+      start: backtest.start_time,
+      end: backtest.end_time
+    });
+  }
+  initialize() {
+    return this.rates.initialize();
+  }
+  registerObservers() {}
+  unregisterObservers() {}
+
+  get backtestId() {
+    return this.backtest.id;
+  }
 }

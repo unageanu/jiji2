@@ -10,8 +10,8 @@ export default class ViewModelFactory {
     this.positionService = ContainerJS.Inject;
     this.graphService    = ContainerJS.Inject;
   }
-  createChart(backtestId=null, config={displayPositionsAndGraphs:false}) {
-    return new Chart( backtestId, config, this );
+  createChart(backtest=null, config={displayPositionsAndGraphs:false}) {
+    return new Chart( backtest, config, this );
   }
 
 }

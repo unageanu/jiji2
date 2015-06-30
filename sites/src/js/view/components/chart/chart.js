@@ -17,7 +17,9 @@ export default class Chart extends React.Component {
   }
 
   componentWillMount() {
-    this.chartModel = this.context.application.viewModelFactory.createChart();
+    this.chartModel = this.context.application.viewModelFactory.createChart(
+      this.props.backtest
+    );
     this.chartModel.stageSize = this.props.size;
   }
 
@@ -106,7 +108,7 @@ export default class Chart extends React.Component {
     const axisPosition = this.chartModel.candleSticks.axisPosition;
     const mask         = new CreateJS.Shape();
     mask.graphics.beginFill("#000000")
-      .drawRect( padding, padding, axisPosition.horizontal- padding, stageSize.h )
+      .drawRect( padding, padding, axisPosition.horizontal - padding, stageSize.h )
       .endFill();
     return mask;
   }
@@ -117,10 +119,12 @@ Chart.contextTypes = {
 Chart.propTypes = {
   enableSlider : React.PropTypes.bool.isRequired,
   devicePixelRatio: React.PropTypes.number.isRequired,
-  size: React.PropTypes.object.isRequired
+  size: React.PropTypes.object.isRequired,
+  backtest: React.PropTypes.object
 };
 Chart.defaultProps = {
   enableSlider : true,
   devicePixelRatio: window.devicePixelRatio || 1,
-  size: {w:600, h:500}
+  size: {w:600, h:500},
+  backtest: null
 };

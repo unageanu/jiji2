@@ -8,7 +8,7 @@ import Context              from "./context";
 
 export default class Chart extends Observable {
 
-  constructor( backtestId, config, components ) {
+  constructor( backtest, config, components ) {
     super();
 
     this.rates           = components.rates;
@@ -16,19 +16,23 @@ export default class Chart extends Observable {
     this.positionService = components.positionService;
     this.graphService    = components.graphService;
 
-    this.context         = this.createContext(backtestId);
-    
+    this.context         = this.createContext(backtest);
+
     this.buildViwModels( config );
   }
 
-  createContext(backtestId) {
-    return Context.createRmtContext(this.rates);  //TODO
+  createContext(backtest) {
+    return backtest
+      ? Context.createBacktestContext(backtest)
+      : Context.createRmtContext(this.rates);
   }
 
   buildViwModels( config ) {
     this.coordinateCalculator = new CoordinateCalculator();
-    this.slider               = new Slider(this.context, this.coordinateCalculator, this.preferences);
-    this.candleSticks         = new CandleSticks(this.coordinateCalculator, this.rates, this.preferences);
+    this.slider               = new Slider(
+      this.context, this.coordinateCalculator, this.preferences);
+    this.candleSticks         = new CandleSticks(
+      this.coordinateCalculator, this.rates, this.preferences);
 
     if (config.displayPositonsAndGraphs) {
       this.positions = new Positions( this.context,

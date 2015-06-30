@@ -41,8 +41,12 @@ export default class Backtests extends Observable {
     this.byId  = {};
   }
 
+  initialize() {
+    return this.initializedDeferred || this.load();
+  }
+
   load() {
-    this.backtestService.getAll().then((tests) => {
+    this.initializedDeferred = this.backtestService.getAll().then((tests) => {
       tests = tests.map((test) => this.convertToBacktest(test));
       tests.sort(comparator);
       this.tests  = tests;
@@ -50,6 +54,7 @@ export default class Backtests extends Observable {
       this.fire("loaded", {items:this.tests});
     });
     if (!this.updater) this.startUpdater();
+    return this.initializedDeferred;
   }
 
   get(id) {

@@ -57,7 +57,7 @@ describe("Backtests", () => {
     target = ContainerJS.utils.Deferred.unpack(d);
     xhrManager = target.backtestService.xhrManager;
 
-    target.load();
+    target.initialize();
     xhrManager.requests[0].resolve([
       {id: "1", name:"aa", status: "finished",          createdAt: date(1)},
       {id: "2", name:"cc", status: "running",           createdAt: date(2)},
@@ -70,10 +70,10 @@ describe("Backtests", () => {
     xhrManager.clear();
   });
   afterEach(() => {
-    target.stopUpdater(); 
+    target.stopUpdater();
   });
 
-  it("loadでソース一覧をロードできる", () => {
+  it("initializeでソース一覧をロードできる", () => {
     expect(target.tests).toSomeBacktests([
       {id: "5", name:"ee", status: "wait_for_finished", createdAt: date(5)},
       {id: "4", name:"dd", status: "wait_for_cancel",   createdAt: date(4)},
@@ -81,6 +81,35 @@ describe("Backtests", () => {
       {id: "3", name:"bb", status: "wait_for_start",    createdAt: date(3)},
       {id: "7", name:"gg", status: "cancelled",         createdAt: date(7)},
       {id: "6", name:"ff", status: "error",             createdAt: date(6)},
+      {id: "1", name:"aa", status: "finished",          createdAt: date(1)}
+    ]);
+
+    // 複数回呼び出しても再読み込みはされない。
+    target.initialize();
+    expect(xhrManager.requests.length).toEqual(0);
+    expect(target.tests).toSomeBacktests([
+      {id: "5", name:"ee", status: "wait_for_finished", createdAt: date(5)},
+      {id: "4", name:"dd", status: "wait_for_cancel",   createdAt: date(4)},
+      {id: "2", name:"cc", status: "running",           createdAt: date(2)},
+      {id: "3", name:"bb", status: "wait_for_start",    createdAt: date(3)},
+      {id: "7", name:"gg", status: "cancelled",         createdAt: date(7)},
+      {id: "6", name:"ff", status: "error",             createdAt: date(6)},
+      {id: "1", name:"aa", status: "finished",          createdAt: date(1)}
+    ]);
+  });
+
+  it("loadでソース一覧を再読み込みできる", () => {
+    target.load();
+    xhrManager.requests[0].resolve([
+      {id: "1", name:"aa", status: "finished",          createdAt: date(1)},
+      {id: "2", name:"cc", status: "running",           createdAt: date(2)},
+      {id: "3", name:"bb", status: "wait_for_start",    createdAt: date(3)},
+      {id: "7", name:"gg", status: "cancelled",         createdAt: date(7)}
+    ]);
+    expect(target.tests).toSomeBacktests([
+      {id: "2", name:"cc", status: "running",           createdAt: date(2)},
+      {id: "3", name:"bb", status: "wait_for_start",    createdAt: date(3)},
+      {id: "7", name:"gg", status: "cancelled",         createdAt: date(7)},
       {id: "1", name:"aa", status: "finished",          createdAt: date(1)}
     ]);
   });

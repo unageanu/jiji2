@@ -150,6 +150,14 @@ describe Jiji::Model::Graphing::Graph do
     expect(graph.fetch_data(start_time, end_time).length).to eq 0
   end
 
+  it 'to_h でハッシュに変換できる' do
+    graph = @repository.find[0]
+    hash = graph.to_h
+    expect(hash[:id]).to eq graph._id
+    expect(hash[:label]).to eq graph.label
+    expect(hash[:colors]).to eq graph.colors
+  end
+
   def register_graphs
     factory_for_rmt =
       Jiji::Model::Graphing::GraphFactory.new

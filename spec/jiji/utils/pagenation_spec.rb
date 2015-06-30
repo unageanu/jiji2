@@ -35,9 +35,9 @@ describe Jiji::Utils::Pagenation::Query do
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(10)
-    expect(data[0].values).to eq([0])
+    expect(data[0].value).to eq([0])
     expect(data[0].timestamp).to eq(Time.at(0))
-    expect(data[9].values).to eq([9])
+    expect(data[9].value).to eq([9])
     expect(data[9].timestamp).to eq(Time.at(9 * 60))
   end
 
@@ -48,9 +48,9 @@ describe Jiji::Utils::Pagenation::Query do
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(10)
-    expect(data[0].values).to eq([10])
+    expect(data[0].value).to eq([10])
     expect(data[0].timestamp).to eq(Time.at(10 * 60))
-    expect(data[9].values).to eq([19])
+    expect(data[9].value).to eq([19])
     expect(data[9].timestamp).to eq(Time.at(19 * 60))
   end
 
@@ -61,9 +61,9 @@ describe Jiji::Utils::Pagenation::Query do
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(5)
-    expect(data[0].values).to eq([95])
+    expect(data[0].value).to eq([95])
     expect(data[0].timestamp).to eq(Time.at(95 * 60))
-    expect(data[4].values).to eq([99])
+    expect(data[4].value).to eq([99])
     expect(data[4].timestamp).to eq(Time.at(99 * 60))
   end
 
@@ -74,9 +74,9 @@ describe Jiji::Utils::Pagenation::Query do
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(10)
-    expect(data[0].values).to eq([99])
+    expect(data[0].value).to eq([99])
     expect(data[0].timestamp).to eq(Time.at(99 * 60))
-    expect(data[9].values).to eq([90])
+    expect(data[9].value).to eq([90])
     expect(data[9].timestamp).to eq(Time.at(90 * 60))
   end
 
@@ -87,9 +87,9 @@ describe Jiji::Utils::Pagenation::Query do
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(10)
-    expect(data[0].values).to eq([89])
+    expect(data[0].value).to eq([89])
     expect(data[0].timestamp).to eq(Time.at(89 * 60))
-    expect(data[9].values).to eq([80])
+    expect(data[9].value).to eq([80])
     expect(data[9].timestamp).to eq(Time.at(80 * 60))
   end
 
@@ -100,9 +100,9 @@ describe Jiji::Utils::Pagenation::Query do
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(5)
-    expect(data[0].values).to eq([4])
+    expect(data[0].value).to eq([4])
     expect(data[0].timestamp).to eq(Time.at(4 * 60))
-    expect(data[4].values).to eq([0])
+    expect(data[4].value).to eq([0])
     expect(data[4].timestamp).to eq(Time.at(0))
   end
 
@@ -112,9 +112,9 @@ describe Jiji::Utils::Pagenation::Query do
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(10)
-    expect(data[0].values).to eq([0])
+    expect(data[0].value).to eq([0])
     expect(data[0].timestamp).to eq(Time.at(0))
-    expect(data[9].values).to eq([9])
+    expect(data[9].value).to eq([9])
     expect(data[9].timestamp).to eq(Time.at(9 * 60))
   end
 
@@ -124,9 +124,9 @@ describe Jiji::Utils::Pagenation::Query do
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(10)
-    expect(data[0].values).to eq([99])
+    expect(data[0].value).to eq([99])
     expect(data[0].timestamp).to eq(Time.at(99 * 60))
-    expect(data[9].values).to eq([90])
+    expect(data[9].value).to eq([90])
     expect(data[9].timestamp).to eq(Time.at(90 * 60))
   end
 
@@ -150,9 +150,9 @@ describe Jiji::Utils::Pagenation::Query do
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 
     expect(data.length).to eq(100)
-    expect(data[0].values).to eq([0])
+    expect(data[0].value).to eq([0])
     expect(data[0].timestamp).to eq(Time.at(0))
-    expect(data[99].values).to eq([99])
+    expect(data[99].value).to eq([99])
     expect(data[99].timestamp).to eq(Time.at(99 * 60))
   end
 end

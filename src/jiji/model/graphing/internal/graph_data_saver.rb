@@ -31,7 +31,7 @@ module Jiji::Model::Graphing::Internal
 
     def updata(values)
       merge(values)
-      @current.values = calculate_average
+      @current.value = calculate_average
     end
 
     def merge(values)

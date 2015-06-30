@@ -7,6 +7,8 @@ module Jiji::Model::Graphing
   class Graph
 
     include Mongoid::Document
+    include Jiji::Utils::ValueObject
+    include Jiji::Web::Transport::Transportable
 
     store_in collection: 'graph'
 
@@ -79,6 +81,17 @@ module Jiji::Model::Graphing
         :timestamp.gte => start_time,
         :timestamp.lt  => end_time
       )
+    end
+
+    def to_h
+      {
+        id:         _id,
+        label:      label,
+        type:       type,
+        colors:     colors,
+        start_time: start_time,
+        end_time:   end_time
+      }
     end
 
     private

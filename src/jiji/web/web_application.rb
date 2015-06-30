@@ -26,6 +26,7 @@ module Jiji::Web
     def build
       builder = Rack::Builder.new
       register_services(builder)
+      register_authentication_service(builder)
       register_setting_services(builder)
       register_testing_services(builder)
       register_static_files(builder)
@@ -40,11 +41,15 @@ module Jiji::Web
     def register_services(builder)
       builder.map('/api/echo')          { run EchoService }
       builder.map('/api/rates')         { run RateService }
-      builder.map('/api/authenticator') { run AuthenticationService }
-      builder.map('/api/sessions')      { run SessionService }
       builder.map('/api/rmt')           { run RMTService }
       builder.map('/api/agents')        { run AgentService }
       builder.map('/api/backtests')     { run BacktestService }
+      builder.map('/api/graph')         { run GraphService }
+    end
+
+    def register_authentication_service(builder)
+      builder.map('/api/authenticator') { run AuthenticationService }
+      builder.map('/api/sessions')      { run SessionService }
     end
 
     def register_setting_services(builder)

@@ -40,6 +40,11 @@ module Jiji::Web
       Time.parse(request[key])
     end
 
+    def get_backtest_id_from_path_param(key = 'backtest_id')
+      id_str = params[key]
+      id_str == 'rmt' ? nil : BSON::ObjectId.from_string(id_str)
+    end
+
     def create_id(id)
       BSON::ObjectId.from_string(id)
     end

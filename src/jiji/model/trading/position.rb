@@ -109,12 +109,13 @@ module Jiji::Model::Trading
     end
 
     def insert_trading_information_to_hash(h)
-      h[:backtest_id]         = backtest_id
+      h[:backtest_id]          = backtest_id
       h[:internal_id]          = internal_id
       h[:pair_name]            = pair_name
       h[:units]                = units
       h[:sell_or_buy]          = sell_or_buy
       h[:status]               = status
+      h[:profit_or_loss]       = profit_or_loss
     end
 
     def insert_price_and_time_information_to_hash(h)

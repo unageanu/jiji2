@@ -9,10 +9,22 @@ module Jiji::Model::Trading
     include Jiji::Errors
 
     def retrieve_positions(backtest_id = nil,
-      sort_order = { entered_at: :asc, id: :asc }, offset = 0, limit = 20)
+      sort_order = { entered_at: :asc, id: :asc },
+      offset = 0, limit = 20, filter_conditions = {})
+      filter_conditions = { backtest_id: backtest_id }.merge(filter_conditions)
       query = Jiji::Utils::Pagenation::Query.new(
-        { backtest_id: backtest_id }, sort_order, offset, limit)
+        filter_conditions, sort_order, offset, limit)
       query.execute(Position).map { |x| x }
+    end
+
+    def retrieve_positions_within(backtest_id, start_time, end_time)
+      base_condition = create_base_condition(backtest_id, end_time)
+      Position.or({
+        :exited_at.gte => start_time
+      }.merge(base_condition), {
+        exited_at: nil
+      }.merge(base_condition))
+        .order_by({ entered_at: :asc, id: :asc }).map { |x| x }
     end
 
     def retrieve_living_positions_of_rmt
@@ -36,6 +48,14 @@ module Jiji::Model::Trading
         :status        => :lost,
         :updated_at.lt => exited_before
       ).delete
+    end
+
+    def create_base_condition(backtest_id, end_time)
+      {
+        :backtest_id   => backtest_id,
+        :status.ne     => :lost,
+        :entered_at.lt => end_time
+      }
     end
 
   end

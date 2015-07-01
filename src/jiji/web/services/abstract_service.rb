@@ -35,9 +35,12 @@ module Jiji::Web
       Time.parse(request[key])
     end
 
-    def get_pagenation_query_from_query_param(key)
-      illegal_argument("illegal argument. key=#{key}") if request[key].nil?
-      Time.parse(request[key])
+    def get_sort_order_from_query_param(
+      order_key = 'order', direction_key = 'direction')
+      return nil unless request[order_key]
+      {
+        request[order_key].to_sym => request[direction_key] || :asc
+      }
     end
 
     def get_backtest_id_from_path_param(key = 'backtest_id')

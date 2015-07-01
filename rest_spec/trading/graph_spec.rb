@@ -7,6 +7,10 @@ describe 'グラフデータ取得' do
     register_graph
   end
 
+  after(:context) do
+    @agent_registry.remove_source('aaa')
+  end
+
   before(:example) do
     @client = Jiji::Client.instance
   end
@@ -98,9 +102,9 @@ describe 'グラフデータ取得' do
     data_builder = Jiji::Test::DataBuilder.new
 
     backtest_repository = container.lookup(:backtest_repository)
-    agent_registry      = container.lookup(:agent_registry)
+    @agent_registry      = container.lookup(:agent_registry)
 
-    agent_registry.add_source('aaa', '',
+    @agent_registry.add_source('aaa', '',
       :agent, data_builder.new_agent_body(1))
     @test = data_builder.register_backtest(1, backtest_repository)
 

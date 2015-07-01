@@ -43,7 +43,8 @@ describe Jiji::Model::Trading::PositionRepository do
       if i < 10
         position.update_state_to_lost
       elsif i < 50
-        position.update_state_to_closed
+        position.update_state_to_closed(
+          position.current_price, Time.at(position.entered_at.to_i + 10))
       end
       position.save
     end
@@ -107,6 +108,65 @@ describe Jiji::Model::Trading::PositionRepository do
     expect(positions.size).to eq(0)
   end
 
+  it '検索条件を指定して、一覧を取得できる' do
+    positions = @position_repository.retrieve_positions(nil, nil, nil, nil, {
+      :entered_at.gt => Time.at(30)
+    })
+
+    expect(positions.length).to eq(69)
+    expect(positions[0].backtest_id).to eq(nil)
+    expect(positions[0].entered_at).to eq(Time.at(31))
+    expect(positions[68].backtest_id).to eq(nil)
+    expect(positions[68].entered_at).to eq(Time.at(99))
+  end
+
+  it '#retrieve_positions_within で期間内の建玉を取得できる' do
+    positions = @position_repository.retrieve_positions_within(
+      nil, Time.at(8), Time.at(12))
+
+    expect(positions.length).to eq(2)
+    expect(positions[0].backtest_id).to eq(nil)
+    expect(positions[0].entered_at).to eq(Time.at(10))
+    expect(positions[1].backtest_id).to eq(nil)
+    expect(positions[1].entered_at).to eq(Time.at(11))
+
+    positions = @position_repository.retrieve_positions_within(
+      nil, Time.at(30), Time.at(40))
+
+    expect(positions.length).to eq(20)
+    expect(positions[0].backtest_id).to eq(nil)
+    expect(positions[0].entered_at).to eq(Time.at(20))
+    expect(positions[19].backtest_id).to eq(nil)
+    expect(positions[19].entered_at).to eq(Time.at(39))
+
+    positions = @position_repository.retrieve_positions_within(
+      nil, Time.at(55), Time.at(60))
+
+    expect(positions.length).to eq(15)
+    expect(positions[0].backtest_id).to eq(nil)
+    expect(positions[0].entered_at).to eq(Time.at(45))
+    expect(positions[14].backtest_id).to eq(nil)
+    expect(positions[14].entered_at).to eq(Time.at(59))
+
+    positions = @position_repository.retrieve_positions_within(
+      nil, Time.at(90), Time.at(95))
+
+    expect(positions.length).to eq(45)
+    expect(positions[0].backtest_id).to eq(nil)
+    expect(positions[0].entered_at).to eq(Time.at(50))
+    expect(positions[44].backtest_id).to eq(nil)
+    expect(positions[44].entered_at).to eq(Time.at(94))
+
+    positions = @position_repository.retrieve_positions_within(
+      @test1._id, Time.at(55), Time.at(60))
+
+    expect(positions.length).to eq(15)
+    expect(positions[0].backtest_id).to eq(@test1._id)
+    expect(positions[0].entered_at).to eq(Time.at(45))
+    expect(positions[14].backtest_id).to eq(@test1._id)
+    expect(positions[14].entered_at).to eq(Time.at(59))
+  end
+
   it 'アクティブなRMTの建玉を取得できる' do
     positions = @position_repository.retrieve_living_positions_of_rmt
 
@@ -142,11 +202,11 @@ describe Jiji::Model::Trading::PositionRepository do
     positions = @position_repository.retrieve_positions
     expect(positions.size).to eq(20)
     expect(positions[0].backtest_id).to eq(nil)
-    expect(positions[0].entered_at).to eq(Time.at(40))
+    expect(positions[0].entered_at).to eq(Time.at(30))
     expect(positions[0].exited_at).to eq(Time.at(40))
     expect(positions[19].backtest_id).to eq(nil)
-    expect(positions[19].entered_at).to eq(Time.at(59))
-    expect(positions[19].exited_at).to eq(nil)
+    expect(positions[19].entered_at).to eq(Time.at(49))
+    expect(positions[19].exited_at).to eq(Time.at(59))
 
     @position_repository.delete_closed_positions_of_rmt(Time.at(60))
 

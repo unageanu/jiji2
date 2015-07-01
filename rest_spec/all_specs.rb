@@ -11,5 +11,7 @@ require 'trading/agents_spec'
 require 'trading/rates_spec'
 require 'trading/rmt_spec'
 require 'trading/backtest_spec'
+require 'trading/graph_spec'
+require 'trading/positions_spec'
 
 require 'utils/echo_spec'

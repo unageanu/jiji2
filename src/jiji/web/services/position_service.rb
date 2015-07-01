@@ -4,16 +4,7 @@ require 'sinatra/base'
 require 'jiji/web/services/abstract_service'
 
 module Jiji::Web
-  class PositionService < Jiji::Web::AuthenticationRequiredService
-
-    options '/rmt' do
-      allow('GET,OPTIONS')
-    end
-
-    get '/rmt' do
-      query = get_time_from_query_param
-      ok(repository.retrieve_positions(nil, query))
-    end
+  class PositionsService < Jiji::Web::AuthenticationRequiredService
 
     options '/rmt/exited' do
       allow('DELETE,OPTIONS')
@@ -30,12 +21,38 @@ module Jiji::Web
     end
 
     get '/:backtest_id' do
-      query = get_time_from_query_param
-      ok(repository.retrieve_positions(params['backtest_id'], query))
+      condition = create_filter_condition
+      id = get_backtest_id_from_path_param
+      if condition
+        ok(retirieve_backtest_widthin(id, condition))
+      else
+        ok(retirieve_backtest(id))
+      end
     end
 
     def repository
       lookup(:position_repository)
+    end
+
+    def retirieve_backtest_widthin(backtest_id, condition)
+      repository.retrieve_positions_within(backtest_id,
+        condition[:start_time], condition[:end_time])
+    end
+
+    def retirieve_backtest(backtest_id)
+      sort_order = get_sort_order_from_query_param('order', 'direction')
+      offset     = request['offset'] ? request['offset'].to_i : nil
+      limit      = request['limit'] ? request['limit'].to_i : nil
+      repository.retrieve_positions(backtest_id, sort_order, offset, limit)
+    end
+
+    def create_filter_condition
+      return {
+        start_time: get_time_from_query_param('start'),
+        end_time:   get_time_from_query_param('end')
+      }
+    rescue ArgumentError
+      return nil
     end
 
   end

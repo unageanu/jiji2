@@ -45,6 +45,7 @@ module Jiji::Web
       builder.map('/api/agents')        { run AgentService }
       builder.map('/api/backtests')     { run BacktestService }
       builder.map('/api/graph')         { run GraphService }
+      builder.map('/api/positions')     { run PositionsService }
     end
 
     def register_authentication_service(builder)

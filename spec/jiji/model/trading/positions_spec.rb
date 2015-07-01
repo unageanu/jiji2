@@ -94,28 +94,28 @@ describe Jiji::Model::Trading::Positions do
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 4
-      position = loaded[0]
+      position = loaded.find { |p| p.internal_id == '1' }
       expect(position._id).to eq original[0]._id
       expect(position.internal_id).to eq '1'
       expect(position.status).to eq :live
       expect(position.units).to be 10_000
       expect(position.updated_at).to eq Time.at(1)
 
-      position = loaded[1]
+      position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
       expect(position.internal_id).to eq '2'
       expect(position.status).to eq :live
       expect(position.units).to be 20_000
       expect(position.updated_at).to eq Time.at(2)
 
-      position = loaded[2]
+      position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
       expect(position.internal_id).to eq '3'
       expect(position.status).to eq :live
       expect(position.units).to be 30_000
       expect(position.updated_at).to eq Time.at(3)
 
-      position = loaded[3]
+      position = loaded.find { |p| p.internal_id == '4' }
       expect(position._id).to eq new_positions[2]._id
       expect(position.internal_id).to eq '4'
       expect(position.status).to eq :live
@@ -165,21 +165,21 @@ describe Jiji::Model::Trading::Positions do
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 3
-      position = loaded[0]
+      position = loaded.find { |p| p.internal_id == '1' }
       expect(position._id).to eq original[0]._id
       expect(position.internal_id).to eq '1'
       expect(position.status).to eq :live
       expect(position.units).to be 10_000
       expect(position.updated_at).to eq Time.at(1)
 
-      position = loaded[1]
+      position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
       expect(position.internal_id).to eq '2'
       expect(position.status).to eq :live
       expect(position.units).to be 10_000
       expect(position.updated_at).to eq Time.at(2)
 
-      position = loaded[2]
+      position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
       expect(position.internal_id).to eq '3'
       expect(position.status).to eq :live
@@ -231,7 +231,7 @@ describe Jiji::Model::Trading::Positions do
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 3
-      position = loaded[0]
+      position = loaded.find { |p| p.internal_id == '1' }
       expect(position._id).to eq original[0]._id
       expect(position.internal_id).to eq '1'
       expect(position.status).to eq :live
@@ -243,7 +243,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 104.003
 
-      position = loaded[1]
+      position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
       expect(position.internal_id).to eq '2'
       expect(position.status).to eq :closed
@@ -255,7 +255,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 104
 
-      position = loaded[2]
+      position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
       expect(position.internal_id).to eq '3'
       expect(position.status).to eq :live
@@ -323,7 +323,7 @@ describe Jiji::Model::Trading::Positions do
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 3
-      position = loaded[0]
+      position = loaded.find { |p| p.internal_id == '1' }
       expect(position._id).to eq original[0]._id
       expect(position.internal_id).to eq '1'
       expect(position.status).to eq :live
@@ -337,7 +337,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.closing_policy.trailing_stop).to eq 0
       expect(position.closing_policy.trailing_amount).to eq 0
 
-      position = loaded[1]
+      position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
       expect(position.internal_id).to eq '2'
       expect(position.status).to eq :live
@@ -351,7 +351,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.closing_policy.trailing_stop).to eq 0
       expect(position.closing_policy.trailing_amount).to eq 0
 
-      position = loaded[2]
+      position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
       expect(position.internal_id).to eq '3'
       expect(position.status).to eq :live
@@ -433,7 +433,7 @@ describe Jiji::Model::Trading::Positions do
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 4
-      position = loaded[0]
+      position = loaded.find { |p| p.internal_id == '1' }
       expect(position._id).to eq original[0]._id
       expect(position.internal_id).to eq '1'
       expect(position.status).to eq :live
@@ -445,7 +445,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 101.003
 
-      position = loaded[1]
+      position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
       expect(position.internal_id).to eq '2'
       expect(position.status).to eq :live
@@ -457,7 +457,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
 
-      position = loaded[2]
+      position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
       expect(position.internal_id).to eq '3'
       expect(position.status).to eq :live
@@ -469,7 +469,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 103.003
 
-      position = loaded[3]
+      position = loaded.find { |p| p.internal_id == '10' }
       expect(position._id).not_to be nil
       expect(position.internal_id).to eq '10'
       expect(position.status).to eq :live
@@ -535,7 +535,7 @@ describe Jiji::Model::Trading::Positions do
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 4
-      position = loaded[0]
+      position = loaded.find { |p| p.internal_id == '1' }
       expect(position._id).to eq original[0]._id
       expect(position.internal_id).to eq '1'
       expect(position.status).to eq :live
@@ -547,7 +547,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 101.003
 
-      position = loaded[1]
+      position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
       expect(position.internal_id).to eq '2'
       expect(position.status).to eq :live
@@ -559,7 +559,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
 
-      position = loaded[2]
+      position = loaded.find { |p| p.internal_id == '2_' }
       expect(position._id).not_to be nil
       expect(position.internal_id).to eq '2_'
       expect(position.status).to eq :closed
@@ -571,7 +571,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 109
 
-      position = loaded[3]
+      position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
       expect(position.internal_id).to eq '3'
       expect(position.status).to eq :live
@@ -713,7 +713,7 @@ describe Jiji::Model::Trading::Positions do
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 3
-      position = loaded[0]
+      position = loaded.find { |p| p.internal_id == '1' }
       expect(position._id).to eq original[0]._id
       expect(position.internal_id).to eq '1'
       expect(position.status).to eq :live
@@ -725,7 +725,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 101.003
 
-      position = loaded[1]
+      position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
       expect(position.internal_id).to eq '2'
       expect(position.status).to eq :live
@@ -737,7 +737,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
 
-      position = loaded[2]
+      position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
       expect(position.internal_id).to eq '3'
       expect(position.status).to eq :live
@@ -787,7 +787,7 @@ describe Jiji::Model::Trading::Positions do
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 3
-      position = loaded[0]
+      position = loaded.find { |p| p.internal_id == '1' }
       expect(position._id).to eq original[0]._id
       expect(position.internal_id).to eq '1'
       expect(position.status).to eq :closed
@@ -799,7 +799,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 110
 
-      position = loaded[1]
+      position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
       expect(position.internal_id).to eq '2'
       expect(position.status).to eq :live
@@ -811,7 +811,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
 
-      position = loaded[2]
+      position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
       expect(position.internal_id).to eq '3'
       expect(position.status).to eq :live

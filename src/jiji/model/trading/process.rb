@@ -32,9 +32,8 @@ module Jiji::Model::Trading
     def do_next_job(context, queue)
       queue.pop.exec(context, queue)
     rescue Exception => e # rubocop:disable Lint/RescueException
-      p '1'
       @trading_context.logger.error(e)
-      raise e if @fail_on_error
+      context.fail(e) if @fail_on_error
     end
 
     def stop

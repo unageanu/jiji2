@@ -75,6 +75,7 @@ describe Jiji::Model::Trading::BackTest do
         }
       ]
     })
+    test.to_h
 
     sleep 0.2 until test.process.finished?
     expect(test.retrieve_process_status).to be :error

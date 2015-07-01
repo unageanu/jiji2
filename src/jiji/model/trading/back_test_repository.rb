@@ -41,7 +41,7 @@ module Jiji::Model::Trading
       backtest = BackTest.create_from_hash(config)
       setup_backtest(backtest)
       backtest.save
-
+      
       @backtests[backtest.id] = backtest
       backtest
     end

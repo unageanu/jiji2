@@ -131,7 +131,6 @@ export default class Graphs extends Observable {
       (p, c, i) => p.set(c.id, new Graph(c, this.coordinateCalculator)), new Map());
   }
   updateGraphData( data ) {
-    try {
     var lines  = [];
     var axises = [];
     data.forEach((graphData) => {
@@ -147,9 +146,5 @@ export default class Graphs extends Observable {
     });
     this.setProperty("lines", lines);
     this.setProperty("axises", axises);
-    } catch (error) {
-      console.log(error);
-      console.log(error.stack);
-    }
   }
 }

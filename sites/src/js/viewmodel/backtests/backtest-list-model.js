@@ -11,12 +11,13 @@ export default class BacktestListModel extends Observable {
   }
 
   initialize( ) {
-    this.setProperty("items", []);
+    this.setProperty("items", [] );
   }
 
   registerObservers() {
     const backtests = this.backtests;
-    const handler = () => this.setProperty("items", backtests.tests);
+    const handler = () =>
+      this.setProperty("items", backtests.tests, () => false);
     ["loaded", "added", "updated", "removed", "updateStates"].forEach(
       (e) => backtests.addObserver(e, handler, this)
     );

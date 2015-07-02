@@ -190,6 +190,8 @@ export default class NewBacktestPage extends AbstractPage {
   }
 
   registerBscktest() {
+    this.applyAgentConfiguration();
+
     const builder = this.backtestBuilder();
     builder.name = this.refs.name.getValue();
     builder.memo = this.refs.memo.getValue();

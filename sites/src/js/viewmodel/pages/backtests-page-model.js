@@ -16,6 +16,7 @@ export default class BacktestsPageModel extends Observable {
   initialize( ) {
     this.selectedBacktestId = null;
     this.selectedBacktest   = null;
+    this.activeTab          = null;
 
     this.backtests.initialize().then(
       () => this.onBacktestLoaded());
@@ -39,5 +40,12 @@ export default class BacktestsPageModel extends Observable {
   }
   set selectedBacktest(backtest) {
     this.setProperty("selectedBacktest", backtest);
+  }
+
+  get activeTab() {
+    return this.getProperty("activeTab");
+  }
+  set activeTab(id) {
+    this.setProperty("activeTab", id);
   }
 }

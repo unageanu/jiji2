@@ -121,7 +121,7 @@ module Jiji::Model::Trading
     include Jiji::Model::Trading::Internal::WorkerMixin
 
     def setup(ignore_agent_creation_error = false)
-      self.created_at = time_source.now
+      self.created_at = self.created_at || time_source.now
       generate_uuid(agent_setting)
 
       create_components(ignore_agent_creation_error)

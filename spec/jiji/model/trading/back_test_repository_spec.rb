@@ -111,6 +111,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(@repository.all.length).to be 3
       test = @repository.all[0]
       expect(test.name).to eq 'テスト0'
+      expect(test.created_at).to eq Time.at(0)
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -123,6 +124,7 @@ describe Jiji::Model::Trading::BackTestRepository do
 
       test = @repository.all[1]
       expect(test.name).to eq 'テスト1'
+      expect(test.created_at).to eq Time.at(1)
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -135,6 +137,7 @@ describe Jiji::Model::Trading::BackTestRepository do
 
       test = @repository.all[2]
       expect(test.name).to eq 'テスト2'
+      expect(test.created_at).to eq Time.at(2)
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -155,6 +158,7 @@ describe Jiji::Model::Trading::BackTestRepository do
 
       test = @repository.all[0]
       expect(test.name).to eq 'テスト0'
+      expect(test.created_at).to eq Time.at(0)
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -167,6 +171,7 @@ describe Jiji::Model::Trading::BackTestRepository do
 
       test = @repository.all[1]
       expect(test.name).to eq 'テスト1'
+      expect(test.created_at).to eq Time.at(1)
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -179,6 +184,7 @@ describe Jiji::Model::Trading::BackTestRepository do
 
       test = @repository.all[2]
       expect(test.name).to eq 'テスト2'
+      expect(test.created_at).to eq Time.at(2)
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -202,6 +208,7 @@ describe Jiji::Model::Trading::BackTestRepository do
 
       test = @repository.all[0]
       expect(test.name).to eq 'テスト0'
+      expect(test.created_at).to eq Time.at(0)
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -213,6 +220,7 @@ describe Jiji::Model::Trading::BackTestRepository do
 
       test = @repository.all[1]
       expect(test.name).to eq 'テスト1'
+      expect(test.created_at).to eq Time.at(1)
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -224,6 +232,7 @@ describe Jiji::Model::Trading::BackTestRepository do
 
       test = @repository.all[2]
       expect(test.name).to eq 'テスト2'
+      expect(test.created_at).to eq Time.at(2)
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]

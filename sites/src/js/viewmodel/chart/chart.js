@@ -34,7 +34,7 @@ export default class Chart extends Observable {
     this.candleSticks         = new CandleSticks(
       this.coordinateCalculator, this.rates, this.preferences);
 
-    if (config.displayPositonsAndGraphs) {
+    if (config.displayPositionsAndGraphs) {
       this.positions = new Positions( this.context,
         this.coordinateCalculator, this.positionService);
       this.graphs = new Graphs( this.context,
@@ -43,7 +43,7 @@ export default class Chart extends Observable {
 
     this.coordinateCalculator.attach(this.slider, this.preferences);
     this.candleSticks.attach(this.slider);
-    if (config.displayPositonsAndGraphs) {
+    if (config.displayPositionsAndGraphs) {
       this.positions.attach(this.slider);
       this.graphs.attach(this.slider);
     }

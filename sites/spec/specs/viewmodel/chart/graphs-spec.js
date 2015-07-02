@@ -21,7 +21,7 @@ describe("Graphs", () => {
     let d = container.get("viewModelFactory");
     const factory = ContainerJS.utils.Deferred.unpack(d);
 
-    chart                = factory.createChart(null, {displayPositonsAndGraphs:true});
+    chart                = factory.createChart(null, {displayPositionsAndGraphs:true});
     operator             = new ChartOperator(chart);
     slider               = chart.slider;
     graphs               = chart.graphs;

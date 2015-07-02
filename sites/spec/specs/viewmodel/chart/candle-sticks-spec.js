@@ -59,7 +59,7 @@ describe("CandleSticks", () => {
       {value:"09:00",       x:239}
     ]);
     expect(candleSticks.axisPosition).toEqual({
-      vertical: 176, horizontal: 244
+      vertical: 176, horizontal: 244, verticalSpliter: null
     });
     expect(candleSticks.sticks).toEqual([
       { high: 70, low: 131, open: 119, close: 101, isUp:  true, x:  11 },
@@ -97,7 +97,7 @@ describe("CandleSticks", () => {
       {value:"09:00",       x:203}
     ]);
     expect(candleSticks.axisPosition).toEqual({
-      vertical: 176, horizontal: 244
+      vertical: 176, horizontal: 244, verticalSpliter: null
     });
     expect(candleSticks.sticks).toEqual([
       { high: 92, low: 109, open: 109, close: 109, isUp: false, x: 35 },
@@ -135,7 +135,7 @@ describe("CandleSticks", () => {
       {value:"09:00",       x:239}
     ]);
     expect(candleSticks.axisPosition).toEqual({
-      vertical: 176, horizontal: 244
+      vertical: 176, horizontal: 244, verticalSpliter: null
     });
     expect(candleSticks.sticks).toEqual([
       { high: 92, low: 109, open: 109, close: 109, isUp: false, x: 227 },
@@ -173,7 +173,7 @@ describe("CandleSticks", () => {
       {value:"09:00",       x:239}
     ]);
     expect(candleSticks.axisPosition).toEqual({
-      vertical: 176, horizontal: 244
+      vertical: 176, horizontal: 244, verticalSpliter: null
     });
     expect(candleSticks.sticks).toEqual([
       { high: 92, low: 109, open: 109, close: 109, isUp: false, x:  11 },

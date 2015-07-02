@@ -5,6 +5,7 @@ import CandleSticks         from "./candle-sticks"
 import Background           from "./background"
 import Axises               from "./axises"
 import Slider               from "./slider"
+import GraphView            from "./graph-view"
 import CoordinateCalculator from "../../../viewmodel/chart/coordinate-calculator"
 
 const padding = CoordinateCalculator.padding();
@@ -38,6 +39,7 @@ export default class Chart extends React.Component {
     this.chartModel.destroy();
     this.axises.unregisterObservers();
     this.candleSticks.unregisterObservers();
+    this.graphView.unregisterObservers();
   }
 
   render() {
@@ -74,11 +76,13 @@ export default class Chart extends React.Component {
     this.background   = new Background( this.chartModel );
     this.axises       = new Axises( this.chartModel, this.slidableMask );
     this.candleSticks = new CandleSticks( this.chartModel, this.slidableMask );
+    this.graphView    = new GraphView( this.chartModel, this.slidableMask );
   }
   initViewComponents() {
     this.background.attach( this.stage );
     this.axises.attach( this.stage );
     this.candleSticks.attach( this.stage );
+    this.graphView.attach( this.stage );
   }
 
   registerSlideAction() {

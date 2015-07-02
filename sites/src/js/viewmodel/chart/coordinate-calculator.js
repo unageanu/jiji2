@@ -100,9 +100,13 @@ export default class CoordinateCalculator extends Observable {
   }
 
   get axisPosition() {
+    const spliter = this.graphAreaHeight > 0
+      ? this.stageSize.h - (bottomLabelheight + padding + this.graphAreaHeight)
+      : null;
     return {
-      vertical:   this.stageSize.h - (bottomLabelheight + padding),
-      horizontal: this.stageSize.w - (sideLabelWidth + padding)
+      vertical:        this.stageSize.h - (bottomLabelheight + padding),
+      horizontal:      this.stageSize.w - (sideLabelWidth + padding),
+      verticalSpliter: spliter
     };
   }
 

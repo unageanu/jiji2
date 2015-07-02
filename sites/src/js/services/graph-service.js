@@ -19,6 +19,6 @@ export default class GraphService extends AbstractService {
   }
 
   endpoint() {
-    return "graphs";
+    return "graph";
   }
 }

@@ -17,6 +17,8 @@ export default class Axises extends AbstractChartComponent {
       "propertyChanged", this.onCandlePropertyChanged.bind(this), this);
     this.chartModel.slider.addObserver(
       "propertyChanged", this.onSliderPropertyChanged.bind(this), this);
+    this.chartModel.graphs.addObserver(
+      "propertyChanged", this.onGraphPropertyChanged.bind(this), this);
   }
   attach( stage ) {
     this.stage = stage;
@@ -40,6 +42,11 @@ export default class Axises extends AbstractChartComponent {
     if (event.key === "temporaryCurrentRange") {
       if (!event.newValue || !event.newValue.start) return;
       this.slideTo(event.newValue);
+    }
+  }
+  onGraphPropertyChanged(name, event) {
+    if (event.key === "axises") {
+      this.update();
     }
   }
 
@@ -80,6 +87,13 @@ export default class Axises extends AbstractChartComponent {
       y: padding,
       h: axisPosition.vertical - padding
     }]);
+    if (axisPosition.verticalSpliter) {
+      this.drowLine(g, "#CCCCCC", [{
+        x: padding,
+        y: axisPosition.verticalSpliter,
+        w: axisPosition.horizontal - padding + 1
+      }]);
+    }
   }
 
   update() {
@@ -104,11 +118,14 @@ export default class Axises extends AbstractChartComponent {
     const axisPosition         = candleSticks.axisPosition;
     const verticalAxisLabels   = candleSticks.verticalAxisLabels;
     const horizontalAxisLabels = candleSticks.horizontalAxisLabels;
+    const graphAxies           = this.chartModel.graphs.axises || [];
 
     this.renderHorizontalAxisLines( axisPosition, horizontalAxisLabels);
     this.renderVerticalAxisLines(   axisPosition, verticalAxisLabels);
+    this.renderVerticalAxisLines(   axisPosition, graphAxies);
     this.renderHorizontalAxisLabels(axisPosition, horizontalAxisLabels);
     this.renderVerticalAxisLabels(  axisPosition, verticalAxisLabels);
+    this.renderVerticalAxisLabels(  axisPosition, graphAxies);
   }
 
   renderHorizontalAxisLines(axisPosition, horizontalAxisLabels) {

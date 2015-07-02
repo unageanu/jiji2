@@ -26,7 +26,7 @@ const comparator = (a, b) => {
   } else if ( statusA < statusB ) {
     return -1;
   }
-  return a.createdAt.getTime() > b .createdAt.getTime() ? -1 : 1;
+  return a.createdAt.getTime() > b.createdAt.getTime() ? -1 : 1;
 };
 
 export default class Backtests extends Observable {

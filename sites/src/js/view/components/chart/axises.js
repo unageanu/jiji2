@@ -17,7 +17,7 @@ export default class Axises extends AbstractChartComponent {
       "propertyChanged", this.onCandlePropertyChanged.bind(this), this);
     this.chartModel.slider.addObserver(
       "propertyChanged", this.onSliderPropertyChanged.bind(this), this);
-    this.chartModel.graphs.addObserver(
+    if (this.chartModel.graphs) this.chartModel.graphs.addObserver(
       "propertyChanged", this.onGraphPropertyChanged.bind(this), this);
   }
   attach( stage ) {
@@ -31,6 +31,7 @@ export default class Axises extends AbstractChartComponent {
   unregisterObservers() {
     this.chartModel.candleSticks.removeAllObservers(this);
     this.chartModel.slider.removeAllObservers(this);
+    if (this.chartModel.graphs) this.chartModel.graphs.removeAllObservers(this);
   }
 
   onCandlePropertyChanged(name, event) {
@@ -118,7 +119,8 @@ export default class Axises extends AbstractChartComponent {
     const axisPosition         = candleSticks.axisPosition;
     const verticalAxisLabels   = candleSticks.verticalAxisLabels;
     const horizontalAxisLabels = candleSticks.horizontalAxisLabels;
-    const graphAxies           = this.chartModel.graphs.axises || [];
+    const graphAxies           = this.chartModel.graphs
+        ? this.chartModel.graphs.axises || [] : [];
 
     this.renderHorizontalAxisLines( axisPosition, horizontalAxisLabels);
     this.renderVerticalAxisLines(   axisPosition, verticalAxisLabels);

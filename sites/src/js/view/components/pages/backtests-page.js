@@ -36,7 +36,7 @@ export default class BacktestsPage extends AbstractPage {
           key={"chart_" + this.state.selectedBacktest.id}
           backtest={this.state.selectedBacktest}
           displayPositionsAndGraphs={true}
-          size={{w:600, h:500, profitAreaHeight:150, graphAreaHeight:150}}
+          size={{w:600, h:500, profitAreaHeight:100, graphAreaHeight:100}}
         />
       : null;
     return (

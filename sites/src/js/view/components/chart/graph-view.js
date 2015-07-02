@@ -15,7 +15,7 @@ export default class GraphView extends AbstractChartComponent {
   addObservers() {
     this.chartModel.slider.addObserver(
       "propertyChanged", this.onSliderPropertyChanged.bind(this), this);
-    this.chartModel.graphs.addObserver(
+    if (this.chartModel.graphs) this.chartModel.graphs.addObserver(
       "propertyChanged", this.onGraphPropertyChanged.bind(this), this);
   }
   attach( stage ) {
@@ -23,8 +23,8 @@ export default class GraphView extends AbstractChartComponent {
     this.stage.addChild(this.shape);
   }
   unregisterObservers() {
-    this.chartModel.graphs.removeAllObservers(this);
-    this.chartModel.slider.removeAllObservers(this);
+    if (this.chartModel.graphs) this.chartModel.graphs.removeAllObservers(this);
+    if (this.chartModel.slider) this.chartModel.slider.removeAllObservers(this);
   }
 
   onGraphPropertyChanged(name, event) {

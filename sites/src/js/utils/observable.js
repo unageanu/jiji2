@@ -52,7 +52,8 @@ export default class Observable {
     this.getReferences(receiver).register(eventName, observer);
   }
   getReferences(receiver) {
-    return getOrCreateEntry(this.observerReferences, receiver, () => new References());
+    return getOrCreateEntry(
+      this.observerReferences, receiver, () => new References());
   }
 
   fire( eventName, event={} ) {

@@ -61,14 +61,13 @@ describe 'グラフデータ取得' do
         'end'   => end_time.iso8601
       })
       expect(r.status).to eq 200
-      expect(r.body.values.length).to be 2
+      expect(r.body.length).to be 2
 
-      r.body.values.each do |graph_data|
-        expect(graph_data.length).to be > 0
-        graph_data.each do |d|
-          expect(d['id']).not_to be nil
+      r.body.each do |graph_data|
+        expect(graph_data['data'].length).to be > 0
+        graph_data['data'].each do |d|
           expect(d['timestamp']).not_to be nil
-          expect(d['value'].length).to be > 0
+          expect(d['values'].length).to be > 0
         end
       end
     end
@@ -84,14 +83,13 @@ describe 'グラフデータ取得' do
         'end'   => end_time.iso8601
       })
       expect(r.status).to eq 200
-      expect(r.body.values.length).to be 1
+      expect(r.body.length).to be 1
 
-      r.body.values.each do |graph_data|
-        expect(graph_data.length).to be > 0
-        graph_data.each do |d|
-          expect(d['id']).not_to be nil
+      r.body.each do |graph_data|
+        expect(graph_data['data'].length).to be > 0
+        graph_data['data'].each do |d|
           expect(d['timestamp']).not_to be nil
-          expect(d['value'].length).to be > 0
+          expect(d['values'].length).to be > 0
         end
       end
     end

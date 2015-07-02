@@ -19,13 +19,18 @@ module Jiji::Web
       allow('GET,OPTIONS')
     end
     get '/data/:backtest_id/:interval' do
-      range = retrieve_range
+      range     = retrieve_range
       interval  = params['interval'].to_sym
-      id = get_backtest_id_from_path_param
+      id        = get_backtest_id_from_path_param
       graphs    = repository.find(id, range[:start], range[:end])
-      response  = graphs.each_with_object({}) do |graph, r|
-        r[graph.id] = graph.fetch_data(range[:start], range[:end], interval) \
-                      .map { |d| d }
+      response  = graphs.map do |graph|
+        data = graph.fetch_data(range[:start], range[:end], interval).map do |d|
+           { values: d.value, timestamp: d.timestamp }
+        end
+        {
+          id:   graph._id,
+          data: data
+        }
       end
       ok(response)
     end

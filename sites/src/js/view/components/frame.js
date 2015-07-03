@@ -3,6 +3,7 @@ import MUI                 from "material-ui"
 import Router              from "react-router"
 import LeftNavi            from "./left-navi"
 import WindowResizeManager from "../window-resize-manager"
+import Theme               from "../theme"
 
 const RouteHandler = Router.RouteHandler;
 const Link         = Router.Link;
@@ -15,6 +16,7 @@ export default class Frame extends React.Component {
 
     this.themeManager = new MUI.Styles.ThemeManager();
     this.windowResizeManager = new WindowResizeManager();
+    this.setTheme();
   }
 
   render() {
@@ -37,6 +39,11 @@ export default class Frame extends React.Component {
         windowResizeManager: this.windowResizeManager
       };
   }
+
+  setTheme() {
+    this.themeManager.setTheme(Theme);
+  }
+
   navigatorElements() {
     return this.props.application.navigator.menuItems().filter((item)=>{
       return item.type === Types.SUBHEADER;

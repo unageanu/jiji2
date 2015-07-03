@@ -21,10 +21,10 @@ module Jiji::Web
     end
 
     get '/:backtest_id' do
-      condition = create_filter_condition
+      period_condition = read_period_filter_condition
       id = get_backtest_id_from_path_param
-      if condition
-        ok(retirieve_backtest_widthin(id, condition))
+      if period_condition
+        ok(retirieve_backtest_widthin(id, period_condition))
       else
         ok(retirieve_backtest(id))
       end
@@ -46,7 +46,7 @@ module Jiji::Web
       repository.retrieve_positions(backtest_id, sort_order, offset, limit)
     end
 
-    def create_filter_condition
+    def read_period_filter_condition
       return {
         start_time: get_time_from_query_param('start'),
         end_time:   get_time_from_query_param('end')

@@ -84,6 +84,12 @@ describe '建玉取得' do
     expect(entered_at).to eq Time.new(2015, 5, 3).to_i
   end
 
+  it 'GET /positions/rmt/count でリアルトレードの建玉数を取得できる' do
+    r = @client.get('positions/rmt/count')
+    expect(r.status).to eq 200
+    expect(r.body['count']).to be 2
+  end
+
   it 'GET /positions/:backtest_id でバックテストの建玉を取得できる' do
     r = @client.get("positions/#{@test._id}",  {
       'start' => Time.new(2015, 5, 1).iso8601,
@@ -151,6 +157,12 @@ describe '建玉取得' do
     expect(position['profit_or_loss']).not_to be nil
     entered_at = Time.iso8601(position['entered_at']).to_i
     expect(entered_at).to eq Time.new(2015, 5, 3).to_i
+  end
+
+  it 'GET /positions/:backtest_id/count でリアルトレードの建玉数を取得できる' do
+    r = @client.get("positions/#{@test._id}/count")
+    expect(r.status).to eq 200
+    expect(r.body['count']).to be 2
   end
 
   def register_positions

@@ -30,6 +30,15 @@ module Jiji::Web
       end
     end
 
+    options '/:backtest_id/count' do
+      allow('GET,OPTIONS')
+    end
+
+    get '/:backtest_id/count' do
+      id = get_backtest_id_from_path_param
+      ok({count:repository.count_positions(id)})
+    end
+
     def repository
       lookup(:position_repository)
     end

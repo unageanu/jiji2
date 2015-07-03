@@ -17,6 +17,11 @@ module Jiji::Model::Trading
       query.execute(Position).map { |x| x }
     end
 
+    def count_positions(backtest_id = nil, filter_conditions = {})
+      filter_conditions = { backtest_id: backtest_id }.merge(filter_conditions)
+      Position.where(filter_conditions).count
+    end
+
     def retrieve_positions_within(backtest_id, start_time, end_time)
       base_condition = create_base_condition(backtest_id, end_time)
       Position.or({

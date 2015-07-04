@@ -38,8 +38,8 @@ module Jiji::Web
     def get_sort_order_from_query_param(
       order_key = 'order', direction_key = 'direction')
       return nil unless request[order_key]
-      {
-        request[order_key].to_sym => request[direction_key] || :asc
+      return {
+        request[order_key].to_sym => request[direction_key].to_sym || :asc
       }
     end
 

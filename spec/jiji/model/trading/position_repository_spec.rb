@@ -120,6 +120,19 @@ describe Jiji::Model::Trading::PositionRepository do
     expect(positions[68].entered_at).to eq(Time.at(99))
   end
 
+  it '建玉の総数を取得できる' do
+    count = @position_repository.count_positions()
+    expect(count).to eq(100)
+
+    count = @position_repository.count_positions(@test1._id)
+    expect(count).to eq(100)
+
+    count = @position_repository.count_positions(nil, {
+      :entered_at.gt => Time.at(30)
+    })
+    expect(count).to eq(69)
+  end
+
   it '#retrieve_positions_within で期間内の建玉を取得できる' do
     positions = @position_repository.retrieve_positions_within(
       nil, Time.at(8), Time.at(12))

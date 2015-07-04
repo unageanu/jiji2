@@ -17,5 +17,5 @@ describe Jiji::Model::Securities::Internal::Oanda::Trading do
     container.lookup(:position_repository)
   end
 
-  it_behaves_like '建玉関連の操作'
+  #it_behaves_like '建玉関連の操作'
 end

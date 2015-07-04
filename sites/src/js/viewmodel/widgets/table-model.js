@@ -16,7 +16,10 @@ export default class TableModel extends Observable {
 
   load() {
     this.offset = 0;
-    return this.loadItems();
+    this.loader.count().then((count)=>{
+      this.totalCount = count;
+      this.loadItems();
+    });
   }
 
   next() {
@@ -42,9 +45,9 @@ export default class TableModel extends Observable {
     if (!this.hasNext) return null;
     this.offset += this.pageSize;
     return this.loader.load(
-      this.offset, this.pageSize, this.sortOrder ).then((result) => {
-        this.totalCount = result.totalCount;
-        this.items      = this.items.concat(result.items);
+      this.offset, this.pageSize, this.sortOrder ).then((items) => {
+        this.items      = this.items.concat(
+          this.convertItems(items));
         this.updateState();
     });
   }
@@ -52,9 +55,8 @@ export default class TableModel extends Observable {
   loadItems() {
     this.items  = [];
     return this.loader.load(
-      this.offset, this.pageSize, this.sortOrder ).then((result) => {
-        this.totalCount = result.totalCount;
-        this.items      = result.items;
+      this.offset, this.pageSize, this.sortOrder ).then((items) => {
+        this.items      = this.convertItems(items);
         this.updateState();
     });
   }
@@ -62,6 +64,10 @@ export default class TableModel extends Observable {
   updateState() {
     this.hasNext = this.totalCount > this.offset+this.pageSize;
     this.hasPrev = this.offset > 0;
+  }
+
+  convertItems(items) {
+    return items;
   }
 
   set hasNext(hasNext) {

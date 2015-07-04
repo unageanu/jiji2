@@ -14,7 +14,13 @@ describe("TableModel", () => {
         this.sortOrder = sortOrder;
         this.deferred  = new Deferred();
         return this.deferred;
-      }
+      },
+      count() {
+        const deferred  =new Deferred();
+        deferred.resolve(this.itemCount);
+        return deferred;
+      },
+      itemCount: 90
     };
     model = new TableModel(loader, {name: "asc"}, 20);
   });
@@ -22,10 +28,7 @@ describe("TableModel", () => {
   it("loadで一覧を取得できる", () => {
 
     model.load();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(0, 20)
-    });
+    loader.deferred.resolve(createItems(0, 20));
 
     expect(loader.offset).toEqual( 0 );
     expect(loader.limit).toEqual( 20 );
@@ -38,16 +41,10 @@ describe("TableModel", () => {
   it("nextで次の一覧を取得できる", () => {
 
     model.load();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(0, 20)
-    });
+    loader.deferred.resolve(createItems(0, 20));
 
     model.next();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(20, 20)
-    });
+    loader.deferred.resolve(createItems(20, 20));
 
     expect(loader.offset).toEqual(20 );
     expect(loader.limit).toEqual( 20 );
@@ -57,10 +54,7 @@ describe("TableModel", () => {
     expect(model.hasPrev).toEqual( true );
 
     model.next();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(40, 20)
-    });
+    loader.deferred.resolve(createItems(40, 20));
 
     expect(loader.offset).toEqual( 40 );
     expect(loader.limit).toEqual( 20 );
@@ -70,10 +64,7 @@ describe("TableModel", () => {
     expect(model.hasPrev).toEqual( true );
 
     model.next();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(60, 20)
-    });
+    loader.deferred.resolve(createItems(60, 20));
 
     expect(loader.offset).toEqual( 60 );
     expect(loader.limit).toEqual( 20 );
@@ -83,10 +74,7 @@ describe("TableModel", () => {
     expect(model.hasPrev).toEqual( true );
 
     model.next();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(80, 10)
-    });
+    loader.deferred.resolve(createItems(80, 10));
 
     expect(loader.offset).toEqual( 80 );
     expect(loader.limit).toEqual( 20 );
@@ -95,12 +83,9 @@ describe("TableModel", () => {
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( true );
 
-
+    loader.itemCount = 40;
     model.load();
-    loader.deferred.resolve({
-      totalCount: 40,
-      items: createItems(0, 20)
-    });
+    loader.deferred.resolve(createItems(0, 20));
     expect(loader.offset).toEqual( 0 );
     expect(loader.limit).toEqual( 20 );
     expect(loader.sortOrder).toEqual({name: "asc"});
@@ -109,10 +94,7 @@ describe("TableModel", () => {
     expect(model.hasPrev).toEqual( false );
 
     model.next();
-    loader.deferred.resolve({
-      totalCount: 40,
-      items: createItems(20, 20)
-    });
+    loader.deferred.resolve(createItems(20, 20));
     expect(loader.offset).toEqual( 20 );
     expect(loader.limit).toEqual( 20 );
     expect(loader.sortOrder).toEqual({name: "asc"});
@@ -124,16 +106,10 @@ describe("TableModel", () => {
   it("prevで前の一覧を取得できる", () => {
 
     model.load();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(0, 20)
-    });
+    loader.deferred.resolve(createItems(0, 20));
 
     model.next();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(20, 20)
-    });
+    loader.deferred.resolve(createItems(20, 20));
 
     expect(loader.offset).toEqual(20 );
     expect(loader.limit).toEqual( 20 );
@@ -143,10 +119,7 @@ describe("TableModel", () => {
     expect(model.hasPrev).toEqual( true );
 
     model.next();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(40, 20)
-    });
+    loader.deferred.resolve(createItems(40, 20));
 
     expect(loader.offset).toEqual( 40 );
     expect(loader.limit).toEqual( 20 );
@@ -156,10 +129,7 @@ describe("TableModel", () => {
     expect(model.hasPrev).toEqual( true );
 
     model.prev();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(20, 20)
-    });
+    loader.deferred.resolve(createItems(20, 20));
 
     expect(loader.offset).toEqual( 20 );
     expect(loader.limit).toEqual( 20 );
@@ -170,10 +140,7 @@ describe("TableModel", () => {
 
 
     model.prev();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(0, 20)
-    });
+    loader.deferred.resolve(createItems(0, 20));
 
     expect(loader.offset).toEqual( 0 );
     expect(loader.limit).toEqual( 20 );
@@ -186,16 +153,10 @@ describe("TableModel", () => {
   it("sortByでソート順を変更できる", () => {
 
     model.load();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(0, 20)
-    });
+    loader.deferred.resolve(createItems(0, 20));
 
     model.sortBy({age: "desc"});
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(0, 20)
-    });
+    loader.deferred.resolve(createItems(0, 20));
 
     expect(loader.offset).toEqual( 0 );
     expect(loader.limit).toEqual( 20 );
@@ -206,10 +167,7 @@ describe("TableModel", () => {
 
 
     model.next();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(20, 20)
-    });
+    loader.deferred.resolve(createItems(20, 20));
 
     expect(loader.offset).toEqual( 20 );
     expect(loader.limit).toEqual( 20 );
@@ -220,10 +178,7 @@ describe("TableModel", () => {
 
 
     model.prev();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(0, 20)
-    });
+    loader.deferred.resolve(createItems(0, 20));
 
     expect(loader.offset).toEqual( 0 );
     expect(loader.limit).toEqual( 20 );
@@ -234,10 +189,7 @@ describe("TableModel", () => {
 
 
     model.next();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(20, 20)
-    });
+    loader.deferred.resolve(createItems(20, 20));
 
     expect(loader.offset).toEqual( 20 );
     expect(loader.limit).toEqual( 20 );
@@ -248,10 +200,7 @@ describe("TableModel", () => {
 
 
     model.sortBy({age: "asc"});
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(0, 20)
-    });
+    loader.deferred.resolve(createItems(0, 20));
 
     expect(loader.offset).toEqual( 0 );
     expect(loader.limit).toEqual( 20 );
@@ -264,16 +213,10 @@ describe("TableModel", () => {
   it("fillNextで次の一覧を取得できる", () => {
 
     model.load();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(0, 20)
-    });
+    loader.deferred.resolve(createItems(0, 20));
 
     model.fillNext();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(20, 20)
-    });
+    loader.deferred.resolve(createItems(20, 20));
 
     expect(loader.offset).toEqual( 20 );
     expect(loader.limit).toEqual( 20 );
@@ -283,10 +226,7 @@ describe("TableModel", () => {
     expect(model.hasPrev).toEqual( true );
 
     model.fillNext();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(40, 20)
-    });
+    loader.deferred.resolve(createItems(40, 20));
 
     expect(loader.offset).toEqual( 40 );
     expect(loader.limit).toEqual( 20 );
@@ -296,10 +236,7 @@ describe("TableModel", () => {
     expect(model.hasPrev).toEqual( true );
 
     model.fillNext();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(60, 20)
-    });
+    loader.deferred.resolve(createItems(60, 20));
 
     expect(loader.offset).toEqual( 60 );
     expect(loader.limit).toEqual( 20 );
@@ -309,10 +246,7 @@ describe("TableModel", () => {
     expect(model.hasPrev).toEqual( true );
 
     model.fillNext();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(80, 10)
-    });
+    loader.deferred.resolve(createItems(80, 10));
 
     expect(loader.offset).toEqual( 80 );
     expect(loader.limit).toEqual( 20 );
@@ -322,10 +256,7 @@ describe("TableModel", () => {
     expect(model.hasPrev).toEqual( true );
 
     model.sortBy({age: "asc"});
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(0, 20)
-    });
+    loader.deferred.resolve(createItems(0, 20));
 
     expect(loader.offset).toEqual( 0 );
     expect(loader.limit).toEqual( 20 );
@@ -335,10 +266,7 @@ describe("TableModel", () => {
     expect(model.hasPrev).toEqual( false );
 
     model.fillNext();
-    loader.deferred.resolve({
-      totalCount: 90,
-      items: createItems(20, 20)
-    });
+    loader.deferred.resolve(createItems(20, 20));
 
     expect(loader.offset).toEqual( 20 );
     expect(loader.limit).toEqual( 20 );

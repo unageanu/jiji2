@@ -1,8 +1,9 @@
-import React        from "react"
-import MUI          from "material-ui"
-import AbstractPage from "./abstract-page"
-import BacktestList from "../backtests/backtest-list"
-import Chart        from "../chart/chart"
+import React          from "react"
+import MUI            from "material-ui"
+import AbstractPage   from "./abstract-page"
+import BacktestList   from "../backtests/backtest-list"
+import Chart          from "../chart/chart"
+import PositionsTable from "../positions/positions-table"
 
 const Tabs  = MUI.Tabs;
 const Tab   = MUI.Tab;
@@ -77,6 +78,8 @@ export default class BacktestsPage extends AbstractPage {
       />;
     } else if ( this.state.activeTab === "report" ) {
       return <div>レポート</div>;
+    } else if ( this.state.activeTab === "trades" ) {
+      return <PositionsTable backtest={this.state.selectedBacktest} />;
     } else {
       return <Chart
           key={"minichart_" + this.state.selectedBacktest.id}

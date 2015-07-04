@@ -1,5 +1,6 @@
-import ContainerJS from "container-js"
-import Chart       from "./chart/chart"
+import ContainerJS         from "container-js"
+import Chart               from "./chart/chart"
+import PositionsTableModel from "./positions/positions-table-model"
 
 export default class ViewModelFactory {
 
@@ -13,5 +14,8 @@ export default class ViewModelFactory {
   createChart(backtest=null, config={displayPositionsAndGraphs:false}) {
     return new Chart( backtest, config, this );
   }
-
+  createPositionsTableModel(backtestId=null, pageSize=100, sortOrder={}) {
+    return new PositionsTableModel(
+      backtestId, pageSize, sortOrder, this.positionService );
+  }
 }

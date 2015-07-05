@@ -129,9 +129,11 @@ describe Jiji::Model::Trading::Positions do
         data_builder.new_position(2),
         data_builder.new_position(3)
       ]
+
       new_positions[1].units = 10_000
       new_positions[1].pair_name = :EURUSD
       new_positions[1].updated_at = Time.at(100)
+      new_positions[1].update_profit_or_loss
 
       positions.update(new_positions)
 

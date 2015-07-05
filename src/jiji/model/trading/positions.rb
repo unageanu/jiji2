@@ -139,6 +139,7 @@ module Jiji::Model::Trading
         SYNCHRONIZE_PROPERTIES.each do |key|
           position.method("#{key}=").call(new_position.method(key).call)
         end
+        position.update_profit_or_loss
         position.save
       end
 

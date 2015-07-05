@@ -121,7 +121,7 @@ describe Jiji::Model::Trading::PositionRepository do
   end
 
   it '建玉の総数を取得できる' do
-    count = @position_repository.count_positions()
+    count = @position_repository.count_positions
     expect(count).to eq(100)
 
     count = @position_repository.count_positions(@test1._id)

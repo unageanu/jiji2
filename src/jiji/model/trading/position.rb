@@ -4,6 +4,7 @@ require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
 require 'jiji/web/transport/transportable'
 require 'jiji/errors/errors'
+require 'jiji/model/trading/internal/position_internal_functions'
 
 module Jiji::Model::Trading
   class Position
@@ -13,6 +14,7 @@ module Jiji::Model::Trading
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
     include Utils
+    include Internal::PositionInternalFunctions
 
     store_in collection: 'positions'
     belongs_to :backtest, {
@@ -26,6 +28,7 @@ module Jiji::Model::Trading
     field :sell_or_buy,    type: Symbol
     field :status,         type: Symbol
 
+    field :profit_or_loss, type: Float
     field :entry_price,    type: Float
     field :current_price,  type: Float
     field :exit_price,     type: Float
@@ -37,10 +40,19 @@ module Jiji::Model::Trading
     embeds_one :closing_policy
 
     index(
-      { backtest_id: 1, entered_at: 1 },
-      name: 'positions_backtest_id_entered_at_index')
+      { backtest_id: 1 },
+      name: 'positions_backtest_id_index')
+
+    index(
+      { backtest_id: 1, profit_or_loss: -1 },
+      name: 'positions_backtest_id_profit_or_loass_index')
 
     attr_readonly :internal_id
+
+    def initialize(*args)
+      super(*args)
+      update_profit_or_loss
+    end
 
     def attach_broker(broker)
       @broker = broker
@@ -54,12 +66,6 @@ module Jiji::Model::Trading
       h
     end
 
-    def profit_or_loss
-      current = actual_amount_of(current_price)
-      entry   = actual_amount_of(entry_price)
-      (current - entry) * (sell_or_buy == :buy ? 1 : -1)
-    end
-
     def modify
       @broker.modify_position(self) if @broker
     end
@@ -67,64 +73,6 @@ module Jiji::Model::Trading
     def close
       illegal_state unless @broker
       @broker.close_position(self)
-    end
-
-    # for internal use.
-    def update_state_for_reduce(units, time)
-      return if status != :live
-      self.units = self.units - units
-      self.updated_at = time
-    end
-
-    # for internal use.
-    def update_state_to_closed(price = current_price, time = updated_at)
-      return if status != :live
-      self.exit_price    = price
-      self.current_price = price
-      self.status        = :closed
-      self.exited_at     = time
-      self.updated_at    = time
-    end
-
-    # for internal use.
-    def update_state_to_lost(price = current_price, time = updated_at)
-      return if status != :live
-      self.current_price = price
-      self.status        = :lost
-      self.updated_at    = time
-    end
-
-    # for internal use.
-    def update_price(tick)
-      return if status != :live
-      self.current_price = PricingUtils.calculate_current_price(
-        tick, pair_name, sell_or_buy)
-      self.updated_at    = tick.timestamp
-    end
-
-    private
-
-    def actual_amount_of(price)
-      BigDecimal.new(price, 10) * units
-    end
-
-    def insert_trading_information_to_hash(h)
-      h[:backtest_id]          = backtest_id
-      h[:internal_id]          = internal_id
-      h[:pair_name]            = pair_name
-      h[:units]                = units
-      h[:sell_or_buy]          = sell_or_buy
-      h[:status]               = status
-      h[:profit_or_loss]       = profit_or_loss
-    end
-
-    def insert_price_and_time_information_to_hash(h)
-      h[:entry_price]   = entry_price
-      h[:current_price] = current_price
-      h[:exit_price]    = exit_price
-      h[:entered_at]    = entered_at
-      h[:exited_at]     = exited_at
-      h[:updated_at]    = updated_at
     end
 
   end

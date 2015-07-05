@@ -13,6 +13,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
         p.entry_price = 120
         p.current_price = 125
         p.sell_or_buy = :buy
+        p.units = 1
       end
 
       expect(policy.should_close?(position)).to be false
@@ -25,6 +26,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
         p.entry_price = 140
         p.current_price = 135
         p.sell_or_buy = :sell
+        p.units = 1
       end
 
       expect(policy.should_close?(position)).to be false
@@ -42,6 +44,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
         p.entry_price = 120
         p.current_price = 125
         p.sell_or_buy = :buy
+        p.units = 1
       end
 
       expect(policy.should_close?(position)).to be false
@@ -54,6 +57,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
         p.entry_price = 100
         p.current_price = 95
         p.sell_or_buy = :sell
+        p.units = 1
       end
 
       expect(policy.should_close?(position)).to be false
@@ -72,6 +76,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
         p.entry_price = 120
         p.current_price = 125
         p.sell_or_buy = :buy
+        p.units = 1
       end
 
       expect(policy.should_close?(position)).to be false
@@ -84,6 +89,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
         p.entry_price = 100
         p.current_price = 95
         p.sell_or_buy = :sell
+        p.units = 1
       end
 
       expect(policy.should_close?(position)).to be false
@@ -107,6 +113,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
         p.entry_price = 120
         p.current_price = 125
         p.sell_or_buy = :buy
+        p.units = 1
       end
 
       policy.update_price(position, pair)
@@ -126,6 +133,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
         p.entry_price = 140
         p.current_price = 135
         p.sell_or_buy = :sell
+        p.units = 1
       end
 
       policy.update_price(position, pair)

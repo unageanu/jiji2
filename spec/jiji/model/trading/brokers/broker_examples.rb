@@ -73,6 +73,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expected_position1.current_price = 135.56
     expected_position1.updated_at    = Time.utc(2015, 5, 1, 0, 0, 15)
+    expected_position1.update_profit_or_loss
     expect(broker.positions.length).to be 1
     expect(broker.positions[result.trade_opened.internal_id]) \
       .to some_position(expected_position1)
@@ -122,6 +123,7 @@ shared_examples 'brokerの基本操作ができる' do
     expected_position1.status     = :closed
     expected_position1.exit_price = 135.56
     expected_position1.exited_at  = Time.utc(2015, 5, 1, 0, 0, 15)
+    expected_position1.update_profit_or_loss
 
     expect(buy_position).to some_position(expected_position1)
     expect(broker.positions.length).to be 1
@@ -143,6 +145,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expected_position2.current_price = 1.4236
     expected_position2.updated_at  = Time.utc(2015, 5, 1, 0, 0, 30)
+    expected_position2.update_profit_or_loss
 
     expect(broker.positions.length).to be 1
     expect(broker.positions[expected_position2.internal_id]) \
@@ -162,6 +165,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expected_position2.current_price = 1.4266
     expected_position2.updated_at  = Time.utc(2015, 5, 1, 0, 0, 45)
+    expected_position2.update_profit_or_loss
 
     expect(broker.positions.length).to be 1
     expect(broker.positions[expected_position2.internal_id]) \
@@ -181,6 +185,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expected_position2.current_price = 1.4246
     expected_position2.updated_at  = Time.utc(2015, 5, 1, 0, 1, 0)
+    expected_position2.update_profit_or_loss
 
     expect(broker.positions.length).to be 1
     expect(broker.positions[expected_position2.internal_id]) \
@@ -207,6 +212,7 @@ shared_examples 'brokerの基本操作ができる' do
     expected_position2.status     = :closed
     expected_position2.exit_price = 1.4246
     expected_position2.exited_at  = Time.utc(2015, 5, 1, 0, 1, 0)
+    expected_position2.update_profit_or_loss
 
     expect(broker.positions.length).to be 0
     positions = position_repository.retrieve_positions(backtest_id)
@@ -417,8 +423,10 @@ shared_examples 'brokerの基本操作ができる' do
 
       expected_position1.current_price = tick[:EURJPY].ask
       expected_position1.updated_at    = tick.timestamp
+      expected_position1.update_profit_or_loss
       expected_position2.current_price = tick[:USDJPY].bid
       expected_position2.updated_at    = tick.timestamp
+      expected_position2.update_profit_or_loss
 
       expect(sort_by_internal_id(broker.orders)).to eq([
         expected_order3
@@ -452,9 +460,11 @@ shared_examples 'brokerの基本操作ができる' do
     expected_position1.exit_price    = tick[:EURJPY].ask
     expected_position1.exited_at     = tick.timestamp
     expected_position1.status        = :closed
+    expected_position1.update_profit_or_loss
 
     expected_position2.current_price = tick[:USDJPY].bid
     expected_position2.updated_at    = tick.timestamp
+    expected_position2.update_profit_or_loss
 
     expect(broker.orders).to eq([])
 
@@ -508,6 +518,7 @@ shared_examples 'brokerの基本操作ができる' do
     expected_position2.exit_price    = tick[:USDJPY].bid
     expected_position2.exited_at     = tick.timestamp
     expected_position2.status        = :closed
+    expected_position2.update_profit_or_loss
 
     positions = broker.positions
     expect(positions.length).to be 1
@@ -535,6 +546,7 @@ shared_examples 'brokerの基本操作ができる' do
     expected_position3.current_price = tick[:EURUSD].bid
     expected_position3.updated_at    = tick.timestamp
     expected_position3.closing_policy.trailing_amount = 1.5239
+    expected_position3.update_profit_or_loss
 
     orders = broker.orders
     expect(orders.length).to be 0

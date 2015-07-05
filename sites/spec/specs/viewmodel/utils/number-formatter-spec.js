@@ -62,6 +62,12 @@ describe("NumberFormatter", () => {
     it("-10100", () => {
       expect( NumberFormatter.formatPrice(-10100)).toBe("-10,100");
     });
+    it("-1211.234", () => {
+      expect( NumberFormatter.formatPrice(-1211.234)).toBe("-1,211.234");
+    });
+    it("1211.23456", () => {
+      expect( NumberFormatter.formatPrice(1211.23456)).toBe("1,211.23456");
+    });
   });
 
 });

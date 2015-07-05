@@ -15,15 +15,18 @@ export default class NumberFormatter {
    static formatPrice(price) {
       if (price === 0) return "0";
       if (!price) return "";
+
+      const result = /^([\-\+]?)(\d+)(\.\d+)?$/.exec(String(price));
+      if (!result || result.length < 1) return "";
+
       var str = "";
-      var tmp = "" + Math.abs(price);
+      var tmp = result[2];
       while ( tmp.length > 3 ) {
           str = "," + tmp.substring(tmp.length-3, tmp.length) + str;
           tmp = tmp.substring(0, tmp.length-3);
       }
       str = tmp + str;
-      if (price <= 0) str = "-" + str;
-      return str;
+      return (result[1] || "") + str + (result[3] || "");
   }
 
 }

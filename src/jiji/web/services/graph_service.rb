@@ -25,7 +25,7 @@ module Jiji::Web
       graphs    = repository.find(id, range[:start], range[:end])
       response  = graphs.map do |graph|
         data = graph.fetch_data(range[:start], range[:end], interval).map do |d|
-           { values: d.value, timestamp: d.timestamp }
+          { values: d.value, timestamp: d.timestamp }
         end
         {
           id:   graph._id,

@@ -36,7 +36,7 @@ module Jiji::Web
 
     get '/:backtest_id/count' do
       id = get_backtest_id_from_path_param
-      ok({count:repository.count_positions(id)})
+      ok({ count: repository.count_positions(id) })
     end
 
     def repository

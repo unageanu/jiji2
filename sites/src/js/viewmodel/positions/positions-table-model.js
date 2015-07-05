@@ -20,6 +20,62 @@ class Loader {
   }
 }
 
+class PositionModel {
+
+  constructor(position) {
+    for (let i in position) {
+      if (i === "closingPolicy") {
+        this[i] = new ClosingPolicyModel(position[i]);
+      } else {
+        this[i] = position[i];
+      }
+    }
+  }
+
+  get formatedProfitOrLoss() {
+    return NumberFormatter.formatPrice(this.profitOrLoss);
+  }
+  get formatedSellOrBuy() {
+    if (this.sellOrBuy === "sell") {
+      return "売";
+    } else {
+      return "買";
+    }
+  }
+  get formatedUnits() {
+    return NumberFormatter.formatPrice(this.units);
+  }
+  get formatedEntryPrice() {
+    return NumberFormatter.formatPrice(this.entryPrice);
+  }
+  get formatedExitPrice() {
+    return this.exitPrice ?
+      NumberFormatter.formatPrice(this.exitPrice) : "-";
+  }
+  get formatedEnteredAt() {
+    return DateFormatter.format(this.enteredAt);
+  }
+  get formatedExitedAt() {
+    return this.exitedAt ? DateFormatter.format(this.exitedAt) : "";
+  }
+}
+
+class ClosingPolicyModel {
+  constructor(policy) {
+    if (policy) for (let i in policy) {
+      this[i] = policy[i];
+    }
+  }
+  get formatedTakeProfit() {
+    return this.takeProfit ?
+      NumberFormatter.formatPrice(this.takeProfit) : "-";
+  }
+  get formatedLossCut() {
+    return this.lossCut ?
+      NumberFormatter.formatPrice(this.lossCut) : "-";
+  }
+}
+
 export default class PositionsTableModel extends TableModel {
   constructor( backtestId, pageSize, defaultSortOrder, positionsService) {
     super( new Loader(backtestId, positionsService),
@@ -31,45 +87,14 @@ export default class PositionsTableModel extends TableModel {
   }
 
   convertItem(item) {
-    const converted = {};
-    for (let i in item) {
-      converted[i] = this.convertValue(i, item[i]);
-    }
-    return converted;
+    return new PositionModel(item);
   }
-  convertValue(key, value) {
-    switch (key) {
-      case "exitPrice"    :
-      case "entryPrice"   :
-        return { content: value ? NumberFormatter.formatPrice(value) : "-" };
-      case "profitOrLoss" :
-        return this.convertProfitOrLoss(value);
-      case "sellOrBuy"    :
-        return this.convertSellOrBuy(value);
-      case "exitedAt"     :
-      case "enteredAt"    :
-        return { content: value ? DateFormatter.format(value) : "-" };
-      default:
-        return { content: value };
-    }
+
+  set selectedPosition( position ) {
+    this.setProperty("selectedPosition", position);
   }
-  convertProfitOrLoss(value) {
-    return {
-      content: NumberFormatter.formatPrice(value),
-      style:   value > 0 ? {color: "#55D"} : {color: "#D55"}
-    };
+  get selectedPosition( ) {
+    return this.getProperty("selectedPosition");
   }
-  convertSellOrBuy(value) {
-    if (value === "sell") {
-      return {
-        content: "売",
-        style:   {color: "#5DD"}
-      };
-    } else {
-      return {
-        content: "買",
-        style:   {color: "#DD5"}
-      };
-    }
-  }
+
 }

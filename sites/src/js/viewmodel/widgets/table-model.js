@@ -90,4 +90,11 @@ export default class TableModel extends Observable {
   get items() {
     return this.getProperty("items");
   }
+
+  set sortOrder(sortOrder) {
+    this.setProperty("sortOrder", sortOrder);
+  }
+  get sortOrder() {
+    return this.getProperty("sortOrder");
+  }
 }

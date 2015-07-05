@@ -1,57 +1,69 @@
-import React  from "react"
-import MUI    from "material-ui"
+import React               from "react"
+import MUI                 from "material-ui"
+import PositionDetailsView from "./position-details-view"
 
 const Table        = MUI.Table;
-const RaisedButton = MUI.RaisedButton;
+const FlatButton   = MUI.FlatButton;
 
 const defaultSortOrder = {
   order:     "profit_or_loss",
   direction: "desc"
 };
 
-const columnOrder = [
-  "profitOrLoss", "pairName", "sellOrBuy", "entryPrice",
-  "exitPrice", "enteredAt", "exitedAt"
-];
-const columns = {
-  profitOrLoss: {
-    content: "損益",
-    tooltip: "決済済みの場合は決済時の損益、決済されていない場合は現在の損益になります"
-  },
-  pairName: {
-    content: "通貨ペア",
-    tooltip: "通貨ペアです"
-  },
-  sellOrBuy: {
-    content: "売/買",
-    tooltip: "売り買いの種別です"
-  },
-  entryPrice: {
-    content: "購入価格",
-    tooltip: "取引を行って建玉を作成したときの購入価格です"
-  },
-  exitPrice: {
-    content: "決済価格",
-    tooltip: "建玉を決裁したときの価格です"
-  },
-  enteredAt: {
-    content: "購入日時",
-    tooltip: "購入日時です"
-  },
-  exitedAt: {
-    content: "決済日時",
-    tooltip: "決済日時です"
+const columns = [
+  {
+    id:"profitOrLoss",
+    name:"損益",
+    key:"profitOrLoss",
+    sort: "profit_or_loss"
+  }, {
+    id:"pairName",
+    name:"通貨ペア",
+    key:"pairName",
+    sort: "pair_name"
+  }, {
+    id:"sellOrBuy",
+    name:"売/買",
+    key:"formatedSellOrBuy",
+    sort: "sell_or_buy"
+  }, {
+    id:"units",
+    name:"数量",
+    key:"formatedUnits",
+    sort: "units"
+  }, {
+    id:"entryPrice",
+    name:"購入価格",
+    key:"formatedEntryPrice",
+    sort: "entry_price"
+  }, {
+    id:"exitPrice",
+    name:"決済価格",
+    key:"formatedExitPrice",
+    sort: "exit_price"
+  }, {
+    id:"enteredAt",
+    name:"購入日時",
+    key:"formatedEnteredAt",
+    sort: "entered_at"
+  }, {
+    id:"exitedAt",
+    name:"決済日時",
+    key:"formatedExitedAt",
+    sort: "exited_at"
   }
-};
+];
 
 export default class PositionsTable extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      hasNext : false,
-      hasPrev : false,
-      items :    []
+      hasNext :         false,
+      hasPrev :         false,
+      items :           [],
+      selectedPosition: null,
+      sortOrder:        defaultSortOrder
     };
   }
 
@@ -70,24 +82,80 @@ export default class PositionsTable extends React.Component {
   }
 
   render() {
+    const headers       = this.createHeaderContent();
+    const body          = this.createBodyContent();
+    const actionContent = this.createActionContent();
     return (
       <div className="positions-table">
-        <Table
-          headerColumns={columns}
-          columnOrder={columnOrder}
-          rowData={this.state.items}
-          height={500}
-          fixedHeader={true}
-          stripedRows={false}
-          showRowHover={true}
-          selectable={false}
-          multiSelectable={false}
-          displaySelectAll={false}
-          canSelectAll={false}
-          showRowSelectCheckbox={false}
-        />
+        <PositionDetailsView position={this.state.selectedPosition} />
+        <div className="actions">
+          {actionContent}
+        </div>
+        <table>
+          <thead>
+            <tr>{headers}</tr>
+          </thead>
+          <tbody>
+            {body}
+          </tbody>
+        </table>
       </div>
     );
+  }
+
+  createActionContent() {
+    const prev = () => this.model.prev();
+    const next = () => this.model.next();
+    return [
+      <FlatButton
+        label="次の50件"
+        disabled={!this.state.hasPrev}
+        onClick={prev}
+      />,
+      <FlatButton
+        label="前の50件"
+        disabled={!this.state.hasNext}
+        onClick={next}
+      />
+    ];
+  }
+
+  createHeaderContent() {
+    return columns.map((column) => {
+      const isCurrentSortKey = this.state.sortOrder.order === column.sort;
+      const onClick = (e) => this.onHeaderTapped(e, column);
+      const orderMark = isCurrentSortKey
+        ? (this.state.sortOrder.direction === "asc" ? "△" : "▽")
+        : "";
+      return <th
+        className={column.id + (isCurrentSortKey ? " sortBy" : "")}
+        key={column.id}>
+        <FlatButton
+          label={column.name + " " + orderMark}
+          onClick={onClick}
+        />
+      </th>;
+    });
+  }
+  createBodyContent() {
+    return this.state.items.map((item) => {
+      const onClick  = (ev) => this.onItemTapped(ev, item);
+      const selected = this.state.selectedPosition
+        && item.id === this.state.selectedPosition.id;
+      return <tr
+          key={item.id}
+          className={selected ? "selected" : ""}
+          onClick={onClick}>
+          {this.createRow(item)}
+        </tr>;
+    });
+  }
+  createRow(item) {
+    return columns.map((column) => {
+      return <td className={column.id} key={column.id}>
+              {item[column.key]}
+             </td>;
+    });
   }
 
   onPropertyChanged(k, ev) {
@@ -96,8 +164,18 @@ export default class PositionsTable extends React.Component {
     this.setState(newState);
   }
 
-  onItemTapped(e, backtest) {
-    this.context.router.transitionTo("/backtests/list/" + backtest.id);
+  onItemTapped(e, position) {
+    this.model.selectedPosition = position;
+  }
+  onHeaderTapped(e, column) {
+    const isCurrentSortKey = this.state.sortOrder.order === column.sort;
+    const direction = isCurrentSortKey
+      ? (this.state.sortOrder.direction === "asc" ? "desc" : "asc")
+      : "asc";
+    this.model.sortBy({
+      order:     column.sort,
+      direction: direction
+    });
   }
 }
 PositionsTable.propTypes = {

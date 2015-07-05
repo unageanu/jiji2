@@ -31,10 +31,11 @@ module Jiji::Model::Trading
     end
 
     def post_running
-      @status = case @status
-        when :wait_for_cancel then :cancelled
-        when :error           then :error
-        else                       :finished
+      @status = \
+      case @status
+      when :wait_for_cancel then :cancelled
+      when :error           then :error
+      else                       :finished
       end
     end
 

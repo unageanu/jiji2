@@ -121,14 +121,13 @@ module Jiji::Model::Trading
     include Jiji::Model::Trading::Internal::WorkerMixin
 
     def setup(ignore_agent_creation_error = false)
-      self.created_at = self.created_at || time_source.now
+      self.created_at = created_at || time_source.now
       generate_uuid(agent_setting)
 
       create_components(ignore_agent_creation_error)
       return unless status == :wait_for_start
 
-      @process.start(
-        [Jobs::NotifyNextTickJobForBackTest.new(start_time, end_time)])
+      @process.start(create_default_jobs)
 
       self.status = :running
       save
@@ -164,6 +163,10 @@ module Jiji::Model::Trading
     end
 
     private
+
+    def create_default_jobs
+      [Jobs::NotifyNextTickJobForBackTest.new(start_time, end_time)]
+    end
 
     def create_components(ignore_agent_creation_error = false)
       graph_factory    = create_graph_factory(self)

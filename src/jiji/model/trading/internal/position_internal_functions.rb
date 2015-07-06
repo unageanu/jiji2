@@ -42,6 +42,9 @@ module Jiji::Model::Trading::Internal
     # for internal use.
     def update_profit_or_loss
       self.profit_or_loss = calculate_profit_or_loss
+      if max_drow_down.nil? || max_drow_down > profit_or_loss
+        self.max_drow_down = profit_or_loss
+      end
     end
 
     private

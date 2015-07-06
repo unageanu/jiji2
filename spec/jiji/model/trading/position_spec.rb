@@ -114,41 +114,55 @@ describe Jiji::Model::Trading::Position do
       nil, :EURUSD, 10_000, :buy, @data_builder.new_tick(1))
 
     expect(position.profit_or_loss).to eq(-30)
+    expect(position.max_drow_down).to eq(-30)
 
     position.update_price(@data_builder.new_tick(2, Time.at(100)))
     expect(position.entry_price).to eq(101.003)
     expect(position.current_price).to eq(102.00)
     expect(position.updated_at).to eq(Time.at(100))
     expect(position.profit_or_loss).to eq(9970)
+    expect(position.max_drow_down).to eq(-30)
 
     position.update_price(@data_builder.new_tick(3, Time.at(200)))
     expect(position.entry_price).to eq(101.003)
     expect(position.current_price).to eq(103.00)
     expect(position.updated_at).to eq(Time.at(200))
     expect(position.profit_or_loss).to eq(19_970)
+    expect(position.max_drow_down).to eq(-30)
+
+    position.update_price(@data_builder.new_tick(0, Time.at(300)))
+    expect(position.entry_price).to eq(101.003)
+    expect(position.current_price).to eq(100.00)
+    expect(position.updated_at).to eq(Time.at(300))
+    expect(position.profit_or_loss).to eq(-10_030)
+    expect(position.max_drow_down).to eq(-10_030)
 
     position = position_builder.build_from_tick(
       1, :EURUSD, 100_000, :sell, @data_builder.new_tick(1))
 
     expect(position.profit_or_loss).to eq(-300)
+    expect(position.max_drow_down).to eq(-300)
 
     position.update_price(@data_builder.new_tick(2, Time.at(100)))
     expect(position.entry_price).to eq(101.00)
     expect(position.current_price).to eq(102.003)
     expect(position.updated_at).to eq(Time.at(100))
     expect(position.profit_or_loss).to eq(-100_300)
+    expect(position.max_drow_down).to eq(-100_300)
 
     position.update_price(@data_builder.new_tick(3, Time.at(200)))
     expect(position.entry_price).to eq(101.00)
     expect(position.current_price).to eq(103.003)
     expect(position.updated_at).to eq(Time.at(200))
     expect(position.profit_or_loss).to eq(-200_300)
+    expect(position.max_drow_down).to eq(-200_300)
 
     position.update_price(@data_builder.new_tick(0, Time.at(100)))
     expect(position.entry_price).to eq(101.00)
     expect(position.current_price).to eq(100.003)
     expect(position.updated_at).to eq(Time.at(100))
     expect(position.profit_or_loss).to eq(99_700)
+    expect(position.max_drow_down).to eq(-200_300)
   end
 
   it 'update_state_for_reduce で取引数を削減できる' do

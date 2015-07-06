@@ -40,12 +40,12 @@ module Jiji::Model::Trading
     end
 
     # for internal use.
-    def apply_order_result(result, tick)
-      add(result.trade_opened, tick) if result.trade_opened
-      split(result.trade_reduced) if result.trade_reduced
-      result.trades_closed.each do |close_result|
-        close(close_result.internal_id,
-          close_result.price, close_result.timestamp)
+    def apply_order_result(result, tick, agent_name = '', agent_id = '')
+      add(result.trade_opened,
+        tick, agent_name, agent_id) if result.trade_opened
+      split(result.trade_reduced, agent_name, agent_id) if result.trade_reduced
+      result.trades_closed.each do |closed|
+        close(closed.internal_id, closed.price, closed.timestamp)
       end
       @account.update(self, tick.timestamp)
     end
@@ -91,19 +91,21 @@ module Jiji::Model::Trading
       end
     end
 
-    def add(order, tick)
-      position = @position_builder.build_from_order(order, tick)
+    def add(order, tick, agent_name, agent_id)
+      position = @position_builder.build_from_order(
+        order, tick, agent_name, agent_id)
       position.save
       @positions << position
       @map[position.internal_id] = position
     end
 
-    def split(result)
+    def split(result, agent_name, agent_id)
       return unless @map.include?(result.internal_id)
       position = @map[result.internal_id]
 
       new_position = @position_builder.split_and_close(position,
-        position.units - result.units, result.price, result.timestamp)
+        position.units - result.units, result.price, result.timestamp,
+        agent_name, agent_id)
       position.save
       new_position.save
 
@@ -122,9 +124,7 @@ module Jiji::Model::Trading
     end
 
     def to_map(positions)
-      positions.each_with_object({}) do |p, r|
-        r[p.internal_id] = p
-      end
+      Jiji::Utils::Collections.to_map(positions) { |p| p.internal_id }
     end
 
     class PositionSynchronizer

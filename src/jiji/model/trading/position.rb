@@ -22,6 +22,8 @@ module Jiji::Model::Trading
     }
 
     field :internal_id,    type: String
+    field :agent_name,     type: String
+    field :agent_id,       type: String
 
     field :pair_name,      type: Symbol
     field :units,          type: Integer
@@ -29,6 +31,8 @@ module Jiji::Model::Trading
     field :status,         type: Symbol
 
     field :profit_or_loss, type: Float
+    field :max_drow_down,  type: Float
+
     field :entry_price,    type: Float
     field :current_price,  type: Float
     field :exit_price,     type: Float
@@ -62,6 +66,7 @@ module Jiji::Model::Trading
       h = {}
       insert_trading_information_to_hash(h)
       insert_price_and_time_information_to_hash(h)
+      insert_agent_information_to_hash(h)
       h[:closing_policy] = closing_policy.to_h
       h
     end

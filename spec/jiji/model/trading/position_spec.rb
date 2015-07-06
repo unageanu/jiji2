@@ -22,6 +22,8 @@ describe Jiji::Model::Trading::Position do
         trailing_stop:   5,
         trailing_amount: 10
     })
+    position.agent_name = 'テストエージェント'
+    position.agent_id   = 'id'
     position.save
 
     expect(position.backtest_id).to eq('test')
@@ -36,6 +38,8 @@ describe Jiji::Model::Trading::Position do
     expect(position.exit_price).to eq(nil)
     expect(position.exited_at).to eq(nil)
     expect(position.status).to eq(:live)
+    expect(position.agent_name).to eq('テストエージェント')
+    expect(position.agent_id).to eq('id')
     expect(position.closing_policy.take_profit).to eq(102)
     expect(position.closing_policy.stop_loss).to eq(100)
     expect(position.closing_policy.trailing_stop).to eq(5)
@@ -59,6 +63,8 @@ describe Jiji::Model::Trading::Position do
     expect(position.exit_price).to eq(nil)
     expect(position.exited_at).to eq(nil)
     expect(position.status).to eq(:live)
+    expect(position.agent_name).to eq(nil)
+    expect(position.agent_id).to eq(nil)
     expect(position.closing_policy.take_profit).to eq(0)
     expect(position.closing_policy.stop_loss).to eq(0)
     expect(position.closing_policy.trailing_stop).to eq(0)
@@ -76,6 +82,8 @@ describe Jiji::Model::Trading::Position do
         trailing_stop:   5,
         trailing_amount: 10
     })
+    position.agent_name = 'テストエージェント'
+    position.agent_id   = 'id'
     position.save
 
     expect(position.backtest_id).to eq(nil)
@@ -90,6 +98,8 @@ describe Jiji::Model::Trading::Position do
     expect(position.exit_price).to eq(nil)
     expect(position.exited_at).to eq(nil)
     expect(position.status).to eq(:live)
+    expect(position.agent_name).to eq('テストエージェント')
+    expect(position.agent_id).to eq('id')
     expect(position.closing_policy.take_profit).to eq(102)
     expect(position.closing_policy.stop_loss).to eq(100)
     expect(position.closing_policy.trailing_stop).to eq(5)
@@ -254,6 +264,8 @@ describe Jiji::Model::Trading::Position do
         trailing_stop:   5,
         trailing_amount: 10
     })
+    original.agent_name = 'テストエージェント'
+    original.agent_id   = 'id'
     original.save
 
     position = Jiji::Model::Trading::Position.find(original.id)
@@ -269,6 +281,8 @@ describe Jiji::Model::Trading::Position do
     expect(position.exit_price).to be nil
     expect(position.exited_at).to be nil
     expect(position.status).to eq(:live)
+    expect(position.agent_name).to eq('テストエージェント')
+    expect(position.agent_id).to eq('id')
     expect(position.closing_policy).to eq(original.closing_policy)
 
     original.closing_policy.trailing_amount = 11
@@ -287,6 +301,8 @@ describe Jiji::Model::Trading::Position do
     expect(position.exit_price).to be nil
     expect(position.exited_at).to be nil
     expect(position.status).to eq(:live)
+    expect(position.agent_name).to eq('テストエージェント')
+    expect(position.agent_id).to eq('id')
     expect(position.closing_policy).to eq(original.closing_policy)
   end
 
@@ -299,6 +315,8 @@ describe Jiji::Model::Trading::Position do
         trailing_stop:   5,
         trailing_amount: 10
     })
+    position.agent_name = 'テストエージェント'
+    position.agent_id   = 'id'
 
     hash = position.to_h
 
@@ -314,6 +332,8 @@ describe Jiji::Model::Trading::Position do
     expect(hash[:exit_price]).to eq(nil)
     expect(hash[:exited_at]).to eq(nil)
     expect(hash[:status]).to eq(:live)
+    expect(hash[:agent_name]).to eq('テストエージェント')
+    expect(hash[:agent_id]).to eq('id')
     expect(hash[:closing_policy][:take_profit]).to eq(102)
     expect(hash[:closing_policy][:stop_loss]).to eq(100)
     expect(hash[:closing_policy][:trailing_stop]).to eq(5)

@@ -6,14 +6,14 @@ require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Agents::Agent
   #====設定可能なプロパティの一覧を返します。
-  # 必要に応じてオーバーライドしてください。
+  # 必要に応じて実装してください。
   # 戻り値:: Jiji::Agent::Propertyの配列
   def self.property_infos
     []
   end
 
   #====エージェントの説明を返します。
-  # 必要に応じてオーバーライドしてください。
+  # 必要に応じて実装してください。
   def self.description
     ''
   end
@@ -29,6 +29,7 @@ module Jiji::Model::Agents::Agent
     end
   end
 
+  attr_accessor :agent_name
   attr_accessor :broker
   attr_accessor :graph_factory
   attr_accessor :notifier

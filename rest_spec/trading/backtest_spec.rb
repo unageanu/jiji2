@@ -18,7 +18,11 @@ describe 'バックテスト' do
       'pair_names'    => [:EURJPY, :EURUSD],
       'balance'       => 1_000_000,
       'agent_setting' => [
-        { name: 'TestAgent1@テスト1', properties: { 'a' => 1, 'b' => 'bb' } }
+        {
+          agent_class: 'TestAgent1@テスト1',
+          agent_name:  'テスト1',
+          properties:  { 'a' => 1, 'b' => 'bb' }
+        }
       ]
     })
     expect(r.status).to eq 201

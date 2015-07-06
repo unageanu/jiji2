@@ -29,9 +29,16 @@ describe Jiji::Model::Trading::BackTest do
       'memo'          => 'メモ',
       'pair_names'    => [:EURJPY, :EURUSD],
       'agent_setting' => [
-        { name: 'TestAgent1@aaa', properties: { 'a' => 1, 'b' => 'bb' } },
-        { name: 'TestAgent1@aaa', properties: {} },
-        { name: 'TestAgent2@bbb' }
+        {
+          agent_class: 'TestAgent1@aaa',
+          agent_name:  'テスト1',
+          properties:  { 'a' => 1, 'b' => 'bb' }
+        }, {
+          agent_class: 'TestAgent1@aaa',
+          properties:  {}
+        }, {
+          agent_class: 'TestAgent2@bbb'
+        }
       ]
     })
 

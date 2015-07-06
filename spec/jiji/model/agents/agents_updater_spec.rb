@@ -27,9 +27,20 @@ describe Jiji::Model::Agents::AgentsUpdater do
   describe '#build' do
     it 'エージェントを作成できる' do
       settings = [
-        { uuid: uuid, name: 'TestAgent1@aaa', properties: { a: 100, b: 'bb' } },
-        { uuid: uuid, name: 'TestAgent1@aaa', properties: {} },
-        { uuid: uuid, name: 'TestAgent2@bbb' }
+        {
+          uuid:        uuid,
+          agent_class: 'TestAgent1@aaa',
+          agent_name:  'テスト1',
+          properties:  { a: 100, b: 'bb' }
+        }, {
+          uuid:        uuid,
+          agent_class: 'TestAgent1@aaa',
+          agent_name:  'テスト2',
+          properties:  {}
+        }, {
+          uuid:        uuid,
+          agent_class: 'TestAgent2@bbb'
+        }
       ]
       agents = Jiji::Model::Agents::Agents.new
       @agents_builder.update(agents, settings)
@@ -41,33 +52,39 @@ describe Jiji::Model::Agents::AgentsUpdater do
       agent1 = agents[settings[0][:uuid]]
       expect(agent1).not_to be nil
       expect(agent1.properties).to eq({ a: 100, b: 'bb' })
-      expect(agent1.broker).to eq :broker
+      expect(agent1.broker.agent_name).to eq 'テスト1'
+      expect(agent1.broker.agent_id).to eq settings[0][:uuid]
       expect(agent1.graph_factory).to eq :graph_factory
       expect(agent1.notifier).to eq :notifier
       expect(agent1.logger).to be @logger
+      expect(agent1.agent_name).to eq 'テスト1'
 
       agent2 = agents[settings[1][:uuid]]
       expect(agent2).not_to be nil
       expect(agent2.properties).to eq({})
-      expect(agent2.broker).to eq :broker
+      expect(agent2.broker.agent_name).to eq 'テスト2'
+      expect(agent2.broker.agent_id).to eq settings[1][:uuid]
       expect(agent2.graph_factory).to eq :graph_factory
       expect(agent2.notifier).to eq :notifier
       expect(agent2.logger).to be @logger
+      expect(agent2.agent_name).to eq 'テスト2'
 
       agent3 = agents[settings[2][:uuid]]
       expect(agent3).not_to be nil
       expect(agent3.properties).to eq({})
-      expect(agent3.broker).to eq :broker
+      expect(agent3.broker.agent_name).to eq 'TestAgent2@bbb'
+      expect(agent3.broker.agent_id).to eq settings[2][:uuid]
       expect(agent3.graph_factory).to eq :graph_factory
       expect(agent3.notifier).to eq :notifier
       expect(agent3.logger).to be @logger
+      expect(agent3.agent_name).to eq 'TestAgent2@bbb'
     end
 
     it 'fail_on_error=trueで エージェントが見つからない場合エラー' do
       agents = Jiji::Model::Agents::Agents.new
       expect do
         @agents_builder.update(agents, [
-          { uuid: uuid, name: 'UnknownAgent1@unknown', properties: {} }
+          { uuid: uuid, agent_class: 'UnknownAgent1@unknown', properties: {} }
         ], true)
       end.to raise_exception(Jiji::Errors::NotFoundException)
     end
@@ -75,8 +92,8 @@ describe Jiji::Model::Agents::AgentsUpdater do
     it 'エージェントが見つからない場合でもfail_on_error=falseの場合エラーにはならない' do
       agents = Jiji::Model::Agents::Agents.new
       settings = [
-        { uuid: uuid, name: 'UnknownAgent1@unknown', properties: {} },
-        { uuid: uuid, name: 'TestAgent2@bbb' }
+        { uuid: uuid, agent_class: 'UnknownAgent1@unknown', properties: {} },
+        { uuid: uuid, agent_class: 'TestAgent2@bbb' }
       ]
       @agents_builder.update(agents, settings)
 
@@ -92,24 +109,37 @@ describe Jiji::Model::Agents::AgentsUpdater do
       agents = Jiji::Model::Agents::Agents.new
 
       settings = [
-        { uuid: uuid, name: 'TestAgent1@aaa', properties: { a: 100, b: 'bb' } },
-        { uuid: uuid, name: 'TestAgent1@aaa', properties: {} },
-        { uuid: uuid, name: 'TestAgent2@bbb' }
+        {
+          uuid:        uuid,
+          agent_class: 'TestAgent1@aaa',
+          agent_name:  'テスト1',
+          properties:  { a: 100, b: 'bb' }
+        }, {
+          uuid:        uuid,
+          agent_class: 'TestAgent1@aaa',
+          agent_name:  'テスト2',
+          properties:  {}
+        }, {
+          uuid:        uuid,
+          agent_class: 'TestAgent2@bbb'
+        }
       ]
       @agents_builder.update(agents, settings)
 
       new_settings = [{
-        uuid:       settings[1][:uuid],
-        name:       'TestAgent1@aaa',
-        properties: { a: 200, b: 'xx' }
+        uuid:        settings[1][:uuid],
+        agent_class: 'TestAgent1@aaa',
+        agent_name:  'テスト11',
+        properties:  { a: 200, b: 'xx' }
       }, {
-        uuid:       settings[2][:uuid],
-        name:       'TestAgent1@aaa',
-        properties: { a: 10 }
+        uuid:        settings[2][:uuid],
+        agent_class: 'TestAgent1@aaa',
+        agent_name:  'テスト12',
+        properties:  { a: 10 }
       }, {
-        uuid:       uuid,
-        name:       'TestAgent2@bbb',
-        properties: { a: 20 }
+        uuid:        uuid,
+        agent_class: 'TestAgent2@bbb',
+        properties:  { a: 20 }
       }]
       @agents_builder.update(agents, new_settings)
 
@@ -119,26 +149,32 @@ describe Jiji::Model::Agents::AgentsUpdater do
       agent2 = agents[settings[1][:uuid]]
       expect(agent2).not_to be nil
       expect(agent2.properties).to eq({ a: 200, b: 'xx' })
-      expect(agent2.broker).to eq :broker
+      expect(agent2.broker.agent_name).to eq 'テスト2'
+      expect(agent2.broker.agent_id).to eq settings[1][:uuid]
       expect(agent2.graph_factory).to eq :graph_factory
       expect(agent2.notifier).to eq :notifier
       expect(agent2.logger).to be @logger
+      expect(agent2.agent_name).to eq 'テスト2'
 
       agent3 = agents[settings[2][:uuid]]
       expect(agent3).not_to be nil
       expect(agent3.properties).to eq({ a: 10 })
-      expect(agent3.broker).to eq :broker
+      expect(agent3.broker.agent_name).to eq 'TestAgent2@bbb'
+      expect(agent3.broker.agent_id).to eq settings[2][:uuid]
       expect(agent3.graph_factory).to eq :graph_factory
       expect(agent3.notifier).to eq :notifier
       expect(agent3.logger).to be @logger
+      expect(agent3.agent_name).to eq 'TestAgent2@bbb'
 
       agent4 = agents[new_settings[2][:uuid]]
       expect(agent4).not_to be nil
       expect(agent4.properties).to eq({ a: 20 })
-      expect(agent4.broker).to eq :broker
+      expect(agent4.broker.agent_name).to eq 'TestAgent2@bbb'
+      expect(agent4.broker.agent_id).to eq new_settings[2][:uuid]
       expect(agent4.graph_factory).to eq :graph_factory
       expect(agent4.notifier).to eq :notifier
       expect(agent4.logger).to be @logger
+      expect(agent4.agent_name).to eq 'TestAgent2@bbb'
     end
   end
 

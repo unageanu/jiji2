@@ -6,6 +6,8 @@ require 'set'
 module Jiji::Model::Agents
   class AgentsUpdater
 
+    include Jiji::Model::Trading::Brokers
+
     def initialize(agent_registory,
       broker, graph_factory, notifier, logger)
       @agent_registory = agent_registory
@@ -34,7 +36,7 @@ module Jiji::Model::Agents
       if agents.include?(uuid)
         r[uuid] = update_agent(agents[uuid], setting)
       else
-        r[uuid] = create_agent(setting)
+        r[uuid] = create_agent(setting, uuid)
       end
     end
 
@@ -43,16 +45,19 @@ module Jiji::Model::Agents
       agent
     end
 
-    def create_agent(setting)
+    def create_agent(setting, uuid)
       agent = @agent_registory.create_agent(
-        setting[:name], setting[:properties] || {})
-      inject_components_to(agent)
+        setting[:agent_class], setting[:properties] || {})
+      agent.agent_name  = setting[:agent_name] || setting[:agent_class]
+      inject_components_to(agent, uuid)
       agent.post_create
       agent
     end
 
-    def inject_components_to(agent)
-      agent.broker          = @broker
+    def inject_components_to(agent, agent_id)
+      broker = BrokerProxy.new(@broker, agent.agent_name, agent_id)
+
+      agent.broker          = broker
       agent.graph_factory   = @graph_factory
       agent.notifier        = @notifier
       agent.logger          = @logger

@@ -47,8 +47,9 @@ shared_examples 'brokerの基本操作ができる' do
       p.updated_at    = Time.utc(2015, 5, 1)
       p.exit_price    = nil
       p.exited_at     = nil
-      p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
-      })
+      p.agent_name    = ''
+      p.agent_id      = ''
+      p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({})
     end
 
     expect(broker.account.balance).to eq 100_000
@@ -78,7 +79,7 @@ shared_examples 'brokerの基本操作ができる' do
     expect(broker.positions[result.trade_opened.internal_id]) \
       .to some_position(expected_position1)
 
-    result = broker.sell(:EURUSD, 10_000, :market)
+    result = broker.sell(:EURUSD, 10_000, :market, {}, 'テスト2', 'test2')
     expected_position2 = Jiji::Model::Trading::Position.new do |p|
       p.backtest_id   = backtest_id
       p.internal_id   = result.trade_opened.internal_id
@@ -92,6 +93,8 @@ shared_examples 'brokerの基本操作ができる' do
       p.updated_at    = Time.utc(2015, 5, 1, 0, 0, 15)
       p.exit_price    = nil
       p.exited_at     = nil
+      p.agent_name    = 'テスト2'
+      p.agent_id      = 'test2'
       p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
       })
     end
@@ -253,24 +256,24 @@ shared_examples 'brokerの基本操作ができる' do
       lower_bound: 135.59,
       upper_bound: 135.61,
       stop_loss:   135.73
-    }).order_opened
+    }, 'テスト1', 'test1').order_opened
     r2 = broker.buy(:USDJPY, 10_000, :stop, {
       price:       112.404,
       expiry:      Time.utc(2015, 5, 2),
       take_profit: 112.6
-    }).order_opened
+    }, 'テスト2', 'test2').order_opened
     r3 = broker.buy(:EURUSD, 10_000, :marketIfTouched, {
       price:         1.4325,
       expiry:        Time.utc(2015, 5, 2),
       trailing_stop: 5
-    }).order_opened
+    }, 'テスト3', 'test3').order_opened
     r4 = broker.sell(:EURJPY, 1000, :limit, {
       price:         136.6,
       expiry:        Time.utc(2015, 5, 1, 0, 0, 45),
       take_profit:   134,
       stop_loss:     140,
       trailing_stop: 10
-    }).order_opened
+    }, 'テスト4', 'test4').order_opened
 
     expected_order1 = Jiji::Model::Trading::Order.new(
       :EURJPY, r1.internal_id, :sell, :limit, Time.new(2015, 5, 1))
@@ -371,6 +374,8 @@ shared_examples 'brokerの基本操作ができる' do
       p.updated_at    = Time.utc(2015, 5, 1, 0, 0, 30)
       p.exit_price    = nil
       p.exited_at     = nil
+      p.agent_name    = ''
+      p.agent_id      = ''
       p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
         stop_loss: 135.73
       })
@@ -388,6 +393,8 @@ shared_examples 'brokerの基本操作ができる' do
       p.updated_at    = Time.utc(2015, 5, 1, 0, 0, 30)
       p.exit_price    = nil
       p.exited_at     = nil
+      p.agent_name    = ''
+      p.agent_id      = ''
       p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
         take_profit: 112.6
       })
@@ -481,6 +488,8 @@ shared_examples 'brokerの基本操作ができる' do
       p.updated_at    = Time.utc(2015, 5, 1, 0, 1, 15)
       p.exit_price    = nil
       p.exited_at     = nil
+      p.agent_name    = ''
+      p.agent_id      = ''
       p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
         trailing_stop:   5,
         trailing_amount: 1.5229
@@ -582,7 +591,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     result = broker.buy(:EURJPY, 10_000, :market, {
       stop_loss: 130
-    })
+    }, 'テスト', 'test')
     expected_position = Jiji::Model::Trading::Position.new do |p|
       p.backtest_id   = backtest_id
       p.internal_id   = result.trade_opened.internal_id
@@ -596,6 +605,8 @@ shared_examples 'brokerの基本操作ができる' do
       p.updated_at    = Time.utc(2015, 5, 1)
       p.exit_price    = nil
       p.exited_at     = nil
+      p.agent_name    = 'テスト'
+      p.agent_id      = 'test'
       p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
         stop_loss: 130
       })

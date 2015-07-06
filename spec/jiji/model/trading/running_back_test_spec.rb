@@ -35,8 +35,13 @@ describe Jiji::Model::Trading::BackTest do
       'pair_names'    => [:USDJPY, :EURUSD],
       'agent_setting' => [
         {
-          name:       'MovingAverageAgent@agent.rb',
-          properties: { 'short': 25, 'long': 75 }
+          agent_class: 'MovingAverageAgent@agent.rb',
+          agent_name:  'テスト1',
+          properties:  { 'short': 25, 'long': 75 }
+        }, {
+          agent_class: 'MovingAverageAgent@agent.rb',
+          agent_name:  'テスト2',
+          properties:  { 'short': 40, 'long': 80 }
         }
       ]
     })
@@ -57,8 +62,20 @@ describe Jiji::Model::Trading::BackTest do
     expect(data.length).to be > 0
 
     positions = position_repository.retrieve_positions(
-      test._id, { entered_at: :asc }, 0, 10).map { |p| p }
+      test._id, { entered_at: :asc }, 0, 10, { agent_name: 'テスト1' })
     expect(positions.length).to be > 0
+    positions.each do |position|
+      expect(position.agent_name).to eq 'テスト1'
+      expect(position.agent_id).not_to be nil
+    end
+
+    positions = position_repository.retrieve_positions(
+      test._id, { entered_at: :asc }, 0, 10, { agent_name: 'テスト2' })
+    expect(positions.length).to be > 0
+    positions.each do |position|
+      expect(position.agent_name).to eq 'テスト2'
+      expect(position.agent_id).not_to be nil
+    end
   end
 
   it 'エラーが発生すると実行がキャンセルされる' do
@@ -70,8 +87,8 @@ describe Jiji::Model::Trading::BackTest do
       'pair_names'    => [:USDJPY, :EURUSD],
       'agent_setting' => [
         {
-          name:       'ErrorAgent@agent.rb',
-          properties: { 'short': 25, 'long': 75 }
+          agent_class: 'ErrorAgent@agent.rb',
+          properties:  { 'short': 25, 'long': 75 }
         }
       ]
     })
@@ -89,7 +106,7 @@ describe Jiji::Model::Trading::BackTest do
         'pair_names'    => [:USDJPY, :EURUSD],
         'agent_setting' => [
           {
-            name:       'ErrorOnCreateAgent@agent.rb'
+            agent_class: 'ErrorOnCreateAgent@agent.rb'
           }
         ]
       })
@@ -104,7 +121,7 @@ describe Jiji::Model::Trading::BackTest do
         'pair_names'    => [:USDJPY, :EURUSD],
         'agent_setting' => [
           {
-            name:       'ErrorOnPostCreateAgent@agent.rb'
+            agent_class: 'ErrorOnPostCreateAgent@agent.rb'
           }
         ]
       })

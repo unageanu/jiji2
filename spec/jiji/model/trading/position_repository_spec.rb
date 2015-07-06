@@ -109,7 +109,8 @@ describe Jiji::Model::Trading::PositionRepository do
   end
 
   it '検索条件を指定して、一覧を取得できる' do
-    positions = @position_repository.retrieve_positions(nil, nil, nil, nil, {
+    positions = @position_repository.retrieve_positions(nil,
+      { entered_at: :asc, id: :asc }, nil, nil, {
       :entered_at.gt => Time.at(30)
     })
 

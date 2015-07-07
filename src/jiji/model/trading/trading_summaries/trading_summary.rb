@@ -223,13 +223,14 @@ module Jiji::Model::Trading::TradingSummaries
 
     def to_h
       {
-        max_profit:    @max_profit,
-        max_loss:      @max_loss,
-        avg_profit:    @win_count  > 0 ? (@total_profit / @win_count)  : 0,
-        avg_loss:      @lose_count > 0 ? (@total_loss   / @lose_count) : 0,
-        total_profit:  @total_profit,
-        total_loss:    @total_loss,
-        profit_factor: calculate_profit_factor
+        max_profit:          @max_profit,
+        max_loss:            @max_loss,
+        avg_profit:          @win_count  > 0 ? (@total_profit / @win_count)  : 0,
+        avg_loss:            @lose_count > 0 ? (@total_loss   / @lose_count) : 0,
+        total_profit:        @total_profit,
+        total_loss:          @total_loss,
+        total_proft_or_loss: @total_profit + @total_loss,
+        profit_factor:       calculate_profit_factor
       }
     end
 

@@ -70,4 +70,42 @@ describe("NumberFormatter", () => {
     });
   });
 
+  describe("formatRatio", () => {
+    it("null", () => {
+      expect( NumberFormatter.formatRatio(null)).toBe("");
+    });
+    it("0", () => {
+      expect( NumberFormatter.formatRatio(0)).toBe("0.0%");
+    });
+    it("0.0011", () => {
+      expect( NumberFormatter.formatRatio(0.0011)).toBe("0.1%");
+    });
+    it("-0.0011", () => {
+      expect( NumberFormatter.formatRatio(-0.0011)).toBe("-0.1%");
+    });
+    it("0.11", () => {
+      expect( NumberFormatter.formatRatio(0.11)).toBe("11.0%");
+    });
+    it("0.111", () => {
+      expect( NumberFormatter.formatRatio(0.111)).toBe("11.1%");
+    });
+    it("0.1114", () => {
+      expect( NumberFormatter.formatRatio(0.1114)).toBe("11.1%");
+    });
+    it("0.1115", () => {
+      expect( NumberFormatter.formatRatio(0.1115)).toBe("11.2%");
+    });
+    it("1/3", () => {
+      expect( NumberFormatter.formatRatio(1/3)).toBe("33.3%");
+    });
+    it("2.1239", () => {
+      expect( NumberFormatter.formatRatio(2.1239)).toBe("212.4%");
+    });
+    it("-2.1239", () => {
+      expect( NumberFormatter.formatRatio(-2.1239)).toBe("-212.4%");
+    });
+    it("-0.0233", () => {
+      expect( NumberFormatter.formatRatio(-0.0233)).toBe("-2.3%");
+    });
+  });
 });

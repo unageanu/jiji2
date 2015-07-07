@@ -29,4 +29,17 @@ export default class NumberFormatter {
       return (result[1] || "") + str + (result[3] || "");
   }
 
+  static formatRatio(ratio) {
+    if (ratio === 0) return "0.0%";
+    if (!ratio) return "";
+    let str = "" + Math.abs(Math.round(ratio*1000));
+    if (str.length <= 1) {
+      str = "0." + str;
+    } else {
+      str = str.substring(0, str.length-1) + "." + str.charAt(str.length-1);
+    }
+    if (ratio < 0) str = "-" + str;
+    return str + "%";
+  }
+
 }

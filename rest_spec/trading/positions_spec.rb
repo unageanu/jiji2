@@ -9,6 +9,7 @@ describe '建玉取得' do
 
   after(:context) do
     @agent_registry.remove_source('aaa')
+    Jiji::Model::Trading::Position.delete_all
   end
 
   before(:example) do

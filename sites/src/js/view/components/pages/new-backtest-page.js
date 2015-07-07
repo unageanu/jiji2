@@ -158,7 +158,7 @@ export default class NewBacktestPage extends AbstractPage {
             key={index}
             className={selected ? "mui-selected" : ""}
             onTouchTap={tapAction}>
-            {agent.name}
+            {agent.agentName}
           </ListItem>;
     });
   }
@@ -168,21 +168,30 @@ export default class NewBacktestPage extends AbstractPage {
     const agentClass    = this.getAgentClass();
     const agentPropertyEditors =
       this.createAgentPropertyEditor(selectedAgent, agentClass);
-    return <div className="agent-details">
-      <div>{selectedAgent ? selectedAgent.name : ""}</div>
+    const agentNameEditor =
+      this.createAgentNameEditor(selectedAgent, agentClass);
+    return <div className="agent-details" key={this.state.selectedAgentIndex}>
+      <div>{selectedAgent ? selectedAgent.agentClass : ""}</div>
       <div>{agentClass ? agentClass.description : ""}</div>
+      <div>{agentNameEditor}</div>
       <div>
         {agentPropertyEditors}
       </div>
     </div>;
   }
-
+  createAgentNameEditor(selectedAgent, agentClass) {
+    if (!selectedAgent || !agentClass) return null;
+    const name = selectedAgent.agentName || selectedAgent.agentClass;
+    return <TextField
+      ref={"agent_name"}
+      floatingLabelText="エージェントの名前"
+      defaultValue={name} />;
+  }
   createAgentPropertyEditor(selectedAgent, agentClass) {
     if (!selectedAgent || !agentClass) return null;
     return agentClass.properties.map((p) => {
       const value = selectedAgent.properties[p.id] || p.default;
       return  <TextField
-          key={ this.state.selectedAgentIndex+"_"+p.id}
           ref={"agent_properties_" + p.id}
           floatingLabelText={p.name}
           defaultValue={value} />;
@@ -214,12 +223,13 @@ export default class NewBacktestPage extends AbstractPage {
     const selectedAgent = this.getSelectedAgent();
     const agentClass    = this.getAgentClass();
     if (!selectedAgent) return;
+    const agentName = this.refs.agent_name.getValue();
     const configuration = agentClass.properties.reduce((r, p) => {
       r[p.id] = this.refs["agent_properties_" + p.id].getValue();
       return r;
     }, {});
     this.backtestBuilder().updateAgentConfiguration(
-      this.state.selectedAgentIndex, configuration);
+      this.state.selectedAgentIndex, agentName, configuration);
   }
 
   getSelectedAgent() {

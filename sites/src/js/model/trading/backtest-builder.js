@@ -31,7 +31,7 @@ export default class BacktestBuilder extends Observable {
     const endTime    = this.truncate(now);
 
     this.backtest = {
-      agentSetting: agents,
+      agentSetting:  agents,
       pairNames:     [],
       balance:       1000000,
       name:          "",
@@ -52,12 +52,14 @@ export default class BacktestBuilder extends Observable {
 
   getAgentClass(index) {
     const agentSetting = this.backtest.agentSetting[index];
-    return this.agentClasses.classes.find((a) => a.name === agentSetting.name );
+    return this.agentClasses.classes.find(
+      (a) => a.name === agentSetting.agentClass );
   }
 
   addAgent( agentClass, configuration={} ) {
     this.backtest.agentSetting.push({
-      name:       agentClass,
+      agentClass: agentClass,
+      agentName:  agentClass,
       properties: configuration
     });
     this.fire("agentAdded", {agents:this.backtest.agentSetting});
@@ -67,7 +69,8 @@ export default class BacktestBuilder extends Observable {
     this.backtest.agentSetting.splice(index, 1);
     this.fire("agentRemoved", {agents:this.backtest.agentSetting});
   }
-  updateAgentConfiguration(index, configuration) {
+  updateAgentConfiguration(index, name, configuration) {
+    this.backtest.agentSetting[index].agentName  = name;
     this.backtest.agentSetting[index].properties = configuration;
   }
 

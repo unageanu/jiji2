@@ -57,9 +57,9 @@ describe("BacktestBuiler", () => {
     expect(target.addAgent("TestClassA@あ", {a:"aa"})).toEqual(1);
     expect(target.addAgent("TestClassC@い", {b:"bb"})).toEqual(2);
     expect(target.backtest.agentSetting).toEqual([
-      {name:"TestClassA@あ", properties: {}},
-      {name:"TestClassA@あ", properties: {a:"aa"}},
-      {name:"TestClassC@い", properties: {b:"bb"}}
+      {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}},
+      {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {a:"aa"}},
+      {agentClass:"TestClassC@い", agentName:"TestClassC@い", properties: {b:"bb"}}
     ]);
   });
 
@@ -70,12 +70,12 @@ describe("BacktestBuiler", () => {
 
     target.removeAgent(1);
     expect(target.backtest.agentSetting).toEqual([
-      {name:"TestClassA@あ", properties: {}},
-      {name:"TestClassC@い", properties: {b:"bb"}}
+      {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}},
+      {agentClass:"TestClassC@い", agentName:"TestClassC@い", properties: {b:"bb"}}
     ]);
     target.removeAgent(1);
     expect(target.backtest.agentSetting).toEqual([
-      {name:"TestClassA@あ", properties: {}}
+      {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}}
     ]);
     target.removeAgent(0);
     expect(target.backtest.agentSetting).toEqual([]);
@@ -86,12 +86,12 @@ describe("BacktestBuiler", () => {
     expect(target.addAgent("TestClassA@あ", {a:"aa"})).toEqual(1);
     expect(target.addAgent("TestClassC@い", {b:"bb"})).toEqual(2);
 
-    target.updateAgentConfiguration(1, {c:"cc"});
-    target.updateAgentConfiguration(0, {a:"aa"});
+    target.updateAgentConfiguration(1, "テスト", {c:"cc"});
+    target.updateAgentConfiguration(0, "", {a:"aa"});
     expect(target.backtest.agentSetting).toEqual([
-      {name:"TestClassA@あ", properties: {a:"aa"}},
-      {name:"TestClassA@あ", properties: {c:"cc"}},
-      {name:"TestClassC@い", properties: {b:"bb"}}
+      {agentClass:"TestClassA@あ", agentName: "", properties: {a:"aa"}},
+      {agentClass:"TestClassA@あ", agentName: "テスト", properties: {c:"cc"}},
+      {agentClass:"TestClassC@い", agentName: "TestClassC@い", properties: {b:"bb"}}
     ]);
   });
 
@@ -106,7 +106,7 @@ describe("BacktestBuiler", () => {
       startTime:    new Date(2015, 4, 27),
       endTime:      new Date(2015, 5, 3),
       agentSetting: [
-        {name:"TestClassA@あ", properties: {}}
+        {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}}
       ],
       pairNames:    ["EURJPY", "USDJPY"],
       balance:      1000000
@@ -117,7 +117,7 @@ describe("BacktestBuiler", () => {
     target.addAgent("TestClassA@あ", {a:"aa"});
     target.addAgent("TestClassC@い", {b:"bb"});
     target.removeAgent(1);
-    target.updateAgentConfiguration(1, {c:"cc"});
+    target.updateAgentConfiguration(1, "テスト", {c:"cc"});
     target.pairNames = ["EURJPY", "USDJPY", "EURUSD", "AUDJPY", "CADJPY"];
     target.balance   = 2000000;
     target.build();
@@ -127,8 +127,8 @@ describe("BacktestBuiler", () => {
       startTime:    new Date(2015, 3, 17),
       endTime:      new Date(2015, 5, 3),
       agentSetting: [
-        {name:"TestClassA@あ", properties: {}},
-        {name:"TestClassC@い", properties: {c:"cc"}}
+        {agentClass:"TestClassA@あ", agentName: "TestClassA@あ", properties: {}},
+        {agentClass:"TestClassC@い", agentName: "テスト", properties: {c:"cc"}}
       ],
       pairNames:    ["EURJPY", "USDJPY", "EURUSD", "AUDJPY", "CADJPY"],
       balance:      2000000

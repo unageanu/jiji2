@@ -21,11 +21,12 @@ module Jiji
       module Internal   end
     end
     module Trading
-      module Brokers    end
-      module Internal   end
-      module Jobs       end
-      module Processes  end
-      module Utils      end
+      module Brokers          end
+      module Internal         end
+      module Jobs             end
+      module Processes        end
+      module Utils            end
+      module TradingSummaries end
     end
   end
 

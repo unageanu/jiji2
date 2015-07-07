@@ -11,6 +11,14 @@ module Jiji::Composing::Configurators
       configure_base_components(container)
       configure_rmt_components(container)
       configure_backtest_components(container)
+      configure_trading_summary_components(container)
+    end
+
+    def configure_trading_summary_components(container)
+      container.configure do
+        object :trading_summary_builder,
+          TradingSummaries::TradingSummaryBuilder.new
+      end
     end
 
     def configure_base_components(container)

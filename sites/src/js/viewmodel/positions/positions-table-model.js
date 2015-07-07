@@ -82,6 +82,11 @@ export default class PositionsTableModel extends TableModel {
       defaultSortOrder, pageSize );
   }
 
+  loadItems() {
+    this.selectedPosition = null;
+    super.loadItems();
+  }
+
   convertItems(items) {
     return items.map((item) => this.convertItem(item));
   }

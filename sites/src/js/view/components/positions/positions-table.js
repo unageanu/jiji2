@@ -32,6 +32,11 @@ const columns = [
     key:"formatedUnits",
     sort: "units"
   }, {
+    id:"agentName",
+    name:"エージェント",
+    key:"agentName",
+    sort: "agent_name"
+  }, {
     id:"entryPrice",
     name:"購入価格",
     key:"formatedEntryPrice",
@@ -71,7 +76,7 @@ export default class PositionsTable extends React.Component {
     const viewModelFactory = this.context.application.viewModelFactory;
     const backtestId = this.props.backtest ? this.props.backtest.id : "rmt";
     this.model = viewModelFactory
-      .createPositionsTableModel(backtestId, 50, defaultSortOrder);
+      .createPositionsTableModel(backtestId, 100, defaultSortOrder);
 
     this.model.addObserver("propertyChanged",
       this.onPropertyChanged.bind(this), this);
@@ -108,12 +113,12 @@ export default class PositionsTable extends React.Component {
     const next = () => this.model.next();
     return [
       <FlatButton
-        label="次の50件"
+        label="前の100件"
         disabled={!this.state.hasPrev}
         onClick={prev}
       />,
       <FlatButton
-        label="前の50件"
+        label="次の100件"
         disabled={!this.state.hasNext}
         onClick={next}
       />

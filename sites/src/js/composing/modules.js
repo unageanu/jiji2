@@ -44,6 +44,7 @@ function services(binder) {
   binder.bind("graphService").to("services.GraphService");
   binder.bind("agentService").to("services.AgentService");
   binder.bind("backtestService").to("services.BacktestService");
+  binder.bind("tradingSummariesService").to("services.TradingSummariesService");
 }
 
 function stores(binder) {

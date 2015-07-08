@@ -108,4 +108,51 @@ describe("NumberFormatter", () => {
       expect( NumberFormatter.formatRatio(-0.0233)).toBe("-2.3%");
     });
   });
+
+  describe("formatDecimal", () => {
+    it("null", () => {
+      expect( NumberFormatter.formatDecimal(null)).toBe("");
+    });
+    it("0", () => {
+      expect( NumberFormatter.formatDecimal(0)).toBe("0");
+      expect( NumberFormatter.formatDecimal(0, 1)).toBe("0.0");
+      expect( NumberFormatter.formatDecimal(0, 2)).toBe("0.00");
+    });
+    it("0.1111", () => {
+      expect( NumberFormatter.formatDecimal(0.1111)).toBe("0");
+      expect( NumberFormatter.formatDecimal(0.1111, 1)).toBe("0.1");
+      expect( NumberFormatter.formatDecimal(0.1111, 2)).toBe("0.11");
+    });
+    it("-0.1111", () => {
+      expect( NumberFormatter.formatDecimal(-0.1111)).toBe("-0");
+      expect( NumberFormatter.formatDecimal(-0.1111, 1)).toBe("-0.1");
+      expect( NumberFormatter.formatDecimal(-0.1111, 2)).toBe("-0.11");
+    });
+    it("0.135", () => {
+      expect( NumberFormatter.formatDecimal(0.135)).toBe("0");
+      expect( NumberFormatter.formatDecimal(0.135, 1)).toBe("0.1");
+      expect( NumberFormatter.formatDecimal(0.135, 2)).toBe("0.14");
+    });
+    it("-0.135", () => {
+      expect( NumberFormatter.formatDecimal(-0.135)).toBe("-0");
+      expect( NumberFormatter.formatDecimal(-0.135, 1)).toBe("-0.1");
+      expect( NumberFormatter.formatDecimal(-0.135, 2)).toBe("-0.14");
+    });
+    it("1/3", () => {
+      expect( NumberFormatter.formatDecimal(1/3)).toBe("0");
+      expect( NumberFormatter.formatDecimal(1/3, 1)).toBe("0.3");
+      expect( NumberFormatter.formatDecimal(1/3, 2)).toBe("0.33");
+    });
+    it("21.239", () => {
+      expect( NumberFormatter.formatDecimal(21.239)).toBe("21");
+      expect( NumberFormatter.formatDecimal(21.239, 1)).toBe("21.2");
+      expect( NumberFormatter.formatDecimal(21.239, 2)).toBe("21.24");
+    });
+    it("-21.239", () => {
+      expect( NumberFormatter.formatDecimal(-21.239)).toBe("-21");
+      expect( NumberFormatter.formatDecimal(-21.239, 1)).toBe("-21.2");
+      expect( NumberFormatter.formatDecimal(-21.239, 2)).toBe("-21.24");
+    });
+  });
+
 });

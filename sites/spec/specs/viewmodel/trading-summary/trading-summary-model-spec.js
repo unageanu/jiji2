@@ -1,4 +1,4 @@
-import TradingSummaryModel from "src/viewmodel/widgets/trading-summary-model"
+import TradingSummaryModel from "src/viewmodel/trading-summary/trading-summary-model"
 
 describe("TradingSummaryModel", () => {
 

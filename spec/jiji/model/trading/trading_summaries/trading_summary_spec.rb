@@ -21,7 +21,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
           avg_loss:            0,
           total_profit:        0,
           total_loss:          0,
-          total_proft_or_loss: 0,
+          total_profit_or_loss: 0,
           profit_factor:       0
         },
         holding_period:  {
@@ -66,7 +66,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
           avg_loss:            -10_000,
           total_profit:        0,
           total_loss:          -10_000,
-          total_proft_or_loss: -10_000,
+          total_profit_or_loss: -10_000,
           profit_factor:       0
         },
         holding_period:  {
@@ -101,7 +101,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
               avg_loss:            -10_000,
               total_profit:        0,
               total_loss:          -10_000,
-              total_proft_or_loss: -10_000,
+              total_profit_or_loss: -10_000,
               profit_factor:       0
             },
             holding_period:  {
@@ -155,7 +155,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
           avg_loss:            -1000,
           total_profit:        4800,
           total_loss:          -4000,
-          total_proft_or_loss: 800,
+          total_profit_or_loss: 800,
           profit_factor:       1.2
         },
         holding_period:  {
@@ -191,7 +191,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
               avg_loss:            -1000,
               total_profit:        2400,
               total_loss:          -2000,
-              total_proft_or_loss: 400,
+              total_profit_or_loss: 400,
               profit_factor:       1.2
             },
             holding_period:  {
@@ -227,7 +227,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
               avg_loss:            -1000,
               total_profit:        2400,
               total_loss:          -2000,
-              total_proft_or_loss: 400,
+              total_profit_or_loss: 400,
               profit_factor:       1.2
             },
             holding_period:  {

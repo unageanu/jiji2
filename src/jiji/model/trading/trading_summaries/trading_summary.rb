@@ -229,7 +229,7 @@ module Jiji::Model::Trading::TradingSummaries
         avg_loss:            @lose_count > 0 ? (@total_loss   / @lose_count) : 0,
         total_profit:        @total_profit,
         total_loss:          @total_loss,
-        total_proft_or_loss: @total_profit + @total_loss,
+        total_profit_or_loss: @total_profit + @total_loss,
         profit_factor:       calculate_profit_factor
       }
     end

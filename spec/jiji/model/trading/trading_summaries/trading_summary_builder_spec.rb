@@ -35,7 +35,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummaryBuilder do
           avg_loss:            0,
           total_profit:        0,
           total_loss:          0,
-          total_proft_or_loss: 0,
+          total_profit_or_loss: 0,
           profit_factor:       0
         },
         holding_period:  {
@@ -64,7 +64,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummaryBuilder do
           avg_loss:            0,
           total_profit:        0,
           total_loss:          0,
-          total_proft_or_loss: 0,
+          total_profit_or_loss: 0,
           profit_factor:       0
         },
         holding_period:  {

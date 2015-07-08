@@ -33,7 +33,7 @@ class PositionModel {
   }
 
   get formatedProfitOrLoss() {
-    return NumberFormatter.formatPrice(this.profitOrLoss);
+    return NumberFormatter.insertThousandsSeparator(this.profitOrLoss);
   }
   get formatedSellOrBuy() {
     if (this.sellOrBuy === "sell") {
@@ -43,14 +43,14 @@ class PositionModel {
     }
   }
   get formatedUnits() {
-    return NumberFormatter.formatPrice(this.units);
+    return NumberFormatter.insertThousandsSeparator(this.units);
   }
   get formatedEntryPrice() {
-    return NumberFormatter.formatPrice(this.entryPrice);
+    return NumberFormatter.insertThousandsSeparator(this.entryPrice);
   }
   get formatedExitPrice() {
     return this.exitPrice ?
-      NumberFormatter.formatPrice(this.exitPrice) : "-";
+      NumberFormatter.insertThousandsSeparator(this.exitPrice) : "-";
   }
   get formatedEnteredAt() {
     return DateFormatter.format(this.enteredAt);
@@ -68,11 +68,11 @@ class ClosingPolicyModel {
   }
   get formatedTakeProfit() {
     return this.takeProfit ?
-      NumberFormatter.formatPrice(this.takeProfit) : "-";
+      NumberFormatter.insertThousandsSeparator(this.takeProfit) : "-";
   }
   get formatedLossCut() {
     return this.lossCut ?
-      NumberFormatter.formatPrice(this.lossCut) : "-";
+      NumberFormatter.insertThousandsSeparator(this.lossCut) : "-";
   }
 }
 

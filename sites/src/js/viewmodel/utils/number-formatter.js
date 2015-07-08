@@ -12,7 +12,7 @@ export default class NumberFormatter {
   /**
    * 数値を3ケタごとに「,」で区切った文字列に変換する。
    */
-   static formatPrice(price) {
+   static insertThousandsSeparator(price) {
       if (price === 0) return "0";
       if (!price) return "";
 

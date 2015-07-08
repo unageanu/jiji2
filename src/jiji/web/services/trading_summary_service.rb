@@ -4,7 +4,7 @@ require 'sinatra/base'
 require 'jiji/web/services/abstract_service'
 
 module Jiji::Web
-  class TradingSummaryService < Jiji::Web::AuthenticationRequiredService
+  class TradingSummariesService < Jiji::Web::AuthenticationRequiredService
 
     options '/:backtest_id' do
       allow('GET,OPTIONS')

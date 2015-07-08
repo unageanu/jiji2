@@ -50,7 +50,7 @@ module Jiji::Web
       builder.map('/api/backtests')         { run BacktestService }
       builder.map('/api/graph')             { run GraphService }
       builder.map('/api/positions')         { run PositionsService }
-      builder.map('/api/trading-summaries') { run TradingSummaryService }
+      builder.map('/api/trading-summaries') { run TradingSummariesService }
     end
 
     def register_authentication_service(builder)

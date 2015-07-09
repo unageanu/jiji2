@@ -12,7 +12,7 @@ module Jiji
 
     include Singleton
 
-    def initilize
+    def initialize
       @running = false
     end
 

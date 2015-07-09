@@ -2,7 +2,7 @@ import AbstractService from "./abstract-service"
 
 export default class TradingSummariesService extends AbstractService {
 
-  get( start, end=null, backtestId="rmt" ) {
+  get( start=null, end=null, backtestId="rmt" ) {
     const url = this.serviceUrl( backtestId, {
       start : start,
       end   : end

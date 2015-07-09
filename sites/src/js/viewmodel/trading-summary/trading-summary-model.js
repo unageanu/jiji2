@@ -28,7 +28,7 @@ export default class TradingSummaryModel extends Observable {
     return _.sortBy(_.keys(this.pairs).map((key, i) => {
       const color = colorPattern[i % colorPattern.length];
       return _.defaults({
-        label: key,
+        label: key.toUpperCase(),
         value: this.pairs[key],
         valueAndRatio: this.valueAndRation( this.pairs[key] )
       }, color);

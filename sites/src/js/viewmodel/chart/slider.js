@@ -102,7 +102,7 @@ export default class Slider extends Observable {
     const result = this.calculateCurrentRangeByHanldePosition(this.positionX);
     if ( this.positionX !== result.x ) this.setProperty("positionX", result.x);
 
-    this.setProperty("currentRange", result.range);
+    this.setProperty("currentRange", result.range, () => false);
   }
 
   slideStart() {

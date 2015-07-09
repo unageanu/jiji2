@@ -19,13 +19,10 @@ export default class Chart extends React.Component {
   }
 
   componentWillMount() {
-    this.chartModel = this.context.application.viewModelFactory.createChart(
-      this.props.backtest,
-      {displayPositionsAndGraphs: this.props.displayPositionsAndGraphs});
-    this.chartModel.stageSize = this.props.size;
   }
 
   componentDidMount() {
+    this.props.model.stageSize = this.props.size;
     const canvas = React.findDOMNode(this.refs.canvas);
 
     this.buildStage(canvas, this.props.devicePixelRatio);
@@ -33,11 +30,10 @@ export default class Chart extends React.Component {
 
     this.initViewComponents();
     this.context.application.initialize()
-      .then( () => this.chartModel.initialize() );
+      .then( () => this.props.model.initialize() );
   }
 
   componentWillUnmount() {
-    this.chartModel.destroy();
     this.axises.unregisterObservers();
     this.candleSticks.unregisterObservers();
     this.graphView.unregisterObservers();
@@ -47,7 +43,7 @@ export default class Chart extends React.Component {
   render() {
     const r = this.props.devicePixelRatio;
     const slider = this.props.enableSlider ?
-      <Slider chartModel={this.chartModel}></Slider> : null;
+      <Slider chartModel={this.props.model}></Slider> : null;
     return (
       <div>
         <canvas ref="canvas"
@@ -74,13 +70,13 @@ export default class Chart extends React.Component {
 
   buildViewComponents() {
     this.slidableMask = this.createSlidableMask();
+    const model = this.props.model;
 
-    this.background    = new Background( this.chartModel );
-    this.axises        = new Axises( this.chartModel, this.slidableMask );
-    this.candleSticks  = new CandleSticks( this.chartModel, this.slidableMask );
-    this.graphView     = new GraphView( this.chartModel, this.slidableMask );
-    this.positionsView = new PositionsView(
-        this.chartModel, this.slidableMask );
+    this.background    = new Background( model );
+    this.axises        = new Axises( model, this.slidableMask );
+    this.candleSticks  = new CandleSticks( model, this.slidableMask );
+    this.graphView     = new GraphView( model, this.slidableMask );
+    this.positionsView = new PositionsView( model, this.slidableMask );
   }
   initViewComponents() {
     this.background.attach( this.stage );
@@ -93,7 +89,7 @@ export default class Chart extends React.Component {
   registerSlideAction() {
     this.stage.addEventListener("mousedown", (event) => {
       this.slideStart = event.stageX;
-      this.chartModel.slider.slideStart();
+      this.props.model.slider.slideStart();
     });
     this.stage.addEventListener("pressmove", (event) => {
       if (!this.slideStart) return;
@@ -102,19 +98,19 @@ export default class Chart extends React.Component {
     this.stage.addEventListener("pressup", (event) => {
       if (!this.slideStart) return;
       this.doSlide( event.stageX );
-      this.chartModel.slider.slideEnd();
+      this.props.model.slider.slideEnd();
       this.slideStart = null;
     });
   }
 
   doSlide(x) {
     x = Math.ceil((this.slideStart - x) / (6*this.props.devicePixelRatio)) * -6;
-    this.chartModel.slider.slideByChart(x/6);
+    this.props.model.slider.slideByChart(x/6);
   }
 
   createSlidableMask() {
-    const stageSize    = this.chartModel.candleSticks.stageSize;
-    const axisPosition = this.chartModel.candleSticks.axisPosition;
+    const stageSize    = this.props.model.candleSticks.stageSize;
+    const axisPosition = this.props.model.candleSticks.axisPosition;
     const mask         = new CreateJS.Shape();
     mask.graphics.beginFill("#000000")
       .drawRect( padding, padding, axisPosition.horizontal - padding, stageSize.h )
@@ -127,15 +123,13 @@ Chart.contextTypes = {
 };
 Chart.propTypes = {
   enableSlider : React.PropTypes.bool.isRequired,
-  displayPositionsAndGraphs: React.PropTypes.bool.isRequired,
   devicePixelRatio: React.PropTypes.number.isRequired,
   size: React.PropTypes.object.isRequired,
-  backtest: React.PropTypes.object
+  model: React.PropTypes.object.isRequired
 };
 Chart.defaultProps = {
   enableSlider : true,
   displayPositionsAndGraphs: false,
   devicePixelRatio: window.devicePixelRatio || 1,
-  size: {w:600, h:500},
-  backtest: null
+  size: {w:600, h:500}
 };

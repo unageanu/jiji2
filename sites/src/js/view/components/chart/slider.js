@@ -33,7 +33,7 @@ export default class Slider extends React.Component {
   }
 
   componentWillUnmount() {
-    this.props.chartModel.slider.unregisterObservers(this);
+    this.props.chartModel.slider.removeAllObservers(this);
   }
 
   render() {

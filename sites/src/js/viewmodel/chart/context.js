@@ -8,26 +8,8 @@ import Intervals            from "../../model/trading/intervals"
 
 export default class Context extends Observable {
 
-constructor() {
-    super();
-  }
-
-  get range() {
-    return this.getProperty("range");
-  }
-
-  static createRmtContext(rates) {
-    return new RmtContext(rates);
-  }
-  static createBacktestContext(backtest) {
-    return new BackTestContext(backtest);
-  }
-}
-
-class RmtContext extends Context{
-
   constructor(rates) {
-    super(null);
+    super();
     this.rates = rates;
 
     this.registerObservers();
@@ -38,35 +20,36 @@ class RmtContext extends Context{
   registerObservers() {
     this.rates.addObserver("propertyChanged", (n, e) => {
       if (e.key !== "range") return;
-      this.setProperty("range", e.newValue);
+      if (!this.backtest) this.setProperty("range", e.newValue);
     }, this);
   }
   unregisterObservers() {
     this.rates.removeAllObservers(this);
   }
 
-  get backtestId() {
-    return null;
+  get range() {
+    return this.getProperty("range");
   }
-}
-
-class BackTestContext extends Context {
-  constructor(backtest) {
-    super(null);
-    this.backtest = backtest;
-
-    this.setProperty("range", {
-      start: backtest.startTime,
-      end: backtest.endTime
-    });
+  set range(range) {
+    this.setProperty("range", range);
   }
-  initialize() {
-    return this.rates.initialize();
-  }
-  registerObservers() {}
-  unregisterObservers() {}
 
   get backtestId() {
-    return this.backtest.id;
+    return this.backtest ? this.backtest.id : "rmt";
+  }
+
+  get backtest() {
+    return this.getProperty("backtest");
+  }
+  set backtest(backtest) {
+    this.setProperty("backtest", backtest);
+    if (backtest == null) {
+      this.setProperty("range", this.rates.range, () => false);
+    } else {
+      this.setProperty("range", {
+        start: backtest.startTime,
+        end: backtest.endTime
+      }, ()=> false);
+    }
   }
 }

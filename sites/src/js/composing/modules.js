@@ -16,6 +16,9 @@ function viewModel(binder) {
   binder.bind("application").to("viewmodel.Application");
   binder.bind("navigator").to("viewmodel.Navigator");
 
+  binder.bind("homePageModel")
+    .to("viewmodel.pages.HomePageModel")
+    .onInitialize("postCreate");
   binder.bind("backtestsPageModel")
     .to("viewmodel.pages.BacktestsPageModel")
     .onInitialize("postCreate");

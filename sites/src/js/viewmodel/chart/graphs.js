@@ -91,6 +91,7 @@ export default class Graphs extends Observable {
 
   unregisterObservers() {
     this.slider.removeAllObservers(this);
+    this.context.removeAllObservers(this);
   }
 
   update() {

@@ -13,8 +13,8 @@ export default class ViewModelFactory {
     this.graphService            = ContainerJS.Inject;
     this.tradingSummariesService = ContainerJS.Inject;
   }
-  createChart(backtest=null, config={displayPositionsAndGraphs:false}) {
-    return new Chart( backtest, config, this );
+  createChart(config={displayPositionsAndGraphs:false}) {
+    return new Chart( config, this );
   }
   createPositionsTableModel(backtestId=null, pageSize=100, sortOrder={}) {
     return new PositionsTableModel(

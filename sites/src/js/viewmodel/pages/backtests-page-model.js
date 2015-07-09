@@ -16,6 +16,10 @@ export default class BacktestsPageModel extends Observable {
 
   postCreate() {
     this.backtestListModel  = new BacktestListModel(this.backtests);
+    this.miniChart = this.viewModelFactory.createChart();
+    this.chart     = this.viewModelFactory.createChart({
+      displayPositionsAndGraphs:true
+    });
     this.positionTable =
       this.viewModelFactory.createPositionsTableModel(null, 100, {
         order:     "profit_or_loss",
@@ -57,6 +61,10 @@ export default class BacktestsPageModel extends Observable {
       this.positionTable.load();
     } else if (this.activeTab === "report") {
       this.tradingSummary.load( this.selectedBacktest.id );
+    } else if (this.activeTab === "chart") {
+      this.chart.backtest =this.selectedBacktest;
+    } else {
+      this.miniChart.backtest =this.selectedBacktest;
     }
   }
 

@@ -74,6 +74,7 @@ export default class Positions extends Observable {
 
   unregisterObservers() {
     this.slider.removeAllObservers(this);
+    this.context.removeAllObservers(this);
   }
 
   update() {

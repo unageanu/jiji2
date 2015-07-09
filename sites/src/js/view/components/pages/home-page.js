@@ -17,8 +17,19 @@ export default class HomePage extends AbstractPage {
       <div>
         <PairSelector />
         <IntervalSelector />
-        <Chart />
+        <Chart
+          model={this.model().miniChart}
+          displayPositionsAndGraphs={false}
+          size={{w:600, h:500}}/>
       </div>
     );
   }
+
+  model() {
+    return this.context.application.homePageModel;
+  }
 }
+HomePage.contextTypes = {
+  application: React.PropTypes.object.isRequired,
+  router: React.PropTypes.func
+};

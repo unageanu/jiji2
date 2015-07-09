@@ -23,7 +23,7 @@ export default class BacktestsPage extends AbstractPage {
   componentWillMount() {
     const model = this.model();
     this.registerPropertyChangeListener(model);
-    
+
     model.initialize();
     model.selectedBacktestId = this.props.params.id;
   }
@@ -72,8 +72,8 @@ export default class BacktestsPage extends AbstractPage {
 
     if ( this.state.activeTab === "chart" ) {
       return <Chart
-          key={"chart_" + this.state.selectedBacktest.id}
-          backtest={this.state.selectedBacktest}
+          key="chart"
+          model={this.model().chart}
           displayPositionsAndGraphs={true}
           size={{w:600, h:500, profitAreaHeight:100, graphAreaHeight:100}}
       />;
@@ -83,8 +83,8 @@ export default class BacktestsPage extends AbstractPage {
       return <PositionsTable model={this.model().positionTable} />;
     } else {
       return <Chart
-          key={"minichart_" + this.state.selectedBacktest.id}
-          backtest={this.state.selectedBacktest}
+          key="mini_chart"
+          model={this.model().miniChart}
           displayPositionsAndGraphs={false}
           size={{w:600, h:500}}
         />;

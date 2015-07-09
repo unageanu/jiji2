@@ -8,7 +8,7 @@ import Context              from "./context";
 
 export default class Chart extends Observable {
 
-  constructor( backtest, config, components ) {
+  constructor( config, components ) {
     super();
 
     this.rates           = components.rates;
@@ -16,15 +16,9 @@ export default class Chart extends Observable {
     this.positionService = components.positionService;
     this.graphService    = components.graphService;
 
-    this.context         = this.createContext(backtest);
+    this.context         = new Context(components.rates);
 
     this.buildViewModels( config );
-  }
-
-  createContext(backtest) {
-    return backtest
-      ? Context.createBacktestContext(backtest)
-      : Context.createRmtContext(this.rates);
   }
 
   buildViewModels( config ) {
@@ -65,5 +59,9 @@ export default class Chart extends Observable {
     this.candleSticks.stageSize = size;
     this.coordinateCalculator.stageSize = size;
     this.slider.width = size.w;
+  }
+
+  set backtest(backtest) {
+    this.context.backtest = backtest;
   }
 }

@@ -53,6 +53,7 @@ export default class GraphView extends AbstractChartComponent {
     this.clearScreen();
     this.renderGraphs();
     this.cache();
+    this.stage.update();
   }
 
   clearScreen() {

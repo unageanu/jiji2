@@ -57,6 +57,7 @@ export default class PositionsView extends AbstractChartComponent {
     this.clearScreen();
     this.renderPositions();
     this.cache();
+    this.stage.update();
   }
 
   clearScreen() {

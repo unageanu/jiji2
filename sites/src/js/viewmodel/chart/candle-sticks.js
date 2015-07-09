@@ -58,7 +58,7 @@ export default class CandleSticks extends Observable {
   }
 
   set sticks(sticks) {
-    this.setProperty("sticks", sticks);
+    this.setProperty("sticks", sticks, () => false);
   }
   get sticks() {
     return this.getProperty("sticks");

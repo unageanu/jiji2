@@ -16,7 +16,8 @@ export default class Application {
     this.backtests       = ContainerJS.Inject;
     this.backtestBuilder = ContainerJS.Inject;
 
-    this.backtestsPageModel    = ContainerJS.Inject;
+    this.backtestsPageModel = ContainerJS.Inject;
+    this.homePageModel      = ContainerJS.Inject;
   }
 
   initialize() {

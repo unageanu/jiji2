@@ -6,19 +6,19 @@ const Types = MUI.MenuItem.Types;
 const MENU_ITEMS = [
   { route: "/",           text: "ホーム",   iconClassName: "md-home" },
 
-  { type: Types.SUBHEADER,       text: "リアルトレード" },
-  { route: "/rmt/status",        text: "取引状況",         iconClassName: "md-account-balance" },
-  { route: "/rmt/chart",         text: "チャート",         iconClassName: "md-trending-up" },
-  { route: "/rmt/positions",     text: "建玉一覧",         iconClassName: "md-list" },
-  { route: "/rmt/agent-setting", text: "エージェント設定",  iconClassName: "md-group-add" },
+  { type: Types.SUBHEADER,         text: "リアルトレード" },
+  { route: "/rmt/trading-summary", text: "取引状況",         iconClassName: "md-account-balance" },
+  { route: "/rmt/chart",           text: "チャート",         iconClassName: "md-trending-up" },
+  { route: "/rmt/positions",       text: "建玉一覧",         iconClassName: "md-list" },
+  { route: "/rmt/agent-setting",   text: "エージェント設定",  iconClassName: "md-group-add" },
 
-  { type: Types.SUBHEADER,       text: "バックテスト" },
-  { route: "/backtests/new",     text: "テストの作成", iconClassName: "md-add-circle-outline" },
-  { route: "/backtests/list",    text: "テスト一覧",   iconClassName: "md-history" },
+  { type: Types.SUBHEADER,         text: "バックテスト" },
+  { route: "/backtests/new",       text: "テストの作成", iconClassName: "md-add-circle-outline" },
+  { route: "/backtests/list",      text: "テスト一覧",   iconClassName: "md-history" },
 
   { type: Types.SUBHEADER  },
-  { route: "/notifications",    text: "通知一覧",     iconClassName: "md-notifications" },
-  { route: "/agents",           text: "エージェント", iconClassName: "md-group" },
+  { route: "/notifications",       text: "通知一覧",     iconClassName: "md-notifications" },
+  { route: "/agents",              text: "エージェント", iconClassName: "md-group" },
 
   { type: Types.SUBHEADER, text: "" },
   { route: "/settings",    text: "設定",              iconClassName: "md-settings" },

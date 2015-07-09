@@ -4,7 +4,7 @@ import BacktestListModel   from "../backtests/backtest-list-model"
 import PositionsTableModel from "../positions/positions-table-model"
 import TradingSummaryModel from "../trading-summary/trading-summary-model"
 
-export default class RMTTradingSummaryPageModel extends Observable {
+export default class HomePageModel extends Observable {
 
   constructor() {
     super();
@@ -12,7 +12,8 @@ export default class RMTTradingSummaryPageModel extends Observable {
   }
 
   postCreate() {
-    this.miniChart = this.viewModelFactory.createChart();
+    this.tradingSummary =
+      this.viewModelFactory.createTradingSummaryViewModel();
   }
 
 }

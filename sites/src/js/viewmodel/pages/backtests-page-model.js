@@ -1,16 +1,33 @@
-import ContainerJS        from "container-js"
-import Observable         from "../../utils/observable"
-import BacktestListModel  from "../backtests/backtest-list-model"
+import ContainerJS         from "container-js"
+import Observable          from "../../utils/observable"
+import BacktestListModel   from "../backtests/backtest-list-model"
+import PositionsTableModel from "../positions/positions-table-model"
+import TradingSummaryModel from "../trading-summary/trading-summary-model"
 
 export default class BacktestsPageModel extends Observable {
 
   constructor() {
     super();
     this.backtests = ContainerJS.Inject;
+    this.viewModelFactory = ContainerJS.Inject;
+
+    this.tradingSummariesService  = ContainerJS.Inject;
   }
 
   postCreate() {
-    this.backtestListModel = new BacktestListModel(this.backtests);
+    this.backtestListModel  = new BacktestListModel(this.backtests);
+    this.positionTable =
+      this.viewModelFactory.createPositionsTableModel(null, 100, {
+        order:     "profit_or_loss",
+        direction: "desc"
+      });
+    this.tradingSummary =
+      this.viewModelFactory.createTradingSummaryViewModel();
+
+    this.addObserver("propertyChanged", (n, e) => {
+      if (e.key === "activeTab") this.onTabChanged();
+      if (e.key === "selectedBacktest") this.onBacktestChanged();
+    });
   }
 
   initialize( ) {
@@ -24,6 +41,23 @@ export default class BacktestsPageModel extends Observable {
 
   onBacktestLoaded() {
     this.selectedBacktest = this.backtests.get(this.selectedBacktestId);
+  }
+
+  onTabChanged() {
+    this.initializeActiveTabData();
+  }
+  onBacktestChanged() {
+    if (!this.selectedBacktest) return;
+    this.positionTable.initialize( this.selectedBacktest.id );
+    this.initializeActiveTabData();
+  }
+
+  initializeActiveTabData() {
+    if (this.activeTab === "trades") {
+      this.positionTable.load();
+    } else if (this.activeTab === "report") {
+      this.tradingSummary.load( this.selectedBacktest.id );
+    }
   }
 
   get selectedBacktestId() {
@@ -47,5 +81,13 @@ export default class BacktestsPageModel extends Observable {
   }
   set activeTab(id) {
     this.setProperty("activeTab", id);
+  }
+
+
+  get tradingSummary() {
+    return this.getProperty("tradingSummary");
+  }
+  set tradingSummary(summary) {
+    this.setProperty("tradingSummary", summary);
   }
 }

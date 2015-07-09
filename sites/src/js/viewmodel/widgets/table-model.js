@@ -5,9 +5,15 @@ export default class TableModel extends Observable {
   constructor(loader, defaultSortOrder, pageSize=100) {
     super();
     this.pageSize  = pageSize;
+    this.defaultSortOrder = defaultSortOrder;
+
+    this.initialize(loader);
+  }
+
+  initialize(loader) {
     this.offset    = 0;
     this.loader    = loader;
-    this.sortOrder = defaultSortOrder;
+    this.sortOrder = this.defaultSortOrder;
 
     this.items = [];
     this.hasNext = false;

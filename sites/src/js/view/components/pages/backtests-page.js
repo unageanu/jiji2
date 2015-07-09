@@ -1,9 +1,10 @@
-import React          from "react"
-import MUI            from "material-ui"
-import AbstractPage   from "./abstract-page"
-import BacktestList   from "../backtests/backtest-list"
-import Chart          from "../chart/chart"
-import PositionsTable from "../positions/positions-table"
+import React              from "react"
+import MUI                from "material-ui"
+import AbstractPage       from "./abstract-page"
+import BacktestList       from "../backtests/backtest-list"
+import Chart              from "../chart/chart"
+import PositionsTable     from "../positions/positions-table"
+import TradingSummaryView from "../trading-summary/trading-summary-view"
 
 const Tabs  = MUI.Tabs;
 const Tab   = MUI.Tab;
@@ -21,8 +22,8 @@ export default class BacktestsPage extends AbstractPage {
 
   componentWillMount() {
     const model = this.model();
-    model.addObserver("propertyChanged",
-      this.onPropertyChanged.bind(this), this);
+    this.registerPropertyChangeListener(model);
+    
     model.initialize();
     model.selectedBacktestId = this.props.params.id;
   }
@@ -77,9 +78,9 @@ export default class BacktestsPage extends AbstractPage {
           size={{w:600, h:500, profitAreaHeight:100, graphAreaHeight:100}}
       />;
     } else if ( this.state.activeTab === "report" ) {
-      return <div>レポート</div>;
+      return <TradingSummaryView model={this.model().tradingSummary} />;
     } else if ( this.state.activeTab === "trades" ) {
-      return <PositionsTable backtest={this.state.selectedBacktest} />;
+      return <PositionsTable model={this.model().positionTable} />;
     } else {
       return <Chart
           key={"minichart_" + this.state.selectedBacktest.id}
@@ -92,12 +93,6 @@ export default class BacktestsPage extends AbstractPage {
 
   onTabChanged(tabIndex, tab) {
     this.model().activeTab = tab.props.name;
-  }
-
-  onPropertyChanged(k, ev) {
-    const newState = {};
-    newState[ev.key] = ev.newValue;
-    this.setState(newState);
   }
 
   model() {

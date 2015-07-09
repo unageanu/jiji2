@@ -1,5 +1,6 @@
 import React               from "react"
 import MUI                 from "material-ui"
+import AbstractComponent   from "../widgets/abstract-component"
 import PositionDetailsView from "./position-details-view"
 
 const Table        = MUI.Table;
@@ -59,7 +60,7 @@ const columns = [
   }
 ];
 
-export default class PositionsTable extends React.Component {
+export default class PositionsTable extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -73,17 +74,17 @@ export default class PositionsTable extends React.Component {
   }
 
   componentWillMount() {
-    const viewModelFactory = this.context.application.viewModelFactory;
-    const backtestId = this.props.backtest ? this.props.backtest.id : "rmt";
-    this.model = viewModelFactory
-      .createPositionsTableModel(backtestId, 100, defaultSortOrder);
-
-    this.model.addObserver("propertyChanged",
-      this.onPropertyChanged.bind(this), this);
-    this.model.load();
+    this.registerPropertyChangeListener(this.props.model);
+    this.setState({
+      hasNext :         this.props.model.hasNext,
+      hasPrev :         this.props.model.hasPrev,
+      items :           this.props.model.items,
+      selectedPosition: this.props.model.selectedPosition,
+      sortOrder:        this.props.model.sortOrder
+    });
   }
   componentWillUnmount() {
-    this.model.removeAllObservers(this);
+    this.props.model.removeAllObservers(this);
   }
 
   render() {
@@ -109,8 +110,8 @@ export default class PositionsTable extends React.Component {
   }
 
   createActionContent() {
-    const prev = () => this.model.prev();
-    const next = () => this.model.next();
+    const prev = () => this.props.model.prev();
+    const next = () => this.props.model.next();
     return [
       <FlatButton
         label="前の100件"
@@ -163,31 +164,25 @@ export default class PositionsTable extends React.Component {
     });
   }
 
-  onPropertyChanged(k, ev) {
-    const newState = {};
-    newState[ev.key] = ev.newValue;
-    this.setState(newState);
-  }
-
   onItemTapped(e, position) {
-    this.model.selectedPosition = position;
+    this.props.model.selectedPosition = position;
   }
   onHeaderTapped(e, column) {
     const isCurrentSortKey = this.state.sortOrder.order === column.sort;
     const direction = isCurrentSortKey
       ? (this.state.sortOrder.direction === "asc" ? "desc" : "asc")
       : "asc";
-    this.model.sortBy({
+    this.props.model.sortBy({
       order:     column.sort,
       direction: direction
     });
   }
 }
 PositionsTable.propTypes = {
-  backtest: React.PropTypes.object
+  model: React.PropTypes.object
 };
 PositionsTable.defaultProp = {
-  backtest: null
+  model: null
 };
 PositionsTable.contextTypes = {
   application: React.PropTypes.object.isRequired

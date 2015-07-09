@@ -80,6 +80,12 @@ export default class PositionsTableModel extends TableModel {
   constructor( backtestId, pageSize, defaultSortOrder, positionsService) {
     super( new Loader(backtestId, positionsService),
       defaultSortOrder, pageSize );
+    this.defaultSortOrder = defaultSortOrder;
+    this.positionsService = positionsService;
+  }
+
+  initialize(backtestId) {
+    super.initialize(new Loader(backtestId, this.positionsService));
   }
 
   loadItems() {

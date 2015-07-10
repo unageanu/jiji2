@@ -19,6 +19,8 @@ export default class Application {
     this.homePageModel              = ContainerJS.Inject;
     this.rmtTradingSummaryPageModel = ContainerJS.Inject;
     this.rmtChartPageModel          = ContainerJS.Inject;
+    this.rmtPositionsPageModel      = ContainerJS.Inject;
+    this.rmtAgentSettingPageModel   = ContainerJS.Inject;
     this.backtestsPageModel         = ContainerJS.Inject;
   }
 

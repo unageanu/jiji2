@@ -1,7 +1,7 @@
 import ContainerJS         from "container-js"
 import Observable          from "../../utils/observable"
 
-export default class RMTChartPageModel extends Observable {
+export default class RMTAgentSettingPageModel extends Observable {
 
   constructor() {
     super();
@@ -9,9 +9,6 @@ export default class RMTChartPageModel extends Observable {
   }
 
   postCreate() {
-    this.chart = this.viewModelFactory.createChart({
-      displayPositionsAndGraphs:true
-    });
   }
 
 }

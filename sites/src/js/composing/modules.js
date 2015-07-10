@@ -25,6 +25,12 @@ function viewModel(binder) {
   binder.bind("rmtChartPageModel")
     .to("viewmodel.pages.RmtChartPageModel")
     .onInitialize("postCreate");
+  binder.bind("rmtPositionsPageModel")
+    .to("viewmodel.pages.RmtPositionsPageModel")
+    .onInitialize("postCreate");
+  binder.bind("rmtAgentSettingPageModel")
+    .to("viewmodel.pages.RmtAgentSettingPageModel")
+    .onInitialize("postCreate");
   binder.bind("backtestsPageModel")
     .to("viewmodel.pages.BacktestsPageModel")
     .onInitialize("postCreate");

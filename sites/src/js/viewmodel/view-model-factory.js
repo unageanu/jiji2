@@ -20,7 +20,9 @@ export default class ViewModelFactory {
     return new PositionsTableModel(
       backtestId, pageSize, sortOrder, this.positionService );
   }
-  createTradingSummaryViewModel() {
-    return new TradingSummaryViewModel( this.tradingSummariesService );
+  createTradingSummaryViewModel(enablePeriodselector=false) {
+    const model = new TradingSummaryViewModel( this.tradingSummariesService );
+    model.enablePeriodselector = enablePeriodselector;
+    return model;
   }
 }

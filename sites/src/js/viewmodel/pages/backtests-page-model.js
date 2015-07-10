@@ -60,7 +60,7 @@ export default class BacktestsPageModel extends Observable {
     if (this.activeTab === "trades") {
       this.positionTable.load();
     } else if (this.activeTab === "report") {
-      this.tradingSummary.load( this.selectedBacktest.id );
+      this.tradingSummary.backtestId = this.selectedBacktest.id;
     } else if (this.activeTab === "chart") {
       this.chart.backtest =this.selectedBacktest;
     } else {

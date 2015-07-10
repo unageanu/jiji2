@@ -13,7 +13,7 @@ export default class HomePageModel extends Observable {
 
   postCreate() {
     this.tradingSummary =
-      this.viewModelFactory.createTradingSummaryViewModel();
+      this.viewModelFactory.createTradingSummaryViewModel(true);
   }
 
 }

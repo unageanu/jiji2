@@ -2,7 +2,8 @@ import React              from "react"
 import MUI                from "material-ui"
 import AbstractPage       from "./abstract-page"
 import BacktestList       from "../backtests/backtest-list"
-import Chart              from "../chart/chart"
+import MiniChartView      from "../chart/mini-chart-view"
+import ChartView          from "../chart/chart-view"
 import PositionsTable     from "../positions/positions-table"
 import TradingSummaryView from "../trading-summary/trading-summary-view"
 
@@ -71,10 +72,8 @@ export default class BacktestsPage extends AbstractPage {
     if (!this.state.selectedBacktest) return null;
 
     if ( this.state.activeTab === "chart" ) {
-      return <Chart
-          key="chart"
+      return <ChartView
           model={this.model().chart}
-          displayPositionsAndGraphs={true}
           size={{w:600, h:500, profitAreaHeight:100, graphAreaHeight:100}}
       />;
     } else if ( this.state.activeTab === "report" ) {
@@ -82,10 +81,8 @@ export default class BacktestsPage extends AbstractPage {
     } else if ( this.state.activeTab === "trades" ) {
       return <PositionsTable model={this.model().positionTable} />;
     } else {
-      return <Chart
-          key="mini_chart"
+      return <MiniChartView
           model={this.model().miniChart}
-          displayPositionsAndGraphs={false}
           size={{w:600, h:500}}
         />;
     }

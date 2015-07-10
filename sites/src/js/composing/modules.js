@@ -22,6 +22,9 @@ function viewModel(binder) {
   binder.bind("rmtTradingSummaryPageModel")
     .to("viewmodel.pages.RmtTradingSummaryPageModel")
     .onInitialize("postCreate");
+  binder.bind("rmtChartPageModel")
+    .to("viewmodel.pages.RmtChartPageModel")
+    .onInitialize("postCreate");
   binder.bind("backtestsPageModel")
     .to("viewmodel.pages.BacktestsPageModel")
     .onInitialize("postCreate");

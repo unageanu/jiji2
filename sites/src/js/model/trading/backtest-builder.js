@@ -1,7 +1,9 @@
-import ContainerJS  from "container-js"
-import Observable   from "../../utils/observable"
-import Deferred     from "../../utils/deferred"
-import Validators   from "../../utils/validation/validators"
+import ContainerJS         from "container-js"
+import Observable          from "../../utils/observable"
+import Deferred            from "../../utils/deferred"
+import Validators          from "../../utils/validation/validators"
+import AgentSettingBuilder from "./agent-setting-builder"
+import _                   from "underscore"
 
 export default class BacktestBuilder extends Observable {
 
@@ -16,22 +18,22 @@ export default class BacktestBuilder extends Observable {
   }
 
   initialize(agents=[]) {
-    this.initializeBuilderState(agents);
+    this.agentSettingBuilder = new AgentSettingBuilder(this.agentClasses);
+    this.initializeBuilderState();
     return Deferred.when([
       this.pairs.initialize(),
       this.rates.initialize(),
-      this.agentClasses.load()
+      this.agentSettingBuilder.initialize(agents)
     ]);
   }
 
-  initializeBuilderState(agents) {
+  initializeBuilderState() {
     const now        = this.timeSource.now;
     const oneWeekAgo = new Date(now.getTime() - (1000 * 60 * 60 * 24 * 7));
     const startTime  = this.truncate(oneWeekAgo);
     const endTime    = this.truncate(now);
 
     this.backtest = {
-      agentSetting:  agents,
       pairNames:     [],
       balance:       1000000,
       name:          "",
@@ -47,37 +49,31 @@ export default class BacktestBuilder extends Observable {
 
   build() {
     this.validateAllProperties();
-    return this.backtestService.register(this.backtest);
+    const backtest = _.defaults(this.backtest,
+      {agentSetting: this.agentSettingBuilder.toArray()});
+    return this.backtestService.register(backtest);
   }
 
   getAgentClass(index) {
-    const agentSetting = this.backtest.agentSetting[index];
-    return this.agentClasses.classes.find(
-      (a) => a.name === agentSetting.agentClass );
+    return this.agentSettingBuilder.getAgentClass(index);
   }
 
   addAgent( agentClass, configuration={} ) {
-    this.backtest.agentSetting.push({
-      agentClass: agentClass,
-      agentName:  agentClass,
-      properties: configuration
-    });
-    this.fire("agentAdded", {agents:this.backtest.agentSetting});
-    return this.backtest.agentSetting.length -1;
+    return this.agentSettingBuilder.addAgent( agentClass, configuration );
   }
   removeAgent( index ) {
-    this.backtest.agentSetting.splice(index, 1);
-    this.fire("agentRemoved", {agents:this.backtest.agentSetting});
+    return this.agentSettingBuilder.removeAgent( index );
   }
   updateAgentConfiguration(index, name, configuration) {
-    this.backtest.agentSetting[index].agentName  = name;
-    this.backtest.agentSetting[index].properties = configuration;
+    this.agentSettingBuilder.updateAgentConfiguration(
+      index, name, configuration);
   }
 
   validateAllProperties() {
     for( let i in this.backtest ) {
       Validators.backtest[i].validate(this.backtest[i]);
     }
+    Validators.backtest.agentSetting.validate(this.agentSetting);
   }
 
   get name() {
@@ -123,6 +119,6 @@ export default class BacktestBuilder extends Observable {
     this.backtest.balance = balance;
   }
   get agentSetting() {
-    return this.backtest.agentSetting;
+    return this.agentSettingBuilder.toArray();
   }
 }

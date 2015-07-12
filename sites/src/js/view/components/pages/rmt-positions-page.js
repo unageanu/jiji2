@@ -1,6 +1,7 @@
 import React            from "react"
 import MUI              from "material-ui"
 import AbstractPage     from "./abstract-page"
+import PositionsTable   from "../positions/positions-table"
 
 export default class RMTPositionsPage extends AbstractPage {
 
@@ -9,16 +10,21 @@ export default class RMTPositionsPage extends AbstractPage {
     this.state = {};
   }
 
+  componentWillMount() {
+    const model = this.model();
+    model.initialize();
+  }
+
   render() {
     return (
       <div>
-
+        <PositionsTable model={this.model().positionTable} />
       </div>
     );
   }
 
   model() {
-    return this.context.application.rmtAgentSettingPageModel;
+    return this.context.application.rmtPositionsPageModel;
   }
 }
 RMTPositionsPage.contextTypes = {

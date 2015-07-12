@@ -10,10 +10,11 @@ export default class PositionService extends AbstractService {
     return this.xhrManager.xhr(url, "GET");
   }
 
-  fetchPositions( offset, limit, sortOrder, backtestId="rmt" ) {
+  fetchPositions( offset, limit, sortOrder, backtestId="rmt", status=null ) {
     const url = this.serviceUrl( backtestId, {
       offset:    offset,
       limit:     limit,
+      status:    status,
       order:     sortOrder.order,
       direction: sortOrder.direction
     });

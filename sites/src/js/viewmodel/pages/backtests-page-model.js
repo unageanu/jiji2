@@ -21,7 +21,7 @@ export default class BacktestsPageModel extends Observable {
       displayPositionsAndGraphs:true
     });
     this.positionTable =
-      this.viewModelFactory.createPositionsTableModel(null, 100, {
+      this.viewModelFactory.createPositionsTableModel(100, {
         order:     "profit_or_loss",
         direction: "desc"
       });

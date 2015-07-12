@@ -16,9 +16,9 @@ export default class ViewModelFactory {
   createChart(config={displayPositionsAndGraphs:false}) {
     return new Chart( config, this );
   }
-  createPositionsTableModel(backtestId=null, pageSize=100, sortOrder={}) {
+  createPositionsTableModel(pageSize=100, sortOrder={}) {
     return new PositionsTableModel(
-      backtestId, pageSize, sortOrder, this.positionService );
+      pageSize, sortOrder, this.positionService );
   }
   createTradingSummaryViewModel(enablePeriodselector=false) {
     const model = new TradingSummaryViewModel( this.tradingSummariesService );

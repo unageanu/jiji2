@@ -22,7 +22,8 @@ describe("TableModel", () => {
       },
       itemCount: 90
     };
-    model = new TableModel(loader, {name: "asc"}, 20);
+    model = new TableModel({name: "asc"}, 20);
+    model.initialize(loader);
   });
 
   it("loadで一覧を取得できる", () => {

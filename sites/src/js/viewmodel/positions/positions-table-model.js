@@ -4,17 +4,18 @@ import DateFormatter   from "../utils/date-formatter"
 import Deferred        from "../../utils/deferred"
 
 class Loader {
-  constructor(  backtestId, positionsService ) {
+  constructor( positionsService, backtestId="rmt", status=null ) {
     this.backtestId = backtestId;
+    this.status     = status;
     this.positionsService = positionsService;
   }
   load( offset, limit, sortOrder) {
     return this.positionsService.fetchPositions(
-      offset, limit, sortOrder, this.backtestId );
+      offset, limit, sortOrder, this.backtestId, this.status);
   }
   count() {
     const d = new Deferred();
-    this.positionsService.countPositions(this.backtestId ).then(
+    this.positionsService.countPositions(this.backtestId, this.status).then(
       (result) => d.resolve(result.count) );
     return d;
   }
@@ -77,15 +78,14 @@ class ClosingPolicyModel {
 }
 
 export default class PositionsTableModel extends TableModel {
-  constructor( backtestId, pageSize, defaultSortOrder, positionsService) {
-    super( new Loader(backtestId, positionsService),
-      defaultSortOrder, pageSize );
+  constructor( pageSize, defaultSortOrder, positionsService) {
+    super( defaultSortOrder, pageSize );
     this.defaultSortOrder = defaultSortOrder;
     this.positionsService = positionsService;
   }
 
-  initialize(backtestId) {
-    super.initialize(new Loader(backtestId, this.positionsService));
+  initialize(backtestId="rmt", status=null) {
+    super.initialize(new Loader(this.positionsService, backtestId, status));
   }
 
   loadItems() {

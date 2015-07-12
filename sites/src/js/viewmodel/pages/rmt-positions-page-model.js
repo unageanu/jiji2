@@ -9,9 +9,16 @@ export default class RMTChartPageModel extends Observable {
   }
 
   postCreate() {
-    this.chart = this.viewModelFactory.createChart({
-      displayPositionsAndGraphs:true
-    });
+    this.positionTable =
+      this.viewModelFactory.createPositionsTableModel(100, {
+        order:     "profit_or_loss",
+        direction: "desc"
+      });
+    this.positionTable.initialize("rmt", "live");
+  }
+
+  initialize( ) {
+    this.positionTable.load();
   }
 
 }

@@ -36,6 +36,7 @@ module Jiji::Model::Trading
       rmt_setting = @setting_repository.rmt_setting
       rmt_setting.agent_setting = new_setting
       rmt_setting.save
+      rmt_setting.agent_setting
     end
 
     def setup_rmt_process

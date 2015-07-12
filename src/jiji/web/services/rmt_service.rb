@@ -17,5 +17,25 @@ module Jiji::Web
       ok(result)
     end
 
+    options '/agents' do
+      allow('GET,PUT,OPTIONS')
+    end
+
+    get '/agents' do
+      ok(rmt_setting.agent_setting)
+    end
+
+    put '/agents' do
+      agent_setting = load_body
+      result = invoke_on_rmt_process do |_trading_context, _queue|
+        rmt.update_agent_setting(agent_setting)
+      end
+      ok(result)
+    end
+
+    def rmt_setting
+      lookup(:setting_repository).rmt_setting
+    end
+
   end
 end

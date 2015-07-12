@@ -36,7 +36,7 @@ module Jiji::Web
 
     get '/:backtest_id/count' do
       id = get_backtest_id_from_path_param
-      ok({ count: repository.count_positions(id) })
+      ok({ count: repository.count_positions(id, read_filter_condition) })
     end
 
     def repository
@@ -51,8 +51,14 @@ module Jiji::Web
     def retirieve_backtest(backtest_id)
       sort_order = get_sort_order_from_query_param('order', 'direction')
       offset     = request['offset'] ? request['offset'].to_i : nil
-      limit      = request['limit'] ? request['limit'].to_i : nil
-      repository.retrieve_positions(backtest_id, sort_order, offset, limit)
+      limit      = request['limit']  ? request['limit'].to_i : nil
+      repository.retrieve_positions(
+        backtest_id, sort_order, offset, limit, read_filter_condition)
+    end
+
+    def read_filter_condition
+      status     = request['status'] ? request['status'].to_sym : nil
+      status ? {:status => status } : {}
     end
 
     def read_period_filter_condition

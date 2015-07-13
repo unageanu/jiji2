@@ -90,8 +90,8 @@ describe '建玉取得' do
     expect(r.status).to eq 200
     expect(r.body['count']).to be 2
 
-    r = @client.get("positions/rmt/count", {
-      'status'    => 'live',
+    r = @client.get('positions/rmt/count', {
+      'status'    => 'live'
     })
     expect(r.status).to eq 200
     expect(r.body['count']).to be 1

@@ -15,14 +15,14 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
         sell_or_buy:     { sell: 0, buy: 0 },
         pairs:           {},
         profit_or_loss:  {
-          max_profit:          nil,
-          max_loss:            nil,
-          avg_profit:          0,
-          avg_loss:            0,
-          total_profit:        0,
-          total_loss:          0,
+          max_profit:           nil,
+          max_loss:             nil,
+          avg_profit:           0,
+          avg_loss:             0,
+          total_profit:         0,
+          total_loss:           0,
           total_profit_or_loss: 0,
-          profit_factor:       0
+          profit_factor:        0
         },
         holding_period:  {
           max_period: nil,
@@ -60,14 +60,14 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
           EURJPY: 1
         },
         profit_or_loss:  {
-          max_profit:          -10_000,
-          max_loss:            -10_000,
-          avg_profit:          0,
-          avg_loss:            -10_000,
-          total_profit:        0,
-          total_loss:          -10_000,
+          max_profit:           -10_000,
+          max_loss:             -10_000,
+          avg_profit:           0,
+          avg_loss:             -10_000,
+          total_profit:         0,
+          total_loss:           -10_000,
           total_profit_or_loss: -10_000,
-          profit_factor:       0
+          profit_factor:        0
         },
         holding_period:  {
           max_period: 99,
@@ -95,14 +95,14 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
               EURJPY: 1
             },
             profit_or_loss:  {
-              max_profit:          -10_000,
-              max_loss:            -10_000,
-              avg_profit:          0,
-              avg_loss:            -10_000,
-              total_profit:        0,
-              total_loss:          -10_000,
+              max_profit:           -10_000,
+              max_loss:             -10_000,
+              avg_profit:           0,
+              avg_loss:             -10_000,
+              total_profit:         0,
+              total_loss:           -10_000,
               total_profit_or_loss: -10_000,
-              profit_factor:       0
+              profit_factor:        0
             },
             holding_period:  {
               max_period: 99,
@@ -149,14 +149,14 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
           USDJPY: 4
         },
         profit_or_loss:  {
-          max_profit:          1400,
-          max_loss:            -1200,
-          avg_profit:          1200,
-          avg_loss:            -1000,
-          total_profit:        4800,
-          total_loss:          -4000,
+          max_profit:           1400,
+          max_loss:             -1200,
+          avg_profit:           1200,
+          avg_loss:             -1000,
+          total_profit:         4800,
+          total_loss:           -4000,
           total_profit_or_loss: 800,
-          profit_factor:       1.2
+          profit_factor:        1.2
         },
         holding_period:  {
           max_period: 200,
@@ -185,14 +185,14 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
               USDJPY: 2
             },
             profit_or_loss:  {
-              max_profit:          1400,
-              max_loss:            -1200,
-              avg_profit:          1200,
-              avg_loss:            -1000,
-              total_profit:        2400,
-              total_loss:          -2000,
+              max_profit:           1400,
+              max_loss:             -1200,
+              avg_profit:           1200,
+              avg_loss:             -1000,
+              total_profit:         2400,
+              total_loss:           -2000,
               total_profit_or_loss: 400,
-              profit_factor:       1.2
+              profit_factor:        1.2
             },
             holding_period:  {
               max_period: 200,
@@ -221,14 +221,14 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
               USDJPY: 2
             },
             profit_or_loss:  {
-              max_profit:          1400,
-              max_loss:            -1200,
-              avg_profit:          1200,
-              avg_loss:            -1000,
-              total_profit:        2400,
-              total_loss:          -2000,
+              max_profit:           1400,
+              max_loss:             -1200,
+              avg_profit:           1200,
+              avg_loss:             -1000,
+              total_profit:         2400,
+              total_loss:           -2000,
               total_profit_or_loss: 400,
-              profit_factor:       1.2
+              profit_factor:        1.2
             },
             holding_period:  {
               max_period: 200,

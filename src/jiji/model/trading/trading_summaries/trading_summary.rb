@@ -65,6 +65,10 @@ module Jiji::Model::Trading::TradingSummaries
     def process(position)
     end
 
+    def calculate_avg(sum, count)
+      count  > 0 ? (sum / count)  : 0
+    end
+
   end
 
   class AgentSummary < Category
@@ -223,14 +227,14 @@ module Jiji::Model::Trading::TradingSummaries
 
     def to_h
       {
-        max_profit:          @max_profit,
-        max_loss:            @max_loss,
-        avg_profit:          @win_count  > 0 ? (@total_profit / @win_count)  : 0,
-        avg_loss:            @lose_count > 0 ? (@total_loss   / @lose_count) : 0,
-        total_profit:        @total_profit,
-        total_loss:          @total_loss,
+        max_profit:           @max_profit,
+        max_loss:             @max_loss,
+        avg_profit:           calculate_avg(@total_profit, @win_count),
+        avg_loss:             calculate_avg(@total_loss,   @lose_count),
+        total_profit:         @total_profit,
+        total_loss:           @total_loss,
         total_profit_or_loss: @total_profit + @total_loss,
-        profit_factor:       calculate_profit_factor
+        profit_factor:        calculate_profit_factor
       }
     end
 
@@ -272,7 +276,7 @@ module Jiji::Model::Trading::TradingSummaries
       {
         max_period: @max_period,
         min_period: @min_period,
-        avg_period: @count > 0 ? (@total_period / @count) : 0
+        avg_period: calculate_avg(@total_period, @count)
       }
     end
 
@@ -308,7 +312,7 @@ module Jiji::Model::Trading::TradingSummaries
       {
         max_units: @max_units,
         min_units: @min_units,
-        avg_units: @count > 0 ? (@total_units / @count) : 0
+        avg_units: calculate_avg(@total_units, @count)
       }
     end
 

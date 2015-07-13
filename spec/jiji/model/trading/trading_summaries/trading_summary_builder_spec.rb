@@ -29,14 +29,14 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummaryBuilder do
         sell_or_buy:     { sell: 0, buy: 0 },
         pairs:           {},
         profit_or_loss:  {
-          max_profit:          nil,
-          max_loss:            nil,
-          avg_profit:          0,
-          avg_loss:            0,
-          total_profit:        0,
-          total_loss:          0,
+          max_profit:           nil,
+          max_loss:             nil,
+          avg_profit:           0,
+          avg_loss:             0,
+          total_profit:         0,
+          total_loss:           0,
           total_profit_or_loss: 0,
-          profit_factor:       0
+          profit_factor:        0
         },
         holding_period:  {
           max_period: nil,
@@ -58,14 +58,14 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummaryBuilder do
         sell_or_buy:     { sell: 0, buy: 0 },
         pairs:           {},
         profit_or_loss:  {
-          max_profit:          nil,
-          max_loss:            nil,
-          avg_profit:          0,
-          avg_loss:            0,
-          total_profit:        0,
-          total_loss:          0,
+          max_profit:           nil,
+          max_loss:             nil,
+          avg_profit:           0,
+          avg_loss:             0,
+          total_profit:         0,
+          total_loss:           0,
           total_profit_or_loss: 0,
-          profit_factor:       0
+          profit_factor:        0
         },
         holding_period:  {
           max_period: nil,

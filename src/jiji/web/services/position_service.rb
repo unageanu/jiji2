@@ -58,7 +58,7 @@ module Jiji::Web
 
     def read_filter_condition
       status     = request['status'] ? request['status'].to_sym : nil
-      status ? {:status => status } : {}
+      status ? { status: status } : {}
     end
 
     def read_period_filter_condition

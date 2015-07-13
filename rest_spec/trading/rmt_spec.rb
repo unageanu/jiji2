@@ -30,7 +30,7 @@ describe 'リアルトレード' do
     }, {
       agent_class: 'TestAgent1@aaa',
       agent_name:  'テスト2',
-      properties:  { }
+      properties:  {}
     }])
     expect(r.status).to eq 200
     expect(r.body.length).to eq 2
@@ -44,7 +44,7 @@ describe 'リアルトレード' do
     agents = r.body[0, 1]
     agents << {
       agent_class: 'TestAgent1@aaa',
-      agent_name:  'テスト3',
+      agent_name:  'テスト3'
     }
     r = @client.put('/rmt/agents', agents)
     expect(r.status).to eq 200
@@ -56,7 +56,6 @@ describe 'リアルトレード' do
       expect(setting['agent_name']).not_to be nil
     end
   end
-
 
   it 'GET /rmt/agents でエージェント設定を取得できる' do
     r = @client.get('/rmt/agents')
@@ -74,7 +73,6 @@ describe 'リアルトレード' do
     container    = Jiji::Test::TestContainerFactory.instance.new_container
     data_builder = Jiji::Test::DataBuilder.new
 
-    backtest_repository = container.lookup(:backtest_repository)
     @agent_registry      = container.lookup(:agent_registry)
 
     @agent_registry.add_source('aaa', '',

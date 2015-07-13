@@ -175,7 +175,6 @@ describe Jiji::Model::Graphing::Graph do
     expect(graph.fetch_data(start_time, end_time).length).to eq 2
   end
 
-
   def register_graphs
     factory_for_rmt =
       Jiji::Model::Graphing::GraphFactory.new

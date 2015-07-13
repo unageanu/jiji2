@@ -1,9 +1,10 @@
-import React               from "react"
-import MUI                 from "material-ui"
-import Router              from "react-router"
-import LeftNavi            from "./left-navi"
-import WindowResizeManager from "../window-resize-manager"
-import Theme               from "../theme"
+import React                        from "react"
+import MUI                          from "material-ui"
+import Router                       from "react-router"
+import LeftNavi                     from "./left-navi"
+import WindowResizeManager          from "../window-resize-manager"
+import Theme                        from "../theme"
+import UnauthorizedExceptionHandler from "./error-handling/unauthorized-exeption-handler"
 
 const RouteHandler = Router.RouteHandler;
 const Link         = Router.Link;
@@ -17,6 +18,11 @@ export default class Frame extends React.Component {
     this.themeManager = new MUI.Styles.ThemeManager();
     this.windowResizeManager = new WindowResizeManager();
     this.setTheme();
+  }
+
+  componentWillMount() {
+    UnauthorizedExceptionHandler.registerObservers(
+      this.context.router, this.props.application.xhrManager);
   }
 
   render() {
@@ -59,4 +65,7 @@ Frame.childContextTypes = {
   application:         React.PropTypes.object.isRequired,
   windowResizeManager: React.PropTypes.object,
   muiTheme:            React.PropTypes.object
+};
+Frame.contextTypes = {
+  router: React.PropTypes.func
 };

@@ -18,6 +18,8 @@ export default class Authenticator {
     ).then((result) => {
       this.sessionManager.setToken(result.token);
       d.resolve(result.token);
+    }, (error) => {
+      d.reject(error);
     });
     return d;
   }

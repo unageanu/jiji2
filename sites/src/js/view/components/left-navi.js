@@ -15,12 +15,22 @@ export default class LeftNavi extends React.Component {
   }
 
   render() {
-    const lists = this.createLists();
-    return (
-      <div className="left-navi">
-        {lists}
-      </div>
-    );
+    const currentRoute = this.getCurrntRoute();
+    if (currentRoute && currentRoute.fullscreen) {
+      return null;
+    } else {
+      const lists = this.createLists();
+      return (
+        <div className="left-navi">
+          {lists}
+        </div>
+      );
+    }
+  }
+
+  getCurrntRoute() {
+    return this.navigator().menuItems().find(
+      (item) => item.route && this.router().isActive(item.route));
   }
 
   createLists() {
@@ -34,7 +44,7 @@ export default class LeftNavi extends React.Component {
         buffer = [];
         label  = item.text;
       } else{
-        buffer.push( this.createListItem(item) );
+        if (item.hidden !== true) buffer.push( this.createListItem(item) );
       }
     });
     lists.push(this.createList( label, buffer, lists.length));

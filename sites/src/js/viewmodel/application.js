@@ -4,6 +4,9 @@ import Deferred     from "../utils/deferred"
 export default class Application {
 
   constructor() {
+
+    this.xhrManager        = ContainerJS.Inject;
+
     this.navigator         = ContainerJS.Inject;
     this.viewModelFactory  = ContainerJS.Inject;
     this.authenticator     = ContainerJS.Inject;
@@ -24,6 +27,8 @@ export default class Application {
 
     this.newBacktestPageModel       = ContainerJS.Inject;
     this.backtestsPageModel         = ContainerJS.Inject;
+
+    this.loginPageModel             = ContainerJS.Inject;
   }
 
   initialize() {

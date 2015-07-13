@@ -2,44 +2,59 @@ import React        from "react"
 import MUI          from "material-ui"
 import AbstractPage from "./abstract-page"
 
+const TextField    = MUI.TextField;
+const RaisedButton = MUI.RaisedButton;
+
 export default class LoginPage extends AbstractPage {
 
   constructor(props) {
     super(props);
-    this.state = { error: "", title:"" };
+    this.state = {
+      error: ""
+    };
+  }
+
+  componentWillMount() {
+    this.registerPropertyChangeListener(this.model());
+  }
+  componentWillUnmount() {
+    this.model().removeAllObservers(this);
   }
 
   render() {
     return (
       <div>
-        password:
-        &nbsp;
-        <input
-          type="password"
-          value={this.state.password}
-          onChange={this.onChange.bind(this)}
-        ></input>
+        パスワード&nbsp;:&nbsp;
+        <input ref="password-input" type="password" />
         &nbsp;&nbsp;
-        <button onClick={this.login.bind(this)}>
-          ログイン
-        </button>
+        <br/>
+        <RaisedButton
+          label="ログイン"
+          onClick={this.login.bind(this)}
+        />
+        <br/>
         <div className="error">{this.state.error}</div>
       </div>
     );
   }
 
-  onChange(event) {
-    this.setState({error:"", password: event.target.value});
+  login(event) {
+    const password = React.findDOMNode(this.refs["password-input"]).value;
+    this.model().login(password).then( () => {
+      this.context.application.xhrManager.cancel();
+      this.router().transitionTo("/");
+    });
   }
 
-  login(event) {
-    const authenticator = this.context.application.authenticator;
-    authenticator.login( this.state.password ).fail(
-      (error) => this.setState({error:"ログイン失敗 : " + error.message, title:""}));
-    this.setState({error:"", title:""});
+  model() {
+    return this.context.application.loginPageModel;
+  }
+  router() {
+    return this.context.router;
   }
 }
 
 LoginPage.contextTypes = {
-  application: React.PropTypes.object.isRequired
+  application: React.PropTypes.object.isRequired,
+  router: React.PropTypes.func
 };

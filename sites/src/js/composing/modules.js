@@ -38,6 +38,10 @@ function viewModel(binder) {
     .to("viewmodel.pages.BacktestsPageModel")
     .onInitialize("postCreate");
 
+  binder.bind("loginPageModel")
+      .to("viewmodel.pages.LoginPageModel")
+      .onInitialize("postCreate");
+
   binder.bind("agentSourceEditor")
     .to("viewmodel.agents.AgentSourceEditor")
     .onInitialize("initialize");
@@ -46,7 +50,9 @@ function viewModel(binder) {
 }
 
 function remoting(binder) {
-  binder.bind("xhrManager").to("remoting.XhrManager");
+  binder.bind("xhrManager").to("remoting.XhrManager").withProperties({
+    supportRelogin: true
+  });
   binder.bind("urlResolver").to("remoting.UrlResolver");
 }
 

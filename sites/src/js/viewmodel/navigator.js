@@ -22,7 +22,8 @@ const MENU_ITEMS = [
 
   { type: Types.SUBHEADER, text: "" },
   { route: "/settings",    text: "設定",              iconClassName: "md-settings" },
-  { route: "/login",       text: "ログイン" }
+
+  { route: "/login",       text: "ログイン", fullscreen: true, hidden: true }
 ];
 
 export default class Navigator extends Observable {

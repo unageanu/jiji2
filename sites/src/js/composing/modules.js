@@ -63,6 +63,7 @@ function services(binder) {
   binder.bind("agentService").to("services.AgentService");
   binder.bind("backtestService").to("services.BacktestService");
   binder.bind("tradingSummariesService").to("services.TradingSummariesService");
+  binder.bind("rmtService").to("services.RmtService");
 }
 
 function stores(binder) {

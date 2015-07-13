@@ -14,16 +14,18 @@ export default class AgentSettingEditor extends AbstractComponent {
   constructor(props) {
     super(props);
     this.state = {
-      availableAgents: [],
-      agents:          []
+      availableAgents:    [],
+      agentSetting:       [],
+      selectedAgentIndex: -1
     };
   }
 
   componentWillMount() {
     this.registerObservers();
     this.setState({
-      availableAgents: this.props.model.availableAgents,
-      agents:          this.props.model.agentSetting
+      availableAgents:    this.props.model.availableAgents,
+      agentSetting:       this.props.model.agentSetting,
+      selectedAgentIndex: -1
     });
   }
   componentWillUnmount() {
@@ -71,7 +73,7 @@ export default class AgentSettingEditor extends AbstractComponent {
   }
 
   createAgents() {
-    return this.state.agents.map((agent, index) => {
+    return this.state.agentSetting.map((agent, index) => {
       const selected  = this.state.selectedAgentIndex === index;
       const tapAction = (ev) => {
         this.applyAgentConfiguration();
@@ -171,6 +173,14 @@ export default class AgentSettingEditor extends AbstractComponent {
     );
     this.registerPropertyChangeListener(builder);
   }
+
+  onPropertyChanged(k, ev) {
+    if (ev.key === "agentSetting") {
+      this.setState({selectedAgentIndex: -1});
+    }
+    super.onPropertyChanged(k, ev);
+  }
+
   unregisterObservers() {
     this.props.model.removeAllObservers(this);
   }

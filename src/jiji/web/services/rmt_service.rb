@@ -26,7 +26,9 @@ module Jiji::Web
     end
 
     put '/agents' do
-      agent_setting = load_body
+      agent_setting = load_body.map do |setting|
+        setting.each_with_object({}) { |pair, r| r[pair[0].to_sym] = pair[1] }
+      end
       result = invoke_on_rmt_process do |_trading_context, _queue|
         rmt.update_agent_setting(agent_setting)
       end

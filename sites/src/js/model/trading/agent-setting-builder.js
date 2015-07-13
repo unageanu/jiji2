@@ -10,37 +10,38 @@ export default class AgentSettingBuilder extends Observable {
     this.agentClasses = agentClasses;
 
     this.availableAgents = [];
+    this.agentSetting    = [];
   }
 
   initialize(agents=[]) {
-    this.settings = agents || [];
+    this.agentSetting = agents || [];
     return this.agentClasses.load().then(() => {
       this.availableAgents = this.agentClasses.classes;
     });
   }
 
   getAgentClass(index) {
-    const settings = this.settings[index];
+    const setting = this.agentSetting[index];
     return this.agentClasses.classes.find(
-      (a) => a.name === settings.agentClass );
+      (a) => a.name === setting.agentClass );
   }
 
   addAgent( agentClass, configuration={} ) {
-    this.settings.push({
+    this.agentSetting.push({
       agentClass: agentClass,
       agentName:  agentClass,
       properties: configuration
     });
     this.fire("agentAdded", {agents:this.settings});
-    return this.settings.length -1;
+    return this.agentSetting.length -1;
   }
   removeAgent( index ) {
-    this.settings.splice(index, 1);
+    this.agentSetting.splice(index, 1);
     this.fire("agentRemoved", {agents:this.settings});
   }
   updateAgentConfiguration(index, name, configuration) {
-    this.settings[index].agentName  = name;
-    this.settings[index].properties = configuration;
+    this.agentSetting[index].agentName  = name;
+    this.agentSetting[index].properties = configuration;
   }
 
   get availableAgents() {
@@ -50,7 +51,10 @@ export default class AgentSettingBuilder extends Observable {
     this.setProperty("availableAgents", agents);
   }
 
+  set agentSetting(setting) {
+    return this.setProperty("agentSetting", setting);
+  }
   get agentSetting() {
-    return this.settings;
+    return this.getProperty("agentSetting");
   }
 }

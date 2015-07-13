@@ -56,8 +56,6 @@ module Jiji::Model::Graphing
       self.type      = type
       self.label     = label
       self.colors    = colors
-
-      setup_data_savers
     end
 
     def <<(values)
@@ -66,6 +64,8 @@ module Jiji::Model::Graphing
 
     def save_data(time)
       return unless @current_values
+
+      setup_data_savers unless @savers
 
       @savers.each do |saver|
         saver.save_data_if_required(@current_values, time)

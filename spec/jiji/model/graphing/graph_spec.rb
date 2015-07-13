@@ -158,6 +158,24 @@ describe Jiji::Model::Graphing::Graph do
     expect(hash[:colors]).to eq graph.colors
   end
 
+  it '永続化データから作成されたGraphにもデータを追加できる' do
+    graph = Jiji::Model::Graphing::Graph.get_or_create(
+      'test1', :chart, ['#444', '#666', '#999'])
+
+    graph << [10, 11, 12]
+    time = Time.new(2015, 4, 1, 0, 3, 0)
+    graph.save_data(time)
+
+    graph << [10, 11, 12]
+    time = Time.new(2015, 4, 1, 0, 4, 0)
+    graph.save_data(time)
+
+    start_time  = Time.new(2015, 4, 1)
+    end_time    = Time.new(2015, 4, 2)
+    expect(graph.fetch_data(start_time, end_time).length).to eq 2
+  end
+
+
   def register_graphs
     factory_for_rmt =
       Jiji::Model::Graphing::GraphFactory.new

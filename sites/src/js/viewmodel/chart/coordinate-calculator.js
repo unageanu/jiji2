@@ -44,7 +44,7 @@ export default class CoordinateCalculator extends Observable {
     if (!this.rateRange || !this.stageSize) return;
     const height      = this.rateAreaHeight;
     this.ratePerPixel = (this.rateRange.highest - this.rateRange.lowest) / height;
-    this.updateDeferred.resolve();
+    if (!this.updateDeferred.fixed()) this.updateDeferred.resolve();
   }
 
   calculateX(date, range=null) {

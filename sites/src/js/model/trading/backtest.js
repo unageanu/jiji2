@@ -23,11 +23,4 @@ export default class Backtest extends Observable {
         || this.status === "cancelled"
         || this.status === "error";
   }
-
-  loadGraphs() {
-  }
-
-  calculateSummary() {
-    // TODO
-  }
 }

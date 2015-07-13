@@ -8,40 +8,49 @@ export default class AgentSettingBuilder extends Observable {
   constructor(agentClasses) {
     super();
     this.agentClasses = agentClasses;
+
+    this.availableAgents = [];
   }
 
   initialize(agents=[]) {
-    this.agentSetting = agents || [];
-    return Deferred.when([
-      this.agentClasses.load()
-    ]);
+    this.settings = agents || [];
+    return this.agentClasses.load().then(() => {
+      this.availableAgents = this.agentClasses.classes;
+    });
   }
 
   getAgentClass(index) {
-    const agentSetting = this.agentSetting[index];
+    const settings = this.settings[index];
     return this.agentClasses.classes.find(
-      (a) => a.name === agentSetting.agentClass );
+      (a) => a.name === settings.agentClass );
   }
 
   addAgent( agentClass, configuration={} ) {
-    this.agentSetting.push({
+    this.settings.push({
       agentClass: agentClass,
       agentName:  agentClass,
       properties: configuration
     });
-    this.fire("agentAdded", {agents:this.agentSetting});
-    return this.agentSetting.length -1;
+    this.fire("agentAdded", {agents:this.settings});
+    return this.settings.length -1;
   }
   removeAgent( index ) {
-    this.agentSetting.splice(index, 1);
-    this.fire("agentRemoved", {agents:this.agentSetting});
+    this.settings.splice(index, 1);
+    this.fire("agentRemoved", {agents:this.settings});
   }
   updateAgentConfiguration(index, name, configuration) {
-    this.agentSetting[index].agentName  = name;
-    this.agentSetting[index].properties = configuration;
+    this.settings[index].agentName  = name;
+    this.settings[index].properties = configuration;
   }
 
-  toArray() {
-    return this.agentSetting;
+  get availableAgents() {
+    return this.getProperty("availableAgents");
+  }
+  set availableAgents(agents) {
+    this.setProperty("availableAgents", agents);
+  }
+
+  get agentSetting() {
+    return this.settings;
   }
 }

@@ -17,19 +17,19 @@ describe("BacktestBuiler", () => {
 
     target.initialize();
     xhrManager.requests[0].resolve([
-      {name: "EURJPY", internalId: "EUR_JPY"},
-      {name: "USDJPY", internalId: "USD_JPY"},
-      {name: "EURUSD", internalId: "EUR_USD"}
-    ]);
-    xhrManager.requests[1].resolve({
-      start: new Date(2015, 4, 1,  10, 0,  0),
-      end:   new Date(2015, 6, 10, 21, 0, 10)
-    });
-    xhrManager.requests[2].resolve([
       {name:"TestClassA@あ", description:"aaa"},
       {name:"TestClassB@あ", description:"bbb"},
       {name:"TestClassC@い", description:"ccc"}
     ]);
+    xhrManager.requests[1].resolve([
+      {name: "EURJPY", internalId: "EUR_JPY"},
+      {name: "USDJPY", internalId: "USD_JPY"},
+      {name: "EURUSD", internalId: "EUR_USD"}
+    ]);
+    xhrManager.requests[2].resolve({
+      start: new Date(2015, 4, 1,  10, 0,  0),
+      end:   new Date(2015, 6, 10, 21, 0, 10)
+    });
     xhrManager.clear();
   });
 

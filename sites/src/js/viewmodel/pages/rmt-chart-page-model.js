@@ -13,5 +13,5 @@ export default class RMTChartPageModel extends Observable {
       displayPositionsAndGraphs:true
     });
   }
-
+  
 }

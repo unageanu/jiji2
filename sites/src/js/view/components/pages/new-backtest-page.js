@@ -2,16 +2,13 @@ import React              from "react"
 import MUI                from "material-ui"
 import AbstractPage       from "./abstract-page"
 import DateFormatter      from "../../../viewmodel/utils/date-formatter"
-import AgentClassSelector from "../backtests/agent-class-selector"
+import AgentSettingEditor from "../widgets/agent-setting-editor"
 
 const TextField    = MUI.TextField;
 const DatePicker   = MUI.DatePicker;
 const Checkbox     = MUI.Checkbox;
 const DropDownMenu = MUI.DropDownMenu;
 const RaisedButton = MUI.RaisedButton;
-const List         = MUI.List;
-const ListItem     = MUI.ListItem;
-const Dialog       = MUI.Dialog;
 
 export default class NewBacktestPage extends AbstractPage {
 
@@ -25,27 +22,29 @@ export default class NewBacktestPage extends AbstractPage {
       minDate:         new Date(),
       maxDate:         new Date(),
       balance:         1000000,
-      availablePairs:  [],
-      availableAgents: [],
-      agents:          []
+      availablePairs:  []
     };
   }
 
   componentWillMount() {
-    this.registerObservers();
-    this.initializeModel();
+    const builder = this.backtestBuilder();
+    this.model().initialize().then(() => {
+      this.setState({
+        startTime:       builder.startTime,
+        endTime:         builder.endTime,
+        minDate:         builder.minDate,
+        maxDate:         builder.maxDate,
+        balance:         builder.balance,
+        availablePairs:  builder.availablePairs
+      });
+    });
   }
   componentWillUnmount() {
-    this.unregisterObservers();
+    this.model().removeAllObservers(this);
   }
 
   render() {
     const pairSelector  = this.createPairSelector();
-    const agents        = this.createAgents();
-    const dialogActions=[
-      { text: "Cancel", onTouchTap: () => this.refs.agentSelectorDialog.dismiss() }
-    ];
-    const agentDetails  = this.createAgentDetail();
     return (
       <div className="new-backtest">
         <h1>バックテストの新規作成</h1>
@@ -99,34 +98,10 @@ export default class NewBacktestPage extends AbstractPage {
             floatingLabelText="メモ"
             defaultValue={this.state.memo} />
 
-          <div className="agents">
-            <RaisedButton
-              label="エージェントを追加"
-              onClick={this.showAgentSelector.bind(this)}
-            />
-            <Dialog
-              ref="agentSelectorDialog"
-              title=""
-              actions={dialogActions}
-              modal={true}
-            >
-            <div>
-             <div>追加するエージェントを選択してください。</div>
-             <AgentClassSelector
-              classes={this.state.availableAgents}
-              onSelect={this.addAgent.bind(this)}
-              />
-            </div>
-            </Dialog>
-          </div>
-          <div>
-            <div className="agent-list">
-              <List>{agents}</List>
-            </div>
-            <div className="agent-details">
-              {agentDetails}
-            </div>
-          </div>
+          <AgentSettingEditor
+            ref="agentSettingEditor"
+            model={this.backtestBuilder().agentSettingBuilder}/>
+
         </div>
       </div>
     );
@@ -147,59 +122,8 @@ export default class NewBacktestPage extends AbstractPage {
     });
   }
 
-  createAgents() {
-    return this.state.agents.map((agent, index) => {
-      const selected  = this.state.selectedAgentIndex === index;
-      const tapAction = (ev) => {
-        this.applyAgentConfiguration();
-        this.setState({selectedAgentIndex:index});
-      };
-      return <ListItem
-            key={index}
-            className={selected ? "mui-selected" : ""}
-            onTouchTap={tapAction}>
-            {agent.agentName}
-          </ListItem>;
-    });
-  }
-
-  createAgentDetail() {
-    const selectedAgent = this.getSelectedAgent();
-    const agentClass    = this.getAgentClass();
-    const agentPropertyEditors =
-      this.createAgentPropertyEditor(selectedAgent, agentClass);
-    const agentNameEditor =
-      this.createAgentNameEditor(selectedAgent, agentClass);
-    return <div className="agent-details" key={this.state.selectedAgentIndex}>
-      <div>{selectedAgent ? selectedAgent.agentClass : ""}</div>
-      <div>{agentClass ? agentClass.description : ""}</div>
-      <div>{agentNameEditor}</div>
-      <div>
-        {agentPropertyEditors}
-      </div>
-    </div>;
-  }
-  createAgentNameEditor(selectedAgent, agentClass) {
-    if (!selectedAgent || !agentClass) return null;
-    const name = selectedAgent.agentName || selectedAgent.agentClass;
-    return <TextField
-      ref={"agent_name"}
-      floatingLabelText="エージェントの名前"
-      defaultValue={name} />;
-  }
-  createAgentPropertyEditor(selectedAgent, agentClass) {
-    if (!selectedAgent || !agentClass) return null;
-    return agentClass.properties.map((p) => {
-      const value = selectedAgent.properties[p.id] || p.default;
-      return  <TextField
-          ref={"agent_properties_" + p.id}
-          floatingLabelText={p.name}
-          defaultValue={value} />;
-    });
-  }
-
   registerBscktest() {
-    this.applyAgentConfiguration();
+    this.refs.agentSettingEditor.applyAgentConfiguration();
 
     const builder = this.backtestBuilder();
     builder.name = this.refs.name.getValue();
@@ -219,76 +143,11 @@ export default class NewBacktestPage extends AbstractPage {
       .map((pair) => pair.name );
   }
 
-  applyAgentConfiguration() {
-    const selectedAgent = this.getSelectedAgent();
-    const agentClass    = this.getAgentClass();
-    if (!selectedAgent) return;
-    const agentName = this.refs.agent_name.getValue();
-    const configuration = agentClass.properties.reduce((r, p) => {
-      r[p.id] = this.refs["agent_properties_" + p.id].getValue();
-      return r;
-    }, {});
-    this.backtestBuilder().updateAgentConfiguration(
-      this.state.selectedAgentIndex, agentName, configuration);
-  }
-
-  getSelectedAgent() {
-    if (this.state.selectedAgentIndex >= 0) {
-      return this.backtestBuilder()
-        .backtest.agentSetting[this.state.selectedAgentIndex];
-    } else {
-      return null;
-    }
-  }
-  getAgentClass() {
-    if (this.state.selectedAgentIndex >= 0) {
-      return this.backtestBuilder()
-        .getAgentClass(this.state.selectedAgentIndex);
-    } else {
-      return null;
-    }
-  }
-
-  showAgentSelector() {
-    this.refs.agentSelectorDialog.show();
-  }
-
-  addAgent(agent) {
-    const index = this.backtestBuilder().addAgent( agent.name );
-    this.refs.agentSelectorDialog.dismiss();
-
-    this.applyAgentConfiguration();
-    this.setState({selectedAgentIndex:index});
-  }
-
-  initializeModel() {
-    const builder = this.backtestBuilder();
-    builder.initialize().then((values) => {
-      this.setState({
-        startTime:       builder.startTime,
-        endTime:         builder.endTime,
-        minDate:         builder.rates.range.start,
-        maxDate:         builder.rates.range.end,
-        balance:         builder.balance,
-        availablePairs:  builder.pairs.pairs,
-        availableAgents: builder.agentClasses.classes
-      });
-    });
-  }
-
-  registerObservers() {
-    const builder  = this.backtestBuilder();
-    const observer = (n, ev) => this.setState({agents:ev.agents});
-    ["agentAdded", "agentRemoved"].forEach(
-      (e) => builder.addObserver(e, observer, this)
-    );
-  }
-  unregisterObservers() {
-    this.backtestBuilder().removeAllObservers(this);
-  }
-
   backtestBuilder() {
-    return this.context.application.backtestBuilder;
+    return this.model().backtestBuilder;
+  }
+  model() {
+    return this.context.application.newBacktestPageModel;
   }
 }
 NewBacktestPage.contextTypes = {

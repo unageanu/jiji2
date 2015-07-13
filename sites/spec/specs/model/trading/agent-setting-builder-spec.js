@@ -24,7 +24,7 @@ describe("AgentSettingBuilder", () => {
   });
 
   it("initializeで状態を初期化できる", () => {
-    expect(target.toArray()).toEqual([]);
+    expect(target.agentSetting).toEqual([]);
     expect(target.agentClasses.classes.length).toEqual(3);
   });
 
@@ -32,7 +32,7 @@ describe("AgentSettingBuilder", () => {
     expect(target.addAgent("TestClassA@あ")).toEqual(0);
     expect(target.addAgent("TestClassA@あ", {a:"aa"})).toEqual(1);
     expect(target.addAgent("TestClassC@い", {b:"bb"})).toEqual(2);
-    expect(target.toArray()).toEqual([
+    expect(target.agentSetting).toEqual([
       {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}},
       {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {a:"aa"}},
       {agentClass:"TestClassC@い", agentName:"TestClassC@い", properties: {b:"bb"}}
@@ -45,16 +45,16 @@ describe("AgentSettingBuilder", () => {
     expect(target.addAgent("TestClassC@い", {b:"bb"})).toEqual(2);
 
     target.removeAgent(1);
-    expect(target.toArray()).toEqual([
+    expect(target.agentSetting).toEqual([
       {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}},
       {agentClass:"TestClassC@い", agentName:"TestClassC@い", properties: {b:"bb"}}
     ]);
     target.removeAgent(1);
-    expect(target.toArray()).toEqual([
+    expect(target.agentSetting).toEqual([
       {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}}
     ]);
     target.removeAgent(0);
-    expect(target.toArray()).toEqual([]);
+    expect(target.agentSetting).toEqual([]);
   });
 
   it("エージェントのプロパティを更新できる", () => {
@@ -64,7 +64,7 @@ describe("AgentSettingBuilder", () => {
 
     target.updateAgentConfiguration(1, "テスト", {c:"cc"});
     target.updateAgentConfiguration(0, "", {a:"aa"});
-    expect(target.toArray()).toEqual([
+    expect(target.agentSetting).toEqual([
       {agentClass:"TestClassA@あ", agentName: "", properties: {a:"aa"}},
       {agentClass:"TestClassA@あ", agentName: "テスト", properties: {c:"cc"}},
       {agentClass:"TestClassC@い", agentName: "TestClassC@い", properties: {b:"bb"}}

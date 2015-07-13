@@ -1,9 +1,9 @@
 import ContainerJS         from "container-js"
 import Observable          from "../../utils/observable"
-import Deferred            from "../../utils/deferred"
 import Validators          from "../../utils/validation/validators"
 import AgentSettingBuilder from "./agent-setting-builder"
 import _                   from "underscore"
+import Deferred            from "../../utils/deferred"
 
 export default class BacktestBuilder extends Observable {
 
@@ -12,19 +12,23 @@ export default class BacktestBuilder extends Observable {
 
     this.timeSource      = ContainerJS.Inject;
     this.agentClasses    = ContainerJS.Inject;
+    this.backtestService = ContainerJS.Inject;
     this.rates           = ContainerJS.Inject;
     this.pairs           = ContainerJS.Inject;
-    this.backtestService = ContainerJS.Inject;
   }
 
   initialize(agents=[]) {
     this.agentSettingBuilder = new AgentSettingBuilder(this.agentClasses);
     this.initializeBuilderState();
     return Deferred.when([
+      this.agentSettingBuilder.initialize(agents),
       this.pairs.initialize(),
-      this.rates.initialize(),
-      this.agentSettingBuilder.initialize(agents)
-    ]);
+      this.rates.initialize()
+    ]).then((results) => {
+      this.availablePairs = this.pairs.pairs;
+      this.minDate = this.rates.range.start;
+      this.maxDate = this.rates.range.end;
+    });
   }
 
   initializeBuilderState() {
@@ -50,7 +54,7 @@ export default class BacktestBuilder extends Observable {
   build() {
     this.validateAllProperties();
     const backtest = _.defaults(this.backtest,
-      {agentSetting: this.agentSettingBuilder.toArray()});
+      {agentSetting: this.agentSettingBuilder.agentSetting});
     return this.backtestService.register(backtest);
   }
 
@@ -118,7 +122,29 @@ export default class BacktestBuilder extends Observable {
     Validators.backtest.balance.validate(balance);
     this.backtest.balance = balance;
   }
+
   get agentSetting() {
-    return this.agentSettingBuilder.toArray();
+    return this.agentSettingBuilder.agentSetting;
+  }
+
+  get minDate() {
+    return this.getProperty("minDate");
+  }
+  set minDate(minDate) {
+    this.setProperty("minDate", minDate);
+  }
+  get maxDate() {
+    return this.getProperty("maxDate");
+  }
+  set maxDate(maxDate) {
+    this.setProperty("maxDate", maxDate);
+  }
+
+
+  get availablePairs() {
+    return this.getProperty("availablePairs");
+  }
+  set availablePairs(availablePairs) {
+    this.setProperty("availablePairs", availablePairs);
   }
 }

@@ -4,7 +4,7 @@ import Router                       from "react-router"
 import LeftNavi                     from "./left-navi"
 import WindowResizeManager          from "../window-resize-manager"
 import Theme                        from "../theme"
-import UnauthorizedExceptionHandler from "./error-handling/unauthorized-exeption-handler"
+import ErrorView                    from "./errorhandling/error-view"
 
 const RouteHandler = Router.RouteHandler;
 const Link         = Router.Link;
@@ -20,11 +20,6 @@ export default class Frame extends React.Component {
     this.setTheme();
   }
 
-  componentWillMount() {
-    UnauthorizedExceptionHandler.registerObservers(
-      this.context.router, this.props.application.xhrManager);
-  }
-
   render() {
     return (
       <div>
@@ -35,6 +30,7 @@ export default class Frame extends React.Component {
             <RouteHandler/>
           </div>
         </div>
+        <ErrorView />
       </div>
     );
   }

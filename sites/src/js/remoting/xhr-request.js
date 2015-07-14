@@ -110,7 +110,7 @@ export default class XhrRequest {
       case 401:
         return Error.Code.UNAUTHORIZED;
       case 403:
-        return Error.Code.OPERATION_NOT_ALLOWD;
+        return Error.Code.OPERATION_NOT_ALLOWED;
       case 404:
         return Error.Code.NOT_FOUND;
       case 406:

@@ -2,6 +2,9 @@
 global._babelPolyfill = false;
 import "babel-core/polyfill"
 
+import "./specs/errorhandling/error-handler-spec"
+import "./specs/errorhandling/error-messages-spec"
+import "./specs/errorhandling/error-event-queue-spec"
 import "./specs/model/preferences-spec"
 import "./specs/model/agents/agent-sources-spec"
 import "./specs/model/agents/agent-classes-spec"

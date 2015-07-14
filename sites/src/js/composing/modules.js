@@ -56,6 +56,14 @@ function remoting(binder) {
   binder.bind("urlResolver").to("remoting.UrlResolver");
 }
 
+function errorHandling(binder) {
+  binder.bind("errorHandler")
+    .to("errorhandling.ErrorHandler")
+    .onInitialize("registerHandlers");
+  binder.bind("errorEventQueue")
+    .to("errorhandling.ErrorEventQueue");
+}
+
 function security(binder) {
   binder.bind("sessionManager").to("security.SessionManager");
   binder.bind("authenticator").to("security.Authenticator");
@@ -87,4 +95,5 @@ export default (binder) => {
   services(binder);
   stores(binder);
   utils(binder);
+  errorHandling(binder);
 }

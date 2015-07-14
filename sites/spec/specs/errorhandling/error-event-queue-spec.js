@@ -1,4 +1,4 @@
-import ErrorEventQueue from "src/error-handling/error-event-queue"
+import ErrorEventQueue from "src/errorhandling/error-event-queue"
 
 describe("ErrorEventQueue", () => {
 

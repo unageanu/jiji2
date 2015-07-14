@@ -30,7 +30,7 @@ describe("ErrorHandler", () => {
       code: "NOT_FOUND"
     });
     expect(errorEventQueue.queue).toEqual([{
-      message:"データが見つかりません<br/>画面を再読み込みして最新の情報に更新してください"
+      message:"データが見つかりません。画面を再読み込みして最新の情報に更新してください"
     }]);
   });
 

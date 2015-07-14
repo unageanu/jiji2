@@ -1,4 +1,4 @@
-import ErrorMessages from "src/error-handling/error-messages"
+import ErrorMessages from "src/errorhandling/error-messages"
 
 describe("ErrorMessages", () => {
 
@@ -44,7 +44,7 @@ describe("ErrorMessages", () => {
 
     expect(ErrorMessages.getMessageFor({
       code: "NOT_FOUND"
-    })).toEqual("データが見つかりません<br/>"
+    })).toEqual("データが見つかりません。"
       + "画面を再読み込みして最新の情報に更新してください");
   });
 

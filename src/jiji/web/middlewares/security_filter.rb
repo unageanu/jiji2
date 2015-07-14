@@ -12,7 +12,8 @@ module Jiji::Web
       headers(@headers ||= {
         'X-Frame-Options'                   => 'SAMEORIGIN',
         'X-Content-Type-Options'            => 'nosniff',
-        'Content-Security-Policy'           => 'default-src \'self\'; ' \
+        'Content-Security-Policy'           =>
+              'default-src \'self\' \'unsafe-eval\'; ' \
             + 'style-src ' + FONT_AND_STYLE_SRC + ' \'unsafe-inline\'; ' \
             + 'font-src  ' + FONT_AND_STYLE_SRC + ' fonts.gstatic.com;',
         'X-Download-Options'                => 'noopen',

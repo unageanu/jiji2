@@ -13,7 +13,7 @@ module Jiji::Model::Settings
     field :active_securities_id,      type: Symbol,  default: nil
     field :securities_configurations, type: Hash,    default: {}
 
-    needs :logger
+    needs :logger_factory
     needs :securities_factory
     needs :securities_provider
     needs :rmt
@@ -24,6 +24,7 @@ module Jiji::Model::Settings
     end
 
     def setup
+      @logger = logger_factory.create
       return unless active_securities_id
       begin
         securities = find_and_configure_securities(

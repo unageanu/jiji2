@@ -171,10 +171,11 @@ module Jiji::Model::Trading
     end
 
     def create_components(ignore_agent_creation_error = false)
+      @logger          = logger_factory.create(self)
       graph_factory    = create_graph_factory(self)
       broker           = create_broker
       @agents          = create_agents(agent_setting, broker,
-        graph_factory, _id, true, ignore_agent_creation_error)
+        graph_factory, self, true, ignore_agent_creation_error)
       trading_context  = create_trading_context(broker, @agents, graph_factory)
       @process         = create_process(trading_context)
     end

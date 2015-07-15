@@ -3,14 +3,11 @@
 module Jiji::Composing::Configurators
   class LoggingConfigurator < AbstractConfigurator
 
-    include Jiji::Db
+    include Jiji::Model::Logging
 
     def configure(container)
-      logger = Logger.new(STDOUT) # TODO
-      logger.level = Logger::DEBUG
-
       container.configure do
-        object :logger, logger
+        object :logger_factory, LoggerFactory.new
       end
     end
 

@@ -7,7 +7,7 @@ module Jiji::Model::Trading::Internal
   module WorkerMixin
     include Encase
 
-    needs :logger
+    needs :logger_factory
     needs :time_source
     needs :agent_registry
 
@@ -15,18 +15,18 @@ module Jiji::Model::Trading::Internal
 
     private
 
-    def create_agents(agent_setting, broker, graph_factory, backtest_id = nil,
+    def create_agents(agent_setting, broker, graph_factory, backtest = nil,
       fail_on_error = false, ignore_agent_creation_error = false)
       agents = Jiji::Model::Agents::Agents.get_or_create(
-        backtest_id, logger, fail_on_error)
-      create_and_restore_agents(graph_factory, broker, backtest_id,
-        agents, agent_setting, fail_on_error, ignore_agent_creation_error)
+        backtest, @logger, fail_on_error)
+      create_and_restore_agents(graph_factory, broker, backtest, agents,
+        agent_setting, fail_on_error, ignore_agent_creation_error)
       agents
     end
 
-    def create_agents_builder(graph_factory, broker, backtest_id = nil)
+    def create_agents_builder(graph_factory, broker)
       Jiji::Model::Agents::AgentsUpdater.new(
-        agent_registry, broker, graph_factory, nil, logger)
+        agent_registry, broker, graph_factory, nil, @logger)
     end
 
     def create_graph_factory(backtest = nil)
@@ -40,9 +40,9 @@ module Jiji::Model::Trading::Internal
       end
     end
 
-    def create_and_restore_agents(graph_factory, broker, backtest_id,
+    def create_and_restore_agents(graph_factory, broker, backtest,
       agents, agent_setting, fail_on_error, ignore_agent_creation_error)
-      create_agents_builder(graph_factory, broker, backtest_id) \
+      create_agents_builder(graph_factory, broker) \
         .update(agents, agent_setting || [], fail_on_error)
       agents.restore_state
     rescue Exception => e # rubocop:disable Lint/RescueException

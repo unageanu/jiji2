@@ -64,11 +64,15 @@ module Jiji::Web
     end
 
     def print_as_warning
-      lookup(:logger).warn(env['sinatra.error'])
+      logger.warn(env['sinatra.error'])
     end
 
     def print_as_error
-      lookup(:logger).error(env['sinatra.error'])
+      logger.error(env['sinatra.error'])
+    end
+
+    def logger
+      @logger ||= lookup(:logger_factory).create_system_logger
     end
 
   end

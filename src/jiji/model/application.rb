@@ -12,6 +12,7 @@ module Jiji::Model
     needs :rmt
     needs :backtest_repository
     needs :index_builder
+    needs :logger_factory
 
     def setup
       @index_builder.create_indexes
@@ -22,6 +23,7 @@ module Jiji::Model
     def tear_down
       @rmt.tear_down
       @backtest_repository.stop
+      @logger_factory.close
     end
 
   end

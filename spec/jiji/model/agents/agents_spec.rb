@@ -9,7 +9,7 @@ describe Jiji::Model::Agents::Agents do
     @data_builder = Jiji::Test::DataBuilder.new
 
     @container = Jiji::Test::TestContainerFactory.instance.new_container
-    @logger    = @container.lookup(:logger)
+    @logger    = @container.lookup(:logger_factory).create
 
     @registory    = @container.lookup(:agent_registry)
     @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))

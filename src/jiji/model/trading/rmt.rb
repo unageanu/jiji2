@@ -42,6 +42,7 @@ module Jiji::Model::Trading
     def setup_rmt_process
       agent_setting = @setting_repository.rmt_setting.agent_setting
 
+      @logger          = logger_factory.create
       graph_factory    = create_graph_factory
       @agents_builder  = create_agents_builder(graph_factory, rmt_broker)
       @agents          = create_agents(
@@ -69,7 +70,7 @@ module Jiji::Model::Trading
 
     def create_trading_context(graph_factory)
       TradingContext.new(@agents, rmt_broker,
-        graph_factory, time_source, logger)
+        graph_factory, time_source, @logger)
     end
 
     def create_process(trading_context)

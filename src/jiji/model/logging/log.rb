@@ -8,8 +8,8 @@ module Jiji::Model::Logging
 
     include Jiji::Utils::Pagenation
 
-    def initialize(time_source, backtest = nil)
-      @backtest    = backtest
+    def initialize(time_source, backtest_id = nil)
+      @backtest_id = backtest_id
       @time_source = time_source
     end
 
@@ -65,7 +65,7 @@ module Jiji::Model::Logging
     end
 
     def create_log_data
-      LogData.create(@time_source.now, nil, @backtest)
+      LogData.create(@time_source.now, nil, @backtest_id)
     end
 
     def save_current_log_data
@@ -73,7 +73,7 @@ module Jiji::Model::Logging
     end
 
     def filter
-      { backtest_id: @backtest ? @backtest.id : nil }
+      { backtest_id: @backtest_id }
     end
 
   end

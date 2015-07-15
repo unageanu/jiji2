@@ -18,7 +18,9 @@ describe Jiji::Model::Logging::Log do
   end
 
   let(:log) { Jiji::Model::Logging::Log.new(time_source) }
-  let(:backtest_log) { Jiji::Model::Logging::Log.new(time_source, backtest) }
+  let(:backtest_log) do
+    Jiji::Model::Logging::Log.new(time_source, backtest._id)
+  end
   let(:logger) { Logger.new(log) }
   let(:backtest_logger) { Logger.new(backtest_log) }
 

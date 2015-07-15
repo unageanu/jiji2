@@ -26,9 +26,9 @@ module Jiji::Model::Logging
       { backtest_id: 1, timestamp: -1 },
       name: 'logdata_backtest_id_timestamp_index')
 
-    def self.create(timestamp, body = nil, backtest = nil)
+    def self.create(timestamp, body = nil, backtest_id = nil)
       LogData.new do |data|
-        data.backtest  = backtest
+        data.backtest_id  = backtest_id
         data.timestamp = timestamp
         data << body if body
       end

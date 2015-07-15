@@ -18,10 +18,10 @@ module Jiji::Model::Logging
     end
 
     def create(backtest = nil)
-      key = backtest ? backtest.id : nil
+      id  = backtest ? backtest.id : nil
       @mutex.synchronize do
-        @logger[key] = create_logger_for(backtest)  unless @logger.include? key
-        @logger[key]
+        @logger[id] = create_logger_for(id) unless @logger.include? id
+        @logger[id]
       end
     end
 
@@ -46,8 +46,8 @@ module Jiji::Model::Logging
       logger
     end
 
-    def create_logger_for(backtest)
-      create_logger(CompositeIO.new(STDOUT, Log.new(time_source, backtest)))
+    def create_logger_for(id)
+      create_logger(CompositeIO.new(STDOUT, Log.new(time_source, id)))
     end
 
   end

@@ -14,5 +14,6 @@ require 'trading/backtest_spec'
 require 'trading/graph_spec'
 require 'trading/positions_spec'
 require 'trading/trading_summaries_spec'
+require 'trading/logs_spec'
 
 require 'utils/echo_spec'

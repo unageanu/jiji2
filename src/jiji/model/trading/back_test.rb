@@ -23,6 +23,8 @@ module Jiji::Model::Trading
       class_name: 'Jiji::Model::Graphing::Graph', dependent: :destroy
     has_many :position,
       class_name: 'Jiji::Model::Trading::Position', dependent: :destroy
+    has_many :logdata,
+      class_name: 'Jiji::Model::Logging::LogData', dependent: :destroy
 
     field :name,          type: String
     field :created_at,    type: Time

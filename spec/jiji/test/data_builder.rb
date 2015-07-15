@@ -129,6 +129,7 @@ BODY
       Jiji::Model::Settings::AbstractSetting.delete_all
       Jiji::Model::Graphing::GraphData.delete_all
       Jiji::Model::Graphing::Graph.delete_all
+      Jiji::Model::Logging::LogData.delete_all
       Mail::TestMailer.deliveries.clear
     end
 

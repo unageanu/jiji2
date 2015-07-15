@@ -355,6 +355,14 @@ describe Jiji::Model::Trading::BackTestRepository do
       positions = position_repository.retrieve_positions(backtests[1].id)
       expect(positions.length).to be > 0
 
+      data = Jiji::Model::Logging::LogData.create(
+        Time.at(100), nil, backtests[1].id)
+      data << "test"
+      data.save
+      count = Jiji::Model::Logging::LogData
+        .where({backtest_id:backtests[1].id}).count
+      expect(count).to be 1
+
       @repository.delete(backtests[1].id)
 
       graph_data = graph.fetch_data(
@@ -367,6 +375,10 @@ describe Jiji::Model::Trading::BackTestRepository do
 
       positions = position_repository.retrieve_positions(backtests[1].id)
       expect(positions.length).to be 0
+
+      count = Jiji::Model::Logging::LogData
+        .where({backtest_id:backtests[1].id}).count
+      expect(count).to be 0
 
       backtests = @repository.all.sort_by { |p| p.name }
       expect(backtests.length).to be 2

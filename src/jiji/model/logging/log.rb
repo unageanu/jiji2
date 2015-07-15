@@ -8,13 +8,13 @@ module Jiji::Model::Logging
 
     include Jiji::Utils::Pagenation
 
-    def initialize( time_source, backtest = nil )
+    def initialize(time_source, backtest = nil)
       @backtest    = backtest
       @time_source = time_source
     end
 
-    def get(index, order=:asc)
-      query = Query.new( filter, {timestamp: order}, index, 1 )
+    def get(index, order = :asc)
+      query = Query.new(filter, { timestamp: order }, index, 1)
       data = query.execute(LogData)
       data && data.length > 0 ? data[0] : nil
     end
@@ -24,11 +24,11 @@ module Jiji::Model::Logging
     end
 
     def delete_before(time)
-      LogData.where(filter.merge({:timestamp.lte => time})).delete
+      LogData.where(filter.merge({ :timestamp.lte => time })).delete
     end
 
     def each
-      query = Query.new( filter, {timestamp: :asc})
+      query = Query.new(filter, { timestamp: :asc })
       query.execute(LogData).each do |data|
         yield data
       end
@@ -57,7 +57,7 @@ module Jiji::Model::Logging
 
     def create_or_open_log_data
       latest = latest_data
-      if (latest && !latest.full?)
+      if latest && !latest.full?
         latest
       else
         create_log_data
@@ -65,7 +65,7 @@ module Jiji::Model::Logging
     end
 
     def create_log_data
-      LogData::create(@time_source.now, nil, @backtest)
+      LogData.create(@time_source.now, nil, @backtest)
     end
 
     def save_current_log_data
@@ -73,7 +73,7 @@ module Jiji::Model::Logging
     end
 
     def filter
-      {backtest_id: @backtest ? @backtest.id : nil}
+      { backtest_id: @backtest ? @backtest.id : nil }
     end
 
   end

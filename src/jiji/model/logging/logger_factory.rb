@@ -17,7 +17,7 @@ module Jiji::Model::Logging
       @logger = {}
     end
 
-    def create(backtest=nil)
+    def create(backtest = nil)
       key = backtest ? backtest.id : nil
       @mutex.synchronize do
         @logger[key] = create_logger_for(backtest)  unless @logger.include? key
@@ -27,13 +27,13 @@ module Jiji::Model::Logging
 
     def create_system_logger
       @mutex.synchronize do
-        @system_logger ||= create_logger(STDOUT) 
+        @system_logger ||= create_logger(STDOUT)
       end
     end
 
     def close
       @mutex.synchronize do
-        @logger.values.each {|logger| logger.close }
+        @logger.values.each { |logger| logger.close }
         @logger = {}
       end
     end
@@ -43,7 +43,7 @@ module Jiji::Model::Logging
     def create_logger(io)
       logger = Logger.new(io)
       logger.level = Logger::DEBUG
-      return logger
+      logger
     end
 
     def create_logger_for(backtest)

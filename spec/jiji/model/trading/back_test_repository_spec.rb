@@ -357,10 +357,10 @@ describe Jiji::Model::Trading::BackTestRepository do
 
       data = Jiji::Model::Logging::LogData.create(
         Time.at(100), nil, backtests[1].id)
-      data << "test"
+      data << 'test'
       data.save
       count = Jiji::Model::Logging::LogData
-        .where({backtest_id:backtests[1].id}).count
+              .where({ backtest_id: backtests[1].id }).count
       expect(count).to be 1
 
       @repository.delete(backtests[1].id)
@@ -377,7 +377,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(positions.length).to be 0
 
       count = Jiji::Model::Logging::LogData
-        .where({backtest_id:backtests[1].id}).count
+              .where({ backtest_id: backtests[1].id }).count
       expect(count).to be 0
 
       backtests = @repository.all.sort_by { |p| p.name }

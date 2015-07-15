@@ -26,8 +26,8 @@ module Jiji::Model::Logging
       { backtest_id: 1, timestamp: -1 },
       name: 'logdata_backtest_id_timestamp_index')
 
-    def self.create( timestamp, body=nil, backtest=nil )
-      return LogData.new do |data|
+    def self.create(timestamp, body = nil, backtest = nil)
+      LogData.new do |data|
         data.backtest  = backtest
         data.timestamp = timestamp
         data << body if body
@@ -35,9 +35,9 @@ module Jiji::Model::Logging
     end
 
     def <<(data)
-      self.body << data
+      body << data
       self.size += data.bytesize
-      save if (exceed_save_limit?(data))
+      save if exceed_save_limit?(data)
     end
 
     def full?

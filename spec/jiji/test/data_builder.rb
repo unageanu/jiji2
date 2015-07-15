@@ -133,5 +133,25 @@ BODY
       Mail::TestMailer.deliveries.clear
     end
 
+    def cancel_all_orders_and_positions(client, wait = 1)
+      client.retrieve_orders.each do |o|
+        sleep wait
+        begin
+          client.cancel_order(o.internal_id)
+        rescue
+          p $ERROR_INFO
+        end
+      end
+      sleep wait
+      client.retrieve_trades.each do |t|
+        sleep wait
+        begin
+          client.close_trade(t.internal_id)
+        rescue
+          p $ERROR_INFO
+        end
+      end
+    end
+
   end
 end

@@ -4,29 +4,15 @@ RSpec.shared_examples '注文関連の操作' do
   describe 'Ordering' do
     let(:tick) { client.retrieve_current_tick }
     let(:now) {  Time.now.round }
+    let(:data_builder) { Jiji::Test::DataBuilder.new }
 
     before(:example) do
       @orders = []
+      data_builder.cancel_all_orders_and_positions(client, wait)
     end
 
     after(:example) do
-      client.retrieve_orders.each do |o|
-        sleep wait
-        begin
-          client.cancel_order(o.internal_id)
-        rescue
-          p $ERROR_INFO
-        end
-      end
-      sleep wait
-      client.retrieve_trades.each do |t|
-        sleep wait
-        begin
-          client.close_trade(t.internal_id)
-        rescue
-          p $ERROR_INFO
-        end
-      end
+      data_builder.cancel_all_orders_and_positions(client, wait)
     end
 
     it '成行で注文ができる' do

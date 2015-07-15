@@ -59,6 +59,29 @@ describe Jiji::Model::Logging::Log do
     end
   end
 
+  it 'Logを再作成した場合、最新のLogDataがフルでなければ、それに追記する' do
+
+    11.times do |i|
+      time_source.set(Time.at(i*10))
+      logger.info("x"*1024*100)
+    end
+    expect(log.count).to be 3
+
+    time_source.set(Time.at(200))
+    new_log = Jiji::Model::Logging::Log.new(time_source)
+    new_logger = Logger.new(new_log)
+    new_logger.warn("bbb")
+    new_logger.close
+
+    expect(log.count).to be 3
+    expect(new_log.count).to be 3
+
+    log_data = new_log.get(2)
+    expect(log_data.size).to be > 0
+    expect(log_data.timestamp).to eq Time.at(90)
+    expect(log_data.body.length).to be 2
+  end
+
   describe '#get' do
     it '指定したインデックスのログデータを取得できる' do
 

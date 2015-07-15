@@ -35,7 +35,7 @@ module Jiji::Model::Logging
     end
 
     def write(message)
-      @current = create_log_data unless @current
+      @current = create_or_open_log_data unless @current
       @current << message
       shift if @current.full?
     end
@@ -49,6 +49,19 @@ module Jiji::Model::Logging
     def shift
       save_current_log_data
       @current = create_log_data
+    end
+
+    def latest_data
+      get(0, :desc)
+    end
+
+    def create_or_open_log_data
+      latest = latest_data
+      if (latest && !latest.full?)
+        latest
+      else
+        create_log_data
+      end
     end
 
     def create_log_data

@@ -6,6 +6,7 @@ import MiniChartView      from "../chart/mini-chart-view"
 import ChartView          from "../chart/chart-view"
 import PositionsTable     from "../positions/positions-table"
 import TradingSummaryView from "../trading-summary/trading-summary-view"
+import LogViewer          from "../logs/log-viewer"
 
 const Tabs  = MUI.Tabs;
 const Tab   = MUI.Tab;
@@ -80,6 +81,8 @@ export default class BacktestsPage extends AbstractPage {
       return <TradingSummaryView model={this.model().tradingSummary} />;
     } else if ( this.state.activeTab === "trades" ) {
       return <PositionsTable model={this.model().positionTable} />;
+    } else if ( this.state.activeTab === "logs" ) {
+        return <LogViewer model={this.model().logViewer} />;
     } else {
       return <MiniChartView
           model={this.model().miniChart}

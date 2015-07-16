@@ -11,6 +11,7 @@ export default class ErrorHandler {
   }
 
   handle(error) {
+    console.log(error);
     if (error.preventDefault) return;
     const message = ErrorMessages.getMessageFor(error);
     if (message) this.errorEventQueue.push({message:message});

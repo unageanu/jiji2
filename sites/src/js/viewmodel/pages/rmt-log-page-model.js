@@ -9,9 +9,12 @@ export default class RMTLogPageModel extends Observable {
   }
 
   postCreate() {
+    this.logViewerModel = this.viewModelFactory.createLogViewerModel();
+    this.logViewerModel.initialize("rmt");
   }
 
   initialize( ) {
+    this.logViewerModel.load();
   }
 
 }

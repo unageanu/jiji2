@@ -27,6 +27,7 @@ export default class BacktestsPageModel extends Observable {
       });
     this.tradingSummary =
       this.viewModelFactory.createTradingSummaryViewModel();
+    this.logViewer = this.viewModelFactory.createLogViewerModel();
 
     this.addObserver("propertyChanged", (n, e) => {
       if (e.key === "activeTab") this.onTabChanged();
@@ -63,6 +64,9 @@ export default class BacktestsPageModel extends Observable {
       this.tradingSummary.backtestId = this.selectedBacktest.id;
     } else if (this.activeTab === "chart") {
       this.chart.backtest =this.selectedBacktest;
+    } else if (this.activeTab === "logs") {
+      this.logViewer.initialize(this.selectedBacktest.id);
+      this.logViewer.load();
     } else {
       this.miniChart.backtest =this.selectedBacktest;
     }

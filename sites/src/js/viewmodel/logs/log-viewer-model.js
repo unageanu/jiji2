@@ -7,7 +7,7 @@ class Loader {
     this.backtestId = backtestId;
   }
   load(offset, pageSize, sortOrder) {
-    return this.logService.get(offset, sortOrder.direction);
+    return this.logService.get(offset, sortOrder.direction, this.backtestId);
   }
   count() {
     const d = new Deferred();

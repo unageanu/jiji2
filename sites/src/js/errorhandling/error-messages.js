@@ -46,6 +46,7 @@ export default class ErrorMessages {
   }
 
   static getMessageTemplateFor(error) {
+    if (error.code === "CANCELED") return "";
     return error.message
         || messages[error.code]
         || messages.SERVER_ERROR;

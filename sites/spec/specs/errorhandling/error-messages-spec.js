@@ -11,6 +11,10 @@ describe("ErrorMessages", () => {
     expect(ErrorMessages.getMessageFor({
       code: "NOT_NULL"
     })).toEqual("値を入力してください");
+
+    expect(ErrorMessages.getMessageFor({
+      code: "CANCELED"
+    })).toEqual("");
   });
 
   it("エラーコードに対応するメッセージが未定義の場合、"

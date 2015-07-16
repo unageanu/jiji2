@@ -1,7 +1,7 @@
 import ContainerJS         from "container-js"
 import Observable          from "../../utils/observable"
 
-export default class RMTChartPageModel extends Observable {
+export default class RMTPositionsPageModel extends Observable {
 
   constructor() {
     super();

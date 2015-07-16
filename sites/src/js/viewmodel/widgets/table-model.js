@@ -22,7 +22,7 @@ export default class TableModel extends Observable {
     this.loader.count().then((count)=>{
       this.totalCount = count;
       this.offset = this.getDefaultOffset();
-      this.loadItems();
+      if (count > 0) this.loadItems();
     });
   }
 

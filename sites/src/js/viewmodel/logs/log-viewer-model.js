@@ -54,7 +54,8 @@ class PageSelectorBuilder {
   createSelector( page ) {
     return {
       label :  page,
-      action: () => this.model.goTo(page)
+      action: () => this.model.goTo(page),
+      selected: page === this.offset
     };
   }
   createSelectorSeparator() {

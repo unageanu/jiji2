@@ -35,7 +35,8 @@ describe("LogViewerModel", () => {
       expect(model.items[0].body).toEqual( "test3" );
       expect(model.hasNext).toEqual( false );
       expect(model.hasPrev).toEqual( true );
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([2, 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([2, 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(2);
     });
 
     it("データ数0の場合、ロードは行われない。", () => {
@@ -48,7 +49,8 @@ describe("LogViewerModel", () => {
       expect(model.items).toEqual( [] );
       expect(model.hasNext).toEqual( false );
       expect(model.hasPrev).toEqual( false );
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([]);
+      expect(pageSelectorLabelOf(model)).toEqual([]);
+      expect(selectedPageIndexOf(model)).toEqual(-1);
     });
 
     it("データ数が1の場合、ロードが行われる", () => {
@@ -69,7 +71,8 @@ describe("LogViewerModel", () => {
       expect(model.items[0].body).toEqual( "test1" );
       expect(model.hasNext).toEqual( false );
       expect(model.hasPrev).toEqual( false );
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([0]);
+      expect(pageSelectorLabelOf(model)).toEqual([0]);
+      expect(selectedPageIndexOf(model)).toEqual(0);
     });
   });
 
@@ -98,7 +101,8 @@ describe("LogViewerModel", () => {
     expect(model.items[0].body).toEqual( "test2" );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
-    expect(model.pageSelectors.map((s)=>s.label)).toEqual([2, 1, 0]);
+    expect(pageSelectorLabelOf(model)).toEqual([2, 1, 0]);
+    expect(selectedPageIndexOf(model)).toEqual(1);
 
     model.prev();
     xhrManager.requests[3].resolve({
@@ -113,7 +117,8 @@ describe("LogViewerModel", () => {
     expect(model.items[0].body).toEqual( "test" );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
-    expect(model.pageSelectors.map((s)=>s.label)).toEqual([2, 1, 0]);
+    expect(pageSelectorLabelOf(model)).toEqual([2, 1, 0]);
+    expect(selectedPageIndexOf(model)).toEqual(0);
 
     model.next();
     xhrManager.requests[4].resolve({
@@ -128,7 +133,8 @@ describe("LogViewerModel", () => {
     expect(model.items[0].body).toEqual( "test2" );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
-    expect(model.pageSelectors.map((s)=>s.label)).toEqual([2, 1, 0]);
+    expect(pageSelectorLabelOf(model)).toEqual([2, 1, 0]);
+    expect(selectedPageIndexOf(model)).toEqual(1);
 
     model.next();
     xhrManager.requests[5].resolve({
@@ -143,7 +149,8 @@ describe("LogViewerModel", () => {
     expect(model.items[0].body).toEqual( "test3" );
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( true );
-    expect(model.pageSelectors.map((s)=>s.label)).toEqual([2, 1, 0]);
+    expect(pageSelectorLabelOf(model)).toEqual([2, 1, 0]);
+    expect(selectedPageIndexOf(model)).toEqual(2);
 
   });
 
@@ -171,7 +178,8 @@ describe("LogViewerModel", () => {
     expect(model.items[0].body).toEqual( "test2" );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
-    expect(model.pageSelectors.map((s)=>s.label)).toEqual([2, 1, 0]);
+    expect(pageSelectorLabelOf(model)).toEqual([2, 1, 0]);
+    expect(selectedPageIndexOf(model)).toEqual(1);
 
     model.goTo(-1);
     xhrManager.requests[3].resolve({
@@ -185,7 +193,8 @@ describe("LogViewerModel", () => {
     expect(model.items[0].body).toEqual( "test" );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
-    expect(model.pageSelectors.map((s)=>s.label)).toEqual([2, 1, 0]);
+    expect(pageSelectorLabelOf(model)).toEqual([2, 1, 0]);
+    expect(selectedPageIndexOf(model)).toEqual(0);
 
     model.goTo(2);
     xhrManager.requests[4].resolve({
@@ -199,7 +208,8 @@ describe("LogViewerModel", () => {
     expect(model.items[0].body).toEqual( "test3" );
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( true );
-    expect(model.pageSelectors.map((s)=>s.label)).toEqual([2, 1, 0]);
+    expect(pageSelectorLabelOf(model)).toEqual([2, 1, 0]);
+    expect(selectedPageIndexOf(model)).toEqual(2);
 
     model.goTo(3);
     xhrManager.requests[5].resolve({
@@ -213,7 +223,8 @@ describe("LogViewerModel", () => {
     expect(model.items[0].body).toEqual( "test3" );
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( true );
-    expect(model.pageSelectors.map((s)=>s.label)).toEqual([2, 1, 0]);
+    expect(pageSelectorLabelOf(model)).toEqual([2, 1, 0]);
+    expect(selectedPageIndexOf(model)).toEqual(2);
   });
 
   describe("pageSelectors", () => {
@@ -223,7 +234,8 @@ describe("LogViewerModel", () => {
       xhrManager.requests[0].resolve({
         count: 0
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([]);
+      expect(pageSelectorLabelOf(model)).toEqual([]);
+      expect(selectedPageIndexOf(model)).toEqual(-1);
     });
     it("要素数1の場合", () => {
       model.load();
@@ -235,7 +247,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([0]);
+      expect(pageSelectorLabelOf(model)).toEqual([0]);
+      expect(selectedPageIndexOf(model)).toEqual(0);
     });
     it("要素数2の場合", () => {
       model.load();
@@ -247,7 +260,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(1);
 
       model.goTo(0);
       xhrManager.requests[2].resolve({
@@ -255,7 +269,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(0);
     });
 
     it("要素数3の場合", () => {
@@ -268,7 +283,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([2, 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([2, 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(2);
 
       model.goTo(1);
       xhrManager.requests[2].resolve({
@@ -276,7 +292,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([2, 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([2, 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(1);
 
       model.goTo(0);
       xhrManager.requests[3].resolve({
@@ -284,7 +301,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([2, 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([2, 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(0);
     });
 
     it("要素数4の場合", () => {
@@ -297,7 +315,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([3, 2, "...", 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([3, 2, "...", 0]);
+      expect(selectedPageIndexOf(model)).toEqual(3);
 
       model.goTo(2);
       xhrManager.requests[2].resolve({
@@ -305,7 +324,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([3, 2, 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([3, 2, 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(2);
 
       model.goTo(1);
       xhrManager.requests[3].resolve({
@@ -313,7 +333,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([3, 2, 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([3, 2, 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(1);
 
       model.goTo(0);
       xhrManager.requests[4].resolve({
@@ -321,7 +342,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([3, "...", 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([3, "...", 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(0);
     });
 
     it("要素数5の場合", () => {
@@ -334,7 +356,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([4, 3, "...", 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([4, 3, "...", 0]);
+      expect(selectedPageIndexOf(model)).toEqual(4);
 
       model.goTo(3);
       xhrManager.requests[2].resolve({
@@ -342,7 +365,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([4, 3, 2, "...", 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([4, 3, 2, "...", 0]);
+      expect(selectedPageIndexOf(model)).toEqual(3);
 
       model.goTo(2);
       xhrManager.requests[3].resolve({
@@ -350,7 +374,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([4, 3, 2, 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([4, 3, 2, 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(2);
 
       model.goTo(1);
       xhrManager.requests[4].resolve({
@@ -358,7 +383,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([4, "...", 2, 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([4, "...", 2, 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(1);
 
       model.goTo(0);
       xhrManager.requests[5].resolve({
@@ -366,7 +392,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([4, "...", 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([4, "...", 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(0);
     });
 
     it("要素数6の場合", () => {
@@ -379,7 +406,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([5, 4, "...", 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([5, 4, "...", 0]);
+      expect(selectedPageIndexOf(model)).toEqual(5);
 
       model.goTo(4);
       xhrManager.requests[2].resolve({
@@ -387,7 +415,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([5, 4, 3, "...", 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([5, 4, 3, "...", 0]);
+      expect(selectedPageIndexOf(model)).toEqual(4);
 
       model.goTo(3);
       xhrManager.requests[3].resolve({
@@ -395,7 +424,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([5, 4, 3, 2, "...", 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([5, 4, 3, 2, "...", 0]);
+      expect(selectedPageIndexOf(model)).toEqual(3);
 
       model.goTo(2);
       xhrManager.requests[4].resolve({
@@ -403,7 +433,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([5, "...", 3, 2, 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([5, "...", 3, 2, 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(2);
 
       model.goTo(1);
       xhrManager.requests[5].resolve({
@@ -411,7 +442,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([5, "...", 2, 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([5, "...", 2, 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(1);
 
       model.goTo(0);
       xhrManager.requests[6].resolve({
@@ -419,7 +451,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([5, "...", 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([5, "...", 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(0);
     });
 
     it("要素数7の場合", () => {
@@ -432,7 +465,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([6, 5, "...", 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([6, 5, "...", 0]);
+      expect(selectedPageIndexOf(model)).toEqual(6);
 
       model.goTo(3);
       xhrManager.requests[2].resolve({
@@ -440,7 +474,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([6, "...", 4, 3, 2, "...", 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([6, "...", 4, 3, 2, "...", 0]);
+      expect(selectedPageIndexOf(model)).toEqual(3);
 
       model.goTo(0);
       xhrManager.requests[3].resolve({
@@ -448,7 +483,8 @@ describe("LogViewerModel", () => {
         timestamp: new Date(100),
         size: 4
       });
-      expect(model.pageSelectors.map((s)=>s.label)).toEqual([6, "...", 1, 0]);
+      expect(pageSelectorLabelOf(model)).toEqual([6, "...", 1, 0]);
+      expect(selectedPageIndexOf(model)).toEqual(0);
     });
 
     it("セレクターで指定ページに移動できる", () => {
@@ -476,5 +512,18 @@ describe("LogViewerModel", () => {
       expect(model.hasPrev).toEqual( false );
     });
   });
+
+  function pageSelectorLabelOf(taret) {
+    return taret.pageSelectors.map((s) => s.label);
+  }
+  function selectedPageIndexOf(taret) {
+    var no = -1;
+    taret.pageSelectors.forEach((page) => {
+      if (!page.selected) return;
+      if (no !== -1) throw "fail.";
+      no = page.label;
+    });
+    return no;
+  }
 
 });

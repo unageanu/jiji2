@@ -26,6 +26,7 @@ export default class Application {
     this.rmtChartPageModel          = ContainerJS.Inject;
     this.rmtPositionsPageModel      = ContainerJS.Inject;
     this.rmtAgentSettingPageModel   = ContainerJS.Inject;
+    this.rmtLogPageModel            = ContainerJS.Inject;
 
     this.newBacktestPageModel       = ContainerJS.Inject;
     this.backtestsPageModel         = ContainerJS.Inject;

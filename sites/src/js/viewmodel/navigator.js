@@ -11,6 +11,7 @@ const MENU_ITEMS = [
   { route: "/rmt/chart",           text: "チャート",         iconClassName: "md-trending-up" },
   { route: "/rmt/positions",       text: "建玉一覧",         iconClassName: "md-list" },
   { route: "/rmt/agent-setting",   text: "エージェント設定",  iconClassName: "md-group-add" },
+  { route: "/rmt/logs",            text: "ログ",            iconClassName: "md-format-align-left" },
 
   { type: Types.SUBHEADER,         text: "バックテスト" },
   { route: "/backtests/new",       text: "テストの作成", iconClassName: "md-add-circle-outline" },

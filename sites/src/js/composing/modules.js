@@ -31,6 +31,9 @@ function viewModel(binder) {
   binder.bind("rmtAgentSettingPageModel")
     .to("viewmodel.pages.RmtAgentSettingPageModel")
     .onInitialize("postCreate");
+  binder.bind("rmtLogPageModel")
+    .to("viewmodel.pages.RmtLogPageModel")
+    .onInitialize("postCreate");
   binder.bind("newBacktestPageModel")
     .to("viewmodel.pages.NewBacktestPageModel")
     .onInitialize("postCreate");

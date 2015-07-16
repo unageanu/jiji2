@@ -8,7 +8,7 @@ export default class UrlResolver {
   createParameterString( parameters ) {
       var params = [];
       for (let i in parameters) {
-          if (!parameters[i]) continue;
+          if (parameters[i] == null) continue;
           params.push( this.concatKeyValue(i, parameters[i]));
       }
       return params.length > 0 ? "?" + params.join("&") : "";

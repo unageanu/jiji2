@@ -2,6 +2,7 @@ import ContainerJS             from "container-js"
 import Chart                   from "./chart/chart"
 import PositionsTableModel     from "./positions/positions-table-model"
 import TradingSummaryViewModel from "./trading-summary/trading-summary-view-model"
+import LogViewerModel          from "./logs/log-viewer-model"
 
 export default class ViewModelFactory {
 
@@ -11,6 +12,7 @@ export default class ViewModelFactory {
     this.rateService             = ContainerJS.Inject;
     this.positionService         = ContainerJS.Inject;
     this.graphService            = ContainerJS.Inject;
+    this.logService              = ContainerJS.Inject;
     this.tradingSummariesService = ContainerJS.Inject;
   }
   createChart(config={displayPositionsAndGraphs:false}) {
@@ -24,5 +26,8 @@ export default class ViewModelFactory {
     const model = new TradingSummaryViewModel( this.tradingSummariesService );
     model.enablePeriodselector = enablePeriodselector;
     return model;
+  }
+  createLogViewerModel() {
+    return new LogViewerModel( this.logService );
   }
 }

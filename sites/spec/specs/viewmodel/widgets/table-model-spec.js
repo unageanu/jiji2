@@ -277,6 +277,53 @@ describe("TableModel", () => {
     expect(model.hasPrev).toEqual( true );
   });
 
+  it("goToで任意のページに移動できる", () => {
+
+    model.load();
+    loader.deferred.resolve(createItems(0, 20));
+
+    model.goTo(25);
+    loader.deferred.resolve(createItems(25, 20));
+
+    expect(loader.offset).toEqual(25);
+    expect(loader.limit).toEqual( 20 );
+    expect(loader.sortOrder).toEqual({name: "asc"});
+    expect(model.items.length).toEqual( 20 );
+    expect(model.hasNext).toEqual( true );
+    expect(model.hasPrev).toEqual( true );
+
+    model.goTo(-5);
+    loader.deferred.resolve(createItems(0, 20));
+
+    expect(loader.offset).toEqual(0);
+    expect(loader.limit).toEqual( 20 );
+    expect(loader.sortOrder).toEqual({name: "asc"});
+    expect(model.items.length).toEqual( 20 );
+    expect(model.hasNext).toEqual( true );
+    expect(model.hasPrev).toEqual( false );
+
+    model.goTo(71);
+    loader.deferred.resolve(createItems(70, 19));
+
+    expect(loader.offset).toEqual(70);
+    expect(loader.limit).toEqual( 20 );
+    expect(loader.sortOrder).toEqual({name: "asc"});
+    expect(model.items.length).toEqual( 19 );
+    expect(model.hasNext).toEqual( false );
+    expect(model.hasPrev).toEqual( true );
+
+    model.goTo(70);
+    loader.deferred.resolve(createItems(70, 20));
+
+    expect(loader.offset).toEqual(70);
+    expect(loader.limit).toEqual( 20 );
+    expect(loader.sortOrder).toEqual({name: "asc"});
+    expect(model.items.length).toEqual( 20 );
+    expect(model.hasNext).toEqual( false );
+    expect(model.hasPrev).toEqual( true );
+
+  });
+
   function createItems(start, count) {
     const items = [];
     for (let i=0; i<count; i++) {

@@ -19,11 +19,22 @@ export default class TableModel extends Observable {
   }
 
   load() {
-    this.offset = 0;
     this.loader.count().then((count)=>{
       this.totalCount = count;
+      this.offset = this.getDefaultOffset();
       this.loadItems();
     });
+  }
+
+  goTo(offset) {
+    if (offset > this.totalCount - this.pageSize) {
+      offset = this.totalCount - this.pageSize;
+    }
+    if (offset < 0) {
+      offset = 0;
+    }
+    this.offset = offset;
+    this.loadItems();
   }
 
   next() {
@@ -41,7 +52,7 @@ export default class TableModel extends Observable {
 
   sortBy(sortOrder) {
     this.sortOrder = sortOrder;
-    this.offset = 0;
+    this.offset = this.getDefaultOffset();
     return this.loadItems();
   }
 
@@ -66,8 +77,13 @@ export default class TableModel extends Observable {
   }
 
   updateState() {
-    this.hasNext = this.totalCount > this.offset+this.pageSize;
+    this.hasNext = this.totalCount > this.offset + this.pageSize;
     this.hasPrev = this.offset > 0;
+  }
+
+
+  getDefaultOffset() {
+    return 0;
   }
 
   convertItems(items) {
@@ -100,5 +116,11 @@ export default class TableModel extends Observable {
   }
   get sortOrder() {
     return this.getProperty("sortOrder");
+  }
+  set totalCount(totalCount) {
+    this.setProperty("totalCount", totalCount);
+  }
+  get totalCount() {
+    return this.getProperty("totalCount");
   }
 }

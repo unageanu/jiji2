@@ -17,6 +17,7 @@ module Jiji
     module Agents       end
     module Graphing     end
     module Logging      end
+    module Notification end
     module Settings     end
     module Securities
       module Internal   end

@@ -7,6 +7,7 @@ export default class LoginPageModel extends AbstractPageModel {
   constructor() {
     super();
     this.authenticator = ContainerJS.Inject;
+    this.xhrManager    = ContainerJS.Inject;
   }
 
   postCreate() {}
@@ -14,7 +15,10 @@ export default class LoginPageModel extends AbstractPageModel {
   login(password) {
     this.error = "";
     const d = this.authenticator.login( password );
-    d.fail((error) => this.error = "パスワードが一致しません。" );
+    d.then(
+      (result) => this.xhrManager.restart(),
+      (error)  => this.error = "パスワードが一致しません。"
+    );
     return d;
   }
 

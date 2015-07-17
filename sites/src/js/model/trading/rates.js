@@ -6,15 +6,24 @@ export default class Rates extends Observable {
     super();
     this.rateService = ContainerJS.Inject;
   }
+
   initialize() {
-    if (!this.initializedDeferred) {
+    if (!this.isInitialied()) {
       this.initializedDeferred = this.reload();
     }
     return this.initializedDeferred;
   }
+
+  isInitialied() {
+    if (!this.initializedDeferred) return false;
+    if (this.initializedDeferred.rejected()) return false;
+    return true;
+  }
+
   reload() {
-    return this.rateService.getRange()
-      .then((range) => this.range = range );
+    const d = this.rateService.getRange();
+    d.done((range) => this.range = range );
+    return d;
   }
 
   fetchRates( name, interval, start, end ) {

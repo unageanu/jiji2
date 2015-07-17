@@ -41,7 +41,6 @@ export default class LoginPage extends AbstractPage {
   login(event) {
     const password = React.findDOMNode(this.refs["password-input"]).value;
     this.model().login(password).then( () => {
-      this.context.application.xhrManager.cancel();
       this.router().transitionTo("/");
     });
   }

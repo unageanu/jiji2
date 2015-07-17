@@ -98,6 +98,16 @@ BODY
         order_opened, trade_opened, trade_reduced, trades_closed)
     end
 
+    def new_notification(seed, backtest_id = nil, timestamp = Time.at(seed))
+        actions = [
+          { "label" => "あ", "action" => "aaa" },
+          { "label" => "い", "action" => "bbb" }
+        ]
+        Jiji::Model::Notification::Notification.create(
+          "agent#{seed}", "test#{seed}", Time.at(seed), backtest_id,
+          "message#{seed}", "icon#{seed}", actions)
+    end
+
     def register_backtest(seed, repository)
       repository.register(
         'name'          => "テスト#{seed}",
@@ -130,6 +140,7 @@ BODY
       Jiji::Model::Graphing::GraphData.delete_all
       Jiji::Model::Graphing::Graph.delete_all
       Jiji::Model::Logging::LogData.delete_all
+      Jiji::Model::Notification::Notification.delete_all
       Mail::TestMailer.deliveries.clear
     end
 

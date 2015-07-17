@@ -28,7 +28,7 @@ module Jiji::Model::Notification
 
     index(
       { backtest_id: 1, timestamp: -1 },
-      name: 'logdata_backtest_id_timestamp_index')
+      name: 'notification_backtest_id_timestamp_index')
 
     def self.create(agent_id, agent_name, timestamp,
       backtest_id = nil, message = "", icon=nil, actions = [])

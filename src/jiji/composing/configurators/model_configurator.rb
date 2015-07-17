@@ -18,7 +18,8 @@ module Jiji::Composing::Configurators
         GraphConfigurator.new,
         SettingsConfigurator.new,
         SecuritiesConfigurator.new,
-        TradingConfigurator.new
+        TradingConfigurator.new,
+        NotificationConfigurator.new
       ]
     end
 

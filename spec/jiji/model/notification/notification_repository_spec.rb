@@ -27,7 +27,7 @@ describe Jiji::Model::Notification::NotificationRepository do
     data_builder.clean
   end
 
-  def register_notifications(backtest_id=nil)
+  def register_notifications(backtest_id = nil)
     100.times do |i|
       notification = data_builder.new_notification(i, backtest_id)
       notification.save

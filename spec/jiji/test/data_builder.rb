@@ -99,13 +99,13 @@ BODY
     end
 
     def new_notification(seed, backtest_id = nil, timestamp = Time.at(seed))
-        actions = [
-          { "label" => "あ", "action" => "aaa" },
-          { "label" => "い", "action" => "bbb" }
-        ]
-        Jiji::Model::Notification::Notification.create(
-          "agent#{seed}", "test#{seed}", Time.at(seed), backtest_id,
-          "message#{seed}", "icon#{seed}", actions)
+      actions = [
+        { 'label' => 'あ', 'action' => 'aaa' },
+        { 'label' => 'い', 'action' => 'bbb' }
+      ]
+      Jiji::Model::Notification::Notification.create(
+        "agent#{seed}", "test#{seed}", Time.at(seed), backtest_id,
+        "message#{seed}", "icon#{seed}", actions)
     end
 
     def register_backtest(seed, repository)

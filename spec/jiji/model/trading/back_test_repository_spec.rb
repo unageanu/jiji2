@@ -364,12 +364,11 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(count).to be 1
 
       notification = Jiji::Model::Notification::Notification.create(
-        "a", "test1", Time.at(100), backtests[1].id)
+        'a', 'test1', Time.at(100), backtests[1].id)
       notification.save
       count = Jiji::Model::Notification::Notification
               .where({ backtest_id: backtests[1].id }).count
       expect(count).to be 1
-
 
       @repository.delete(backtests[1].id)
 

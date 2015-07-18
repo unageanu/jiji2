@@ -31,11 +31,11 @@ module Jiji::Model::Notification
       name: 'notification_backtest_id_timestamp_index')
 
     def self.create(agent_id, agent_name, timestamp,
-      backtest_id = nil, message = "", icon=nil, actions = [])
+      backtest_id = nil, message = '', icon = nil, actions = [])
       Notification.new do |n|
         n.timestamp   = timestamp
-        n.initialize_agent_information( agent_id, agent_name, backtest_id )
-        n.initialize_content( message, icon, actions )
+        n.initialize_agent_information(agent_id, agent_name, backtest_id)
+        n.initialize_content(message, icon, actions)
       end
     end
 
@@ -45,7 +45,7 @@ module Jiji::Model::Notification
     end
 
     def read?
-      !self.read_at.nil?
+      !read_at.nil?
     end
 
     def to_h
@@ -55,16 +55,16 @@ module Jiji::Model::Notification
       }
       insert_content_to_hash(hash)
       insert_agent_information_to_hash(hash)
-      return hash
+      hash
     end
 
-    def initialize_agent_information( agent_id, agent_name, backtest_id )
+    def initialize_agent_information(agent_id, agent_name, backtest_id)
       self.agent_id    = agent_id
       self.agent_name  = agent_name
       self.backtest_id = backtest_id
     end
 
-    def initialize_content( message = "", icon=nil, actions = [] )
+    def initialize_content(message = '', icon = nil, actions = [])
       self.message     = message
       self.icon        = icon
       self.actions     = actions

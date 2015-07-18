@@ -27,7 +27,7 @@ module Jiji::Model::Trading
       class_name: 'Jiji::Model::Logging::LogData', dependent: :destroy
     has_many :notification,
       class_name: 'Jiji::Model::Notification::Notification', dependent: :destroy
-        
+
     field :name,          type: String
     field :created_at,    type: Time
     field :memo,          type: String

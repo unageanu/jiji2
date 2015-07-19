@@ -15,7 +15,7 @@ module Jiji::Messaging
     needs :userSettingSMTPServer
     needs :postmarkSMTPServer
 
-    def compose(to, title, from=FROM, &block)
+    def compose(to, title, from = FROM, &block)
       mail = Mail.new(&block)
       setup_delivery_method(mail)
 

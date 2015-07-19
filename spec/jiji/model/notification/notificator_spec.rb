@@ -4,7 +4,6 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 describe Jiji::Model::Notification::Notificator do
-
   let(:data_builder) { Jiji::Test::DataBuilder.new }
   let(:container) { Jiji::Test::TestContainerFactory.instance.new_container }
   let(:backtest) do
@@ -35,7 +34,7 @@ describe Jiji::Model::Notification::Notificator do
   end
 
   it 'テキスト形式のメールを送信できる' do
-    notificator.compose_text_mail( 'foo@example.com', "テストメール", 'テスト' )
+    notificator.compose_text_mail('foo@example.com', 'テストメール', 'テスト')
 
     expect(Mail::TestMailer.deliveries.length).to eq 1
     mail = Mail::TestMailer.deliveries[0]
@@ -45,20 +44,20 @@ describe Jiji::Model::Notification::Notificator do
     expect(mail.body.parts[0].content_type).to eq('text/plain; charset=UTF-8')
     expect(mail.body.parts[0].body.raw_source).to eq('テスト')
 
-    notificator.compose_text_mail( 'foo@example.com',
-      "テストメール2", 'テスト2', 'var@example.com' )
+    notificator.compose_text_mail('foo@example.com',
+      'テストメール2', 'テスト2', 'var@example.com')
 
     expect(Mail::TestMailer.deliveries.length).to eq 2
     mail = Mail::TestMailer.deliveries[1]
     expect(mail.subject).to eq 'テストメール2'
     expect(mail.to).to eq ['foo@example.com']
-    expect(mail.from).to eq ['var@example.com' ]
+    expect(mail.from).to eq ['var@example.com']
     expect(mail.body.parts[0].content_type).to eq('text/plain; charset=UTF-8')
     expect(mail.body.parts[0].body.raw_source).to eq('テスト2')
   end
 
   it 'メールを送信できる' do
-    notificator.compose_mail( 'foo@example.com', "テストメール" ) do
+    notificator.compose_mail('foo@example.com', 'テストメール') do
       text_part do
         content_type 'text/plain; charset=UTF-8'
         body 'テスト'
@@ -79,8 +78,8 @@ describe Jiji::Model::Notification::Notificator do
     time_source.set(Time.at(100))
 
     notificator.push_notification('メッセージ', 'icon', [
-      { "label" => "あ", "action" => "aaa" },
-      { "label" => "い", "action" => "bbb" }
+      { 'label' => 'あ', 'action' => 'aaa' },
+      { 'label' => 'い', 'action' => 'bbb' }
     ])
 
     notifications = notification_repository.retrieve_notifications(backtest.id)
@@ -91,11 +90,10 @@ describe Jiji::Model::Notification::Notificator do
     expect(notification.agent_name).to eq 'agent_name'
     expect(notification.timestamp).to eq Time.at(100)
     expect(notification.message).to eq 'メッセージ'
-    expect(notification.icon).to eq "icon"
-    expect(notification.actions).to eq  [
-      { "label" => "あ", "action" => "aaa" },
-      { "label" => "い", "action" => "bbb" }
+    expect(notification.icon).to eq 'icon'
+    expect(notification.actions).to eq [
+      { 'label' => 'あ', 'action' => 'aaa' },
+      { 'label' => 'い', 'action' => 'bbb' }
     ]
   end
-
 end

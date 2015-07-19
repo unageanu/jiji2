@@ -85,8 +85,8 @@ class SendNotificationAgent
     notifier.push_notification('テスト通知2', 'icon')
     @send = true
   end
-end
 
+end
 
 class ErrorAgent
 

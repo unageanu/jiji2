@@ -1,7 +1,7 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/model/trading/cross'
+require 'jiji/model/trading/agent_sources/cross'
 
 describe Cross do
   it 'トレンドを判定できる' do

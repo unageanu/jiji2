@@ -68,6 +68,26 @@ class MovingAverageAgent
 
 end
 
+class SendNotificationAgent
+
+  extend Jiji::Model::Agents::Context
+  include Jiji::Model::Agents::Agent
+
+  def post_create
+    notifier.compose_text_mail('foo@example.com', 'テスト', '本文')
+    notifier.push_notification('テスト通知', 'icon')
+  end
+
+  def next_tick(tick)
+    return if @send
+
+    notifier.compose_text_mail('foo@example.com', 'テスト2', '本文')
+    notifier.push_notification('テスト通知2', 'icon')
+    @send = true
+  end
+end
+
+
 class ErrorAgent
 
   extend Jiji::Model::Agents::Context

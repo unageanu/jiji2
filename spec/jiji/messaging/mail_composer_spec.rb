@@ -15,6 +15,7 @@ describe Jiji::Messaging::MailComposer do
   end
 
   after(:example) do
+    Mail::TestMailer.deliveries.clear
     @data_builder.clean
     ENV['POSTMARK_SMTP_SERVER'] = nil
     ENV['POSTMARK_API_TOKEN'] = nil

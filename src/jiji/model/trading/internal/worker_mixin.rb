@@ -10,6 +10,8 @@ module Jiji::Model::Trading::Internal
     needs :logger_factory
     needs :time_source
     needs :agent_registry
+    needs :mail_composer
+    needs :push_notifier
 
     attr_reader :process
 
@@ -24,9 +26,11 @@ module Jiji::Model::Trading::Internal
       agents
     end
 
-    def create_agents_builder(graph_factory, broker)
-      Jiji::Model::Agents::AgentsUpdater.new(
-        agent_registry, broker, graph_factory, nil, @logger)
+    def create_agents_builder(graph_factory, broker, backtest = nil)
+      backtest_id = backtest ? backtest.id : nil
+      Jiji::Model::Agents::AgentsUpdater.new(backtest_id,
+        agent_registry, broker, graph_factory, push_notifier,
+        mail_composer, time_source, @logger)
     end
 
     def create_graph_factory(backtest = nil)
@@ -42,7 +46,7 @@ module Jiji::Model::Trading::Internal
 
     def create_and_restore_agents(graph_factory, broker, backtest,
       agents, agent_setting, fail_on_error, ignore_agent_creation_error)
-      create_agents_builder(graph_factory, broker) \
+      create_agents_builder(graph_factory, broker, backtest) \
         .update(agents, agent_setting || [], fail_on_error)
       agents.restore_state
     rescue Exception => e # rubocop:disable Lint/RescueException

@@ -7,13 +7,17 @@ module Jiji::Model::Agents
   class AgentsUpdater
 
     include Jiji::Model::Trading::Brokers
+    include Jiji::Model::Notification
 
-    def initialize(agent_registory,
-      broker, graph_factory, notifier, logger)
+    def initialize(backtest_id, agent_registory, broker, graph_factory,
+      push_notifier, mail_composer, time_source, logger)
+      @backtest_id     = backtest_id
       @agent_registory = agent_registory
       @broker          = broker
       @graph_factory   = graph_factory
-      @notifier        = notifier
+      @push_notifier   = push_notifier
+      @mail_composer   = mail_composer
+      @time_source     = time_source
       @logger          = logger
     end
 
@@ -55,12 +59,18 @@ module Jiji::Model::Agents
     end
 
     def inject_components_to(agent, agent_id)
-      broker = BrokerProxy.new(@broker, agent.agent_name, agent_id)
+      agent_name = agent.agent_name
+      broker = BrokerProxy.new(@broker, agent_name, agent_id)
 
       agent.broker          = broker
       agent.graph_factory   = @graph_factory
-      agent.notifier        = @notifier
+      agent.notifier        = create_notificator(agent_id, agent_name)
       agent.logger          = @logger
+    end
+
+    def create_notificator(agent_id, agent_name)
+      Notificator.new(@backtest_id, agent_id,
+        agent_name, @push_notifier, @mail_composer, @time_source)
     end
 
   end

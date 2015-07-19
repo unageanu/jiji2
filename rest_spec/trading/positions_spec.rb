@@ -83,6 +83,22 @@ describe '建玉取得' do
     expect(position['profit_or_loss']).not_to be nil
     entered_at = Time.iso8601(position['entered_at']).to_i
     expect(entered_at).to eq Time.new(2015, 5, 3).to_i
+
+    r = @client.get('positions/rmt',  {
+      'order'     => 'entered_at',
+      'direction' => 'desc',
+      'status'    => 'live',
+      'offset'    => 0,
+      'limit'     => 2
+    })
+    expect(r.status).to eq 200
+    expect(r.body.length).to be 1
+
+    position = r.body[0]
+    expect(position['pair_name']).not_to be nil
+    expect(position['profit_or_loss']).not_to be nil
+    entered_at = Time.iso8601(position['entered_at']).to_i
+    expect(entered_at).to eq Time.new(2015, 5, 3).to_i
   end
 
   it 'GET /positions/rmt/count でリアルトレードの建玉数を取得できる' do
@@ -117,69 +133,6 @@ describe '建玉取得' do
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 0
-  end
-
-  it 'GET /positions/rmt で取得数を指定してリアルトレードの建玉を取得できる' do
-    r = @client.get('positions/rmt',  {
-      'order'     => 'entered_at',
-      'direction' => 'desc',
-      'offset'    => 1,
-      'limit'     => 10
-    })
-    expect(r.status).to eq 200
-    expect(r.body.length).to be 1
-
-    position = r.body[0]
-    expect(position['pair_name']).not_to be nil
-    expect(position['profit_or_loss']).not_to be nil
-    entered_at = Time.iso8601(position['entered_at']).to_i
-    expect(entered_at).to eq Time.new(2015, 5, 2).to_i
-
-    r = @client.get('positions/rmt',  {
-      'order'     => 'entered_at',
-      'direction' => 'asc',
-      'offset'    => 1,
-      'limit'     => 10
-    })
-    expect(r.status).to eq 200
-    expect(r.body.length).to be 1
-
-    position = r.body[0]
-    expect(position['pair_name']).not_to be nil
-    expect(position['profit_or_loss']).not_to be nil
-    entered_at = Time.iso8601(position['entered_at']).to_i
-    expect(entered_at).to eq Time.new(2015, 5, 3).to_i
-
-    r = @client.get('positions/rmt',  {
-      'order'     => 'entered_at',
-      'direction' => 'desc',
-      'offset'    => 0,
-      'limit'     => 1
-    })
-    expect(r.status).to eq 200
-    expect(r.body.length).to be 1
-
-    position = r.body[0]
-    expect(position['pair_name']).not_to be nil
-    expect(position['profit_or_loss']).not_to be nil
-    entered_at = Time.iso8601(position['entered_at']).to_i
-    expect(entered_at).to eq Time.new(2015, 5, 3).to_i
-
-    r = @client.get('positions/rmt',  {
-      'order'     => 'entered_at',
-      'direction' => 'desc',
-      'status'    => 'live',
-      'offset'    => 0,
-      'limit'     => 2
-    })
-    expect(r.status).to eq 200
-    expect(r.body.length).to be 1
-
-    position = r.body[0]
-    expect(position['pair_name']).not_to be nil
-    expect(position['profit_or_loss']).not_to be nil
-    entered_at = Time.iso8601(position['entered_at']).to_i
-    expect(entered_at).to eq Time.new(2015, 5, 3).to_i
   end
 
   it 'GET /positions/:backtest_id で取得数を指定してバックテストの建玉を取得できる' do

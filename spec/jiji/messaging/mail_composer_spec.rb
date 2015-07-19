@@ -74,5 +74,17 @@ describe Jiji::Messaging::MailComposer do
     expect(Mail::TestMailer.deliveries[0].subject).to eq 'テスト'
     expect(Mail::TestMailer.deliveries[0].to).to eq ['foo@var.com']
     expect(Mail::TestMailer.deliveries[0].from).to eq ['jiji@unageanu.net']
+
+    @composer.compose('foo@var.com', 'テスト', 'test@unageanu.net') do
+      text_part do
+        content_type 'text/plain; charset=UTF-8'
+        body 'テストメール'
+      end
+    end
+
+    expect(Mail::TestMailer.deliveries.length).to eq 2
+    expect(Mail::TestMailer.deliveries[1].subject).to eq 'テスト'
+    expect(Mail::TestMailer.deliveries[1].to).to eq ['foo@var.com']
+    expect(Mail::TestMailer.deliveries[1].from).to eq ['test@unageanu.net']
   end
 end

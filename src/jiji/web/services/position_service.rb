@@ -24,9 +24,9 @@ module Jiji::Web
       period_condition = read_period_filter_condition
       id = get_backtest_id_from_path_param
       if period_condition
-        ok(retirieve_backtest_widthin(id, period_condition))
+        ok(retirieve_positions_widthin(id, period_condition))
       else
-        ok(retirieve_backtest(id))
+        ok(retirieve_positions(id))
       end
     end
 
@@ -43,12 +43,12 @@ module Jiji::Web
       lookup(:position_repository)
     end
 
-    def retirieve_backtest_widthin(backtest_id, condition)
+    def retirieve_positions_widthin(backtest_id, condition)
       repository.retrieve_positions_within(backtest_id,
         condition[:start_time], condition[:end_time])
     end
 
-    def retirieve_backtest(backtest_id)
+    def retirieve_positions(backtest_id)
       sort_order = get_sort_order_from_query_param('order', 'direction')
       offset     = request['offset'] ? request['offset'].to_i : nil
       limit      = request['limit']  ? request['limit'].to_i : nil

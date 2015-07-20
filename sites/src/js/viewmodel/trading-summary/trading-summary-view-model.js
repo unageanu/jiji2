@@ -26,11 +26,11 @@ export default class TradingSummaryViewModel extends Observable {
     return this.getProperty("summary");
   }
 
-  set enablePeriodselector(enable) {
-    this.setProperty("enablePeriodselector", enable);
+  set enablePeriodSelector(enable) {
+    this.setProperty("enablePeriodSelector", enable);
   }
-  get enablePeriodselector() {
-    return this.getProperty("enablePeriodselector");
+  get enablePeriodSelector() {
+    return this.getProperty("enablePeriodSelector");
   }
 
   set backtestId(backtestId) {

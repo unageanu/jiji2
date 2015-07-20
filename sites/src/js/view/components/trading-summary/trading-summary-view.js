@@ -27,21 +27,21 @@ export default class TradingSummaryView extends AbstractComponent {
     super(props);
     this.state = {
       summary :              null,
-      enablePeriodselector : false,
+      enablePeriodSelector : false,
       selectedIndex:         0
     };
   }
 
   componentWillMount() {
     this.registerPropertyChangeListener(this.props.model);
-    if (this.props.model.enablePeriodselector) {
+    if (this.props.model.enablePeriodSelector) {
       this.props.model.startTime = periodSelections[0].time;
     } else {
       this.props.model.load();
     }
     this.setState({
       summary :               this.props.model.summary,
-      enablePeriodselector :  this.props.model.enablePeriodselector
+      enablePeriodSelector :  this.props.model.enablePeriodSelector
     });
   }
   componentWillUnmount() {
@@ -79,7 +79,7 @@ export default class TradingSummaryView extends AbstractComponent {
   }
 
   createPeriodSelector() {
-    if (!this.state.enablePeriodselector) return null;
+    if (!this.state.enablePeriodSelector) return null;
     return (
       <div>
         集計期間

@@ -82,6 +82,7 @@ function services(binder) {
   binder.bind("tradingSummariesService").to("services.TradingSummariesService");
   binder.bind("rmtService").to("services.RmtService");
   binder.bind("logService").to("services.LogService");
+  binder.bind("notificationService").to("services.NotificationService");
 }
 
 function stores(binder) {

@@ -35,76 +35,70 @@ describe Jiji::Model::Notification::NotificationRepository do
   end
 
   it 'ソート条件、取得数を指定して、一覧を取得できる' do
-    notifications = notification_repository.retrieve_notifications(nil)
+    notifications = notification_repository.retrieve_notifications
 
     expect(notifications.length).to eq(20)
-    expect(notifications[0].backtest_id).to eq(nil)
     expect(notifications[0].timestamp).to eq(Time.at(0))
-    expect(notifications[19].backtest_id).to eq(nil)
-    expect(notifications[19].timestamp).to eq(Time.at(19))
+    expect(notifications[19].timestamp).to eq(Time.at(9))
 
     notifications = notification_repository.retrieve_notifications(
-      nil, timestamp: :desc)
+      {}, { timestamp: :desc, backtest_id: :desc })
 
     expect(notifications.size).to eq(20)
-    expect(notifications[0].backtest_id).to eq(nil)
+    expect(notifications[0].backtest_id).to eq(backtests[0].id)
     expect(notifications[0].timestamp).to eq(Time.at(99))
     expect(notifications[19].backtest_id).to eq(nil)
-    expect(notifications[19].timestamp).to eq(Time.at(80))
+    expect(notifications[19].timestamp).to eq(Time.at(90))
 
     notifications = notification_repository.retrieve_notifications(
-      nil, { timestamp: :desc }, 10, 30)
+      {}, { timestamp: :desc, backtest_id: :desc }, 10, 30)
 
     expect(notifications.size).to eq(30)
-    expect(notifications[0].backtest_id).to eq(nil)
-    expect(notifications[0].timestamp).to eq(Time.at(89))
+    expect(notifications[0].backtest_id).to eq(backtests[0].id)
+    expect(notifications[0].timestamp).to eq(Time.at(94))
     expect(notifications[29].backtest_id).to eq(nil)
-    expect(notifications[29].timestamp).to eq(Time.at(60))
+    expect(notifications[29].timestamp).to eq(Time.at(80))
 
     notifications = notification_repository.retrieve_notifications(
-      nil, { timestamp: :asc }, 10, 30)
+      {}, { timestamp: :asc, backtest_id: :desc }, 10, 30)
 
     expect(notifications.size).to eq(30)
-    expect(notifications[0].backtest_id).to eq(nil)
-    expect(notifications[0].timestamp).to eq(Time.at(10))
+    expect(notifications[0].backtest_id).to eq(backtests[0].id)
+    expect(notifications[0].timestamp).to eq(Time.at(5))
     expect(notifications[29].backtest_id).to eq(nil)
-    expect(notifications[29].timestamp).to eq(Time.at(39))
-
-    notifications = notification_repository.retrieve_notifications(
-      backtests[0]._id)
-
-    expect(notifications.size).to eq(20)
-    expect(notifications[0].backtest_id).to eq(backtests[0]._id)
-    expect(notifications[0].timestamp).to eq(Time.at(0))
-    expect(notifications[19].backtest_id).to eq(backtests[0]._id)
-    expect(notifications[19].timestamp).to eq(Time.at(19))
-
-    notifications = notification_repository.retrieve_notifications(
-      backtests[1]._id)
-    expect(notifications.size).to eq(0)
+    expect(notifications[29].timestamp).to eq(Time.at(19))
   end
 
   it '検索条件を指定して、一覧を取得できる' do
-    notifications = notification_repository.retrieve_notifications(nil,
-      { timestamp: :asc, id: :asc }, nil, nil, {
+    notifications = notification_repository.retrieve_notifications({
+      :backtest_id  => nil,
       :timestamp.gt => Time.at(30)
-    })
+    }, { timestamp: :asc, id: :asc }, nil, nil)
 
     expect(notifications.length).to eq(69)
     expect(notifications[0].backtest_id).to eq(nil)
     expect(notifications[0].timestamp).to eq(Time.at(31))
     expect(notifications[68].backtest_id).to eq(nil)
     expect(notifications[68].timestamp).to eq(Time.at(99))
+
+    notifications = notification_repository.retrieve_notifications({
+        :backtest_id  => backtests[0].id,
+        :timestamp.gt => Time.at(30)
+    }, { timestamp: :asc, id: :asc }, nil, nil)
+
+    expect(notifications.length).to eq(69)
+    expect(notifications[0].backtest_id).to eq(backtests[0].id)
+    expect(notifications[0].timestamp).to eq(Time.at(31))
+    expect(notifications[68].backtest_id).to eq(backtests[0].id)
+    expect(notifications[68].timestamp).to eq(Time.at(99))
   end
 
   it '通知の総数を取得できる' do
     count = notification_repository.count_notifications
-    expect(count).to eq(100)
+    expect(count).to eq(200)
 
-    count = notification_repository.count_notifications(backtests[0]._id)
-    expect(count).to eq(100)
-
-    count = notification_repository.count_notifications(nil, {
+    count = notification_repository.count_notifications({
+      :backtest_id  => nil,
       :timestamp.gt => Time.at(30)
     })
     expect(count).to eq(69)
@@ -116,7 +110,9 @@ describe Jiji::Model::Notification::NotificationRepository do
 
     notification_repository.delete_notifications_of_rmt(Time.at(40))
 
-    notifications = notification_repository.retrieve_notifications
+    notifications = notification_repository.retrieve_notifications(
+      { backtest_id: nil })
+
     expect(notifications.size).to eq(20)
     expect(notifications[0].backtest_id).to eq(nil)
     expect(notifications[0].timestamp).to eq(Time.at(40))
@@ -125,11 +121,30 @@ describe Jiji::Model::Notification::NotificationRepository do
 
     notification_repository.delete_notifications_of_rmt(Time.at(60))
 
-    notifications = notification_repository.retrieve_notifications
+    notifications = notification_repository.retrieve_notifications(
+      { backtest_id: nil })
     expect(notifications.size).to eq(20)
     expect(notifications[0].backtest_id).to eq(nil)
     expect(notifications[0].timestamp).to eq(Time.at(60))
     expect(notifications[19].backtest_id).to eq(nil)
     expect(notifications[19].timestamp).to eq(Time.at(79))
+  end
+
+  describe '#get_by_id' do
+    it 'idを指定して通知を取得できる' do
+      notifications = notification_repository.retrieve_notifications({
+        backtest_id: nil
+      }, { timestamp: :asc, id: :asc })
+
+      notification = notification_repository.get_by_id(notifications[0])
+      expect(notification.backtest_id).to eq(nil)
+      expect(notification.timestamp).to eq(Time.at(0))
+    end
+
+    it 'idに対応する通知が存在しない場合、エラーになる' do
+      expect do
+        notification_repository.get_by_id('not_found')
+      end.to raise_error(Jiji::Errors::NotFoundException)
+    end
   end
 end

@@ -82,7 +82,9 @@ describe Jiji::Model::Notification::Notificator do
       { 'label' => 'い', 'action' => 'bbb' }
     ])
 
-    notifications = notification_repository.retrieve_notifications(backtest.id)
+    notifications = notification_repository.retrieve_notifications({
+      backtest_id: backtest.id
+    })
     expect(notifications.length).to be 1
     notification = notifications[0]
     expect(notification.backtest_id).to eq backtest.id

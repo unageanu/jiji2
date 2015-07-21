@@ -50,6 +50,7 @@ module Jiji::Model::Notification
 
     def to_h
       hash = {
+        id:        id,
         timestamp: timestamp,
         read_at:   read_at
       }

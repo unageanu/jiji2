@@ -15,12 +15,13 @@ describe '通知取得' do
     @client = Jiji::Client.instance
   end
 
-  it 'GET /notifications/rmt で取得数を指定してリアルトレードの通知を取得できる' do
-    r = @client.get('notifications/rmt',  {
-      'order'     => 'timestamp',
-      'direction' => 'desc',
-      'offset'    => 1,
-      'limit'     => 10
+  it 'GET /notificationsで通知一覧を取得できる' do
+    r = @client.get('notifications',  {
+      'order'       => 'timestamp',
+      'direction'   => 'desc',
+      'offset'      => 1,
+      'limit'       => 10,
+      'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
@@ -35,17 +36,18 @@ describe '通知取得' do
     expect(Time.iso8601(notification['timestamp'])).to eq Time.at(100)
     expect(notification['read_at']).to be nil
 
-    r = @client.get('notifications/rmt',  {
-      'order'     => 'timestamp',
-      'direction' => 'asc',
-      'offset'    => 1,
-      'limit'     => 10
+    r = @client.get('notifications',  {
+      'order'       => 'timestamp',
+      'direction'   => 'asc',
+      'offset'      => 1,
+      'limit'       => 10,
+      'backtest_id' => @test._id.to_s
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
 
     notification = r.body[0]
-    expect(notification['backtest_id']).to eq nil
+    expect(notification['backtest_id']).to eq @test._id.to_s
     expect(notification['agent_id']).to eq 'a'
     expect(notification['agent_name']).to eq 'test1'
     expect(notification['message']).to eq 'message2'
@@ -54,17 +56,16 @@ describe '通知取得' do
     expect(Time.iso8601(notification['timestamp'])).to eq Time.at(200)
     expect(Time.iso8601(notification['read_at'])).to eq Time.at(500)
 
-    r = @client.get('notifications/rmt',  {
-      'order'     => 'timestamp',
-      'direction' => 'desc',
-      'offset'    => 0,
-      'limit'     => 1
+    r = @client.get('notifications',  {
+      'order'       => 'timestamp',
+      'direction'   => 'desc',
+      'offset'      => 0,
+      'limit'       => 1
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
 
     notification = r.body[0]
-    expect(notification['backtest_id']).to eq nil
     expect(notification['agent_id']).to eq 'a'
     expect(notification['agent_name']).to eq 'test1'
     expect(notification['message']).to eq 'message2'
@@ -74,75 +75,58 @@ describe '通知取得' do
     expect(Time.iso8601(notification['read_at'])).to eq Time.at(500)
   end
 
-  it 'GET /notifications/rmt/count でリアルトレードの通知数を取得できる' do
-    r = @client.get('notifications/rmt/count')
+  it 'GET /notifications/count 通知の総数を取得できる' do
+    r = @client.get('notifications/count')
+    expect(r.status).to eq 200
+    expect(r.body['count']).to be 4
+
+    r = @client.get('notifications/count', {
+      'backtest_id' => @test._id.to_s
+    })
+    expect(r.status).to eq 200
+    expect(r.body['count']).to be 2
+
+    r = @client.get('notifications/count', {
+      'backtest_id' => 'rmt'
+    })
     expect(r.status).to eq 200
     expect(r.body['count']).to be 2
   end
 
-  it 'GET /notifications/:backtest_id で取得数を指定してバックテストの通知を取得できる' do
-    r = @client.get("notifications/#{@test._id}",  {
-      'order'     => 'timestamp',
-      'direction' => 'desc',
-      'offset'    => 1,
-      'limit'     => 10
+  it 'PUT /notifications/:notificatio_id/read で通知を既読にできる' do
+    r = @client.get('notifications',  {
+      'order'       => 'timestamp',
+      'direction'   => 'desc',
+      'offset'      => 1,
+      'limit'       => 10,
+      'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
+    expect(r.body[0]['read_at']).to be nil
+    notification_id = r.body[0]['id']
 
-    notification = r.body[0]
-    expect(notification['backtest_id']).to eq @test.id.to_s
-    expect(notification['agent_id']).to eq 'a'
-    expect(notification['agent_name']).to eq 'test1'
-    expect(notification['message']).to eq 'message'
-    expect(notification['icon']).to eq 'icon'
-    expect(notification['actions']).to eq []
-    expect(Time.iso8601(notification['timestamp'])).to eq Time.at(100)
-    expect(notification['read_at']).to be nil
+    r = @client.put("notifications/#{notification_id}/read", {
+      read: nil
+    })
+    expect(r.status).to eq 400
 
-    r = @client.get("notifications/#{@test._id}",  {
-      'order'     => 'timestamp',
-      'direction' => 'asc',
-      'offset'    => 1,
-      'limit'     => 10
+    r = @client.put("notifications/#{notification_id}/read", {
+      read: true
+    })
+    expect(r.status).to eq 200
+
+    r = @client.get('notifications',  {
+      'order'       => 'timestamp',
+      'direction'   => 'desc',
+      'offset'      => 1,
+      'limit'       => 10,
+      'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
-
-    notification = r.body[0]
-    expect(notification['backtest_id']).to eq @test.id.to_s
-    expect(notification['agent_id']).to eq 'a'
-    expect(notification['agent_name']).to eq 'test1'
-    expect(notification['message']).to eq 'message2'
-    expect(notification['icon']).to eq 'icon'
-    expect(notification['actions']).to eq []
-    expect(Time.iso8601(notification['timestamp'])).to eq Time.at(200)
-    expect(Time.iso8601(notification['read_at'])).to eq Time.at(500)
-
-    r = @client.get("notifications/#{@test._id}",  {
-      'order'     => 'timestamp',
-      'direction' => 'desc',
-      'offset'    => 0,
-      'limit'     => 1
-    })
-    expect(r.status).to eq 200
-    expect(r.body.length).to be 1
-
-    notification = r.body[0]
-    expect(notification['backtest_id']).to eq @test.id.to_s
-    expect(notification['agent_id']).to eq 'a'
-    expect(notification['agent_name']).to eq 'test1'
-    expect(notification['message']).to eq 'message2'
-    expect(notification['icon']).to eq 'icon'
-    expect(notification['actions']).to eq []
-    expect(Time.iso8601(notification['timestamp'])).to eq Time.at(200)
-    expect(Time.iso8601(notification['read_at'])).to eq Time.at(500)
-  end
-
-  it 'GET /notifications/:backtest_id/count でバックテストの通知数を取得できる' do
-    r = @client.get("notifications/#{@test._id}/count")
-    expect(r.status).to eq 200
-    expect(r.body['count']).to be 2
+    expect(r.body[0]['id']).to eq notification_id
+    expect(r.body[0]['read_at']).not_to be nil
   end
 
   def register_notifications

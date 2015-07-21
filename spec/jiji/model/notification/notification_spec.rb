@@ -88,6 +88,7 @@ describe Jiji::Model::Notification::Notification do
       'a', 'test1', Time.at(100), nil, 'message', 'icon', actions)
 
     expect(notification.to_h).to eq({
+      id:          notification.id,
       backtest_id: nil,
       agent_id:    'a',
       agent_name:  'test1',

@@ -40,6 +40,9 @@ function viewModel(binder) {
   binder.bind("backtestsPageModel")
     .to("viewmodel.pages.BacktestsPageModel")
     .onInitialize("postCreate");
+  binder.bind("notificationsPageModel")
+    .to("viewmodel.pages.NotificationsPageModel")
+    .onInitialize("postCreate");
 
   binder.bind("loginPageModel")
       .to("viewmodel.pages.LoginPageModel")

@@ -10,6 +10,7 @@ import RMTTradingSummary from "./components/pages/rmt-trading-summary-page"
 import RMTPositions      from "./components/pages/rmt-positions-page"
 import RMTAgentSetting   from "./components/pages/rmt-agent-setting-page"
 import RMTLogs           from "./components/pages/rmt-log-page"
+import Notifications     from "./components/pages/notifications-page"
 import Agents            from "./components/pages/agents-page"
 import Settings          from "./components/pages/settings-page"
 import Login             from "./components/pages/login-page"
@@ -30,6 +31,7 @@ export default (
       <Route path=":id" handler={BackTests} ignoreScrollBehavior={true}>
       </Route>
     </Route>
+    <Route path="notifications"        handler={Notifications} />
     <Route path="agents"               handler={Agents} />
     <Route path="settings"             handler={Settings} />
 

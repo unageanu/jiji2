@@ -31,6 +31,7 @@ export default class Application {
     this.newBacktestPageModel       = ContainerJS.Inject;
     this.backtestsPageModel         = ContainerJS.Inject;
 
+    this.notificationsPageModel     = ContainerJS.Inject;
     this.loginPageModel             = ContainerJS.Inject;
   }
 

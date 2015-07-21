@@ -49,7 +49,9 @@ class PageSelectorBuilder {
     });
   }
   addOldestselector() {
-    this.selectors.push( this.createSelector( 0 ) );
+    if (this.totalCount > 0) {
+      this.selectors.push( this.createSelector( 0 ) );
+    }
   }
   createSelector( page ) {
     return {

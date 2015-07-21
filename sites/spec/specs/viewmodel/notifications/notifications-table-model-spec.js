@@ -11,14 +11,18 @@ describe("NotificationsTableModel", () => {
     let d = container.get("viewModelFactory");
     const factory = ContainerJS.utils.Deferred.unpack(d);
     model = factory.createNotificationsTableModel(20);
-    model.initialize("rmt");
+    model.initialize();
     xhrManager = model.notificationService.xhrManager;
+    xhrManager.requests[0].resolve([
+      {id: "aa", name:"aaa", createdAt: new Date(200)},
+      {id: "bb", name:"bbb", createdAt: new Date(100)}
+    ]);
+    xhrManager.requests = [];
   });
 
   describe("load", () => {
 
     it("loadで一覧を取得できる", () => {
-
       model.load();
       xhrManager.requests[0].resolve({
         count: 50
@@ -26,22 +30,30 @@ describe("NotificationsTableModel", () => {
       xhrManager.requests[1].resolve(createItems(20));
 
       expect(xhrManager.requests[1].url).toEqual(
-        "/api/notifications/rmt?offset=0&limit=20&order=timestamp&direction=desc");
+        "/api/notifications?offset=0&limit=20&"
+        + "order=timestamp&direction=desc");
       expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
+      expect(model.filterCondition).toEqual({backtestId: null});
       expect(model.items[0].timestamp).toEqual( new Date(0) );
       expect(model.items[0].formatedTimestamp).not.toBe( null );
       expect(model.hasNext).toEqual( true );
       expect(model.hasPrev).toEqual( false );
       expect(model.selectedNotification).toBe( null );
+      expect(model.availableFilterConditions).toEqual([
+        { id: "all", text:"すべて",        condition: {backtestId: null} },
+        { id: "rmt", text:"リアルトレード", condition: {backtestId: "rmt"} },
+        { id: "aa",  text:"aaa",          condition: {backtestId: "aa"} },
+        { id: "bb",  text:"bbb",          condition: {backtestId: "bb"} }
+      ]);
     });
 
     it("データ数0の場合、ロードは行われない。", () => {
-
       model.load();
       xhrManager.requests[0].resolve({
         count: 0
       });
       expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
+      expect(model.filterCondition).toEqual({backtestId: null});
       expect(model.items).toEqual( [] );
       expect(model.hasNext).toEqual( false );
       expect(model.hasPrev).toEqual( false );
@@ -58,8 +70,10 @@ describe("NotificationsTableModel", () => {
       });
       xhrManager.requests[1].resolve(createItems(20));
 
-      model.selectedNotification = model.items[0];
-      expect(model.selectedNotification).toBe( model.items[0] );
+      expect(model.items[1].readAt).toBe( null );
+      model.selectedNotification = model.items[1];
+      expect(model.selectedNotification).toBe( model.items[1] );
+      expect(model.items[1].readAt).not.toBe( null );
     });
     it("次へ/前へを押してページを切り替えると、選択が解除される", () => {
       model.load();
@@ -119,8 +133,10 @@ describe("NotificationsTableModel", () => {
     xhrManager.requests[2].resolve(createItems(20));
 
     expect(xhrManager.requests[2].url).toEqual(
-      "/api/notifications/rmt?offset=20&limit=20&order=timestamp&direction=desc");
+      "/api/notifications?offset=20&limit=20&"
+      + "order=timestamp&direction=desc");
     expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
+    expect(model.filterCondition).toEqual({backtestId: null});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
@@ -131,8 +147,10 @@ describe("NotificationsTableModel", () => {
     xhrManager.requests[3].resolve(createItems(20));
 
     expect(xhrManager.requests[3].url).toEqual(
-      "/api/notifications/rmt?offset=40&limit=20&order=timestamp&direction=desc");
+      "/api/notifications?offset=40&limit=20"
+      + "&order=timestamp&direction=desc");
     expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
+    expect(model.filterCondition).toEqual({backtestId: null});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( true );
@@ -143,8 +161,10 @@ describe("NotificationsTableModel", () => {
     xhrManager.requests[4].resolve(createItems(20));
 
     expect(xhrManager.requests[4].url).toEqual(
-      "/api/notifications/rmt?offset=20&limit=20&order=timestamp&direction=desc");
+      "/api/notifications?offset=20&limit=20"
+      + "&order=timestamp&direction=desc");
     expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
+    expect(model.filterCondition).toEqual({backtestId: null});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
@@ -155,8 +175,10 @@ describe("NotificationsTableModel", () => {
     xhrManager.requests[5].resolve(createItems(20));
 
     expect(xhrManager.requests[5].url).toEqual(
-      "/api/notifications/rmt?offset=0&limit=20&order=timestamp&direction=desc");
+      "/api/notifications?offset=0&limit=20"
+      + "&order=timestamp&direction=desc");
     expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
+    expect(model.filterCondition).toEqual({backtestId: null});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
@@ -175,8 +197,10 @@ describe("NotificationsTableModel", () => {
     xhrManager.requests[2].resolve(createItems(20));
 
     expect(xhrManager.requests[2].url).toEqual(
-      "/api/notifications/rmt?offset=0&limit=20&order=timestamp&direction=asc");
+      "/api/notifications?offset=0&limit=20"
+      + "&order=timestamp&direction=asc");
     expect(model.sortOrder).toEqual({order:"timestamp", direction: "asc"});
+    expect(model.filterCondition).toEqual({backtestId: null});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
@@ -186,8 +210,10 @@ describe("NotificationsTableModel", () => {
     xhrManager.requests[3].resolve(createItems(20));
 
     expect(xhrManager.requests[3].url).toEqual(
-      "/api/notifications/rmt?offset=20&limit=20&order=timestamp&direction=asc");
+      "/api/notifications?offset=20&limit=20"
+      + "&order=timestamp&direction=asc");
     expect(model.sortOrder).toEqual({order:"timestamp", direction: "asc"});
+    expect(model.filterCondition).toEqual({backtestId: null});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
@@ -197,10 +223,103 @@ describe("NotificationsTableModel", () => {
     xhrManager.requests[4].resolve(createItems(20));
 
     expect(xhrManager.requests[4].url).toEqual(
-      "/api/notifications/rmt?offset=0&limit=20&order=agent_name&direction=desc");
+      "/api/notifications?offset=0&limit=20"
+      + "&order=agent_name&direction=desc");
     expect(model.sortOrder).toEqual({order:"agent_name", direction: "desc"});
+    expect(model.filterCondition).toEqual({backtestId: null});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
+    expect(model.hasPrev).toEqual( false );
+    expect(model.selectedNotification).toBe( null );
+  });
+
+  it("filterで一覧の絞り込みができる", () => {
+    model.load();
+    xhrManager.requests[0].resolve({
+      count: 60
+    });
+    xhrManager.requests[1].resolve(createItems(20));
+
+    model.filter(model.availableFilterConditions[1].condition);
+    xhrManager.requests[2].resolve({
+      count: 30
+    });
+    xhrManager.requests[3].resolve(createItems(20));
+
+    expect(xhrManager.requests[3].url).toEqual(
+      "/api/notifications?offset=0&limit=20"
+      + "&order=timestamp&direction=desc&backtestId=rmt");
+    expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
+    expect(model.filterCondition).toEqual({backtestId: "rmt"});
+    expect(model.items.length).toEqual( 20 );
+    expect(model.hasNext).toEqual( true );
+    expect(model.hasPrev).toEqual( false );
+    expect(model.selectedNotification).toBe( null );
+
+    model.next();
+    xhrManager.requests[4].resolve(createItems(10));
+
+    expect(xhrManager.requests[4].url).toEqual(
+      "/api/notifications?offset=20&limit=20"
+      + "&order=timestamp&direction=desc&backtestId=rmt");
+    expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
+    expect(model.filterCondition).toEqual({backtestId: "rmt"});
+    expect(model.items.length).toEqual( 10 );
+    expect(model.hasNext).toEqual( false );
+    expect(model.hasPrev).toEqual( true );
+    expect(model.selectedNotification).toBe( null );
+
+    model.filter(model.availableFilterConditions[2].condition);
+    xhrManager.requests[5].resolve({
+      count: 50
+    });
+    xhrManager.requests[6].resolve(createItems(20));
+
+    expect(xhrManager.requests[6].url).toEqual(
+      "/api/notifications?offset=0&limit=20"
+      + "&order=timestamp&direction=desc&backtestId=aa");
+    expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
+    expect(model.filterCondition).toEqual({backtestId: "aa"});
+    expect(model.items.length).toEqual( 20 );
+    expect(model.hasNext).toEqual( true );
+    expect(model.hasPrev).toEqual( false );
+    expect(model.selectedNotification).toBe( null );
+
+    model.next();
+    xhrManager.requests[7].resolve(createItems(20));
+
+    expect(xhrManager.requests[7].url).toEqual(
+      "/api/notifications?offset=20&limit=20"
+      + "&order=timestamp&direction=desc&backtestId=aa");
+    expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
+    expect(model.filterCondition).toEqual({backtestId: "aa"});
+    expect(model.items.length).toEqual( 20 );
+    expect(model.hasNext).toEqual( true );
+    expect(model.hasPrev).toEqual( true );
+    expect(model.selectedNotification).toBe( null );
+
+    model.sortBy({order:"agent_name", direction: "desc"});
+    xhrManager.requests[8].resolve(createItems(20));
+
+    expect(xhrManager.requests[8].url).toEqual(
+      "/api/notifications?offset=0&limit=20"
+      + "&order=agent_name&direction=desc&backtestId=aa");
+    expect(model.sortOrder).toEqual({order:"agent_name", direction: "desc"});
+    expect(model.filterCondition).toEqual({backtestId: "aa"});
+    expect(model.items.length).toEqual( 20 );
+    expect(model.hasNext).toEqual( true );
+    expect(model.hasPrev).toEqual( false );
+    expect(model.selectedNotification).toBe( null );
+
+
+    model.filter(model.availableFilterConditions[0].condition);
+    xhrManager.requests[9].resolve({
+      count: 0
+    });
+    expect(model.sortOrder).toEqual({order:"agent_name", direction: "desc"});
+    expect(model.filterCondition).toEqual({backtestId: null});
+    expect(model.items.length).toEqual( 0 );
+    expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( false );
     expect(model.selectedNotification).toBe( null );
   });

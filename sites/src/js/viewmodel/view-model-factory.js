@@ -16,6 +16,7 @@ export default class ViewModelFactory {
     this.graphService            = ContainerJS.Inject;
     this.logService              = ContainerJS.Inject;
     this.tradingSummariesService = ContainerJS.Inject;
+    this.backtests               = ContainerJS.Inject;
   }
   createChart(config={displayPositionsAndGraphs:false}) {
     return new Chart( config, this );
@@ -28,7 +29,7 @@ export default class ViewModelFactory {
   createNotificationsTableModel(pageSize=100,
     sortOrder={order:"timestamp", direction:"desc"}) {
     return new NotificationsTableModel(
-      pageSize, sortOrder, this.notificationService );
+      pageSize, sortOrder, this.notificationService, this.backtests );
   }
   createTradingSummaryViewModel(enablePeriodSelector=false) {
     const model = new TradingSummaryViewModel( this.tradingSummariesService );

@@ -9,9 +9,10 @@ export default class TableModel extends Observable {
   }
 
   initialize(loader) {
-    this.offset    = 0;
-    this.loader    = loader;
-    this.sortOrder = this.defaultSortOrder;
+    this.offset          = 0;
+    this.loader          = loader;
+    this.sortOrder       = this.defaultSortOrder;
+    this.filterCondition = null;
 
     this.items = [];
     this.hasNext = false;
@@ -19,10 +20,15 @@ export default class TableModel extends Observable {
   }
 
   load() {
-    this.loader.count().then((count)=>{
+    this.loader.count(this.filterCondition).then((count)=>{
       this.totalCount = count;
       this.offset = this.getDefaultOffset();
-      if (count > 0) this.loadItems();
+      if (count > 0) {
+        this.loadItems();
+      } else {
+        this.items = [];
+        this.updateState();
+      }
     });
   }
 
@@ -50,6 +56,12 @@ export default class TableModel extends Observable {
     return this.loadItems();
   }
 
+  filter(condition) {
+    this.filterCondition = condition;
+    this.offset = this.getDefaultOffset();
+    return this.load();
+  }
+
   sortBy(sortOrder) {
     this.sortOrder = sortOrder;
     this.offset = this.getDefaultOffset();
@@ -59,8 +71,8 @@ export default class TableModel extends Observable {
   fillNext() {
     if (!this.hasNext) return null;
     this.offset += this.pageSize;
-    return this.loader.load(
-      this.offset, this.pageSize, this.sortOrder ).then((items) => {
+    return this.loader.load(this.offset, this.pageSize,
+      this.sortOrder, this.filterCondition ).then((items) => {
         this.items      = this.items.concat(
           this.convertItems(items));
         this.updateState();
@@ -69,8 +81,8 @@ export default class TableModel extends Observable {
 
   loadItems() {
     this.items  = [];
-    return this.loader.load(
-      this.offset, this.pageSize, this.sortOrder ).then((items) => {
+    return this.loader.load( this.offset, this.pageSize,
+      this.sortOrder, this.filterCondition ).then((items) => {
         this.items      = this.convertItems(items);
         this.updateState();
     });
@@ -117,6 +129,14 @@ export default class TableModel extends Observable {
   get sortOrder() {
     return this.getProperty("sortOrder");
   }
+  set filterCondition(filterCondition) {
+    this.setProperty("filterCondition", filterCondition);
+  }
+  get filterCondition() {
+    return this.getProperty("filterCondition");
+  }
+
+
   set totalCount(totalCount) {
     this.setProperty("totalCount", totalCount);
   }

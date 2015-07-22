@@ -58,6 +58,28 @@ end
 BODY
     end
 
+    def new_notification_agent_body(seed, parent = nil)
+      <<BODY
+class TestAgent#{seed} #{ parent ? ' < ' + parent : '' }
+
+  include Jiji::Model::Agents::Agent
+
+  def post_create
+    notifier.push_notification('テスト通知', 'icon', [
+      {label: "アクション1", action: "aaa"},
+      {label: "アクション2", action: "bbb"}
+    ])
+  end
+
+  def do_action(action)
+    fail "test" if action == "error"
+    notifier.push_notification("do action " + action)
+  end
+
+end
+BODY
+    end
+
     def new_trading_context(broker = Mock::MockBroker.new,
       time_source = Jiji::Utils::TimeSource.new, logger = Logger.new(STDOUT))
       agents = Jiji::Model::Agents::Agents.new
@@ -108,11 +130,12 @@ BODY
         "message#{seed}", "icon#{seed}", actions)
     end
 
-    def register_backtest(seed, repository)
+    def register_backtest(seed, repository,
+      start_time=Time.at(seed * 100), end_time=Time.at((seed + 1) * 200))
       repository.register(
         'name'          => "テスト#{seed}",
-        'start_time'    => Time.at(seed * 100),
-        'end_time'      => Time.at((seed + 1) * 200),
+        'start_time'    => start_time,
+        'end_time'      => end_time,
         'balance'       => 1_000_000,
         'memo'          => "メモ#{seed}",
         'pair_names'    => [:EURJPY, :EURUSD],

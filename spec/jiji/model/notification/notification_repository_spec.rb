@@ -38,8 +38,8 @@ describe Jiji::Model::Notification::NotificationRepository do
     notifications = notification_repository.retrieve_notifications
 
     expect(notifications.length).to eq(20)
-    expect(notifications[0].timestamp).to eq(Time.at(0))
-    expect(notifications[19].timestamp).to eq(Time.at(9))
+    expect(notifications[0].timestamp).to eq(Time.at(99))
+    expect(notifications[19].timestamp).to eq(Time.at(90))
 
     notifications = notification_repository.retrieve_notifications(
       {}, { timestamp: :desc, backtest_id: :desc })
@@ -111,7 +111,7 @@ describe Jiji::Model::Notification::NotificationRepository do
     notification_repository.delete_notifications_of_rmt(Time.at(40))
 
     notifications = notification_repository.retrieve_notifications(
-      { backtest_id: nil })
+      { backtest_id: nil }, { timestamp: :asc, id: :asc })
 
     expect(notifications.size).to eq(20)
     expect(notifications[0].backtest_id).to eq(nil)
@@ -122,7 +122,7 @@ describe Jiji::Model::Notification::NotificationRepository do
     notification_repository.delete_notifications_of_rmt(Time.at(60))
 
     notifications = notification_repository.retrieve_notifications(
-      { backtest_id: nil })
+      { backtest_id: nil }, { timestamp: :asc, id: :asc })
     expect(notifications.size).to eq(20)
     expect(notifications[0].backtest_id).to eq(nil)
     expect(notifications[0].timestamp).to eq(Time.at(60))

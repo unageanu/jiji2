@@ -8,6 +8,7 @@ module Jiji::Composing::Configurators
     def configure(container)
       container.configure do
         object :notification_repository,  NotificationRepository.new
+        object :action_dispatcher,        ActionDispatcher.new
       end
     end
 

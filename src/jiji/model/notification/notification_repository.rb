@@ -36,7 +36,7 @@ module Jiji::Model::Notification
 
     def insert_default_sort_order(sort_order)
       sort_order ||= {}
-      sort_order[:timestamp] = :asc unless sort_order.include?(:timestamp)
+      sort_order[:timestamp] = :desc unless sort_order.include?(:timestamp)
       sort_order[:id] = :asc unless sort_order.include?(:id)
       sort_order
     end

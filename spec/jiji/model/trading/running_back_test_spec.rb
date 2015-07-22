@@ -106,9 +106,8 @@ describe Jiji::Model::Trading::BackTest do
     expect(Mail::TestMailer.deliveries[1].to).to eq ['foo@example.com']
     expect(Mail::TestMailer.deliveries[1].from).to eq ['jiji@unageanu.net']
 
-    notifications = notification_repository.retrieve_notifications({
-      backtest_id: test.id
-    })
+    notifications = notification_repository.retrieve_notifications(
+      { backtest_id: test.id }, { timestamp: :asc, id: :asc })
     expect(notifications.length).to eq 2
     notification = notifications[0]
     expect(notification.backtest_id).to eq test.id

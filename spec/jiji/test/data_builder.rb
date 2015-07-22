@@ -131,7 +131,7 @@ BODY
     end
 
     def register_backtest(seed, repository,
-      start_time=Time.at(seed * 100), end_time=Time.at((seed + 1) * 200))
+      start_time = Time.at(seed * 100), end_time = Time.at((seed + 1) * 200))
       repository.register(
         'name'          => "テスト#{seed}",
         'start_time'    => start_time,

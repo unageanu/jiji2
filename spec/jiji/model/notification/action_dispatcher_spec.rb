@@ -27,21 +27,21 @@ describe Jiji::Model::Notification::NotificationRepository do
       expect(notifications.length).to eq(1)
       notification = notifications[0]
       expect(notification.backtest_id).to eq backtest_id
-      expect(notification.message).to eq("テスト通知")
+      expect(notification.message).to eq('テスト通知')
       expect(notification.actions).to eq([
-        {"label" => "アクション1", "action" => "aaa"},
-        {"label" => "アクション2", "action" => "bbb"}
+        { 'label' => 'アクション1', 'action' => 'aaa' },
+        { 'label' => 'アクション2', 'action' => 'bbb' }
       ])
 
       action_dispatcher.dispatch(
-        notification.backtest_id, notification.agent_id, "aaa" ).value
+        notification.backtest_id, notification.agent_id, 'aaa').value
 
       notifications = notification_repository.retrieve_notifications({
         backtest_id: backtest_id
       })
       expect(notifications.length).to eq(2)
       notification = notifications[0]
-      expect(notification.message).to eq("do action aaa")
+      expect(notification.message).to eq('do action aaa')
       expect(notification.actions).to eq([])
     end
 
@@ -54,25 +54,25 @@ describe Jiji::Model::Notification::NotificationRepository do
 
       expect do
         action_dispatcher.dispatch(
-          notification.backtest_id, notification.agent_id, "error" ).value
+          notification.backtest_id, notification.agent_id, 'error').value
       end.to raise_error
 
       action_dispatcher.dispatch(
-        notification.backtest_id, notification.agent_id, "bbb" ).value
+        notification.backtest_id, notification.agent_id, 'bbb').value
 
       notifications = notification_repository.retrieve_notifications({
         backtest_id: backtest_id
       })
       expect(notifications.length).to eq(2)
       notification = notifications[0]
-      expect(notification.message).to eq("do action bbb")
+      expect(notification.message).to eq('do action bbb')
       expect(notification.actions).to eq([])
     end
 
     it 'エージェントが存在しない場合、エラーになる' do
       expect do
         action_dispatcher.dispatch(
-          backtest_id, "not_found", "aaa" ).value
+          backtest_id, 'not_found', 'aaa').value
       end.to raise_error(Jiji::Errors::NotFoundException)
     end
   end
@@ -102,7 +102,7 @@ describe Jiji::Model::Notification::NotificationRepository do
     let(:target) do
       backtest_repository = container.lookup(:backtest_repository)
       return data_builder.register_backtest(1,
-        backtest_repository, Time.at(0), Time.at(60*60*1000))
+        backtest_repository, Time.at(0), Time.at(60 * 60 * 1000))
     end
     let(:backtest_id) { target.id }
 
@@ -117,7 +117,7 @@ describe Jiji::Model::Notification::NotificationRepository do
 
       expect do
         action_dispatcher.dispatch(
-          "not_found", notification.agent_id, "aaa" ).value
+          'not_found', notification.agent_id, 'aaa').value
       end.to raise_error(Jiji::Errors::NotFoundException)
     end
 
@@ -131,17 +131,15 @@ describe Jiji::Model::Notification::NotificationRepository do
       sleep 1 while target.process.finished?
 
       action_dispatcher.dispatch(
-        notification.backtest_id, notification.agent_id, "aaa" ).value
+        notification.backtest_id, notification.agent_id, 'aaa').value
 
       notifications = notification_repository.retrieve_notifications({
         backtest_id: backtest_id
       })
       expect(notifications.length).to eq(2)
       notification = notifications[0]
-      expect(notification.message).to eq("do action aaa")
+      expect(notification.message).to eq('do action aaa')
       expect(notification.actions).to eq([])
     end
-
   end
-
 end

@@ -29,7 +29,7 @@ describe 'アクションの実行' do
 
     r = @client.post('/actions', {
       agent_id: notification['agent_id'],
-      action:  'aaa'
+      action:   'aaa'
     })
     expect(r.status).to eq 204
 

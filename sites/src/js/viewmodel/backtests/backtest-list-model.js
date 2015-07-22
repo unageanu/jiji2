@@ -7,11 +7,8 @@ export default class BacktestListModel extends Observable {
   constructor(backtests) {
     super();
     this.backtests = backtests;
-    this.registerObservers();
-  }
-
-  initialize( ) {
     this.setProperty("items", [] );
+    this.registerObservers();
   }
 
   registerObservers() {
@@ -24,7 +21,7 @@ export default class BacktestListModel extends Observable {
   }
 
   get items() {
-    this.getProperty("items");
+    return this.getProperty("items");
   }
 
 }

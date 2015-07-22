@@ -1,12 +1,13 @@
-import React  from "react"
-import Router from "react-router"
-import MUI    from "material-ui"
+import React               from "react"
+import Router              from "react-router"
+import MUI                 from "material-ui"
+import AbstractComponent   from "../widgets/abstract-component"
 
 const List         = MUI.List;
 const ListItem     = MUI.ListItem;
 const RaisedButton = MUI.RaisedButton;
 
-export default class BacktestList extends React.Component {
+export default class BacktestList extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -16,8 +17,10 @@ export default class BacktestList extends React.Component {
   }
 
   componentWillMount() {
-    this.model().addObserver("propertyChanged",
-      this.onPropertyChanged.bind(this), this);
+    this.registerPropertyChangeListener(this.props.model);
+    this.setState({
+      items : this.props.model.items
+    });
   }
   componentWillUnmount() {
     this.model().removeAllObservers(this);
@@ -46,12 +49,6 @@ export default class BacktestList extends React.Component {
         {backtest.name + " " + backtest.status + " " + (backtest.progress*100)}
       </ListItem>
     );
-  }
-
-  onPropertyChanged(k, ev) {
-    const newState = {};
-    newState[ev.key] = ev.newValue;
-    this.setState(newState);
   }
 
   onItemTapped(e, backtest) {

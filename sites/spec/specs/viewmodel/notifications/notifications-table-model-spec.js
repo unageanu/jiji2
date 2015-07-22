@@ -19,6 +19,9 @@ describe("NotificationsTableModel", () => {
     ]);
     xhrManager.requests = [];
   });
+  afterEach(() => {
+    model.backtests.stopUpdater();
+  });
 
   describe("load", () => {
 

@@ -248,7 +248,7 @@ describe("NotificationsTableModel", () => {
 
     expect(xhrManager.requests[3].url).toEqual(
       "/api/notifications?offset=0&limit=20"
-      + "&order=timestamp&direction=desc&backtestId=rmt");
+      + "&order=timestamp&direction=desc&backtest_id=rmt");
     expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
     expect(model.filterCondition).toEqual({backtestId: "rmt"});
     expect(model.items.length).toEqual( 20 );
@@ -261,7 +261,7 @@ describe("NotificationsTableModel", () => {
 
     expect(xhrManager.requests[4].url).toEqual(
       "/api/notifications?offset=20&limit=20"
-      + "&order=timestamp&direction=desc&backtestId=rmt");
+      + "&order=timestamp&direction=desc&backtest_id=rmt");
     expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
     expect(model.filterCondition).toEqual({backtestId: "rmt"});
     expect(model.items.length).toEqual( 10 );
@@ -277,7 +277,7 @@ describe("NotificationsTableModel", () => {
 
     expect(xhrManager.requests[6].url).toEqual(
       "/api/notifications?offset=0&limit=20"
-      + "&order=timestamp&direction=desc&backtestId=aa");
+      + "&order=timestamp&direction=desc&backtest_id=aa");
     expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
     expect(model.filterCondition).toEqual({backtestId: "aa"});
     expect(model.items.length).toEqual( 20 );
@@ -290,7 +290,7 @@ describe("NotificationsTableModel", () => {
 
     expect(xhrManager.requests[7].url).toEqual(
       "/api/notifications?offset=20&limit=20"
-      + "&order=timestamp&direction=desc&backtestId=aa");
+      + "&order=timestamp&direction=desc&backtest_id=aa");
     expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
     expect(model.filterCondition).toEqual({backtestId: "aa"});
     expect(model.items.length).toEqual( 20 );
@@ -303,7 +303,7 @@ describe("NotificationsTableModel", () => {
 
     expect(xhrManager.requests[8].url).toEqual(
       "/api/notifications?offset=0&limit=20"
-      + "&order=agent_name&direction=desc&backtestId=aa");
+      + "&order=agent_name&direction=desc&backtest_id=aa");
     expect(model.sortOrder).toEqual({order:"agent_name", direction: "desc"});
     expect(model.filterCondition).toEqual({backtestId: "aa"});
     expect(model.items.length).toEqual( 20 );

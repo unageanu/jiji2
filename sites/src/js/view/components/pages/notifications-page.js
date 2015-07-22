@@ -1,7 +1,7 @@
-import React            from "react"
-import MUI              from "material-ui"
-import AbstractPage     from "./abstract-page"
-import PositionsTable   from "../positions/positions-table"
+import React              from "react"
+import MUI                from "material-ui"
+import AbstractPage       from "./abstract-page"
+import NotificationsTable from "../notifications/notifications-table"
 
 export default class NotificationsPage extends AbstractPage {
 
@@ -18,6 +18,7 @@ export default class NotificationsPage extends AbstractPage {
   render() {
     return (
       <div>
+        <NotificationsTable model={this.model().notificationsTable} />
       </div>
     );
   }

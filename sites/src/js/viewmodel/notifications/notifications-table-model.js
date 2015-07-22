@@ -3,6 +3,11 @@ import NumberFormatter from "../utils/number-formatter"
 import DateFormatter   from "../utils/date-formatter"
 import Deferred        from "../../utils/deferred"
 
+const defaultFilterConditions = [
+  { id: "all", text:"すべて",        condition: {backtestId: null} },
+  { id: "rmt", text:"リアルトレード", condition: {backtestId: "rmt"} }
+];
+
 class Loader {
   constructor( notificationService ) {
     this.notificationService = notificationService;
@@ -43,6 +48,7 @@ export default class NotificationsTableModel extends TableModel {
     this.defaultSortOrder = defaultSortOrder;
     this.notificationService = notificationService;
     this.selectedNotification = null;
+    this.availableFilterConditions = defaultFilterConditions;
   }
 
   initialize() {
@@ -66,18 +72,14 @@ export default class NotificationsTableModel extends TableModel {
   }
 
   createAvailableFilterConditions() {
-    const conditions = [
-      { id: "all", text:"すべて",        condition: {backtestId: null} },
-      { id: "rmt", text:"リアルトレード", condition: {backtestId: "rmt"} }
-    ];
-    this.backtests.tests.forEach((test) => {
-      conditions.push({
+    const backtestConditions = this.backtests.tests.map((test) => {
+      return {
         id: test.id,
         text: test.name,
         condition: {backtestId: test.id }
-      });
+      };
     });
-    return conditions;
+    return defaultFilterConditions.concat(backtestConditions);
   }
 
   markAsRead(notification) {

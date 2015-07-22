@@ -44,6 +44,7 @@ module Jiji::Web
       builder.map('/api/agents')        { run AgentService }
       builder.map('/api/logs')          { run LogService }
       builder.map('/api/notifications') { run NotificationService }
+      builder.map('/api/actions')       { run ActionService }
     end
 
     def register_trading_services(builder)

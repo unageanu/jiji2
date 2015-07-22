@@ -8,6 +8,7 @@ describe '通知取得' do
   end
 
   after(:context) do
+    Jiji::Model::Notification::Notification.delete_all
     @agent_registry.remove_source('aaa')
   end
 

@@ -16,5 +16,6 @@ require 'trading/positions_spec'
 require 'trading/trading_summaries_spec'
 require 'trading/logs_spec'
 require 'trading/notifications_spec'
+require 'trading/action_spec'
 
 require 'utils/echo_spec'

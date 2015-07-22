@@ -14,7 +14,7 @@ module Jiji::Web
 
     get '/' do
       sort_order = get_sort_order_from_query_param('order', 'direction')
-      filter_condition = reaa_filter_condition_from_query_param
+      filter_condition = read_filter_condition_from_query_param
       offset     = request['offset'] ? request['offset'].to_i : nil
       limit      = request['limit']  ? request['limit'].to_i : nil
       notifications = repository.retrieve_notifications(
@@ -27,7 +27,7 @@ module Jiji::Web
     end
 
     get '/count' do
-      filter_condition = reaa_filter_condition_from_query_param
+      filter_condition = read_filter_condition_from_query_param
       ok({ count: repository.count_notifications(filter_condition) })
     end
 
@@ -44,7 +44,7 @@ module Jiji::Web
       ok(notification.to_h)
     end
 
-    def reaa_filter_condition_from_query_param
+    def read_filter_condition_from_query_param
       id_str = request['backtest_id']
       return {} unless id_str
       {

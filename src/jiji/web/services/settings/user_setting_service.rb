@@ -23,7 +23,7 @@ module Jiji::Web
     end
 
     options '/password' do
-      allow('GET,PUT,OPTIONS')
+      allow('PUT,OPTIONS')
     end
 
     put '/password' do

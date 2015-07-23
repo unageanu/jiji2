@@ -71,7 +71,7 @@ class TestAgent#{seed} #{ parent ? ' < ' + parent : '' }
     ])
   end
 
-  def do_action(action)
+  def execute_action(action)
     fail "test" if action == "error"
     notifier.push_notification("do action " + action)
     return "OK " + action

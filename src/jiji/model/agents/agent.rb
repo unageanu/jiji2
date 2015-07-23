@@ -51,7 +51,7 @@ module Jiji::Model::Agents::Agent
   #====アクションを実行します
   # 戻り値で応答メッセージを返却できます。
   # 応答メッセージは、画面からアクションを実行した時に表示されます。
-  def do_action(action_name)
+  def execute_action(action)
     'OK'
   end
 

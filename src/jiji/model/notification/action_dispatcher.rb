@@ -14,7 +14,7 @@ module Jiji::Model::Notification
       resolve_target(backtest_id).process.post_exec do |context, _queue|
         agent = context.agents[agent_id] \
              || not_found(Jiji::Model::Agents::Agent, agent_id: agent_id)
-        agent.do_action(action)
+        agent.execute_action(action)
       end
     end
 

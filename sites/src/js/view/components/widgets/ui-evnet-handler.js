@@ -4,7 +4,7 @@ import AbstractComponent from "../widgets/abstract-component";
 
 const Snackbar = MUI.Snackbar;
 
-export default class ErrorView extends AbstractComponent {
+export default class UIEventHandler extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -14,10 +14,10 @@ export default class ErrorView extends AbstractComponent {
   }
 
   componentWillMount() {
-    this.errorQueue().addObserver("pushed", () => this.processErrorEvents());
+    this.eventQueue().addObserver("pushed", () => this.processErrorEvents());
   }
   componentWillUnmount() {
-    this.errorQueue().removeAllObservers(this);
+    this.eventQueue().removeAllObservers(this);
   }
 
   render() {
@@ -36,7 +36,8 @@ export default class ErrorView extends AbstractComponent {
   }
 
   processErrorEvents() {
-    let errorEvent = this.errorQueue().shift();
+    if (this.refs["message-bar"].state.open) return;
+    let errorEvent = this.eventQueue().shift();
     if (errorEvent) {
       this.processError(errorEvent);
     }
@@ -50,11 +51,11 @@ export default class ErrorView extends AbstractComponent {
     }
   }
 
-  errorQueue() {
-    return this.context.application.errorEventQueue;
+  eventQueue() {
+    return this.context.application.eventQueue;
   }
 }
-ErrorView.contextTypes = {
+UIEventHandler.contextTypes = {
   application: React.PropTypes.object.isRequired,
   router: React.PropTypes.func
 };

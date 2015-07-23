@@ -108,8 +108,7 @@ export default class NotificationsTable extends AbstractComponent {
     </div>;
   }
   createActionButtons(item, action) {
-    const execute = () => this.model.executeAction(
-      item.backtestId, item.agentId, action.action);
+    const execute = () => this.props.model.executeAction(item, action.action);
     return <FlatButton
       label={action.label}
       onClick={execute}

@@ -53,6 +53,9 @@ function viewModel(binder) {
     .onInitialize("initialize");
 
   binder.bind("viewModelFactory").to("viewmodel.ViewModelFactory");
+
+  binder.bind("eventQueue")
+    .to("viewmodel.widgets.EventQueue");
 }
 
 function remoting(binder) {
@@ -66,8 +69,6 @@ function errorHandling(binder) {
   binder.bind("errorHandler")
     .to("errorhandling.ErrorHandler")
     .onInitialize("registerHandlers");
-  binder.bind("errorEventQueue")
-    .to("errorhandling.ErrorEventQueue");
 }
 
 function security(binder) {
@@ -86,6 +87,7 @@ function services(binder) {
   binder.bind("rmtService").to("services.RmtService");
   binder.bind("logService").to("services.LogService");
   binder.bind("notificationService").to("services.NotificationService");
+  binder.bind("actionService").to("services.ActionService");
 }
 
 function stores(binder) {

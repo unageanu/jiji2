@@ -7,7 +7,7 @@ export default class Application {
 
     this.xhrManager        = ContainerJS.Inject;
     this.errorHandler      = ContainerJS.Inject;
-    this.errorEventQueue   = ContainerJS.Inject;
+    this.eventQueue        = ContainerJS.Inject;
 
     this.navigator         = ContainerJS.Inject;
     this.viewModelFactory  = ContainerJS.Inject;

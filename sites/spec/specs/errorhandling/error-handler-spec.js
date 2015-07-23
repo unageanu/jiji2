@@ -12,7 +12,7 @@ describe("ErrorHandler", () => {
     let d = container.get("errorHandler");
     errorHandler      = ContainerJS.utils.Deferred.unpack(d);
     xhrManager        = errorHandler.xhrManager;
-    errorEventQueue   = errorHandler.errorEventQueue;
+    errorEventQueue   = errorHandler.eventQueue;
   });
 
   it("handle(error)でerrorに対応するメッセージが、queueに積まれる", () => {
@@ -21,6 +21,7 @@ describe("ErrorHandler", () => {
       field: "ファイル名"
     });
     expect(errorEventQueue.queue).toEqual([{
+      type: "error",
       message: "ファイル名を入力してください"
     }]);
   });
@@ -30,6 +31,7 @@ describe("ErrorHandler", () => {
       code: "NOT_FOUND"
     });
     expect(errorEventQueue.queue).toEqual([{
+      type: "error",
       message:"データが見つかりません。画面を再読み込みして最新の情報に更新してください"
     }]);
   });
@@ -51,7 +53,7 @@ describe("ErrorHandler", () => {
 
   it("認証エラーが発生すると、queueにログイン画面への遷移イベントが積まれる", () => {
     xhrManager.fire("startBlocking", {});
-    expect(errorEventQueue.queue).toEqual([{route:"/login"}]);
+    expect(errorEventQueue.queue).toEqual([{type: "routing", route:"/login"}]);
   });
 
 });

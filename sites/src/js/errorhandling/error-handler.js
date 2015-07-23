@@ -7,14 +7,14 @@ export default class ErrorHandler {
     super();
 
     this.xhrManager      = ContainerJS.Inject;
-    this.errorEventQueue = ContainerJS.Inject;
+    this.eventQueue = ContainerJS.Inject;
   }
 
   handle(error) {
     console.log(error);
     if (error.preventDefault) return;
     const message = ErrorMessages.getMessageFor(error);
-    if (message) this.errorEventQueue.push({message:message});
+    if (message) this.eventQueue.push({type:"error", message:message});
   }
 
   registerHandlers() {
@@ -26,7 +26,7 @@ export default class ErrorHandler {
   }
   registerUnauthorizedErrorHandler() {
     this.xhrManager.addObserver("startBlocking", () => {
-      this.errorEventQueue.push({route: "/login"});
+      this.eventQueue.push({type:"routing", route: "/login"});
     });
   }
 }

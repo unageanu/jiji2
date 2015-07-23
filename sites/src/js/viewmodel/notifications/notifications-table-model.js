@@ -42,11 +42,14 @@ class NotificationModel {
 }
 
 export default class NotificationsTableModel extends TableModel {
-  constructor( pageSize, defaultSortOrder, notificationService, backtests) {
+  constructor( pageSize, defaultSortOrder, notificationService,
+    actionService, backtests, eventQueue) {
     super( defaultSortOrder, pageSize );
     this.backtests = backtests;
     this.defaultSortOrder = defaultSortOrder;
     this.notificationService = notificationService;
+    this.actionService = actionService;
+    this.eventQueue = eventQueue;
     this.selectedNotification = null;
     this.availableFilterConditions = defaultFilterConditions;
   }
@@ -86,6 +89,32 @@ export default class NotificationsTableModel extends TableModel {
     notification.readAt = new Date();
     this.setProperty("items", this.items);
     this.notificationService.markAsRead( notification.id );
+  }
+
+  executeAction( notification, action ) {
+    this.actionService.post(notification.backtestId,
+      notification.agentId, action).then((result) => {
+      this.eventQueue.push(
+        this.createResponseMessage(result, notification, action));
+    }, (error)  => {
+      error.preventDefault = true;
+      this.eventQueue.push(this.createErrorMessage(error, notification));
+    });
+  }
+  createResponseMessage(result, notification, action) {
+    return {
+      type: "info",
+      message: notification.agentName + " : "
+        + (result.message || "アクション \"" + action + "\" を実行しました")
+    };
+  }
+  createErrorMessage(error, notification) {
+    return {
+      type: "error",
+      message: notification.agentName
+        + " : アクション実行時にエラーが発生しました。"
+        + "ログを確認してください。"
+    };
   }
 
   set selectedNotification( notification ) {

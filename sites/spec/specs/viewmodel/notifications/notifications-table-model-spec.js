@@ -5,6 +5,7 @@ describe("NotificationsTableModel", () => {
 
   var model;
   var xhrManager;
+  var eventQueue;
 
   beforeEach(() => {
     let container = new ContainerFactory().createContainer();
@@ -12,6 +13,7 @@ describe("NotificationsTableModel", () => {
     const factory = ContainerJS.utils.Deferred.unpack(d);
     model = factory.createNotificationsTableModel(20);
     model.initialize();
+    eventQueue = model.eventQueue;
     xhrManager = model.notificationService.xhrManager;
     xhrManager.requests[0].resolve([
       {id: "aa", name:"aaa", createdAt: new Date(200)},
@@ -325,6 +327,49 @@ describe("NotificationsTableModel", () => {
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( false );
     expect(model.selectedNotification).toBe( null );
+  });
+
+  describe("executeAction", () => {
+    it("アクションを実行できる", () => {
+      model.executeAction({
+        backtestId: null,
+        agentId:    "aaaa",
+        agentName:  "エージェントA"
+      }, "aaa");
+      xhrManager.requests[0].resolve({message: "OK"});
+
+      expect(eventQueue.queue).toEqual([{
+        type: "info",
+        message: "エージェントA : OK"
+      }]);
+    });
+    it("メッセージがない場合、デフォルトのメッセージが使われる", () => {
+      model.executeAction({
+        backtestId: null,
+        agentId:    "aaaa",
+        agentName:  "エージェントA"
+      }, "aaa");
+      xhrManager.requests[0].resolve({});
+
+      expect(eventQueue.queue).toEqual([{
+        type: "info",
+        message: "エージェントA : アクション \"aaa\" を実行しました"
+      }]);
+    });
+    it("エラーが発生した場合、エラーメッセージが表示される", () => {
+      model.executeAction({
+        backtestId: null,
+        agentId:    "aaaa",
+        agentName:  "エージェントA"
+      }, "aaa");
+      xhrManager.requests[0].reject({});
+
+      expect(eventQueue.queue).toEqual([{
+        type: "error",
+        message: "エージェントA : アクション実行時にエラーが発生しました。"
+          + "ログを確認してください。"
+      }]);
+    });
   });
 
   function createItems(count) {

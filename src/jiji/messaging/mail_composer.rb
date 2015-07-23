@@ -15,9 +15,9 @@ module Jiji::Messaging
     needs :userSettingSMTPServer
     needs :postmarkSMTPServer
 
-    def compose(to, title, from = FROM, &block)
+    def compose(to, title, from = FROM, server_setting = nil,  &block)
       mail = Mail.new(&block)
-      setup_delivery_method(mail)
+      setup_delivery_method(mail, server_setting)
 
       mail.to      = to
       mail.from    = from
@@ -33,11 +33,11 @@ module Jiji::Messaging
 
     private
 
-    def setup_delivery_method(mail)
+    def setup_delivery_method(mail, server_setting)
       if ENV['RACK_ENV'] == 'test'
         mail.delivery_method :test
       else
-        mail.delivery_method :smtp, smtp_server.setting
+        mail.delivery_method :smtp, server_setting || smtp_server.setting
       end
     end
 

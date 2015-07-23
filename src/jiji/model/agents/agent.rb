@@ -35,23 +35,24 @@ module Jiji::Model::Agents::Agent
   attr_accessor :notifier
   attr_accessor :logger
 
-  #====エージェントの登録後に1度だけ呼び出される関数。
-  # 必要に応じてオーバーライドしてください。コンストラクタと違い、
-  # このメソッド内ではbrokerやgraph_factory,logger等が使用可能です。
+  #====エージェントの登録後に1度だけ呼び出される関数です
+  # コンストラクタと違い、このメソッド内ではbrokerやgraph_factory,logger等が使用可能です。
   def post_create
   end
 
-  #====レート情報が通知されるメソッドです。
+  #====レート情報が通知されるメソッドです
   # エージェントが動作している間順次呼び出されます。
   # このメソッドをオーバーライドして、シグナルの計算や
-  # 取り引きを行うロジックを実装してください
+  # 取り引きを行うロジックを実装します
   # tick:: Jiji::Model::Trading::Tick
-  def next_tick(_tick)
+  def next_tick(tick)
   end
 
-  #====アクションを実行します。
-  # 必要に応じてオーバーライドしてください。
+  #====アクションを実行します
+  # 戻り値で応答メッセージを返却できます。
+  # 応答メッセージは、画面からアクションを実行した時に表示されます。
   def do_action(action_name)
+    'OK'
   end
 
   #====エージェントの状態を返します。
@@ -61,7 +62,7 @@ module Jiji::Model::Agents::Agent
 
   #====保存された状態データから、状態を復元します。
   # 必要に応じてオーバーライドしてください。
-  def restore_state(_state)
+  def restore_state(state)
   end
 
   #===エージェントのプロパティ

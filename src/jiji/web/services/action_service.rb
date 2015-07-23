@@ -14,9 +14,15 @@ module Jiji::Web
 
     post '/' do
       body = load_body
-      action_dispatcher.dispatch(
+      future = action_dispatcher.dispatch(
         read_backtest_id_from_body(body), body['agent_id'], body['action'])
-      no_content
+      ok(build_response(future))
+    end
+
+    def build_response(future)
+      { message: future.value }
+    rescue Exception => e # rubocop:disable Lint/RescueException
+      illegal_argument(e.to_s)
     end
 
     def read_backtest_id_from_body(body)

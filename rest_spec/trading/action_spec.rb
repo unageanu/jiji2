@@ -31,15 +31,20 @@ describe 'アクションの実行' do
       agent_id: notification['agent_id'],
       action:   'aaa'
     })
-    expect(r.status).to eq 204
-
-    sleep 1
+    expect(r.status).to eq 200
+    expect(r.body['message']).to eq 'OK aaa'
 
     r = @client.get('notifications',  {
       'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 2
+
+    r = @client.post('/actions', {
+      agent_id: notification['agent_id'],
+      action:   'error'
+    })
+    expect(r.status).to eq 400
   end
 
   def register_agent

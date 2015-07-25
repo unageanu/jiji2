@@ -11,9 +11,9 @@ module Jiji::Model::Settings
 
     include Encase
 
-    field :encrypted_mail_address, type: String, default: nil
-    field :salt,                   type: String, default: nil
-    field :hashed_password,        type: String, default: nil
+    field :encrypted_mail_address, type: String,  default: nil
+    field :salt,                   type: String,  default: nil
+    field :hashed_password,        type: String,  default: nil
     field :expiration_days,        type: Integer, default: 10
 
     needs :cryptographic_service

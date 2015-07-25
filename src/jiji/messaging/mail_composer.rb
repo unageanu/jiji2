@@ -12,8 +12,8 @@ module Jiji::Messaging
     include Encase
     include Jiji::Errors
 
-    needs :userSettingSMTPServer
-    needs :postmarkSMTPServer
+    needs :user_setting_smtp_server
+    needs :postmark_smtp_server
 
     def compose(to, title, from = FROM, server_setting = nil,  &block)
       mail = Mail.new(&block)
@@ -26,8 +26,8 @@ module Jiji::Messaging
     end
 
     def smtp_server
-      return userSettingSMTPServer if userSettingSMTPServer.available?
-      return postmarkSMTPServer    if postmarkSMTPServer.available?
+      return user_setting_smtp_server if user_setting_smtp_server.available?
+      return postmark_smtp_server    if postmark_smtp_server.available?
       illegal_state('SMTP server is not set.')
     end
 

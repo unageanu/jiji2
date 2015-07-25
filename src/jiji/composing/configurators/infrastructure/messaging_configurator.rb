@@ -8,8 +8,10 @@ module Jiji::Composing::Configurators
     def configure(container)
       container.configure do
         object :mail_composer,         MailComposer.new
-        object :userSettingSMTPServer, MailComposer::UserSettingSMTPServer.new
-        object :postmarkSMTPServer,    MailComposer::PostmarkSMTPServer.new
+        object :user_setting_smtp_server,
+          MailComposer::UserSettingSMTPServer.new
+        object :postmark_smtp_server,
+          MailComposer::PostmarkSMTPServer.new
 
         object :device_register,    DeviceRegister.new
         object :push_notifier,      PushNotifier.new

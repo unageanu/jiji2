@@ -37,7 +37,7 @@ module Jiji::Web
 
     get '/status' do
       ok({
-        enable_postmark: (postmarkSMTPServer.available? == true)
+        enable_postmark: (postmark_smtp_server.available? == true)
       })
     end
 
@@ -53,15 +53,15 @@ module Jiji::Web
     def compose_test_mail(body)
       mail_composer.compose(to, '[Jiji] テストメール',
         Jiji::Messaging::MailComposer::FROM,
-        load_smtp_server_setting_from( body )) do
-          text_part do
-            content_type 'text/plain; charset=UTF-8'
-            body 'メール送信のテスト用メールです。'
-          end
+        load_smtp_server_setting_from(body)) do
+        text_part do
+          content_type 'text/plain; charset=UTF-8'
+          body 'メール送信のテスト用メールです。'
+        end
       end
     end
 
-    def load_smtp_server_setting_from( body )
+    def load_smtp_server_setting_from(body)
       {
         address:   body['smtp_host'],
         port:      body['smtp_port'],
@@ -71,12 +71,14 @@ module Jiji::Web
       }
     end
 
-    def postmarkSMTPServer
-      lookup(:postmarkSMTPServer)
+    def postmark_smtp_server
+      lookup(:postmark_smtp_server)
     end
+
     def mail_composer
       lookup(:mail_composer)
     end
+
     def setting
       lookup(:setting_repository).mail_composer_setting
     end

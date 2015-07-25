@@ -3,7 +3,6 @@
 require 'jiji/test/test_configuration'
 
 describe Jiji::Utils::Strings do
-
   describe '#mask' do
     it '空文字' do
       expect(Jiji::Utils::Strings.mask('')).to eq ''
@@ -37,6 +36,5 @@ describe Jiji::Utils::Strings do
       expect(Jiji::Utils::Strings.mask('あああああ', 2)).to eq 'ああxxx'
       expect(Jiji::Utils::Strings.mask('あああああ', 3)).to eq 'あああxx'
     end
-
   end
 end

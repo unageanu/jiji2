@@ -1,11 +1,14 @@
 import Observable      from "../../utils/observable"
 import Deferred        from "../../utils/deferred"
+import Error           from "../../model/error"
+import ErrorMessages   from "../../errorhandling/error-messages"
 
 export default class SecuritiesSettingModel extends Observable {
 
   constructor(securitiesSettingService) {
     super();
     this.securitiesSettingService = securitiesSettingService;
+    this.error = null;
   }
 
   initialize() {
@@ -21,8 +24,16 @@ export default class SecuritiesSettingModel extends Observable {
   }
 
   save(configurations) {
+    this.error = null;
     return this.securitiesSettingService.setActiveSecurities(
-      this.activeSecuritiesId, configurations);
+      this.activeSecuritiesId, configurations).fail( (error) => {
+        if (error.code === Error.Code.INVALID_VALUE ) {
+          this.error = "証券会社に接続できませんでした。<br/>アクセストークンを確認してください。";
+        } else {
+          this.error = ErrorMessages.getMessageFor(error);
+        }
+        error.preventDefault = true;
+      });
   }
 
   updateConfiguration() {
@@ -60,6 +71,13 @@ export default class SecuritiesSettingModel extends Observable {
   }
   set activeSecuritiesConfiguration(configuration) {
     this.setProperty("activeSecuritiesConfiguration", configuration);
+  }
+
+  get error() {
+    return this.getProperty("error");
+  }
+  set error(error) {
+    this.setProperty("error", error);
   }
 
 }

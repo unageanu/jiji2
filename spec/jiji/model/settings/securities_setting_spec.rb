@@ -20,27 +20,46 @@ describe Jiji::Model::Settings::SecuritiesSetting do
     @data_builder.clean
   end
 
-  it 'アクティブな証券会社を設定できる' do
-    plugin = nil
-    @setting.on_setting_changed do |_key, event|
-      plugin = event[:value]
+  describe '#set_active_securities' do
+    it 'アクティブな証券会社を設定できる' do
+      plugin = nil
+      @setting.on_setting_changed do |_key, event|
+        plugin = event[:value]
+      end
+
+      expect(@provider.get.class).to be Jiji::Test::Mock::MockSecurities
+      # テスト環境では、初期値はMockになる
+
+      @setting.set_active_securities(:MOCK,  'a' => 'aa', 'b' => 'bb')
+
+      expect(@provider.get.class).to be Jiji::Test::Mock::MockSecurities
+      expect(@provider.get.config).to eq('a' => 'aa', 'b' => 'bb')
+      expect(plugin.class).to be Jiji::Test::Mock::MockSecurities
+      expect(plugin.config).to eq('a' => 'aa', 'b' => 'bb')
+
+      @setting.set_active_securities(:MOCK2, 'a' => 'aa', 'c' => 'cc')
+
+      expect(@provider.get.class).to eq Jiji::Test::Mock::MockSecurities2
+      expect(@provider.get.config).to eq('a' => 'aa', 'c' => 'cc')
+      expect(plugin.class).to eq Jiji::Test::Mock::MockSecurities2
+      expect(plugin.config).to eq('a' => 'aa', 'c' => 'cc')
     end
+    it '接続確認としてアカウント情報の取得が行われる。取得できない場合、設定は変更されない' do
+      @setting.set_active_securities(:MOCK,  'a' => 'aa', 'b' => 'bb')
 
-    expect(@provider.get.class).to be Jiji::Test::Mock::MockSecurities
+      expect do
+        @setting.set_active_securities(:MOCK2,
+          'fail_on_test_connection' => true)
+      end.to raise_error(ArgumentError)
 
-    @setting.set_active_securities(:MOCK,  'a' => 'aa', 'b' => 'bb')
+      expect(@provider.get.class).to be Jiji::Test::Mock::MockSecurities
+      expect(@provider.get.config).to eq('a' => 'aa', 'b' => 'bb')
 
-    expect(@provider.get.class).to be Jiji::Test::Mock::MockSecurities
-    expect(@provider.get.config).to eq('a' => 'aa', 'b' => 'bb')
-    expect(plugin.class).to be Jiji::Test::Mock::MockSecurities
-    expect(plugin.config).to eq('a' => 'aa', 'b' => 'bb')
-
-    @setting.set_active_securities(:MOCK2, 'a' => 'aa', 'c' => 'cc')
-
-    expect(@provider.get.class).to eq Jiji::Test::Mock::MockSecurities2
-    expect(@provider.get.config).to eq('a' => 'aa', 'c' => 'cc')
-    expect(plugin.class).to eq Jiji::Test::Mock::MockSecurities2
-    expect(plugin.config).to eq('a' => 'aa', 'c' => 'cc')
+      @setting    = @repository.securities_setting
+      @setting.setup
+      expect(@provider.get.class).to be Jiji::Test::Mock::MockSecurities
+      expect(@provider.get.config).to eq('a' => 'aa', 'b' => 'bb')
+    end
   end
 
   it 'プラグインの設定情報を取得できる' do

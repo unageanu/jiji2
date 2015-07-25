@@ -75,6 +75,7 @@ module Jiji::Test::Mock
     end
 
     def retrieve_account
+      fail 'test' if @config['fail_on_test_connection']
       Account.new(0, 100_000, 0.04)
     end
 

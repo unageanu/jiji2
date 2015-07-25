@@ -29,6 +29,14 @@ describe '証券会社の設定' do
     ]
   end
 
+  it '接続エラーの場合、エラーが返される' do
+    r = @client.put('/settings/securities/active-securities', {
+        'securities_id' => 'MOCK',
+        'configurations' => { 'fail_on_test_connection' => 'true' }
+      })
+    expect(r.status).to eq 400
+  end
+
   it 'アクティブな証券会社を設定できる' do
     r = @client.get('/settings/securities/available-securities/' \
       + 'MOCK/configurations')

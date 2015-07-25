@@ -19,11 +19,11 @@ module Jiji::Web
       ok(available_securities)
     end
 
-    options '/available-securities/:securities_id/configuration_definitions' do
+    options '/available-securities/:securities_id/configuration-definitions' do
       allow('GET,OPTIONS')
     end
 
-    get '/available-securities/:securities_id/configuration_definitions' do
+    get '/available-securities/:securities_id/configuration-definitions' do
       config = securities_factory.get(params['securities_id'].to_sym)
       ok(config[:configuration_definition])
     end

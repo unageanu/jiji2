@@ -21,7 +21,7 @@ describe '証券会社の設定' do
   it 'GET /settings/securities/available-securities/$id/' \
     + 'configuration_definitions で証券会社の設定値が取得できる' do
     r = @client.get('/settings/securities/available-securities/' \
-        + 'MOCK/configuration_definitions')
+        + 'MOCK/configuration-definitions')
     expect(r.status).to eq 200
     expect(r.body).to eq [
       { 'key' => 'a', 'description' => 'aaa' },

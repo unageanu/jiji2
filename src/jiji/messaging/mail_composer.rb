@@ -25,6 +25,16 @@ module Jiji::Messaging
       mail.deliver
     end
 
+    def compose_test_mail(to, server_setting = nil)
+      compose(to, '[Jiji] テストメール',
+        Jiji::Messaging::MailComposer::FROM, server_setting) do
+        text_part do
+          content_type 'text/plain; charset=UTF-8'
+          body 'メール送信のテスト用メールです。'
+        end
+      end
+    end
+
     def smtp_server
       return user_setting_smtp_server if user_setting_smtp_server.available?
       return postmark_smtp_server    if postmark_smtp_server.available?

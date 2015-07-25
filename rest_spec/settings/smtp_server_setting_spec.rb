@@ -40,5 +40,10 @@ describe 'SMTPサーバーの設定' do
       password:  'pass1'
     })
     expect(r.status).to eq 204
+
+    r = @client.post('/settings/smtp-server/test', {
+      mail_address: 'foo@var.com'
+    })
+    expect(r.status).to eq 204
   end
 end

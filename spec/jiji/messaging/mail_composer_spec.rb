@@ -88,4 +88,13 @@ describe Jiji::Messaging::MailComposer do
     expect(Mail::TestMailer.deliveries[1].to).to eq ['foo@var.com']
     expect(Mail::TestMailer.deliveries[1].from).to eq ['test@unageanu.net']
   end
+
+  it 'テストメールを送信できる' do
+    @composer.compose_test_mail('foo@var.com')
+
+    expect(Mail::TestMailer.deliveries.length).to eq 1
+    expect(Mail::TestMailer.deliveries[0].subject).to eq '[Jiji] テストメール'
+    expect(Mail::TestMailer.deliveries[0].to).to eq ['foo@var.com']
+    expect(Mail::TestMailer.deliveries[0].from).to eq ['jiji@unageanu.net']
+  end
 end

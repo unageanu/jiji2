@@ -23,11 +23,17 @@ describe 'ユーザー情報の設定' do
     expect(r.status).to eq 401
   end
 
-  it 'PUT /settings/user/mail_address　でメールアドレスを変更できる' do
+  it 'PUT /settings/user/mailaddress　でメールアドレスを変更できる' do
     r = @client.put('/settings/user/mailaddress', {
       'mail_address' => 'foo2@var.com'
     })
     expect(r.status).to eq 204
+  end
+
+  it 'GET /settings/user/mailaddress　でメールアドレスを取得できる' do
+    r = @client.get('/settings/user/mailaddress')
+    expect(r.status).to eq 200
+    expect(r.body['mail_address']).to eq 'foo2@var.com'
   end
 
   it 'メールアドレスが不正な場合、エラーになる' do

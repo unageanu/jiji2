@@ -11,7 +11,7 @@ module Jiji::Web
     end
 
     get '/mailaddress' do
-      ok(security_setting.mail_address)
+      ok({ mail_address: security_setting.mail_address })
     end
 
     put '/mailaddress' do

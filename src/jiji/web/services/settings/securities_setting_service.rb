@@ -55,8 +55,9 @@ module Jiji::Web
 
     put '/active-securities' do
       body = load_body
+      configuration = body['configurations'].with_indifferent_access
       securities_setting.set_active_securities(
-        body['securities_id'].to_sym, body['configurations'])
+        body['securities_id'].to_sym, configuration)
       no_content
     end
 

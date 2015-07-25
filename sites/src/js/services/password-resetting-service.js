@@ -12,7 +12,7 @@ export default class PasswordResettingService extends AbstractService {
   resetPassword(token, newPassword) {
     const url = this.serviceUrl();
     return this.xhrManager.xhr( url, "PUT", {
-      "token": mailAddress,
+      "token": token,
       "new_password": newPassword
     });
   }

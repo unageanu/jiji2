@@ -4,6 +4,7 @@ import PositionsTableModel     from "./positions/positions-table-model"
 import NotificationsTableModel from "./notifications/notifications-table-model"
 import TradingSummaryViewModel from "./trading-summary/trading-summary-view-model"
 import LogViewerModel          from "./logs/log-viewer-model"
+import SecuritiesSettingModel  from "./settings/securities-setting-model"
 
 export default class ViewModelFactory {
 
@@ -19,6 +20,12 @@ export default class ViewModelFactory {
     this.tradingSummariesService = ContainerJS.Inject;
     this.backtests               = ContainerJS.Inject;
     this.eventQueue              = ContainerJS.Inject;
+
+    this.securitiesSettingService = ContainerJS.Inject;
+    this.smtpServerSettingService = ContainerJS.Inject;
+    this.userSettingService       = ContainerJS.Inject;
+    this.passwordResettingService = ContainerJS.Inject;
+    this.initialSettingService    = ContainerJS.Inject;
   }
   createChart(config={displayPositionsAndGraphs:false}) {
     return new Chart( config, this );
@@ -41,5 +48,8 @@ export default class ViewModelFactory {
   }
   createLogViewerModel() {
     return new LogViewerModel( this.logService );
+  }
+  createSecuritiesSettingModel() {
+    return new SecuritiesSettingModel( this.securitiesSettingService );
   }
 }

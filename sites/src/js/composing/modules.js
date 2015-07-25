@@ -83,11 +83,20 @@ function services(binder) {
   binder.bind("graphService").to("services.GraphService");
   binder.bind("agentService").to("services.AgentService");
   binder.bind("backtestService").to("services.BacktestService");
-  binder.bind("tradingSummariesService").to("services.TradingSummariesService");
+  binder.bind("tradingSummariesService")
+    .to("services.TradingSummariesService");
   binder.bind("rmtService").to("services.RmtService");
   binder.bind("logService").to("services.LogService");
   binder.bind("notificationService").to("services.NotificationService");
   binder.bind("actionService").to("services.ActionService");
+  binder.bind("securitiesSettingService")
+    .to("services.SecuritiesSettingService");
+  binder.bind("smtpServerSettingService")
+    .to("services.SmtpServerSettingService");
+  binder.bind("userSettingService").to("services.UserSettingService");
+  binder.bind("passwordResettingService")
+    .to("services.PasswordResettingService");
+  binder.bind("initialSettingService").to("services.InitialSettingService");
 }
 
 function stores(binder) {

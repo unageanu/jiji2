@@ -14,11 +14,11 @@ export default class UserSettingService extends AbstractService {
     });
   }
 
-  setPassword(old, new) {
+  setPassword(oldPassword, newPassword) {
     const url = this.serviceUrl("password");
     return this.xhrManager.xhr( url, "PUT", {
-      "old_password": old,
-      "password":     new
+      "old_password": oldPassword,
+      "password":     newPassword
     });
   }
 

@@ -8,7 +8,12 @@ export default class SecuritiesSettingService extends AbstractService {
   }
   getSecuritiesConfiguration(securitiesId) {
     const url = this.serviceUrl("available-securities/"
-     + securitiesId + "/configuration_definitions");
+     + securitiesId + "/configuration");
+    return this.xhrManager.xhr( url, "GET");
+  }
+  getSecuritiesConfigurationDefinitions(securitiesId) {
+    const url = this.serviceUrl("available-securities/"
+     + securitiesId + "/configuration-definitions");
     return this.xhrManager.xhr( url, "GET");
   }
   getActiveSecuritiesId() {
@@ -18,7 +23,7 @@ export default class SecuritiesSettingService extends AbstractService {
   setActiveSecurities(securitiesId, configurations) {
     const url = this.serviceUrl("active-securities");
     return this.xhrManager.xhr( url, "PUT", {
-      securities_id : securitiesId,
+      "securities_id" : securitiesId,
       configurations: configurations
     });
   }

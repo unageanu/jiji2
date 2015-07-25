@@ -128,32 +128,69 @@ describe("SecuritiesSettingModel", () => {
     ]);
   });
 
-  it("Saveで設定を永続化できる", () => {
-    model.initialize();
-    xhrManager.requests[0].resolve([
-      {id: "aa", name:"aaa" },
-      {id: "bb", name:"bbb" }
-    ]);
-    xhrManager.requests[1].resolve(
-      {securitiesId: null }
-    );
-    xhrManager.requests[2].resolve([]);
-    xhrManager.requests[3].resolve({});
+  describe("#save", () => {
+    it("Saveで設定を永続化できる", () => {
+      model.initialize();
+      xhrManager.requests[0].resolve([
+        {id: "aa", name:"aaa" },
+        {id: "bb", name:"bbb" }
+      ]);
+      xhrManager.requests[1].resolve(
+        {securitiesId: null }
+      );
+      xhrManager.requests[2].resolve([]);
+      xhrManager.requests[3].resolve({});
 
-    model.activeSecuritiesId = "bb";
-    xhrManager.requests[4].resolve([
-      { id: "config1", description: "config1" },
-      { id: "config2", description: "config2" }
-    ]);
-    xhrManager.requests[5].resolve({
-      config1: "xxx"
+      model.activeSecuritiesId = "bb";
+      xhrManager.requests[4].resolve([
+        { id: "config1", description: "config1" },
+        { id: "config2", description: "config2" }
+      ]);
+      xhrManager.requests[5].resolve({
+        config1: "xxx"
+      });
+
+      model.save({config1: "yyy"});
+      expect(xhrManager.requests[6].body).toEqual({
+        "securities_id": "bb",
+        configurations: {config1: "yyy"}
+      });
+      expect(model.error).toEqual(null);
     });
+    it("設定でエラーになった場合、メッセージが表示される", () => {
+      model.initialize();
+      xhrManager.requests[0].resolve([
+        {id: "aa", name:"aaa" },
+        {id: "bb", name:"bbb" }
+      ]);
+      xhrManager.requests[1].resolve(
+        {securitiesId: null }
+      );
+      xhrManager.requests[2].resolve([]);
+      xhrManager.requests[3].resolve({});
 
-    model.save({config1: "yyy"});
-    expect(xhrManager.requests[6].body).toEqual({
-      "securities_id": "bb",
-      configurations: {config1: "yyy"}
+      model.activeSecuritiesId = "bb";
+      xhrManager.requests[4].resolve([
+        { id: "config1", description: "config1" },
+        { id: "config2", description: "config2" }
+      ]);
+      xhrManager.requests[5].resolve({
+        config1: "xxx"
+      });
+
+      model.save({config1: "yyy"});
+      xhrManager.requests[6].reject({
+        status: 400
+      });
+      expect(model.error).toEqual(
+        "証券会社に接続できませんでした。<br/>アクセストークンを確認してください。");
+
+      model.save({config1: "yyy2"});
+      xhrManager.requests[7].reject({
+        status: 500
+      });
+      expect(model.error).toEqual(
+        "サーバーが混雑しています。しばらく待ってからやり直してください");
     });
   });
-
 });

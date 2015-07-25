@@ -106,7 +106,7 @@ export default class XhrRequest {
   convertErrorCode(response) {
     switch (response.status) {
       case 400:
-        return Error.Code.SERVER_BUSY;
+        return Error.Code.INVALID_VALUE;
       case 401:
         return Error.Code.UNAUTHORIZED;
       case 403:

@@ -5,6 +5,8 @@ import NotificationsTableModel from "./notifications/notifications-table-model"
 import TradingSummaryViewModel from "./trading-summary/trading-summary-view-model"
 import LogViewerModel          from "./logs/log-viewer-model"
 import SecuritiesSettingModel  from "./settings/securities-setting-model"
+import MailAddressSettingModel from "./settings/mail-address-setting-model"
+import PasswordSettingModel    from "./settings/password-setting-model"
 
 export default class ViewModelFactory {
 
@@ -51,5 +53,12 @@ export default class ViewModelFactory {
   }
   createSecuritiesSettingModel() {
     return new SecuritiesSettingModel( this.securitiesSettingService );
+  }
+  createMailAddressSettingModel() {
+    return new MailAddressSettingModel(
+      this.userSettingService, this.smtpServerSettingService );
+  }
+  createPasswordSettingModel() {
+    return new PasswordSettingModel( this.userSettingService );
   }
 }

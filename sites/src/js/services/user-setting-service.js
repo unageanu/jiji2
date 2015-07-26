@@ -2,7 +2,7 @@ import AbstractService from "./abstract-service"
 
 export default class UserSettingService extends AbstractService {
 
-  getMailAddress(mailAddress) {
+  getMailAddress() {
     const url = this.serviceUrl("mailaddress");
     return this.xhrManager.xhr( url, "GET");
   }

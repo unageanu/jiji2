@@ -151,11 +151,13 @@ describe("SecuritiesSettingModel", () => {
       });
 
       model.save({config1: "yyy"});
+      xhrManager.requests[6].resolve({});
       expect(xhrManager.requests[6].body).toEqual({
         "securities_id": "bb",
         configurations: {config1: "yyy"}
       });
       expect(model.error).toEqual(null);
+      expect(model.message).toEqual("証券会社の設定を変更しました");
     });
     it("設定でエラーになった場合、メッセージが表示される", () => {
       model.initialize();
@@ -184,6 +186,7 @@ describe("SecuritiesSettingModel", () => {
       });
       expect(model.error).toEqual(
         "証券会社に接続できませんでした。<br/>アクセストークンを確認してください。");
+      expect(model.message).toEqual(null);
 
       model.save({config1: "yyy2"});
       xhrManager.requests[7].reject({
@@ -191,6 +194,7 @@ describe("SecuritiesSettingModel", () => {
       });
       expect(model.error).toEqual(
         "サーバーが混雑しています。しばらく待ってからやり直してください");
+      expect(model.message).toEqual(null);
     });
   });
 });

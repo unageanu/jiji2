@@ -9,6 +9,7 @@ export default class SecuritiesSettingModel extends Observable {
     super();
     this.securitiesSettingService = securitiesSettingService;
     this.error = null;
+    this.message = null;
   }
 
   initialize() {
@@ -25,15 +26,20 @@ export default class SecuritiesSettingModel extends Observable {
 
   save(configurations) {
     this.error = null;
+    this.message = null;
     return this.securitiesSettingService.setActiveSecurities(
-      this.activeSecuritiesId, configurations).fail( (error) => {
-        if (error.code === Error.Code.INVALID_VALUE ) {
-          this.error = "証券会社に接続できませんでした。<br/>アクセストークンを確認してください。";
-        } else {
-          this.error = ErrorMessages.getMessageFor(error);
-        }
-        error.preventDefault = true;
-      });
+      this.activeSecuritiesId, configurations).then(
+      (result) => this.message = "証券会社の設定を変更しました",
+      (error)  => this.handleError(error));
+  }
+
+  handleError(error) {
+    if (error.code === Error.Code.INVALID_VALUE ) {
+      this.error = "証券会社に接続できませんでした。<br/>アクセストークンを確認してください。";
+    } else {
+      this.error = ErrorMessages.getMessageFor(error);
+    }
+    error.preventDefault = true;
   }
 
   updateConfiguration() {
@@ -79,5 +85,10 @@ export default class SecuritiesSettingModel extends Observable {
   set error(error) {
     this.setProperty("error", error);
   }
-
+  get message() {
+    return this.getProperty("message");
+  }
+  set message(message) {
+    this.setProperty("message", message);
+  }
 }

@@ -62,7 +62,7 @@ describe Jiji::Model::Settings::MailComposerSetting do
   end
 
   it 'smtp_hostが不正な場合エラーになる' do
-    @setting.smtp_host = 'a' * 201
+    @setting.smtp_host = 'a' * 1001
     expect do
       @setting.save
     end.to raise_exception(ActiveModel::StrictValidationFailed)
@@ -86,14 +86,14 @@ describe Jiji::Model::Settings::MailComposerSetting do
   end
 
   it 'user_nameが不正な場合エラーになる' do
-    @setting.user_name = 'a' * 201
+    @setting.user_name = 'a' * 1001
     expect do
       @setting.save
     end.to raise_exception(ActiveModel::StrictValidationFailed)
   end
 
   it 'passwordが不正な場合エラーになる' do
-    @setting.password = 'a' * 201
+    @setting.password = 'a' * 1001
     expect do
       @setting.save
     end.to raise_exception(ActiveModel::StrictValidationFailed)

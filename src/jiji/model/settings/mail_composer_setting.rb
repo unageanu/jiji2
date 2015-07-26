@@ -17,7 +17,7 @@ module Jiji::Model::Settings
     field :encrypted_password,  type: String,  default: nil
 
     validates :smtp_host,
-      length:      { maximum: 200, strict: true },
+      length:      { maximum: 1000, strict: true },
       allow_nil:   true,
       allow_blank: true
 
@@ -29,12 +29,12 @@ module Jiji::Model::Settings
       }
 
     validates :user_name,
-      length:      { maximum: 200, strict: true },
+      length:      { maximum: 1000, strict: true },
       allow_nil:   true,
       allow_blank: true
 
     validates :password,
-      length:      { maximum: 200, strict: true },
+      length:      { maximum: 1000, strict: true },
       allow_nil:   true,
       allow_blank: true
 

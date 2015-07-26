@@ -45,7 +45,6 @@ module Jiji::Model::Settings
     def set_active_securities(securities_id, configurations)
       securities = find_and_configure_securities(
         securities_id, configurations)
-      test_connection(securities)
 
       self.active_securities_id = securities_id
       securities_configurations[securities_id] = configurations
@@ -63,10 +62,8 @@ module Jiji::Model::Settings
     def find_and_configure_securities(securities_id, configurations)
       configurations = configurations.with_indifferent_access
       securities_factory.create(securities_id, configurations)
-    end
-
-    def test_connection(securities)
-      securities.retrieve_account
+    rescue Jiji::Errors::NotFoundException
+      raise
     rescue Exception => e  # rubocop:disable Lint/RescueException
       @logger.error(e) if @logger
       illegal_argument('failed to connect securities.')

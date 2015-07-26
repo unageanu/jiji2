@@ -23,6 +23,7 @@ module Jiji::Test::Mock
       @i = -1
 
       @data_builder = Jiji::Test::DataBuilder.new
+      retrieve_account
     end
 
     def reset

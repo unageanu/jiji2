@@ -9,7 +9,7 @@ export default class SettingsPageModel extends Observable {
   }
 
   postCreate() {
-    this.mailSetting       =
+    this.mailAddressSetting       =
       this.viewModelFactory.createMailAddressSettingModel();
     this.passwordSetting   =
       this.viewModelFactory.createPasswordSettingModel();
@@ -20,7 +20,7 @@ export default class SettingsPageModel extends Observable {
   }
 
   initialize() {
-    this.mailSetting.initialize();
+    this.mailAddressSetting.initialize();
     this.securitiesSetting.initialize();
     this.smtpServerSetting.initialize();
   }

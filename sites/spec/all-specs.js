@@ -41,3 +41,5 @@ import "./specs/viewmodel/utils/string-formatter-spec"
 import "./specs/viewmodel/utils/number-formatter-spec"
 import "./specs/viewmodel/widgets/table-model-spec"
 import "./specs/viewmodel/widgets/event-queue-spec"
+
+import "./specs/viewmodel/settings/smtp-server-setting-model-spec"

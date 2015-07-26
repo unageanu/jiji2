@@ -7,6 +7,7 @@ import LogViewerModel          from "./logs/log-viewer-model"
 import SecuritiesSettingModel  from "./settings/securities-setting-model"
 import MailAddressSettingModel from "./settings/mail-address-setting-model"
 import PasswordSettingModel    from "./settings/password-setting-model"
+import SMTPServerSettingModel  from "./settings/smtp-server-setting-model"
 
 export default class ViewModelFactory {
 
@@ -60,5 +61,8 @@ export default class ViewModelFactory {
   }
   createPasswordSettingModel() {
     return new PasswordSettingModel( this.userSettingService );
+  }
+  createSMTPServerSettingModel() {
+    return new SMTPServerSettingModel( this.smtpServerSettingService );
   }
 }

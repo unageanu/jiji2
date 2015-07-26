@@ -66,6 +66,25 @@ export default {
     notNull: true
   }),
 
+  smtpServer: {
+    host: builder.build({
+      notNull: true,
+      noSpecials : true,
+      maxLength: 1000
+    }),
+    port: builder.build({
+      number : true,
+      maxLength: 10
+    }),
+    userName: builder.build({
+      noSpecials : true,
+      maxLength: 1000
+    }),
+    password: builder.build({
+      noSpecials : true,
+      maxLength: 1000
+    })
+  },
 
   all() {
     for (let i=0, n=arguments.length; i<n; i++) {

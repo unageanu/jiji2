@@ -6,7 +6,7 @@ export default class SmtpServerSettingService extends AbstractService {
     const url = this.serviceUrl("status");
     return this.xhrManager.xhr( url, "GET");
   }
-  getSMTPServerSetting(setting) {
+  getSMTPServerSetting() {
     const url = this.serviceUrl();
     return this.xhrManager.xhr( url, "GET");
   }

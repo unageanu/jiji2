@@ -25,7 +25,7 @@ describe("MailAddressSettingModel", () => {
       expect(model.error).toEqual(null);
       expect(model.message).toEqual(null);
     });
-    it("アドレスが未設定の場合", () => {
+    it("アドレス設定済みの場合", () => {
       model.initialize();
       xhrManager.requests[0].resolve({
         mailAddress: "foo@var.com"

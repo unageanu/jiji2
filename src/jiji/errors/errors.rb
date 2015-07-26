@@ -1,5 +1,13 @@
 # coding: utf-8
 
+class ArgumentError
+
+  def http_status
+    400
+  end
+
+end
+
 module Jiji::Errors
   class AuthFailedException < StandardError
 

@@ -2,23 +2,30 @@ import Observable      from "../../utils/observable"
 import Deferred        from "../../utils/deferred"
 import Error           from "../../model/error"
 import ErrorMessages   from "../../errorhandling/error-messages"
+import StringFormatter from "../utils/string-formatter"
 
 export default class SecuritiesSettingModel extends Observable {
 
   constructor(securitiesSettingService) {
     super();
     this.securitiesSettingService = securitiesSettingService;
+    this.setProperty("availableSecurities", []);
     this.error = null;
     this.message = null;
   }
 
   initialize() {
+    this.setProperty("availableSecurities", []);
+    this.error = null;
+    this.message = null;
+    this.activeSecuritiesId = null;
     const d = Deferred.when([
       this.securitiesSettingService.getAvailableSecurities(),
       this.securitiesSettingService.getActiveSecuritiesId()
     ]);
     d.done((results) => {
-      this.setProperty("availableSecurities", results[0]);
+      this.setProperty("availableSecurities",
+        this.convertAvailableSecurities(results[0]));
       this.activeSecuritiesId  = results[1].securitiesId || results[0][0].id;
     });
     return d;
@@ -42,12 +49,21 @@ export default class SecuritiesSettingModel extends Observable {
     error.preventDefault = true;
   }
 
+  convertAvailableSecurities(securities) {
+    securities.forEach((s) => {
+      s.id   = s.securitiesId;
+      s.text = s.name;
+    });
+    return securities;
+  }
+
   updateConfiguration() {
+    this.activeSecuritiesConfiguration = [];
     const id = this.activeSecuritiesId;
-    this.activeSecuritiesConfiguration = null;
+    if (id == null) return;
     Deferred.when([
-      this.securitiesSettingService.getSecuritiesConfiguration(id),
-      this.securitiesSettingService.getSecuritiesConfigurationDefinitions(id)
+      this.securitiesSettingService.getSecuritiesConfigurationDefinitions(id),
+      this.securitiesSettingService.getSecuritiesConfiguration(id)
     ]).then((results)=> {
       this.activeSecuritiesConfiguration =
         this.buildconfigurations(results[0], results[1]);
@@ -55,7 +71,10 @@ export default class SecuritiesSettingModel extends Observable {
   }
 
   buildconfigurations( definitions, values ) {
-    definitions.forEach((i) => i.value = values[i.id] || null );
+    definitions.forEach((i) => {
+      const key = StringFormatter.snakeCaseToCamelCase(i.id);
+      i.value = values[key] || null;
+    });
     return definitions;
   }
 

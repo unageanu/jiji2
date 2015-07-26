@@ -1,6 +1,7 @@
 import React        from "react"
 import MUI          from "material-ui"
 import AbstractPage from "./abstract-page"
+import SecuritiesSettingView from "../settings/securities-setting-view"
 
 export default class SettingsPage extends AbstractPage {
 
@@ -16,6 +17,7 @@ export default class SettingsPage extends AbstractPage {
   render() {
     return (
       <div>
+        <SecuritiesSettingView model={this.model().securitiesSetting} />
       </div>
     );
   }

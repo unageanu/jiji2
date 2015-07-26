@@ -8,7 +8,7 @@ export default class SecuritiesSettingService extends AbstractService {
   }
   getSecuritiesConfiguration(securitiesId) {
     const url = this.serviceUrl("available-securities/"
-     + securitiesId + "/configuration");
+     + securitiesId + "/configurations");
     return this.xhrManager.xhr( url, "GET");
   }
   getSecuritiesConfigurationDefinitions(securitiesId) {

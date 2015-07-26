@@ -3,6 +3,8 @@ import MUI                    from "material-ui"
 import AbstractPage           from "./abstract-page"
 import SecuritiesSettingView  from "../settings/securities-setting-view"
 import MailAddressSettingView from "../settings/mail-address-setting-view"
+import PasswordSettingView    from "../settings/password-setting-view"
+import SMTPServerSettingView  from "../settings/smtp-server-setting-view"
 
 export default class SettingsPage extends AbstractPage {
 
@@ -19,7 +21,9 @@ export default class SettingsPage extends AbstractPage {
     return (
       <div>
         <MailAddressSettingView model={this.model().mailAddressSetting} />
+        <PasswordSettingView model={this.model().passwordSetting} />
         <SecuritiesSettingView model={this.model().securitiesSetting} />
+        <SMTPServerSettingView model={this.model().smtpServerSetting} />
       </div>
     );
   }
@@ -27,7 +31,6 @@ export default class SettingsPage extends AbstractPage {
   model() {
     return this.context.application.settingsPageModel;
   }
-
 }
 
 SettingsPage.contextTypes = {

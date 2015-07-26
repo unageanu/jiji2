@@ -18,13 +18,13 @@ export default class PasswordSettingModel extends Observable {
     this.message = null;
     if (!this.validate(newPassword, newPassword2)) return;
     this.userSettingService.setPassword(oldPassword, newPassword).then(
-        (result) => this.message = "パスワードを設定しました",
+        (result) => this.message = "パスワードを変更しました",
         (error)  => this.handleError(error));
   }
 
   handleError(error) {
-    if (error.code === Error.Code.INVALID_VALUE) {
-      this.error = "現在のパスワードが一致しません。入力した値をご確認ください";
+    if (error.code === Error.Code.UNAUTHORIZED) {
+      this.error = "現在のパスワードが一致していません。入力した値をご確認ください";
     } else {
       this.error = ErrorMessages.getMessageFor(error);
     }
@@ -40,7 +40,7 @@ export default class PasswordSettingModel extends Observable {
       Validators.password.validate(newPassword);
       return true;
     } catch (error) {
-      this.error = ErrorMessages.getMessageFor(error, {field: "新パスワード"});
+      this.error = ErrorMessages.getMessageFor(error, {field: "新しいパスワード"});
       return false;
     }
   }

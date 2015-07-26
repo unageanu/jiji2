@@ -92,7 +92,8 @@ export default class XhrRequest {
 
   isAuthRequest() {
     return (
-      this.url.match(/\/api\/authenticator$/) && this.method === "POST"
+      (this.url.match(/\/api\/authenticator$/) && this.method === "POST")
+      || (this.url.match(/\/api\/settings\/user\/password$/) && this.method === "PUT")
     );
   }
 

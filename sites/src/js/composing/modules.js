@@ -43,7 +43,9 @@ function viewModel(binder) {
   binder.bind("notificationsPageModel")
     .to("viewmodel.pages.NotificationsPageModel")
     .onInitialize("postCreate");
-
+  binder.bind("settingsPageModel")
+      .to("viewmodel.pages.SettingsPageModel")
+      .onInitialize("postCreate");
   binder.bind("loginPageModel")
       .to("viewmodel.pages.LoginPageModel")
       .onInitialize("postCreate");

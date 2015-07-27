@@ -14,7 +14,6 @@ export default class PasswordSettingModel extends Observable {
   }
 
   save(newPassword, newPassword2, oldPassword) {
-    this.error = null;
     this.message = null;
     if (!this.validate(newPassword, newPassword2)) return;
     this.userSettingService.setPassword(oldPassword, newPassword).then(
@@ -31,16 +30,17 @@ export default class PasswordSettingModel extends Observable {
     error.preventDefault = true;
   }
 
-  validate(newPassword, newPassword2) {
+  validate(newPassword, newPassword2, field="新しいパスワード") {
+    this.error = null;
     if (newPassword !== newPassword2) {
-      this.error = "新パスワードが一致していません";
+      this.error = field+ "が一致していません";
       return false;
     }
     try {
       Validators.password.validate(newPassword);
       return true;
     } catch (error) {
-      this.error = ErrorMessages.getMessageFor(error, {field: "新しいパスワード"});
+      this.error = ErrorMessages.getMessageFor(error, {field:  field});
       return false;
     }
   }

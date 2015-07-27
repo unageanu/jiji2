@@ -52,8 +52,9 @@ export default class SMTPServerSettingModel extends Observable {
   save(setting) {
     this.error = null;
     this.message = null;
-    if (!this.validate(setting)) return;
-    this.smtpServerSettingService.setSMTPServerSetting(setting).then(
+    if (!this.validate(setting)) return Deferred.errorOf(null);
+    const d = this.smtpServerSettingService.setSMTPServerSetting(setting);
+    d.then(
       (result) => {
         this.setting = setting;
         this.message = "設定を変更しました";
@@ -62,6 +63,7 @@ export default class SMTPServerSettingModel extends Observable {
         this.error = ErrorMessages.getMessageFor(error);
         error.preventDefault = true;
       });
+    return d;
   }
 
   validate(setting) {

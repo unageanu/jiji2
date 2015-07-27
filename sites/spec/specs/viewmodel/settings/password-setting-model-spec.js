@@ -24,7 +24,7 @@ describe("PasswordSettingModel", () => {
     });
     it("パスワードが一致しない場合、エラーが表示される", () => {
       model.save( "11111", "11112", "22222" );
-      expect(model.error).toEqual("新パスワードが一致していません");
+      expect(model.error).toEqual("新しいパスワードが一致していません");
       expect(model.message).toEqual(null);
     });
     it("パスワードが不正な場合、エラーが表示される", () => {

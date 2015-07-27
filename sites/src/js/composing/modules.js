@@ -49,6 +49,9 @@ function viewModel(binder) {
   binder.bind("loginPageModel")
       .to("viewmodel.pages.LoginPageModel")
       .onInitialize("postCreate");
+  binder.bind("initialSettingsPageModel")
+      .to("viewmodel.pages.InitialSettingsPageModel")
+      .onInitialize("postCreate");
 
   binder.bind("agentSourceEditor")
     .to("viewmodel.agents.AgentSourceEditor")

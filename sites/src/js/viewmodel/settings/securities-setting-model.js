@@ -34,10 +34,12 @@ export default class SecuritiesSettingModel extends Observable {
   save(configurations) {
     this.error = null;
     this.message = null;
-    return this.securitiesSettingService.setActiveSecurities(
-      this.activeSecuritiesId, configurations).then(
+    const d = this.securitiesSettingService.setActiveSecurities(
+      this.activeSecuritiesId, configurations);
+    d.then(
       (result) => this.message = "証券会社の設定を変更しました",
       (error)  => this.handleError(error));
+    return d;
   }
 
   handleError(error) {

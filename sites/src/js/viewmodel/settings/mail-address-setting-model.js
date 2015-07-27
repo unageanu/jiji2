@@ -15,6 +15,9 @@ export default class MailAddressSettingModel extends Observable {
   }
 
   initialize() {
+    this.error = null;
+    this.message = null;
+    this.mailAddress = null;
     const d = this.userSettingService.getMailAddress();
     d.done((result) => {
       this.mailAddress = result.mailAddress;
@@ -29,7 +32,6 @@ export default class MailAddressSettingModel extends Observable {
   }
 
   save(mailAddress) {
-    this.error = null;
     this.message = null;
     if (!this.validate(mailAddress)) return;
     this.userSettingService.setMailAddress(mailAddress).then(
@@ -44,6 +46,7 @@ export default class MailAddressSettingModel extends Observable {
   }
 
   validate(mailAddress) {
+    this.error = null;
     try {
       Validators.mailAddress.validate(mailAddress);
       return true;

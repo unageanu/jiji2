@@ -18,6 +18,14 @@ export default class SMTPServerSettingModel extends Observable {
   }
 
   initialize() {
+    this.error = null;
+    this.hostError = null;
+    this.portError = null;
+    this.userNameError = null;
+    this.passwordError = null;
+    this.message = null;
+    this.enablePostmark = true;
+    this.setting = {};
     const d = Deferred.when([
       this.smtpServerSettingService.getStatus(),
       this.smtpServerSettingService.getSMTPServerSetting()

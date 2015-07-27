@@ -16,7 +16,7 @@ module Jiji::Web
         smtp_host: mail_setting.smtp_host,
         smtp_port: mail_setting.smtp_port,
         user_name: mail_setting.user_name,
-        password:  Jiji::Utils::Strings.mask(mail_setting.password)
+        password:  mail_setting.password
       })
     end
 

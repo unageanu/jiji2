@@ -26,9 +26,12 @@ module Jiji::Web
       setting.mail_address = body['mail_address']
       setting.password     = body['password']
       setting.save
-      no_content
+      ok({token: authenticator.authenticate(body['password'])})
     end
 
+    def authenticator
+      lookup(:authenticator)
+    end
     def security_setting
       lookup(:setting_repository).security_setting
     end

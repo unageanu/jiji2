@@ -27,7 +27,8 @@ describe '初期化' do
         mail_address: 'foo@var.com',
         password:     'test'
       })
-      expect(r.status).to eq 204
+      expect(r.status).to eq 200
+      expect(r.body['token']).not_to be nil
     end
   end
 

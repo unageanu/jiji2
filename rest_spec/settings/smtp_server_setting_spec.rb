@@ -29,7 +29,7 @@ describe 'SMTPサーバーの設定' do
     expect(r.body['smtp_host']).to eq 'test01'
     expect(r.body['smtp_port']).to eq 80
     expect(r.body['user_name']).to eq 'user1'
-    expect(r.body['password']).to eq 'pxxxx'
+    expect(r.body['password']).to eq 'pass1'
   end
 
   it 'POST /settings/smtp-server/test　でテストメールを送信できる' do

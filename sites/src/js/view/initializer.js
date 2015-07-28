@@ -12,7 +12,11 @@ export default class Initializer {
   initialize() {
     this.createContainer();
     this.container.get("application").then(
-        this.initializeView.bind(this), this.handleError.bind(this));
+      (application) => {
+        application.initialize().then(
+          () => this.initializeView(application),
+          this.handleError.bind(this));
+      }, this.handleError.bind(this));
   }
   createContainer() {
     this.container = new ContainerJS.Container(
@@ -22,8 +26,10 @@ export default class Initializer {
     );
   }
   initializeView(application) {
+    const location = Router.HashLocation;
+    if (!application.initialized) location.replace("/initial-settings");
     try {
-      Router.run(this.routes(), (Handler) => {
+      Router.run(this.routes(), location, (Handler) => {
         const element = document.getElementById("main");
         React.render(<Handler application={application} />, element);
       });

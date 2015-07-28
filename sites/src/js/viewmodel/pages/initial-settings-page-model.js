@@ -82,6 +82,9 @@ export default class InitialSettingsPageModel extends Observable {
     this.smtpServerSetting.save(settings).done(
       () => this.setProperty("phase", "finished"));
   }
+  skipSMTPServerSetting( ) {
+    this.setProperty("phase", "finished");
+  }
 
   exit() {
     this.setProperty("phase", "none");

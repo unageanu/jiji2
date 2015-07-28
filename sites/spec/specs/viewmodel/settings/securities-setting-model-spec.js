@@ -21,9 +21,9 @@ describe("SecuritiesSettingModel", () => {
         { securitiesId: "aa", name:"aaa" },
         { securitiesId: "bb", name:"bbb" }
       ]);
-      xhrManager.requests[1].resolve(
-        {securitiesId: null }
-      );
+      xhrManager.requests[1].reject({
+        status: 404
+      });
       xhrManager.requests[2].resolve([
         { id: "config1", description: "config1" },
         { id: "config2", description: "config2" }

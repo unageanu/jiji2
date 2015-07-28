@@ -13,6 +13,7 @@ import RMTLogs           from "./components/pages/rmt-log-page"
 import Notifications     from "./components/pages/notifications-page"
 import Agents            from "./components/pages/agents-page"
 import Settings          from "./components/pages/settings-page"
+import InitialSettings   from "./components/pages/initial-settings-page"
 import Login             from "./components/pages/login-page"
 
 const Route        = Router.Route;
@@ -35,6 +36,7 @@ export default (
     <Route path="agents"               handler={Agents} />
     <Route path="settings"             handler={Settings} />
 
+    <Route path="initial-settings"     handler={InitialSettings} />
     <Route path="login"                handler={Login} />
   </Route>
 );

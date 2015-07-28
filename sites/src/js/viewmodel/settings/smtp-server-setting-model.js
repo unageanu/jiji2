@@ -15,6 +15,7 @@ export default class SMTPServerSettingModel extends Observable {
     this.userNameError = null;
     this.passwordError = null;
     this.message = null;
+    this.testMailMessage = null;
   }
 
   initialize() {
@@ -24,6 +25,7 @@ export default class SMTPServerSettingModel extends Observable {
     this.userNameError = null;
     this.passwordError = null;
     this.message = null;
+    this.testMailMessage = null;
     this.enablePostmark = true;
     this.setting = {};
     const d = Deferred.when([
@@ -40,9 +42,11 @@ export default class SMTPServerSettingModel extends Observable {
   composeTestMail(setting) {
     this.error = null;
     this.message = null;
+    this.testMailMessage = null;
     if (!this.validate(setting)) return;
     this.smtpServerSettingService.composeTestMail(setting).then(
-      (result) => this.message = "登録されているメールアドレスにテストメールを送信しました。ご確認ください",
+      (result) => this.testMailMessage =
+        "登録されているメールアドレスにテストメールを送信しました。ご確認ください",
       (error) => {
         this.error = "メールの送信でエラーが発生しました。接続先SMTPサーバーの設定を確認してください";
         error.preventDefault = true;
@@ -52,6 +56,7 @@ export default class SMTPServerSettingModel extends Observable {
   save(setting) {
     this.error = null;
     this.message = null;
+    this.testMailMessage = null;
     if (!this.validate(setting)) return Deferred.errorOf(null);
     const d = this.smtpServerSettingService.setSMTPServerSetting(setting);
     d.then(
@@ -164,5 +169,11 @@ export default class SMTPServerSettingModel extends Observable {
   }
   set message(message) {
     this.setProperty("message", message);
+  }
+  get testMailMessage() {
+    return this.getProperty("testMailMessage");
+  }
+  set testMailMessage(testMailMessage) {
+    this.setProperty("testMailMessage", testMailMessage);
   }
 }

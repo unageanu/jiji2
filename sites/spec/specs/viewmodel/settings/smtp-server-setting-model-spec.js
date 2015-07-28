@@ -40,6 +40,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.userNameError).toEqual(null);
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual(null);
+      expect(model.testMailMessage).toEqual(null);
     });
     it("設定済みの場合", () => {
       model.initialize();
@@ -66,6 +67,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.userNameError).toEqual(null);
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual(null);
+      expect(model.testMailMessage).toEqual(null);
     });
   });
 
@@ -95,7 +97,8 @@ describe("SMTPServerSettingModel", () => {
       expect(model.portError).toEqual(null);
       expect(model.userNameError).toEqual(null);
       expect(model.passwordError).toEqual(null);
-      expect(model.message).toEqual("登録されているメールアドレスにテストメールを送信しました。ご確認ください");
+      expect(model.message).toEqual(null);
+      expect(model.testMailMessage).toEqual("登録されているメールアドレスにテストメールを送信しました。ご確認ください");
     });
 
     it("入力内容に不備がある場合、メッセージが表示される", () => {
@@ -123,6 +126,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.userNameError).toEqual(null);
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual(null);
+      expect(model.testMailMessage).toEqual(null);
     });
 
     it("エラーの場合、メッセージが表示される", () => {
@@ -151,6 +155,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.userNameError).toEqual(null);
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual(null);
+      expect(model.testMailMessage).toEqual(null);
     });
   });
 
@@ -187,6 +192,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.userNameError).toEqual(null);
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual("設定を変更しました");
+      expect(model.testMailMessage).toEqual(null);
     });
     it("入力値が不正な場合、エラーが表示される", () => {
       model.initialize();
@@ -219,6 +225,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.userNameError).toEqual("ユーザー名に不正な文字が含まれています");
       expect(model.passwordError).toEqual("パスワードに不正な文字が含まれています");
       expect(model.message).toEqual(null);
+      expect(model.testMailMessage).toEqual(null);
     });
     it("通信エラーの場合、エラーが表示される", () => {
       model.initialize();
@@ -254,6 +261,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.userNameError).toEqual(null);
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual(null);
+      expect(model.testMailMessage).toEqual(null);
     });
   });
 });

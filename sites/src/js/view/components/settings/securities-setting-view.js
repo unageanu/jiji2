@@ -20,19 +20,20 @@ export default class SecuritiesSettingView extends AbstractComponent {
   }
 
   componentWillMount() {
-    this.registerPropertyChangeListener(this.props.model);
+    const model = this.model();
+    this.registerPropertyChangeListener(model);
+    const selectedIndex = this.getSelectedSecuritiesIndex(
+      model.activeSecuritiesId, model.availableSecurities);
     this.setState({
-      availableSecurities:           this.props.model.availableSecurities,
-      activeSecuritiesConfiguration:
-        this.props.model.activeSecuritiesConfiguration,
-      error:                         this.props.model.error,
-      message:                       this.props.model.message,
-      selectedSecuritiesIndex:
-        this.getSelectedSecuritiesIndex(this.props.model.activeSecuritiesId)
+      availableSecurities:            model.availableSecurities,
+      activeSecuritiesConfiguration:  model.activeSecuritiesConfiguration,
+      error:                          model.error,
+      message:                        model.message,
+      selectedSecuritiesIndex:        selectedIndex
     });
   }
   componentWillUnmount() {
-    this.props.model.removeAllObservers(this);
+    this.model().removeAllObservers(this);
   }
 
   render() {
@@ -76,7 +77,7 @@ export default class SecuritiesSettingView extends AbstractComponent {
   }
 
   save() {
-    this.props.model.save(this.collectConfigurations());
+    this.model().save(this.collectConfigurations());
   }
 
   onPropertyChanged(k, ev) {
@@ -90,7 +91,7 @@ export default class SecuritiesSettingView extends AbstractComponent {
     }
   }
   onChangeSecurities(e, selectedIndex, menuItem) {
-    this.props.model.activeSecuritiesId =
+    this.model().activeSecuritiesId =
       this.state.availableSecurities[selectedIndex].id;
     this.setState({selectedSecuritiesIndex: selectedIndex});
   }
@@ -101,12 +102,16 @@ export default class SecuritiesSettingView extends AbstractComponent {
       return r;
     }, {});
   }
-  getSelectedSecuritiesIndex(id) {
+  getSelectedSecuritiesIndex(id, securities=this.state.availableSecurities) {
     let index = 0;
-    this.state.availableSecurities.forEach((item, i) => {
+    securities.forEach((item, i) => {
       if (item.id === id) index = i;
     });
     return index;
+  }
+
+  model() {
+    return this.props.model;
   }
 }
 SecuritiesSettingView.propTypes = {

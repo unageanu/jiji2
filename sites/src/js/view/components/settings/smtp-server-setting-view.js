@@ -27,23 +27,24 @@ export default class SMTPServerSettingView extends AbstractComponent {
   }
 
   componentWillMount() {
-    this.registerPropertyChangeListener(this.props.model);
+    const model = this.model();
+    this.registerPropertyChangeListener(model);
     this.setState({
-      host:           this.props.model.setting.smtpHost,
-      port:           this.props.model.setting.smtpPort || defaultPort,
-      userName:       this.props.model.setting.userName,
-      password:       this.props.model.setting.password,
-      error:          this.props.model.error,
-      hostError:      this.props.model.hostError,
-      portError:      this.props.model.portError,
-      userNameError:  this.props.model.userNameError,
-      passwordError:  this.props.model.passwordError,
-      message:        this.props.model.message,
-      enablePostmark: this.props.model.enablePostmark
+      host:           model.setting.smtpHost,
+      port:           model.setting.smtpPort || defaultPort,
+      userName:       model.setting.userName,
+      password:       model.setting.password,
+      error:          model.error,
+      hostError:      model.hostError,
+      portError:      model.portError,
+      userNameError:  model.userNameError,
+      passwordError:  model.passwordError,
+      message:        model.message,
+      enablePostmark: model.enablePostmark
     });
   }
   componentWillUnmount() {
-    this.props.model.removeAllObservers(this);
+    this.model().removeAllObservers(this);
   }
 
   render() {
@@ -51,33 +52,7 @@ export default class SMTPServerSettingView extends AbstractComponent {
     return (
       <div className="smtp-server-setting">
         <h3>SMTPサーバーの設定</h3>
-        <div>
-        <TextField
-           floatingLabelText="SMTPサーバー"
-           errorText={this.state.hostError}
-           onChange={(e) => this.setState({host: e.target.value}) }
-           value={this.state.host} />
-        <br/>
-        <TextField
-           floatingLabelText="SMTPサーバーポート"
-           errorText={this.state.portError}
-           onChange={(e) => this.setState({port: e.target.value}) }
-           value={this.state.port} />
-        <br/>
-        <TextField
-           floatingLabelText="ユーザー名"
-           errorText={this.state.userNameError}
-           onChange={(e) => this.setState({userName: e.target.value}) }
-           value={this.state.userName} />
-        <br/>
-        <TextField
-          floatingLabelText="パスワード"
-          errorText={this.state.passwordError}
-          onChange={(e) => this.setState({password: e.target.value}) }
-          value={this.state.password}>
-           <input type="password" value={this.state.password} />
-        </TextField>
-        </div>
+        {this.createInputFields()}
         <br/>
         <RaisedButton
           label="テストメール送信"
@@ -92,11 +67,42 @@ export default class SMTPServerSettingView extends AbstractComponent {
       </div>
     );
   }
+
+  createInputFields() {
+    return <div>
+      <TextField
+         floatingLabelText="SMTPサーバー"
+         errorText={this.state.hostError}
+         onChange={(e) => this.setState({host: e.target.value}) }
+         value={this.state.host} />
+      <br/>
+      <TextField
+         floatingLabelText="SMTPサーバーポート"
+         errorText={this.state.portError}
+         onChange={(e) => this.setState({port: e.target.value}) }
+         value={this.state.port} />
+      <br/>
+      <TextField
+         floatingLabelText="ユーザー名"
+         errorText={this.state.userNameError}
+         onChange={(e) => this.setState({userName: e.target.value}) }
+         value={this.state.userName} />
+      <br/>
+      <TextField
+        floatingLabelText="パスワード"
+        errorText={this.state.passwordError}
+        onChange={(e) => this.setState({password: e.target.value}) }
+        value={this.state.password}>
+         <input type="password" value={this.state.password} />
+      </TextField>
+    </div>;
+  }
+
   save() {
-    this.props.model.save(this.collectSetting());
+    this.model().save(this.collectSetting());
   }
   composeTestMail() {
-    this.props.model.composeTestMail(this.collectSetting());
+    this.model().composeTestMail(this.collectSetting());
   }
 
   onPropertyChanged(k, ev) {
@@ -119,6 +125,9 @@ export default class SMTPServerSettingView extends AbstractComponent {
       userName: this.state.userName,
       password: this.state.password
     };
+  }
+  model() {
+    return this.props.model;
   }
 }
 SMTPServerSettingView.propTypes = {

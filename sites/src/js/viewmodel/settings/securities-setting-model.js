@@ -19,14 +19,20 @@ export default class SecuritiesSettingModel extends Observable {
     this.error = null;
     this.message = null;
     this.activeSecuritiesId = null;
-    const d = Deferred.when([
-      this.securitiesSettingService.getAvailableSecurities(),
-      this.securitiesSettingService.getActiveSecuritiesId()
-    ]);
-    d.done((results) => {
+    const d = new Deferred();
+    this.securitiesSettingService.getAvailableSecurities().done((securities) => {
       this.setProperty("availableSecurities",
-        this.convertAvailableSecurities(results[0]));
-      this.activeSecuritiesId  = results[1].securitiesId || results[0][0].id;
+        this.convertAvailableSecurities(securities));
+      this.securitiesSettingService.getActiveSecuritiesId().then(
+        (result) => {
+          this.activeSecuritiesId  = result.securitiesId || securities[0].id;
+          d.resolve();
+        }, (error)  => {
+          error.preventDefault = true;
+          this.activeSecuritiesId  = securities[0].id;
+          d.resolve();
+        }
+      );
     });
     return d;
   }

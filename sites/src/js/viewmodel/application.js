@@ -34,14 +34,19 @@ export default class Application {
     this.notificationsPageModel     = ContainerJS.Inject;
     this.settingsPageModel          = ContainerJS.Inject;
     this.loginPageModel             = ContainerJS.Inject;
+    this.initialSettingsPageModel   = ContainerJS.Inject;
   }
 
   initialize() {
     if ( !this.initializationDeferred ) {
-      this.initializationDeferred = Deferred.when([
-        this.pairs.initialize()
-      ]);
+      this.initializationDeferred =
+        this.initialSettingsPageModel.initialize();
+      this.initializationDeferred.then(this.onInitialized.bind(this));
     }
     return this.initializationDeferred;
+  }
+
+  onInitialized() {
+    this.initialized = this.initialSettingsPageModel.isInitialized;
   }
 }

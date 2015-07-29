@@ -20,11 +20,12 @@ module Jiji::Model::Graphing
       dependent:  :destroy
     }
 
-    field :label,        type: String
-    field :type,         type: Symbol
-    field :colors,       type: Array
-    field :start_time,   type: Time
-    field :end_time,     type: Time
+    field :label,            type: String
+    field :type,             type: Symbol
+    field :aggregation_type, type: Symbol
+    field :colors,           type: Array
+    field :start_time,       type: Time
+    field :end_time,         type: Time
 
     index(
       { backtest_id: 1, label: 1 },
@@ -38,24 +39,26 @@ module Jiji::Model::Graphing
 
     attr_accessor :values
 
-    def self.get_or_create(label, type, colors, backtest = nil)
+    def self.get_or_create(label, type,
+      colors, aggregation_type = :agerage, backtest = nil)
       graph = Graph.find_by({
         backtest: backtest,
         label:    label
       })
       return graph if graph
 
-      graph = Graph.new(backtest, type, label, colors)
+      graph = Graph.new(backtest, type, aggregation_type, label, colors)
       graph.save
       graph
     end
 
-    def initialize(backtest, type, label, colors)
+    def initialize(backtest, type, aggregation_type, label, colors)
       super()
-      self.backtest  = backtest
-      self.type      = type
-      self.label     = label
-      self.colors    = colors
+      self.backtest         = backtest
+      self.type             = type
+      self.aggregation_type = aggregation_type
+      self.label            = label
+      self.colors           = colors
     end
 
     def <<(values)
@@ -85,12 +88,13 @@ module Jiji::Model::Graphing
 
     def to_h
       {
-        id:         _id,
-        label:      label,
-        type:       type,
-        colors:     colors,
-        start_time: start_time,
-        end_time:   end_time
+        id:               _id,
+        label:            label,
+        type:             type,
+        aggregation_type: aggregation_type,
+        colors:           colors,
+        start_time:       start_time,
+        end_time:         end_time
       }
     end
 

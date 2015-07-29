@@ -8,10 +8,11 @@ module Jiji::Model::Graphing
       @graphs = {}
     end
 
-    def create(label, type, *colors)
+    def create(label, type, aggregation_type, *colors)
       return @graphs[label] if @graphs.include?(label)
 
-      graph = Graph.get_or_create(label, type, colors, @backtest)
+      graph = Graph.get_or_create(label,
+        type, colors, aggregation_type, @backtest)
       @graphs[label] = graph
       graph
     end

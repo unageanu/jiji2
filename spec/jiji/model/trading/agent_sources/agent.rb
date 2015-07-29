@@ -30,7 +30,8 @@ class MovingAverageAgent
     @cross = Cross.new
 
     # 移動平均グラフ
-    @graph = graph_factory.create('移動平均線', :rate, '#779999', '#557777')
+    @graph = graph_factory.create('移動平均線',
+      :rate, :average, '#779999', '#557777')
   end
 
   # 次のレートを受け取る

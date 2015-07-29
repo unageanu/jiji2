@@ -9,14 +9,14 @@ describe Jiji::Utils::Pagenation::Query do
 
     @time_srouce = Jiji::Utils::TimeSource.new
     factory = Jiji::Model::Graphing::GraphFactory.new
-    @graph1 = factory.create('test1', :chart)
-    @graph2 = factory.create('test2', :chart)
+    @graph1 = factory.create('test1', :chart, :last)
+    @graph2 = factory.create('test2', :chart, :first)
 
     interval = Jiji::Model::Trading::Intervals.instance.get(:one_minute)
     saver1 = Jiji::Model::Graphing::Internal::GraphDataSaver.new(
-      @graph1.id, interval)
+      @graph1, interval)
     saver2 = Jiji::Model::Graphing::Internal::GraphDataSaver.new(
-      @graph2.id, interval)
+      @graph2, interval)
 
     101.times do |i|
       saver1.save_data_if_required([i], Time.at(i * 60))

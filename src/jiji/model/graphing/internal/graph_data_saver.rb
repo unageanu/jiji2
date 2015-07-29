@@ -4,10 +4,10 @@ module Jiji::Model::Graphing::Internal
   class GraphDataSaver
 
     def initialize(graph, interval)
-      @graph           = graph
-      @interval        = interval
-      @values          = nil
-      @current         = nil
+      @graph                = graph
+      @interval             = interval
+      @aggregation_strategy = nil
+      @current              = nil
     end
 
     def save_data_if_required(values, time)
@@ -24,31 +24,23 @@ module Jiji::Model::Graphing::Internal
       time = @interval.calcurate_interval_start_time(time)
       @next_recreate_point = time + (@interval.ms / 1000)
       @next_save_point     = time + 60
+      init_graph_data(time)
+      init_agregate_strategy
+    end
+
+    def init_graph_data(time)
       @current = Jiji::Model::Graphing::GraphData.create(
         @graph, [], @interval.id, time)
-      @values  = []
+    end
+
+    def init_agregate_strategy
+      @aggregation_strategy =
+        AggregationStrategies.create(@graph.aggregation_type)
     end
 
     def updata(values)
-      merge(values)
-      @current.value = calculate_average
-    end
-
-    def merge(values)
-      values.each_with_index do |item, index|
-        h = @values[index] \
-        || (@values[index] = { count: 0, sum: BigDecimal.new(0, 10) })
-        unless values[index].nil?
-          h[:sum]   += item
-          h[:count] += 1
-        end
-      end
-    end
-
-    def calculate_average
-      @values.map do |h|
-        h && h[:count] > 0 ? (h[:sum] / h[:count]).to_f : 0
-      end
+      @aggregation_strategy.merge(values)
+      @current.value = @aggregation_strategy.calculate
     end
 
     def save_data

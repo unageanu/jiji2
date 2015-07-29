@@ -1,7 +1,7 @@
 import ContainerJS         from "container-js"
 import Observable          from "../../utils/observable"
 
-export default class RMTTradingSummaryPageModel extends Observable {
+export default class HomePageModel extends Observable {
 
   constructor() {
     super();
@@ -9,7 +9,15 @@ export default class RMTTradingSummaryPageModel extends Observable {
   }
 
   postCreate() {
-    this.miniChart = this.viewModelFactory.createChart();
+    const factory =  this.viewModelFactory;
+    this.miniChart     = factory.createChart();
+    this.notifications = factory.createNotificationsTableModel(5);
+    this.positions     = factory.createPositionsTableModel(5);
+    this.backtests     = factory.createBacktestListModel();
   }
 
+  initialize() {
+    [this.notifications, this.positions, this.backtests].forEach(
+      (model) => model.initialize() );
+  }
 }

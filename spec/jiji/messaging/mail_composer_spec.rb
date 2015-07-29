@@ -1,35 +1,32 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/data_builder'
+require 'jiji/test/shared_contexts'
 
 describe Jiji::Messaging::MailComposer do
-  before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
 
-    @container  = Jiji::Composing::ContainerFactory.instance.new_container
-    @composer   = @container.lookup(:mail_composer)
-    @repository = @container.lookup(:setting_repository)
+  include_context 'use data_builder'
+  include_context 'use container'
 
-    @setting    = @repository.mail_composer_setting
-  end
+  let(:composer) { container.lookup(:mail_composer) }
+  let(:repository) { container.lookup(:setting_repository) }
+  let(:setting) { repository.mail_composer_setting }
 
   after(:example) do
     Mail::TestMailer.deliveries.clear
-    @data_builder.clean
     ENV['POSTMARK_SMTP_SERVER'] = nil
     ENV['POSTMARK_API_TOKEN'] = nil
     ENV['POSTMARK_API_KEY'] = nil
   end
 
   it 'メールサーバーが設定されている場合、設定したサーバーでメールが送信される' do
-    @setting.smtp_host = 'foo.com'
-    @setting.smtp_port = 588
-    @setting.user_name = 'aaa'
-    @setting.password  = 'bbb'
-    @setting.save
+    setting.smtp_host = 'foo.com'
+    setting.smtp_port = 588
+    setting.user_name = 'aaa'
+    setting.password  = 'bbb'
+    setting.save
 
-    server_setting = @composer.smtp_server.setting
+    server_setting = composer.smtp_server.setting
     expect(server_setting[:address]).to eq 'foo.com'
     expect(server_setting[:port]).to eq 588
     expect(server_setting[:domain]).to eq 'unageanu.net'
@@ -42,7 +39,7 @@ describe Jiji::Messaging::MailComposer do
     ENV['POSTMARK_API_TOKEN']   = 'token'
     ENV['POSTMARK_API_KEY']     = 'key'
 
-    server_setting = @composer.smtp_server.setting
+    server_setting = composer.smtp_server.setting
     expect(server_setting[:address]).to eq 'var.com'
     expect(server_setting[:port]).to eq 587
     expect(server_setting[:domain]).to eq 'unageanu.net'
@@ -52,19 +49,19 @@ describe Jiji::Messaging::MailComposer do
 
   it 'いずれの設定もない場合、エラーになる' do
     expect do
-      @composer.smtp_server
+      composer.smtp_server
     end.to raise_exception(Jiji::Errors::IllegalStateException)
 
-    @setting.smtp_host = 'foo.com'
+    setting.smtp_host = 'foo.com'
     ENV['POSTMARK_SMTP_SERVER'] = 'var.com'
 
     expect do
-      @composer.smtp_server
+      composer.smtp_server
     end.to raise_exception(Jiji::Errors::IllegalStateException)
   end
 
   it 'メールを送信できる' do
-    @composer.compose('foo@var.com', 'テスト') do
+    composer.compose('foo@var.com', 'テスト') do
       text_part do
         content_type 'text/plain; charset=UTF-8'
         body 'テストメール'
@@ -76,7 +73,7 @@ describe Jiji::Messaging::MailComposer do
     expect(Mail::TestMailer.deliveries[0].to).to eq ['foo@var.com']
     expect(Mail::TestMailer.deliveries[0].from).to eq ['jiji@unageanu.net']
 
-    @composer.compose('foo@var.com', 'テスト', 'test@unageanu.net') do
+    composer.compose('foo@var.com', 'テスト', 'test@unageanu.net') do
       text_part do
         content_type 'text/plain; charset=UTF-8'
         body 'テストメール'
@@ -90,7 +87,7 @@ describe Jiji::Messaging::MailComposer do
   end
 
   it 'テストメールを送信できる' do
-    @composer.compose_test_mail('foo@var.com')
+    composer.compose_test_mail('foo@var.com')
 
     expect(Mail::TestMailer.deliveries.length).to eq 1
     expect(Mail::TestMailer.deliveries[0].subject).to eq '[Jiji] テストメール'

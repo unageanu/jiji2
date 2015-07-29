@@ -1,13 +1,14 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/data_builder'
+require 'jiji/test/shared_contexts'
 
 describe Jiji::Utils::Pagenation::Query do
-  before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
 
-    @time_srouce = Jiji::Utils::TimeSource.new
+  include_context 'use data_builder'
+  let(:time_source) { Jiji::Utils::TimeSource.new }
+
+  before(:example) do
     factory = Jiji::Model::Graphing::GraphFactory.new
     @graph1 = factory.create('test1', :chart, :last)
     @graph2 = factory.create('test2', :chart, :first)
@@ -22,10 +23,6 @@ describe Jiji::Utils::Pagenation::Query do
       saver1.save_data_if_required([i], Time.at(i * 60))
       saver2.save_data_if_required([i], Time.at(i * 60))
     end
-  end
-
-  after(:example) do
-    @data_builder.clean
   end
 
   it '絞り込み条件あり、ソート条件あり、0～10件取得' do

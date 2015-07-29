@@ -1,5 +1,7 @@
 import ContainerJS             from "container-js"
+import AccountViewModel        from "./accounts/account-view-model"
 import Chart                   from "./chart/chart"
+import BacktestListModel       from "./backtests/backtest-list-model"
 import PositionsTableModel     from "./positions/positions-table-model"
 import NotificationsTableModel from "./notifications/notifications-table-model"
 import TradingSummaryViewModel from "./trading-summary/trading-summary-view-model"
@@ -15,6 +17,7 @@ export default class ViewModelFactory {
     this.rates                   = ContainerJS.Inject;
     this.preferences             = ContainerJS.Inject;
     this.rateService             = ContainerJS.Inject;
+    this.rmtService              = ContainerJS.Inject;
     this.positionService         = ContainerJS.Inject;
     this.notificationService     = ContainerJS.Inject;
     this.actionService           = ContainerJS.Inject;
@@ -29,6 +32,9 @@ export default class ViewModelFactory {
     this.userSettingService       = ContainerJS.Inject;
     this.passwordResettingService = ContainerJS.Inject;
     this.initialSettingService    = ContainerJS.Inject;
+  }
+  createAccountViewModel() {
+    return new AccountViewModel( this.rmtService );
   }
   createChart(config={displayPositionsAndGraphs:false}) {
     return new Chart( config, this );
@@ -48,6 +54,9 @@ export default class ViewModelFactory {
     const model = new TradingSummaryViewModel( this.tradingSummariesService );
     model.enablePeriodSelector = enablePeriodSelector;
     return model;
+  }
+  createBacktestListModel() {
+    return new BacktestListModel( this.backtests );
   }
   createLogViewerModel() {
     return new LogViewerModel( this.logService );

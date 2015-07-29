@@ -45,7 +45,7 @@ export default class BacktestsPage extends AbstractPage {
       <div className="backtests">
         <BacktestList
           selectedId={this.state.selectedBacktestId}
-          model={model.backtestListModel} />
+          model={model.backtestList} />
         <div className="details">
           {tab}
           {tabContent}

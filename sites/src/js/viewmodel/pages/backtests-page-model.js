@@ -1,6 +1,5 @@
 import ContainerJS         from "container-js"
 import Observable          from "../../utils/observable"
-import BacktestListModel   from "../backtests/backtest-list-model"
 import PositionsTableModel from "../positions/positions-table-model"
 import TradingSummaryModel from "../trading-summary/trading-summary-model"
 
@@ -8,16 +7,16 @@ export default class BacktestsPageModel extends Observable {
 
   constructor() {
     super();
-    this.backtests = ContainerJS.Inject;
     this.viewModelFactory = ContainerJS.Inject;
+    this.backtests        = ContainerJS.Inject;
 
     this.tradingSummariesService  = ContainerJS.Inject;
   }
 
   postCreate() {
-    this.backtestListModel  = new BacktestListModel(this.backtests);
-    this.miniChart = this.viewModelFactory.createChart();
-    this.chart     = this.viewModelFactory.createChart({
+    this.backtestList  = this.viewModelFactory.createBacktestListModel();
+    this.miniChart     = this.viewModelFactory.createChart();
+    this.chart         = this.viewModelFactory.createChart({
       displayPositionsAndGraphs:true
     });
     this.positionTable =

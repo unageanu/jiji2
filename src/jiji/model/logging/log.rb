@@ -67,7 +67,7 @@ module Jiji::Model::Logging
     def create_log_data
       data = LogData.create(@time_source.now, nil, @backtest_id)
       data.save
-      return data
+      data
     end
 
     def save_current_log_data

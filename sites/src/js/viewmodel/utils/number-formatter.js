@@ -34,9 +34,9 @@ export default class NumberFormatter {
     return decimal.toFixed(digits);
   }
 
-  static formatRatio(ratio) {
+  static formatRatio(ratio, digits=1) {
     if (ratio == null) return "";
-    return NumberFormatter.formatDecimal(ratio*100, 1) + "%";
+    return NumberFormatter.formatDecimal(ratio*100, digits) + "%";
   }
 
 }

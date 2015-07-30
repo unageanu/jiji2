@@ -17,6 +17,10 @@ module Jiji::Model::Graphing
       graph
     end
 
+    def create_balance_graph
+      create("口座資産", :balance, :last)
+    end
+
     def save_data(time)
       @graphs.values.each do |g|
         g.save_data(time)

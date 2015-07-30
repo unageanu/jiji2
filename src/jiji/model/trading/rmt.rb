@@ -66,6 +66,16 @@ module Jiji::Model::Trading
       @rmt_next_tick_job_generator.stop
     end
 
+    def balance_of_yesterday
+      time      = time_source.now
+      today     = Jiji::Utils::Times.round_day(time)
+      yesterday = Jiji::Utils::Times.yesterday(time)
+      graph = @trading_context.graph_factory.create_balance_graph
+      data = graph.fetch_data( yesterday, today, :one_day )
+        .sort_by {|d| d.timestamp.to_i * -1 }
+      data.empty? ? nil : data[0].value[0]
+    end
+
     private
 
     def create_trading_context(graph_factory)

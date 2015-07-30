@@ -44,7 +44,7 @@ module Jiji::Model::Trading::Jobs
     end
 
     def create_balance_graph(context)
-      context.graph_factory.create('口座資産', :balance, :last)
+      context.graph_factory.create_balance_graph
     end
 
     def save_graph_data(trading_context, time)

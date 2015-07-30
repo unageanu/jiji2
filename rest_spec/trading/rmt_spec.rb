@@ -20,6 +20,7 @@ describe 'リアルトレード' do
     expect(r.body['margin_rate']).to be >= 0
     expect(r.body['margin_used']).to be >= 0
     expect(r.body['profit_or_loss']).to be >= 0
+    expect(r.body['balance_of_yesterday']).to be nil
   end
 
   it 'PUT /rmt/agents でエージェントの設定を作成/更新できる' do

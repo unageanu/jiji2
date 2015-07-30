@@ -12,7 +12,9 @@ module Jiji::Web
 
     get '/account' do
       result = invoke_on_rmt_process do |trading_context, _queue|
-        trading_context.broker.account
+        h = trading_context.broker.account.to_h
+        h[:balance_of_yesterday] = rmt.balance_of_yesterday
+        h
       end
       ok(result)
     end

@@ -44,7 +44,7 @@ module Jiji::Model::Trading::Jobs
     end
 
     def create_balance_graph(context)
-      context.graph_factory.create("口座資産", :balance, :last)
+      context.graph_factory.create('口座資産', :balance, :last)
     end
 
     def save_graph_data(trading_context, time)
@@ -74,13 +74,7 @@ module Jiji::Model::Trading::Jobs
       save_graph_data(context, tick.timestamp)
       update_progress(context, tick.timestamp)
 
-      return unless context.alive?
-      if context.broker.next?
-        queue << self
-        sleep 0.01
-      else
-        context.request_finish
-      end
+      push_next_job_if_required(context, queue)
     end
 
     private
@@ -94,6 +88,16 @@ module Jiji::Model::Trading::Jobs
       return 0.0 if timestamp <= @start_time
       return 1.0 if timestamp >= @end_time
       (timestamp.to_i - @start_time.to_i).to_f / @sec
+    end
+
+    def push_next_job_if_required(context, queue)
+      return unless context.alive?
+      if context.broker.next?
+        queue << self
+        sleep 0.01
+      else
+        context.request_finish
+      end
     end
 
   end

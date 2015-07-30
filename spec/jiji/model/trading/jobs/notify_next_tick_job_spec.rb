@@ -93,6 +93,8 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
       .and_return(*create_tick_response)
     allow(broker).to receive(:next?)
       .and_return(true, true, true, true, false)
+    allow(broker).to receive(:account)
+      .and_return(Jiji::Model::Trading::Account.new("a", 10000, 0.03))
 
     expect(broker).to receive(:refresh).exactly(refresh_count).times
     if expect_to_refresh_accounts

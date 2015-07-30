@@ -23,6 +23,7 @@ module Jiji::Model::Trading::Jobs
 
     def after_do_next(trading_context, queue)
       time = trading_context.broker.tick.timestamp
+      add_balance_graph_data(trading_context)
       save_graph_data(trading_context, time)
     end
 
@@ -35,6 +36,15 @@ module Jiji::Model::Trading::Jobs
       trading_context.broker.refresh_positions
       trading_context.broker.refresh_account
       @counter = 0
+    end
+
+    def add_balance_graph_data(context)
+      @balance_graph = create_balance_graph(context) unless @balance_graph
+      @balance_graph << [context.broker.account.balance]
+    end
+
+    def create_balance_graph(context)
+      context.graph_factory.create("口座資産", :balance, :last)
     end
 
     def save_graph_data(trading_context, time)
@@ -60,6 +70,7 @@ module Jiji::Model::Trading::Jobs
     def after_do_next(context, queue)
       tick = context.broker.tick
 
+      add_balance_graph_data(context)
       save_graph_data(context, tick.timestamp)
       update_progress(context, tick.timestamp)
 

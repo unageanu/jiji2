@@ -52,10 +52,13 @@ describe Jiji::Model::Trading::BackTest do
     expect(test.retrieve_process_status).to be :finished
 
     graphs = graph_repository.find(test._id).map { |g| g }
-    expect(graphs.length).to be 1
+    expect(graphs.length).to be 2
     expect(graphs[0].backtest_id).to eq test._id
-    expect(graphs[0].label).to eq '移動平均線'
-    expect(graphs[0].colors).to eq ['#779999', '#557777']
+    expect(graphs[0].label).to eq '口座資産'
+    expect(graphs[0].colors).to eq []
+    expect(graphs[1].backtest_id).to eq test._id
+    expect(graphs[1].label).to eq '移動平均線'
+    expect(graphs[1].colors).to eq ['#779999', '#557777']
 
     data = graphs[0].fetch_data(
       Time.new(2015, 6, 20, 0,  0, 0),

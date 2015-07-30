@@ -30,7 +30,7 @@ describe Jiji::Model::Graphing::Graph do
     expect(rmt_graphs[1].end_time).to eq Time.new(2015, 4, 1, 0, 2, 0)
 
     graphs = graph_repository.find(backtests[0].id)
-    expect(graphs.length).to eq 1
+    expect(graphs.length).to eq 2
     expect(graphs[0].label).to eq 'backtest1'
     expect(graphs[0].type).to eq :chart
     expect(graphs[0].aggregation_type).to eq :last
@@ -39,7 +39,7 @@ describe Jiji::Model::Graphing::Graph do
     expect(graphs[0].end_time).to eq Time.new(2015, 4, 1, 0, 2, 0)
 
     graphs = graph_repository.find(backtests[1].id)
-    expect(graphs.length).to eq 1
+    expect(graphs.length).to eq 2
     expect(graphs[0].label).to eq 'backtest2'
     expect(graphs[0].type).to eq :zero_base
     expect(graphs[0].aggregation_type).to eq :average
@@ -108,7 +108,7 @@ describe Jiji::Model::Graphing::Graph do
     expect(graphs.length).to eq 0
 
     graphs = graph_repository.find(backtests[1].id)
-    expect(graphs.length).to eq 1
+    expect(graphs.length).to eq 2
 
     expect(graph1.fetch_data(start_time, end_time).length).to eq 0
     expect(graph2.fetch_data(start_time, end_time).length).not_to eq 0

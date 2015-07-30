@@ -20,7 +20,11 @@ module Jiji::Model::Trading
     end
 
     def calcurate_interval_start_time(time)
-      Time.at((time.to_i / (@ms / 1000)).floor * (@ms / 1000))
+      step   = @ms / 1000
+      offset = time.utc_offset
+      t = Time.at(((time.to_i + offset) / step).floor * step - offset)
+      t.localtime(time.utc_offset)
+      t
     end
 
   end

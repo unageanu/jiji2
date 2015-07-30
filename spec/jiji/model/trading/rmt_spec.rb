@@ -132,7 +132,7 @@ describe Jiji::Model::Trading::RMT do
   describe 'balance_of_yesterday' do
     it 'データが未登録の場合、nil' do
       @rmt.setup
-      @time_source.set(Time.utc(2015, 5, 1, 6, 0, 0))
+      @time_source.set(Time.local(2015, 5, 1, 6, 0, 0))
 
       expect(@rmt.balance_of_yesterday).to be nil
     end
@@ -140,43 +140,43 @@ describe Jiji::Model::Trading::RMT do
       @rmt.setup
 
       graph = @rmt.trading_context.graph_factory.create_balance_graph
-      start_time = Time.utc(2015, 5, 1, 18, 0, 0)
-      end_time   = Time.utc(2015, 5, 4, 18, 0, 0)
+      start_time = Time.local(2015, 5, 1, 18, 0, 0)
+      end_time   = Time.local(2015, 5, 4, 18, 0, 0)
       15.times do |i|
         graph << [1000*i]
         graph.save_data(start_time + (i*60*60*6))
       end
 
-      start_time = Time.utc(2015, 5, 1, 0, 0, 0)
-      end_time   = Time.utc(2015, 5, 6, 0, 0, 0)
+      start_time = Time.local(2015, 5, 1, 0, 0, 0)
+      end_time   = Time.local(2015, 5, 6, 0, 0, 0)
       expect(graph.fetch_data(start_time, end_time).length).to eq 14
       expect(graph.fetch_data(start_time, end_time, :one_day).length).to eq 5
 
-      @time_source.set(Time.utc(2015, 5, 1, 0, 0, 0))
+      @time_source.set(Time.local(2015, 5, 1, 0, 0, 0))
       expect(@rmt.balance_of_yesterday).to be nil
-      @time_source.set(Time.utc(2015, 5, 1, 8, 59, 0))
+      @time_source.set(Time.local(2015, 5, 1, 8, 59, 0))
       expect(@rmt.balance_of_yesterday).to be nil
-      @time_source.set(Time.utc(2015, 5, 1, 9, 0, 0))
+      @time_source.set(Time.local(2015, 5, 1, 9, 0, 0))
       expect(@rmt.balance_of_yesterday).to be nil
-      @time_source.set(Time.utc(2015, 5, 1, 23, 59, 59))
+      @time_source.set(Time.local(2015, 5, 1, 23, 59, 59))
       expect(@rmt.balance_of_yesterday).to be nil
-      @time_source.set(Time.utc(2015, 5, 2, 0, 0, 0))
+      @time_source.set(Time.local(2015, 5, 2, 0, 0, 0))
       expect(@rmt.balance_of_yesterday).to be 0
-      @time_source.set(Time.utc(2015, 5, 2, 8, 59, 0))
+      @time_source.set(Time.local(2015, 5, 2, 8, 59, 0))
       expect(@rmt.balance_of_yesterday).to be 0
-      @time_source.set(Time.utc(2015, 5, 2, 9, 0, 0))
+      @time_source.set(Time.local(2015, 5, 2, 9, 0, 0))
       expect(@rmt.balance_of_yesterday).to be 0
-      @time_source.set(Time.utc(2015, 5, 2, 23, 59, 59))
+      @time_source.set(Time.local(2015, 5, 2, 23, 59, 59))
       expect(@rmt.balance_of_yesterday).to be 0
-      @time_source.set(Time.utc(2015, 5, 3, 3, 0, 0))
+      @time_source.set(Time.local(2015, 5, 3, 3, 0, 0))
       expect(@rmt.balance_of_yesterday).to be 4000
-      @time_source.set(Time.utc(2015, 5, 4, 4, 0, 0))
+      @time_source.set(Time.local(2015, 5, 4, 4, 0, 0))
       expect(@rmt.balance_of_yesterday).to be 8000
-      @time_source.set(Time.utc(2015, 5, 5, 5, 0, 0))
+      @time_source.set(Time.local(2015, 5, 5, 5, 0, 0))
       expect(@rmt.balance_of_yesterday).to be 12000
-      @time_source.set(Time.utc(2015, 5, 6, 6, 0, 0))
+      @time_source.set(Time.local(2015, 5, 6, 6, 0, 0))
       expect(@rmt.balance_of_yesterday).to be 14000
-      @time_source.set(Time.utc(2015, 5, 7, 7, 0, 0))
+      @time_source.set(Time.local(2015, 5, 7, 7, 0, 0))
       expect(@rmt.balance_of_yesterday).to be nil
     end
   end

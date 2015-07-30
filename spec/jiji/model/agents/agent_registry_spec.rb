@@ -1,19 +1,14 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/data_builder'
 
 describe Jiji::Model::Agents::AgentRegistry do
+  include_context 'use data_builder'
+  include_context 'use container'
+
   before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
-
-    @container    = Jiji::Test::TestContainerFactory.instance.new_container
-    @repository   = @container.lookup(:agent_source_repository)
-    @registory    = @container.lookup(:agent_registry)
-  end
-
-  after(:example) do
-    @data_builder.clean
+    @repository   = container.lookup(:agent_source_repository)
+    @registory    = container.lookup(:agent_registry)
   end
 
   describe '登録' do
@@ -52,9 +47,9 @@ describe Jiji::Model::Agents::AgentRegistry do
         @registory.get_agent_class('TestAgent1@aaa')
       end.to raise_exception(Jiji::Errors::NotFoundException)
 
-      @container    = Jiji::Test::TestContainerFactory.instance.new_container
-      @repository   = @container.lookup(:agent_source_repository)
-      @registory    = @container.lookup(:agent_registry)
+      new_container    = Jiji::Test::TestContainerFactory.instance.new_container
+      @repository   = new_container.lookup(:agent_source_repository)
+      @registory    = new_container.lookup(:agent_registry)
 
       expect(@registory.agent_sources.length).to be 0
       expect do
@@ -345,9 +340,9 @@ describe Jiji::Model::Agents::AgentRegistry do
     end
 
     def reload
-      @container    = Jiji::Test::TestContainerFactory.instance.new_container
-      @repository   = @container.lookup(:agent_source_repository)
-      @registory    = @container.lookup(:agent_registry)
+      new_container    = Jiji::Test::TestContainerFactory.instance.new_container
+      @repository   = new_container.lookup(:agent_source_repository)
+      @registory    = new_container.lookup(:agent_registry)
     end
   end
 
@@ -391,9 +386,9 @@ BODY
     agent = @registory.create_agent('TestAgent1@bbb')
     agent.post_create
 
-    @container    = Jiji::Test::TestContainerFactory.instance.new_container
-    @repository   = @container.lookup(:agent_source_repository)
-    @registory    = @container.lookup(:agent_registry)
+    new_container    = Jiji::Test::TestContainerFactory.instance.new_container
+    @repository   = new_container.lookup(:agent_source_repository)
+    @registory    = new_container.lookup(:agent_registry)
 
     agent = @registory.create_agent('TestModule2::TestAgent2@bbb')
     agent.post_create
@@ -402,6 +397,6 @@ BODY
   end
 
   def new_body(seed, parent = nil)
-    @data_builder.new_agent_body(seed, parent)
+    data_builder.new_agent_body(seed, parent)
   end
 end

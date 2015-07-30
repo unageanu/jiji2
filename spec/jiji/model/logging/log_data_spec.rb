@@ -1,16 +1,9 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/data_builder'
 
 describe Jiji::Model::Logging::LogData do
-  before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
-  end
-
-  after(:example) do
-    @data_builder.clean
-  end
+  include_context 'use data_builder'
 
   it 'LogDataを作成してログを保存できる' do
     data = Jiji::Model::Logging::LogData.create(Time.at(100))

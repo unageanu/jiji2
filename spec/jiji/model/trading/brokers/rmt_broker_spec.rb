@@ -4,7 +4,7 @@ require 'jiji/test/test_configuration'
 require 'jiji/model/trading/brokers/broker_examples'
 
 describe Jiji::Model::Trading::Brokers::RMTBroker do
-  let(:data_builder) { Jiji::Test::DataBuilder.new }
+  include_context 'use data_builder'
   let(:position_repository) do
     @container.lookup(:position_repository)
   end
@@ -17,7 +17,6 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
   after(:example) do
     @rmt.stop_rmt_process if @rmt
-    data_builder.clean
   end
 
   context 'プラグインが未設定の場合' do

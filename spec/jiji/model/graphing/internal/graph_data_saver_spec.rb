@@ -1,10 +1,9 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/shared_contexts'
 
 describe Jiji::Model::Graphing::Internal::GraphDataSaver do
-  include_context 'use backtest'
+  include_context 'use backtests'
 
   context ':average' do
     let(:graph) do

@@ -1,10 +1,9 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/shared_contexts'
 
 describe Jiji::Model::Graphing::GraphFactory do
-  include_context 'use backtest'
+  include_context 'use backtests'
 
   it '同じ名前のグラフを作成すると、同じインスタンスが返される' do
     factory_for_rmt =

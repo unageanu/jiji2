@@ -4,21 +4,9 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::TradingSummaries::TradingSummaryBuilder do
-  let(:data_builder) { Jiji::Test::DataBuilder.new }
-  let(:container)    { Jiji::Test::TestContainerFactory.instance.new_container }
-
+  include_context 'use backtests'
   let(:trading_summary_builder) { container.lookup(:trading_summary_builder) }
-  let(:backtest_repository) { container.lookup(:backtest_repository) }
-  let(:agent_registory)     { container.lookup(:agent_registry) }
-  let(:test) do
-    agent_registory.add_source(
-      'aaa', '', :agent, data_builder.new_agent_body(1))
-    data_builder.register_backtest(1, backtest_repository)
-  end
-
-  after(:example) do
-    data_builder.clean
-  end
+  let(:test) { backtests[0] }
 
   describe '#build' do
     it '取引結果がない場合もSummaryを構築できる' do

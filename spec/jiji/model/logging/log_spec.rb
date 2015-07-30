@@ -1,32 +1,18 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/data_builder'
+
 require 'logger'
 
 describe Jiji::Model::Logging::Log do
-  let(:data_builder) { Jiji::Test::DataBuilder.new }
+  include_context 'use backtests'
   let(:time_source) { Jiji::Utils::TimeSource.new }
-
-  let(:container) { Jiji::Test::TestContainerFactory.instance.new_container }
-  let(:backtest) do
-    agent_registry      = container.lookup(:agent_registry)
-    backtest_repository = container.lookup(:backtest_repository)
-    agent_registry.add_source('aaa', '', :agent,
-      data_builder.new_agent_body(1))
-    data_builder.register_backtest(1, backtest_repository)
-  end
-
   let(:log) { Jiji::Model::Logging::Log.new(time_source) }
   let(:backtest_log) do
-    Jiji::Model::Logging::Log.new(time_source, backtest._id)
+    Jiji::Model::Logging::Log.new(time_source, backtests[0]._id)
   end
   let(:logger) { Logger.new(log) }
   let(:backtest_logger) { Logger.new(backtest_log) }
-
-  after(:example) do
-    data_builder.clean
-  end
 
   it 'ログを保存できる' do
     time_source.set(Time.at(100))

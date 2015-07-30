@@ -4,13 +4,7 @@ require 'thread'
 require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
-  before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
-  end
-
-  after(:example) do
-    @data_builder.clean
-  end
+  include_context 'use data_builder'
 
   describe Jiji::Model::Trading::Jobs::NotifyNextTickJobForRMT do
     it 'exec で次のtickの処理が行われる' do
@@ -91,22 +85,12 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
     end
   end
 
-  def create_trading_context(refresh_count = 5,
-    expect_to_refresh_accounts = true)
+  def create_trading_context(
+    refresh_count = 5, expect_to_refresh_accounts = true)
     broker  = double('mock broker')
     allow(broker).to receive(:tick) \
       .at_least(:once) \
-      .and_return(
-        @data_builder.new_tick(1, Time.new(2014, 1, 1, 0, 0,  0)),
-        @data_builder.new_tick(1, Time.new(2014, 1, 1, 0, 0,  0)),
-        @data_builder.new_tick(2, Time.new(2014, 1, 1, 0, 0, 15)),
-        @data_builder.new_tick(2, Time.new(2014, 1, 1, 0, 0, 15)),
-        @data_builder.new_tick(3, Time.new(2014, 1, 1, 0, 0, 30)),
-        @data_builder.new_tick(3, Time.new(2014, 1, 1, 0, 0, 30)),
-        @data_builder.new_tick(4, Time.new(2014, 1, 1, 0, 0, 45)),
-        @data_builder.new_tick(4, Time.new(2014, 1, 1, 0, 0, 45)),
-        @data_builder.new_tick(5, Time.new(2014, 1, 1, 0, 1,  0)),
-        @data_builder.new_tick(5, Time.new(2014, 1, 1, 0, 1,  0)))
+      .and_return(*create_tick_response)
     allow(broker).to receive(:next?)
       .and_return(true, true, true, true, false)
 
@@ -116,6 +100,21 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
       expect(broker).to receive(:refresh_account).once
     end
 
-    @data_builder.new_trading_context(broker)
+    data_builder.new_trading_context(broker)
+  end
+
+  def create_tick_response
+    [
+      data_builder.new_tick(1, Time.new(2014, 1, 1, 0, 0,  0)),
+      data_builder.new_tick(1, Time.new(2014, 1, 1, 0, 0,  0)),
+      data_builder.new_tick(2, Time.new(2014, 1, 1, 0, 0, 15)),
+      data_builder.new_tick(2, Time.new(2014, 1, 1, 0, 0, 15)),
+      data_builder.new_tick(3, Time.new(2014, 1, 1, 0, 0, 30)),
+      data_builder.new_tick(3, Time.new(2014, 1, 1, 0, 0, 30)),
+      data_builder.new_tick(4, Time.new(2014, 1, 1, 0, 0, 45)),
+      data_builder.new_tick(4, Time.new(2014, 1, 1, 0, 0, 45)),
+      data_builder.new_tick(5, Time.new(2014, 1, 1, 0, 1,  0)),
+      data_builder.new_tick(5, Time.new(2014, 1, 1, 0, 1,  0))
+    ]
   end
 end

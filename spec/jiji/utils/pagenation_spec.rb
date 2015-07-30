@@ -1,10 +1,8 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/shared_contexts'
 
 describe Jiji::Utils::Pagenation::Query do
-
   include_context 'use data_builder'
   let(:time_source) { Jiji::Utils::TimeSource.new }
 

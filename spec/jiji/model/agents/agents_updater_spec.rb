@@ -1,12 +1,13 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/data_builder'
+
 require 'securerandom'
 
 describe Jiji::Model::Agents::AgentsUpdater do
-  let(:data_builder) { Jiji::Test::DataBuilder.new }
-  let(:container) { Jiji::Test::TestContainerFactory.instance.new_container }
+  include_context 'use data_builder'
+  include_context 'use container'
+
   let(:agent_source_repository) { container.lookup(:agent_source_repository) }
   let(:agent_registry) { container.lookup(:agent_registry) }
   let(:mail_composer) { container.lookup(:mail_composer) }

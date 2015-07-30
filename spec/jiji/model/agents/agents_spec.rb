@@ -1,67 +1,53 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/data_builder'
+
 require 'securerandom'
 
 describe Jiji::Model::Agents::Agents do
-  before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
-
-    @container = Jiji::Test::TestContainerFactory.instance.new_container
-    @logger    = @container.lookup(:logger_factory).create
-
-    @registory    = @container.lookup(:agent_registry)
-    @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))
-
-    backtest_repository = @container.lookup(:backtest_repository)
-    @backtest1 = @data_builder.register_backtest(1, backtest_repository)
-    @backtest2 = @data_builder.register_backtest(2, backtest_repository)
-  end
-
-  after(:example) do
-    @data_builder.clean
-  end
+  include_context 'use backtests'
+  let(:logger) { container.lookup(:logger_factory).create }
 
   describe '#get_or_create' do
     it 'idに対応するAgentsを取得できる' do
       agents1 = Jiji::Model::Agents::Agents.new(
-        @backtest1.id, {}, @logger)
+        backtests[0].id, {}, logger)
       agents1.states = { 'a' => 'aaa' }
       agents1.save
-      expect(agents1.logger).to be @logger
+      expect(agents1.logger).to be logger
       expect(agents1.fail_on_error).to be false
 
       agents2 = Jiji::Model::Agents::Agents.new(
-        @backtest2.id, {}, @logger, true)
+        backtests[1].id, {}, logger, true)
       agents2.states = { 'b' => 'bbb' }
       agents2.save
-      expect(agents2.logger).to be @logger
+      expect(agents2.logger).to be logger
       expect(agents2.fail_on_error).to be true
 
       agents = Jiji::Model::Agents::Agents.get_or_create(
-        @backtest1.id, @logger)
+        backtests[0].id, logger)
       expect(agents).not_to be nil
       expect(agents.states).to eq({ 'a' => 'aaa' })
-      expect(agents.backtest_id).to eq @backtest1.id
-      expect(agents.logger).to be @logger
+      expect(agents.backtest_id).to eq backtests[0].id
+      expect(agents.logger).to be logger
       expect(agents.fail_on_error).to be false
 
       agents = Jiji::Model::Agents::Agents.get_or_create(
-        @backtest2.id, @logger, true)
+        backtests[1].id, logger, true)
       expect(agents).not_to be nil
       expect(agents.states).to eq({ 'b' => 'bbb' })
-      expect(agents.backtest_id).to eq @backtest2.id
-      expect(agents.logger).to be @logger
+      expect(agents.backtest_id).to eq backtests[1].id
+      expect(agents.logger).to be logger
       expect(agents.fail_on_error).to be true
     end
 
     it 'idに対応するAgentsが存在しない場合、新規作成される' do
-      agents = Jiji::Model::Agents::Agents.get_or_create(@backtest1.id, @logger)
+      agents = Jiji::Model::Agents::Agents.get_or_create(
+        backtests[0].id, logger)
       expect(agents).not_to be nil
       expect(agents.states).to eq({})
-      expect(agents.backtest_id).to eq @backtest1.id
-      expect(agents.logger).to be @logger
+      expect(agents.backtest_id).to eq backtests[0].id
+      expect(agents.logger).to be logger
       expect(agents.fail_on_error).to be false
     end
   end
@@ -73,9 +59,9 @@ describe Jiji::Model::Agents::Agents do
         expect(agent).to receive(:next_tick)
         r[uuid] = agent
       end
-      agents = Jiji::Model::Agents::Agents.new(nil, agents, @logger)
+      agents = Jiji::Model::Agents::Agents.new(nil, agents, logger)
 
-      agents.next_tick(@data_builder.new_tick(1))
+      agents.next_tick(data_builder.new_tick(1))
     end
 
     it 'fail_on_error=falseの場合、' \
@@ -89,9 +75,9 @@ describe Jiji::Model::Agents::Agents do
         end
         r[uuid] = agent
       end
-      agents = Jiji::Model::Agents::Agents.new(nil, agents, @logger)
+      agents = Jiji::Model::Agents::Agents.new(nil, agents, logger)
 
-      agents.next_tick(@data_builder.new_tick(1))
+      agents.next_tick(data_builder.new_tick(1))
     end
 
     it 'fail_on_error=trueの場合、' \
@@ -105,10 +91,10 @@ describe Jiji::Model::Agents::Agents do
         end
         r[uuid] = agent
       end
-      agents = Jiji::Model::Agents::Agents.new(nil, agents, @logger, true)
+      agents = Jiji::Model::Agents::Agents.new(nil, agents, logger, true)
 
       expect do
-        agents.next_tick(@data_builder.new_tick(1))
+        agents.next_tick(data_builder.new_tick(1))
       end.to raise_exception
     end
   end
@@ -120,12 +106,12 @@ describe Jiji::Model::Agents::Agents do
         expect(agent).to receive(:state).and_return(i)
         r[uuid] = agent
       end
-      agents = Jiji::Model::Agents::Agents.new(nil, agents, @logger)
+      agents = Jiji::Model::Agents::Agents.new(nil, agents, logger)
 
       agents.save_state
       expect(agents.states.size).to eq 3
 
-      agents = Jiji::Model::Agents::Agents.get_or_create(nil, @logger)
+      agents = Jiji::Model::Agents::Agents.get_or_create(nil, logger)
       expect(agents.states.size).to eq 3
     end
 
@@ -140,7 +126,7 @@ describe Jiji::Model::Agents::Agents do
         end
         r[uuid] = agent
       end
-      agents = Jiji::Model::Agents::Agents.new(nil, agents, @logger)
+      agents = Jiji::Model::Agents::Agents.new(nil, agents, logger)
 
       agents.save_state
       expect(agents.states.size).to eq 2
@@ -157,7 +143,7 @@ describe Jiji::Model::Agents::Agents do
         end
         r[uuid] = agent
       end
-      agents = Jiji::Model::Agents::Agents.new(nil, agents, @logger, true)
+      agents = Jiji::Model::Agents::Agents.new(nil, agents, logger, true)
 
       expect do
         agents.save_state
@@ -173,7 +159,7 @@ describe Jiji::Model::Agents::Agents do
         expect(agent).to receive(:restore_state).with(i)
         r[uuid] = agent
       end
-      agents = Jiji::Model::Agents::Agents.new(nil, agents, @logger)
+      agents = Jiji::Model::Agents::Agents.new(nil, agents, logger)
       agents.save_state
       agents.restore_state
     end
@@ -190,7 +176,7 @@ describe Jiji::Model::Agents::Agents do
         end
         r[uuid] = agent
       end
-      agents = Jiji::Model::Agents::Agents.new(nil, agents, @logger)
+      agents = Jiji::Model::Agents::Agents.new(nil, agents, logger)
       agents.save_state
       agents.restore_state
     end
@@ -207,7 +193,7 @@ describe Jiji::Model::Agents::Agents do
         end
         r[uuid] = agent
       end
-      agents = Jiji::Model::Agents::Agents.new(nil, agents, @logger, true)
+      agents = Jiji::Model::Agents::Agents.new(nil, agents, logger, true)
       agents.save_state
       expect do
         agents.restore_state
@@ -225,7 +211,7 @@ describe Jiji::Model::Agents::Agents do
         end
         r[uuid] = agent
       end
-      agents = Jiji::Model::Agents::Agents.new(nil, agents, @logger)
+      agents = Jiji::Model::Agents::Agents.new(nil, agents, logger)
       agents.save_state
       agents.restore_state
     end

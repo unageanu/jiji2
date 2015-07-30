@@ -4,8 +4,8 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
+  include_context 'use data_builder'
   let(:summary) { Jiji::Model::Trading::TradingSummaries::TradingSummary.new }
-  let(:data_builder) { Jiji::Test::DataBuilder.new }
 
   describe '#add_position' do
     it '取引結果がない場合' do

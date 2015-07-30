@@ -1,26 +1,20 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/data_builder'
 
 describe Jiji::Model::Agents::AgentSource do
+  include_context 'use data_builder'
+  include_context 'use container'
+  let(:repository) { container.lookup(:agent_source_repository) }
+
   before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
-
-    @container    = Jiji::Test::TestContainerFactory.instance.new_container
-    @repository   = @container.lookup(:agent_source_repository)
-
     10.times do |i|
-      @data_builder.register_agent(i)
+      data_builder.register_agent(i)
     end
   end
 
-  after(:example) do
-    @data_builder.clean
-  end
-
   it 'allですべてのソースを取得できる' do
-    agents = @repository.all
+    agents = repository.all
 
     expect(agents.length).to eq 10
     expect(agents.first.context).to eq nil
@@ -32,8 +26,8 @@ describe Jiji::Model::Agents::AgentSource do
   end
 
   it 'getで特定のソースを取得できる' do
-    agents = @repository.all
-    agent  = @repository.get_by_id(agents.first._id)
+    agents = repository.all
+    agent  = repository.get_by_id(agents.first._id)
 
     expect(agent.context).not_to eq nil
     expect(agent.name).to eq 'test0'
@@ -41,7 +35,7 @@ describe Jiji::Model::Agents::AgentSource do
   end
 
   it 'get_by_typeで特定の種類のソースを取得できる' do
-    agents = @repository.get_by_type(:agent)
+    agents = repository.get_by_type(:agent)
 
     expect(agents.length).to eq 5
     expect(agents.first.context).to eq nil
@@ -51,7 +45,7 @@ describe Jiji::Model::Agents::AgentSource do
     expect(agents.last.name).to eq 'test8'
     expect(agents.last.type).to eq :agent
 
-    agents = @repository.get_by_type(:lib)
+    agents = repository.get_by_type(:lib)
 
     expect(agents.length).to eq 5
     expect(agents.first.context).to eq nil

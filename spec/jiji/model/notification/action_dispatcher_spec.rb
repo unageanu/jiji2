@@ -3,9 +3,8 @@
 require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Notification::NotificationRepository do
-  let(:data_builder) { Jiji::Test::DataBuilder.new }
-
-  let(:container) { Jiji::Test::TestContainerFactory.instance.new_container }
+  include_context 'use data_builder'
+  include_context 'use container'
   let(:notification_repository) { container.lookup(:notification_repository) }
   let(:action_dispatcher) { container.lookup(:action_dispatcher) }
 
@@ -13,10 +12,6 @@ describe Jiji::Model::Notification::NotificationRepository do
     agent_registry = container.lookup(:agent_registry)
     agent_registry.add_source('aaa', '', :agent,
       data_builder. new_notification_agent_body(1))
-  end
-
-  after(:example) do
-    data_builder.clean
   end
 
   RSpec.shared_examples 'アクションの実行' do

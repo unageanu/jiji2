@@ -1,27 +1,9 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/data_builder'
 
 describe Jiji::Model::Notification::Notification do
-  let(:data_builder) { Jiji::Test::DataBuilder.new }
-
-  let(:container) { Jiji::Test::TestContainerFactory.instance.new_container }
-  let(:backtest) do
-    agent_registry      = container.lookup(:agent_registry)
-    backtest_repository = container.lookup(:backtest_repository)
-    agent_registry.add_source('aaa', '', :agent,
-      data_builder.new_agent_body(1))
-    data_builder.register_backtest(1, backtest_repository)
-  end
-
-  after(:example) do
-    data_builder.clean
-  end
-
-  after(:example) do
-    data_builder.clean
-  end
+  include_context 'use backtests'
 
   it 'Notificationを作成して永続化できる' do
     actions = [
@@ -51,9 +33,9 @@ describe Jiji::Model::Notification::Notification do
     expect(notification.actions).to eq actions
 
     notification = Jiji::Model::Notification::Notification.create(
-      'b', 'test2', Time.at(200), backtest.id, 'message2', 'icon2', actions)
+      'b', 'test2', Time.at(200), backtests[0].id, 'message2', 'icon2', actions)
 
-    expect(notification.backtest_id).to be backtest.id
+    expect(notification.backtest_id).to be backtests[0].id
     expect(notification.agent_id).to eq 'b'
     expect(notification.agent_name).to eq 'test2'
     expect(notification.timestamp).to eq Time.at(200)

@@ -1,10 +1,8 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/shared_contexts'
 
 describe Jiji::Security::SessionStore do
-
   include_context 'use container'
 
   let(:session_store) { container.lookup(:session_store) }

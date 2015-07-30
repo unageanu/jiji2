@@ -3,22 +3,21 @@
 require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Trading::BackTestRepository do
-  before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
+  include_context 'use data_builder'
 
+  before(:example) do
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
     @repository   = @container.lookup(:backtest_repository)
     @time_source  = @container.lookup(:time_source)
     @registory    = @container.lookup(:agent_registry)
     @repository.load
 
-    @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))
-    @registory.add_source('bbb', '', :agent, @data_builder.new_agent_body(2))
+    @registory.add_source('aaa', '', :agent, data_builder.new_agent_body(1))
+    @registory.add_source('bbb', '', :agent, data_builder.new_agent_body(2))
   end
 
   after(:example) do
     @repository.stop
-    @data_builder.clean
   end
 
   it 'テストを追加できる' do
@@ -300,7 +299,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     end
 
     it 'テストで利用しているエージェントが削除されていた場合も、正しく起動できる' do
-      @registory.add_source('ccc', '', :agent, @data_builder.new_agent_body(3))
+      @registory.add_source('ccc', '', :agent, data_builder.new_agent_body(3))
       @repository.register({
         'name'          => 'テスト10',
         'start_time'    => Time.at(100),
@@ -350,8 +349,8 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(graph_data.length).to be 1
 
       position_repository = @container.lookup(:position_repository)
-      @data_builder.new_position(1, backtests[1].id).save
-      @data_builder.new_position(2, backtests[1].id).save
+      data_builder.new_position(1, backtests[1].id).save
+      data_builder.new_position(2, backtests[1].id).save
       positions = position_repository.retrieve_positions(backtests[1].id)
       expect(positions.length).to be > 0
 

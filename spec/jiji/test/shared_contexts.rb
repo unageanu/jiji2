@@ -12,14 +12,20 @@ RSpec.shared_context 'use container' do
   let(:container) { Jiji::Test::TestContainerFactory.instance.new_container }
 end
 
-RSpec.shared_context 'use backtest' do
+RSpec.shared_context 'use agent' do
   include_context 'use data_builder'
   include_context 'use container'
   let(:agent_registry) { container.lookup(:agent_registry) }
-  let(:backtest_repository) { container.lookup(:backtest_repository) }
-  let(:backtests) do
+  before(:example) do
     agent_registry.add_source('aaa', '', :agent,
       data_builder.new_agent_body(1))
+  end
+end
+
+RSpec.shared_context 'use backtests' do
+  include_context 'use agent'
+  let(:backtest_repository) { container.lookup(:backtest_repository) }
+  let(:backtests) do
     return [
       data_builder.register_backtest(1, backtest_repository),
       data_builder.register_backtest(2, backtest_repository),

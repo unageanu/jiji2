@@ -1,18 +1,10 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/data_builder'
 
 describe Jiji::Model::Notification::Notificator do
-  let(:data_builder) { Jiji::Test::DataBuilder.new }
-  let(:container) { Jiji::Test::TestContainerFactory.instance.new_container }
-  let(:backtest) do
-    agent_registry      = container.lookup(:agent_registry)
-    backtest_repository = container.lookup(:backtest_repository)
-    agent_registry.add_source('aaa', '', :agent,
-      data_builder.new_agent_body(1))
-    data_builder.register_backtest(1, backtest_repository)
-  end
+  include_context 'use backtests'
+
   let(:push_notifier) do
     double('notifier')
   end
@@ -21,7 +13,7 @@ describe Jiji::Model::Notification::Notificator do
   end
   let(:notificator) do
     mail_composer = container.lookup(:mail_composer)
-    Jiji::Model::Notification::Notificator.new(backtest.id,
+    Jiji::Model::Notification::Notificator.new(backtests[0].id,
       'agent_id', 'agent_name', push_notifier, mail_composer, time_source)
   end
   let(:notification_repository) do
@@ -30,7 +22,6 @@ describe Jiji::Model::Notification::Notificator do
 
   after(:example) do
     Mail::TestMailer.deliveries.clear
-    data_builder.clean
   end
 
   it 'テキスト形式のメールを送信できる' do
@@ -83,11 +74,11 @@ describe Jiji::Model::Notification::Notificator do
     ])
 
     notifications = notification_repository.retrieve_notifications({
-      backtest_id: backtest.id
+      backtest_id: backtests[0].id
     })
     expect(notifications.length).to be 1
     notification = notifications[0]
-    expect(notification.backtest_id).to eq backtest.id
+    expect(notification.backtest_id).to eq backtests[0].id
     expect(notification.agent_id).to eq 'agent_id'
     expect(notification.agent_name).to eq 'agent_name'
     expect(notification.timestamp).to eq Time.at(100)

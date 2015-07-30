@@ -4,17 +4,12 @@ require 'jiji/test/test_configuration'
 require 'jiji/model/settings/security_setting'
 
 describe Jiji::Model::Settings::SecuritySetting do
+  include_context 'use data_builder'
+  include_context 'use container'
+  let(:repository) { container.lookup(:setting_repository) }
+
   before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
-
-    @container  = Jiji::Composing::ContainerFactory.instance.new_container
-    @repository = @container.lookup(:setting_repository)
-
-    @setting    = @repository.security_setting
-  end
-
-  after(:example) do
-    @data_builder.clean
+    @setting    = repository.security_setting
   end
 
   it '設定がない場合、初期値を返す' do
@@ -108,6 +103,6 @@ describe Jiji::Model::Settings::SecuritySetting do
   end
 
   def recreate_setting
-    @setting = @repository.security_setting
+    @setting = repository.security_setting
   end
 end

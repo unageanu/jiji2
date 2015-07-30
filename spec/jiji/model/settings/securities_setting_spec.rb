@@ -3,21 +3,19 @@
 require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Settings::SecuritiesSetting do
+  include_context 'use data_builder'
+  include_context 'use container'
+  let(:repository) { container.lookup(:setting_repository) }
+  let(:provider) { container.lookup(:securities_provider) }
+  let(:rmt) { container.lookup(:rmt) }
+
   before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
-    @container    = Jiji::Test::TestContainerFactory.instance.new_container
-    @provider     = @container.lookup(:securities_provider)
-    @repository   = @container.lookup(:setting_repository)
-    @rmt          = @container.lookup(:rmt)
-
-    @rmt.setup
-
-    @setting      = @repository.securities_setting
+    rmt.setup
+    @setting      = repository.securities_setting
   end
 
   after(:example) do
-    @rmt.tear_down
-    @data_builder.clean
+    rmt.tear_down
   end
 
   describe '#set_active_securities' do
@@ -27,20 +25,20 @@ describe Jiji::Model::Settings::SecuritiesSetting do
         plugin = event[:value]
       end
 
-      expect(@provider.get.class).to be Jiji::Test::Mock::MockSecurities
+      expect(provider.get.class).to be Jiji::Test::Mock::MockSecurities
       # テスト環境では、初期値はMockになる
 
       @setting.set_active_securities(:MOCK,  'a' => 'aa', 'b' => 'bb')
 
-      expect(@provider.get.class).to be Jiji::Test::Mock::MockSecurities
-      expect(@provider.get.config).to eq('a' => 'aa', 'b' => 'bb')
+      expect(provider.get.class).to be Jiji::Test::Mock::MockSecurities
+      expect(provider.get.config).to eq('a' => 'aa', 'b' => 'bb')
       expect(plugin.class).to be Jiji::Test::Mock::MockSecurities
       expect(plugin.config).to eq('a' => 'aa', 'b' => 'bb')
 
       @setting.set_active_securities(:MOCK2, 'a' => 'aa', 'c' => 'cc')
 
-      expect(@provider.get.class).to eq Jiji::Test::Mock::MockSecurities2
-      expect(@provider.get.config).to eq('a' => 'aa', 'c' => 'cc')
+      expect(provider.get.class).to eq Jiji::Test::Mock::MockSecurities2
+      expect(provider.get.config).to eq('a' => 'aa', 'c' => 'cc')
       expect(plugin.class).to eq Jiji::Test::Mock::MockSecurities2
       expect(plugin.config).to eq('a' => 'aa', 'c' => 'cc')
     end
@@ -52,13 +50,13 @@ describe Jiji::Model::Settings::SecuritiesSetting do
           'fail_on_test_connection' => true)
       end.to raise_error(ArgumentError)
 
-      expect(@provider.get.class).to be Jiji::Test::Mock::MockSecurities
-      expect(@provider.get.config).to eq('a' => 'aa', 'b' => 'bb')
+      expect(provider.get.class).to be Jiji::Test::Mock::MockSecurities
+      expect(provider.get.config).to eq('a' => 'aa', 'b' => 'bb')
 
-      @setting    = @repository.securities_setting
+      @setting    = repository.securities_setting
       @setting.setup
-      expect(@provider.get.class).to be Jiji::Test::Mock::MockSecurities
-      expect(@provider.get.config).to eq('a' => 'aa', 'b' => 'bb')
+      expect(provider.get.class).to be Jiji::Test::Mock::MockSecurities
+      expect(provider.get.config).to eq('a' => 'aa', 'b' => 'bb')
     end
   end
 
@@ -74,10 +72,10 @@ describe Jiji::Model::Settings::SecuritiesSetting do
     @setting.set_active_securities(:MOCK,  'a' => 'aa', 'b' => 'bb')
     @setting.set_active_securities(:MOCK2, 'a' => 'aa', 'c' => 'cc')
 
-    @setting    = @repository.securities_setting
+    @setting    = repository.securities_setting
     @setting.setup
-    expect(@provider.get.class).to eq Jiji::Test::Mock::MockSecurities2
-    expect(@provider.get.config).to eq('a' => 'aa', 'c' => 'cc')
+    expect(provider.get.class).to eq Jiji::Test::Mock::MockSecurities2
+    expect(provider.get.config).to eq('a' => 'aa', 'c' => 'cc')
 
     @setting.set_active_securities(:MOCK, 'a' => 'aa', 'b' => 'bb')
   end

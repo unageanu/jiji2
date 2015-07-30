@@ -4,21 +4,15 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::Rate do
-  before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
-  end
-
-  after(:example) do
-    @data_builder.clean
-  end
+  include_context 'use data_builder'
 
   it 'tickから作成できる' do
     rate1 = Jiji::Model::Trading::Rate.create_from_tick(:EURJPY,
-      @data_builder.new_tick(1,   Time.new(2014, 1, 1, 0, 0, 0)),
-      @data_builder.new_tick(2,   Time.new(2014, 2, 1, 0, 0, 0)),
-      @data_builder.new_tick(3,   Time.new(2014, 1, 1, 0, 0, 1)),
-      @data_builder.new_tick(10,  Time.new(2014, 1, 10, 0, 0, 0)),
-      @data_builder.new_tick(-10, Time.new(2014, 1, 21, 0, 0, 0))
+      data_builder.new_tick(1,   Time.new(2014, 1, 1, 0, 0, 0)),
+      data_builder.new_tick(2,   Time.new(2014, 2, 1, 0, 0, 0)),
+      data_builder.new_tick(3,   Time.new(2014, 1, 1, 0, 0, 1)),
+      data_builder.new_tick(10,  Time.new(2014, 1, 10, 0, 0, 0)),
+      data_builder.new_tick(-10, Time.new(2014, 1, 21, 0, 0, 0))
     )
 
     expect(rate1.pair).to eq(:EURJPY)
@@ -34,23 +28,23 @@ describe Jiji::Model::Trading::Rate do
   end
 
   it 'すべての値が同一である場合、同一とみなされる' do
-    rate1 = @data_builder.new_rate(1)
-    rate2 = @data_builder.new_rate(2)
+    rate1 = data_builder.new_rate(1)
+    rate2 = data_builder.new_rate(2)
 
     expect(rate1 == rate2).to eq(false)
-    expect(rate1 == @data_builder.new_rate(1)).to eq(true)
+    expect(rate1 == data_builder.new_rate(1)).to eq(true)
 
     expect(rate1.eql?(rate2)).to eq(false)
     expect(rate1.eql?(rate1)).to eq(true)
-    expect(rate1.eql?(@data_builder.new_rate(1))).to eq(true)
+    expect(rate1.eql?(data_builder.new_rate(1))).to eq(true)
 
     expect(rate1.equal?(rate2)).to eq(false)
     expect(rate1.equal?(rate1)).to eq(true)
-    expect(rate1.equal?(@data_builder.new_rate(1))).to eq(false)
+    expect(rate1.equal?(data_builder.new_rate(1))).to eq(false)
   end
 
   it 'clone で複製ができる' do
-    rate1 = @data_builder.new_rate(1)
+    rate1 = data_builder.new_rate(1)
     clone = rate1.clone
 
     expect(rate1 == clone).to eq(true)
@@ -60,16 +54,16 @@ describe Jiji::Model::Trading::Rate do
 
   it 'unionで統合できる' do
     rate1 = Jiji::Model::Trading::Rate.create_from_tick(:USDJPY,
-      @data_builder.new_tick(1,   Time.new(2014, 1, 3, 0, 0, 0)),
-      @data_builder.new_tick(2,   Time.new(2014, 2, 1, 0, 0, 0))
+      data_builder.new_tick(1,   Time.new(2014, 1, 3, 0, 0, 0)),
+      data_builder.new_tick(2,   Time.new(2014, 2, 1, 0, 0, 0))
     )
     rate2 = Jiji::Model::Trading::Rate.create_from_tick(:USDJPY,
-      @data_builder.new_tick(4,   Time.new(2014, 1, 1, 0, 0, 0)),
-      @data_builder.new_tick(5,   Time.new(2014, 1, 2, 0, 0, 0))
+      data_builder.new_tick(4,   Time.new(2014, 1, 1, 0, 0, 0)),
+      data_builder.new_tick(5,   Time.new(2014, 1, 2, 0, 0, 0))
     )
     rate3 = Jiji::Model::Trading::Rate.create_from_tick(:USDJPY,
-      @data_builder.new_tick(6,   Time.new(2014, 4, 3, 0, 0, 0)),
-      @data_builder.new_tick(7,   Time.new(2014, 3, 1, 0, 0, 0))
+      data_builder.new_tick(6,   Time.new(2014, 4, 3, 0, 0, 0)),
+      data_builder.new_tick(7,   Time.new(2014, 3, 1, 0, 0, 0))
     )
 
     rate = Jiji::Model::Trading::Rate.union(rate1, rate2, rate3)

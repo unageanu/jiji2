@@ -3,22 +3,21 @@
 require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Trading::RMT do
-  before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
+  include_context 'use data_builder'
 
+  before(:example) do
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
     @rmt          = @container.lookup(:rmt)
     @time_source  = @container.lookup(:time_source)
     @settings     = @container.lookup(:setting_repository)
     @registory    = @container.lookup(:agent_registry)
 
-    @registory.add_source('aaa', '', :agent, @data_builder.new_agent_body(1))
-    @registory.add_source('bbb', '', :agent, @data_builder.new_agent_body(2))
+    @registory.add_source('aaa', '', :agent, data_builder.new_agent_body(1))
+    @registory.add_source('bbb', '', :agent, data_builder.new_agent_body(2))
   end
 
   after(:example) do
     @rmt.tear_down
-    @data_builder.clean
   end
 
   it 'エージェントを追加/更新できる' do

@@ -4,16 +4,11 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::TickRepository do
-  before(:context) do
-    @repository = Jiji::Model::Trading::TickRepository.new
-    @container  = Jiji::Test::TestContainerFactory.instance.new_container
-    @repository = @container.lookup(:tick_repository)
-    @provider   = @container.lookup(:securities_provider)
-    @factory    = @container.lookup(:securities_factory)
-  end
+  include_context 'use container'
+  let(:repository) { container.lookup(:tick_repository) }
 
   it 'fetch で tickの一覧を取得できる' do
-    ticks = @repository.fetch([:EURJPY, :USDJPY], Time.at(0), Time.at(75))
+    ticks = repository.fetch([:EURJPY, :USDJPY], Time.at(0), Time.at(75))
 
     expect(ticks.length).to eq(5)
     expect(ticks[0][:EURJPY].bid).to eq(135.3)
@@ -40,7 +35,7 @@ describe Jiji::Model::Trading::TickRepository do
     expect(ticks[4][:USDJPY].ask).to eq(112.421)
     expect(ticks[4].timestamp).to eq(Time.at(60))
 
-    ticks = @repository.fetch([:EURJPY], Time.at(30), Time.at(90))
+    ticks = repository.fetch([:EURJPY], Time.at(30), Time.at(90))
 
     expect(ticks.length).to eq(4)
     expect(ticks[0][:EURJPY].bid).to eq(135.3)
@@ -53,7 +48,7 @@ describe Jiji::Model::Trading::TickRepository do
   end
 
   it 'range で tickが登録されている期間を取得できる' do
-    range = @repository.range
+    range = repository.range
 
     expect(range[:start]).not_to be nil
     expect(range[:end]).not_to be nil

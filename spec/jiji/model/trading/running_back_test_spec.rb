@@ -3,8 +3,8 @@
 require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Trading::BackTest do
-  let(:data_builder) { Jiji::Test::DataBuilder.new }
-  let(:container)    { Jiji::Test::TestContainerFactory.instance.new_container }
+  include_context 'use data_builder'
+  include_context 'use container'
 
   let(:backtest_repository)     { container.lookup(:backtest_repository) }
   let(:agent_registory)         { container.lookup(:agent_registry) }
@@ -24,7 +24,6 @@ describe Jiji::Model::Trading::BackTest do
 
   after(:example) do
     backtest_repository.stop
-    data_builder.clean
     Mail::TestMailer.deliveries.clear
   end
 

@@ -4,16 +4,9 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::Process do
-  before(:example) do
-    @data_builder = Jiji::Test::DataBuilder.new
-
-    @broker  = Jiji::Test::Mock::MockBroker.new
-    @context = @data_builder.new_trading_context(@broker)
-  end
-
-  after(:example) do
-    @data_builder.clean
-  end
+  include_context 'use data_builder'
+  let(:broker) { Jiji::Test::Mock::MockBroker.new }
+  let(:context) { data_builder.new_trading_context(broker) }
 
   context 'thread poolを共有するprocessが1つの場合' do
     shared_examples 'process の基本操作ができる' do
@@ -65,7 +58,7 @@ describe Jiji::Model::Trading::Process do
     context 'fail_on_error=false の場合' do
       before(:example) do
         @process = Jiji::Model::Trading::Process.new(
-          @context, Thread.pool(1), false)
+          context, Thread.pool(1), false)
       end
 
       it_behaves_like 'process の基本操作ができる'
@@ -91,7 +84,7 @@ describe Jiji::Model::Trading::Process do
     context 'fail_on_error=true の場合' do
       before(:example) do
         @process = Jiji::Model::Trading::Process.new(
-          @context, Thread.pool(1), true)
+          context, Thread.pool(1), true)
       end
 
       it_behaves_like 'process の基本操作ができる'
@@ -115,16 +108,16 @@ describe Jiji::Model::Trading::Process do
     before(:example) do
       @pool = Thread.pool(1)
 
-      @context1 = @data_builder.new_trading_context(@broker)
-      @context2 = @data_builder.new_trading_context(@broker)
-      @context3 = @data_builder.new_trading_context(@broker)
+      context1 = data_builder.new_trading_context(broker)
+      context2 = data_builder.new_trading_context(broker)
+      context3 = data_builder.new_trading_context(broker)
 
       @process1 = Jiji::Model::Trading::Process.new(
-        @context1, @pool, false)
+        context1, @pool, false)
       @process2 = Jiji::Model::Trading::Process.new(
-        @context2, @pool, true)
+        context2, @pool, true)
       @process3 = Jiji::Model::Trading::Process.new(
-        @context3, @pool, false)
+        context3, @pool, false)
     end
 
     it 'start で処理を開始できる' do

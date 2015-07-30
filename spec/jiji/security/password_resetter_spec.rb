@@ -1,7 +1,6 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/shared_contexts'
 
 describe Jiji::Security::PasswordResetter do
   include_context 'use data_builder'
@@ -38,9 +37,12 @@ describe Jiji::Security::PasswordResetter do
     expect(mail.from).to eq ['jiji@unageanu.net']
     expect(mail.text_part.body.to_s).to match(/トークン\: ([a-zA-Z0-9]+)/)
 
-    reset_token = mail.text_part.body.to_s.scan(/トークン\: ([a-zA-Z0-9]+)/)[0][0]
+    body = mail.text_part.body.to_s
+    reset_token = body.scan(/トークン\: ([a-zA-Z0-9]+)/)[0][0]
     expect(session_store.valid_token? reset_token, :user).to be false
-    expect(session_store.valid_token? reset_token, :resetting_password).to be true
+    expect(
+      session_store.valid_token? reset_token, :resetting_password
+    ).to be true
 
     user_token = authenticator.authenticate('foo')
     expect(session_store.valid_token? user_token, :user).to be true
@@ -52,9 +54,11 @@ describe Jiji::Security::PasswordResetter do
       authenticator.authenticate('foo')
     end.to raise_error(Jiji::Errors::AuthFailedException)
 
-    expect(session_store.valid_token? reset_token,    :user).to be false
-    expect(session_store.valid_token? reset_token,    :resetting_password).to be false
-    expect(session_store.valid_token? user_token,     :user).to be false
+    expect(session_store.valid_token? reset_token, :user).to be false
+    expect(
+      session_store.valid_token? reset_token, :resetting_password
+    ).to be false
+    expect(session_store.valid_token? user_token, :user).to be false
     expect(session_store.valid_token? new_user_token, :user).to be true
   end
 

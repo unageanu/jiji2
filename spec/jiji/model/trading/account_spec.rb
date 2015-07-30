@@ -4,12 +4,10 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::Account do
-  let(:container) do
-    Jiji::Test::TestContainerFactory.instance.new_container
-  end
+  include_context 'use data_builder'
+  include_context 'use container'
   let(:builder)      { container.lookup(:position_builder) }
   let(:repository)   { container.lookup(:position_repository) }
-  let(:data_builder) { Jiji::Test::DataBuilder.new }
   let(:positions) do
     Jiji::Model::Trading::Positions.new([
       data_builder.new_position(1),
@@ -26,10 +24,6 @@ describe Jiji::Model::Trading::Account do
       Jiji::Model::Trading::Pair.new(
         :USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04)
     ]
-  end
-
-  after(:example) do
-    data_builder.clean
   end
 
   describe '+/-' do

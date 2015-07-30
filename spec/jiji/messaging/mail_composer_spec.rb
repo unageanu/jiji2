@@ -1,10 +1,8 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/test/shared_contexts'
 
 describe Jiji::Messaging::MailComposer do
-
   include_context 'use data_builder'
   include_context 'use container'
 

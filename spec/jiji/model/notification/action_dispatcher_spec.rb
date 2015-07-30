@@ -94,12 +94,15 @@ describe Jiji::Model::Notification::NotificationRepository do
   end
 
   describe 'backtest' do
+    let(:backtest_repository) { container.lookup(:backtest_repository) }
     let(:target) do
-      backtest_repository = container.lookup(:backtest_repository)
       return data_builder.register_backtest(1,
         backtest_repository, Time.at(0), Time.at(60 * 60 * 1000))
     end
     let(:backtest_id) { target.id }
+    after(:example) do
+      backtest_repository.stop
+    end
 
     it_behaves_like 'アクションの実行'
 

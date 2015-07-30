@@ -32,4 +32,7 @@ RSpec.shared_context 'use backtests' do
       data_builder.register_backtest(3, backtest_repository)
     ]
   end
+  after(:example) do
+    backtest_repository.stop
+  end
 end

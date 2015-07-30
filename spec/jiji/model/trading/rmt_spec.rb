@@ -142,8 +142,8 @@ describe Jiji::Model::Trading::RMT do
       graph = @rmt.trading_context.graph_factory.create_balance_graph
       start_time = Time.local(2015, 5, 1, 18, 0, 0)
       15.times do |i|
-        graph << [1000*i]
-        graph.save_data(start_time + (i*60*60*6))
+        graph << [1000 * i]
+        graph.save_data(start_time + (i * 60 * 60 * 6))
       end
 
       start_time = Time.local(2015, 5, 1, 0, 0, 0)
@@ -172,12 +172,11 @@ describe Jiji::Model::Trading::RMT do
       @time_source.set(Time.local(2015, 5, 4, 4, 0, 0))
       expect(@rmt.balance_of_yesterday).to be 8000
       @time_source.set(Time.local(2015, 5, 5, 5, 0, 0))
-      expect(@rmt.balance_of_yesterday).to be 12000
+      expect(@rmt.balance_of_yesterday).to be 12_000
       @time_source.set(Time.local(2015, 5, 6, 6, 0, 0))
-      expect(@rmt.balance_of_yesterday).to be 14000
+      expect(@rmt.balance_of_yesterday).to be 14_000
       @time_source.set(Time.local(2015, 5, 7, 7, 0, 0))
       expect(@rmt.balance_of_yesterday).to be nil
     end
   end
-
 end

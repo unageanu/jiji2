@@ -134,7 +134,5 @@ describe Jiji::Model::Trading::Intervals do
     def local(*args)
       Time.local(*args)
     end
-
   end
-
 end

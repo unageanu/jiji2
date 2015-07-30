@@ -3,7 +3,6 @@
 require 'jiji/test/test_configuration'
 
 describe Jiji::Utils::Times do
-
   describe '#yesterday' do
     it '前の日を取得できる' do
       expect(yesterday(Time.local(2015, 1, 1, 23, 59, 59)))
@@ -39,6 +38,7 @@ describe Jiji::Utils::Times do
   def round_day(time)
     Jiji::Utils::Times.round_day(time)
   end
+
   def yesterday(time)
     Jiji::Utils::Times.yesterday(time)
   end

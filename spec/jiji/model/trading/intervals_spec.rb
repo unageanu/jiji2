@@ -92,43 +92,49 @@ describe Jiji::Model::Trading::Intervals do
     it '集計期間は引数で指定された時刻のタイムゾーンにおける00:00:00を起点に算出される' do
       interval = intervals.get(:fifteen_minutes)
       expect(
-        interval.calcurate_interval_start_time(Time.local(2015, 5, 1, 12, 10, 32))
-      ).to eq Time.local(2015, 5, 1, 12, 0, 0)
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 12, 10, 32))
+      ).to eq local(2015, 5, 1, 12, 0, 0)
       expect(
-        interval.calcurate_interval_start_time(Time.local(2015, 5, 1, 12, 0, 0))
-      ).to eq Time.local(2015, 5, 1, 12, 0, 0)
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 12, 0, 0))
+      ).to eq local(2015, 5, 1, 12, 0, 0)
       expect(
-        interval.calcurate_interval_start_time(Time.local(2015, 5, 1, 12, 14, 59))
-      ).to eq Time.local(2015, 5, 1, 12, 0, 0)
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 12, 14, 59))
+      ).to eq local(2015, 5, 1, 12, 0, 0)
       expect(
-        interval.calcurate_interval_start_time(Time.local(2015, 5, 1, 12, 15, 0))
-      ).to eq Time.local(2015, 5, 1, 12, 15, 0)
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 12, 15, 0))
+      ).to eq local(2015, 5, 1, 12, 15, 0)
       expect(
-        interval.calcurate_interval_start_time(Time.local(2015, 5, 1, 12, 15, 01))
-      ).to eq Time.local(2015, 5, 1, 12, 15, 0)
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 12, 15, 01))
+      ).to eq local(2015, 5, 1, 12, 15, 0)
       expect(
-        interval.calcurate_interval_start_time(Time.local(2015, 5, 1, 13, 15, 01))
-      ).to eq Time.local(2015, 5, 1, 13, 15, 0)
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 13, 15, 01))
+      ).to eq local(2015, 5, 1, 13, 15, 0)
 
       interval = intervals.get(:one_day)
       expect(
-        interval.calcurate_interval_start_time(Time.local(2015, 5, 1, 12, 10, 32))
-      ).to eq Time.local(2015, 5, 1, 0, 0, 0)
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 12, 10, 32))
+      ).to eq local(2015, 5, 1, 0, 0, 0)
       expect(
-        interval.calcurate_interval_start_time(Time.local(2015, 5, 1, 12, 0, 0))
-      ).to eq Time.local(2015, 5, 1, 0, 0, 0)
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 12, 0, 0))
+      ).to eq local(2015, 5, 1, 0, 0, 0)
       expect(
-        interval.calcurate_interval_start_time(Time.local(2015, 5, 1, 12, 14, 59))
-      ).to eq Time.local(2015, 5, 1, 0, 0, 0)
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 12, 14, 59))
+      ).to eq local(2015, 5, 1, 0, 0, 0)
       expect(
-        interval.calcurate_interval_start_time(Time.local(2015, 5, 1, 20, 15, 00))
-      ).to eq Time.local(2015, 5, 1, 0, 0, 0)
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 20, 15, 00))
+      ).to eq local(2015, 5, 1, 0, 0, 0)
       expect(
-        interval.calcurate_interval_start_time(Time.local(2015, 5, 1, 23, 59, 59))
-      ).to eq Time.local(2015, 5, 1, 0, 0, 0)
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 23, 59, 59))
+      ).to eq local(2015, 5, 1, 0, 0, 0)
       expect(
-        interval.calcurate_interval_start_time(Time.local(2015, 5, 2, 0, 0, 1))
-      ).to eq Time.local(2015, 5, 2, 0, 0, 0)
+        interval.calcurate_interval_start_time(local(2015, 5, 2, 0, 0, 1))
+      ).to eq local(2015, 5, 2, 0, 0, 0)
     end
+
+    def local(*args)
+      Time.local(*args)
+    end
+
   end
+
 end

@@ -67,16 +67,19 @@ module Jiji::Model::Trading
     end
 
     def balance_of_yesterday
-      time      = time_source.now
-      today     = Jiji::Utils::Times.round_day(time)
-      yesterday = Jiji::Utils::Times.yesterday(time)
-      graph = @trading_context.graph_factory.create_balance_graph
-      data = graph.fetch_data( yesterday, today, :one_day )
-        .sort_by {|d| d.timestamp.to_i * -1 }
+      today     = Jiji::Utils::Times.round_day(time_source.now)
+      yesterday = Jiji::Utils::Times.yesterday(today)
+      data = fetch_balance_graph_data(yesterday, today)
       data.empty? ? nil : data[0].value[0]
     end
 
     private
+
+    def fetch_balance_graph_data(yesterday, today)
+      graph = @trading_context.graph_factory.create_balance_graph
+      graph.fetch_data( yesterday, today, :one_day )
+        .sort_by {|d| d.timestamp.to_i * -1 }
+    end
 
     def create_trading_context(graph_factory)
       TradingContext.new(@agents, rmt_broker,

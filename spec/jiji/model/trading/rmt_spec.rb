@@ -141,7 +141,6 @@ describe Jiji::Model::Trading::RMT do
 
       graph = @rmt.trading_context.graph_factory.create_balance_graph
       start_time = Time.local(2015, 5, 1, 18, 0, 0)
-      end_time   = Time.local(2015, 5, 4, 18, 0, 0)
       15.times do |i|
         graph << [1000*i]
         graph.save_data(start_time + (i*60*60*6))

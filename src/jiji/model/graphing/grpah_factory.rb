@@ -18,7 +18,7 @@ module Jiji::Model::Graphing
     end
 
     def create_balance_graph
-      create("口座資産", :balance, :last)
+      create('口座資産', :balance, :last)
     end
 
     def save_data(time)

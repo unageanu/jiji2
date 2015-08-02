@@ -2,6 +2,7 @@ import LocalStorage from "src/stores/local-storage";
 
 export default class MockLocalStorage extends LocalStorage {
   constructor() {
+    super();
     this.map = {};
   }
   load( key ) {

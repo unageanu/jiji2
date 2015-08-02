@@ -4,9 +4,7 @@ import ErrorMessages from "./error-messages"
 export default class ErrorHandler {
 
   constructor() {
-    super();
-
-    this.xhrManager      = ContainerJS.Inject;
+    this.xhrManager = ContainerJS.Inject;
     this.eventQueue = ContainerJS.Inject;
   }
 

@@ -12,6 +12,7 @@ const colorPattern = [
 export default class TradingSummaryModel extends Observable {
 
   constructor(summary) {
+    super();
     _.pairs(summary).forEach(
       (pair) => this[pair[0]] = pair[1] );
     this.agentSummary = _.mapObject(this.agentSummary || {}, (val, key) => {

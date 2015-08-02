@@ -6,7 +6,7 @@
   "dependencies": {
     "axios": "^0.5.4",
     "change-case": "^2.3.0",
-    "container-js": "^1.0.5",
+    "container-js": "^1.0.6",
     "date-format": "0.0.2",
     "date-with-offset": "^1.0.1",
     "material-ui": "^0.9.2",

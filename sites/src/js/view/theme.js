@@ -82,7 +82,7 @@ export default {
       menuItem: {
         dataHeight: 32,
         height: 48,
-        hoverColor: "rgba(0, 0, 0, .045)",
+        hoverColor: "inherited", //"rgba(0, 0, 0, .045)",
         padding: spacing.desktopGutterLess,
         selectedTextColor: palette.accent1Color
       },

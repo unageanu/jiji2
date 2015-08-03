@@ -1,23 +1,26 @@
 import MUI from "material-ui"
+import _   from "underscore"
 
 const Colors           = MUI.Styles.Colors;
 const Spacing          = MUI.Styles.Spacing;
 const ColorManipulator = MUI.Utils.ColorManipulator;
 
 export default {
-  spacing: Spacing,
+  spacing: _.defaults({
+  }, Spacing),
   contentFontFamily: "Roboto, 'Roboto Condensed', 'ヒラギノ角ゴ Pro W3',"
    + "'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, "
    + "'Noto Sans Japanese', sans-serif",
   getPalette() {
     return {
-      primary1Color: "#407F7F",
-      primary2Color: "#428bca",
-      primary3Color: "#428bca",
-      accent1Color: "#428bca",
-      accent2Color: "#428bca",
-      accent3Color: "#428bca",
-      textColor: "#666666",
+      primary1Color:  "#356868",
+      primary2Color:  "#2B5353", // dark
+      primary3Color:  "#417E7E", // light
+      accent1Color:   "#00BFA5",
+      accent2Color:   "#1DE9B6", // light
+      accent3Color:   "#428bca",
+      textColor:      "#555555",
+      textColorLight: "#888888",
       canvasColor: Colors.white,
       borderColor: Colors.grey300,
       disabledColor: ColorManipulator.fade("#666666", 0.3)
@@ -69,7 +72,7 @@ export default {
         secondaryIconColor: Colors.white
       },
       leftNav: {
-        width: spacing.desktopKeylineIncrement * 4,
+        width: 288,
         color: Colors.white
       },
       menu: {
@@ -79,14 +82,14 @@ export default {
       menuItem: {
         dataHeight: 32,
         height: 48,
-        hoverColor: "rgba(0, 0, 0, .035)",
-        padding: spacing.desktopGutter,
+        hoverColor: "rgba(0, 0, 0, .045)",
+        padding: spacing.desktopGutterLess,
         selectedTextColor: palette.accent1Color
       },
       menuSubheader: {
-        padding: spacing.desktopGutter,
+        padding: spacing.desktopGutterLess,
         borderColor: palette.borderColor,
-        textColor: palette.primary1Color
+        textColor: palette.textColorLight
       },
       paper: {
         backgroundColor: Colors.white

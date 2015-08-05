@@ -19,8 +19,8 @@ export default {
       accent1Color:   "#00BFA5",
       accent2Color:   "#1DE9B6", // light
       accent3Color:   "#428bca",
-      textColor:      "#555555",
-      textColorLight: "#888888",
+      textColor:      "#666666",
+      textColorLight: "#999999",
       canvasColor: Colors.white,
       borderColor: Colors.grey300,
       disabledColor: ColorManipulator.fade("#666666", 0.3)

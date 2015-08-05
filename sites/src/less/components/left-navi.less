@@ -2,16 +2,22 @@
 @import "../sizes.less";
 
 .left-navi {
+  border-right: 1px solid @border-color;
+  box-shadow: @shadow;
+  
   .menu-icon {
     font-size:   24px;
   }
   .mui-menu-item {
-    color:        @font-color-demilight !important;
+    color:        @font-color-normal !important;
     font-size:    16px;
   }
   .mui-menu-item.mui-is-selected {
-    color:            @font-color-normal !important;
+    color:            @accent-color-normal  !important;
     background-color: @background-color-dark !important;
+    .menu-icon {
+      color:            @accent-color-normal  !important;
+    }
   }
   .mui-subheader {
     color:         @font-color-light;

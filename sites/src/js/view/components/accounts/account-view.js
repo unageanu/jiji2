@@ -52,11 +52,11 @@ export default class AccountView extends AbstractCard {
     if (this.state.changesFromPreviousDay == null) {
       return "";
     } else if (this.state.changesFromPreviousDay > 0) {
-      return <span className="md-trending-up" />;
+      return <span className="icon md-trending-up" />;
     } else if (this.state.changesFromPreviousDay < 0) {
-      return <span className="md-trending-down" />;
+      return <span className="icon md-trending-down" />;
     } else if (this.state.changesFromPreviousDay == 0) {
-      return <span className="md-trending-flat" />;
+      return <span className="icon md-trending-flat" />;
     }
   }
 

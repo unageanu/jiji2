@@ -53,8 +53,8 @@ describe("AccountViewModel", () => {
       expect(model.marginRate).toEqual(0.0032);
       expect(model.formatedMarginRate).toEqual("0.32%");
       expect(model.changesFromPreviousDay).toEqual(undefined);
-      expect(model.formatedChangesFromPreviousDay).toEqual(undefined);
-      expect(model.formatedChangeRatioFromPreviousDay).toEqual(undefined);
+      expect(model.formatedChangesFromPreviousDay).toEqual("-");
+      expect(model.formatedChangeRatioFromPreviousDay).toEqual("-");
     });
 
   });

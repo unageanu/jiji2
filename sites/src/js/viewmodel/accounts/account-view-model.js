@@ -22,14 +22,19 @@ export default class AccountViewModel extends Observable {
   }
 
   calculateChangesFromPreviousDay() {
-    if ( this.balance == null || this.balanceOfYesterday == null ) return;
-    const changesFromPreviousDay = this.balance - this.balanceOfYesterday;
-    const changeRatio = changesFromPreviousDay / this.balanceOfYesterday;
-    this.setProperty("changesFromPreviousDay", changesFromPreviousDay);
-    this.setProperty("formatedChangesFromPreviousDay",
-      NumberFormatter.insertThousandsSeparator(changesFromPreviousDay));
-    this.setProperty("formatedChangeRatioFromPreviousDay",
-      NumberFormatter.formatRatio(changeRatio, 1));
+    if ( this.balance == null || this.balanceOfYesterday == null ) {
+      this.setProperty("changesFromPreviousDay", undefined);
+      this.setProperty("formatedChangesFromPreviousDay", "-");
+      this.setProperty("formatedChangeRatioFromPreviousDay", "-");
+    } else {
+      const changesFromPreviousDay = this.balance - this.balanceOfYesterday;
+      const changeRatio = changesFromPreviousDay / this.balanceOfYesterday;
+      this.setProperty("changesFromPreviousDay", changesFromPreviousDay);
+      this.setProperty("formatedChangesFromPreviousDay",
+        NumberFormatter.insertThousandsSeparator(changesFromPreviousDay));
+      this.setProperty("formatedChangeRatioFromPreviousDay",
+        NumberFormatter.formatRatio(changeRatio, 1));
+    }
   }
 
   get balance() {

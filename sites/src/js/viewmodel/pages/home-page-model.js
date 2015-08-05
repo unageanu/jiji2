@@ -14,10 +14,11 @@ export default class HomePageModel extends Observable {
     this.notifications = factory.createNotificationsTableModel(5);
     this.positions     = factory.createPositionsTableModel(5);
     this.backtests     = factory.createBacktestListModel();
+    this.accounts      = factory.createAccountViewModel();
   }
 
   initialize() {
-    [this.notifications, this.positions, this.backtests].forEach(
+    [this.notifications, this.positions, this.accounts].forEach(
       (model) => model.initialize() );
   }
 }

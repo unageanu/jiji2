@@ -1,6 +1,7 @@
 import React            from "react"
 import MUI              from "material-ui"
 import AbstractPage     from "./abstract-page"
+import AccountView      from "../accounts/account-view"
 import MiniChart        from "../chart/mini-chart-view"
 
 export default class HomePage extends AbstractPage {
@@ -10,9 +11,15 @@ export default class HomePage extends AbstractPage {
     this.state = {};
   }
 
+  componentWillMount() {
+    const model = this.model();
+    model.initialize();
+  }
+
   render() {
     return (
       <div>
+        <AccountView model={this.model().accounts} />
         <MiniChart
           model={this.model().miniChart}
           size={{w:600, h:500}}/>

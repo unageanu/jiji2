@@ -1,0 +1,28 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.account-view {
+  .balance, .changes-from-previous-day {
+    text-align: right;
+  }
+  .balance {
+    color: @font-color-normal;
+    font-size: @font-size-xlarge;
+  }
+  .changes-from-previous-day {
+    color: @font-color-light;
+    margin-top: @grid;
+    font-size:  @font-size-normal;
+
+    .label, .price {
+      padding-right: @grid;
+    }
+
+    .md-trending-up {
+
+    }
+    .md-trending-down {
+
+    }
+  }
+}

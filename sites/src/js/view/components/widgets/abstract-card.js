@@ -17,11 +17,8 @@ export default class AbstractCard extends AbstractComponent {
 
   render() {
     return (
-      <Card initiallyExpanded={true} className={this.getClassName()}>
-        <CardTitle
-          title={this.getTitle()}
-          titleColor={Theme.getPalette().textColorLight}
-        ></CardTitle>
+      <Card initiallyExpanded={true} className={"card " + this.getClassName()}>
+        {this.createTitle()}
         <CardText style={{padding: "0px 16px 16px 16px"}}>
           {this.createBody()}
         </CardText>
@@ -35,6 +32,15 @@ export default class AbstractCard extends AbstractComponent {
   getTitle() {
     return "";
   }
+  createTitle() {
+    const title = this.getTitle();
+    if (!title) return null;
+    return <CardTitle
+      title={title}
+      titleColor={Theme.getPalette().textColorLight}
+    ></CardTitle>;
+  }
+
   createBody() {
     return "";
   }

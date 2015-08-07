@@ -15,6 +15,7 @@ export default class ViewModelFactory {
 
   constructor() {
     this.rates                   = ContainerJS.Inject;
+    this.pairs                   = ContainerJS.Inject;
     this.preferences             = ContainerJS.Inject;
     this.rateService             = ContainerJS.Inject;
     this.rmtService              = ContainerJS.Inject;

@@ -17,7 +17,6 @@ export default class PairSelector extends React.Component {
   componentWillMount() {
     this.pairs().addObserver("propertyChanged",
       this.onPairsPropertyChanged.bind(this), this);
-
     this.updateState();
   }
   componentWillUnmount() {
@@ -65,13 +64,12 @@ export default class PairSelector extends React.Component {
   }
 
   preferences() {
-    return this.context.application.preferences;
+    return this.props.model.preferences;
   }
   pairs() {
-    return this.context.application.pairs;
+    return this.props.model.pairs;
   }
 }
-
-PairSelector.contextTypes = {
-  application: React.PropTypes.object.isRequired
+PairSelector.propTypes = {
+  model: React.PropTypes.object.isRequired
 };

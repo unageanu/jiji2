@@ -16,8 +16,8 @@ export default class ChartView extends AbstractComponent {
   render() {
     return (
       <div>
-        <PairSelector />
-        <IntervalSelector />
+        <PairSelector model={this.props.model} />
+        <IntervalSelector model={this.props.model} />
         <Chart
           {...this.props}
           enableSlider={true}

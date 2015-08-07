@@ -1,4 +1,5 @@
 import Observable           from "../../utils/observable";
+import Deferred             from "../../utils/deferred";
 import CandleSticks         from "./candle-sticks";
 import Slider               from "./slider";
 import CoordinateCalculator from "./coordinate-calculator";
@@ -12,6 +13,7 @@ export default class Chart extends Observable {
     super();
 
     this.rates           = components.rates;
+    this.pairs           = components.pairs;
     this.preferences     = components.preferences;
     this.positionService = components.positionService;
     this.graphService    = components.graphService;
@@ -44,7 +46,10 @@ export default class Chart extends Observable {
   }
 
   initialize( ) {
-    return this.context.initialize();
+    return Deferred.when([
+      this.pairs.initialize(),
+      this.context.initialize()
+    ]);
   }
 
   destroy() {

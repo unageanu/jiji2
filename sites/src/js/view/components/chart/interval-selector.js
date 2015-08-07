@@ -41,10 +41,10 @@ export default class IntervalSelector extends React.Component {
   }
 
   preferences() {
-    return this.context.application.preferences;
+    return this.props.model.preferences;
   }
 }
 
-IntervalSelector.contextTypes = {
-  application: React.PropTypes.object.isRequired
+IntervalSelector.propTypes = {
+  model: React.PropTypes.object.isRequired
 };

@@ -14,7 +14,6 @@ export default class Application {
     this.authenticator     = ContainerJS.Inject;
     this.agentSourceEditor = ContainerJS.Inject;
 
-    this.pairs        = ContainerJS.Inject;
     this.rates        = ContainerJS.Inject;
     this.preferences  = ContainerJS.Inject;
 

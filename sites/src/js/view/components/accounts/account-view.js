@@ -42,7 +42,7 @@ export default class AccountView extends AbstractCard {
       <div key="changes-from-previous-day" className="changes-from-previous-day">
         <span className="label">前日比:</span>
         <span className="price">￥{this.state.formatedChangesFromPreviousDay}</span>
-        <span className="ratio">({this.state.formatedChangeratioFromPreviousDay})</span>
+        <span className="ratio">({this.state.formatedChangeRatioFromPreviousDay})</span>
         {icon}
       </div>
     ];

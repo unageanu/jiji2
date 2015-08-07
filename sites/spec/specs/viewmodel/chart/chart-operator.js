@@ -19,14 +19,19 @@ export default class ChartOperator {
     this.chart.slider.preferences.chartInterval = interval;
     this.chart.slider.preferences.preferredPair = "USDJPY";
     this.chart.initialize();
-    requests[0].resolve({
+    requests[0].resolve([
+      {"pair_id": 0, "name": "USDJPY"},
+      {"pair_id": 1, "name": "EURJPY"},
+      {"pair_id": 2, "name": "EURUSD"}
+    ]);
+    requests[1].resolve({
       start: this.date("2015-05-01T00:01:10Z"),
       end:   this.date("2015-05-10T00:02:20Z")
     });
-    requests[1].resolve(this.createDefaultRateResponse());
-    if (requests.length >= 3) requests[2].resolve(this.createDefaultPositionsResponse());
-    if (requests.length >= 4) requests[3].resolve(this.createDefaultGraphResponse());
-    if (requests.length >= 5) requests[4].resolve(this.createDefaultGraphDataResponse());
+    requests[2].resolve(this.createDefaultRateResponse());
+    if (requests.length >= 4) requests[3].resolve(this.createDefaultPositionsResponse());
+    if (requests.length >= 5) requests[4].resolve(this.createDefaultGraphResponse());
+    if (requests.length >= 6) requests[5].resolve(this.createDefaultGraphDataResponse());
     this.chart.rates.rateService.xhrManager.clear();
   }
 

@@ -21,8 +21,7 @@ export default class HomePage extends AbstractPage {
       <div>
         <AccountView model={this.model().accounts} />
         <MiniChart
-          model={this.model().miniChart}
-          size={{w:600, h:500}}/>
+          model={this.model().miniChart}/>
       </div>
     );
   }

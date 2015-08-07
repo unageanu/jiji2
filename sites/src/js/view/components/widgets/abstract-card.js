@@ -19,7 +19,7 @@ export default class AbstractCard extends AbstractComponent {
     return (
       <Card initiallyExpanded={true} className={"card " + this.getClassName()}>
         {this.createTitle()}
-        <CardText style={{padding: "0px 16px 16px 16px"}}>
+        <CardText style={this.getBodyContentStyle()}>
           {this.createBody()}
         </CardText>
       </Card>
@@ -31,6 +31,9 @@ export default class AbstractCard extends AbstractComponent {
   }
   getTitle() {
     return "";
+  }
+  getBodyContentStyle() {
+    return {padding: "0px 16px 16px 16px"};
   }
   createTitle() {
     const title = this.getTitle();

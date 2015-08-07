@@ -129,7 +129,6 @@ Chart.propTypes = {
 };
 Chart.defaultProps = {
   enableSlider : true,
-  displayPositionsAndGraphs: false,
   devicePixelRatio: window.devicePixelRatio || 1,
   size: {w:600, h:500}
 };

@@ -67,12 +67,12 @@ export default class PositionsView extends AbstractChartComponent {
 
   renderPositions() {
     const axisPosition = this.chartModel.candleSticks.axisPosition;
-    if (!axisPosition.verticalSpliter) return;
+    const bottom = axisPosition.verticalSpliter || axisPosition.vertical;
 
     const slots = this.chartModel.positions.positionsForDisplay;
     let g = this.shape.graphics;
     slots.forEach((positions, index) => {
-      const y = axisPosition.verticalSpliter - 5 - (index * 10);
+      const y = bottom - 5 - (index * 10);
       positions.forEach((position)=>{
         this.renderPosition(position, y, axisPosition, g);
       });

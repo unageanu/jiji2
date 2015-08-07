@@ -20,8 +20,7 @@ export default class ChartView extends AbstractComponent {
         <IntervalSelector model={this.props.model} />
         <Chart
           {...this.props}
-          enableSlider={true}
-          displayPositionsAndGraphs={true} />
+          enableSlider={true} />
       </div>
     );
   }

@@ -9,8 +9,10 @@ export default class HomePageModel extends Observable {
   }
 
   postCreate() {
-    const factory =  this.viewModelFactory;
-    this.miniChart     = factory.createChart();
+    const factory      =  this.viewModelFactory;
+    this.miniChart     = factory.createChart({
+      displayPositionsAndGraphs: true
+    });
     this.notifications = factory.createNotificationsTableModel(5);
     this.positions     = factory.createPositionsTableModel(5);
     this.backtests     = factory.createBacktestListModel();

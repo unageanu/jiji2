@@ -32,8 +32,7 @@ export default class MiniChartView extends AbstractCard {
       <div className="chart">
         <Chart
           {...this.props}
-          enableSlider={false}
-          displayPositionsAndGraphs={true} />
+          enableSlider={false} />
       </div>
     </div>;
   }

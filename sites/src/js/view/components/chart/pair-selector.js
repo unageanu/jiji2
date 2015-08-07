@@ -49,6 +49,12 @@ export default class PairSelector extends React.Component {
       <DropDownMenu
         menuItems={this.state.items}
         selectedIndex={this.state.selectedIndex}
+        style={{width:"130px"}}
+        labelStyle={{padding: "0px 0px 0px 8px"}}
+        iconStyle={{right:"0px"}}
+        underlineStyle={{margin: "0px"}}
+        autoWidth={false}
+        zDepth={5}
         onChange={this.onChange.bind(this)}/>
     );
   }

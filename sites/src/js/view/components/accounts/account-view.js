@@ -38,8 +38,8 @@ export default class AccountView extends AbstractCard {
   createBody() {
     const icon = this.createIcon();
     return [
-      <div className="balance">￥{this.state.formatedBalance}</div>,
-      <div className="changes-from-previous-day">
+      <div key="balance" className="balance">￥{this.state.formatedBalance}</div>,
+      <div key="changes-from-previous-day" className="changes-from-previous-day">
         <span className="label">前日比:</span>
         <span className="price">￥{this.state.formatedChangesFromPreviousDay}</span>
         <span className="ratio">({this.state.formatedChangeratioFromPreviousDay})</span>

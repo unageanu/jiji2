@@ -113,7 +113,7 @@ describe("GraphType", () => {
 
   describe("ProfitOrLoss", () => {
     beforeEach(() => {
-      type = GraphCoordinateCalculator.create("profitOrLoss", coordinateCalculator);
+      type = GraphCoordinateCalculator.create("balance", coordinateCalculator);
     });
 
     describe("値にばらつきがある場合", ()=> {
@@ -149,6 +149,25 @@ describe("GraphType", () => {
       it("getAxises は 金額に応じた座標系を返す", () => {
         expect(type.calculateAxises([])).toEqual([
           {value: 0, y: 237}, {value:-2500, y:270}, {value:-5000, y:303}
+        ]);
+      });
+    });
+    describe("値が少数の場合", ()=> {
+      beforeEach(() => {
+        type.calculateRange([
+          {values:[2999883.0767]}, {values:[2999884.0267]}
+        ], []);
+      });
+      it("calculateY は 値に対応する座標を返す", () => {
+        expect(type.calculateY(2999883)).toEqual(306);
+        expect(type.calculateY(2999884.02)).toEqual(217);
+        expect(type.calculateY(null)).toEqual(null);
+      });
+      it("getAxises は 金額に応じた座標系を返す", () => {
+        expect(type.calculateAxises([])).toEqual([
+          { value: 2999884,   y: 219 },
+          { value: 2999883.5, y: 263 },
+          { value: 2999883,   y: 306 }
         ]);
       });
     });

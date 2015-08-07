@@ -16,7 +16,7 @@ export default class GraphCoordinateCalculator {
   static create( type, coordinateCalculator ) {
     switch (type) {
       case "rate"         : return new Rate(coordinateCalculator);
-      case "profitOrLoss" : return new ProfitOrLoss(coordinateCalculator);
+      case "balance"      : return new ProfitOrLoss(coordinateCalculator);
       default :             return new Line(coordinateCalculator);
     }
   }
@@ -95,7 +95,7 @@ class ProfitOrLoss extends Line {
   calculateAxises(axises) {
     const max = Math.max(Math.abs(this.range.lowest), Math.abs(this.range.highest));
     const diff = this.range.highest - this.range.lowest;
-    const step = CandleSticks.adjustStep(ProfitOrLoss.calculateStep( max ), diff);
+    const step = CandleSticks.adjustStep(ProfitOrLoss.calculateStep( diff, 0.0001 ), diff);
     return this.createVerticalAxisLabels(step, max);
   }
   getAreaHeight() {
@@ -118,8 +118,8 @@ class ProfitOrLoss extends Line {
     }
     return results;
   }
-  static calculateStep( val ) {
+  static calculateStep( val, min=100 ) {
     const positiveDigit = Numbers.getPositiveDigits(val);
-    return Math.max(Math.pow(10, positiveDigit-2), 100);
+    return Math.max(Math.pow(10, positiveDigit-2), min);
   }
 }

@@ -74,7 +74,7 @@ export default class ChartOperator {
     return [
       {id:"a", type:"rate", label:"aaa", colors:["#aaa", "#bbb"]},
       {id:"b", type:"line", label:"bbb", colors:["#ccc"], axises:[30, 70]},
-      {id:"c", type:"profitOrLoss"}
+      {id:"c", type:"balance"}
     ];
   }
 

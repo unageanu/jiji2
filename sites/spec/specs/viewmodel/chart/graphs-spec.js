@@ -67,7 +67,7 @@ describe("Graphs", () => {
         {x:53, y:341, value: 3, timestamp:Dates.date("2015-05-08T17:00:00Z")}
       ]
     }, {
-      type:  "profitOrLoss",
+      type:  "balance",
       color: "#999",
       line:  [
         {x:41, y:248, value:    0, timestamp:Dates.date("2015-05-08T15:00:00Z")},

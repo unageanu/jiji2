@@ -80,9 +80,9 @@ export default class PositionsView extends AbstractChartComponent {
   }
 
   renderPosition(position, y, axisPosition, graphics) {
-    const color = position.sellOrBuy === "sell" ? "#D55" : "#55D";
+    const color = this.calculateColor(position);
     let g = graphics.beginStroke(color);
-    g = g.beginFill( position.profitOrLoss > 0 ? color : "#FFF");
+    g = g.beginFill( position.sellOrBuy === "buy" ? color : "#F0F0F0");
     g = g.drawCircle(position.startX, y, 2);
     if (position.startX !== position.endX) {
       g = g.drawCircle(position.endX, y, 2);
@@ -95,6 +95,11 @@ export default class PositionsView extends AbstractChartComponent {
           .lineTo(position.endX-2, y);
     }
     g.endFill().endStroke();
+  }
+
+  calculateColor(position) {
+    if ( position.profitOrLoss == 0 ) return "#CCCCCC";
+    return position.profitOrLoss > 0 ? "#5DD2C2" : "#F97C8E";
   }
 
   cache() {}

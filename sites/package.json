@@ -14,7 +14,7 @@
     "react-router": "0.13.3",
     "react-tap-event-plugin": "0.1.7",
     "underscore": "1.8.3",
-    "react-ace": "2.0.2",
+    "react-ace": "2.0.3",
     "brace": "0.5.1",
     "react-chartjs": "0.6.0"
   },

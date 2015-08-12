@@ -61,6 +61,3 @@ export default class AccountView extends AbstractCard {
   }
 
 }
-AccountView.contextTypes = {
-  application: React.PropTypes.object.isRequired
-};

@@ -57,6 +57,27 @@ describe("AccountViewModel", () => {
       expect(model.formatedChangeRatioFromPreviousDay).toEqual("-");
     });
 
+    it("balanceが小数になる場合", () => {
+      model.initialize();
+      xhrManager = model.rmtService.xhrManager;
+      xhrManager.requests[0].resolve({
+        balance:            2999881.9505,
+        balanceOfYesterday: 2999882.1165,
+        marginRate:               0.0032,
+        profitOrLoss:               5860
+      });
+
+      expect(model.balance).toEqual(2999881.9505);
+      expect(model.formatedBalance).toEqual("2,999,881.9505");
+      expect(model.profitOrLoss).toEqual(5860);
+      expect(model.formatedProfitOrLoss).toEqual("5,860");
+      expect(model.marginRate).toEqual(0.0032);
+      expect(model.formatedMarginRate).toEqual("0.32%");
+      expect(model.changesFromPreviousDay).toEqual(-0.166);
+      expect(model.formatedChangesFromPreviousDay).toEqual("-0.166");
+      expect(model.formatedChangeRatioFromPreviousDay).toEqual("-0.0%");
+    });
+
   });
 
 });

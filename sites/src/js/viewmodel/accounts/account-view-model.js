@@ -3,6 +3,7 @@ import Observable      from "../../utils/observable"
 import NumberFormatter from "../utils/number-formatter"
 import DateFormatter   from "../utils/date-formatter"
 import _               from "underscore"
+import BigDecimal      from "big.js"
 
 export default class AccountViewModel extends Observable {
 
@@ -27,7 +28,8 @@ export default class AccountViewModel extends Observable {
       this.setProperty("formatedChangesFromPreviousDay", "-");
       this.setProperty("formatedChangeRatioFromPreviousDay", "-");
     } else {
-      const changesFromPreviousDay = this.balance - this.balanceOfYesterday;
+      const changesFromPreviousDay =
+        parseFloat(new BigDecimal(this.balance).minus(this.balanceOfYesterday));
       const changeRatio = changesFromPreviousDay / this.balanceOfYesterday;
       this.setProperty("changesFromPreviousDay", changesFromPreviousDay);
       this.setProperty("formatedChangesFromPreviousDay",

@@ -1,4 +1,5 @@
-import _ from "underscore"
+import _              from "underscore"
+import {EventEmitter} from "events"
 
 function getOrCreateEntry(map, key, generator=()=>[]) {
   if (map.has(key)) {
@@ -22,24 +23,20 @@ class References {
   }
 }
 
-export default class Observable {
+export default class Observable extends EventEmitter {
 
   constructor(properties={}) {
+    super();
     this.properties = properties;
-    this.observers  = new Map();
     this.observerReferences = new WeakMap();
   }
 
   addObserver(eventName, observer, receiver=null) {
-    getOrCreateEntry(this.observers, eventName).push(observer);
+    this.on(eventName, observer);
     if (receiver) this.registerReference(eventName, observer, receiver);
   }
   removeObserver(eventName, ...observers) {
-    const set = new Set(observers);
-    const newObservers =
-        getOrCreateEntry(this.observers, eventName)
-        .filter( (item) => !set.has(item) );
-    this.observers.set(eventName, newObservers);
+    observers.forEach( (observer) => this.removeListener(eventName, observer) );
   }
 
   removeAllObservers(receiver) {
@@ -57,8 +54,7 @@ export default class Observable {
   }
 
   fire( eventName, event={} ) {
-    getOrCreateEntry(this.observers, eventName)
-      .forEach(( o )=> o(eventName, event) );
+    return this.emit( eventName, eventName, event );
   }
 
   setProperty(key, value, comparator=_.isEqual) {

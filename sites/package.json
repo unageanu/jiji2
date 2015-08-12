@@ -16,7 +16,8 @@
     "underscore": "1.8.3",
     "react-ace": "2.0.3",
     "brace": "0.5.1",
-    "react-chartjs": "0.6.0"
+    "react-chartjs": "0.6.0",
+    "events": "1.0.2"
   },
   "devDependencies": {
     "deepmerge": "0.2.10",

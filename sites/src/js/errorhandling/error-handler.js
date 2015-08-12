@@ -20,7 +20,7 @@ export default class ErrorHandler {
     this.registerUnauthorizedErrorHandler();
   }
   registerNetworkErrorHandler() {
-    this.xhrManager.addObserver("error", (n, error) => this.handle(error));
+    this.xhrManager.addObserver("fail", (n, error) => this.handle(error));
   }
   registerUnauthorizedErrorHandler() {
     this.xhrManager.addObserver("startBlocking", () => {

@@ -27,7 +27,7 @@ describe("ErrorHandler", () => {
   });
 
   it("通信エラーが発生すると、queueにイベントが積まれる", () => {
-    xhrManager.fire("error", {
+    xhrManager.fire("fail", {
       code: "NOT_FOUND"
     });
     expect(errorEventQueue.queue).toEqual([{
@@ -37,7 +37,7 @@ describe("ErrorHandler", () => {
   });
 
   it("処理済みのエラーは無視される", () => {
-    xhrManager.fire("error", {
+    xhrManager.fire("fail", {
       code: "NOT_FOUND",
       preventDefault: true
     });

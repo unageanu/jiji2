@@ -15,7 +15,7 @@ const States = {
         manager.fire("startBlocking");
       } else {
         request.result().reject(error);
-        manager.fire("error", error);
+        manager.fire("fail", error);
       }
     }
   },
@@ -32,7 +32,7 @@ const States = {
         manager.queue.push(request);
       } else {
         request.result().reject(error);
-        manager.fire("error", error);
+        manager.fire("fail", error);
       }
     }
   }

@@ -74,7 +74,7 @@ export default class PositionsView extends AbstractChartComponent {
     slots.forEach((positions, index) => {
       const y = bottom - 5 - (index * 10);
       positions.forEach((position)=>{
-        this.renderPosition(position, y, axisPosition, g);
+        this.renderPosition(position, y-0.5, axisPosition, g);
       });
     });
   }
@@ -82,24 +82,25 @@ export default class PositionsView extends AbstractChartComponent {
   renderPosition(position, y, axisPosition, graphics) {
     const color = this.calculateColor(position);
     let g = graphics.beginStroke(color);
-    g = g.beginFill( position.sellOrBuy === "buy" ? color : "#F0F0F0");
+    g = g.beginFill( position.sellOrBuy === "buy" ? color : "#FFF");
     g = g.drawCircle(position.startX, y, 2);
-    if (position.startX !== position.endX) {
-      g = g.drawCircle(position.endX, y, 2);
-    }
     if ( position.endX == null ) {
       g = g.moveTo(position.startX+2, y)
-           .lineTo(axisPosition.horizontal, y);
+           .lineTo(axisPosition.horizontal, y).closePath();
     } else if ( position.endX - position.startX > 4 ) {
      g = g.moveTo(position.startX+2, y)
-          .lineTo(position.endX-2, y);
+          .lineTo(position.endX-2, y).closePath();
     }
-    g.endFill().endStroke();
+    if (position.startX !== position.endX) {
+      g = g.moveTo(position.endX+2, y)
+      g = g.drawCircle(position.endX, y, 2);
+    }
+    g.endStroke().endFill();
   }
 
   calculateColor(position) {
-    if ( position.profitOrLoss == 0 ) return "#CCCCCC";
-    return position.profitOrLoss > 0 ? "#5DD2C2" : "#F97C8E";
+    if ( position.profitOrLoss == 0 ) return "#AAAAAA";
+    return position.profitOrLoss > 0 ? "#00BFA5" : "#FF3350";
   }
 
   cache() {}

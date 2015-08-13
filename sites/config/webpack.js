@@ -21,7 +21,10 @@ var base = {
     loaders: [{
       test:     /\.js$/,
       exclude:  /(node_modules|lib)/,
-      loader:  'babel-loader'
+      loader:  'babel-loader',
+      query: {
+        experimental: true
+      }
     }, {
       test:     /\.jsx/,
       loader: 'jsx'

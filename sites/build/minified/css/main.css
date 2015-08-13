@@ -1,7 +1,8 @@
 @charset "UTF-8";
-@import "http://fonts.googleapis.com/earlyaccess/notosansjapanese.css";
-@import url(http://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed);
+@import url(http://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
+@import url(http://fonts.googleapis.com/css?family=Roboto%7CRoboto+Condensed);
 .slider .bar,.slider .handle{position:relative;height:30px}
+.agent-source-list,.new-backtest .agent-list{width:300px;float:left}
 *{font-family:Roboto,'Roboto Condensed','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'Noto Sans Japanese',sans-serif}
 .slider .bar{background-color:#f0f0f0;line-height:0;width:300px}
 .slider .handle{display:none;background-color:#407f7f}
@@ -10,17 +11,22 @@
 .left-navi .mui-menu-item{color:#999!important;font-size:16px}
 .left-navi .mui-menu-item.mui-is-selected{color:#666!important;background-color:#f0f0f0!important}
 .left-navi .mui-subheader{color:#aaa;font-size:14px;padding-left:16px;padding-right:16px;line-height:46px;height:auto}
-.agent-source-list .mui-selected{color:#666!important;background-color:#f0f0f0!important}
+.agent-source-list .mui-selected,.backtests .backtest-list .mui-selected,.new-backtest .agent-list .mui-selected{color:#666!important;background-color:#f0f0f0!important}
+.backtests .details,.content{position:relative;padding:24px}
+.agent-source-editor{float:left;margin-right:-300px}
+.backtests{width:100%;float:right;margin-left:-300px}
+.backtests .backtest-list{width:300px;float:left}
+.backtests .details{margin:0 0 0 300px}
 body{margin:0}
 .topbar{width:100%;height:100px;background-color:#407f7f}
-.content{float:left;margin-right:-300px;padding:24px}
-.md-border,.md-border-circle{padding:.2em .25em .15em;border:.08em solid grey}
-.left-navi{width:300px;float:left}
+.container{width:100%;float:right;margin-left:-300px}
+.content{margin:0 0 0 300px}
+.left-navi{width:300px;float:left;z-index:100000}
 /*!
  *  Material Design Iconic Font 1.0.1 by Sergey Kupletsky (@zavoloklom) - http://zavoloklom.github.io/material-design-iconic-font/
  *  License - https://github.com/zavoloklom/material-design-iconic-font/blob/gh-pages/License.md (Attribution-ShareAlike 4.0 International license)
  */
-@font-face{font-family:'Material Design Iconic Font';src:url(../fonts/Material-Design-Iconic-Font.eot?v=1.0.1);src:url(../fonts/Material-Design-Iconic-Font.eot?#iefix&v=1.0.1)format('embedded-opentype'),url(../fonts/Material-Design-Iconic-Font.woff?v=1.0.1)format('woff'),url(../fonts/Material-Design-Iconic-Font.ttf?v=1.0.1)format('truetype'),url(../fonts/Material-Design-Iconic-Font.svg?v=1.0.1#Material-Design-Iconic-Font)format('svg');font-weight:400;font-style:normal}
+@font-face{font-family:'Material Design Iconic Font';src:url(../fonts/Material-Design-Iconic-Font.eot?v=1.0.1);src:url(../fonts/Material-Design-Iconic-Font.eot?#iefix&v=1.0.1) format('embedded-opentype'),url(../fonts/Material-Design-Iconic-Font.woff?v=1.0.1) format('woff'),url(../fonts/Material-Design-Iconic-Font.ttf?v=1.0.1) format('truetype'),url(../fonts/Material-Design-Iconic-Font.svg?v=1.0.1#Material-Design-Iconic-Font) format('svg');font-weight:400;font-style:normal}
 [class*=" md-"],[class^=md-]{display:inline-block;font:normal normal normal 14px/1 'Material Design Iconic Font';font-size:inherit;speak:none;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 .md{line-height:inherit;vertical-align:bottom}
 .md-lg{font-size:1.5em;line-height:.5em;vertical-align:-35%}
@@ -28,8 +34,8 @@ body{margin:0}
 .md-3x{font-size:3em}
 .md-4x{font-size:4em}
 .md-5x{font-size:5em}
-.md-border{border-radius:.1em}
-.md-border-circle{border-radius:50%}
+.md-border{padding:.2em .25em .15em;border:.08em solid grey;border-radius:.1em}
+.md-border-circle{padding:.2em .25em .15em;border:.08em solid grey;border-radius:50%}
 [class*=" md-"].pull-left,[class^=md-].pull-left{float:left;margin-right:.3em}
 [class*=" md-"].pull-right,[class^=md-].pull-right{float:right;margin-left:.3em}
 .md-spin{-webkit-animation:md-spin 1.5s infinite linear;animation:md-spin 1.5s infinite linear}

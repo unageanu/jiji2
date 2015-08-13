@@ -27,7 +27,7 @@ export default class IntervalSelector extends React.Component {
         className="interval-selector"
         menuItems={items}
         selectedIndex={this.state.selectedIndex}
-        style={{width:"130px"}}
+        style={{width:"100px"}}
         labelStyle={{padding: "0px 0px 0px 16px"}}
         iconStyle={{right:"8px"}}
         underlineStyle={{margin: "0px 8px"}}

@@ -135,8 +135,9 @@ export default class Graphs extends Observable {
     var lines  = [];
     var axises = [];
     data.forEach((graphData) => {
-      const converter = new GraphDataConverter(
-        this.graphs.get(graphData.id), this.coordinateCalculator );
+      const graph = this.graphs.get(graphData.id);
+      if (!this.checkEnabled(graph)) return;
+      const converter = new GraphDataConverter(graph, this.coordinateCalculator );
       converter.prepare(graphData.data);
 
       graphData.data.map((data) =>
@@ -147,5 +148,11 @@ export default class Graphs extends Observable {
     });
     this.setProperty("lines", lines);
     this.setProperty("axises", axises);
+  }
+  checkEnabled(graph) {
+    if (!graph) return false;
+    if (!this.context.displaySubGraph
+      && (graph.type !== "rate" && graph.type !== "balance" )) return false;
+    return true;
   }
 }

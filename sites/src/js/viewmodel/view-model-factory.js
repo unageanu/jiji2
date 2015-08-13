@@ -37,7 +37,7 @@ export default class ViewModelFactory {
   createAccountViewModel() {
     return new AccountViewModel( this.rmtService );
   }
-  createChart(config={displayPositionsAndGraphs:false}) {
+  createChart(config={displaySubGraph:false, enablePointer:true}) {
     return new Chart( config, this );
   }
   createPositionsTableModel(pageSize=100,

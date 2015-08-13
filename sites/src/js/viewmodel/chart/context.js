@@ -8,9 +8,11 @@ import Intervals            from "../../model/trading/intervals"
 
 export default class Context extends Observable {
 
-  constructor(rates) {
+  constructor(rates, config) {
     super();
     this.rates = rates;
+
+    this.displaySubGraph = config.displaySubGraph;
 
     this.registerObservers();
   }

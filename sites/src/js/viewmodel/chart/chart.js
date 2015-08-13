@@ -18,32 +18,29 @@ export default class Chart extends Observable {
     this.positionService = components.positionService;
     this.graphService    = components.graphService;
 
-    this.context         = new Context(components.rates);
+    this.context         = new Context(components.rates,config);
 
-    this.buildViewModels( config );
+    this.buildViewModels();
   }
 
-  buildViewModels( config ) {
+  buildViewModels( ) {
     this.coordinateCalculator = new CoordinateCalculator();
     this.slider               = new Slider(
       this.context, this.coordinateCalculator, this.preferences);
     this.candleSticks         = new CandleSticks(
       this.coordinateCalculator, this.rates, this.preferences);
-
-    if (config.displayPositionsAndGraphs) {
-      this.positions = new Positions( this.context,
-        this.coordinateCalculator, this.positionService);
-      this.graphs = new Graphs( this.context,
-        this.coordinateCalculator, this.preferences, this.graphService);
-    }
+    this.positions = new Positions( this.context,
+      this.coordinateCalculator, this.positionService);
+    this.graphs = new Graphs( this.context,
+      this.coordinateCalculator, this.preferences, this.graphService);
 
     this.coordinateCalculator.attach(this.slider, this.preferences);
     this.candleSticks.attach(this.slider);
-    if (config.displayPositionsAndGraphs) {
-      this.positions.attach(this.slider);
-      this.graphs.attach(this.slider);
-    }
+    this.positions.attach(this.slider);
+    this.graphs.attach(this.slider);
   }
+
+
 
   initialize( ) {
     return Deferred.when([
@@ -56,8 +53,8 @@ export default class Chart extends Observable {
     this.context.unregisterObservers();
     this.slider.unregisterObservers();
     this.candleSticks.unregisterObservers();
-    if (this.positions) this.positions.unregisterObservers();
-    if (this.graphs) this.graphs.unregisterObservers();
+    this.positions.unregisterObservers();
+    this.graphs.unregisterObservers();
   }
 
   set stageSize(size) {

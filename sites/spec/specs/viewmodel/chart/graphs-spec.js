@@ -21,7 +21,7 @@ describe("Graphs", () => {
     let d = container.get("viewModelFactory");
     const factory = ContainerJS.utils.Deferred.unpack(d);
 
-    chart                = factory.createChart({displayPositionsAndGraphs:true});
+    chart                = factory.createChart({displaySubGraph:true});
     operator             = new ChartOperator(chart);
     slider               = chart.slider;
     graphs               = chart.graphs;
@@ -125,5 +125,47 @@ describe("Graphs", () => {
     ]);
   });
 
+  it("enableSubGraph=falseの場合、typeがrate,balanceでないグラフは表示されない", () => {
+
+    chart.context.displaySubGraph=false;
+
+    // 最初は未初期化
+    expect(graphs.lines).toEqual(undefined);
+    expect(graphs.axises).toEqual(undefined);
+
+    // データを設定
+    operator.initialize(1000, 300, "one_hour", 100);
+
+    expect(graphs.lines).toEq([{
+      type:  "rate",
+      color: "#aaa",
+      line:  [
+        {x:41, y:119, value:178.2, timestamp:Dates.date("2015-05-08T15:00:00Z")},
+        {x:53, y:113, value:178.3, timestamp:Dates.date("2015-05-08T17:00:00Z")}
+      ]
+    }, {
+      type:  "rate",
+      color: "#bbb",
+      line:  [
+        {x:47, y:107, value:178.4, timestamp:Dates.date("2015-05-08T16:00:00Z")},
+        {x:53, y:119, value:178.2, timestamp:Dates.date("2015-05-08T17:00:00Z")}
+      ]
+    }, {
+      type:  "balance",
+      color: "#999",
+      line:  [
+        {x:41, y:248, value:    0, timestamp:Dates.date("2015-05-08T15:00:00Z")},
+        {x:47, y:268, value:-4720, timestamp:Dates.date("2015-05-08T16:00:00Z")},
+        {x:53, y:184, value:15280, timestamp:Dates.date("2015-05-08T17:00:00Z")},
+        {x:59, y:243, value: 1234, timestamp:Dates.date("2015-05-08T18:00:00Z")}
+      ]
+    }]);
+
+    expect(graphs.axises).toEq([
+      { value: 10000, y: 206 },
+      { value: 0,     y: 248 }
+    ]);
+
+  });
 
 });

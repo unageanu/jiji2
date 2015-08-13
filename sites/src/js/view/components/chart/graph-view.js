@@ -62,15 +62,23 @@ export default class GraphView extends AbstractChartComponent {
   }
 
   renderGraphs() {
-    const lines = this.chartModel.graphs.lines;
+    const series = this.chartModel.graphs.lines;
     let g = this.shape.graphics;
-    g.setStrokeStyle(1);
-    lines.forEach((line) => this.renderLine(line, g));
+    series.forEach((s) => this.renderSeries(s, g));
   }
 
-  renderLine(line, graphics) {
-    let g = graphics.beginStroke(line.color);
-    line.line.forEach( (data, i) => {
+  renderSeries(series, graphics) {
+    if (series.type === "balance") {
+      this.renderBalanceGraph(series, graphics);
+    } else {
+      this.renderLinerGraph(series, graphics);
+    }
+  }
+
+  renderLinerGraph(series, graphics) {
+    let g = graphics.beginStroke(series.color);
+    g.setStrokeStyle(1);
+    series.line.forEach( (data, i) => {
       if (i === 0) {
         g = g.moveTo( data.x, data.y );
       } else {
@@ -78,6 +86,28 @@ export default class GraphView extends AbstractChartComponent {
       }
     });
     g = g.endStroke();
+  }
+  renderBalanceGraph(series, graphics) {
+    if (series.line.length <= 0) return;
+
+    let g = graphics.beginFill("rgba(50,90,205,0.10)");
+    series.line.forEach( (data, i) => {
+      if (i === 0) {
+        g = g.moveTo( data.x, data.y );
+      } else {
+        g = g.lineTo( data.x, data.y );
+      }
+    });
+
+    const axisPosition = this.chartModel.candleSticks.axisPosition;
+    const last  = series.line[series.line.length-1];
+    const first = series.line[0];
+    g = g.lineTo( axisPosition.horizontal, last.y )
+         .lineTo( axisPosition.horizontal, axisPosition.vertical )
+         .lineTo( 0, axisPosition.vertical )
+         .lineTo( 0, first.y )
+         .closePath();
+    g = g.endFill();
   }
 
   cache() {}

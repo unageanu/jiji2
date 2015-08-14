@@ -146,6 +146,23 @@ export default class CoordinateCalculator extends Observable {
     return this.stageSize.graphAreaHeight || 0;
   }
 
+  isRateArea(y) {
+    if ( y <  padding ) return false;
+    if ( y >  padding + this.rateAreaHeight ) return false;
+    return true;
+  }
+  isProfitArea(y) {
+    if ( y <=  padding + this.rateAreaHeight ) return false;
+    if ( y >  padding + this.rateAreaHeight + this.profitAreaHeight ) return false;
+    return true;
+  }
+  isGraphArea(y) {
+    if (this.graphAreaHeight <= 0) return false;
+    if (y <= padding + this.rateAreaHeight + this.profitAreaHeight ) return false;
+    if (y > this.axisPosition.vertical ) return false;
+    return true;
+  }
+
   static calculateDisplayableCandleCount( stageWidth ) {
     return Math.floor((stageWidth - CoordinateCalculator.totalPaddingWidth() )
                     / (stickWidth + stickGap));

@@ -22,7 +22,7 @@ describe("coordinateCalculator", () => {
     let container = new ContainerFactory().createContainer();
     let d = container.get("viewModelFactory");
     const factory = ContainerJS.utils.Deferred.unpack(d);
-    let chart                = factory.createChart();
+    let chart            = factory.createChart();
     operator             = new ChartOperator(chart);
     target               = chart.coordinateCalculator;
     xhrManager           = chart.slider.context.rates.rateService.xhrManager;
@@ -62,4 +62,40 @@ describe("coordinateCalculator", () => {
     expect(target.calculatePrice(132)).toBe("177.993");
   });
 
+  it("isRateArea", () => {
+    operator.initialize(300, 300, "one_hour", 100);
+    expect(target.isRateArea(0)).toEqual(false);
+    expect(target.isRateArea(7)).toEqual(false);
+    expect(target.isRateArea(8)).toEqual(true);
+    expect(target.isRateArea(176)).toEqual(true);
+    expect(target.isRateArea(177)).toEqual(false);
+    expect(target.isRateArea(276)).toEqual(false);
+    expect(target.isRateArea(277)).toEqual(false);
+    expect(target.isRateArea(376)).toEqual(false);
+    expect(target.isRateArea(377)).toEqual(false);
+  });
+  it("isProfitArea", () => {
+    operator.initialize(300, 300, "one_hour", 100);
+    expect(target.isProfitArea(0)).toEqual(false);
+    expect(target.isProfitArea(7)).toEqual(false);
+    expect(target.isProfitArea(8)).toEqual(false);
+    expect(target.isProfitArea(176)).toEqual(false);
+    expect(target.isProfitArea(177)).toEqual(true);
+    expect(target.isProfitArea(276)).toEqual(true);
+    expect(target.isProfitArea(277)).toEqual(false);
+    expect(target.isProfitArea(376)).toEqual(false);
+    expect(target.isProfitArea(377)).toEqual(false);
+  });
+  it("isGraphArea", () => {
+    operator.initialize(300, 300, "one_hour", 100);
+    expect(target.isGraphArea(0)).toEqual(false);
+    expect(target.isGraphArea(7)).toEqual(false);
+    expect(target.isGraphArea(8)).toEqual(false);
+    expect(target.isGraphArea(176)).toEqual(false);
+    expect(target.isGraphArea(177)).toEqual(false);
+    expect(target.isGraphArea(276)).toEqual(false);
+    expect(target.isGraphArea(277)).toEqual(true);
+    expect(target.isGraphArea(376)).toEqual(true);
+    expect(target.isGraphArea(377)).toEqual(false);
+  });
 });

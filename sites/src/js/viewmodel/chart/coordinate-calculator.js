@@ -2,6 +2,7 @@ import Observable   from "../../utils/observable"
 import Dates        from "../../utils/dates"
 import Deferred     from "../../utils/deferred"
 import Intervals    from "../../model/trading/intervals"
+import BigDecimal   from "big.js"
 
 const padding           = 8;
 const sideLabelWidth    = 48;
@@ -23,6 +24,9 @@ export default class CoordinateCalculator extends Observable {
   }
   static padding() {
     return padding;
+  }
+  static stickWidthAndGap() {
+    return stickWidth+stickGap;
   }
   static sideLabelWidth() {
     return sideLabelWidth;
@@ -55,13 +59,32 @@ export default class CoordinateCalculator extends Observable {
     }
     const intervalMs =  Intervals.resolveCollectingInterval(chartInterval);
     const index = Math.floor( (date.getTime() - currentRange.start.getTime()) / intervalMs);
-    return (stickWidth + stickGap) * index + ((stickWidth +  stickGap) / 2) + padding;
+    return (stickWidth + stickGap) * index + ((stickWidth + stickGap) / 2) + padding;
   }
   calculateY(rate) {
     if (!this.rateRange || !this.ratePerPixel) {
       throw new Error("illegalState");
     }
     return Math.floor( (this.rateRange.highest - rate) / this.ratePerPixel ) + padding;
+  }
+  calculateTime(x)  {
+    const currentRange  = this.slider.currentRange;
+    const chartInterval = this.preferences.chartInterval;
+    if (!currentRange || !chartInterval) {
+      return null;
+    }
+    const intervalMs =  Intervals.resolveCollectingInterval(chartInterval);
+    const stickWidthAndGap = stickWidth + stickGap;
+    const index = Math.floor((x - padding - (stickWidthAndGap/2)) / stickWidthAndGap);
+    return Dates.date( currentRange.start.getTime() + intervalMs*index );
+  }
+  calculatePrice(y) {
+    if (!this.rateRange || !this.ratePerPixel) {
+      return null;
+    }
+    return new BigDecimal((y-padding) * this.ratePerPixel)
+            .minus(this.rateRange.highest)
+            .times(-1).toFixed(3);
   }
 
   normalizeDate(date) {

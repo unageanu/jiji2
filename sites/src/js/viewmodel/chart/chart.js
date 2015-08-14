@@ -1,11 +1,12 @@
-import Observable           from "../../utils/observable";
-import Deferred             from "../../utils/deferred";
-import CandleSticks         from "./candle-sticks";
-import Slider               from "./slider";
-import CoordinateCalculator from "./coordinate-calculator";
-import Positions            from "./positions";
-import Graphs               from "./graphs";
-import Context              from "./context";
+import Observable           from "../../utils/observable"
+import Deferred             from "../../utils/deferred"
+import CandleSticks         from "./candle-sticks"
+import Slider               from "./slider"
+import CoordinateCalculator from "./coordinate-calculator"
+import Positions            from "./positions"
+import Graphs               from "./graphs"
+import Context              from "./context"
+import Pointer              from "./pointer"
 
 export default class Chart extends Observable {
 
@@ -33,14 +34,14 @@ export default class Chart extends Observable {
       this.coordinateCalculator, this.positionService);
     this.graphs = new Graphs( this.context,
       this.coordinateCalculator, this.preferences, this.graphService);
-
+    this.pointer = new Pointer(
+        this.coordinateCalculator, this.candleSticks, this.graphs);
     this.coordinateCalculator.attach(this.slider, this.preferences);
     this.candleSticks.attach(this.slider);
     this.positions.attach(this.slider);
     this.graphs.attach(this.slider);
+    this.pointer.attach(this.slider);
   }
-
-
 
   initialize( ) {
     return Deferred.when([

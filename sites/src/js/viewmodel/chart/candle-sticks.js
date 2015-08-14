@@ -187,6 +187,7 @@ export default class CandleSticks extends Observable {
   calculateSticks(data) {
     return data.map((item, i) =>{
       return {
+        data:  item,
         high:  this.coordinateCalculator.calculateY(item.high.bid),
         low:   this.coordinateCalculator.calculateY(item.low.bid),
         open:  this.coordinateCalculator.calculateY(item.open.bid),

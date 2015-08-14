@@ -2,6 +2,7 @@ import ContainerJS          from "container-js"
 import Numbers              from "../../utils/numbers"
 import CandleSticks         from "./candle-sticks"
 import CoordinateCalculator from "./coordinate-calculator"
+import BigDecimal           from "big.js"
 
 export default class GraphCoordinateCalculator {
   constructor(coordinateCalculator) {
@@ -68,6 +69,12 @@ class Line extends GraphCoordinateCalculator {
   calculateY(value) {
     if (value === null || value === undefined) return null;
     return Math.round(this.bottom - ((value - this.range.lowest) / this.valuesPerPixel ));
+  }
+  calculateValue(y) {
+    if ( this.valuesPerPixel == null || this.range == null ) return null;
+    return new BigDecimal((this.bottom - y) * this.valuesPerPixel)
+      .plus(this.range.lowest)
+      .toFixed(2);
   }
   calculateAxises(axises) {
     return axises.map((axis)=>{

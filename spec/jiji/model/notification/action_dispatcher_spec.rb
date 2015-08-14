@@ -2,7 +2,7 @@
 
 require 'jiji/test/test_configuration'
 
-describe Jiji::Model::Notification::NotificationRepository do
+describe Jiji::Model::Notification::ActionDispatcher do
   include_context 'use data_builder'
   include_context 'use container'
   let(:notification_repository) { container.lookup(:notification_repository) }
@@ -35,7 +35,7 @@ describe Jiji::Model::Notification::NotificationRepository do
         backtest_id: backtest_id
       })
       expect(notifications.length).to eq(2)
-      notification = notifications[0]
+      notification = notifications.find { |n| n.message == 'do action aaa' }
       expect(notification.message).to eq('do action aaa')
       expect(notification.actions).to eq([])
     end

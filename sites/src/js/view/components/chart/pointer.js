@@ -1,79 +1,142 @@
-import CreateJS               from "easeljs";
+import CreateJS               from "easeljs"
 import AbstractChartComponent from "./abstract-chart-component"
+import CoordinateCalculator   from "../../../viewmodel/chart/coordinate-calculator"
+import DateFormatter          from "../../../viewmodel/utils/date-formatter"
+
+const padding = CoordinateCalculator.padding();
+const color   = "#FFF";
+const textColor = "#222";
+const shadowColor = "rgba(150,150,150,0.5)";
+const verticalHandleWidth  = 72;
+const verticalHandleHeight = 18;
+const horizontalHandleWidth  = 58;
+const horizontalHandleHeight = 18;
 
 export default class Pointer extends AbstractChartComponent {
 
-  constructor( chartModel ) {
+  constructor( chartModel, slidableMask ) {
     super(chartModel);
     this.initSprite(slidableMask);
+    this.registerDragAction();
   }
 
   addObservers() {
-    this.chartModel.candleSticks.addObserver(
-      "propertyChanged", this.onCandlePropertyChanged.bind(this), this);
-    this.chartModel.slider.addObserver(
-      "propertyChanged", this.onSliderPropertyChanged.bind(this), this);
+    this.chartModel.pointer.addObserver(
+      "propertyChanged", this.onPropertyChanged.bind(this), this);
   }
   attach( stage ) {
     this.stage = stage;
-    this.stage.addChild(this.sticksShape);
+    this.stage.addChild(this.verticalPointer);
+    this.stage.addChild(this.horizontalPointer);
   }
 
   unregisterObservers() {
-    this.chartModel.candleSticks.removeAllObservers(this);
+    this.chartModel.pointer.removeAllObservers(this);
     this.chartModel.slider.removeAllObservers(this);
   }
 
-  onCandlePropertyChanged(name, event) {
-    if (event.key === "sticks") {
-      this.update();
+  onPropertyChanged(name, event) {
+    this.initPointer();
+    if (this.chartModel.pointer.time
+      && (this.chartModel.pointer.price || this.chartModel.pointer.balance)) {
+      this.show();
     }
-  }
-  onSliderPropertyChanged(name, event) {
-    if (event.key === "temporaryCurrentRange") {
-      if (!event.newValue || !event.newValue.start) return;
-      this.slideTo(event.newValue.start);
+    if (event.key === "x") {
+      this.verticalPointer.x = event.newValue - verticalHandleWidth/2;
+    } else if (event.key === "y") {
+      this.horizontalPointer.y = event.newValue - horizontalHandleHeight/2;
+    } else if (event.key === "time") {
+      this.verticalLabel.text =
+        DateFormatter.format(event.newValue, "MM-dd hh:mm");
+    } else if (event.key === "price" || event.key === "balance") {
+      this.horizontalLabel.text = event.newValue;
     }
-  }
-  slideTo( temporaryStart ) {
-    const x = this.calculateSlideX( temporaryStart );
-    this.sticksShape.x = x;
     this.stage.update();
   }
 
   initSprite(slidableMask) {
-    this.sticksShape      = this.initializeElement(new CreateJS.Shape());
-    this.sticksShape.mask = slidableMask;
+    this.verticalPointer   = this.initializeElement(new CreateJS.Container());
+    this.horizontalPointer = this.initializeElement(new CreateJS.Container());
+  }
+  initPointer() {
+    if ( this.verticalLabel ) return;
+
+    const candleSticks         = this.chartModel.candleSticks;
+    const axisPosition         = candleSticks.axisPosition;
+    this.initVerticalPointer(axisPosition);
+    this.initHorizontalPointer(axisPosition);
+    this.hide();
   }
 
-  update() {
-    this.clearScreen();
-    this.renderSticks( this.chartModel.candleSticks.sticks );
-    this.stage.update();
-    this.cache();
+  hide() {
+    this.verticalPointer.visible = false;
+    this.horizontalPointer.visible = false;
+  }
+  show() {
+    this.verticalPointer.visible = true;
+    this.horizontalPointer.visible = true;
   }
 
-  clearScreen() {
-    const stageSize = this.chartModel.candleSticks.stageSize;
-    this.sticksShape.graphics.clear();
-    this.sticksShape.x = this.sticksShape.y = 0;
+  initVerticalPointer(axisPosition) {
+    const shape = new CreateJS.Shape();
+    //shape.shadow = new CreateJS.Shadow(shadowColor, 1, 1, 3);
+    shape.graphics.beginFill(color)
+     .drawRect(verticalHandleWidth/2, padding, 1, axisPosition.vertical )
+     .drawRect(0,  axisPosition.vertical+4,
+        verticalHandleWidth, verticalHandleHeight )
+     .endFill();
+
+    this.verticalLabel = this.createLabelText();
+    this.verticalLabel.x = 8;
+    this.verticalLabel.y = axisPosition.vertical + 6;
+
+    this.verticalPointer.addChild(shape);
+    this.verticalPointer.addChild(this.verticalLabel);
+  }
+  initHorizontalPointer(axisPosition) {
+    const shape = new CreateJS.Shape();
+    //shape.shadow = new CreateJS.Shadow(shadowColor, 1, 1, 3);
+    shape.graphics.beginFill(color)
+     .drawRect(padding, horizontalHandleHeight/2, axisPosition.horizontal+4, 1)
+     .drawRect(axisPosition.horizontal+4, 0,
+       horizontalHandleWidth, horizontalHandleHeight )
+     .endFill();
+
+    this.horizontalLabel = this.createLabelText();
+    this.horizontalLabel.x = axisPosition.horizontal + 6;
+    this.horizontalLabel.y = 2;
+
+    this.horizontalPointer.addChild(shape);
+    this.horizontalPointer.addChild(this.horizontalLabel);
   }
 
-  renderSticks( sticks ) {
-    const g = this.sticksShape.graphics;
-    sticks.reduce( (g, s)=>{
-      g = g.beginFill("#AAAAAA")
-           .drawRect( s.x-2, s.open, 5, s.close - s.open || 1 )
-           .drawRect( s.x,   s.high, 1, Math.min(s.open, s.close) - s.high)
-           .drawRect( s.x,   Math.max(s.open, s.close), 1, s.low - Math.max(s.open, s.close))
-           .endFill();
-      if ( s.isUp && (s.open-s.close) > 2) {
-        g = g.beginFill("#FFFFFF").drawRect( s.x-1, s.close+1, 3, (s.open-s.close)-2 ).endFill();
-      }
-      return g;
-    }, g);
+  registerDragAction() {
+    this.verticalPointer.addEventListener("mousedown", (event) => {
+      this.slideXStart = this.chartModel.pointer.x - event.stageX;
+    });
+    this.verticalPointer.addEventListener("pressmove", (event) => {
+      if (this.slideXStart == null) return;
+      this.chartModel.pointer.x = this.slideXStart + event.stageX;
+    });
+    this.verticalPointer.addEventListener("pressup", (event) => {
+      this.slideXStart = null;
+    });
+    this.horizontalPointer.addEventListener("mousedown", (event) => {
+      this.slideYStart = this.chartModel.pointer.y - event.stageY;
+    });
+    this.horizontalPointer.addEventListener("pressmove", (event) => {
+      if (this.slideYStart == null) return;
+      this.chartModel.pointer.y = this.slideYStart + event.stageY;
+    });
+    this.horizontalPointer.addEventListener("pressup", (event) => {
+      this.slideYStart = null;
+    });
   }
 
   cache() {
+  }
+
+  createLabelText( text ) {
+    return new CreateJS.Text("", "12px Roboto Condensed", textColor);
   }
 }

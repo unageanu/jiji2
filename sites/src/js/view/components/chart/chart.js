@@ -7,6 +7,7 @@ import Axises               from "./axises"
 import Slider               from "./slider"
 import GraphView            from "./graph-view"
 import PositionsView        from "./positions-view"
+import Pointer              from "./pointer"
 import CoordinateCalculator from "../../../viewmodel/chart/coordinate-calculator"
 
 const padding = CoordinateCalculator.padding();
@@ -77,10 +78,12 @@ export default class Chart extends React.Component {
     this.candleSticks  = new CandleSticks( model, this.slidableMask );
     this.graphView     = new GraphView( model, this.slidableMask );
     this.positionsView = new PositionsView( model, this.slidableMask );
+    this.pointer       = new Pointer( model, this.slidableMask );
   }
   initViewComponents() {
     this.background.attach( this.stage );
     this.axises.attach( this.stage );
+    this.pointer.attach( this.stage );
     this.candleSticks.attach( this.stage );
     this.graphView.attach( this.stage );
     this.positionsView.attach( this.stage );
@@ -88,6 +91,10 @@ export default class Chart extends React.Component {
 
   registerSlideAction() {
     this.stage.addEventListener("mousedown", (event) => {
+      if (this.pointer.slideXStart != null
+       || this.pointer.slideYStart != null) {
+        return;
+      }
       this.slideStart = event.stageX;
       this.props.model.slider.slideStart();
     });

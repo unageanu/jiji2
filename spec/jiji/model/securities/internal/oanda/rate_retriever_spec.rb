@@ -4,17 +4,14 @@ require 'jiji/test/test_configuration'
 require 'jiji/model/securities/oanda_securities'
 
 describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
-  before(:example) do
-    @client = Jiji::Model::Securities::OandaDemoSecurities.new(
+  let(:client) do
+    Jiji::Model::Securities::OandaDemoSecurities.new(
       access_token: ENV['OANDA_API_ACCESS_TOKEN'])
-  end
-
-  after(:example) do
   end
 
   describe 'pairs' do
     it '通貨ペアの一覧を取得できる。' do
-      pairs = @client.retrieve_pairs
+      pairs = client.retrieve_pairs
       # p pairs
       expect(pairs.length).to be > 0
       pairs.each do |pair|
@@ -30,7 +27,7 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
 
   describe 'retrieve_current_tick' do
     it '通貨ペアごとの現在価格を取得できる。' do
-      tick = @client.retrieve_current_tick
+      tick = client.retrieve_current_tick
       # p tick
       expect(tick.length).to be > 0
       expect(tick.timestamp).not_to be nil
@@ -44,7 +41,7 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
 
   describe 'retrieve_tick_history' do
     it '通貨ペアの価格履歴を取得できる。' do
-      ticks = @client.retrieve_tick_history(:EURJPY,
+      ticks = client.retrieve_tick_history(:EURJPY,
         Time.utc(2015, 5, 22, 12, 00, 00), Time.utc(2015, 5, 22, 12, 15, 00))
       # p ticks
       expect(ticks.length).to be 15 * 4
@@ -62,7 +59,7 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
 
   describe 'retrieve_rate_history' do
     it '通貨ペアの4本値の履歴を取得できる。' do
-      rates = @client.retrieve_rate_history(:EURJPY, :one_hour,
+      rates = client.retrieve_rate_history(:EURJPY, :one_hour,
         Time.utc(2015, 5, 21, 12, 00, 00), Time.utc(2015, 5, 22, 12, 00, 00))
       # p ticks
       expect(rates.length).to be 24
@@ -79,6 +76,53 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
         expect(rate.low.ask).to be > 0
         time = Time.at(time.to_i + 60 * 60).utc
       end
+    end
+
+    context '週末などでレート情報がない場合、直近の情報で補完される' do
+      it '途中のレートがない場合' do
+        start_time = Time.utc(2015, 5, 1, 17)
+        end_time   = Time.utc(2015, 5, 4, 6)
+        expect_to_enable_retrieve_rates(start_time, end_time, :one_hour, 61)
+      end
+
+      it '開始時点のレートがない場合' do
+        start_time = Time.utc(2015, 5, 3, 17)
+        end_time   = Time.utc(2015, 5, 6, 6)
+        expect_to_enable_retrieve_rates(start_time, end_time, :one_hour, 61)
+      end
+
+      it '終了時点のレートがない場合' do
+        start_time = Time.utc(2015, 5, 1, 17)
+        end_time   = Time.utc(2015, 5, 3, 6)
+        expect_to_enable_retrieve_rates(start_time, end_time, :one_hour, 37)
+      end
+    end
+
+    def expect_to_enable_retrieve_rates(start_time,
+      end_time, interval_id, expected_rate_count)
+      rates = client.retrieve_rate_history(
+        :EURJPY, interval_id, start_time, end_time)
+
+      interval_ms = Jiji::Model::Trading::Intervals.instance \
+                    .resolve_collecting_interval(interval_id)
+      expect(rates.length).to eq expected_rate_count
+      time = start_time
+      rates.each do |rate|
+        check_rate(rate, time)
+        time = Time.at(time.to_i + (interval_ms / 1000)).utc
+      end
+    end
+
+    def check_rate(rate, time)
+      expect(rate.timestamp).to eq time
+      expect(rate.open.bid).to be > 0
+      expect(rate.open.ask).to be > 0
+      expect(rate.close.bid).to be > 0
+      expect(rate.close.ask).to be > 0
+      expect(rate.high.bid).to be > 0
+      expect(rate.high.ask).to be > 0
+      expect(rate.low.bid).to be > 0
+      expect(rate.low.ask).to be > 0
     end
   end
 end

@@ -38,6 +38,8 @@ export default class Pointer extends Observable {
     this.slider.addObserver("propertyChanged", (n, e) => {
       if (e.key === "currentRange") {
         this.updateTime();
+      } else if (e.key === "temporaryCurrentRange") {
+        this.updateTime(e.newValue);
       }
     }, this);
   }

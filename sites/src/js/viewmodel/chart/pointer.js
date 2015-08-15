@@ -70,10 +70,10 @@ export default class Pointer extends Observable {
     }
     this.setProperty("rate", rate);
   }
-  updateTime() {
+  updateTime(range=null) {
     let time = null
     if (this.x != null) {
-      time = this.coordinateCalculator.calculateTime(this.x);
+      time = this.coordinateCalculator.calculateTime(this.x, range);
     }
     this.setProperty("time", time);
   }
@@ -99,10 +99,7 @@ export default class Pointer extends Observable {
   }
 
   set x(x) {
-    const sticeWidth = CoordinateCalculator.stickWidthAndGap();
-    const padding    = CoordinateCalculator.padding();
-    x = Math.floor((x-padding)/sticeWidth)*sticeWidth+sticeWidth/2 + padding;
-    this.setProperty("x", x);
+    this.setProperty("x", this.normalizeX(x));
     this.updateTime();
     this.updateRate();
   }
@@ -110,7 +107,7 @@ export default class Pointer extends Observable {
     return this.getProperty("x");
   }
   set y(y) {
-    this.setProperty("y", y);
+    this.setProperty("y", this.normalizeY(y));
     this.updatePrice();
     this.updateBalance();
   }
@@ -130,4 +127,19 @@ export default class Pointer extends Observable {
     return this.getProperty("balance");
   }
 
+  normalizeX(x) {
+    const sticeWidth   = CoordinateCalculator.stickWidthAndGap();
+    const padding      = CoordinateCalculator.padding();
+    const axisPosition = this.coordinateCalculator.axisPosition;
+    if (x < padding) x = padding;
+    if (x >= axisPosition.horizontal) x = axisPosition.horizontal-1;
+    return Math.floor((x-padding)/sticeWidth)*sticeWidth+sticeWidth/2 + padding;
+  }
+  normalizeY(y) {
+    const padding      = CoordinateCalculator.padding();
+    const axisPosition = this.coordinateCalculator.axisPosition;
+    if (y < padding) y = padding;
+    if (y >= axisPosition.vertical) y = axisPosition.vertical-1;
+    return y;
+  }
 }

@@ -52,8 +52,11 @@ describe("Pointer", () => {
     }])[0]);
     expect(target.price).toEqual(178.5);
     expect(target.balance).toEqual(null);
+  });
 
-    // ポインターを移動
+  it("ポインターを移動できる", () => {
+    operator.initialize(300, 300, "one_hour", 100);
+
     target.x = 233;
     expect(target.x).toEqual(233);
     expect(target.y).toEqual(101);
@@ -91,6 +94,45 @@ describe("Pointer", () => {
     }])[0]);
     expect(target.price).toEqual(null);
     expect(target.balance).toEqual("-6480.00");
+  });
+
+  it("ポインターはチャート外には移動できない", () => {
+    operator.initialize(300, 300, "one_hour", 100);
+
+    target.x = 0;
+    expect(target.x).toEqual(11);
+    expect(target.y).toEqual(101);
+    expect(target.time).toEq(Dates.date("2015-05-08T10:00:00.000Z"));
+    expect(target.rate.data).toEqual(operator.createRates([{
+      high:179.0, low:178.0, open:178.2, close:178.5,
+      timestamp:Dates.date("2015-05-08T10:00:00Z")
+    }])[0]);
+    expect(target.price).toEqual(178.5);
+    expect(target.balance).toEqual(null);
+
+    target.x = 295;
+    expect(target.x).toEqual(245);
+    expect(target.y).toEqual(101);
+    expect(target.time).toEq(Dates.date("2015-05-10T01:00:00Z"));
+    expect(target.rate).toEqual(undefined);
+    expect(target.price).toEqual(178.5);
+    expect(target.balance).toEqual(null);
+
+    target.y = 0;
+    expect(target.x).toEqual(245);
+    expect(target.y).toEqual(8);
+    expect(target.time).toEq(Dates.date("2015-05-10T01:00:00Z"));
+    expect(target.rate).toEqual(undefined);
+    expect(target.price).toEqual("180.030");
+    expect(target.balance).toEqual(null);
+
+    target.y = 390;
+    expect(target.x).toEqual(245);
+    expect(target.y).toEqual(375);
+    expect(target.time).toEq(Dates.date("2015-05-10T01:00:00Z"));
+    expect(target.rate).toEqual(undefined);
+    expect(target.price).toEqual(null);
+    expect(target.balance).toEqual(null);
   });
 
 });

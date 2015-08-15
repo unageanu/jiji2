@@ -67,8 +67,8 @@ export default class CoordinateCalculator extends Observable {
     }
     return Math.floor( (this.rateRange.highest - rate) / this.ratePerPixel ) + padding;
   }
-  calculateTime(x)  {
-    const currentRange  = this.slider.currentRange;
+  calculateTime(x, range=null)  {
+    const currentRange  = range || this.slider.currentRange;
     const chartInterval = this.preferences.chartInterval;
     if (!currentRange || !chartInterval) {
       return null;

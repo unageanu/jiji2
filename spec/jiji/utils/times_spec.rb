@@ -35,6 +35,46 @@ describe Jiji::Utils::Times do
     end
   end
 
+  describe '#iana_name' do
+    it '+1400' do
+      expect(iana_name(Time.now.localtime('+14:00'))).to eq "Pacific/Kiritimati"
+    end
+    it '+900' do
+      expect(iana_name(Time.now.localtime('+09:00'))).to eq "Asia/Tokyo"
+    end
+    it '+500' do
+      expect(iana_name(Time.now.localtime('+05:00'))).to eq "Asia/Samarkand"
+    end
+    it '+530' do
+      expect(iana_name(Time.now.localtime('+05:30'))).to eq "Asia/Calcutta"
+    end
+    it '+545' do
+      expect(iana_name(Time.now.localtime('+05:45'))).to eq "Asia/Kathmandu"
+    end
+    it '0' do
+      expect(iana_name(Time.now.localtime('+00:00'))).to eq "UTC"
+      expect(iana_name(Time.now.utc)).to eq "UTC"
+    end
+    it '-900' do
+      expect(iana_name(Time.now.localtime('-09:00'))).to eq "US/Alaska"
+    end
+    it '-930' do
+      expect(iana_name(Time.now.localtime('-09:30'))).to eq "Pacific/Marquesas"
+    end
+    it '-1000' do
+      expect(iana_name(Time.now.localtime('-10:00'))).to eq "US/Hawaii"
+    end
+    it '対応するタイムゾーンが存在しない場合、エラーになる' do
+      expect do
+        iana_name(Time.now.localtime('+10:10'))
+      end.to raise_error(ArgumentError)
+    end
+  end
+
+  def iana_name(time)
+    Jiji::Utils::Times.iana_name(time)
+  end
+
   def round_day(time)
     Jiji::Utils::Times.round_day(time)
   end

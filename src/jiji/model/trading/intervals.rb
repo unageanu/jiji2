@@ -24,7 +24,6 @@ module Jiji::Model::Trading
       offset = time.utc_offset
       t = Time.at(((time.to_i + offset) / step).floor * step - offset)
       t.localtime(time.utc_offset)
-      t
     end
 
   end

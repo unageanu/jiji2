@@ -83,6 +83,26 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
         start_time = Time.utc(2015, 5, 1, 17)
         end_time   = Time.utc(2015, 5, 4, 6)
         expect_to_enable_retrieve_rates(start_time, end_time, :one_hour, 61)
+
+        start_time = Time.local(2015, 5,  1)
+        end_time   = Time.local(2015, 5, 15)
+        expect_to_enable_retrieve_rates(start_time, end_time, :six_hours, 56)
+
+        start_time = Time.utc(2015, 5,  1)
+        end_time   = Time.utc(2015, 5, 15)
+        expect_to_enable_retrieve_rates(start_time, end_time, :six_hours, 56)
+
+        start_time = Time.utc(2015, 4, 30, 10).localtime('+14:00')
+        end_time   = Time.utc(2015, 5, 14, 10).localtime('+14:00')
+        expect_to_enable_retrieve_rates(start_time, end_time, :six_hours, 56)
+
+        start_time = Time.local(2015, 5,  1)
+        end_time   = Time.local(2015, 5, 30)
+        expect_to_enable_retrieve_rates(start_time, end_time, :one_day, 29)
+
+        start_time = Time.utc(2015, 5,  1)
+        end_time   = Time.utc(2015, 5, 30)
+        expect_to_enable_retrieve_rates(start_time, end_time, :one_day, 29)
       end
 
       it '開始時点のレートがない場合' do
@@ -103,17 +123,17 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
       rates = client.retrieve_rate_history(
         :EURJPY, interval_id, start_time, end_time)
 
-      interval_ms = Jiji::Model::Trading::Intervals.instance \
-                    .resolve_collecting_interval(interval_id)
+      interval = Jiji::Model::Trading::Intervals.instance.get(interval_id)
       expect(rates.length).to eq expected_rate_count
-      time = start_time
+      time = interval.calcurate_interval_start_time(start_time)
       rates.each do |rate|
         check_rate(rate, time)
-        time = Time.at(time.to_i + (interval_ms / 1000)).utc
+        time = Time.at(time.to_i + (interval.ms / 1000))
       end
     end
 
     def check_rate(rate, time)
+      # puts "#{time} #{rate.timestamp} #{rate.open.bid} #{rate.close.bid}"
       expect(rate.timestamp).to eq time
       expect(rate.open.bid).to be > 0
       expect(rate.open.ask).to be > 0

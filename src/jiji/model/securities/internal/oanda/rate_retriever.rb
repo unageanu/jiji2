@@ -21,32 +21,17 @@ module Jiji::Model::Securities::Internal::Oanda
     end
 
     def retrieve_tick_history(pair_name, start_time, end_time)
-      rates = retrieve_candles(pair_name, 'S15', start_time, end_time).get
+      interval = Jiji::Model::Trading::Interval.new(:fifteen_seconds, 15 * 1000)
       converter = TickConverter.new(pair_name)
-      filler = RateFiller.new(start_time,
-        end_time, 15, 'S15', pair_name, self, converter)
-      filler.fill(rates)
+      RateFetcher.new(@client, converter)
+        .fetch_and_fill(start_time, end_time, interval, pair_name)
     end
 
-    def retrieve_rate_history(pair_name, interval, start_time, end_time)
-      granularity = Converter.convert_interval_to_granularity(interval)
-      interval = Intervals.instance.get(interval).ms / 1000
-      rates = retrieve_candles(pair_name, granularity, start_time, end_time).get
+    def retrieve_rate_history(pair_name, interval_id, start_time, end_time)
+      interval    = Intervals.instance.get(interval_id)
       converter = RateConverter.new(pair_name, interval)
-      filler = RateFiller.new(start_time, end_time,
-        interval, granularity, pair_name, self, converter)
-      filler.fill(rates)
-    end
-
-    def retrieve_candles(pair_name, interval,
-      start_time, end_time, candle_format = 'bidask')
-      @client.candles({
-        instrument:    Converter.convert_pair_name_to_instrument(pair_name),
-        granularity:   interval,
-        candle_format: candle_format,
-        start:         start_time.utc.to_datetime.rfc3339,
-        end:           end_time.utc.to_datetime.rfc3339
-      })
+      RateFetcher.new(@client, converter)
+        .fetch_and_fill(start_time, end_time, interval, pair_name)
     end
 
     private
@@ -73,17 +58,44 @@ module Jiji::Model::Securities::Internal::Oanda
     end
   end
 
-  class RateFiller
+  class RateFetcher
 
-    def initialize(start_time, end_time, interval,
-        granularity, pair_name, retriever, converter)
-      @start_time   = start_time
-      @end_time     = end_time
-      @interval     = interval
-      @granularity  = granularity
-      @pair_name    = pair_name
-      @retriever    = retriever
+    include Jiji::Model::Trading
+
+    def initialize(client, converter)
+      @client       = client
       @converter    = converter
+    end
+
+    def fetch_and_fill(start_time, end_time, interval, pair_name)
+      @interval     = interval
+      @start_time   = interval.calcurate_interval_start_time(start_time)
+      @end_time     = interval.calcurate_interval_start_time(end_time)
+      @pair_name    = pair_name
+
+      fill(fetch(@interval, @start_time, @end_time))
+    end
+
+    private
+
+    def fetch(interval, start_time, end_time, candle_format = 'bidask')
+      @client.candles({
+        granularity:        to_granularity(interval),
+        candle_format:      candle_format,
+        start:              start_time.getutc.to_datetime.rfc3339,
+        end:                end_time.getutc.to_datetime.rfc3339,
+        alignment_timezone: Jiji::Utils::Times.iana_name(start_time),
+        dailyAlignment:     0,
+        instrument:         to_instrument
+      }).get
+    end
+
+    def to_granularity(interval)
+      Converter.convert_interval_to_granularity(interval.id)
+    end
+
+    def to_instrument
+      Converter.convert_pair_name_to_instrument(@pair_name)
     end
 
     def fill(rates)
@@ -91,14 +103,14 @@ module Jiji::Model::Securities::Internal::Oanda
       current_time = @start_time
       while  current_time < @end_time
         array << retrieve_rate_at(rates, current_time, array)
-        current_time += @interval
+        current_time += @interval.ms / 1000
       end
       array
     end
 
     def retrieve_rate_at(rates, current_time, array)
       if !rates.empty? && rates.first.time == current_time
-        @converter.convert_value(rates.shift)
+        @converter.convert_value(rates.shift, current_time)
       else
         resolve_latest_rate(array, current_time)
       end
@@ -107,7 +119,7 @@ module Jiji::Model::Securities::Internal::Oanda
     def resolve_latest_rate(array, current_time)
       if array.empty?
         rate = retrieve_latest_rate(current_time)
-        @converter.convert_value(rate, current_time)
+        @converter.convert_value(rate, current_time, true)
       else
         @converter.clone_value(array.last, current_time)
       end
@@ -119,16 +131,15 @@ module Jiji::Model::Securities::Internal::Oanda
     end
 
     def try_to_retrieve_latest_rate_with_some_interval(time)
-      rates = @retriever.retrieve_candles(
-        @pair_name, @granularity, time - @interval * 20, time).get
+      rates = fetch(@interval, time - @interval.ms / 1000 * 20, time)
       rates.empty? ? nil : rates.last
     end
 
     def retrieve_latest_rate_with_long_interval(time)
       step = 60 * 60 * 24 * 7 * 4
+      interval = Intervals.instance.get(:six_hours)
       4.times do
-        rates = @retriever.retrieve_candles(
-          @pair_name, 'H6', time - step, time).get
+        rates = fetch(interval, time - step, time)
         return rates.last unless rates.empty?
         time -= step
       end
@@ -148,15 +159,28 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def clone_value(value, time)
       Jiji::Model::Trading::Rate.new(value.pair, time, value.close,
-        value.close, value.close, value.close, time + @interval)
+        value.close, value.close, value.close, time + @interval.ms / 1000)
     end
 
-    def convert_value(value, time = value.time)
+    def convert_value(value, time = value.time, using_close_value = false)
+      if using_close_value
+        create_rate_using_close_value(value, time)
+      else
+        create_rate(value, time)
+      end
+    end
+
+    def create_rate(value, time)
       Rate.new(@pair_name, time,
         convert_response_to_tick_value('open',  value),
         convert_response_to_tick_value('close', value),
         convert_response_to_tick_value('high',  value),
         convert_response_to_tick_value('low',   value))
+    end
+
+    def create_rate_using_close_value(value, time)
+      close = convert_response_to_tick_value('close', value)
+      Rate.new(@pair_name, time, close, close, close, close)
     end
 
     def convert_response_to_tick_value(id, item)
@@ -179,17 +203,17 @@ module Jiji::Model::Securities::Internal::Oanda
       Tick.new(value.values, time)
     end
 
-    def convert_value(value, time = value.time)
+    def convert_value(value, time = value.time, using_close_value = false)
       values = {}
-      values[@pair_name] = create_tick_value(value, time)
+      values[@pair_name] = create_tick_value(value, using_close_value)
       Tick.new(values, time)
     end
 
-    def create_tick_value(value, time)
-      if (time == value.time)
-        Tick::Value.new(value.open_bid.to_f, value.open_ask.to_f)
-      else
+    def create_tick_value(value, using_close_value)
+      if using_close_value
         Tick::Value.new(value.close_bid.to_f, value.close_ask.to_f)
+      else
+        Tick::Value.new(value.open_bid.to_f, value.open_ask.to_f)
       end
     end
 

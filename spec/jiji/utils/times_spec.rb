@@ -37,32 +37,32 @@ describe Jiji::Utils::Times do
 
   describe '#iana_name' do
     it '+1400' do
-      expect(iana_name(Time.now.localtime('+14:00'))).to eq "Pacific/Kiritimati"
+      expect(iana_name(Time.now.localtime('+14:00'))).to eq 'Pacific/Kiritimati'
     end
     it '+900' do
-      expect(iana_name(Time.now.localtime('+09:00'))).to eq "Asia/Tokyo"
+      expect(iana_name(Time.now.localtime('+09:00'))).to eq 'Asia/Tokyo'
     end
     it '+500' do
-      expect(iana_name(Time.now.localtime('+05:00'))).to eq "Asia/Samarkand"
+      expect(iana_name(Time.now.localtime('+05:00'))).to eq 'Asia/Samarkand'
     end
     it '+530' do
-      expect(iana_name(Time.now.localtime('+05:30'))).to eq "Asia/Calcutta"
+      expect(iana_name(Time.now.localtime('+05:30'))).to eq 'Asia/Calcutta'
     end
     it '+545' do
-      expect(iana_name(Time.now.localtime('+05:45'))).to eq "Asia/Kathmandu"
+      expect(iana_name(Time.now.localtime('+05:45'))).to eq 'Asia/Kathmandu'
     end
     it '0' do
-      expect(iana_name(Time.now.localtime('+00:00'))).to eq "UTC"
-      expect(iana_name(Time.now.utc)).to eq "UTC"
+      expect(iana_name(Time.now.localtime('+00:00'))).to eq 'UTC'
+      expect(iana_name(Time.now.utc)).to eq 'UTC'
     end
     it '-900' do
-      expect(iana_name(Time.now.localtime('-09:00'))).to eq "US/Alaska"
+      expect(iana_name(Time.now.localtime('-09:00'))).to eq 'US/Alaska'
     end
     it '-930' do
-      expect(iana_name(Time.now.localtime('-09:30'))).to eq "Pacific/Marquesas"
+      expect(iana_name(Time.now.localtime('-09:30'))).to eq 'Pacific/Marquesas'
     end
     it '-1000' do
-      expect(iana_name(Time.now.localtime('-10:00'))).to eq "US/Hawaii"
+      expect(iana_name(Time.now.localtime('-10:00'))).to eq 'US/Hawaii'
     end
     it '対応するタイムゾーンが存在しない場合、エラーになる' do
       expect do

@@ -14,6 +14,7 @@ module Jiji::Model::Securities::Internal::Oanda
     # rubocop:disable Metrics/CyclomaticComplexity
     def self.convert_interval_to_granularity(interval)
       case interval
+      when :fifteen_seconds then 'S15'
       when :one_minute      then 'M1'
       when :fifteen_minutes then 'M15'
       when :thirty_minutes  then 'M30'

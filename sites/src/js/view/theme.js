@@ -18,7 +18,7 @@ export default {
       primary3Color:  "#417E7E", // light
       accent1Color:   "#00BFA5",
       accent2Color:   "#1DE9B6", // light
-      accent3Color:   "#428bca",
+      accent3Color:   "#64FFDA", // super light
       textColor:      "#666666",
       textColorLight: "#999999",
       canvasColor: Colors.white,

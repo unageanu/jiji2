@@ -1,6 +1,10 @@
 import Dates                from "src/utils/dates"
 import CoordinateCalculator from "src/viewmodel/chart/coordinate-calculator"
 
+CoordinateCalculator.setPadding( 8 );
+CoordinateCalculator.setSideLabelWidth( 48 );
+CoordinateCalculator.setBottomLabelHeight( 16 );
+
 const candleStickPadding = CoordinateCalculator.totalPaddingWidth();
 
 export default class ChartOperator {

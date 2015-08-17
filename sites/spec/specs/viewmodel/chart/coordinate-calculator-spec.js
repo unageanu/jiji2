@@ -1,3 +1,4 @@
+import ChartOperator    from "./chart-operator"
 import ContainerJS      from "container-js"
 import DateWithOffset   from "date-with-offset"
 import _                from "underscore"
@@ -7,7 +8,6 @@ import Numbers          from "src/utils/numbers"
 import Dates            from "src/utils/dates"
 
 import ContainerFactory from "../../../utils/test-container-factory"
-import ChartOperator    from "./chart-operator"
 import CustomMatchers   from "../../../utils/custom-matchers"
 
 describe("coordinateCalculator", () => {

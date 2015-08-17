@@ -4,9 +4,9 @@ import Deferred     from "../../utils/deferred"
 import Intervals    from "../../model/trading/intervals"
 import BigDecimal   from "big.js"
 
-const padding           = 8;
-const sideLabelWidth    = 48;
-const bottomLabelheight = 16;
+let padding           = 0;
+let sideLabelWidth    = 72;
+let bottomLabelHeight = 24;
 const stickWidth = 5;
 const stickGap   = 1;
 
@@ -20,7 +20,7 @@ export default class CoordinateCalculator extends Observable {
     return padding*2 + sideLabelWidth;
   }
   static totalPaddingHeight() {
-    return padding*2 + bottomLabelheight;
+    return padding*2 + bottomLabelHeight;
   }
   static padding() {
     return padding;
@@ -31,8 +31,18 @@ export default class CoordinateCalculator extends Observable {
   static sideLabelWidth() {
     return sideLabelWidth;
   }
-  static bottomLabelheight() {
-    return bottomLabelheight;
+  static bottomLabelHeight() {
+    return bottomLabelHeight;
+  }
+
+  static setPadding( newPadding ) {
+    padding = newPadding;
+  }
+  static setSideLabelWidth( newSideLabelWidth ) {
+    sideLabelWidth  = newSideLabelWidth;
+  }
+  static setBottomLabelHeight( newBottomLabelHeight ) {
+    bottomLabelHeight  = newBottomLabelHeight;
   }
 
   attach( slider, preferences ) {
@@ -124,10 +134,10 @@ export default class CoordinateCalculator extends Observable {
 
   get axisPosition() {
     const spliter = this.graphAreaHeight > 0
-      ? this.stageSize.h - (bottomLabelheight + padding + this.graphAreaHeight)
+      ? this.stageSize.h - (bottomLabelHeight + padding + this.graphAreaHeight)
       : null;
     return {
-      vertical:        this.stageSize.h - (bottomLabelheight + padding),
+      vertical:        this.stageSize.h - (bottomLabelHeight + padding),
       horizontal:      this.stageSize.w - (sideLabelWidth + padding),
       verticalSpliter: spliter
     };
@@ -137,7 +147,7 @@ export default class CoordinateCalculator extends Observable {
     return this.stageSize.h
       - this.profitAreaHeight
       - this.graphAreaHeight
-      - (bottomLabelheight + padding*2);
+      - (bottomLabelHeight + padding*2);
   }
   get profitAreaHeight() {
     return this.stageSize.profitAreaHeight || 0;

@@ -2,12 +2,12 @@ import ContainerJS      from "container-js"
 import DateWithOffset   from "date-with-offset"
 import _                from "underscore"
 
+import ChartOperator    from "./chart-operator"
 import CandleSticks     from "src/viewmodel/chart/candle-sticks"
 import Numbers          from "src/utils/numbers"
 import Dates            from "src/utils/dates"
 
 import ContainerFactory from "../../../utils/test-container-factory"
-import ChartOperator    from "./chart-operator"
 
 describe("CandleSticks", () => {
 

@@ -1,33 +1,90 @@
 @import "../../colors.less";
 @import "../../sizes.less";
 
+@performance-panel-width: @grid*40;
+
 .account-view {
-  .balance, .changes-from-previous-day {
-    text-align: right;
-  }
-  .balance {
-    color: @font-color-normal;
-    font-size: @font-size-xlarge;
-    line-height: @font-size-xlarge + 4px;
-  }
-  .changes-from-previous-day {
-    color: @font-color-light;
-    font-size:  @font-size-normal;
+  .body {
 
-    .label, .price {
-      padding-right: @grid;
+  }
+  .panel {
+    margin-top: @grid*2;
+  }
+  .panel.balance {
+    border-right: 1px solid @border-color;
+    float:left;
+    width: 65%
+  }
+  .panel.performance {
+    width: 33%;
+    float: right;
+
+    .item {
+      margin-top: @grid;
     }
-
+    .item.first {
+      margin-top: 0;
+      .value {
+        font-size:  @font-size-large;
+        vertical-align: bottom;
+      }
+      .label, .value {
+        line-height: 24px;
+        vertical-align: bottom;
+      }
+    }
+    .label {
+      color: @font-color-light;
+      font-size:  @font-size-normal;
+      line-height: @grid*2;
+    }
     .icon {
-      font-size: 20px;
-      padding-left: @grid;
+      float: right;
+      margin-right: @grid;
+      line-height: @grid*2;
     }
+    .value {
+      color: @font-color-normal;
+      font-size:  @font-size-normal;
+      float: right;
+      line-height: @grid*2;
+    }
+  }
 
-    .md-trending-up {
-      color: @positive-color
+  .title {
+    color: @font-color-light;
+    font-size: @font-size-large;
+    margin-bottom: @grid * 2;
+  }
+
+  .panel.balance {
+    .balance, .changes-from-previous-day {
+      text-align: right;
+      margin-right: @grid*2;
     }
-    .md-trending-down {
-      color: @nagative-color
+    .balance {
+      padding-top: @grid;
+      color: @font-color-normal;
+      font-size: @font-size-xlarge;
+      line-height: @font-size-xlarge;
+    }
+    .changes-from-previous-day {
+      margin-top: @grid*2;
+      color: @font-color-light;
+      font-size:  @font-size-normal;
+      line-height: @font-size-normal;
+
+      * {
+        vertical-align: middle;
+      }
+
+      .label, .price {
+        padding-right: @grid;
+      }
+
+      .icon {
+        margin-left: @grid;
+      }
     }
   }
 }

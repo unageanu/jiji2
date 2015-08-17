@@ -35,7 +35,8 @@ export default class AccountViewModel extends Observable {
       this.setProperty("formatedChangesFromPreviousDay",
         NumberFormatter.insertThousandsSeparator(changesFromPreviousDay));
       this.setProperty("formatedChangeRatioFromPreviousDay",
-        NumberFormatter.formatRatio(changeRatio, 1));
+        (changesFromPreviousDay > 0 ? "+" : "")
+         + NumberFormatter.formatRatio(changeRatio, 2));
     }
   }
 

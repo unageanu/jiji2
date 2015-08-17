@@ -17,10 +17,14 @@ export default class HomePageModel extends Observable {
     this.positions     = factory.createPositionsTableModel(5);
     this.backtests     = factory.createBacktestListModel();
     this.accounts      = factory.createAccountViewModel();
+    this.tradingSummary =
+      this.viewModelFactory.createTradingSummaryViewModel(false);
   }
 
   initialize() {
     [this.notifications, this.positions, this.accounts].forEach(
       (model) => model.initialize() );
+    this.tradingSummary.startTime =
+      new Date(new Date().getTime()-7*1000*60*60*24);
   }
 }

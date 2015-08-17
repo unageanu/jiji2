@@ -31,7 +31,7 @@ export default class TradingSummaryModel extends Observable {
       return _.defaults({
         label: key.toUpperCase(),
         value: this.pairs[key],
-        valueAndRatio: this.valueAndRation( this.pairs[key] )
+        valueAndRatio: this.valueAndRatio( this.pairs[key] )
       }, color);
     }), (v) => v.label );
   }
@@ -42,13 +42,13 @@ export default class TradingSummaryModel extends Observable {
       color: "#F7464A",
       highlight: "#FF5A5E",
       value: this.sellOrBuy.buy,
-      valueAndRatio: this.valueAndRation( this.sellOrBuy.buy )
+      valueAndRatio: this.valueAndRatio( this.sellOrBuy.buy )
     }, {
       label: "売",
       color: "#46BFBD",
       highlight: "#5AD3D1",
       value: this.sellOrBuy.sell,
-      valueAndRatio: this.valueAndRation( this.sellOrBuy.sell )
+      valueAndRatio: this.valueAndRatio( this.sellOrBuy.sell )
     }];
   }
 
@@ -59,20 +59,26 @@ export default class TradingSummaryModel extends Observable {
       color: "#F7464A",
       highlight: "#FF5A5E",
       value: values.win,
-      valueAndRatio: this.valueAndRation( values.win )
+      valueAndRatio: this.valueAndRatio( values.win )
     }, {
       label: "負",
       color: "#46BFBD",
       highlight: "#5AD3D1",
       value: this.winsAndLosses.lose,
-      valueAndRatio: this.valueAndRation( values.lose )
+      valueAndRatio: this.valueAndRatio( values.lose )
     }, {
       label: "引き分け",
       color: "#999",
       highlight: "#AAA",
       value: this.winsAndLosses.draw,
-      valueAndRatio: this.valueAndRation( values.draw )
+      valueAndRatio: this.valueAndRatio( values.draw )
     }];
+  }
+
+  get formatedWinPercentage() {
+    const values = this.winsAndLosses;
+    const ratio = values.win / this.states.count;
+    return NumberFormatter.formatRatio(ratio);
   }
 
   get formatedPositionCount() {
@@ -130,7 +136,7 @@ export default class TradingSummaryModel extends Observable {
     return NumberFormatter.insertThousandsSeparator(this.units.avgUnit);
   }
 
-  valueAndRation( value, count=this.states.count ) {
+  valueAndRatio( value, count=this.states.count ) {
     const ratio = value / count;
     return NumberFormatter.insertThousandsSeparator(value)
       + " (" + NumberFormatter.formatRatio(ratio) + ")";

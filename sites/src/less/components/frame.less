@@ -1,6 +1,8 @@
 @import "../colors.less";
 @import "../sizes.less";
 
+@navi-width:   @grid * 36;
+
 .topbar {
   width: 100%;
   height: 100px;
@@ -12,17 +14,17 @@
 .container {
   width: 100%;
   float: right;
-  margin-left: -300px;
+  margin-left: @navi-width * -1 ;
 }
 
 .content {
   position: relative;
-  margin: 0 0 0 300px;
+  margin: 0 0 0 @navi-width;
   padding: @grid *2;
 }
 
 .left-navi {
-  width: 300px;
+  width: @navi-width;
   float: left;
   z-index: 100000;
 }

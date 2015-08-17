@@ -1,8 +1,8 @@
-import React            from "react"
-import MUI              from "material-ui"
-import AbstractPage     from "./abstract-page"
-import AccountView      from "../accounts/account-view"
-import MiniChart        from "../chart/mini-chart-view"
+import React               from "react"
+import MUI                 from "material-ui"
+import AbstractPage        from "./abstract-page"
+import AccountSummaryCard  from "../accounts/account-summary-card"
+import MiniChart           from "../chart/mini-chart-view"
 
 export default class HomePage extends AbstractPage {
 
@@ -19,7 +19,9 @@ export default class HomePage extends AbstractPage {
   render() {
     return (
       <div>
-        <AccountView model={this.model().accounts} />
+        <AccountSummaryCard
+          accounts={this.model().accounts}
+          tradingSummary={this.model().tradingSummary} />
         <MiniChart
           model={this.model().miniChart}/>
       </div>

@@ -1,0 +1,25 @@
+@import "./colors.less";
+@import "./sizes.less";
+
+.icon {
+  display:  inline-block;
+  overflow: hidden;
+  background-repeat:  no-repeat;
+}
+
+.icon.trend {
+  width:    17px;
+  height:   16px;
+  background-image:   url('../images/trends.png');
+  background-position: 30px 30px;
+}
+
+.icon.trend.up {
+  background-position: 0px -33px;
+}
+.icon.trend.down {
+  background-position: -17px -33px;
+}
+.icon.trend.flat {
+  background-position: -38px -33px;
+}

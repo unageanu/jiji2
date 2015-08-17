@@ -33,7 +33,7 @@ describe("AccountViewModel", () => {
       expect(model.formatedMarginRate).toEqual("0.32%");
       expect(model.changesFromPreviousDay).toEqual(-9770000);
       expect(model.formatedChangesFromPreviousDay).toEqual("-9,770,000");
-      expect(model.formatedChangeRatioFromPreviousDay).toEqual("-24.4%");
+      expect(model.formatedChangeRatioFromPreviousDay).toEqual("-24.42%");
     });
 
     it("前日の残高が取得できない場合", () => {
@@ -75,7 +75,7 @@ describe("AccountViewModel", () => {
       expect(model.formatedMarginRate).toEqual("0.32%");
       expect(model.changesFromPreviousDay).toEqual(-0.166);
       expect(model.formatedChangesFromPreviousDay).toEqual("-0.166");
-      expect(model.formatedChangeRatioFromPreviousDay).toEqual("-0.0%");
+      expect(model.formatedChangeRatioFromPreviousDay).toEqual("-0.00%");
     });
 
   });

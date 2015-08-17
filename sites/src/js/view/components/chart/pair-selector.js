@@ -1,5 +1,6 @@
 import React     from "react"
 import MUI       from "material-ui"
+import Theme     from "../../theme"
 
 const DropDownMenu = MUI.DropDownMenu;
 const emptyItems   = [{text:""}];
@@ -52,8 +53,11 @@ export default class PairSelector extends React.Component {
         valueMember="value"
         menuItems={this.state.items}
         selectedIndex={this.state.selectedIndex}
-        style={{width:"130px"}}
-        labelStyle={{padding: "0px", fontSize: "24px", color:"#999"}}
+        style={{width:"136px"}}
+        labelStyle={{
+          padding: "0px",
+          fontSize: "24px",
+          color: Theme.getPalette().textColorLight}}
         iconStyle={{right:"0px"}}
         underlineStyle={{margin: "0px"}}
         autoWidth={false}

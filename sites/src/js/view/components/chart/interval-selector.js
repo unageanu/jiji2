@@ -1,6 +1,7 @@
 import React     from "react"
 import MUI       from "material-ui"
 import Intervals from "../../../model/trading/intervals"
+import Theme     from "../../theme"
 
 const DropDownMenu = MUI.DropDownMenu;
 
@@ -27,10 +28,14 @@ export default class IntervalSelector extends React.Component {
         className="interval-selector"
         menuItems={items}
         selectedIndex={this.state.selectedIndex}
-        style={{width:"100px"}}
-        labelStyle={{padding: "0px 0px 0px 16px"}}
+        style={{width:"136px"}}
+        labelStyle={{
+          padding: "0 0 0 16px",
+          fontSize: "24px",
+          color: Theme.getPalette().textColorLight
+        }}
         iconStyle={{right:"8px"}}
-        underlineStyle={{margin: "0px 8px"}}
+        underlineStyle={{margin: "0px 16px"}}
         autoWidth={false}
         zDepth={5}
         onChange={this.onChange.bind(this)}/>

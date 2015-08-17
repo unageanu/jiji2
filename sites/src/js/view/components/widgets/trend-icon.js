@@ -26,7 +26,7 @@ export default class TrendIcon extends React.Component {
   }
 }
 TrendIcon.propTypes = {
-  value: React.PropTypes.number.isRequired
+  value: React.PropTypes.number
 };
 TrendIcon.defaultProp = {
   value: null

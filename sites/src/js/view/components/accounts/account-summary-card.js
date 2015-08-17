@@ -5,7 +5,7 @@ import AbstractCard     from "../widgets/abstract-card"
 import BalancePanel     from "./balance-panel"
 import PerformancePanel from "./performance-panel"
 
-export default class AccountView extends AbstractCard {
+export default class AccountSummaryView extends AbstractCard {
 
   constructor(props) {
     super(props);
@@ -20,14 +20,14 @@ export default class AccountView extends AbstractCard {
   }
   createBody() {
     return [
-      <PerformancePanel model={this.props.tradingSummary} />,
-      <BalancePanel     model={this.props.accounts} />,
-      <div style={{clear:"both"}} />
+      <PerformancePanel key="performance" model={this.props.tradingSummary} />,
+      <BalancePanel     key="balance"     model={this.props.accounts} />,
+      <div key="clear" style={{clear:"both"}} />
     ];
   }
 
 }
-AccountView.propTypes = {
+AccountSummaryView.propTypes = {
   accounts: React.PropTypes.object.isRequired,
   tradingSummary: React.PropTypes.object.isRequired
 };

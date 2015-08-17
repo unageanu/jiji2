@@ -2,15 +2,17 @@ import CreateJS               from "easeljs"
 import AbstractChartComponent from "./abstract-chart-component"
 import CoordinateCalculator   from "../../../viewmodel/chart/coordinate-calculator"
 import DateFormatter          from "../../../viewmodel/utils/date-formatter"
+import Theme                  from "../../theme"
 
 const padding = CoordinateCalculator.padding();
-const color   = "#FFF";
-const textColor = "#222";
+const palette = Theme.getPalette();
+const color   = palette.accent1Color;
+const textColor = "#FFF";
 const shadowColor = "rgba(150,150,150,0.5)";
 const verticalHandleWidth  = 72;
-const verticalHandleHeight = 18;
-const horizontalHandleWidth  = 58;
-const horizontalHandleHeight = 18;
+const verticalHandleHeight = 20;
+const horizontalHandleWidth  = 72;
+const horizontalHandleHeight = 20;
 
 export default class Pointer extends AbstractChartComponent {
 
@@ -82,8 +84,11 @@ export default class Pointer extends AbstractChartComponent {
     //shape.shadow = new CreateJS.Shadow(shadowColor, 1, 1, 3);
     shape.graphics.beginFill(color)
      .drawRect(verticalHandleWidth/2, padding, 1, axisPosition.vertical )
-     .drawRect(0,  axisPosition.vertical+4,
+     .drawRect(0,  axisPosition.vertical+3,
         verticalHandleWidth, verticalHandleHeight )
+     .moveTo(verticalHandleWidth/2-5, axisPosition.vertical+3)
+     .lineTo(verticalHandleWidth/2+0.5, axisPosition.vertical-3)
+     .lineTo(verticalHandleWidth/2+5, axisPosition.vertical+3)
      .endFill();
 
     this.verticalLabel = this.createLabelText();
@@ -97,14 +102,17 @@ export default class Pointer extends AbstractChartComponent {
     const shape = new CreateJS.Shape();
     //shape.shadow = new CreateJS.Shadow(shadowColor, 1, 1, 3);
     shape.graphics.beginFill(color)
-     .drawRect(padding, horizontalHandleHeight/2, axisPosition.horizontal+4, 1)
-     .drawRect(axisPosition.horizontal+4, 0,
+     .drawRect(padding, horizontalHandleHeight/2, axisPosition.horizontal-3, 1)
+     .moveTo(axisPosition.horizontal+3, horizontalHandleHeight/2-5)
+     .lineTo(axisPosition.horizontal-3, horizontalHandleHeight/2+0.5)
+     .lineTo(axisPosition.horizontal+3, horizontalHandleHeight/2+5)
+     .drawRect(axisPosition.horizontal+3, 0,
        horizontalHandleWidth, horizontalHandleHeight )
      .endFill();
 
     this.horizontalLabel = this.createLabelText();
-    this.horizontalLabel.x = axisPosition.horizontal + 6;
-    this.horizontalLabel.y = 2;
+    this.horizontalLabel.x = axisPosition.horizontal + 7;
+    this.horizontalLabel.y = 3;
 
     this.horizontalPointer.addChild(shape);
     this.horizontalPointer.addChild(this.horizontalLabel);

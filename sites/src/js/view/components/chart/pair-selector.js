@@ -40,10 +40,7 @@ export default class PairSelector extends React.Component {
   convertPairsToMenuItems(pairs) {
     if (pairs.length <= 0) return emptyItems;
     return pairs.map((item) => {
-      const icon = <span className={"icon " + item.name.toLowerCase()} />;
-      const text = <span className="label" >{item.name}</span>;
-      const iconAndText = <div>{icon}{text}</div>;
-      return {text:item.name, iconAndText: iconAndText, value:item.name };
+      return {text:item.name, value:item.name };
     });
   }
 
@@ -51,12 +48,12 @@ export default class PairSelector extends React.Component {
     return (
       <DropDownMenu
         className="pair-selector"
-        displayMember="iconAndText"
+        displayMember="text"
         valueMember="value"
         menuItems={this.state.items}
         selectedIndex={this.state.selectedIndex}
-        style={{width:"150px"}}
-        labelStyle={{padding: "0px 0px 0px 8px"}}
+        style={{width:"130px"}}
+        labelStyle={{padding: "0px", fontSize: "24px", color:"#999"}}
         iconStyle={{right:"0px"}}
         underlineStyle={{margin: "0px"}}
         autoWidth={false}

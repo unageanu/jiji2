@@ -21,7 +21,7 @@ export default class MiniChartView extends AbstractCard {
     return "";
   }
   getBodyContentStyle() {
-    return {padding: "0px 0px 16px 0px"};
+    return {padding: "0px 0px 8px 0px"};
   }
   createBody() {
     return <div>

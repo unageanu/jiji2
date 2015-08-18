@@ -19,6 +19,9 @@ export default class Context extends Observable {
   initialize() {
     return this.rates.initialize();
   }
+  reload() {
+    return this.rates.reload();
+  }
   registerObservers() {
     this.rates.addObserver("propertyChanged", (n, e) => {
       if (e.key !== "range") return;

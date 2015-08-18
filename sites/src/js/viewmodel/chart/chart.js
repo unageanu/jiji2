@@ -50,6 +50,10 @@ export default class Chart extends Observable {
     ]);
   }
 
+  reload() {
+    return this.context.reload();
+  }
+
   destroy() {
     this.context.unregisterObservers();
     this.slider.unregisterObservers();

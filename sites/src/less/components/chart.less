@@ -21,13 +21,18 @@
   }
 }
 
-.mini-chart {
+.card.mini-chart {
   .header {
-    margin: 0px @grid @grid*2 @grid*2;
+    padding: 0px 8px 8px 16px;
+
+    .setting-menu {
+      margin-top: @grid;
+    }
   }
   .chart {
     background-color: @background-color-dark;
-    padding: 16px;
+    padding: @grid*2;
+    margin-bottom: @grid*2;
   }
 }
 

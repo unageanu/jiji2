@@ -22,26 +22,24 @@ export default class MiniChartView extends AbstractCard {
   getTitle() {
     return "";
   }
-  getBodyContentStyle() {
-    return {padding: "0px 0px 8px 0px"};
+  getSettingMenuItems() {
+    return ["更新"];
   }
-  createBody() {
-    return <div>
-      <div className="header">
+  createHeader() {
+    const settingMenu = this.createSettingMenu("8px");
+    return <div className="header">
         <PairSelector model={this.props.model} />
         <IntervalSelector model={this.props.model} />
-        <SettingMenuButton
-          menuItems={["更新"]}
-          style={{float:"right",marginTop:"8px"}}
-          onItemTouchTap={this.onMenuItemTouchTap.bind(this)} />
-      </div>
-      <div className="chart">
+        {settingMenu}
+      </div>;
+  }
+  createBody() {
+    return <div className="chart">
         <RateView chartModel={this.props.model} />
         <Chart
           {...this.props}
           enableSlider={false} />
-      </div>
-    </div>;
+      </div>;
   }
 
   onMenuItemTouchTap(e, item) {

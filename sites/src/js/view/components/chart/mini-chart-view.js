@@ -5,6 +5,7 @@ import Chart        from "../chart/chart"
 
 import IntervalSelector from "../chart/interval-selector"
 import PairSelector     from "../chart/pair-selector"
+import RateView         from "../chart/rate-view"
 
 export default class MiniChartView extends AbstractCard {
 
@@ -30,6 +31,7 @@ export default class MiniChartView extends AbstractCard {
       <IntervalSelector model={this.props.model} />
       </div>
       <div className="chart">
+        <RateView chartModel={this.props.model} />
         <Chart
           {...this.props}
           enableSlider={false} />

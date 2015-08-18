@@ -2,16 +2,11 @@ import React        from "react"
 import MUI          from "material-ui"
 import AbstractCard from "../widgets/abstract-card"
 import Chart        from "../chart/chart"
-import Theme        from "../../theme"
 
-import IntervalSelector from "../chart/interval-selector"
-import PairSelector     from "../chart/pair-selector"
-import RateView         from "../chart/rate-view"
-import MenuItem         from 'material-ui/lib/menus/menu-item'
-
-const IconButton = MUI.IconButton;
-const IconMenu   = MUI.IconMenu;
-//const MenuItem   = MUI.MenuItem;
+import IntervalSelector  from "../chart/interval-selector"
+import PairSelector      from "../chart/pair-selector"
+import RateView          from "../chart/rate-view"
+import SettingMenuButton from "../widgets/setting-menu-button"
 
 export default class MiniChartView extends AbstractCard {
 
@@ -31,19 +26,14 @@ export default class MiniChartView extends AbstractCard {
     return {padding: "0px 0px 8px 0px"};
   }
   createBody() {
-    const iconButtonElement = <IconButton
-        iconClassName="md-more-vert"
-        iconStyle={{color:Theme.getPalette().textColorLight}}
-      />;
     return <div>
       <div className="header">
         <PairSelector model={this.props.model} />
         <IntervalSelector model={this.props.model} />
-        <IconMenu iconButtonElement={iconButtonElement}
+        <SettingMenuButton
+          menuItems={["更新"]}
           style={{float:"right",marginTop:"8px"}}
-          onItemTouchTap={this.onMenuItemTouchTap.bind(this)}>
-          <MenuItem primaryText="更新" />
-        </IconMenu>
+          onItemTouchTap={this.onMenuItemTouchTap.bind(this)} />
       </div>
       <div className="chart">
         <RateView chartModel={this.props.model} />

@@ -7,6 +7,7 @@ module Jiji::Model::Icons
   class IconRepository
 
     include Encase
+    include Jiji::Errors
 
     needs :imaging_service
     needs :time_source
@@ -22,9 +23,15 @@ module Jiji::Model::Icons
     def get(id)
       icon = @cache[id]
       return icon if icon
-      icon = Icon.find(id) || not_found(Icon, id:id)
-      @cache[id] = icon
-      return icon
+
+      return @cache[id] = retrieve_icon(id)
+    end
+
+    def delete(id)
+      icon = retrieve_icon(id)
+      icon.destroy
+      @cache.delete id
+      icon
     end
 
     def add(image)
@@ -32,6 +39,10 @@ module Jiji::Model::Icons
       icon = Icon.new(time_source.now, icon_data)
       icon.save
       icon
+    end
+
+    def retrieve_icon(id)
+      Icon.find(id) || not_found(Icon, id:id)
     end
 
   end

@@ -8,13 +8,18 @@ describe Jiji::Model::Icons::IconRepository do
 
   let(:repository) { container.lookup(:icon_repository) }
 
-  it 'アイコンを登録/取得できる' do
+  it 'アイコンを登録/取得/削除できる' do
     icon = repository.add( data_builder.read_image_date("01.png") )
     icon = repository.get(icon.id)
 
     expect(icon.created_at).not_to be nil
     expect(icon.image).not_to be nil
     expect(icon.to_h).to eq( { id: icon.id, created_at: icon.created_at })
+
+    repository.delete(icon.id)
+    expect do
+      repository.get(icon.id)
+    end.to raise_exception(Jiji::Errors::NotFoundException)
   end
 
   it 'allですべてのアイコンを取得できる' do

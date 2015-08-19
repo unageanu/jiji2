@@ -9,12 +9,12 @@ describe Jiji::Model::Icons::IconRepository do
   let(:repository) { container.lookup(:icon_repository) }
 
   it 'アイコンを登録/取得/削除できる' do
-    icon = repository.add( data_builder.read_image_date("01.png") )
+    icon = repository.add(data_builder.read_image_date('01.png'))
     icon = repository.get(icon.id)
 
     expect(icon.created_at).not_to be nil
     expect(icon.image).not_to be nil
-    expect(icon.to_h).to eq( { id: icon.id, created_at: icon.created_at })
+    expect(icon.to_h).to eq({ id: icon.id, created_at: icon.created_at })
 
     repository.delete(icon.id)
     expect do
@@ -23,16 +23,15 @@ describe Jiji::Model::Icons::IconRepository do
   end
 
   it 'allですべてのアイコンを取得できる' do
-    ["01.gif", "01.jpg", "02.jpg"].each do |name|
-      repository.add( data_builder.read_image_date(name) )
+    ['01.gif', '01.jpg', '02.jpg'].each do |name|
+      repository.add(data_builder.read_image_date(name))
     end
 
     icons = repository.all
     expect(icons.length).to be 3
     icons.each do |icon|
       expect(icon.created_at).not_to be nil
-      expect(icon.to_h).to eq( { id: icon.id, created_at: icon.created_at })
+      expect(icon.to_h).to eq({ id: icon.id, created_at: icon.created_at })
     end
   end
-
 end

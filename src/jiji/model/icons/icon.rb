@@ -27,8 +27,8 @@ module Jiji::Model::Icons
 
     def to_h
       {
-        id:               id,
-        created_at:       created_at
+        id:         id,
+        created_at: created_at
       }
     end
 

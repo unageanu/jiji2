@@ -24,7 +24,7 @@ module Jiji::Model::Icons
       icon = @cache[id]
       return icon if icon
 
-      return @cache[id] = retrieve_icon(id)
+      @cache[id] = retrieve_icon(id)
     end
 
     def delete(id)
@@ -42,7 +42,7 @@ module Jiji::Model::Icons
     end
 
     def retrieve_icon(id)
-      Icon.find(id) || not_found(Icon, id:id)
+      Icon.find(id) || not_found(Icon, id: id)
     end
 
   end

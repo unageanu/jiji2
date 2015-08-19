@@ -194,7 +194,7 @@ BODY
     end
 
     def base_dir
-      File.expand_path("../", __FILE__)
+      File.expand_path('../', __FILE__)
     end
 
   end

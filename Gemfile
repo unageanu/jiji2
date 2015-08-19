@@ -10,6 +10,7 @@ gem 'thread',                    '0.1.4'
 gem 'activesupport',             '4.2.1'
 gem 'figaro',                    '1.1.0'
 gem 'validates_email_format_of', '1.6.2'
+gem 'mini_magick',               '4.2.10'
 
 gem 'msgpack',   '0.5.9'
 gem 'rack',      '1.5.2'

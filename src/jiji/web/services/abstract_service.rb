@@ -105,6 +105,14 @@ module Jiji::Web
         'Pragma'        => 'no-cache'
       }
     end
+    
+    def cacheable
+      max_age = 60 * 60 * 24 * 365
+      @cacheable ||= {
+        'Cache-Control' => "public max_age=#{max_age}" ,
+        'Expires'       => max_age.to_s
+      }
+    end
 
   end
 

@@ -190,11 +190,11 @@ BODY
     end
 
     def read_image_date(name)
-      File.open("#{base_dir}/#{name}") { |f| f.read }
+      File.open("#{base_dir}/sample_images/#{name}") { |f| f.read }
     end
 
     def base_dir
-      File.expand_path("../sample_images", __FILE__)
+      File.expand_path("../", __FILE__)
     end
 
   end

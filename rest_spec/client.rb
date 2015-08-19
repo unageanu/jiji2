@@ -39,6 +39,18 @@ module Jiji
       end
     end
 
+    def post_file(path, file, header = {})
+      r = File.open(file) do |io|
+        header = complement_header(header)
+        header.delete 'Content-Type'
+        @client.post("#{@api_url}/#{path}", {
+          body:   { 'file' => io },
+          header: header
+        })
+      end
+      Response.new(r, @transport)
+    end
+
     def do_request(method, path, body = nil,  query = nil, header = {})
       r = @client.request(method, "#{@api_url}/#{path}", {
         body:   serialize_body(body),

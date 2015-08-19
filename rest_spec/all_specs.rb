@@ -9,6 +9,7 @@ require 'settings/password_resetter_spec'
 require 'settings/smtp_server_setting_spec'
 
 require 'trading/agents_spec'
+require 'trading/icons_spec'
 require 'trading/rates_spec'
 require 'trading/rmt_spec'
 require 'trading/backtest_spec'

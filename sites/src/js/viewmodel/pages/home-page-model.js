@@ -26,5 +26,6 @@ export default class HomePageModel extends Observable {
       (model) => model.initialize() );
     this.tradingSummary.startTime =
       new Date(new Date().getTime()-7*1000*60*60*24);
+    this.notifications.load();
   }
 }

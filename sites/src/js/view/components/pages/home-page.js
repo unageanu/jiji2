@@ -3,6 +3,7 @@ import MUI                 from "material-ui"
 import AbstractPage        from "./abstract-page"
 import AccountSummaryCard  from "../accounts/account-summary-card"
 import MiniChart           from "../chart/mini-chart-view"
+import NotificationsCard   from "../notifications/notifications-card"
 
 export default class HomePage extends AbstractPage {
 
@@ -24,6 +25,8 @@ export default class HomePage extends AbstractPage {
           tradingSummary={this.model().tradingSummary} />
         <MiniChart
           model={this.model().miniChart}/>
+        <NotificationsCard
+          model={this.model().notifications} />
       </div>
     );
   }

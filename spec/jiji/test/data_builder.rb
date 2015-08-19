@@ -165,6 +165,7 @@ BODY
       Jiji::Model::Graphing::Graph.delete_all
       Jiji::Model::Logging::LogData.delete_all
       Jiji::Model::Notification::Notification.delete_all
+      Jiji::Model::Icons::Icon.delete_all
       Mail::TestMailer.deliveries.clear
     end
 
@@ -186,6 +187,14 @@ BODY
           p $ERROR_INFO
         end
       end
+    end
+
+    def read_image_date(name)
+      File.open("#{base_dir}/#{name}").read
+    end
+
+    def base_dir
+      File.expand_path("../sample_images", __FILE__)
     end
 
   end

@@ -10,7 +10,7 @@ module Jiji::Model::Graphing
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
-    store_in collection: 'graph'
+    store_in collection: 'graphs'
 
     belongs_to :backtest, {
       class_name: 'Jiji::Model::Trading::BackTestProperties'

@@ -30,6 +30,7 @@ module Jiji::Model::Agents::Agent
   end
 
   attr_accessor :agent_name
+  attr_accessor :icon_id
   attr_accessor :broker
   attr_accessor :graph_factory
   attr_accessor :notifier

@@ -65,7 +65,7 @@ class TestAgent#{seed} #{ parent ? ' < ' + parent : '' }
   include Jiji::Model::Agents::Agent
 
   def post_create
-    notifier.push_notification('テスト通知', 'icon', [
+    notifier.push_notification('テスト通知', [
       {label: "アクション1", action: "aaa"},
       {label: "アクション2", action: "bbb"}
     ])

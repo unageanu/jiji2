@@ -46,6 +46,9 @@ module Jiji::Model::Agents
 
     def update_agent(agent, setting)
       agent.properties = setting[:properties]
+      agent.agent_name = setting[:agent_name]
+      agent.broker.agent_name = agent.agent_name
+      agent.notifier.update(agent.agent_name, setting[:icon_id])
       agent
     end
 
@@ -53,24 +56,24 @@ module Jiji::Model::Agents
       agent = @agent_registory.create_agent(
         setting[:agent_class], setting[:properties] || {})
       agent.agent_name  = setting[:agent_name] || setting[:agent_class]
-      inject_components_to(agent, uuid)
+      inject_components_to(agent, uuid, setting[:icon_id])
       agent.post_create
       agent
     end
 
-    def inject_components_to(agent, agent_id)
+    def inject_components_to(agent, agent_id, icon_id)
       agent_name = agent.agent_name
       broker = BrokerProxy.new(@broker, agent_name, agent_id)
 
       agent.broker          = broker
       agent.graph_factory   = @graph_factory
-      agent.notifier        = create_notificator(agent_id, agent_name)
+      agent.notifier        = create_notificator(agent_id, agent_name, icon_id)
       agent.logger          = @logger
     end
 
-    def create_notificator(agent_id, agent_name)
+    def create_notificator(agent_id, agent_name, icon_id)
       Notificator.new(@backtest_id, agent_id,
-        agent_name, @push_notifier, @mail_composer, @time_source)
+        agent_name, icon_id, @push_notifier, @mail_composer, @time_source)
     end
 
   end

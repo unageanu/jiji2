@@ -12,7 +12,8 @@ module Jiji::Model::Trading::Brokers
     def_delegators :@broker, :pairs, :tick, :positions, :orders,
       :modify_order, :cancel_order, :modify_position, :close_position
 
-    attr_reader :agent_name, :agent_id
+    attr_reader :agent_id
+    attr_accessor :agent_name
 
     def initialize(broker, agent_name, agent_id)
       @broker     = broker

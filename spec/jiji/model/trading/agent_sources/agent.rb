@@ -76,14 +76,14 @@ class SendNotificationAgent
 
   def post_create
     notifier.compose_text_mail('foo@example.com', 'テスト', '本文')
-    notifier.push_notification('テスト通知', 'icon')
+    notifier.push_notification('テスト通知')
   end
 
   def next_tick(tick)
     return if @send
 
     notifier.compose_text_mail('foo@example.com', 'テスト2', '本文')
-    notifier.push_notification('テスト通知2', 'icon')
+    notifier.push_notification('テスト通知2')
     @send = true
   end
 

@@ -13,8 +13,8 @@ describe Jiji::Model::Notification::Notificator do
   end
   let(:notificator) do
     mail_composer = container.lookup(:mail_composer)
-    Jiji::Model::Notification::Notificator.new(backtests[0].id,
-      'agent_id', 'agent_name', push_notifier, mail_composer, time_source)
+    Jiji::Model::Notification::Notificator.new(backtests[0].id, 'agent_id',
+      'agent_name', 'icon', push_notifier, mail_composer, time_source)
   end
   let(:notification_repository) do
     container.lookup(:notification_repository)
@@ -68,7 +68,7 @@ describe Jiji::Model::Notification::Notificator do
     expect(push_notifier).to receive(:notify).once
     time_source.set(Time.at(100))
 
-    notificator.push_notification('メッセージ', 'icon', [
+    notificator.push_notification('メッセージ',  [
       { 'label' => 'あ', 'action' => 'aaa' },
       { 'label' => 'い', 'action' => 'bbb' }
     ])

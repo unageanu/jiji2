@@ -79,7 +79,7 @@ describe Jiji::Model::Trading::RMT do
     expect(agent_setting[0]['agent_name']).to eq 'テスト3'
     expect(agent_setting[0]['properties']).to eq({ 'a' => 200, 'b' => 'bb' })
     agent = @rmt.agents[agent_setting[0][:uuid]]
-    expect(agent.agent_name).to eq 'テスト1'
+    expect(agent.agent_name).to eq 'テスト3'
     expect(agent.broker.agent_id).to eq agent_setting[0][:uuid]
   end
 

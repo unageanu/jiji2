@@ -92,7 +92,8 @@ describe Jiji::Model::Trading::BackTest do
       'agent_setting' => [
         {
           agent_class: 'SendNotificationAgent@agent.rb',
-          agent_name:  'テスト1'
+          agent_name:  'テスト1',
+          icon_id:     'icon'
         }
       ]
     })

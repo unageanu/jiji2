@@ -23,7 +23,7 @@ describe Jiji::Services::ImagingService do
 
   def out(data, name)
     FileUtils.mkdir_p "./tmp"
-    File.open("./tmp/#{name}", "w").write(data)
+    File.open("./tmp/#{name}", "w") { |f| f.write(data) }
   end
 
 end

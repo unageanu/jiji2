@@ -190,7 +190,7 @@ BODY
     end
 
     def read_image_date(name)
-      File.open("#{base_dir}/#{name}").read
+      File.open("#{base_dir}/#{name}") { |f| f.read }
     end
 
     def base_dir

@@ -37,7 +37,10 @@ export default class NotificationListItem extends React.Component {
     return result;
   }
   createAvatar(notification) {
-    return <Avatar src={"/api/icons/" + notification.icon} />
+    return <Avatar src={this.createIconUrl(notification)} />
+  }
+  createIconUrl(notification) {
+    return "/api/icon-images/" + (notification.icon || "default");
   }
 }
 NotificationListItem.propTypes = {

@@ -21,7 +21,7 @@ module Jiji::Model::Notification
     field :agent_id,      type: String
     field :agent_name,    type: String
     field :actions,       type: Array
-    field :icon,          type: String
+    field :icon,          type: BSON::ObjectId
     field :message,       type: String
     field :timestamp,     type: Time
     field :read_at,       type: Time

@@ -22,12 +22,12 @@ describe 'アイコン' do
     r = @client.get('icons')
     id = r.body[0]['id']
 
-    r = @client.get("icons/#{id}/image")
+    r = @client.get("icon-images/#{id}")
     expect(r.status).to eq 200
   end
 
   it '存在しないidを指定するとデフォルトアイコンが返される' do
-    r = @client.get('icons/unknown/image')
+    r = @client.get('icon-images/unknown')
     expect(r.status).to eq 200
   end
 

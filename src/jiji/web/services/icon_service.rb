@@ -33,29 +33,8 @@ module Jiji::Web
       ok(repository.delete(icon_id))
     end
 
-    options '/:icon_id/image' do
-      allow('GET,OPTIONS')
-    end
-    get '/:icon_id/image' do
-      [200, cacheable, load_icon_image]
-    end
-
-    def load_icon_image
-      repository.get(icon_id).image
-    rescue Jiji::Errors::NotFoundException, BSON::ObjectId::Invalid
-      load_default_icon
-    end
-
     def icon_id
       BSON::ObjectId.from_string(params['icon_id'])
-    end
-
-    def load_default_icon
-      @default_icon_data ||= File.open(default_icon_path) { |f| f.read }
-    end
-
-    def default_icon_path
-      StaticFileService.static_file_dir + '/images/default-icon.png'
     end
 
     def repository

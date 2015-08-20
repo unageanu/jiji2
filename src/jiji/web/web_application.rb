@@ -46,6 +46,7 @@ module Jiji::Web
       builder.map('/api/notifications') { run NotificationService }
       builder.map('/api/actions')       { run ActionService }
       builder.map('/api/icons')         { run IconService }
+      builder.map('/api/icon-images')   { run IconImageService }
     end
 
     def register_trading_services(builder)

@@ -31,8 +31,8 @@ export default class NotificationListItem extends React.Component {
     if ( notification.formatedTimestamp != null ) {
       result += notification.formatedTimestamp;
     }
-    if ( notification.agentName != null ) {
-      result += (result ? " - " : "") + notification.agentName;
+    if ( notification.agent && notification.agent.name != null ) {
+      result += (result ? " - " : "") + notification.agent.name;
     }
     return result;
   }
@@ -40,7 +40,8 @@ export default class NotificationListItem extends React.Component {
     return <Avatar src={this.createIconUrl(notification)} />
   }
   createIconUrl(notification) {
-    return "/api/icon-images/" + (notification.icon || "default");
+    const iconId = notification.agent ? notification.agent.iconId : null;
+    return "/api/icon-images/" + (iconId || "default");
   }
 }
 NotificationListItem.propTypes = {

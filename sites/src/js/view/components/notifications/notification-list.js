@@ -29,6 +29,7 @@ export default class NotificationList extends AbstractComponent {
     if (this.state.items == null) return [];
     return this.state.items.map((notification, index) => {
        return <NotificationListItem
+          key={index}
           notification={notification}
           selected={this.props.selectable && this.state.selectedIndex === index } /> ;
     });

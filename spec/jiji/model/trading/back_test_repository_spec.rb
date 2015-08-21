@@ -52,27 +52,34 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(test.end_time).to eq Time.at(200)
     expect(test.pair_names).to eq [:EURJPY, :EURUSD]
     expect(test.balance).to eq 0
-    expect(test.agent_setting[0][:uuid]).not_to be nil
-    expect(test.agent_setting[0][:agent_class]).to eq 'TestAgent1@aaa'
-    expect(test.agent_setting[0][:agent_name]).to eq 'テスト1'
-    expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'bb' })
-    agent = test.agents[test.agent_setting[0][:uuid]]
-    expect(agent.agent_name).to eq 'テスト1'
-    expect(agent.broker.agent_id).to eq test.agent_setting[0][:uuid]
-    expect(test.agent_setting[1][:uuid]).not_to be nil
-    expect(test.agent_setting[1][:agent_class]).to eq 'TestAgent1@aaa'
-    expect(test.agent_setting[1][:agent_name]).to eq 'テスト2'
-    expect(test.agent_setting[1][:properties]).to eq({})
-    agent = test.agents[test.agent_setting[1][:uuid]]
-    expect(agent.agent_name).to eq 'テスト2'
-    expect(agent.broker.agent_id).to eq test.agent_setting[1][:uuid]
-    expect(test.agent_setting[2][:uuid]).not_to be nil
-    expect(test.agent_setting[2][:agent_class]).to eq 'TestAgent2@bbb'
-    expect(test.agent_setting[2][:agent_name]).to eq nil
-    expect(test.agent_setting[2][:properties]).to eq(nil)
-    agent = test.agents[test.agent_setting[2][:uuid]]
+
+    agent_settings = load_agent_settings(test.id)
+    expect(agent_settings.length).to be 3
+
+    expect(agent_settings[0].id).not_to be nil
+    expect(agent_settings[0].agent_class).to eq 'TestAgent2@bbb'
+    expect(agent_settings[0].name).to eq nil
+    expect(agent_settings[0].properties).to eq({})
+    agent = test.agents[agent_settings[0].id]
     expect(agent.agent_name).to eq 'TestAgent2@bbb'
-    expect(agent.broker.agent_id).to eq test.agent_setting[2][:uuid]
+    expect(agent.broker.agent_id).to eq agent_settings[0].id
+
+    expect(agent_settings[1].id).not_to be nil
+    expect(agent_settings[1].agent_class).to eq 'TestAgent1@aaa'
+    expect(agent_settings[1].name).to eq 'テスト1'
+    expect(agent_settings[1].properties).to eq({ 'a' => 1, 'b' => 'bb' })
+    agent = test.agents[agent_settings[1].id]
+    expect(agent.agent_name).to eq 'テスト1'
+    expect(agent.broker.agent_id).to eq agent_settings[1].id
+
+    expect(agent_settings[2].id).not_to be nil
+    expect(agent_settings[2].agent_class).to eq 'TestAgent1@aaa'
+    expect(agent_settings[2].name).to eq 'テスト2'
+    expect(agent_settings[2].properties).to eq({})
+    agent = test.agents[agent_settings[2].id]
+    expect(agent.agent_name).to eq 'テスト2'
+    expect(agent.broker.agent_id).to eq agent_settings[2].id
+
     expect(test.status).to eq :running
 
     expect(@repository.all.length).to be 1
@@ -98,13 +105,17 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(test2.end_time).to eq Time.at(300)
     expect(test2.pair_names).to eq [:EURJPY, :EURUSD]
     expect(test2.balance).to eq 10_000
-    expect(test2.agent_setting[0][:uuid]).not_to be nil
-    expect(test2.agent_setting[0][:agent_class]).to eq 'TestAgent1@aaa'
-    expect(test2.agent_setting[0][:agent_name]).to eq nil
-    expect(test2.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'bb' })
-    agent = test2.agents[test2.agent_setting[0][:uuid]]
+
+    agent_settings = load_agent_settings(test2.id)
+    expect(agent_settings.length).to be 1
+    expect(agent_settings[0].id).not_to be nil
+    expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+    expect(agent_settings[0].name).to eq nil
+    expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'bb' })
+    agent = test2.agents[agent_settings[0].id]
     expect(agent.agent_name).to eq 'TestAgent1@aaa'
-    expect(agent.broker.agent_id).to eq test2.agent_setting[0][:uuid]
+    expect(agent.broker.agent_id).to eq agent_settings[0].id
+
     expect(test2.status).to eq :running
 
     expect(@repository.all.length).to be 2
@@ -143,13 +154,15 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      expect(test.agent_setting[0][:uuid]).not_to be nil
-      expect(test.agent_setting[0][:agent_class]).to eq 'TestAgent1@aaa'
-      expect(test.agent_setting[0][:agent_name]).to eq 'テスト1'
-      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[test.agent_setting[0][:uuid]]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq test.agent_setting[0][:uuid]
+      expect(agent.broker.agent_id).to eq agent_settings[0].id
       expect(test.status).to eq :running
       expect(test.retrieve_process_status).to eq :running
 
@@ -159,13 +172,15 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      expect(test.agent_setting[0][:uuid]).not_to be nil
-      expect(test.agent_setting[0][:agent_class]).to eq 'TestAgent1@aaa'
-      expect(test.agent_setting[0][:agent_name]).to eq 'テスト1'
-      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[test.agent_setting[0][:uuid]]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq test.agent_setting[0][:uuid]
+      expect(agent.broker.agent_id).to eq agent_settings[0].id
       expect(test.status).to eq :running
       expect(test.retrieve_process_status).to eq :running
 
@@ -175,13 +190,15 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      expect(test.agent_setting[0][:uuid]).not_to be nil
-      expect(test.agent_setting[0][:agent_class]).to eq 'TestAgent1@aaa'
-      expect(test.agent_setting[0][:agent_name]).to eq 'テスト1'
-      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[test.agent_setting[0][:uuid]]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq test.agent_setting[0][:uuid]
+      expect(agent.broker.agent_id).to eq agent_settings[0].id
       expect(test.status).to eq :running
       expect(test.retrieve_process_status).to eq :wait_for_start
 
@@ -199,13 +216,15 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      expect(test.agent_setting[0][:uuid]).not_to be nil
-      expect(test.agent_setting[0][:agent_class]).to eq 'TestAgent1@aaa'
-      expect(test.agent_setting[0][:agent_name]).to eq 'テスト1'
-      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[test.agent_setting[0][:uuid]]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq test.agent_setting[0][:uuid]
+      expect(agent.broker.agent_id).to eq agent_settings[0].id
       expect(test.status).to eq :cancelled
       expect(test.retrieve_process_status).to eq :wait_for_start
 
@@ -215,13 +234,15 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      expect(test.agent_setting[0][:uuid]).not_to be nil
-      expect(test.agent_setting[0][:agent_class]).to eq 'TestAgent1@aaa'
-      expect(test.agent_setting[0][:agent_name]).to eq 'テスト1'
-      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[test.agent_setting[0][:uuid]]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq test.agent_setting[0][:uuid]
+      expect(agent.broker.agent_id).to eq agent_settings[0].id
       expect(test.status).to eq :cancelled
       expect(test.retrieve_process_status).to eq :wait_for_start
 
@@ -231,13 +252,15 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      expect(test.agent_setting[0][:uuid]).not_to be nil
-      expect(test.agent_setting[0][:agent_class]).to eq 'TestAgent1@aaa'
-      expect(test.agent_setting[0][:agent_name]).to eq 'テスト1'
-      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[test.agent_setting[0][:uuid]]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq test.agent_setting[0][:uuid]
+      expect(agent.broker.agent_id).to eq agent_settings[0].id
       expect(test.status).to eq :running
       expect(test.retrieve_process_status).to eq :running
 
@@ -258,13 +281,15 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      expect(test.agent_setting[0][:uuid]).not_to be nil
-      expect(test.agent_setting[0][:agent_class]).to eq 'TestAgent1@aaa'
-      expect(test.agent_setting[0][:agent_name]).to eq 'テスト1'
-      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[test.agent_setting[0][:uuid]]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq test.agent_setting[0][:uuid]
+      expect(agent.broker.agent_id).to eq agent_settings[0].id
       expect(test.status).to eq :cancelled
 
       test = @repository.all[1]
@@ -273,13 +298,15 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      expect(test.agent_setting[0][:uuid]).not_to be nil
-      expect(test.agent_setting[0][:agent_class]).to eq 'TestAgent1@aaa'
-      expect(test.agent_setting[0][:agent_name]).to eq 'テスト1'
-      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[test.agent_setting[0][:uuid]]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq test.agent_setting[0][:uuid]
+      expect(agent.broker.agent_id).to eq agent_settings[0].id
       expect(test.status).to eq :cancelled
 
       test = @repository.all[2]
@@ -288,13 +315,15 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      expect(test.agent_setting[0][:uuid]).not_to be nil
-      expect(test.agent_setting[0][:agent_class]).to eq 'TestAgent1@aaa'
-      expect(test.agent_setting[0][:agent_name]).to eq 'テスト1'
-      expect(test.agent_setting[0][:properties]).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[test.agent_setting[0][:uuid]]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq test.agent_setting[0][:uuid]
+      expect(agent.broker.agent_id).to eq agent_settings[0].id
       expect(test.status).to eq :finished
     end
 
@@ -363,7 +392,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(count).to be 1
 
       notification = Jiji::Model::Notification::Notification.create(
-        'a', 'test1', Time.at(100), backtests[1].id)
+        'a', Time.at(100), backtests[1].id)
       notification.save
       count = Jiji::Model::Notification::Notification
               .where({ backtest_id: backtests[1].id }).count
@@ -585,7 +614,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'balance'       => 100_000,
           'agent_setting' => []
         })
-      end.to raise_exception(ActiveModel::StrictValidationFailed)
+      end.to raise_exception(ArgumentError)
 
       expect do
         @repository.register({
@@ -596,7 +625,7 @@ describe Jiji::Model::Trading::BackTestRepository do
           'pair_names' => [:EURJPY, :EURUSD],
           'balance'    => 100_000
         })
-      end.to raise_exception(ActiveModel::StrictValidationFailed)
+      end.to raise_exception(ArgumentError)
     end
 
     it '証拠金が不正な場合エラー' do
@@ -638,5 +667,9 @@ describe Jiji::Model::Trading::BackTestRepository do
     it 'stopで全テストを停止できる' do
       @repository.stop
     end
+  end
+
+  def load_agent_settings(backtest_id)
+    Jiji::Model::Agents::AgentSetting.load(backtest_id).map { |x| x }
   end
 end

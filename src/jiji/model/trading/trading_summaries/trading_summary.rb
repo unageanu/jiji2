@@ -79,7 +79,7 @@ module Jiji::Model::Trading::TradingSummaries
     end
 
     def process(position)
-      agent_name = position.agent_name || ''
+      agent_name = (position.agent && position.agent.name) || ''
       unless @agent_summary.include?(agent_name)
         @agent_summary[agent_name] = CompositeSummary.new
       end

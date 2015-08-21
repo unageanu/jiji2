@@ -28,7 +28,7 @@ describe 'アクションの実行' do
     notification = r.body[0]
 
     r = @client.post('/actions', {
-      agent_id: notification['agent_id'],
+      agent_id: notification['agent']['id'],
       action:   'aaa'
     })
     expect(r.status).to eq 200
@@ -41,7 +41,7 @@ describe 'アクションの実行' do
     expect(r.body.length).to be 2
 
     r = @client.post('/actions', {
-      agent_id: notification['agent_id'],
+      agent_id: notification['agent']['id'],
       action:   'error'
     })
     expect(r.status).to eq 400

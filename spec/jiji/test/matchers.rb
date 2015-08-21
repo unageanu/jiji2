@@ -11,7 +11,7 @@ module Jiji::Test
       p.pair_name, p.units, p.sell_or_buy, p.status,
       p.entry_price, p.entered_at, p.current_price, p.updated_at,
       p.exit_price, p.exited_at, p.closing_policy, p.profit_or_loss,
-      p.agent_name, p.agent_id
+      p.agent_id
     ]
   end
 end

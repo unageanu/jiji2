@@ -29,10 +29,10 @@ describe '通知取得' do
 
     notification = r.body[0]
     expect(notification['backtest_id']).to eq nil
-    expect(notification['agent_id']).to eq 'a'
-    expect(notification['agent_name']).to eq 'test1'
+    expect(notification['agent']['id']).not_to be nil
+    expect(notification['agent']['name']).to eq 'test1'
+    expect(notification['agent']['icon_id']).not_to be nil
     expect(notification['message']).to eq 'message'
-    expect(notification['icon']).to eq 'icon'
     expect(notification['actions']).to eq []
     expect(Time.iso8601(notification['timestamp'])).to eq Time.at(100)
     expect(notification['read_at']).to be nil
@@ -49,10 +49,10 @@ describe '通知取得' do
 
     notification = r.body[0]
     expect(notification['backtest_id']).to eq @test._id.to_s
-    expect(notification['agent_id']).to eq 'a'
-    expect(notification['agent_name']).to eq 'test1'
+    expect(notification['agent']['id']).not_to be nil
+    expect(notification['agent']['name']).to eq 'test1'
+    expect(notification['agent']['icon_id']).not_to be nil
     expect(notification['message']).to eq 'message2'
-    expect(notification['icon']).to eq 'icon'
     expect(notification['actions']).to eq []
     expect(Time.iso8601(notification['timestamp'])).to eq Time.at(200)
     expect(Time.iso8601(notification['read_at'])).to eq Time.at(500)
@@ -67,10 +67,10 @@ describe '通知取得' do
     expect(r.body.length).to be 1
 
     notification = r.body[0]
-    expect(notification['agent_id']).to eq 'a'
-    expect(notification['agent_name']).to eq 'test1'
+    expect(notification['agent']['id']).not_to be nil
+    expect(notification['agent']['name']).to eq 'test1'
+    expect(notification['agent']['icon_id']).not_to be nil
     expect(notification['message']).to eq 'message2'
-    expect(notification['icon']).to eq 'icon'
     expect(notification['actions']).to eq []
     expect(Time.iso8601(notification['timestamp'])).to eq Time.at(200)
     expect(Time.iso8601(notification['read_at'])).to eq Time.at(500)
@@ -141,14 +141,19 @@ describe '通知取得' do
       :agent, data_builder.new_agent_body(1))
     @test = data_builder.register_backtest(1, backtest_repository)
 
-    register_notification
-    register_notification(@test._id)
+    setting = data_builder.register_agent_setting
+    setting.backtest = @test
+    setting.save
+    rmt_setting = data_builder.register_agent_setting
+
+    register_notification(rmt_setting)
+    register_notification(setting, @test._id)
   end
 
-  def register_notification(backtest_id = nil)
-    Jiji::Model::Notification::Notification.create('a', 'test1', Time.at(100),
-      backtest_id, 'message', 'icon',  []).save
-    Jiji::Model::Notification::Notification.create('a', 'test1', Time.at(200),
-      backtest_id, 'message2', 'icon', []).read(Time.at(500))
+  def register_notification(agent_setting, backtest_id = nil)
+    Jiji::Model::Notification::Notification.create(agent_setting.id,
+      Time.at(100), backtest_id, 'message', []).save
+    Jiji::Model::Notification::Notification.create(agent_setting.id,
+      Time.at(200), backtest_id, 'message2', []).read(Time.at(500))
   end
 end

@@ -4,12 +4,10 @@ require 'client'
 
 describe 'リアルトレード' do
   before(:example) do
-    register_agent
     @client = Jiji::Client.instance
   end
 
   after(:example) do
-    @agent_registry.remove_source('aaa')
   end
 
   it 'GET /rmt/account でアカウント情報を取得できる' do
@@ -25,11 +23,11 @@ describe 'リアルトレード' do
 
   it 'PUT /rmt/agents でエージェントの設定を作成/更新できる' do
     r = @client.put('/rmt/agents', [{
-      agent_class: 'TestAgent1@aaa',
+      agent_class: 'TestAgent1@テスト1',
       agent_name:  'テスト1',
       properties:  { 'a' => 200, 'b' => 'bb' }
     }, {
-      agent_class: 'TestAgent1@aaa',
+      agent_class: 'TestAgent1@テスト1',
       agent_name:  'テスト2',
       properties:  {}
     }])
@@ -37,14 +35,19 @@ describe 'リアルトレード' do
     expect(r.body.length).to eq 2
 
     r.body.each do |setting|
-      expect(setting['uuid']).not_to be nil
+      expect(setting['id']).not_to be nil
       expect(setting['agent_class']).not_to be nil
-      expect(setting['agent_name']).not_to be nil
+      expect(setting['name']).not_to be nil
     end
 
-    agents = r.body[0, 1]
+    agents = [{
+      id:          r.body[0]['id'],
+      agent_name:  r.body[0]['name'],
+      agent_class: r.body[0]['agent_class'],
+      properties:  r.body[0]['properties']
+    }]
     agents << {
-      agent_class: 'TestAgent1@aaa',
+      agent_class: 'TestAgent1@テスト1',
       agent_name:  'テスト3'
     }
     r = @client.put('/rmt/agents', agents)
@@ -52,9 +55,9 @@ describe 'リアルトレード' do
     expect(r.body.length).to eq 2
 
     r.body.each do |setting|
-      expect(setting['uuid']).not_to be nil
+      expect(setting['id']).not_to be nil
       expect(setting['agent_class']).not_to be nil
-      expect(setting['agent_name']).not_to be nil
+      expect(setting['name']).not_to be nil
     end
   end
 
@@ -64,19 +67,9 @@ describe 'リアルトレード' do
     expect(r.body.length).to eq 2
 
     r.body.each do |setting|
-      expect(setting['uuid']).not_to be nil
+      expect(setting['id']).not_to be nil
       expect(setting['agent_class']).not_to be nil
-      expect(setting['agent_name']).not_to be nil
+      expect(setting['name']).not_to be nil
     end
-  end
-
-  def register_agent
-    container    = Jiji::Test::TestContainerFactory.instance.new_container
-    data_builder = Jiji::Test::DataBuilder.new
-
-    @agent_registry      = container.lookup(:agent_registry)
-
-    @agent_registry.add_source('aaa', '',
-      :agent, data_builder.new_agent_body(1))
   end
 end

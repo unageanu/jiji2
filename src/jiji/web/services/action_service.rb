@@ -15,7 +15,8 @@ module Jiji::Web
     post '/' do
       body = load_body
       future = action_dispatcher.dispatch(
-        read_backtest_id_from_body(body), body['agent_id'], body['action'])
+        read_backtest_id_from_body(body),
+        BSON::ObjectId.from_string(body['agent_id']), body['action'])
       ok(build_response(future))
     end
 

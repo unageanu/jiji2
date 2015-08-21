@@ -15,11 +15,11 @@ module Jiji::Model::Agents
     belongs_to :backtest, {
       class_name: 'Jiji::Model::Trading::BackTestProperties'
     }
-    has_many :position, {
+    has_many :positions, {
       class_name: 'Jiji::Model::Trading::Position',
       dependent:  :destroy
     }
-    has_many :notification, {
+    has_many :notifications, {
       class_name: 'Jiji::Model::Notification::Notification',
       dependent:  :destroy
     }
@@ -35,22 +35,32 @@ module Jiji::Model::Agents
       setting = AgentSetting.find(id) if id
       return setting if setting
 
-      return AgentSetting.new
+      AgentSetting.new
     end
 
-    def self.get_or_create_from_hash(hash)
+    def self.get_or_create_from_hash(hash, backtest_id = nil)
       setting = AgentSetting.get_or_create(create_id_or_nil(hash[:id]))
       setting.agent_class = hash[:agent_class]
       setting.name        = hash[:agent_name]
       setting.icon_id     = create_id_or_nil(hash[:icon_id])
       setting.properties  = hash[:properties] || {}
+      setting.backtest_id = backtest_id
       setting
     end
 
-    def self.load(backtest_id=nil)
+    def self.load(backtest_id = nil)
       AgentSetting
-        .where({backtest_id:backtest_id, active: true})
-        .order_by({name: :asc, id: :asc})
+        .where({ backtest_id: backtest_id, active: true })
+        .order_by({ name: :asc, id: :asc })
+    end
+
+    def properties_with_indifferent_access
+      (properties || {}).with_indifferent_access
+    end
+
+    def state_with_indifferent_access
+      return nil if state.nil?
+      state.with_indifferent_access
     end
 
     def display_info

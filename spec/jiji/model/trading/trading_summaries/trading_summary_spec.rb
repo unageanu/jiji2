@@ -6,6 +6,12 @@ require 'jiji/test/data_builder'
 describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
   include_context 'use data_builder'
   let(:summary) { Jiji::Model::Trading::TradingSummaries::TradingSummary.new }
+  let(:agent_sttings) do
+    [
+      data_builder.register_agent_setting('test1'),
+      data_builder.register_agent_setting('test2')
+    ]
+  end
 
   describe '#add_position' do
     it '取引結果がない場合' do
@@ -120,18 +126,20 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
     end
 
     it '取引結果が複数の場合' do
+      a1 = agent_sttings[0]
+      a2 = agent_sttings[1]
       summary.process_positions([
-        create_position(:EURJPY, :sell, 100,  99, 1000, 'a1', 100, 200), # 1000
-        create_position(:EURJPY, :buy,  100,  99,  800, 'a1', 100, 300), # -800
-        create_position(:USDJPY, :sell, 100,  99, 1400, 'a1', 100, 110), # 1400
-        create_position(:USDJPY, :buy,  100,  99, 1200, 'a1', 100, 190), #-1200
-        create_position(:EURJPY, :sell, 100, 100,  500, 'a1', 100, nil), #    0
+        create_position(:EURJPY, :sell, 100,  99, 1000, a1, 100, 200), # 1000
+        create_position(:EURJPY, :buy,  100,  99,  800, a1, 100, 300), # -800
+        create_position(:USDJPY, :sell, 100,  99, 1400, a1, 100, 110), # 1400
+        create_position(:USDJPY, :buy,  100,  99, 1200, a1, 100, 190), #-1200
+        create_position(:EURJPY, :sell, 100, 100,  500, a1, 100, nil), #    0
 
-        create_position(:EURJPY, :sell, 100,  99, 1000, 'a2', 100, 200), # 1000
-        create_position(:EURJPY, :buy,  100,  99,  800, 'a2', 100, 300), # -800
-        create_position(:USDJPY, :sell, 100,  99, 1400, 'a2', 100, 110), # 1400
-        create_position(:USDJPY, :buy,  100,  99, 1200, 'a2', 100, 190), #-1200
-        create_position(:EURJPY, :sell, 100, 100,  500, 'a2', 100, nil), #    0
+        create_position(:EURJPY, :sell, 100,  99, 1000, a2, 100, 200), # 1000
+        create_position(:EURJPY, :buy,  100,  99,  800, a2, 100, 300), # -800
+        create_position(:USDJPY, :sell, 100,  99, 1400, a2, 100, 110), # 1400
+        create_position(:USDJPY, :buy,  100,  99, 1200, a2, 100, 190), #-1200
+        create_position(:EURJPY, :sell, 100, 100,  500, a2, 100, nil), #    0
       ])
       expect(summary.to_h).to eq({
         states:          {
@@ -169,7 +177,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
           avg_units: 980
         },
         agent_summary:   {
-          'a1' => {
+          'test1' => {
             states:          {
               count:  5,
               exited: 4
@@ -205,7 +213,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
               avg_units: 980
             }
           },
-          'a2' => {
+          'test2' => {
             states:          {
               count:  5,
               exited: 4
@@ -247,9 +255,9 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
   end
 
   def create_position(pair, sell_or_buy, entry_price, current_price,
-    units = 1000, agent_name = nil, entered_at = 100, exited_at = 110)
+    units = 1000, agent = nil, entered_at = 100, exited_at = 110)
     Jiji::Model::Trading::Position.new do |position|
-      position.agent_name    = agent_name
+      position.agent         = agent
       position.pair_name     = pair
       position.sell_or_buy   = sell_or_buy
       position.entry_price   = entry_price

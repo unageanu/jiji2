@@ -10,13 +10,13 @@ module Jiji::Model::Trading
     include Jiji::Errors
     include Jiji::Model::Trading
     include Jiji::Model::Trading::Internal::WorkerMixin
+    include Jiji::Model::Agents
 
     needs :setting_repository
     needs :rmt_broker
     needs :rmt_next_tick_job_generator
 
     attr_reader :process, :trading_context, :agents
-    attr_accessor :agent_setting
 
     def setup
       @setting_repository.securities_setting.setup
@@ -31,24 +31,20 @@ module Jiji::Model::Trading
     end
 
     def update_agent_setting(new_setting)
-      generate_uuid(new_setting)
-      @agents_builder.update(@agents, new_setting)
-      rmt_setting = @setting_repository.rmt_setting
-      rmt_setting.agent_setting = new_setting
-      rmt_setting.save
-      rmt_setting.agent_setting
+      @agents.update_setting(new_setting, true)
+      agent_settings
+    end
+
+    def agent_settings
+      AgentSetting.load.map { |s| s }
     end
 
     def setup_rmt_process
-      agent_setting = @setting_repository.rmt_setting.agent_setting
-
       @logger          = logger_factory.create
-      graph_factory    = create_graph_factory
-      @agents_builder  = create_agents_builder(graph_factory, rmt_broker)
-      @agents          = create_agents(
-        agent_setting, rmt_broker, graph_factory)
-
-      @trading_context = create_trading_context(graph_factory)
+      @graph_factory   = create_graph_factory
+      @broker          = rmt_broker
+      @agents          = create_agents
+      @trading_context = create_trading_context(@graph_factory)
       @process         = create_process(trading_context)
 
       @process.start

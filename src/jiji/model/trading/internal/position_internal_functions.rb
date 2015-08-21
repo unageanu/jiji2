@@ -73,8 +73,8 @@ module Jiji::Model::Trading::Internal
     end
 
     def insert_agent_information_to_hash(h)
-      h[:agent_name] = agent_name
-      h[:agent_id]   = agent_id
+      return unless agent
+      h[:agent] = agent.display_info
     end
 
     def calculate_profit_or_loss

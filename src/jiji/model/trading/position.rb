@@ -17,13 +17,14 @@ module Jiji::Model::Trading
     include Internal::PositionInternalFunctions
 
     store_in collection: 'positions'
+    belongs_to :agent, {
+      class_name: 'Jiji::Model::Agents::AgentSetting'
+    }
     belongs_to :backtest, {
       class_name: 'Jiji::Model::Trading::BackTestProperties'
     }
 
     field :internal_id,    type: String
-    field :agent_name,     type: String
-    field :agent_id,       type: String
 
     field :pair_name,      type: Symbol
     field :units,          type: Integer

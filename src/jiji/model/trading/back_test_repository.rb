@@ -38,11 +38,14 @@ module Jiji::Model::Trading
     end
 
     def register(config)
+      config = config.with_indifferent_access
       backtest = BackTest.create_from_hash(config)
       setup_backtest(backtest)
       backtest.save
+      backtest.create_agent_instances(extract_agent_setting(config), true)
 
       @backtests[backtest.id] = backtest
+      backtest.start
       backtest
     end
 
@@ -75,7 +78,8 @@ module Jiji::Model::Trading
       @backtests = BackTest
                    .order_by(:created_at.asc)
                    .all.each_with_object(@backtests) do |t, r|
-        setup_backtest(t, true)
+        setup_backtest(t)
+        t.start
         r[t.id] = t
         r
       end
@@ -83,9 +87,15 @@ module Jiji::Model::Trading
 
     private
 
-    def setup_backtest(backtest, ignore_agent_creation_error = false)
+    def extract_agent_setting(config)
+      setting = config[:agent_setting] || {}
+      illegal_argument if setting.empty?
+      setting
+    end
+
+    def setup_backtest(backtest)
       container.inject(backtest)
-      backtest.setup(ignore_agent_creation_error)
+      backtest.setup
       backtest
     end
 

@@ -66,23 +66,26 @@ describe Jiji::Model::Trading::BackTest do
     expect(data.length).to be > 0
 
     positions = position_repository.retrieve_positions(
-      test._id, { entered_at: :asc }, 0, 10, { agent_name: 'テスト1' })
+      test._id, { entered_at: :asc }, 0, 10)
+                .reject { |p| p.agent.name != 'テスト1' }
     expect(positions.length).to be > 0
     positions.each do |position|
-      expect(position.agent_name).to eq 'テスト1'
+      expect(position.agent.name).to eq 'テスト1'
       expect(position.agent_id).not_to be nil
     end
 
     positions = position_repository.retrieve_positions(
-      test._id, { entered_at: :asc }, 0, 10, { agent_name: 'テスト2' })
+      test._id, { entered_at: :asc }, 0, 10)
+                .reject { |p| p.agent.name != 'テスト2' }
     expect(positions.length).to be > 0
     positions.each do |position|
-      expect(position.agent_name).to eq 'テスト2'
+      expect(position.agent.name).to eq 'テスト2'
       expect(position.agent_id).not_to be nil
     end
   end
 
   it 'メール、push通知を送信できる' do
+    icon_id = BSON::ObjectId.from_time(Time.new)
     test = backtest_repository.register({
       'name'          => 'テスト',
       'start_time'    => Time.new(2015, 6, 20, 0, 0, 0),
@@ -93,7 +96,7 @@ describe Jiji::Model::Trading::BackTest do
         {
           agent_class: 'SendNotificationAgent@agent.rb',
           agent_name:  'テスト1',
-          icon_id:     'icon'
+          icon_id:     icon_id
         }
       ]
     })
@@ -114,20 +117,20 @@ describe Jiji::Model::Trading::BackTest do
     expect(notifications.length).to eq 2
     notification = notifications[0]
     expect(notification.backtest_id).to eq test.id
-    expect(notification.agent_id).not_to be nil
-    expect(notification.agent_name).to eq 'テスト1'
     expect(notification.timestamp).not_to be nil
     expect(notification.message).to eq 'テスト通知'
-    expect(notification.icon).to eq 'icon'
+    expect(notification.agent_id).not_to be nil
+    expect(notification.agent.name).to eq 'テスト1'
+    expect(notification.agent.icon_id).to eq icon_id
     expect(notification.actions).to eq []
 
     notification = notifications[1]
     expect(notification.backtest_id).to eq test.id
-    expect(notification.agent_id).not_to be nil
-    expect(notification.agent_name).to eq 'テスト1'
     expect(notification.timestamp).not_to be nil
     expect(notification.message).to eq 'テスト通知2'
-    expect(notification.icon).to eq 'icon'
+    expect(notification.agent_id).not_to be nil
+    expect(notification.agent.name).to eq 'テスト1'
+    expect(notification.agent.icon_id).to eq icon_id
     expect(notification.actions).to eq []
   end
 

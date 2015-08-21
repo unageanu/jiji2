@@ -25,7 +25,7 @@ describe Jiji::Model::Trading::RMT do
     agent_setting = @settings.rmt_setting.agent_setting
     expect(agent_setting.length).to be 0
 
-    @rmt.update_agent_setting([
+    agent_setting = @rmt.update_agent_setting([
       {
         agent_class: 'TestAgent1@aaa',
         agent_name:  'テスト1',
@@ -37,55 +37,55 @@ describe Jiji::Model::Trading::RMT do
       }, {
         agent_class: 'TestAgent2@bbb'
       }
-    ])
-    agent_setting = @settings.rmt_setting.agent_setting
-    expect(agent_setting[0]['uuid']).not_to be nil
-    expect(agent_setting[0]['agent_class']).to eq 'TestAgent1@aaa'
-    expect(agent_setting[0]['agent_name']).to eq 'テスト1'
-    expect(agent_setting[0]['properties']).to eq({ 'a' => 100, 'b' => 'bb' })
-    agent = @rmt.agents[agent_setting[0][:uuid]]
-    expect(agent.agent_name).to eq 'テスト1'
-    expect(agent.broker.agent_id).to eq agent_setting[0][:uuid]
-    expect(agent_setting[1][:uuid]).not_to be nil
-    expect(agent_setting[1][:agent_class]).to eq 'TestAgent1@aaa'
-    expect(agent_setting[1][:agent_name]).to eq 'テスト2'
-    expect(agent_setting[1][:properties]).to eq({})
-    agent = @rmt.agents[agent_setting[1][:uuid]]
-    expect(agent.agent_name).to eq 'テスト2'
-    expect(agent.broker.agent_id).to eq agent_setting[1][:uuid]
-    expect(agent_setting[2][:uuid]).not_to be nil
-    expect(agent_setting[2][:agent_class]).to eq 'TestAgent2@bbb'
-    expect(agent_setting[2][:agent_name]).to eq nil
-    expect(agent_setting[2][:properties]).to eq(nil)
-    agent = @rmt.agents[agent_setting[2][:uuid]]
+    ]).map { |x| x }
+    expect(agent_setting[0].id).not_to be nil
+    expect(agent_setting[0].agent_class).to eq 'TestAgent2@bbb'
+    expect(agent_setting[0].name).to eq nil
+    expect(agent_setting[0].properties).to eq({})
+    agent = @rmt.agents[agent_setting[0].id]
     expect(agent.agent_name).to eq 'TestAgent2@bbb'
-    expect(agent.broker.agent_id).to eq agent_setting[2][:uuid]
+    expect(agent.broker.agent_id).to eq agent_setting[0].id
+
+    expect(agent_setting[1].id).not_to be nil
+    expect(agent_setting[1].agent_class).to eq 'TestAgent1@aaa'
+    expect(agent_setting[1].name).to eq 'テスト1'
+    expect(agent_setting[1].properties).to eq({ 'a' => 100, 'b' => 'bb' })
+    agent = @rmt.agents[agent_setting[1].id]
+    expect(agent.agent_name).to eq 'テスト1'
+    expect(agent.broker.agent_id).to eq agent_setting[1].id
+
+    expect(agent_setting[2].id).not_to be nil
+    expect(agent_setting[2].agent_class).to eq 'TestAgent1@aaa'
+    expect(agent_setting[2].name).to eq 'テスト2'
+    expect(agent_setting[2].properties).to eq({})
+    agent = @rmt.agents[agent_setting[2].id]
+    expect(agent.agent_name).to eq 'テスト2'
+    expect(agent.broker.agent_id).to eq agent_setting[2].id
 
     new_setting = [{
-      uuid:        agent_setting[0][:uuid],
+      id:          agent_setting[1].id,
       agent_class: 'TestAgent1@aaa',
       agent_name:  'テスト3',
       properties:  { 'a' => 200, 'b' => 'bb' }
     }]
-    @rmt.update_agent_setting(new_setting)
-    expect(new_setting[0][:uuid]).not_to be nil
-    expect(@rmt.agents[new_setting[0][:uuid]]).not_to be nil
-    expect(@rmt.agents[agent_setting[1][:uuid]]).to be nil
-    expect(@rmt.agents[agent_setting[2][:uuid]]).to be nil
+    new_agent_setting = @rmt.update_agent_setting(new_setting).map { |x| x }
+    expect(new_agent_setting[0].id).to eq agent_setting[1].id
+    expect(@rmt.agents[agent_setting[1].id]).not_to be nil
+    expect(@rmt.agents[agent_setting[0].id]).to be nil
+    expect(@rmt.agents[agent_setting[2].id]).to be nil
 
-    agent_setting = @settings.rmt_setting.agent_setting
-    expect(agent_setting[0]['uuid']).not_to be nil
-    expect(agent_setting[0]['agent_class']).to eq 'TestAgent1@aaa'
-    expect(agent_setting[0]['agent_name']).to eq 'テスト3'
-    expect(agent_setting[0]['properties']).to eq({ 'a' => 200, 'b' => 'bb' })
-    agent = @rmt.agents[agent_setting[0][:uuid]]
+    expect(new_agent_setting[0].id).not_to be nil
+    expect(new_agent_setting[0].agent_class).to eq 'TestAgent1@aaa'
+    expect(new_agent_setting[0].name).to eq 'テスト3'
+    expect(new_agent_setting[0].properties).to eq({ 'a' => 200, 'b' => 'bb' })
+    agent = @rmt.agents[new_agent_setting[0].id]
     expect(agent.agent_name).to eq 'テスト3'
-    expect(agent.broker.agent_id).to eq agent_setting[0][:uuid]
+    expect(agent.broker.agent_id).to eq new_agent_setting[0].id
   end
 
   it '永続化したデータから状態を復元できる' do
     @rmt.setup
-    @rmt.update_agent_setting([
+    agent_setting = @rmt.update_agent_setting([
       {
         agent_class: 'TestAgent1@aaa',
         agent_name:  'テスト1',
@@ -97,7 +97,7 @@ describe Jiji::Model::Trading::RMT do
       }, {
         agent_class: 'TestAgent2@bbb'
       }
-    ])
+    ]).map { |x| x }
     @rmt.tear_down
 
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
@@ -105,28 +105,29 @@ describe Jiji::Model::Trading::RMT do
     @settings     = @container.lookup(:setting_repository)
     @rmt.setup
 
-    agent_setting = @settings.rmt_setting.agent_setting
-    expect(agent_setting[0]['uuid']).not_to be nil
-    expect(agent_setting[0]['agent_class']).to eq 'TestAgent1@aaa'
-    expect(agent_setting[0]['agent_name']).to eq 'テスト1'
-    expect(agent_setting[0]['properties']).to eq({ 'a' => 100, 'b' => 'bb' })
-    agent = @rmt.agents[agent_setting[0][:uuid]]
-    expect(agent.agent_name).to eq 'テスト1'
-    expect(agent.broker.agent_id).to eq agent_setting[0][:uuid]
-    expect(agent_setting[1]['uuid']).not_to be nil
-    expect(agent_setting[1][:agent_class]).to eq 'TestAgent1@aaa'
-    expect(agent_setting[1][:agent_name]).to eq 'テスト2'
-    expect(agent_setting[1][:properties]).to eq({})
-    agent = @rmt.agents[agent_setting[1][:uuid]]
-    expect(agent.agent_name).to eq 'テスト2'
-    expect(agent.broker.agent_id).to eq agent_setting[1][:uuid]
-    expect(agent_setting[2][:uuid]).not_to be nil
-    expect(agent_setting[2][:agent_class]).to eq 'TestAgent2@bbb'
-    expect(agent_setting[2][:agent_name]).to eq nil
-    expect(agent_setting[2][:properties]).to eq(nil)
-    agent = @rmt.agents[agent_setting[2][:uuid]]
+    expect(agent_setting[0].id).not_to be nil
+    expect(agent_setting[0].agent_class).to eq 'TestAgent2@bbb'
+    expect(agent_setting[0].name).to eq nil
+    expect(agent_setting[0].properties).to eq({})
+    agent = @rmt.agents[agent_setting[0].id]
     expect(agent.agent_name).to eq 'TestAgent2@bbb'
-    expect(agent.broker.agent_id).to eq agent_setting[2][:uuid]
+    expect(agent.broker.agent_id).to eq agent_setting[0].id
+
+    expect(agent_setting[1].id).not_to be nil
+    expect(agent_setting[1].agent_class).to eq 'TestAgent1@aaa'
+    expect(agent_setting[1].name).to eq 'テスト1'
+    expect(agent_setting[1].properties).to eq({ 'a' => 100, 'b' => 'bb' })
+    agent = @rmt.agents[agent_setting[1].id]
+    expect(agent.agent_name).to eq 'テスト1'
+    expect(agent.broker.agent_id).to eq agent_setting[1].id
+
+    expect(agent_setting[2].id).not_to be nil
+    expect(agent_setting[2].agent_class).to eq 'TestAgent1@aaa'
+    expect(agent_setting[2].name).to eq 'テスト2'
+    expect(agent_setting[2].properties).to eq({})
+    agent = @rmt.agents[agent_setting[2].id]
+    expect(agent.agent_name).to eq 'テスト2'
+    expect(agent.broker.agent_id).to eq agent_setting[2].id
   end
 
   describe 'balance_of_yesterday' do

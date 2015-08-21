@@ -10,12 +10,10 @@ module Jiji::Model::Notification
 
     attr_reader :agent_id, :backtest_id, :agent_name, :icon
 
-    def initialize(backtest_id, agent_id, agent_name,
-      icon, push_notifier, mail_composer, time_source)
+    def initialize(backtest_id, agent_id,
+      push_notifier, mail_composer, time_source)
       @backtest_id   = backtest_id
       @agent_id      = agent_id
-      @agent_name    = agent_name
-      @icon          = icon
       @push_notifier = push_notifier
       @mail_composer = mail_composer
       @time_source   = time_source
@@ -37,15 +35,10 @@ module Jiji::Model::Notification
     end
 
     def push_notification(message = '', actions = [])
-      n = Notification.create(@agent_id, @agent_name,
-        @time_source.now, @backtest_id, message, @icon, actions)
+      n = Notification.create(@agent_id,
+        @time_source.now, @backtest_id, message, actions)
       n.save
       @push_notifier.notify(message, message)
-    end
-
-    def update(agent_name, icon)
-      @agent_name = agent_name
-      @icon       = icon
     end
 
   end

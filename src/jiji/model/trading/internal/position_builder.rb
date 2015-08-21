@@ -26,12 +26,12 @@ module Jiji::Model::Trading::Internal
       position
     end
 
-    def build_from_order(order, tick, agent_name = '', agent_id = '')
+    def build_from_order(order, tick, agent_id = nil)
       position = Position.new do |p|
         initialize_trading_information(p, @backtest_id, order.internal_id,
           order.pair_name, order.units, order.sell_or_buy)
         initialize_price_and_time(p, order.price, tick.timestamp)
-        initialize_agent_information(p, agent_name, agent_id)
+        initialize_agent_information(p, agent_id)
         p.closing_policy = ClosingPolicy.create(order.extract_options)
       end
       position.update_price(tick)
@@ -48,10 +48,10 @@ module Jiji::Model::Trading::Internal
     end
 
     def split_and_close(position, units,
-      price, time, agent_name = '', agent_id = '')
+      price, time, agent_id = nil)
       position.update_state_for_reduce(units, time)
       create_splited_position(position, units,
-        price, time, agent_name, agent_id)
+        price, time, agent_id)
     end
 
     private
@@ -66,11 +66,11 @@ module Jiji::Model::Trading::Internal
     end
 
     def create_splited_position(position,
-        units, price, time, agent_name, agent_id)
+        units, price, time, agent_id)
       new_position = Position.new do |p|
         initialize_trading_information_from_position(p, position, units)
         initialize_price_and_time(p, position.entry_price, position.entered_at)
-        initialize_agent_information(p, agent_name, agent_id)
+        initialize_agent_information(p, agent_id)
         p.closing_policy = ClosingPolicy.create(position.closing_policy.to_h)
       end
       new_position.update_state_to_closed(price, time)
@@ -92,8 +92,7 @@ module Jiji::Model::Trading::Internal
       position.updated_at    = tick.timestamp
     end
 
-    def initialize_agent_information(position, agent_name, agent_id)
-      position.agent_name = agent_name
+    def initialize_agent_information(position, agent_id)
       position.agent_id   = agent_id
     end
 
@@ -111,12 +110,12 @@ module Jiji::Model::Trading::Internal
 
     def initialize_trading_information(position,
         backtest_id, internal_id, pair_name, units, sell_or_buy)
+      position.pair_name           = pair_name
+      position.units               = units
+      position.sell_or_buy         = sell_or_buy
+      position.internal_id         = internal_id
+      position.status              = :live
       position.backtest_id         = backtest_id
-      position.pair_name            = pair_name
-      position.units                = units
-      position.sell_or_buy          = sell_or_buy
-      position.internal_id          = internal_id
-      position.status               = :live
     end
 
   end

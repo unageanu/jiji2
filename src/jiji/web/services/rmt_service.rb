@@ -24,7 +24,7 @@ module Jiji::Web
     end
 
     get '/agents' do
-      ok(rmt_setting.agent_setting)
+      ok(rmt.agent_settings)
     end
 
     put '/agents' do
@@ -35,10 +35,6 @@ module Jiji::Web
         rmt.update_agent_setting(agent_setting)
       end
       ok(result)
-    end
-
-    def rmt_setting
-      lookup(:setting_repository).rmt_setting
     end
 
   end

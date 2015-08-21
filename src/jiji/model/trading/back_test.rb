@@ -19,13 +19,15 @@ module Jiji::Model::Trading
     needs :pairs
 
     store_in collection: 'backtests'
-    has_many :graph,
+    has_many :graphs,
       class_name: 'Jiji::Model::Graphing::Graph', dependent: :destroy
-    has_many :position,
-      class_name: 'Jiji::Model::Trading::Position', dependent: :destroy
     has_many :logdata,
       class_name: 'Jiji::Model::Logging::LogData', dependent: :destroy
-    has_many :notification,
+    has_many :agent_settings,
+      class_name: 'Jiji::Model::Agents::AgentSetting', dependent: :destroy
+    has_many :positions,
+      class_name: 'Jiji::Model::Trading::Position', dependent: :destroy
+    has_many :notifications,
       class_name: 'Jiji::Model::Notification::Notification', dependent: :destroy
 
     field :name,          type: String
@@ -34,7 +36,6 @@ module Jiji::Model::Trading
 
     field :start_time,    type: Time
     field :end_time,      type: Time
-    field :agent_setting, type: Array
     field :pair_names,    type: Array
     field :balance,       type: Integer, default: 0
     field :status,        type: Symbol,  default: :wait_for_start
@@ -57,9 +58,6 @@ module Jiji::Model::Trading
     validates :pair_names,
       presence: { strict: true },
       length:   { minimum: 1 }
-    validates :agent_setting,
-      presence: { strict: true },
-      length:   { minimum: 1 }
     validates :balance,
       presence:     { strict: true },
       numericality: {
@@ -76,11 +74,10 @@ module Jiji::Model::Trading
 
     def to_h
       hash = {
-        id:            _id,
-        name:          name,
-        memo:          memo,
-        agent_setting: agent_setting,
-        created_at:    created_at
+        id:         _id,
+        name:       name,
+        memo:       memo,
+        created_at: created_at
       }
       insert_broker_setting_to_hash(hash)
       insert_status_to_hash(hash)
@@ -124,11 +121,12 @@ module Jiji::Model::Trading
     include Jiji::Model::Trading
     include Jiji::Model::Trading::Internal::WorkerMixin
 
-    def setup(ignore_agent_creation_error = false)
+    def setup
       self.created_at = created_at || time_source.now
-      generate_uuid(agent_setting)
+      create_components
+    end
 
-      create_components(ignore_agent_creation_error)
+    def start
       return unless status == :wait_for_start
 
       @process.start(create_default_jobs)
@@ -153,7 +151,6 @@ module Jiji::Model::Trading
       BackTest.new do |b|
         b.name          = hash['name']
         b.memo          = hash['memo']
-        b.agent_setting = hash['agent_setting']
 
         load_broker_setting_from_hash(b, hash)
       end
@@ -172,13 +169,13 @@ module Jiji::Model::Trading
       [Jobs::NotifyNextTickJobForBackTest.new(start_time, end_time)]
     end
 
-    def create_components(ignore_agent_creation_error = false)
+    def create_components
       @logger          = logger_factory.create(self)
-      graph_factory    = create_graph_factory(self)
-      broker           = create_broker
-      @agents          = create_agents(agent_setting, broker,
-        graph_factory, self, true, ignore_agent_creation_error)
-      trading_context  = create_trading_context(broker, @agents, graph_factory)
+      @graph_factory   = create_graph_factory(self)
+      @broker          = create_broker
+      @agents          = create_agents(id, true)
+      trading_context  = create_trading_context(
+        @broker, @agents, @graph_factory)
       @process         = create_process(trading_context)
     end
 

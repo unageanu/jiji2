@@ -14,7 +14,7 @@ module Jiji::Model::Trading
       filter_conditions = { backtest_id: backtest_id }.merge(filter_conditions)
       query = Jiji::Utils::Pagenation::Query.new(
         filter_conditions, sort_order, offset, limit)
-      query.execute(Position).map { |x| x }
+      query.execute(Position.includes(:agent)).map { |x| x }
     end
 
     def count_positions(backtest_id = nil, filter_conditions = {})
@@ -35,7 +35,7 @@ module Jiji::Model::Trading
     def retrieve_living_positions_of_rmt
       query = Jiji::Utils::Pagenation::Query.new(
         { backtest_id: nil, status: :live }, entered_at: :asc)
-      query.execute(Position).map { |x| x }
+      query.execute(Position.includes(:agent)).map { |x| x }
     end
 
     def delete_all_positions_of_backtest(backtest_id)

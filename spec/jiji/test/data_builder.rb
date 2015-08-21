@@ -54,6 +54,19 @@ class TestAgent#{seed} #{ parent ? ' < ' + parent : '' }
     "description#{seed}"
   end
 
+  def state
+    fail "test" if agent_name =~ /state_error/
+    return nil  if agent_name =~ /state_nil/
+    {:name => agent_name, :number => #{seed} }
+  end
+
+  def restore_state(state)
+    fail "test" if agent_name =~ /restore_state_error/
+    @restored_state = state
+  end
+
+  attr_reader :restored_state
+
 end
 BODY
     end
@@ -83,8 +96,13 @@ BODY
 
     def new_trading_context(broker = Mock::MockBroker.new,
       time_source = Jiji::Utils::TimeSource.new, logger = Logger.new(STDOUT))
-      agents = Jiji::Model::Agents::Agents.new
       graph_factory = Jiji::Model::Graphing::GraphFactory.new
+      agents = Jiji::Model::Agents::Agents.new(nil, nil, {
+        logger:        logger,
+        time_source:   time_source,
+        bloker:        broker,
+        graph_factory: graph_factory
+      })
       TradingContext.new(agents, broker, graph_factory, time_source, logger)
     end
 
@@ -127,8 +145,7 @@ BODY
         { 'label' => 'い', 'action' => 'bbb' }
       ]
       Jiji::Model::Notification::Notification.create(
-        "agent#{seed}", "test#{seed}", Time.at(seed), backtest_id,
-        "message#{seed}", "icon#{seed}", actions)
+        "agent#{seed}", Time.at(seed), backtest_id, "message#{seed}", actions)
     end
 
     def register_backtest(seed, repository,
@@ -155,11 +172,21 @@ BODY
         "class Foo#{seed}; def to_s; return \"xxx#{seed}\"; end; end")
     end
 
+    def register_agent_setting(name = 'test1',
+       icon = BSON::ObjectId.from_time(Time.new))
+      setting = Jiji::Model::Agents::AgentSetting.new
+      setting.name        = name
+      setting.agent_class = 'testClass1'
+      setting.icon_id     = BSON::ObjectId.from_time(Time.new)
+      setting.save
+      setting
+    end
+
     def clean
       BackTest.delete_all
       Position.delete_all
       Jiji::Model::Agents::AgentSource.delete_all
-      Jiji::Model::Agents::Agents.delete_all
+      Jiji::Model::Agents::AgentSetting.delete_all
       Jiji::Model::Settings::AbstractSetting.delete_all
       Jiji::Model::Graphing::GraphData.delete_all
       Jiji::Model::Graphing::Graph.delete_all

@@ -50,7 +50,6 @@ describe Jiji::Model::Trading::BackTest do
     expect(hash[:end_time]).to eq Time.at(2000)
     expect(hash[:pair_names]).to eq [:EURJPY, :EURUSD]
     expect(hash[:balance]).to eq 0
-    expect(hash[:agent_setting].length).to be 3
     expect(hash[:status]).to eq :running
     expect(hash[:progress]).to be >= 0
     expect(hash[:current_time]).not_to be nil
@@ -68,7 +67,6 @@ describe Jiji::Model::Trading::BackTest do
     expect(hash[:end_time]).to eq Time.at(2000)
     expect(hash[:pair_names]).to eq [:EURJPY, :EURUSD]
     expect(hash[:balance]).to eq 0
-    expect(hash[:agent_setting].length).to be 3
     expect(hash[:status]).to eq :cancelled
     expect(hash[:progress]).to be nil
     expect(hash[:current_time]).to be nil

@@ -11,10 +11,13 @@ describe Jiji::Model::Notification::Notificator do
   let(:time_source) do
     container.lookup(:time_source)
   end
+  let(:agent_setting) do
+    data_builder.register_agent_setting
+  end
   let(:notificator) do
     mail_composer = container.lookup(:mail_composer)
-    Jiji::Model::Notification::Notificator.new(backtests[0].id, 'agent_id',
-      'agent_name', 'icon', push_notifier, mail_composer, time_source)
+    Jiji::Model::Notification::Notificator.new(backtests[0].id,
+      agent_setting.id, push_notifier, mail_composer, time_source)
   end
   let(:notification_repository) do
     container.lookup(:notification_repository)
@@ -79,11 +82,11 @@ describe Jiji::Model::Notification::Notificator do
     expect(notifications.length).to be 1
     notification = notifications[0]
     expect(notification.backtest_id).to eq backtests[0].id
-    expect(notification.agent_id).to eq 'agent_id'
-    expect(notification.agent_name).to eq 'agent_name'
+    expect(notification.agent.id).to eq agent_setting.id
+    expect(notification.agent.name).to eq agent_setting.name
+    expect(notification.agent.icon_id).to eq agent_setting.icon_id
     expect(notification.timestamp).to eq Time.at(100)
     expect(notification.message).to eq 'メッセージ'
-    expect(notification.icon).to eq 'icon'
     expect(notification.actions).to eq [
       { 'label' => 'あ', 'action' => 'aaa' },
       { 'label' => 'い', 'action' => 'bbb' }

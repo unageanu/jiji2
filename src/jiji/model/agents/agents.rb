@@ -13,33 +13,20 @@ module Jiji::Model::Agents
 
     def_delegators :@agents, :[], :include?, :each, :keys, :values
 
-    store_in collection: 'agent_states'
-
-    field :backtest_id,  type: BSON::ObjectId
-    field :states,       type: Hash, default: {}
-
-    index(
-      { backtest_id: 1 },
-      unique: true, name: 'agent_states_backtest_id_index')
-
     attr_accessor :agents, :logger, :fail_on_error
 
-    def initialize(backtest_id = nil, agents = {},
-      logger = nil, fail_on_error = false)
+    def initialize(backtest_id, agent_registry,
+      components, fail_on_error = false)
       super()
-      @agents        = agents
-      @logger        = logger
+      @updater       = Internal::AgentsUpdater.new(
+        backtest_id, agent_registry, components)
+      @logger        = components[:logger]
       @fail_on_error = fail_on_error
-
-      self.backtest_id = backtest_id
+      @agents        = @updater.restore_agents_from_saved_state
     end
 
-    def self.get_or_create(backtest_id, logger, fail_on_error = false)
-      agents = Agents.find_by(backtest_id: backtest_id) \
-             || Agents.new(backtest_id, {}, logger, fail_on_error)
-      agents.logger = logger
-      agents.fail_on_error = fail_on_error
-      agents
+    def update_setting(new_setting, fail_on_error = false)
+      @agents = @updater.update(@agents, new_setting, fail_on_error)
     end
 
     def next_tick(tick)
@@ -53,26 +40,7 @@ module Jiji::Model::Agents
     end
 
     def save_state
-      self.states = @agents.each_with_object({}) do |pair, r|
-        begin
-          r[pair[0]] = pair[1].state
-        rescue Exception => e # rubocop:disable Lint/RescueException
-          process_error(e)
-        end
-      end
-      save
-    end
-
-    def restore_state
-      return unless states
-      states.each do |k, v|
-        begin
-          agent = @agents[k]
-          agent.restore_state(v) if agent
-        rescue Exception => e # rubocop:disable Lint/RescueException
-          process_error(e)
-        end
-      end
+      @updater.save_state(@agents)
     end
 
     private

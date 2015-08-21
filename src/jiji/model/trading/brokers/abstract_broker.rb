@@ -32,14 +32,12 @@ module Jiji::Model::Trading::Brokers
       load_orders
     end
 
-    def buy(pair_name, units, type = :market, options = {},
-      agent_name = '', agent_id = '')
-      order(pair_name, :buy, units, type, options, agent_name, agent_id)
+    def buy(pair_name, units, type = :market, options = {}, agent_id = nil)
+      order(pair_name, :buy, units, type, options, agent_id)
     end
 
-    def sell(pair_name, units, type = :market, options = {},
-      agent_name = '', agent_id = '')
-      order(pair_name, :sell, units, type, options, agent_name, agent_id)
+    def sell(pair_name, units, type = :market, options = {}, agent_id = nil)
+      order(pair_name, :sell, units, type, options, agent_id)
     end
 
     def modify_order(order)
@@ -108,11 +106,11 @@ module Jiji::Model::Trading::Brokers
       @orders
     end
 
-    def order(pair_id, sell_or_buy, units, type, options, agent_name, agent_id)
+    def order(pair_id, sell_or_buy, units, type, options, agent_id)
       result = securities.order(pair_id, sell_or_buy, units, type, options)
       @positions_is_dirty = true
       @orders_is_dirty    = true
-      @positions.apply_order_result(result, tick, agent_name, agent_id)
+      @positions.apply_order_result(result, tick, agent_id)
       result
     end
 

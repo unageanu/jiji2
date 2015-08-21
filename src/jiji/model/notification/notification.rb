@@ -14,14 +14,14 @@ module Jiji::Model::Notification
     include Jiji::Errors
 
     store_in collection: 'notifications'
+    belongs_to :agent, {
+      class_name: 'Jiji::Model::Agents::AgentSetting'
+    }
     belongs_to :backtest, {
       class_name: 'Jiji::Model::Trading::BackTestProperties'
     }
 
-    field :agent_id,      type: String
-    field :agent_name,    type: String
     field :actions,       type: Array
-    field :icon,          type: BSON::ObjectId
     field :message,       type: String
     field :timestamp,     type: Time
     field :read_at,       type: Time
@@ -30,12 +30,12 @@ module Jiji::Model::Notification
       { backtest_id: 1, timestamp: -1 },
       name: 'notification_backtest_id_timestamp_index')
 
-    def self.create(agent_id, agent_name, timestamp,
-      backtest_id = nil, message = '', icon = nil, actions = [])
+    def self.create(agent_id, timestamp,
+      backtest_id = nil, message = '', actions = [])
       Notification.new do |n|
         n.timestamp   = timestamp
-        n.initialize_agent_information(agent_id, agent_name, backtest_id)
-        n.initialize_content(message, icon, actions)
+        n.initialize_agent_information(agent_id, backtest_id)
+        n.initialize_content(message, actions)
       end
     end
 
@@ -59,15 +59,13 @@ module Jiji::Model::Notification
       hash
     end
 
-    def initialize_agent_information(agent_id, agent_name, backtest_id)
+    def initialize_agent_information(agent_id, backtest_id)
       self.agent_id    = agent_id
-      self.agent_name  = agent_name
       self.backtest_id = backtest_id
     end
 
-    def initialize_content(message = '', icon = nil, actions = [])
+    def initialize_content(message = '', actions = [])
       self.message     = message
-      self.icon        = icon
       self.actions     = actions
     end
 
@@ -75,14 +73,14 @@ module Jiji::Model::Notification
 
     def insert_content_to_hash(hash)
       hash[:message] = message
-      hash[:icon]    = icon
       hash[:actions] = actions
     end
 
     def insert_agent_information_to_hash(hash)
-      hash[:agent_id]    = agent_id
-      hash[:agent_name]  = agent_name
       hash[:backtest_id] = backtest_id
+      return unless agent
+
+      hash[:agent]    = agent.display_info
     end
 
   end

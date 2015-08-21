@@ -6,7 +6,6 @@ const ListItem   = MUI.ListItem;
 const Avatar     = MUI.Avatar;
 
 const nullNotification = {
-  icon: "default.png"
 };
 
 export default class NotificationListItem extends React.Component {

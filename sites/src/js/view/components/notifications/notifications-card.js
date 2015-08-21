@@ -29,7 +29,7 @@ export default class NotificationsCard extends AbstractCard {
   }
 
   onMenuItemTouchTap(e, item) {
-    this.props.model.reload();
+    this.props.model.load();
   }
 
 }

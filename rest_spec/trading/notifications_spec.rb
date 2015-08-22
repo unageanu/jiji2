@@ -80,18 +80,21 @@ describe '通知取得' do
     r = @client.get('notifications/count')
     expect(r.status).to eq 200
     expect(r.body['count']).to be 4
+    expect(r.body['not_read']).to be 2
 
     r = @client.get('notifications/count', {
       'backtest_id' => @test._id.to_s
     })
     expect(r.status).to eq 200
     expect(r.body['count']).to be 2
+    expect(r.body['not_read']).to be 1
 
     r = @client.get('notifications/count', {
       'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
     expect(r.body['count']).to be 2
+    expect(r.body['not_read']).to be 1
   end
 
   it 'PUT /notifications/:notificatio_id/read で通知を既読にできる' do

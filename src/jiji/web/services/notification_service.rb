@@ -28,7 +28,11 @@ module Jiji::Web
 
     get '/count' do
       filter_condition = read_filter_condition_from_query_param
-      ok({ count: repository.count_notifications(filter_condition) })
+      ok({
+        count: repository.count_notifications(filter_condition),
+        not_read: repository.count_notifications(
+          filter_condition.merge({read_at: {"$ne" => nil}}))
+      })
     end
 
     options '/:notification_id/read' do

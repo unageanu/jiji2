@@ -19,8 +19,11 @@ export default {
       accent1Color:   "#00BFA5",
       accent2Color:   "#1DE9B6", // light
       accent3Color:   "#64FFDA", // super light
+      accent4Color:   "#FF3350", // red
       textColor:      "#666666",
       textColorLight: "#999999",
+      positiveColor:  "#00BFA5",
+      nagativeColor:  "#FF3350",
       canvasColor: Colors.white,
       borderColor: Colors.grey300,
       disabledColor: ColorManipulator.fade("#666666", 0.3)

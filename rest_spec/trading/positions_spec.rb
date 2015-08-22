@@ -105,12 +105,14 @@ describe '建玉取得' do
     r = @client.get('positions/rmt/count')
     expect(r.status).to eq 200
     expect(r.body['count']).to be 2
+    expect(r.body['not_exited']).to be 1
 
     r = @client.get('positions/rmt/count', {
       'status'    => 'live'
     })
     expect(r.status).to eq 200
     expect(r.body['count']).to be 1
+    expect(r.body['not_exited']).to be 1
   end
 
   it 'GET /positions/:backtest_id でバックテストの建玉を取得できる' do
@@ -186,6 +188,7 @@ describe '建玉取得' do
     r = @client.get("positions/#{@test._id}/count")
     expect(r.status).to eq 200
     expect(r.body['count']).to be 2
+    expect(r.body['not_exited']).to be 1
   end
 
   def register_positions

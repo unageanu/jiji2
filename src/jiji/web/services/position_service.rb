@@ -36,7 +36,12 @@ module Jiji::Web
 
     get '/:backtest_id/count' do
       id = get_backtest_id_from_path_param
-      ok({ count: repository.count_positions(id, read_filter_condition) })
+      filter = read_filter_condition
+      ok({
+        count: repository.count_positions(id, filter),
+        not_exited: repository.count_positions(
+          id,filter.merge({status: :live}))
+      })
     end
 
     def repository

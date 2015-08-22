@@ -21,7 +21,7 @@ export default class NotificationList extends AbstractComponent {
 
   render() {
     return (
-      <List>{this.createListItems()}</List>
+      <List style={{paddingTop:0}}>{this.createListItems()}</List>
     );
   }
 

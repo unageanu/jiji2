@@ -30,7 +30,8 @@ describe("NotificationsTableModel", () => {
     it("loadで一覧を取得できる", () => {
       model.load();
       xhrManager.requests[0].resolve({
-        count: 50
+        count: 50,
+        notRead: 25
       });
       xhrManager.requests[1].resolve(createItems(20));
 
@@ -41,6 +42,7 @@ describe("NotificationsTableModel", () => {
       expect(model.filterCondition).toEqual({backtestId: null});
       expect(model.items[0].timestamp).toEqual( new Date(0) );
       expect(model.items[0].formatedTimestamp).not.toBe( null );
+      expect(model.notRead).toEqual( 25 );
       expect(model.hasNext).toEqual( true );
       expect(model.hasPrev).toEqual( false );
       expect(model.selectedNotification).toBe( null );
@@ -55,11 +57,13 @@ describe("NotificationsTableModel", () => {
     it("データ数0の場合、ロードは行われない。", () => {
       model.load();
       xhrManager.requests[0].resolve({
-        count: 0
+        count: 0,
+        notRead: 0
       });
       expect(model.sortOrder).toEqual({order:"timestamp", direction: "desc"});
       expect(model.filterCondition).toEqual({backtestId: null});
       expect(model.items).toEqual( [] );
+      expect(model.notRead).toEqual( 0 );
       expect(model.hasNext).toEqual( false );
       expect(model.hasPrev).toEqual( false );
       expect(model.selectedNotification).toBe( null );
@@ -372,10 +376,33 @@ describe("NotificationsTableModel", () => {
     });
   });
 
+  describe("markAsRead", () => {
+    it("通知を既読にできる", () => {
+      model.load();
+      xhrManager.requests[0].resolve({
+        count: 50,
+        notRead: 25
+      });
+      xhrManager.requests[1].resolve(createItems(20));
+
+      expect(model.items[3].readAt).toBe( null );
+      expect(model.notRead).toEqual( 25 );
+
+
+      model.markAsRead(model.items[3]);
+
+      expect(xhrManager.requests[2].url).toEqual(
+        "/api/notifications/3/read");
+      expect(model.items[3].readAt).not.toBe( null );
+      expect(model.notRead).toEqual( 24 );
+    });
+  });
+
   function createItems(count) {
     var items = [];
     for( let i=0; i<count; i++ ) {
       items.push({
+        id: i,
         agentId:   "agent_id",
         agentName: "agent_name",
         timestamp: new Date(i*1000),

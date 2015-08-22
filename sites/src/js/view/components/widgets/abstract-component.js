@@ -2,10 +2,21 @@ import React               from "react"
 
 export default class AbstractComponent extends React.Component {
 
-  registerPropertyChangeListener(observable) {
+  registerPropertyChangeListener(observable, keys=null) {
     observable.addObserver("propertyChanged",
-      this.onPropertyChanged.bind(this), this);
+      this.createObserver(keys), this);
     this.registerObservable(observable);
+  }
+
+  createObserver(keys) {
+    let base = this.onPropertyChanged.bind(this);
+    if (keys) {
+      return (k, ev) => {
+        if (keys.has(ev.key)) base(k, ev)
+      };
+    } else {
+      return base;
+    }
   }
 
   onPropertyChanged(k, ev) {
@@ -19,11 +30,12 @@ export default class AbstractComponent extends React.Component {
     this.observables.forEach((o) => o.removeAllObservers(this));
   }
 
-  collectInitialState(model, ...keys) {
-    return keys.reduce((r,k) => {
-      r[k] = model[k];
-      return r;
-    }, {});
+  collectInitialState(model, keys) {
+    const states = {};
+    for (var k of keys) {
+      states[k] = model[k];
+    }
+    return states;
   }
 
   registerObservable(observable) {

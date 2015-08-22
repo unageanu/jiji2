@@ -5,6 +5,10 @@ import NotificationListItem from "./notification-list-item"
 
 const List   = MUI.List;
 
+const keys = new Set([
+  "items", "selectedNotification"
+]);
+
 export default class NotificationList extends AbstractComponent {
 
   constructor(props) {
@@ -13,9 +17,8 @@ export default class NotificationList extends AbstractComponent {
   }
 
   componentWillMount() {
-    this.registerPropertyChangeListener(this.props.model);
-    const state = this.collectInitialState(this.props.model,
-      "items", "selectedNotification");
+    this.registerPropertyChangeListener(this.props.model, keys);
+    const state = this.collectInitialState(this.props.model, keys);
     this.setState(state);
   }
 

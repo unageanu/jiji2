@@ -19,7 +19,7 @@ describe("TableModel", () => {
       count(filterCondition) {
         const deferred  =new Deferred();
         this.filterForCount = filterCondition;
-        deferred.resolve(this.itemCount);
+        deferred.resolve({count:this.itemCount});
         return deferred;
       },
       itemCount: 90

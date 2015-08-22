@@ -37,14 +37,20 @@ export default class AbstractCard extends AbstractComponent {
   }
 
   createHeader() {
-    const title = this.getTitle();
+    const title = this.createTitle();
     const settingMenu = this.createSettingMenu();
     if (!title && !settingMenu) return null;
 
     return <div className="header">
-        <span className="title">{title}</span>
+        {title}
         {settingMenu}
       </div>;
+  }
+
+  createTitle() {
+    const title = this.getTitle();
+    if (!title) return null;
+    return <span className="title">{title}</span>;
   }
 
   createSettingMenu(paddingTop="") {

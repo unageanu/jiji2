@@ -21,9 +21,10 @@ export default class TableModel extends Observable {
 
   load() {
     this.loader.count(this.filterCondition).then((count)=>{
-      this.totalCount = count;
+      this.totalCount = count.count;
+      this.processCount(count);
       this.offset = this.getDefaultOffset();
-      if (count > 0) {
+      if (this.totalCount > 0) {
         this.loadItems();
       } else {
         this.items = [];
@@ -101,6 +102,8 @@ export default class TableModel extends Observable {
   convertItems(items) {
     return items;
   }
+
+  processCount(count) {}
 
   set hasNext(hasNext) {
     this.setProperty("hasNext", hasNext);

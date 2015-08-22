@@ -20,7 +20,7 @@ class Loader {
     const d = new Deferred();
     const backtestId = this.extractBacktestId(filterCondition);
     this.notificationService.countNotifications(backtestId).then(
-      (result) => d.resolve(result.count) );
+      (result) => d.resolve(result) );
     return d;
   }
   extractBacktestId(filterCondition) {
@@ -85,9 +85,14 @@ export default class NotificationsTableModel extends TableModel {
     return defaultFilterConditions.concat(backtestConditions);
   }
 
+  processCount(count) {
+    this.notRead = count.notRead;
+  }
+
   markAsRead(notification) {
     notification.readAt = new Date();
     this.setProperty("items", this.items);
+    this.notRead = this.notRead > 0 ? this.notRead-1 : 0;
     this.notificationService.markAsRead( notification.id );
   }
 
@@ -134,4 +139,10 @@ export default class NotificationsTableModel extends TableModel {
     return this.getProperty("availableFilterConditions");
   }
 
+  set notRead(notRead) {
+    this.setProperty("notRead", notRead);
+  }
+  get notRead() {
+    return this.getProperty("notRead");
+  }
 }

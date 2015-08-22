@@ -12,7 +12,7 @@ class Loader {
   count() {
     const d = new Deferred();
     this.logService.count(this.backtestId).then(
-      (result) => d.resolve(result.count) );
+      (result) => d.resolve(result) );
     return d;
   }
 }

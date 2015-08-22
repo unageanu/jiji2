@@ -2,6 +2,8 @@ import React             from "react"
 import TrendIcon         from "../widgets/trend-icon"
 import AbstractComponent from "../widgets/abstract-component"
 
+const keys = new Set(["summary"]);
+
 export default class PerformancePanel extends AbstractComponent {
 
   constructor(props) {
@@ -10,8 +12,8 @@ export default class PerformancePanel extends AbstractComponent {
   }
 
   componentWillMount() {
-    this.registerPropertyChangeListener(this.props.model);
-    const state = this.collectInitialState(this.props.model, "summary");
+    this.registerPropertyChangeListener(this.props.model, keys);
+    const state = this.collectInitialState(this.props.model, keys);
     this.setState(state);
   }
 

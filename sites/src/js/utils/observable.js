@@ -54,7 +54,13 @@ export default class Observable extends EventEmitter {
   }
 
   fire( eventName, event={} ) {
-    return this.emit( eventName, eventName, event );
+    try {
+      return this.emit( eventName, eventName, event );
+    } catch (error) {
+      console.log(error);
+      console.log(error.stack);
+      throw error;
+    }
   }
 
   setProperty(key, value, comparator=_.isEqual) {

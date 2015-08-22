@@ -16,7 +16,7 @@ class Loader {
   count() {
     const d = new Deferred();
     this.positionService.countPositions(this.backtestId, this.status).then(
-      (result) => d.resolve(result.count) );
+      (result) => d.resolve(result) );
     return d;
   }
 }

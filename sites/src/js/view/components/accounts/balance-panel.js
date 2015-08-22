@@ -2,6 +2,11 @@ import React             from "react"
 import TrendIcon         from "../widgets/trend-icon"
 import AbstractComponent from "../widgets/abstract-component"
 
+const keys = new Set([
+  "formatedBalance", "formatedChangesFromPreviousDay",
+  "formatedChangeRatioFromPreviousDay", "changesFromPreviousDay"
+]);
+
 export default class BalancePanel extends AbstractComponent {
 
   constructor(props) {
@@ -10,10 +15,8 @@ export default class BalancePanel extends AbstractComponent {
   }
 
   componentWillMount() {
-    this.registerPropertyChangeListener(this.props.model);
-    const state = this.collectInitialState(this.props.model,
-      "formatedBalance", "formatedChangesFromPreviousDay",
-      "formatedChangeRatioFromPreviousDay", "changesFromPreviousDay");
+    this.registerPropertyChangeListener(this.props.model, keys);
+    const state = this.collectInitialState(this.props.model, keys);
     this.setState(state);
   }
 

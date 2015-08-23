@@ -53,7 +53,7 @@ export default class PairSelector extends React.Component {
         valueMember="value"
         menuItems={this.state.items}
         selectedIndex={this.state.selectedIndex}
-        style={{width:"136px"}}
+        style={{width:"120px"}}
         labelStyle={{
           padding: "0px",
           fontSize: "24px",

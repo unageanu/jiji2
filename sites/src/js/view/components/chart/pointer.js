@@ -16,8 +16,9 @@ const horizontalHandleHeight = 20;
 
 export default class Pointer extends AbstractChartComponent {
 
-  constructor( chartModel, slidableMask ) {
+  constructor( chartModel, slidableMask, devicePixelRatio ) {
     super(chartModel);
+    this.devicePixelRatio = devicePixelRatio;
     this.initSprite(slidableMask);
     this.registerDragAction();
   }
@@ -120,21 +121,25 @@ export default class Pointer extends AbstractChartComponent {
 
   registerDragAction() {
     this.verticalPointer.addEventListener("mousedown", (event) => {
-      this.slideXStart = this.chartModel.pointer.x - event.stageX;
+      this.slideXStart = this.chartModel.pointer.x
+        - event.stageX/devicePixelRatio;
     });
     this.verticalPointer.addEventListener("pressmove", (event) => {
       if (this.slideXStart == null) return;
-      this.chartModel.pointer.x = this.slideXStart + event.stageX;
+      this.chartModel.pointer.x = this.slideXStart
+        + event.stageX/devicePixelRatio;
     });
     this.verticalPointer.addEventListener("pressup", (event) => {
       this.slideXStart = null;
     });
     this.horizontalPointer.addEventListener("mousedown", (event) => {
-      this.slideYStart = this.chartModel.pointer.y - event.stageY;
+      this.slideYStart = this.chartModel.pointer.y
+        - event.stageY/devicePixelRatio;
     });
     this.horizontalPointer.addEventListener("pressmove", (event) => {
       if (this.slideYStart == null) return;
-      this.chartModel.pointer.y = this.slideYStart + event.stageY;
+      this.chartModel.pointer.y = this.slideYStart
+        + event.stageY/devicePixelRatio;
     });
     this.horizontalPointer.addEventListener("pressup", (event) => {
       this.slideYStart = null;

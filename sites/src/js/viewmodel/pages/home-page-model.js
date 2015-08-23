@@ -14,7 +14,9 @@ export default class HomePageModel extends Observable {
       displayPositionsAndGraphs: true
     });
     this.notifications = factory.createNotificationsTableModel(5);
-    this.positions     = factory.createPositionsTableModel(5);
+    this.positions     = factory.createPositionsTableModel(5, {
+      order:"entered_at", direction:"desc"
+    });
     this.backtests     = factory.createBacktestListModel();
     this.accounts      = factory.createAccountViewModel();
     this.tradingSummary =
@@ -27,5 +29,6 @@ export default class HomePageModel extends Observable {
     this.tradingSummary.startTime =
       new Date(new Date().getTime()-7*1000*60*60*24);
     this.notifications.load();
+    this.positions.load();
   }
 }

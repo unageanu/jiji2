@@ -59,6 +59,10 @@ class PositionModel {
   get formatedExitedAt() {
     return this.exitedAt ? DateFormatter.format(this.exitedAt) : "";
   }
+  get formatedExitedAtShort() {
+    return this.exitedAt
+      ? DateFormatter.format(this.exitedAt, "MM-dd hh:mm:ss") : "";
+  }
 }
 
 class ClosingPolicyModel {
@@ -102,6 +106,10 @@ export default class PositionsTableModel extends TableModel {
     return new PositionModel(item);
   }
 
+  processCount(count) {
+    this.notExited = count.notExited;
+  }
+
   set selectedPosition( position ) {
     this.setProperty("selectedPosition", position);
   }
@@ -109,4 +117,10 @@ export default class PositionsTableModel extends TableModel {
     return this.getProperty("selectedPosition");
   }
 
+  set notExited(notExited) {
+    this.setProperty("notExited", notExited);
+  }
+  get notExited() {
+    return this.getProperty("notExited");
+  }
 }

@@ -26,8 +26,8 @@ describe("PositionsTableModel", () => {
       xhrManager.requests[1].resolve(createItems(20));
 
       expect(xhrManager.requests[1].url).toEqual(
-        "/api/positions/rmt?offset=0&limit=20&order=profit_or_loss&direction=asc");
-      expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "asc"});
+        "/api/positions/rmt?offset=0&limit=20&order=profit_or_loss&direction=desc");
+      expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "desc"});
 
       expect(model.items[0].enteredAt).toEqual( new Date(0) );
       expect(model.items[0].formatedEnteredAt).not.toBe( null );
@@ -77,7 +77,7 @@ describe("PositionsTableModel", () => {
       xhrManager.requests[0].resolve({
         count: 0
       });
-      expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "asc"});
+      expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "desc"});
       expect(model.items).toEqual( [] );
       expect(model.hasNext).toEqual( false );
       expect(model.hasPrev).toEqual( false );
@@ -155,8 +155,8 @@ describe("PositionsTableModel", () => {
     xhrManager.requests[2].resolve(createItems(20));
 
     expect(xhrManager.requests[2].url).toEqual(
-      "/api/positions/rmt?offset=20&limit=20&order=profit_or_loss&direction=asc");
-    expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "asc"});
+      "/api/positions/rmt?offset=20&limit=20&order=profit_or_loss&direction=desc");
+    expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "desc"});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
@@ -167,8 +167,8 @@ describe("PositionsTableModel", () => {
     xhrManager.requests[3].resolve(createItems(20));
 
     expect(xhrManager.requests[3].url).toEqual(
-      "/api/positions/rmt?offset=40&limit=20&order=profit_or_loss&direction=asc");
-    expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "asc"});
+      "/api/positions/rmt?offset=40&limit=20&order=profit_or_loss&direction=desc");
+    expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "desc"});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( true );
@@ -179,8 +179,8 @@ describe("PositionsTableModel", () => {
     xhrManager.requests[4].resolve(createItems(20));
 
     expect(xhrManager.requests[4].url).toEqual(
-      "/api/positions/rmt?offset=20&limit=20&order=profit_or_loss&direction=asc");
-    expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "asc"});
+      "/api/positions/rmt?offset=20&limit=20&order=profit_or_loss&direction=desc");
+    expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "desc"});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
@@ -191,8 +191,8 @@ describe("PositionsTableModel", () => {
     xhrManager.requests[5].resolve(createItems(20));
 
     expect(xhrManager.requests[5].url).toEqual(
-      "/api/positions/rmt?offset=0&limit=20&order=profit_or_loss&direction=asc");
-    expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "asc"});
+      "/api/positions/rmt?offset=0&limit=20&order=profit_or_loss&direction=desc");
+    expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "desc"});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );

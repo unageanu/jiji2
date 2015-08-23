@@ -4,6 +4,7 @@ import AbstractPage        from "./abstract-page"
 import AccountSummaryCard  from "../accounts/account-summary-card"
 import MiniChart           from "../chart/mini-chart-view"
 import NotificationsCard   from "../notifications/notifications-card"
+import PositionsCard       from "../positions/positions-card"
 
 export default class HomePage extends AbstractPage {
 
@@ -27,6 +28,8 @@ export default class HomePage extends AbstractPage {
           model={this.model().miniChart}/>
         <NotificationsCard
           model={this.model().notifications} />
+        <PositionsCard
+          model={this.model().positions} />
       </div>
     );
   }

@@ -40,7 +40,7 @@ module Jiji::Web
       ok({
         count: repository.count_positions(id, filter),
         not_exited: repository.count_positions(
-          id,filter.merge({status: :live}))
+          id, ({status: :live}).merge(filter))
       })
     end
 
@@ -62,7 +62,7 @@ module Jiji::Web
     end
 
     def read_filter_condition
-      status     = request['status'] ? request['status'].to_sym : nil
+      status = request['status'] ? request['status'].to_sym : nil
       status ? { status: status } : {}
     end
 

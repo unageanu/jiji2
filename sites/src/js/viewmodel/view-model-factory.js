@@ -41,7 +41,7 @@ export default class ViewModelFactory {
     return new Chart( config, this );
   }
   createPositionsTableModel(pageSize=100,
-    sortOrder={order:"profit_or_loss", direction:"asc"}) {
+    sortOrder={order:"profit_or_loss", direction:"desc"}) {
     return new PositionsTableModel(
       pageSize, sortOrder, this.positionService );
   }

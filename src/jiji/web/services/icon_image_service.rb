@@ -10,7 +10,8 @@ module Jiji::Web
       allow('GET,OPTIONS')
     end
     get '/:icon_id' do
-      [200, cacheable, load_icon_image]
+      content_type 'image/png'
+      [200, cacheable.merge({}), load_icon_image]
     end
 
     def load_icon_image

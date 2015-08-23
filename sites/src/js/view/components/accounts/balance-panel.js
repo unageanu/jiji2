@@ -39,5 +39,5 @@ export default class BalancePanel extends AbstractComponent {
 }
 BalancePanel.propTypes = {
   model: React.PropTypes.object.isRequired,
-  visibleTradingSummary: React.PropTypes.boolean
+  visibleTradingSummary: React.PropTypes.bool
 };

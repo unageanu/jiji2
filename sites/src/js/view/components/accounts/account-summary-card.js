@@ -35,5 +35,5 @@ export default class AccountSummaryView extends AbstractCard {
 AccountSummaryView.propTypes = {
   accounts: React.PropTypes.object.isRequired,
   tradingSummary: React.PropTypes.object,
-  visibleTradingSummary: React.PropTypes.boolean
+  visibleTradingSummary: React.PropTypes.bool
 };

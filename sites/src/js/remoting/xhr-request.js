@@ -75,6 +75,7 @@ export default class XhrRequest {
     return new Uint8Array(Msgpack.msgpack.pack(transformed));
   }
   transformResponse(arrayBuffer) {
+    if (!arrayBuffer) return null
     let data = Msgpack.msgpack.unpack(new Uint8Array(arrayBuffer));
     return this.transformer.transformResponse(data);
   }

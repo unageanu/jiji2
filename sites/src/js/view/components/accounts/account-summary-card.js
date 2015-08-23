@@ -19,15 +19,21 @@ export default class AccountSummaryView extends AbstractCard {
     return "";
   }
   createBody() {
-    return [
-      <PerformancePanel key="performance" model={this.props.tradingSummary} />,
-      <BalancePanel     key="balance"     model={this.props.accounts} />,
-      <div key="clear" style={{clear:"both"}} />
-    ];
+    const body = [];
+    if (this.props.visibleTradingSummary) {
+      body.push(<PerformancePanel
+        key="performance" model={this.props.tradingSummary} />);
+    }
+    body.push(<BalancePanel key="balance"
+      visibleTradingSummary={this.props.visibleTradingSummary}
+      model={this.props.accounts} />);
+    body.push(<div key="clear" style={{clear:"both"}} />);
+    return body;
   }
 
 }
 AccountSummaryView.propTypes = {
   accounts: React.PropTypes.object.isRequired,
-  tradingSummary: React.PropTypes.object.isRequired
+  tradingSummary: React.PropTypes.object,
+  visibleTradingSummary: React.PropTypes.boolean
 };

@@ -21,8 +21,10 @@ export default class BalancePanel extends AbstractComponent {
   }
 
   render() {
+    const style = this.props.visibleTradingSummary
+      ? { width: "calc(67% - 32px)"} : { width: "100%" };
     return (
-      <div key="balance panel" className="balance panel">
+      <div key="balance panel" className="balance panel" style={style}>
         <div className="title">口座残高</div>
         <div key="balance" className="balance">￥{this.state.formatedBalance}</div>
         <div key="changes-from-previous-day" className="changes-from-previous-day">
@@ -36,5 +38,6 @@ export default class BalancePanel extends AbstractComponent {
   }
 }
 BalancePanel.propTypes = {
-  model: React.PropTypes.object.isRequired
+  model: React.PropTypes.object.isRequired,
+  visibleTradingSummary: React.PropTypes.boolean
 };

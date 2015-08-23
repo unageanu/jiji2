@@ -19,17 +19,19 @@ export default class HomePage extends AbstractPage {
   }
 
   render() {
+    const model = this.model();
     return (
       <div>
         <AccountSummaryCard
-          accounts={this.model().accounts}
-          tradingSummary={this.model().tradingSummary} />
+          accounts={model.accounts}
+          visibleTradingSummary={model.visibleTradingSummary}
+          tradingSummary={model.tradingSummary} />
         <MiniChart
-          model={this.model().miniChart}/>
+          model={model.miniChart}/>
         <NotificationsCard
-          model={this.model().notifications} />
+          model={model.notifications} />
         <PositionsCard
-          model={this.model().positions} />
+          model={model.positions} />
       </div>
     );
   }

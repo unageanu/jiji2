@@ -6,6 +6,10 @@ export default class HomePageModel extends Observable {
   constructor() {
     super();
     this.viewModelFactory = ContainerJS.Inject;
+
+    this.visibleTradingSummary = true;
+    this.notificationCount = 5;
+    this.positionCount = 5;
   }
 
   postCreate() {
@@ -13,22 +17,31 @@ export default class HomePageModel extends Observable {
     this.miniChart     = factory.createChart({
       displayPositionsAndGraphs: true
     });
-    this.notifications = factory.createNotificationsTableModel(5);
-    this.positions     = factory.createPositionsTableModel(5, {
-      order:"entered_at", direction:"desc"
-    });
+    this.notifications = factory
+      .createNotificationsTableModel(this.notificationCount);
+    this.positions     = factory
+      .createPositionsTableModel(this.positionCount, {
+        order:"entered_at", direction:"desc"
+      });
     this.backtests     = factory.createBacktestListModel();
     this.accounts      = factory.createAccountViewModel();
-    this.tradingSummary =
-      this.viewModelFactory.createTradingSummaryViewModel(false);
+
+    if (this.visibleTradingSummary) {
+      this.tradingSummary =
+        this.viewModelFactory.createTradingSummaryViewModel(false);
+    }
   }
 
   initialize() {
     [this.notifications, this.positions, this.accounts].forEach(
       (model) => model.initialize() );
-    this.tradingSummary.startTime =
-      new Date(new Date().getTime()-7*1000*60*60*24);
+
     this.notifications.load();
     this.positions.load();
+
+    if (this.visibleTradingSummary) {
+      this.tradingSummary.startTime =
+        new Date(new Date().getTime()-7*1000*60*60*24);
+    }
   }
 }

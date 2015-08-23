@@ -4,17 +4,16 @@
 @performance-panel-width: @grid*40;
 
 .account-view {
-
   padding: @grid*2;
 
   .panel.balance {
-    border-right: 1px solid @border-color;
     float:left;
-    width: ~"calc(67% - 16px)";
   }
   .panel.performance {
     width: 33%;
     float: right;
+    padding-left: @grid*2;
+    border-left: 1px solid @border-color;
 
     .item {
       margin-top: @grid;
@@ -57,7 +56,6 @@
   .panel.balance {
     .balance, .changes-from-previous-day {
       text-align: right;
-      margin-right: @grid*2;
     }
     .balance {
       padding-top: @grid;

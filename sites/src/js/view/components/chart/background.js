@@ -1,6 +1,7 @@
 
 import CreateJS               from "easeljs";
 import AbstractChartComponent from "./abstract-chart-component"
+import Theme                  from "../../theme"
 
 export default class Background extends AbstractChartComponent {
 
@@ -18,7 +19,7 @@ export default class Background extends AbstractChartComponent {
     const stageSize = this.chartModel.candleSticks.stageSize;
     this.backgroundShape = this.initializeElement(new CreateJS.Shape());
     this.backgroundShape.graphics
-        .beginFill("#F0F0F0")
+        .beginFill(Theme.getPalette().backgroundColorDark)
         .drawRect( 0, 0, stageSize.w, stageSize.h )
         .endFill();
   }

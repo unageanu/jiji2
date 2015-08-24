@@ -9,6 +9,7 @@ import GraphView            from "./graph-view"
 import PositionsView        from "./positions-view"
 import Pointer              from "./pointer"
 import CoordinateCalculator from "../../../viewmodel/chart/coordinate-calculator"
+import Theme                from "../../theme"
 
 const padding = CoordinateCalculator.padding();
 
@@ -71,7 +72,8 @@ export default class Chart extends React.Component {
 
   buildViewComponents() {
     this.slidableMask = this.createSlidableMask();
-    this.slidable     = this.createSlidableMask("#F0F0F0");
+    this.slidable     = this.createSlidableMask(
+      Theme.getPalette().backgroundColorDark);
     const model = this.props.model;
 
     this.background    = new Background( model );

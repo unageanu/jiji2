@@ -26,7 +26,9 @@ export default {
       nagativeColor:  "#FF3350",
       canvasColor: Colors.white,
       borderColor: Colors.grey300,
-      disabledColor: ColorManipulator.fade("#666666", 0.3)
+      disabledColor: ColorManipulator.fade("#666666", 0.3),
+      backgroundColor: "#FFF",
+      backgroundColorDark: "#F0F0F0"
     };
   },
   getComponentThemes(palette, spacing) {

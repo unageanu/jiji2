@@ -123,26 +123,32 @@ export default class Pointer extends AbstractChartComponent {
     this.verticalPointer.addEventListener("mousedown", (event) => {
       this.slideXStart = this.chartModel.pointer.x
         - event.stageX/devicePixelRatio;
+      event.nativeEvent.preventDefault();
     });
     this.verticalPointer.addEventListener("pressmove", (event) => {
       if (this.slideXStart == null) return;
       this.chartModel.pointer.x = this.slideXStart
         + event.stageX/devicePixelRatio;
+      event.nativeEvent.preventDefault();
     });
     this.verticalPointer.addEventListener("pressup", (event) => {
       this.slideXStart = null;
+      event.nativeEvent.preventDefault();
     });
     this.horizontalPointer.addEventListener("mousedown", (event) => {
       this.slideYStart = this.chartModel.pointer.y
         - event.stageY/devicePixelRatio;
+      event.nativeEvent.preventDefault();
     });
     this.horizontalPointer.addEventListener("pressmove", (event) => {
       if (this.slideYStart == null) return;
       this.chartModel.pointer.y = this.slideYStart
         + event.stageY/devicePixelRatio;
+      event.nativeEvent.preventDefault();
     });
     this.horizontalPointer.addEventListener("pressup", (event) => {
       this.slideYStart = null;
+      event.nativeEvent.preventDefault();
     });
   }
 

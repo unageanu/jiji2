@@ -29,6 +29,7 @@ export default class Chart extends React.Component {
     this.buildStage(canvas, this.props.devicePixelRatio);
     this.buildViewComponents();
 
+    this.registerSlideAction();
     this.initViewComponents();
     this.context.application.initialize()
       .then( () => this.props.model.initialize() );
@@ -64,13 +65,13 @@ export default class Chart extends React.Component {
     this.stage = new CreateJS.Stage(canvas);
     this.stage.scaleX = scale;
     this.stage.scaleY = scale;
-    CreateJS.Touch.enable(this.stage);
-
-    this.registerSlideAction();
+    CreateJS.Touch.enable(this.stage, true, true);
+    this.stage.preventSelection = false;
   }
 
   buildViewComponents() {
     this.slidableMask = this.createSlidableMask();
+    this.slidable     = this.createSlidableMask("#F0F0F0");
     const model = this.props.model;
 
     this.background    = new Background( model );
@@ -78,10 +79,13 @@ export default class Chart extends React.Component {
     this.candleSticks  = new CandleSticks( model, this.slidableMask );
     this.graphView     = new GraphView( model, this.slidableMask );
     this.positionsView = new PositionsView( model, this.slidableMask );
-    this.pointer       = new Pointer( model, this.slidableMask );
+    this.pointer       = new Pointer( model,
+      this.slidableMask, this.props.devicePixelRatio );
   }
   initViewComponents() {
     this.background.attach( this.stage );
+    this.stage.addChild(this.slidable);
+
     this.axises.attach( this.stage );
     this.pointer.attach( this.stage );
     this.candleSticks.attach( this.stage );
@@ -90,23 +94,26 @@ export default class Chart extends React.Component {
   }
 
   registerSlideAction() {
-    this.stage.addEventListener("mousedown", (event) => {
+    this.slidable.addEventListener("mousedown", (event) => {
       if (this.pointer.slideXStart != null
        || this.pointer.slideYStart != null) {
         return;
       }
       this.slideStart = event.stageX;
       this.props.model.slider.slideStart();
+      event.nativeEvent.preventDefault();
     });
-    this.stage.addEventListener("pressmove", (event) => {
+    this.slidable.addEventListener("pressmove", (event) => {
       if (!this.slideStart) return;
       this.doSlide( event.stageX );
+      event.nativeEvent.preventDefault();
     });
-    this.stage.addEventListener("pressup", (event) => {
+    this.slidable.addEventListener("pressup", (event) => {
       if (!this.slideStart) return;
       this.doSlide( event.stageX );
       this.props.model.slider.slideEnd();
       this.slideStart = null;
+      event.nativeEvent.preventDefault();
     });
   }
 
@@ -115,11 +122,11 @@ export default class Chart extends React.Component {
     this.props.model.slider.slideByChart(x/6);
   }
 
-  createSlidableMask() {
+  createSlidableMask(color="#000") {
     const stageSize    = this.props.model.candleSticks.stageSize;
     const axisPosition = this.props.model.candleSticks.axisPosition;
     const mask         = new CreateJS.Shape();
-    mask.graphics.beginFill("#000000")
+    mask.graphics.beginFill(color)
       .drawRect( padding, padding, axisPosition.horizontal - padding, stageSize.h )
       .endFill();
     return mask;

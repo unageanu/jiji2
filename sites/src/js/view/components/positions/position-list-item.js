@@ -70,11 +70,7 @@ export default class PositionListItem extends React.Component {
       return <span style={{width:"auto"}}><TextInRadius text="未決済" /></span>;
   }
   createAvatar(position) {
-    return <Avatar src={this.createIconUrl(position)} />
-  }
-  createIconUrl(position) {
-    const iconId = position.agent ? position.agent.iconId : null;
-    return "/api/icon-images/" + (iconId || "default");
+    return <Avatar src={position.agentIconUrl} />
   }
 }
 PositionListItem.propTypes = {

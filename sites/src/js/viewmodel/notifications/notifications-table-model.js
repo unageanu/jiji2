@@ -30,20 +30,25 @@ class Loader {
 
 class NotificationModel {
 
-  constructor(position) {
+  constructor(position, urlResolver) {
     for (let i in position) {
       this[i] = position[i];
     }
+    this.urlResolver = urlResolver;
   }
   get formatedTimestamp() {
     return DateFormatter.format(this.timestamp);
   }
-
+  get agentIconUrl() {
+    const iconId = this.agent ? this.agent.iconId : null;
+    return this.urlResolver.resolveServiceUrl(
+      "icon-images/" + (iconId || "default"));
+  }
 }
 
 export default class NotificationsTableModel extends TableModel {
   constructor( pageSize, defaultSortOrder, notificationService,
-    actionService, backtests, eventQueue) {
+    actionService, backtests, eventQueue, urlResolver) {
     super( defaultSortOrder, pageSize );
     this.backtests = backtests;
     this.defaultSortOrder = defaultSortOrder;
@@ -52,6 +57,7 @@ export default class NotificationsTableModel extends TableModel {
     this.eventQueue = eventQueue;
     this.selectedNotification = null;
     this.availableFilterConditions = defaultFilterConditions;
+    this.urlResolver = urlResolver;
   }
 
   initialize() {
@@ -71,7 +77,7 @@ export default class NotificationsTableModel extends TableModel {
   }
 
   convertItem(item) {
-    return new NotificationModel(item);
+    return new NotificationModel(item, this.urlResolver);
   }
 
   createAvailableFilterConditions() {

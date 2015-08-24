@@ -23,7 +23,7 @@ class Loader {
 
 class PositionModel {
 
-  constructor(position) {
+  constructor(position, urlResolver) {
     for (let i in position) {
       if (i === "closingPolicy") {
         this[i] = new ClosingPolicyModel(position[i]);
@@ -31,6 +31,7 @@ class PositionModel {
         this[i] = position[i];
       }
     }
+    this.urlResolver = urlResolver;
   }
 
   get formatedProfitOrLoss() {
@@ -63,6 +64,11 @@ class PositionModel {
     return this.exitedAt
       ? DateFormatter.format(this.exitedAt, "MM-dd hh:mm:ss") : "";
   }
+  get agentIconUrl() {
+    const iconId = this.agent ? this.agent.iconId : null;
+    return this.urlResolver.resolveServiceUrl(
+      "icon-images/" + (iconId || "default"));
+  }
 }
 
 class ClosingPolicyModel {
@@ -82,11 +88,13 @@ class ClosingPolicyModel {
 }
 
 export default class PositionsTableModel extends TableModel {
-  constructor( pageSize, defaultSortOrder, positionService) {
+  constructor( pageSize, defaultSortOrder,
+    positionService, urlResolver ) {
     super( defaultSortOrder, pageSize );
     this.defaultSortOrder = defaultSortOrder;
     this.positionService = positionService;
     this.selectedPosition = null;
+    this.urlResolver = urlResolver;
   }
 
   initialize(backtestId="rmt", status=null) {
@@ -103,7 +111,7 @@ export default class PositionsTableModel extends TableModel {
   }
 
   convertItem(item) {
-    return new PositionModel(item);
+    return new PositionModel(item, this.urlResolver);
   }
 
   processCount(count) {

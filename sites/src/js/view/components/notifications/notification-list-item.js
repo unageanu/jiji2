@@ -43,11 +43,7 @@ export default class NotificationListItem extends React.Component {
       return <span style={{width:"auto"}}><TextInRadius text="未読" /></span>;
   }
   createAvatar(notification) {
-    return <Avatar src={this.createIconUrl(notification)} />
-  }
-  createIconUrl(notification) {
-    const iconId = notification.agent ? notification.agent.iconId : null;
-    return "/api/icon-images/" + (iconId || "default");
+    return <Avatar src={notification.agentIconUrl} />
   }
 }
 NotificationListItem.propTypes = {

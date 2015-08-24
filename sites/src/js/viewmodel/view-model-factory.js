@@ -27,7 +27,7 @@ export default class ViewModelFactory {
     this.tradingSummariesService = ContainerJS.Inject;
     this.backtests               = ContainerJS.Inject;
     this.eventQueue              = ContainerJS.Inject;
-
+    this.urlResolver             = ContainerJS.Inject;
     this.securitiesSettingService = ContainerJS.Inject;
     this.smtpServerSettingService = ContainerJS.Inject;
     this.userSettingService       = ContainerJS.Inject;
@@ -43,13 +43,13 @@ export default class ViewModelFactory {
   createPositionsTableModel(pageSize=100,
     sortOrder={order:"profit_or_loss", direction:"desc"}) {
     return new PositionsTableModel(
-      pageSize, sortOrder, this.positionService );
+      pageSize, sortOrder, this.positionService, this.urlResolver );
   }
   createNotificationsTableModel(pageSize=100,
     sortOrder={order:"timestamp", direction:"desc"}) {
     return new NotificationsTableModel(
       pageSize, sortOrder, this.notificationService,
-      this.actionService, this.backtests, this.eventQueue );
+      this.actionService, this.backtests, this.eventQueue, this.urlResolver );
   }
   createTradingSummaryViewModel(enablePeriodSelector=false) {
     const model = new TradingSummaryViewModel( this.tradingSummariesService );

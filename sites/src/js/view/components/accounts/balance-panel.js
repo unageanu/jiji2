@@ -28,13 +28,18 @@ export default class BalancePanel extends AbstractComponent {
         <div className="title">口座残高</div>
         <div key="balance" className="balance">￥{this.state.formatedBalance}</div>
         <div key="changes-from-previous-day" className="changes-from-previous-day">
-          <span className="label">前日比:</span>
-          <span className="price">￥{this.state.formatedChangesFromPreviousDay}</span>
-          <span className="ratio">( {this.state.formatedChangeRatioFromPreviousDay} )</span>
+          {this.createPriceAndRatio()}
           <TrendIcon value={this.state.changesFromPreviousDay} />
         </div>
       </div>
     );
+  }
+
+  createPriceAndRatio() {
+    let result = "前日比: ￥";
+    result += this.state.formatedChangesFromPreviousDay || " - ";
+    result += " ( " + (this.state.formatedChangeRatioFromPreviousDay || "-%") + " )";
+    return result;
   }
 }
 BalancePanel.propTypes = {

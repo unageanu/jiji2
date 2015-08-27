@@ -34,6 +34,7 @@ export default class PositionList extends AbstractComponent {
        return <PositionListItem
           key={index}
           position={position}
+          innerDivStyle={this.props.innerDivStyle}
           selected={this.props.selectable && this.state.selectedIndex === index } /> ;
     });
   }
@@ -41,5 +42,6 @@ export default class PositionList extends AbstractComponent {
 }
 PositionList.propTypes = {
   model: React.PropTypes.object.isRequired,
-  selectable: React.PropTypes.bool.isRequired
+  selectable: React.PropTypes.bool.isRequired,
+    innerDivStyle: React.PropTypes.object
 };

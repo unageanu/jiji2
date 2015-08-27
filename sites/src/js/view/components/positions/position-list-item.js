@@ -19,7 +19,9 @@ export default class PositionListItem extends React.Component {
     const position = this.props.position || nullPosition;
     return (
       <ListItem
-        innerDivStyle={{paddingRight:"72px"}}
+        innerDivStyle={
+          Object.assign({ paddingRight:"72px"}, this.props.innerDivStyle)
+        }
         leftAvatar={this.createAvatar(position)}
         primaryText={this.createPrimaryText(position)}
         secondaryText={this.createSecondaryText(position)}
@@ -28,12 +30,12 @@ export default class PositionListItem extends React.Component {
   }
 
   createPrimaryText(position) {
-    return [
-      <span key="pair" className="pair">{position.pairName}</span>,
-      <span key="separator" className="separator">/</span>,
-      <span key="sell-or-buy" className="sell-or-buy">{position.formatedSellOrBuy}</span>,
-      this.createProfitOrLossElement(position)
-    ];
+    return <span className="primary-text">
+      <span key="pair" className="pair">{position.pairName}</span>
+      <span key="separator" className="separator">/</span>
+      <span key="sell-or-buy" className="sell-or-buy">{position.formatedSellOrBuy}</span>
+      {this.createProfitOrLossElement(position)}
+    </span>;
   }
   createProfitOrLossElement(position) {
     const type = this.resolveProfitOrLossClass(position.profitOrLoss);
@@ -67,17 +69,21 @@ export default class PositionListItem extends React.Component {
   }
   createRightIcon(position) {
       if (position.status != "live") return null;
-      return <span style={{width:"auto"}}><TextInRadius text="未決済" /></span>;
+      return <span className="right-icon" style={{width:"auto"}}>
+        <TextInRadius text="未決済" />
+      </span>;
   }
   createAvatar(position) {
-    return <Avatar src={position.agentIconUrl} />
+    return <Avatar className="left-icon" src={position.agentIconUrl} />
   }
 }
 PositionListItem.propTypes = {
   position: React.PropTypes.object,
-  selected: React.PropTypes.bool
+  selected: React.PropTypes.bool,
+  innerDivStyle: React.PropTypes.object
 };
 PositionListItem.defaultProp = {
   position: null,
-  selected: false
+  selected: false,
+  innerDivStyle: {}
 };

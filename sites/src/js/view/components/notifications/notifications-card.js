@@ -55,5 +55,6 @@ export default class NotificationsCard extends AbstractCard {
 
 }
 NotificationsCard.propTypes = {
-  model: React.PropTypes.object.isRequired
+  model: React.PropTypes.object.isRequired,
+  innerDivStyle: React.PropTypes.object
 };

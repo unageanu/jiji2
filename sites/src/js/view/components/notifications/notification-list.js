@@ -34,6 +34,7 @@ export default class NotificationList extends AbstractComponent {
        return <NotificationListItem
           key={index}
           notification={notification}
+          innerDivStyle={this.props.innerDivStyle}
           selected={this.props.selectable && this.state.selectedIndex === index } /> ;
     });
   }
@@ -41,5 +42,9 @@ export default class NotificationList extends AbstractComponent {
 }
 NotificationList.propTypes = {
   model: React.PropTypes.object.isRequired,
-  selectable: React.PropTypes.bool.isRequired
+  selectable: React.PropTypes.bool.isRequired,
+  innerDivStyle: React.PropTypes.object,
+};
+NotificationList.defaultProp = {
+  innerDivStyle: {}
 };

@@ -20,14 +20,18 @@ export default class NotificationListItem extends React.Component {
     const notification = this.props.notification || nullNotification;
     return (
       <ListItem
-        innerDivStyle={{paddingRight:"72px"}}
+        innerDivStyle={
+          Object.assign({ paddingRight:"72px"}, this.props.innerDivStyle)
+        }
         leftAvatar={this.createAvatar(notification)}
         primaryText={notification.message}
         secondaryText={this.createSecondaryText(notification)}
         rightIcon={this.createRightIcon(notification)} />
     );
   }
-
+  createPrimaryTextt(notification) {
+    return <span className="primary-text">{this.notification.message}</span>;
+  }
   createSecondaryText(notification) {
     let result = "";
     if ( notification.formatedTimestamp != null ) {
@@ -40,17 +44,21 @@ export default class NotificationListItem extends React.Component {
   }
   createRightIcon(notification) {
       if (notification.readAt) return null;
-      return <span style={{width:"auto"}}><TextInRadius text="未読" /></span>;
+      return <span className="right-icon" style={{width:"auto"}}>
+        <TextInRadius text="未読" />
+      </span>;
   }
   createAvatar(notification) {
-    return <Avatar src={notification.agentIconUrl} />
+    return <Avatar className="left-icon" src={notification.agentIconUrl} />
   }
 }
 NotificationListItem.propTypes = {
   notification: React.PropTypes.object,
-  selected: React.PropTypes.bool
+  selected: React.PropTypes.bool,
+  innerDivStyle: React.PropTypes.object
 };
 NotificationListItem.defaultProp = {
   notification: null,
-  selected: false
+  selected: false,
+  innerDivStyle: {}
 };

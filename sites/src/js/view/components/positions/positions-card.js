@@ -54,5 +54,6 @@ export default class PositionsCard extends AbstractCard {
 
 }
 PositionsCard.propTypes = {
-  model: React.PropTypes.object.isRequired
+  model: React.PropTypes.object.isRequired,
+   innerDivStyle: React.PropTypes.object
 };

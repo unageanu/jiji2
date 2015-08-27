@@ -28,6 +28,7 @@ export default class MiniChartView extends AbstractCard {
   createHeader() {
     const settingMenu = this.createSettingMenu("8px");
     return <div className="header">
+        <span className="icon md-trending-up"></span>
         <PairSelector model={this.props.model} />
         <IntervalSelector model={this.props.model} />
         {settingMenu}

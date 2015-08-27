@@ -29,6 +29,9 @@ export default class PositionsCard extends AbstractCard {
   getTitle() {
     return "建玉";
   }
+  getIconClass() {
+    return "md-list";
+  }
   getSettingMenuItems() {
     return ["更新"];
   }

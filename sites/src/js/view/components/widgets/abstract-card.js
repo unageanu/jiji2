@@ -32,6 +32,9 @@ export default class AbstractCard extends AbstractComponent {
   getTitle() {
     return "";
   }
+  getIconClass() {
+    return "";
+  }
   getSettingMenuItems() {
     return [];
   }
@@ -39,9 +42,11 @@ export default class AbstractCard extends AbstractComponent {
   createHeader() {
     const title = this.createTitle();
     const settingMenu = this.createSettingMenu();
-    if (!title && !settingMenu) return null;
+    const titleIcon = this.createTitleIcon();
+    if (!title && !settingMenu && !titleIcon) return null;
 
     return <div className="header">
+        {titleIcon}
         {title}
         {settingMenu}
       </div>;
@@ -52,7 +57,11 @@ export default class AbstractCard extends AbstractComponent {
     if (!title) return null;
     return <span className="title">{title}</span>;
   }
-
+  createTitleIcon() {
+    const iconClass = this.getIconClass();
+    if (!iconClass) return null;
+    return <span className={"icon " + iconClass}></span>;
+  }
   createSettingMenu(paddingTop="") {
     const items = this.getSettingMenuItems();
     if (!items || items.length == 0) return null;

@@ -25,7 +25,10 @@ export default class BalancePanel extends AbstractComponent {
       ? { width: "calc(67% - 32px)"} : { width: "100%" };
     return (
       <div key="balance panel" className="balance panel" style={style}>
-        <div className="title">口座残高</div>
+        <div className="title">
+          <span className="icon md-account-balance"></span>
+          口座残高
+        </div>
         <div key="balance" className="balance">￥{this.state.formatedBalance}</div>
         <div key="changes-from-previous-day" className="changes-from-previous-day">
           {this.createPriceAndRatio()}

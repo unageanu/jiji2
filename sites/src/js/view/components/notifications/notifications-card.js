@@ -30,6 +30,9 @@ export default class NotificationsCard extends AbstractCard {
   getTitle() {
     return "通知";
   }
+  getIconClass() {
+    return "md-notifications";
+  }
   getSettingMenuItems() {
     return ["更新"];
   }

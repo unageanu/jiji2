@@ -1,0 +1,16 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.loading-image {
+  display: inline-block;
+  width:    24px;
+  height:   24px;
+  background-image:   url('../images/loading.gif');
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2),
+       only screen and (min-device-pixel-ratio: 2) {
+  .loading-image {
+    background-size:  24px 24px;
+    background-image: url('../images/loading-large.gif');
+  }
+}

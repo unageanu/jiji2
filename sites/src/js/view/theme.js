@@ -210,5 +210,17 @@ export default {
     obj.toggle.trackRequiredColor = ColorManipulator.fade(obj.toggle.thumbRequiredColor, 0.5);
 
     return obj;
+  },
+
+  chart: {
+    selector: {
+      fontSize: "24px"
+    },
+    pairSelector: {
+      width: "120px"
+    },
+    intervalSelector: {
+      width: "136px"
+    }
   }
 }

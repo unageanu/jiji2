@@ -1,6 +1,7 @@
 import React             from "react"
 import TrendIcon         from "../widgets/trend-icon"
 import AbstractComponent from "../widgets/abstract-component"
+import LoadingImage      from "../widgets/loading-image"
 
 const keys = new Set([
   "formatedBalance", "formatedChangesFromPreviousDay",
@@ -29,13 +30,20 @@ export default class BalancePanel extends AbstractComponent {
           <span className="icon md-account-balance"></span>
           口座残高
         </div>
-        <div key="balance" className="balance">￥{this.state.formatedBalance}</div>
-        <div key="changes-from-previous-day" className="changes-from-previous-day">
-          {this.createPriceAndRatio()}
-          <TrendIcon value={this.state.changesFromPreviousDay} />
-        </div>
+        {this.createContent()}
       </div>
     );
+  }
+
+  createContent() {
+    if (!this.state.formatedBalance) return <div className="info"><LoadingImage /></div>;
+    return [
+      <div key="balance" className="balance">￥{this.state.formatedBalance}</div>,
+      <div key="changes-from-previous-day" className="changes-from-previous-day">
+        {this.createPriceAndRatio()}
+        <TrendIcon value={this.state.changesFromPreviousDay} />
+      </div>
+    ];
   }
 
   createPriceAndRatio() {

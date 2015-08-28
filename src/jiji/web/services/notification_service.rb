@@ -46,7 +46,7 @@ module Jiji::Web
     put '/read' do
       body = load_body
       illegal_argument('body["read"] must be true.') unless body['read']
-      condition = { read_at: { '$eq' => nil } }
+      condition = { read_at: nil }
       load_backtest_id_condition(condition, body)
       now = time_source.now
       repository.retrieve_notifications(condition).each do |notification|

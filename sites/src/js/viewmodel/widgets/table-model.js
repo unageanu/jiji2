@@ -14,7 +14,7 @@ export default class TableModel extends Observable {
     this.sortOrder       = this.defaultSortOrder;
     this.filterCondition = null;
 
-    this.items = [];
+    this.items = null;
     this.hasNext = false;
     this.hasPrev = false;
   }
@@ -81,7 +81,7 @@ export default class TableModel extends Observable {
   }
 
   loadItems() {
-    this.items  = [];
+    this.items  = null;
     return this.loader.load( this.offset, this.pageSize,
       this.sortOrder, this.filterCondition ).then((items) => {
         this.items      = this.convertItems(items);

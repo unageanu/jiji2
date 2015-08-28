@@ -2,6 +2,7 @@ import React                from "react"
 import MUI                  from "material-ui"
 import AbstractComponent    from "../widgets/abstract-component"
 import NotificationListItem from "./notification-list-item"
+import LoadingImage         from "../widgets/loading-image"
 
 const List   = MUI.List;
 
@@ -23,13 +24,15 @@ export default class NotificationList extends AbstractComponent {
   }
 
   render() {
-    return (
-      <List style={{paddingTop:0}}>{this.createListItems()}</List>
-    );
+    if (this.state.items == null) {
+      return <div className="info"><LoadingImage /></div>;
+    }
+    if (this.state.items.length <= 0) {
+      return <div className="info">未読の通知はありません</div>;
+    }
+    return <List style={{paddingTop:0}}>{this.createListItems()}</List>;
   }
-
   createListItems() {
-    if (this.state.items == null) return [];
     return this.state.items.map((notification, index) => {
        return <NotificationListItem
           key={index}

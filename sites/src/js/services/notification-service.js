@@ -2,21 +2,18 @@ import AbstractService from "./abstract-service"
 
 export default class NotificationService extends AbstractService {
 
-  fetchNotifications( offset, limit, sortOrder, backtestId) {
-    const url = this.serviceUrl( "", {
+  fetchNotifications( offset, limit, sortOrder, filterCondition) {
+    const url = this.serviceUrl( "", Object.assign({
       offset:        offset,
       limit:         limit,
       order:         sortOrder.order,
-      direction:     sortOrder.direction,
-      "backtest_id": backtestId
-    });
+      direction:     sortOrder.direction
+    }, filterCondition));
     return this.xhrManager.xhr(url, "GET");
   }
 
-  countNotifications( backtestId ) {
-    const url = this.serviceUrl( "count", {
-      "backtest_id": backtestId
-    });
+  countNotifications( filterCondition ) {
+    const url = this.serviceUrl( "count", filterCondition);
     return this.xhrManager.xhr(url, "GET");
   }
 

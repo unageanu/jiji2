@@ -36,6 +36,9 @@ export default class HomePageModel extends Observable {
     [this.notifications, this.positions, this.accounts].forEach(
       (model) => model.initialize() );
 
+    this.notifications.filterCondition = {
+      status: "not_read"
+    };
     this.notifications.load();
     this.positions.load();
 

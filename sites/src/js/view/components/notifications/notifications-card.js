@@ -28,7 +28,7 @@ export default class NotificationsCard extends AbstractCard {
     return "notifications-card";
   }
   getTitle() {
-    return "通知";
+    return "未読の通知";
   }
   getIconClass() {
     return "md-notifications";

@@ -1,5 +1,6 @@
 import _               from "underscore"
 import Dates           from "../utils/dates"
+import StringFormatter from "../viewmodel/utils/string-formatter"
 
 export default class UrlResolver {
   resolveServiceUrl( serviceName, parameters={} ) {
@@ -14,7 +15,7 @@ export default class UrlResolver {
       return params.length > 0 ? "?" + params.join("&") : "";
   }
   concatKeyValue(key, value) {
-    return encodeURIComponent(key) + "="
+    return encodeURIComponent(StringFormatter.camelCaseToSnakeCase(key)) + "="
       + encodeURIComponent(this.convertValue(value));
   }
   convertValue( value ) {

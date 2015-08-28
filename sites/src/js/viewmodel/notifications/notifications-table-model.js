@@ -14,17 +14,10 @@ class Loader {
   }
   load( offset, limit, sortOrder, filterCondition) {
     return this.notificationService.fetchNotifications(
-      offset, limit, sortOrder, this.extractBacktestId(filterCondition));
+      offset, limit, sortOrder, filterCondition);
   }
   count(filterCondition) {
-    const d = new Deferred();
-    const backtestId = this.extractBacktestId(filterCondition);
-    this.notificationService.countNotifications(backtestId).then(
-      (result) => d.resolve(result) );
-    return d;
-  }
-  extractBacktestId(filterCondition) {
-    return (filterCondition||{}).backtestId;
+    return this.notificationService.countNotifications(filterCondition);
   }
 }
 

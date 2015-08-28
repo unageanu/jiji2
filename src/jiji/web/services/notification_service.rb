@@ -34,7 +34,7 @@ module Jiji::Web
         result[:not_read] = result[:count]
       else
         result[:not_read] = repository.count_notifications(
-          filter_condition.merge({ read_at: { '$eq' => nil } }))
+          filter_condition.merge({ read_at: nil }))
       end
       ok(result)
     end
@@ -84,7 +84,7 @@ module Jiji::Web
     def load_status_condition(condition, param)
       status = param['status']
       return unless status
-      condition[:read_at] = { '$eq' => nil } if status == 'not_read'
+      condition[:read_at] = nil if status == 'not_read'
     end
 
     def repository

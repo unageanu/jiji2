@@ -45,6 +45,11 @@ module Jiji::Web
 
     def get_backtest_id_from_path_param(key = 'backtest_id')
       id_str = params[key]
+      convert_to_backtest_id(id_str)
+    end
+
+    def convert_to_backtest_id(id_str)
+      return nil if id_str.nil?
       id_str == 'rmt' ? nil : BSON::ObjectId.from_string(id_str)
     end
 

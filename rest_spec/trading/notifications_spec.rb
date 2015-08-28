@@ -25,9 +25,19 @@ describe '通知取得' do
       'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
-    expect(r.body.length).to be 1
+    expect(r.body.length).to be 2
 
     notification = r.body[0]
+    expect(notification['backtest_id']).to eq nil
+    expect(notification['agent']['id']).not_to be nil
+    expect(notification['agent']['name']).to eq 'test1'
+    expect(notification['agent']['icon_id']).not_to be nil
+    expect(notification['message']).to eq 'message2'
+    expect(notification['actions']).to eq []
+    expect(Time.iso8601(notification['timestamp'])).to eq Time.at(200)
+    expect(Time.iso8601(notification['read_at'])).to eq Time.at(500)
+
+    notification = r.body[1]
     expect(notification['backtest_id']).to eq nil
     expect(notification['agent']['id']).not_to be nil
     expect(notification['agent']['name']).to eq 'test1'
@@ -45,7 +55,7 @@ describe '通知取得' do
       'backtest_id' => @test._id.to_s
     })
     expect(r.status).to eq 200
-    expect(r.body.length).to be 1
+    expect(r.body.length).to be 2
 
     notification = r.body[0]
     expect(notification['backtest_id']).to eq @test._id.to_s
@@ -56,6 +66,16 @@ describe '通知取得' do
     expect(notification['actions']).to eq []
     expect(Time.iso8601(notification['timestamp'])).to eq Time.at(200)
     expect(Time.iso8601(notification['read_at'])).to eq Time.at(500)
+
+    notification = r.body[1]
+    expect(notification['backtest_id']).to eq @test._id.to_s
+    expect(notification['agent']['id']).not_to be nil
+    expect(notification['agent']['name']).to eq 'test1'
+    expect(notification['agent']['icon_id']).not_to be nil
+    expect(notification['message']).to eq 'message3'
+    expect(notification['actions']).to eq []
+    expect(Time.iso8601(notification['timestamp'])).to eq Time.at(300)
+    expect(notification['read_at']).to eq nil
 
     r = @client.get('notifications',  {
       'order'       => 'timestamp',
@@ -70,43 +90,71 @@ describe '通知取得' do
     expect(notification['agent']['id']).not_to be nil
     expect(notification['agent']['name']).to eq 'test1'
     expect(notification['agent']['icon_id']).not_to be nil
-    expect(notification['message']).to eq 'message2'
+    expect(notification['message']).to eq 'message3'
     expect(notification['actions']).to eq []
-    expect(Time.iso8601(notification['timestamp'])).to eq Time.at(200)
-    expect(Time.iso8601(notification['read_at'])).to eq Time.at(500)
+    expect(Time.iso8601(notification['timestamp'])).to eq Time.at(300)
+    expect(notification['read_at']).to eq nil
+
+    r = @client.get('notifications',  {
+      'order'       => 'timestamp',
+      'direction'   => 'desc',
+      'offset'      => 0,
+      'limit'       => 10,
+      'status'      => 'not_read'
+    })
+    expect(r.status).to eq 200
+    expect(r.body.length).to be 4
+
+    r.body.each do |n|
+      expect(n['agent']['id']).not_to be nil
+      expect(n['agent']['name']).to eq 'test1'
+      expect(n['agent']['icon_id']).not_to be nil
+      expect(n['message']).not_to be nil
+      expect(n['actions']).to eq []
+      expect(Time.iso8601(n['timestamp'])).not_to be nil
+      expect(n['read_at']).to eq nil
+    end
   end
 
   it 'GET /notifications/count 通知の総数を取得できる' do
     r = @client.get('notifications/count')
     expect(r.status).to eq 200
-    expect(r.body['count']).to be 4
-    expect(r.body['not_read']).to be 2
+    expect(r.body['count']).to be 6
+    expect(r.body['not_read']).to be 4
 
     r = @client.get('notifications/count', {
       'backtest_id' => @test._id.to_s
     })
     expect(r.status).to eq 200
-    expect(r.body['count']).to be 2
-    expect(r.body['not_read']).to be 1
+    expect(r.body['count']).to be 3
+    expect(r.body['not_read']).to be 2
 
     r = @client.get('notifications/count', {
       'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
+    expect(r.body['count']).to be 3
+    expect(r.body['not_read']).to be 2
+
+    r = @client.get('notifications/count', {
+      'backtest_id' => 'rmt',
+      'status'      => 'not_read'
+    })
+    expect(r.status).to eq 200
     expect(r.body['count']).to be 2
-    expect(r.body['not_read']).to be 1
+    expect(r.body['not_read']).to be 2
   end
 
   it 'PUT /notifications/:notificatio_id/read で通知を既読にできる' do
     r = @client.get('notifications',  {
       'order'       => 'timestamp',
-      'direction'   => 'desc',
-      'offset'      => 1,
+      'direction'   => 'asc',
+      'offset'      => 0,
       'limit'       => 10,
       'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
-    expect(r.body.length).to be 1
+    expect(r.body.length).to be 3
     expect(r.body[0]['read_at']).to be nil
     notification_id = r.body[0]['id']
 
@@ -122,15 +170,48 @@ describe '通知取得' do
 
     r = @client.get('notifications',  {
       'order'       => 'timestamp',
-      'direction'   => 'desc',
-      'offset'      => 1,
+      'direction'   => 'asc',
+      'offset'      => 0,
       'limit'       => 10,
       'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
-    expect(r.body.length).to be 1
+    expect(r.body.length).to be 3
     expect(r.body[0]['id']).to eq notification_id
     expect(r.body[0]['read_at']).not_to be nil
+  end
+
+  it 'PUT /notifications/read で未読通知をまとめて既読にできる' do
+    r = @client.get('notifications/count')
+    expect(r.status).to eq 200
+    expect(r.body['count']).to be 6
+    expect(r.body['not_read']).to be 3
+
+    r = @client.put('notifications/read', {
+      read: nil
+    })
+    expect(r.status).to eq 400
+
+    r = @client.put('notifications/read', {
+      'read'        => true,
+      'backtest_id' => @test._id.to_s
+    })
+    expect(r.status).to eq 204
+
+    r = @client.get('notifications/count')
+    expect(r.status).to eq 200
+    expect(r.body['count']).to be 6
+    expect(r.body['not_read']).to be 1
+
+    r = @client.put('notifications/read', {
+      'read'        => true
+    })
+    expect(r.status).to eq 204
+
+    r = @client.get('notifications/count')
+    expect(r.status).to eq 200
+    expect(r.body['count']).to be 6
+    expect(r.body['not_read']).to be 0
   end
 
   def register_notifications
@@ -158,5 +239,7 @@ describe '通知取得' do
       Time.at(100), backtest_id, 'message', []).save
     Jiji::Model::Notification::Notification.create(agent_setting.id,
       Time.at(200), backtest_id, 'message2', []).read(Time.at(500))
+    Jiji::Model::Notification::Notification.create(agent_setting.id,
+      Time.at(300), backtest_id, 'message3', []).save
   end
 end

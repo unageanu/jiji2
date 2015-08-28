@@ -14,7 +14,7 @@ module Jiji::Web
 
     get '/' do
       sort_order = get_sort_order_from_query_param('order', 'direction')
-      filter_condition = read_filter_condition_from_query_param
+      filter_condition = read_filter_condition_from(request)
       offset     = request['offset'] ? request['offset'].to_i : nil
       limit      = request['limit']  ? request['limit'].to_i : nil
       notifications = repository.retrieve_notifications(
@@ -27,12 +27,32 @@ module Jiji::Web
     end
 
     get '/count' do
-      filter_condition = read_filter_condition_from_query_param
-      ok({
-        count: repository.count_notifications(filter_condition),
-        not_read: repository.count_notifications(
-          filter_condition.merge({read_at: {"$ne" => nil}}))
-      })
+      filter_condition = read_filter_condition_from(request)
+      result = {}
+      result[:count] = repository.count_notifications(filter_condition)
+      if filter_condition.include?(:read_at)
+        result[:not_read] = result[:count]
+      else
+        result[:not_read] = repository.count_notifications(
+          filter_condition.merge({ read_at: { '$eq' => nil } }))
+      end
+      ok(result)
+    end
+
+    options '/read' do
+      allow('PUT,OPTIONS')
+    end
+
+    put '/read' do
+      body = load_body
+      illegal_argument('body["read"] must be true.') unless body['read']
+      condition = { read_at: { '$eq' => nil } }
+      load_backtest_id_condition(condition, body)
+      now = time_source.now
+      repository.retrieve_notifications(condition).each do |notification|
+        notification.read(now)
+      end
+      no_content
     end
 
     options '/:notification_id/read' do
@@ -48,12 +68,23 @@ module Jiji::Web
       ok(notification.to_h)
     end
 
-    def read_filter_condition_from_query_param
-      id_str = request['backtest_id']
-      return {} unless id_str
-      {
-        backtest_id: id_str == 'rmt' ? nil : BSON::ObjectId.from_string(id_str)
-      }
+    def read_filter_condition_from(param)
+      condition = {}
+      load_backtest_id_condition(condition, param)
+      load_status_condition(condition, param)
+      condition
+    end
+
+    def load_backtest_id_condition(condition, param)
+      id_str = param['backtest_id']
+      return unless id_str
+      condition[:backtest_id] = convert_to_backtest_id(id_str)
+    end
+
+    def load_status_condition(condition, param)
+      status = param['status']
+      return unless status
+      condition[:read_at] = { '$eq' => nil } if status == 'not_read'
     end
 
     def repository

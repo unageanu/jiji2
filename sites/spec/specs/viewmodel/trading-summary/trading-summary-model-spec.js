@@ -113,6 +113,42 @@ describe("TradingSummaryModel", () => {
             minUnits: 500,
             avgUnits: 980
           }
+        },
+        a3 : {
+          states: {
+            count:  0,
+            exited: 0
+          },
+          winsAndLosses: {
+            win:  0,
+            lose: 0,
+            draw: 0
+          },
+          sellOrBuy: { sell: 0, buy: 0 },
+          pairs: {
+            EURJPY: 0,
+            USDJPY: 0
+          },
+          profitOrLoss:  {
+            maxProfit:          0,
+            maxLoss:            0,
+            avgProfit:          0,
+            avgLoss:            0,
+            totalProfit:        0,
+            totalLoss:          0,
+            totalProfitOrLoss:  0,
+            profitFactor:       0
+          },
+          holdingPeriod:  {
+            maxPeriod: 0,
+            minPeriod: 0,
+            avgPeriod: 0
+          },
+          units:           {
+            maxUnits: 0,
+            minUnits: 0,
+            avgUnits: 0
+          }
         }
       }
     });
@@ -184,4 +220,11 @@ describe("TradingSummaryModel", () => {
     expect(model.agentSummary.a1.formatedProfitOrLoss).toEqual( "400" );
     expect(model.agentSummary.a2.formatedProfitOrLoss).toEqual( "400" );
   });
+
+  it("formatedWinPercentage", () => {
+    expect(model.formatedWinPercentage).toEqual( "40.0%" );
+    expect(model.agentSummary.a1.formatedWinPercentage).toEqual( "40.0%" );
+    expect(model.agentSummary.a3.formatedWinPercentage).toEqual( "-%" );
+  });
+
 });

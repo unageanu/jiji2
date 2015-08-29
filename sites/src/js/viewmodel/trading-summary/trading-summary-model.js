@@ -76,6 +76,7 @@ export default class TradingSummaryModel extends Observable {
   }
 
   get formatedWinPercentage() {
+    if (!this.states.count) return "-%";
     const values = this.winsAndLosses;
     const ratio = values.win / this.states.count;
     return NumberFormatter.formatRatio(ratio);

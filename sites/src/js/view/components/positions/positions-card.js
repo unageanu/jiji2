@@ -4,6 +4,7 @@ import AbstractCard      from "../widgets/abstract-card"
 import Chart             from "../chart/chart"
 import SettingMenuButton from "../widgets/setting-menu-button"
 import PositionList      from "./position-list"
+import TextInRadius      from "../widgets/text-in-radius"
 
 const keys = new Set([
   "notExited"

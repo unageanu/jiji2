@@ -74,6 +74,7 @@ export default class NotificationsTable extends AbstractComponent {
   }
 
   createBodyContent() {
+    if (!this.state.items) return [];
     return this.state.items.map((item) => {
       const selected = this.state.selectedNotification
         && item.id === this.state.selectedNotification.id;

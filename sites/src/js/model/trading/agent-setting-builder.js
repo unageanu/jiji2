@@ -44,6 +44,13 @@ export default class AgentSettingBuilder extends Observable {
     this.agentSetting[index].properties = configuration;
   }
 
+  convert(agents) {
+    return agents.map((a) => {
+      a.agentName = a.name;
+      return a;
+    });
+  }
+
   get availableAgents() {
     return this.getProperty("availableAgents");
   }
@@ -52,7 +59,7 @@ export default class AgentSettingBuilder extends Observable {
   }
 
   set agentSetting(setting) {
-    return this.setProperty("agentSetting", setting);
+    return this.setProperty("agentSetting", this.convert(setting));
   }
   get agentSetting() {
     return this.getProperty("agentSetting");

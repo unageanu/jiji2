@@ -47,6 +47,7 @@ module Jiji::Web
       builder.map('/api/actions')       { run ActionService }
       builder.map('/api/icons')         { run IconService }
       builder.map('/api/icon-images')   { run IconImageService }
+      builder.map('/api/devices')       { run DeviceService }
     end
 
     def register_trading_services(builder)

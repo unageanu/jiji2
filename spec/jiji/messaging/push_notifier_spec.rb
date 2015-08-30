@@ -11,11 +11,25 @@ describe Jiji::Messaging::PushNotifier do
   let(:repository) { container.lookup(:setting_repository) }
 
   it 'デバイスを登録できる' do
-    device_register.register('device1', 'test-token')
-    device_register.register('device2', 'test-token')
+    device_register.register({
+      type:         'gcm',
+      uuid:         '7005121694c81ad5',
+      model:        'FJL22',
+      platform:     'Android',
+      version:      '4.2.2',
+      device_token: 'test-token'
+    })
+    device_register.register({
+      type:         'gcm',
+      uuid:         '7005121694c81ad6',
+      model:        'FJL22',
+      platform:     'Android',
+      version:      '4.2.2',
+      device_token: 'test-token2'
+    })
 
-    setting = repository.device_setting
-    expect(setting.devices.length).to eq 2
+    devices = Jiji::Messaging::Device.all.map {|d| d}
+    expect(devices.length).to eq 2
 
     message_ids = push_notifier.notify('テスト', '{test:"test"}')
     expect(message_ids).to eq %w(message_id message_id)

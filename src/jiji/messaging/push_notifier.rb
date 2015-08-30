@@ -12,8 +12,8 @@ module Jiji::Messaging
     needs :sns_service
 
     def notify(subject, message)
-      setting_repository.device_setting.devices.map do |device|
-        sns_service.publish(device[1][:target_arn], message, subject)
+      Device.all.map do |device|
+        sns_service.publish(device.target_arn, message, subject)
       end
     end
 

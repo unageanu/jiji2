@@ -193,6 +193,7 @@ BODY
       Jiji::Model::Logging::LogData.delete_all
       Jiji::Model::Notification::Notification.delete_all
       Jiji::Model::Icons::Icon.delete_all
+      Jiji::Messaging::Device.delete_all
       Mail::TestMailer.deliveries.clear
     end
 

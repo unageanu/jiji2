@@ -1,5 +1,6 @@
 # coding: utf-8
 
+require 'encase'
 require 'jiji/configurations/mongoid_configuration'
 require 'securerandom'
 

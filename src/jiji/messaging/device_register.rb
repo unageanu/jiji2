@@ -11,13 +11,10 @@ module Jiji::Messaging
     needs :setting_repository
     needs :sns_service
 
-    def register(name, device_token)
-      type = :gcm
-      target_arn = register_target(type, device_token)
-
-      device_setting = setting_repository.device_setting
-      device_setting.register(name, type, device_token, target_arn)
-      device_setting.save
+    def register(info)
+      info[:target_arn] =
+        register_target(info[:type].to_sym, info[:device_token])
+      Device.get_or_create_from_hash(info)
     end
 
     private

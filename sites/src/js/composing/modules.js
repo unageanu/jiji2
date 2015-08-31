@@ -102,6 +102,7 @@ function services(binder) {
   binder.bind("passwordResettingService")
     .to("services.PasswordResettingService");
   binder.bind("initialSettingService").to("services.InitialSettingService");
+  binder.bind("deviceService").to("services.DeviceService");
 }
 
 function stores(binder) {

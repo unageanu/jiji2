@@ -26,6 +26,7 @@ module Jiji::Web
     def build
       builder = Rack::Builder.new
       register_base_services(builder)
+      register_icon_services(builder)
       register_trading_services(builder)
       register_authentication_service(builder)
       register_setting_services(builder)
@@ -43,11 +44,14 @@ module Jiji::Web
       builder.map('/api/echo')          { run EchoService }
       builder.map('/api/agents')        { run AgentService }
       builder.map('/api/logs')          { run LogService }
-      builder.map('/api/notifications') { run NotificationService }
       builder.map('/api/actions')       { run ActionService }
+      builder.map('/api/notifications') { run NotificationService }
+      builder.map('/api/devices')       { run DeviceService }
+    end
+
+    def register_icon_services(builder)
       builder.map('/api/icons')         { run IconService }
       builder.map('/api/icon-images')   { run IconImageService }
-      builder.map('/api/devices')       { run DeviceService }
     end
 
     def register_trading_services(builder)

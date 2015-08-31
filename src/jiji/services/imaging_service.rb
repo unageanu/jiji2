@@ -7,7 +7,7 @@ module Jiji::Services
 
     include Jiji::Errors
 
-    def create_icon(stream, w = 40, h = 40)
+    def create_icon(stream, w = 192, h = 192)
       img = MiniMagick::Image.read(stream)
       img.define "size=#{w}x#{h}"
       img.combine_options do |cmd|

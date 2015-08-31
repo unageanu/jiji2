@@ -13,6 +13,7 @@ module Jiji::Messaging
     store_in collection: 'devices'
 
     field :uuid,         type: String
+    field :server_url,   type: String
     field :model,        type: String
     field :platform,     type: String
     field :version,      type: String
@@ -24,18 +25,19 @@ module Jiji::Messaging
 
     def self.get_or_create_from_hash(hash)
       uuid = hash[:uuid]
-      device = Device.find_by({uuid: uuid}) || Device.new(uuid)
+      device = Device.find_by({ uuid: uuid }) || Device.new(uuid)
       device.update_from_hash(hash)
       device.save
       device
     end
 
-    def initialize( uuid )
+    def initialize(uuid)
       super()
       self.uuid = uuid
     end
 
     def update_from_hash(hash)
+      self.server_url   = hash[:server_url]
       self.model        = hash[:model]
       self.platform     = hash[:platform]
       self.version      = hash[:version]
@@ -46,12 +48,13 @@ module Jiji::Messaging
 
     def to_h
       {
-        id:           id,
-        uuid:         uuid,
-        model:        model,
-        platform:     platform,
-        version:      version,
-        type:         type
+        id:         id,
+        uuid:       uuid,
+        model:      model,
+        platform:   platform,
+        version:    version,
+        type:       type,
+        server_url: server_url
       }
     end
 

@@ -15,11 +15,11 @@ module Jiji::Model::Agents
 
     attr_accessor :agents, :logger, :fail_on_error
 
-    def initialize(backtest_id, agent_registry,
+    def initialize(backtest, agent_registry,
       components, fail_on_error = false)
       super()
       @updater       = Internal::AgentsUpdater.new(
-        backtest_id, agent_registry, components)
+        backtest, agent_registry, components)
       @logger        = components[:logger]
       @fail_on_error = fail_on_error
       @agents        = @updater.restore_agents_from_saved_state

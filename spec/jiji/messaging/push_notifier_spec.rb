@@ -17,7 +17,8 @@ describe Jiji::Messaging::PushNotifier do
       model:        'FJL22',
       platform:     'Android',
       version:      '4.2.2',
-      device_token: 'test-token'
+      device_token: 'test-token',
+      server_url:   'http://localhost:3000'
     })
     device_register.register({
       type:         'gcm',
@@ -25,13 +26,48 @@ describe Jiji::Messaging::PushNotifier do
       model:        'FJL22',
       platform:     'Android',
       version:      '4.2.2',
-      device_token: 'test-token2'
+      device_token: 'test-token2',
+      server_url:   'http://localhost:3001'
     })
 
-    devices = Jiji::Messaging::Device.all.map {|d| d}
+    expect(push_notifier.sns_service).to receive(:publish).with(
+      'target_arn',
+      "{\"default\":\"テスト\",\"GCM\":\"{\\\"data\\\":" \
+      + "{\\\"title\\\":\\\"テスト | リアルトレード\\\"," \
+      + "\\\"message\\\":\\\"テスト\\\"," \
+      + "\\\"icon\\\":\\\"http://localhost:3000/api/icons/aaaa\\\"}}\"}",
+      'テスト | リアルトレード')
+    expect(push_notifier.sns_service).to receive(:publish).with(
+      'target_arn',
+      "{\"default\":\"テスト\",\"GCM\":\"{\\\"data\\\":" \
+      + "{\\\"title\\\":\\\"テスト | リアルトレード\\\"," \
+      + "\\\"message\\\":\\\"テスト\\\"," \
+      + "\\\"icon\\\":\\\"http://localhost:3001/api/icons/aaaa\\\"}}\"}",
+      'テスト | リアルトレード')
+    expect(push_notifier.sns_service).to receive(:publish).with(
+      'target_arn',
+      "{\"default\":\"テスト\",\"GCM\":\"{\\\"data\\\":"\
+      + "{\\\"message\\\":\\\"テスト\\\"}}\"}",
+      '')
+    expect(push_notifier.sns_service).to receive(:publish).with(
+      'target_arn',
+      "{\"default\":\"テスト\",\"GCM\":\"{\\\"data\\\":"\
+      + "{\\\"message\\\":\\\"テスト\\\"}}\"}",
+      '')
+
+    devices = Jiji::Messaging::Device.all.map { |d| d }
     expect(devices.length).to eq 2
 
-    message_ids = push_notifier.notify('テスト', '{test:"test"}')
+    message_ids = push_notifier.notify({
+      title:   'テスト | リアルトレード',
+      message: 'テスト',
+      icon:    'aaaa'
+    }, Logger.new(STDOUT))
+    expect(message_ids).to eq %w(message_id message_id)
+
+    message_ids = push_notifier.notify({
+      message: 'テスト'
+    }, Logger.new(STDOUT))
     expect(message_ids).to eq %w(message_id message_id)
   end
 end

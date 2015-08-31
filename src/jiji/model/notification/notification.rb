@@ -30,11 +30,11 @@ module Jiji::Model::Notification
       { backtest_id: 1, timestamp: -1 },
       name: 'notification_backtest_id_timestamp_index')
 
-    def self.create(agent_id, timestamp,
-      backtest_id = nil, message = '', actions = [])
+    def self.create(agent, timestamp,
+      backtest = nil, message = '', actions = [])
       Notification.new do |n|
         n.timestamp   = timestamp
-        n.initialize_agent_information(agent_id, backtest_id)
+        n.initialize_agent_information(agent, backtest)
         n.initialize_content(message, actions)
       end
     end
@@ -59,14 +59,18 @@ module Jiji::Model::Notification
       hash
     end
 
-    def initialize_agent_information(agent_id, backtest_id)
-      self.agent_id    = agent_id
-      self.backtest_id = backtest_id
+    def initialize_agent_information(agent, backtest)
+      self.agent    = agent
+      self.backtest = backtest
     end
 
     def initialize_content(message = '', actions = [])
       self.message     = message
       self.actions     = actions
+    end
+
+    def title
+      "#{agent.name} | #{backtest ? backtest.name : 'リアルトレード'}"
     end
 
     private

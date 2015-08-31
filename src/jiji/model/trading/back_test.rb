@@ -173,7 +173,7 @@ module Jiji::Model::Trading
       @logger          = logger_factory.create(self)
       @graph_factory   = create_graph_factory(self)
       @broker          = create_broker
-      @agents          = create_agents(id, true)
+      @agents          = create_agents(self, true)
       trading_context  = create_trading_context(
         @broker, @agents, @graph_factory)
       @process         = create_process(trading_context)

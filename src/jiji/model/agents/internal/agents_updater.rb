@@ -9,8 +9,8 @@ module Jiji::Model::Agents::Internal
     include Jiji::Model::Trading::Brokers
     include Jiji::Model::Notification
 
-    def initialize(backtest_id, agent_registry, components)
-      @backtest_id     = backtest_id
+    def initialize(backtest, agent_registry, components)
+      @backtest        = backtest
       @agent_registry  = agent_registry
       @components      = components
     end
@@ -18,7 +18,7 @@ module Jiji::Model::Agents::Internal
     def update(agents, new_agent_setting, fail_on_error = false)
       settings = []
       agents = new_agent_setting.each_with_object({}) do |s, r|
-        settings << s = AgentSetting.get_or_create_from_hash(s, @backtest_id)
+        settings << s = AgentSetting.get_or_create_from_hash(s, backtest_id)
         process_error(!fail_on_error) do
           r[s.id] = create_or_update_agent(agents, s)
         end
@@ -29,13 +29,13 @@ module Jiji::Model::Agents::Internal
     end
 
     def restore_agents_from_saved_state
-      AgentSetting.load(@backtest_id).each_with_object({}) do |setting, r|
+      AgentSetting.load(backtest_id).each_with_object({}) do |setting, r|
         process_error { r[setting.id] = create_agent(setting) }
       end
     end
 
     def save_state(agents)
-      AgentSetting.load(@backtest_id).each do |setting|
+      AgentSetting.load(backtest_id).each do |setting|
         agent = agents[setting.id]
         next unless agent
         process_error do
@@ -48,7 +48,7 @@ module Jiji::Model::Agents::Internal
     private
 
     def deactivate_removed_agents(agents)
-      AgentSetting.load(@backtest_id).each do |setting|
+      AgentSetting.load(backtest_id).each do |setting|
         setting.active = agents.include?(setting.id)
         setting.save
       end
@@ -72,24 +72,25 @@ module Jiji::Model::Agents::Internal
       agent = @agent_registry.create_agent(
         setting.agent_class, setting.properties_with_indifferent_access)
       agent.agent_name  = setting.name || setting.agent_class
-      inject_components_to(agent, setting.id)
+      inject_components_to(agent, setting)
       restore_state(agent, setting)
       agent.post_create
       agent
     end
 
-    def inject_components_to(agent, agent_id)
-      broker = BrokerProxy.new(@components[:broker], agent_id)
+    def inject_components_to(agent, setting)
+      broker = BrokerProxy.new(@components[:broker], setting.id)
 
       agent.broker          = broker
       agent.graph_factory   = @components[:graph_factory]
-      agent.notifier        = create_notificator(agent_id)
+      agent.notifier        = create_notificator(setting)
       agent.logger          = @components[:logger]
     end
 
-    def create_notificator(agent_id)
-      Notificator.new(@backtest_id, agent_id, @components[:push_notifier],
-        @components[:mail_composer], @components[:time_source])
+    def create_notificator(agent)
+      Notificator.new(@backtest, agent, @components[:push_notifier],
+        @components[:mail_composer], @components[:time_source],
+        @components[:logger])
     end
 
     def restore_state(agent, setting)
@@ -103,6 +104,10 @@ module Jiji::Model::Agents::Internal
     rescue Exception => e # rubocop:disable Lint/RescueException
       log(e)
       raise e unless ignore
+    end
+
+    def backtest_id
+      @backtest ? @backtest.id : nil
     end
 
     def log(error)

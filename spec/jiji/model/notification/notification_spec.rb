@@ -14,7 +14,7 @@ describe Jiji::Model::Notification::Notification do
       { 'label' => 'い', 'action' => 'bbb' }
     ]
     notification = Jiji::Model::Notification::Notification.create(
-      agent_setting.id, Time.at(100), nil, 'message', actions)
+      agent_setting, Time.at(100), nil, 'message', actions)
 
     expect(notification.backtest_id).to be nil
     expect(notification.agent_id).to eq agent_setting.id
@@ -36,7 +36,7 @@ describe Jiji::Model::Notification::Notification do
     expect(notification.actions).to eq actions
 
     notification = Jiji::Model::Notification::Notification.create(
-      agent_setting.id, Time.at(200), backtests[0].id, 'message2', actions)
+      agent_setting, Time.at(200), backtests[0], 'message2', actions)
 
     expect(notification.backtest_id).to be backtests[0].id
     expect(notification.agent_id).to eq agent_setting.id

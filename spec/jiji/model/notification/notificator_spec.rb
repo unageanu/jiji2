@@ -14,10 +14,13 @@ describe Jiji::Model::Notification::Notificator do
   let(:agent_setting) do
     data_builder.register_agent_setting
   end
+  let(:logger) do
+    Logger.new STDOUT
+  end
   let(:notificator) do
     mail_composer = container.lookup(:mail_composer)
     Jiji::Model::Notification::Notificator.new(backtests[0].id,
-      agent_setting.id, push_notifier, mail_composer, time_source)
+      agent_setting.id, push_notifier, mail_composer, time_source, logger)
   end
   let(:notification_repository) do
     container.lookup(:notification_repository)

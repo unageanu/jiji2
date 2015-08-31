@@ -23,8 +23,8 @@ module Jiji::Model::Trading::Internal
 
     private
 
-    def create_agents(backtest_id = nil, fail_on_error = false)
-      agents = Jiji::Model::Agents::Agents.new(backtest_id,
+    def create_agents(backtest = nil, fail_on_error = false)
+      agents = Jiji::Model::Agents::Agents.new(backtest,
         agent_registry, collect_components, fail_on_error)
       agents
     end

@@ -8,15 +8,16 @@ require 'jiji/web/transport/transportable'
 module Jiji::Model::Notification
   class Notificator
 
-    attr_reader :agent_id, :backtest_id, :agent_name, :icon
+    attr_reader :agent, :backtest
 
-    def initialize(backtest_id, agent_id,
-      push_notifier, mail_composer, time_source)
-      @backtest_id   = backtest_id
-      @agent_id      = agent_id
+    def initialize(backtest, agent,
+      push_notifier, mail_composer, time_source, logger)
+      @backtest      = backtest
+      @agent         = agent
       @push_notifier = push_notifier
       @mail_composer = mail_composer
       @time_source   = time_source
+      @logger        = logger
     end
 
     def compose_text_mail(to, title, body,
@@ -35,10 +36,14 @@ module Jiji::Model::Notification
     end
 
     def push_notification(message = '', actions = [])
-      n = Notification.create(@agent_id,
-        @time_source.now, @backtest_id, message, actions)
+      n = Notification.create(@agent,
+        @time_source.now, @backtest, message, actions)
       n.save
-      @push_notifier.notify(message, message)
+      @push_notifier.notify({
+        title:   n.title,
+        message: message,
+        icon:    n.agent.icon_id
+      }, @logger)
     end
 
   end

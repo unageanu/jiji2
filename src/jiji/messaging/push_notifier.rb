@@ -29,16 +29,15 @@ module Jiji::Messaging
     def create_message(device, message)
       m = message.clone
       insert_server_url_to_icon(device, m)
-
       {
-        default: m[:message],
+        default: m[:title],
         GCM:     { data: m }.to_json
       }.to_json
     end
 
     def insert_server_url_to_icon(device, message)
-      return unless message[:icon]
-      message[:icon] = "#{device.server_url}/api/icons/#{message[:icon]}"
+      image_id = message[:image] || 'default'
+      message[:image] = "#{device.server_url}/api/icon-images/#{image_id}"
     end
 
   end

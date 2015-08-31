@@ -32,27 +32,29 @@ describe Jiji::Messaging::PushNotifier do
 
     expect(push_notifier.sns_service).to receive(:publish).with(
       'target_arn',
-      "{\"default\":\"テスト\",\"GCM\":\"{\\\"data\\\":" \
+      "{\"default\":\"テスト | リアルトレード\",\"GCM\":\"{\\\"data\\\":" \
       + "{\\\"title\\\":\\\"テスト | リアルトレード\\\"," \
       + "\\\"message\\\":\\\"テスト\\\"," \
-      + "\\\"icon\\\":\\\"http://localhost:3000/api/icons/aaaa\\\"}}\"}",
+      + "\\\"image\\\":\\\"http://localhost:3000/api/icon-images/aaaa\\\"}}\"}",
       'テスト | リアルトレード')
     expect(push_notifier.sns_service).to receive(:publish).with(
       'target_arn',
-      "{\"default\":\"テスト\",\"GCM\":\"{\\\"data\\\":" \
+      "{\"default\":\"テスト | リアルトレード\",\"GCM\":\"{\\\"data\\\":" \
       + "{\\\"title\\\":\\\"テスト | リアルトレード\\\"," \
       + "\\\"message\\\":\\\"テスト\\\"," \
-      + "\\\"icon\\\":\\\"http://localhost:3001/api/icons/aaaa\\\"}}\"}",
+      + "\\\"image\\\":\\\"http://localhost:3001/api/icon-images/aaaa\\\"}}\"}",
       'テスト | リアルトレード')
     expect(push_notifier.sns_service).to receive(:publish).with(
       'target_arn',
-      "{\"default\":\"テスト\",\"GCM\":\"{\\\"data\\\":"\
-      + "{\\\"message\\\":\\\"テスト\\\"}}\"}",
+      "{\"default\":null,\"GCM\":\"{\\\"data\\\":"\
+      + "{\\\"message\\\":\\\"テスト\\\",\\\"image\\\":"\
+      + "\\\"http://localhost:3000/api/icon-images/default\\\"}}\"}",
       '')
     expect(push_notifier.sns_service).to receive(:publish).with(
       'target_arn',
-      "{\"default\":\"テスト\",\"GCM\":\"{\\\"data\\\":"\
-      + "{\\\"message\\\":\\\"テスト\\\"}}\"}",
+      "{\"default\":null,\"GCM\":\"{\\\"data\\\":"\
+      + "{\\\"message\\\":\\\"テスト\\\",\\\"image\\\":"\
+      + "\\\"http://localhost:3001/api/icon-images/default\\\"}}\"}",
       '')
 
     devices = Jiji::Messaging::Device.all.map { |d| d }
@@ -61,7 +63,7 @@ describe Jiji::Messaging::PushNotifier do
     message_ids = push_notifier.notify({
       title:   'テスト | リアルトレード',
       message: 'テスト',
-      icon:    'aaaa'
+      image:   'aaaa'
     }, Logger.new(STDOUT))
     expect(message_ids).to eq %w(message_id message_id)
 

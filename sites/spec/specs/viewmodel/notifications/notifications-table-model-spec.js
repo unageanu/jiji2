@@ -337,8 +337,10 @@ describe("NotificationsTableModel", () => {
     it("アクションを実行できる", () => {
       model.executeAction({
         backtestId: null,
-        agentId:    "aaaa",
-        agentName:  "エージェントA"
+        agent: {
+          id:    "aaaa",
+          name:  "エージェントA"
+        }
       }, "aaa");
       xhrManager.requests[0].resolve({message: "OK"});
 
@@ -350,8 +352,10 @@ describe("NotificationsTableModel", () => {
     it("メッセージがない場合、デフォルトのメッセージが使われる", () => {
       model.executeAction({
         backtestId: null,
-        agentId:    "aaaa",
-        agentName:  "エージェントA"
+        agent: {
+          id:    "aaaa",
+          name:  "エージェントA"
+        }
       }, "aaa");
       xhrManager.requests[0].resolve({});
 
@@ -363,8 +367,10 @@ describe("NotificationsTableModel", () => {
     it("エラーが発生した場合、エラーメッセージが表示される", () => {
       model.executeAction({
         backtestId: null,
-        agentId:    "aaaa",
-        agentName:  "エージェントA"
+        agent: {
+          id:    "aaaa",
+          name:  "エージェントA"
+        }
       }, "aaa");
       xhrManager.requests[0].reject({});
 
@@ -403,8 +409,10 @@ describe("NotificationsTableModel", () => {
     for( let i=0; i<count; i++ ) {
       items.push({
         id: i,
-        agentId:   "agent_id",
-        agentName: "agent_name",
+        agent: {
+          id: "agent_id",
+          name: "agent_name"
+        },
         timestamp: new Date(i*1000),
         message:   "message" + i,
         readAt:    i%2===0 ? new Date(i*1000+10) : null

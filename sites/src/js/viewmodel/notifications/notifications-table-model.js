@@ -97,7 +97,7 @@ export default class NotificationsTableModel extends TableModel {
 
   executeAction( notification, action ) {
     this.actionService.post(notification.backtestId,
-      notification.agentId, action).then((result) => {
+      notification.agent.id, action).then((result) => {
       this.eventQueue.push(
         this.createResponseMessage(result, notification, action));
     }, (error)  => {
@@ -108,14 +108,14 @@ export default class NotificationsTableModel extends TableModel {
   createResponseMessage(result, notification, action) {
     return {
       type: "info",
-      message: notification.agentName + " : "
+      message: notification.agent.name + " : "
         + (result.message || "アクション \"" + action + "\" を実行しました")
     };
   }
   createErrorMessage(error, notification) {
     return {
       type: "error",
-      message: notification.agentName
+      message: notification.agent.name
         + " : アクション実行時にエラーが発生しました。"
         + "ログを確認してください。"
     };

@@ -41,7 +41,7 @@ class NotificationModel {
 
 export default class NotificationsTableModel extends TableModel {
   constructor( pageSize, defaultSortOrder, notificationService,
-    actionService, backtests, eventQueue, urlResolver) {
+    actionService, backtests, eventQueue, urlResolver, pushNotifier) {
     super( defaultSortOrder, pageSize );
     this.backtests = backtests;
     this.defaultSortOrder = defaultSortOrder;
@@ -51,6 +51,21 @@ export default class NotificationsTableModel extends TableModel {
     this.selectedNotification = null;
     this.availableFilterConditions = defaultFilterConditions;
     this.urlResolver = urlResolver;
+    this.pushNotifier = pushNotifier;
+
+    this.registerNotificationReceivedEventObserver(pushNotifier);
+  }
+
+  registerNotificationReceivedEventObserver(pushNotifier) {
+    pushNotifier.addObserver("notificationReceived", (n, event) => {
+      const backtestId = event.data.additionalData.backtestId;
+      if (this.offset != 0) return;
+      if (this.filterCondition.backtestId == null
+        || backtestId == this.filterCondition.backtestId
+        || (backtestId == null && this.filterCondition.backtestId == "rmt")) {
+        this.load();
+      }
+    });
   }
 
   initialize() {

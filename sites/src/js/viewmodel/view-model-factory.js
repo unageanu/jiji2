@@ -33,6 +33,7 @@ export default class ViewModelFactory {
     this.userSettingService       = ContainerJS.Inject;
     this.passwordResettingService = ContainerJS.Inject;
     this.initialSettingService    = ContainerJS.Inject;
+    this.pushNotifier             = ContainerJS.Inject;
   }
   createAccountViewModel() {
     return new AccountViewModel( this.rmtService );
@@ -48,8 +49,8 @@ export default class ViewModelFactory {
   createNotificationsTableModel(pageSize=100,
     sortOrder={order:"timestamp", direction:"desc"}) {
     return new NotificationsTableModel(
-      pageSize, sortOrder, this.notificationService,
-      this.actionService, this.backtests, this.eventQueue, this.urlResolver );
+      pageSize, sortOrder, this.notificationService, this.actionService,
+      this.backtests, this.eventQueue, this.urlResolver, this.pushNotifier );
   }
   createTradingSummaryViewModel(enablePeriodSelector=false) {
     const model = new TradingSummaryViewModel( this.tradingSummariesService );

@@ -1,3 +1,5 @@
+import Observable from "../utils/observable"
+
 function model(binder) {
   binder.bind("preferences")
     .to("model.Preferences")
@@ -110,6 +112,7 @@ function stores(binder) {
 }
 function utils(binder) {
   binder.bind("timeSource").to("utils.TimeSource");
+  binder.bind("pushNotifier").toInstance( new Observable() );
 }
 
 export default (binder) => {

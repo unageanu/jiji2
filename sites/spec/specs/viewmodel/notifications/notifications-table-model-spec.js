@@ -6,6 +6,7 @@ describe("NotificationsTableModel", () => {
   var model;
   var xhrManager;
   var eventQueue;
+  var pushNotifier;
 
   beforeEach(() => {
     let container = new ContainerFactory().createContainer();
@@ -13,8 +14,9 @@ describe("NotificationsTableModel", () => {
     const factory = ContainerJS.utils.Deferred.unpack(d);
     model = factory.createNotificationsTableModel(20);
     model.initialize();
-    eventQueue = model.eventQueue;
-    xhrManager = model.notificationService.xhrManager;
+    pushNotifier = model.pushNotifier;
+    eventQueue   = model.eventQueue;
+    xhrManager   = model.notificationService.xhrManager;
     xhrManager.requests[0].resolve([
       {id: "aa", name:"aaa", createdAt: new Date(200)},
       {id: "bb", name:"bbb", createdAt: new Date(100)}
@@ -402,6 +404,230 @@ describe("NotificationsTableModel", () => {
       expect(model.items[3].readAt).not.toBe( null );
       expect(model.notRead).toEqual( 24 );
     });
+  });
+
+  describe("notificationReceived", () => {
+    it("通知を取得したとき、2ページ目以降であれば再読み込みは行われない", () => {
+      model.load();
+      xhrManager.requests[0].resolve({
+        count: 50,
+        notRead: 25
+      });
+      xhrManager.requests[1].resolve(createItems(20));
+      xhrManager.clear();
+
+      model.next();
+      xhrManager.requests[0].resolve(createItems(20));
+      xhrManager.clear();
+
+      pushNotifier.fire("notificationReceived", {
+        data : {
+          additionalData : { }
+        }
+      });
+
+      expect(xhrManager.requests.length).toBe(0);
+    });
+
+    describe("「RMTのみ」の絞り込み条件が設定されていない場合", () => {
+      beforeEach(()=> {
+        model.load();
+        xhrManager.requests[0].resolve({
+          count: 50,
+          notRead: 25
+        });
+        xhrManager.requests[1].resolve(createItems(20));
+        xhrManager.clear();
+      });
+
+      it("RMTからの通知を受信した場合、更新が行われる。", () => {
+        pushNotifier.fire("notificationReceived", {
+          data : {
+            additionalData : { }
+          }
+        });
+        xhrManager.requests[0].resolve({
+          count: 50,
+          notRead: 25
+        });
+        expect(xhrManager.requests.length).toBe(2);
+        expect(xhrManager.requests[1].url).toEqual(
+          "/api/notifications?offset=0&limit=20&"
+          + "order=timestamp&direction=desc");
+      });
+
+      it("バックテスト「aa」からの通知を受信した場合、更新が行われる。", () => {
+        pushNotifier.fire("notificationReceived", {
+          data : {
+            additionalData : { backtestId: "aa" }
+          }
+        });
+        xhrManager.requests[0].resolve({
+          count: 50,
+          notRead: 25
+        });
+        expect(xhrManager.requests.length).toBe(2);
+        expect(xhrManager.requests[1].url).toEqual(
+          "/api/notifications?offset=0&limit=20&"
+          + "order=timestamp&direction=desc");
+      });
+
+      it("バックテスト「bb」からの通知を受信した場合、更新が行われる。", () => {
+        pushNotifier.fire("notificationReceived", {
+          data : {
+            additionalData : { backtestId: "bb" }
+          }
+        });
+        xhrManager.requests[0].resolve({
+          count: 50,
+          notRead: 25
+        });
+        expect(xhrManager.requests.length).toBe(2);
+        expect(xhrManager.requests[1].url).toEqual(
+          "/api/notifications?offset=0&limit=20&"
+          + "order=timestamp&direction=desc");
+      });
+    });
+
+    describe("「RMTのみ」の絞り込み条件が設定されている場合", () => {
+      beforeEach(()=> {
+        model.filter(model.availableFilterConditions[1].condition);
+        xhrManager.requests[0].resolve({
+          count: 50,
+          notRead: 25
+        });
+        xhrManager.requests[1].resolve(createItems(20));
+        xhrManager.clear();
+      });
+
+      it("RMTからの通知を受信した場合、更新が行われる。", () => {
+        pushNotifier.fire("notificationReceived", {
+          data : {
+            additionalData : { }
+          }
+        });
+        xhrManager.requests[0].resolve({
+          count: 50,
+          notRead: 25
+        });
+        expect(xhrManager.requests.length).toBe(2);
+        expect(xhrManager.requests[1].url).toEqual(
+          "/api/notifications?offset=0&limit=20&"
+          + "order=timestamp&direction=desc&backtest_id=rmt");
+      });
+
+      it("バックテスト「aa」からの通知を受信した場合、更新は行われない。", () => {
+        pushNotifier.fire("notificationReceived", {
+          data : {
+            additionalData : { backtestId: "aa" }
+          }
+        });
+        expect(xhrManager.requests.length).toBe(0);
+      });
+
+      it("バックテスト「bb」からの通知を受信した場合、更新は行われない。", () => {
+        pushNotifier.fire("notificationReceived", {
+          data : {
+            additionalData : { backtestId: "bb" }
+          }
+        });
+        expect(xhrManager.requests.length).toBe(0);
+      });
+    });
+
+    describe("「バックテストaaのみ」の絞り込み条件が設定されている場合", () => {
+      beforeEach(()=> {
+        model.filter(model.availableFilterConditions[2].condition);
+        xhrManager.requests[0].resolve({
+          count: 50,
+          notRead: 25
+        });
+        xhrManager.requests[1].resolve(createItems(20));
+        xhrManager.clear();
+      });
+
+      it("RMTからの通知を受信した場合、更新は行われない更新が行われる。", () => {
+        pushNotifier.fire("notificationReceived", {
+          data : {
+            additionalData : { }
+          }
+        });
+        expect(xhrManager.requests.length).toBe(0);
+      });
+
+      it("バックテスト「aa」からの通知を受信した場合、更新が行われる。", () => {
+        pushNotifier.fire("notificationReceived", {
+          data : {
+            additionalData : { backtestId: "aa" }
+          }
+        });
+        xhrManager.requests[0].resolve({
+          count: 50,
+          notRead: 25
+        });
+        expect(xhrManager.requests.length).toBe(2);
+        expect(xhrManager.requests[1].url).toEqual(
+          "/api/notifications?offset=0&limit=20&"
+          + "order=timestamp&direction=desc&backtest_id=aa");
+      });
+
+      it("バックテスト「bb」からの通知を受信した場合、更新は行われない。", () => {
+        pushNotifier.fire("notificationReceived", {
+          data : {
+            additionalData : { backtestId: "bb" }
+          }
+        });
+        expect(xhrManager.requests.length).toBe(0);
+      });
+    });
+
+
+    describe("「バックテストbbのみ」の絞り込み条件が設定されている場合", () => {
+      beforeEach(()=> {
+        model.filter(model.availableFilterConditions[3].condition);
+        xhrManager.requests[0].resolve({
+          count: 50,
+          notRead: 25
+        });
+        xhrManager.requests[1].resolve(createItems(20));
+        xhrManager.clear();
+      });
+
+      it("RMTからの通知を受信した場合、更新は行われない。", () => {
+        pushNotifier.fire("notificationReceived", {
+          data : {
+            additionalData : { }
+          }
+        });
+        expect(xhrManager.requests.length).toBe(0);
+      });
+
+      it("バックテスト「aa」からの通知を受信した場合、更新は行われない。", () => {
+        pushNotifier.fire("notificationReceived", {
+          data : {
+            additionalData : { backtestId: "aa" }
+          }
+        });
+        expect(xhrManager.requests.length).toBe(0);
+      });
+
+      it("バックテスト「bb」からの通知を受信した場合、更新が行われる。", () => {
+        pushNotifier.fire("notificationReceived", {
+          data : {
+            additionalData : { backtestId: "bb" }
+          }
+        });
+        xhrManager.requests[0].resolve({
+          count: 50,
+          notRead: 25
+        });
+        expect(xhrManager.requests.length).toBe(2);
+        expect(xhrManager.requests[1].url).toEqual(
+          "/api/notifications?offset=0&limit=20&"
+          + "order=timestamp&direction=desc&backtest_id=bb");
+      });
+    });
+
   });
 
   function createItems(count) {

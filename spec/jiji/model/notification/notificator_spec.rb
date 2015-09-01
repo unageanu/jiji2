@@ -19,7 +19,7 @@ describe Jiji::Model::Notification::Notificator do
   end
   let(:notificator) do
     mail_composer = container.lookup(:mail_composer)
-    Jiji::Model::Notification::Notificator.new(backtests[0].id,
+    Jiji::Model::Notification::Notificator.new(backtests[0],
       agent_setting.id, push_notifier, mail_composer, time_source, logger)
   end
   let(:notification_repository) do

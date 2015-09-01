@@ -42,7 +42,9 @@ module Jiji::Model::Notification
       @push_notifier.notify({
         title:   message,
         message: n.title,
-        image:   n.agent.icon_id
+        image:   n.agent.icon_id,
+        notificationId: n.id.to_s,
+        backtestId: @backtest ? @backtest.id.to_s : nil
         # style: "inbox",
         # summaryText: "他 %n%件",
         # notId: 1

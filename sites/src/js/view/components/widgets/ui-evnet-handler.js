@@ -1,54 +1,105 @@
 import React             from "react";
 import MUI               from "material-ui"
 import AbstractComponent from "../widgets/abstract-component";
+import Theme             from "../../theme"
 
-const Snackbar = MUI.Snackbar;
+const Snackbar   = MUI.Snackbar;
+const Avatar     = MUI.Avatar;
 
 export default class UIEventHandler extends AbstractComponent {
 
   constructor(props) {
     super(props);
     this.state = {
-      message : ""
+      event: null
     };
   }
 
   componentWillMount() {
-    this.eventQueue().addObserver("pushed", () => this.processErrorEvents());
+    this.eventQueue().addObserver("pushed", () => this.processEventIfExist());
   }
   componentWillUnmount() {
     this.eventQueue().removeAllObservers(this);
   }
 
   render() {
+    const {message, action, autoHideDuration}
+      = this.createMessage(this.state.event);
     return <Snackbar
+      className="snackbar"
       ref="message-bar"
-      message={this.state.message}
-      action="閉じる"
-      autoHideDuration={3000}
-      onActionTouchTap={this.onActionTouchTap.bind(this)}/>;
+      style={Theme.snackbar}
+      message={message}
+      action={action}
+      autoHideDuration={autoHideDuration}
+      onActionTouchTap={this.onActionTouchTap.bind(this)}
+      onDismiss={this.onDismiss.bind(this)} />;
   }
 
   onActionTouchTap(ev) {
+    if ( this.state.event.type == "notificationReceived" ) {
+      // TODO
+    }
     this.refs["message-bar"].dismiss();
-    this.setState({message: ""});
-    this.processErrorEvents();
   }
 
-  processErrorEvents() {
+  onDismiss(ev) {
+    this.setState({message: "", action: ""});
+    setTimeout(() => this.processEventIfExist(), 500);
+  }
+
+  processEventIfExist() {
     if (this.refs["message-bar"].state.open) return;
-    let errorEvent = this.eventQueue().shift();
-    if (errorEvent) {
-      this.processError(errorEvent);
+    let event = this.eventQueue().shift();
+    if (event) {
+      this.processEvent(event);
     }
   }
-  processError(errorEvent) {
-    if (errorEvent.message) {
-      this.setState({message: errorEvent.message});
-      this.refs["message-bar"].show();
-    } else if (errorEvent.route) {
-      this.context.router.transitionTo(errorEvent.route);
+  processEvent(event) {
+    switch (event.type) {
+      case "error" :
+      case "info" :
+      case "notificationReceived" :
+        this.processMessageEvent(event); return;
+      case "routing":
+        this.processRoutingEvent(event); return;
     }
+  }
+  processMessageEvent(event) {
+    this.setState({event: event});
+    this.refs["message-bar"].show();
+  }
+  processRoutingEvent(event) {
+    this.context.router.transitionTo(event.route);
+  }
+
+  createMessage(event) {
+    if (!event) return { message:"", action: ""};
+    switch (event.type) {
+      case "error" :
+      case "info" :
+        return {
+          message: event.message,
+          action:  "閉じる",
+          autoHideDuration: 3000
+        };
+      case "notificationReceived" :
+        return {
+          message: this.createNotificationContent(event.data),
+          action:  "開く",
+          autoHideDuration: null
+        };
+    }
+  }
+
+  createNotificationContent(data) {
+    return <span className="notification">
+        <Avatar className="left-icon" src={data.image} />
+        <span className="content">
+          <span className="title">{data.title}</span><br/>
+          <span className="message">{data.message}</span>
+        </span>
+      </span>;
   }
 
   eventQueue() {

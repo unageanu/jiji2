@@ -222,5 +222,6 @@ export default {
     intervalSelector: {
       width: "136px"
     }
-  }
+  },
+  snackbar: {}
 }

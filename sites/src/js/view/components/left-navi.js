@@ -64,8 +64,8 @@ export default class LeftNavi extends React.Component {
         key={item.route}
         className={"mui-menu-item" + (selected ? " mui-is-selected" : "")}
         leftIcon={icon}
+        primaryText={item.text}
         onTouchTap={action}>
-        {item.text}
       </ListItem>
     );
   }

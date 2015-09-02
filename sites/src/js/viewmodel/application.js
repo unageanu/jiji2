@@ -40,12 +40,7 @@ export default class Application {
     if ( !this.initializationDeferred ) {
       this.initializationDeferred =
         this.initialSettingsPageModel.initialize();
-      this.initializationDeferred.then(this.onInitialized.bind(this));
     }
     return this.initializationDeferred;
-  }
-
-  onInitialized() {
-    this.initialized = this.initialSettingsPageModel.isInitialized;
   }
 }

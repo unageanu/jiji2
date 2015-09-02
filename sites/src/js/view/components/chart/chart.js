@@ -32,8 +32,7 @@ export default class Chart extends React.Component {
 
     this.registerSlideAction();
     this.initViewComponents();
-    this.context.application.initialize()
-      .then( () => this.props.model.initialize() );
+    this.props.model.initialize();
   }
 
   componentWillUnmount() {
@@ -134,9 +133,6 @@ export default class Chart extends React.Component {
     return mask;
   }
 }
-Chart.contextTypes = {
-  application: React.PropTypes.object.isRequired
-};
 Chart.propTypes = {
   enableSlider : React.PropTypes.bool.isRequired,
   devicePixelRatio: React.PropTypes.number.isRequired,

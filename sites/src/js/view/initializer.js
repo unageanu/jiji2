@@ -27,7 +27,7 @@ export default class Initializer {
   }
   initializeView(application) {
     const location = Router.HashLocation;
-    if (!application.initialized) location.replace("/initial-settings");
+    this.detectInitialPage(application);
     try {
       Router.run(this.routes(), location, (Handler) => {
         const element = document.getElementById("main");
@@ -35,6 +35,12 @@ export default class Initializer {
       });
     } catch (e) {
       this.handleError(e);
+    }
+  }
+  detectInitialPage(application) {
+    const location = Router.HashLocation;
+    if (!application.initialSettingsPageModel.isInitialized) {
+      location.replace("/initial-settings");
     }
   }
   handleError(error) {

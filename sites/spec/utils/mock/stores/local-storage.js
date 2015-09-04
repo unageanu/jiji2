@@ -11,4 +11,7 @@ export default class MockLocalStorage extends LocalStorage {
   save( key, data ) {
     this.map[key] = data;
   }
+  delete( key ) {
+    delete this.map[key];
+  }
 }

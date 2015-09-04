@@ -79,7 +79,8 @@ function errorHandling(binder) {
 }
 
 function security(binder) {
-  binder.bind("sessionManager").to("security.SessionManager");
+  binder.bind("sessionManager").to("security.SessionManager")
+      .onInitialize("initialize");
   binder.bind("authenticator").to("security.Authenticator");
 }
 

@@ -47,7 +47,7 @@ export default class XhrRequest {
   }
 
   addAuthorizationHeader(headers) {
-    if (!this.manager.sessionManager.isLoggedIn()) return;
+    if (!this.manager.sessionManager.isLoggedIn) return;
     headers[HTTPHeaderField.AUTHORIZATION] =
       "X-JIJI-AUTHENTICATE " + this.manager.sessionManager.getToken();
   }

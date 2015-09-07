@@ -7,12 +7,13 @@ import Transformer     from "./transformer";
 
 export default class XhrRequest {
 
-  constructor(manager, url, method, body, params) {
+  constructor(manager, url, method, body, params, isBackground = false) {
     this.url = url;
     this.body = body;
     this.manager = manager;
     this.method = method;
     this.params = params;
+    this.isBackground = isBackground;
     this.deferred = new Deferred();
 
     this.transformer = new Transformer();
@@ -23,7 +24,7 @@ export default class XhrRequest {
   }
 
   resendable() {
-    return this.method === "GET";
+    return this.method === "GET" || this.isBackground;
   }
 
   send() {

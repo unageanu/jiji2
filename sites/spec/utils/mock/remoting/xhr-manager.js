@@ -3,8 +3,8 @@ import XhrRequest from "src/remoting/xhr-request";
 import Deferred   from "src/utils/deferred";
 
 class MockXhrRequest extends XhrRequest {
-  constructor(manager, url, method, body, param) {
-    super(manager, url, method, body, param);
+  constructor(manager, url, method, body, param, isBackground=false) {
+    super(manager, url, method, body, param, isBackground);
     this.ajaxRequests = [];
   }
   sendRequest(settings) {
@@ -28,8 +28,9 @@ export default class MockXhrManager extends XhrManager {
     super();
     this.requests = [];
   }
-  xhr(url, method, body, param) {
-    let request = new MockXhrRequest(this, url, method, body, param);
+  xhr(url, method, body, param, isBackground=false) {
+    let request = new MockXhrRequest(
+      this, url, method, body, param, isBackground);
     this.requests.push(request);
     this.state.send(request, this);
     return request.result();

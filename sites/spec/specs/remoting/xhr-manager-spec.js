@@ -271,7 +271,7 @@ describe("XhrManager", () => {
       expect(manager.isLoading()).toBe(false);
     });
 
-    it("start()を呼び出してもGET以外のリクエストは再送されず、キャンセルとされる。", () => {
+    it("start()を呼び出してもGETまたはisBackgroundでないリクエストは再送されず、キャンセルとされる。", () => {
 
       let stopped = false;
 
@@ -282,14 +282,16 @@ describe("XhrManager", () => {
       let xhr1 = manager.xhr("/test", "PUT");
       let xhr2 = manager.xhr("/test2", "GET");
       let xhr3 = manager.xhr("/test3", "POST");
-      let xhr4 = manager.xhr("/test4", "POST");
+      let xhr4 = manager.xhr("/test4", "DELETE");
+      let xhr5 = manager.xhr("/test5", "PUT", {}, {}, true);
 
       expect(manager.isLoading()).toBe(true);
-      expect(manager.requests.length).toBe(4);
+      expect(manager.requests.length).toBe(5);
       expect(manager.requests[0].ajaxRequests.length).toBe(1);
       expect(manager.requests[1].ajaxRequests.length).toBe(1);
       expect(manager.requests[2].ajaxRequests.length).toBe(1);
       expect(manager.requests[3].ajaxRequests.length).toBe(1);
+      expect(manager.requests[4].ajaxRequests.length).toBe(1);
 
       // xhr1に401応答が返される
       manager.requests[0].ajaxRequests[0].d.reject(
@@ -303,29 +305,33 @@ describe("XhrManager", () => {
       expect(xhr2.fixed()).toBe(false);
       expect(xhr3.fixed()).toBe(false);
       expect(xhr4.fixed()).toBe(false);
+      expect(xhr5.fixed()).toBe(false);
 
       // ブロック中にリクエストを発行 / サーバーには送られない。
       let xhr10 = manager.xhr("/test10", "DELETE");
 
-      expect(manager.requests.length).toBe(5);
+      expect(manager.requests.length).toBe(6);
       expect(manager.requests[0].ajaxRequests.length).toBe(1);
       expect(manager.requests[1].ajaxRequests.length).toBe(1);
       expect(manager.requests[2].ajaxRequests.length).toBe(1);
       expect(manager.requests[3].ajaxRequests.length).toBe(1);
-      expect(manager.requests[4].ajaxRequests.length).toBe(0);
+      expect(manager.requests[4].ajaxRequests.length).toBe(1);
+      expect(manager.requests[5].ajaxRequests.length).toBe(0);
 
-      // xhr2,xhr3 も 401 でエラー
+      // xhr2,xhr3,xhr5 も 401 でエラー
       manager.requests[1].ajaxRequests[0].d.reject(createErrorResponse(401));
       manager.requests[2].ajaxRequests[0].d.reject(createErrorResponse(401));
+      manager.requests[4].ajaxRequests[0].d.reject(createErrorResponse(401));
 
       // xhr4 は 200 で成功 / 結果がクライアントに通知される
       manager.requests[3].ajaxRequests[0].d.resolve([{}]);
       expect(xhr4.resolved()).toBe(true);
 
-      // 1と2,3,10は未確定
+      // 1と2,3,5,10は未確定
       expect(xhr1.fixed()).toBe(false);
       expect(xhr2.fixed()).toBe(false);
       expect(xhr3.fixed()).toBe(false);
+      expect(xhr5.fixed()).toBe(false);
       expect(xhr10.fixed()).toBe(false);
 
       // すべてのリクエストが待ち状態になったので、一旦ローディングは完了
@@ -333,27 +339,34 @@ describe("XhrManager", () => {
 
       // 通信を再開
       // 401となっていたGETリクエスト,ブロック後に送付されたGETリクエストが再送される
-      // GET以外のリクエストは再送されずキャンセルとなる
+      // GETまたはisBackground=trueでないリクエストは再送されずキャンセルとなる
       manager.restart();
-      expect(manager.requests.length).toBe(5);
+      expect(manager.requests.length).toBe(6);
       expect(manager.requests[0].ajaxRequests.length).toBe(1);
       expect(manager.requests[1].ajaxRequests.length).toBe(2);
       expect(manager.requests[2].ajaxRequests.length).toBe(1);
       expect(manager.requests[3].ajaxRequests.length).toBe(1);
-      expect(manager.requests[4].ajaxRequests.length).toBe(0);
+      expect(manager.requests[4].ajaxRequests.length).toBe(2);
+      expect(manager.requests[5].ajaxRequests.length).toBe(0);
 
       // 1と3,10が確定
       expect(xhr1.rejected()).toBe(true);
       expect(xhr2.fixed()).toBe(false);
       expect(xhr3.rejected()).toBe(true);
+      expect(xhr5.fixed()).toBe(false);
       expect(xhr10.rejected()).toBe(true);
 
-      // xhr2があるのでローディング中
+      // xhr2,5があるのでローディング中
       expect(manager.isLoading()).toBe(true);
 
       // xhr2が完了
       manager.requests[1].ajaxRequests[1].d.resolve([{}]);
       expect(xhr2.resolved()).toBe(true);
+
+      // xhr5が完了
+      manager.requests[4].ajaxRequests[1].d.resolve([{}]);
+      expect(xhr5.resolved()).toBe(true);
+
 
       // 最後のリクエストが終わるとローディングも終了
       expect(manager.isLoading()).toBe(false);

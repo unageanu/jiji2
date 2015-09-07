@@ -4,7 +4,7 @@ export default class DeviceService extends AbstractService {
 
   put( uuid, info ) {
     const url = this.serviceUrl( uuid );
-    return this.xhrManager.xhr(url, "PUT", info);
+    return this.xhrManager.xhr(url, "PUT", info, {}, true);
   }
 
   endpoint() {

@@ -193,4 +193,48 @@ describe("Validators", () => {
     });
   });
 
+  describe("serverUrl", () => {
+    it("一般的な入力値", () => {
+      expect( () => {
+        Validators.serverUrl.validate("http://localhost:51423");
+      }).notToBeError();
+      expect( () => {
+        Validators.serverUrl.validate("https://127.0.0.1");
+      }).notToBeError();
+      expect( () => {
+        Validators.serverUrl.validate("http://192.168.0.100:12365/aaa");
+      }).notToBeError();
+      expect( () => {
+        Validators.serverUrl.validate("https://foo.var.com/bbb/ccc");
+      }).notToBeError();
+    });
+    it("入力必須", () => {
+      expect( () => {
+        Validators.serverUrl.validate("");
+      }).toBeValidationError("NOT_NULL");
+      expect( () => {
+        Validators.serverUrl.validate(null);
+      }).toBeValidationError("NOT_NULL");
+      expect( () => {
+        Validators.serverUrl.validate(undefined);
+      }).toBeValidationError("NOT_NULL");
+    });
+    it("コントロールコードは入力不可", () => {
+      expect( () => {
+        Validators.serverUrl.validate("http://090\u0002789");
+      }).toBeValidationError("CONTROL_CODE");
+    });
+    it("形式が不正", () => {
+      expect( () => {
+        Validators.serverUrl.validate("aaa");
+      }).toBeValidationError("PATTERN");
+      expect( () => {
+        Validators.serverUrl.validate("ftp://");
+      }).toBeValidationError("PATTERN");
+      expect( () => {
+        Validators.serverUrl.validate("http:/aaa/bbb");
+      }).toBeValidationError("PATTERN");
+    });
+  });
+
 });

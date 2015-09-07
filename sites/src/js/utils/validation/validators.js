@@ -86,6 +86,16 @@ export default {
     })
   },
 
+  serverUrl: builder.build({
+    notNull: true,
+    noSpecials : true,
+    maxLength: 1000,
+    pattern : {
+      regexp : /^https?\:\/\/.*/,
+      code: "PATTERN"
+    }
+  }),
+
   all() {
     for (let i=0, n=arguments.length; i<n; i++) {
       if (!arguments[i]) return false;

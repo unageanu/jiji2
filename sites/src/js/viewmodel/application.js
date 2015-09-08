@@ -39,7 +39,10 @@ export default class Application {
   initialize() {
     if ( !this.initializationDeferred ) {
       this.initializationDeferred =
-        this.initialSettingsPageModel.initialize();
+        this.initialSettingsPageModel.initialize().then(
+          () => this.initialSettingsPageModel.isInitialized ? null : "/initial-settings",
+          () => null
+        );
     }
     return this.initializationDeferred;
   }

@@ -14,7 +14,7 @@ export default class Initializer {
     this.container.get("application").then(
       (application) => {
         application.initialize().then(
-          () => this.initializeView(application),
+          (initialRoute) => this.initializeView(application, initialRoute),
           this.handleError.bind(this));
       }, this.handleError.bind(this));
   }
@@ -25,9 +25,9 @@ export default class Initializer {
       ContainerJS.Loaders.COMMON_JS
     );
   }
-  initializeView(application) {
+  initializeView(application, initialRoute) {
     const location = Router.HashLocation;
-    this.detectInitialPage(application);
+    if (initialRoute) location.replace(initialRoute);
     try {
       Router.run(this.routes(), location, (Handler) => {
         const element = document.getElementById("main");
@@ -35,12 +35,6 @@ export default class Initializer {
       });
     } catch (e) {
       this.handleError(e);
-    }
-  }
-  detectInitialPage(application) {
-    const location = Router.HashLocation;
-    if (!application.initialSettingsPageModel.isInitialized) {
-      location.replace("/initial-settings");
     }
   }
   handleError(error) {

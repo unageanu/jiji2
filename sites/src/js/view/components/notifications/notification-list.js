@@ -48,6 +48,6 @@ NotificationList.propTypes = {
   selectable: React.PropTypes.bool.isRequired,
   innerDivStyle: React.PropTypes.object,
 };
-NotificationList.defaultProp = {
+NotificationList.defaultProps = {
   innerDivStyle: {}
 };

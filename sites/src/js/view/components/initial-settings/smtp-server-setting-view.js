@@ -53,6 +53,6 @@ export default class SMTPServerSettingView extends Base {
 SMTPServerSettingView.propTypes = {
   model: React.PropTypes.object
 };
-SMTPServerSettingView.defaultProp = {
+SMTPServerSettingView.defaultProps = {
   model: null
 };

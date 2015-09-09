@@ -60,6 +60,6 @@ export default class MailAddressSettingView extends AbstractComponent {
 MailAddressSettingView.propTypes = {
   model: React.PropTypes.object
 };
-MailAddressSettingView.defaultProp = {
+MailAddressSettingView.defaultProps = {
   model: null
 };

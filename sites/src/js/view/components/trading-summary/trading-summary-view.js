@@ -99,7 +99,7 @@ export default class TradingSummaryView extends AbstractComponent {
 TradingSummaryView.propTypes = {
   model: React.PropTypes.object
 };
-TradingSummaryView.defaultProp = {
+TradingSummaryView.defaultProps = {
   model: null
 };
 TradingSummaryView.contextTypes = {

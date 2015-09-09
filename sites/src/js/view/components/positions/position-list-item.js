@@ -82,7 +82,7 @@ PositionListItem.propTypes = {
   selected: React.PropTypes.bool,
   innerDivStyle: React.PropTypes.object
 };
-PositionListItem.defaultProp = {
+PositionListItem.defaultProps = {
   position: null,
   selected: false,
   innerDivStyle: {}

@@ -99,6 +99,6 @@ extends AbstractComponent {
 MailaddressAndPasswordSettingView.propTypes = {
   model: React.PropTypes.object
 };
-MailaddressAndPasswordSettingView.defaultProp = {
+MailaddressAndPasswordSettingView.defaultProps = {
   model: null
 };

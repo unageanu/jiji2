@@ -129,7 +129,7 @@ export default class NotificationsTable extends AbstractComponent {
 NotificationsTable.propTypes = {
   model: React.PropTypes.object
 };
-NotificationsTable.defaultProp = {
+NotificationsTable.defaultProps = {
   model: null
 };
 NotificationsTable.contextTypes = {

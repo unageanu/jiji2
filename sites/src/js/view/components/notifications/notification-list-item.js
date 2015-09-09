@@ -57,7 +57,7 @@ NotificationListItem.propTypes = {
   selected: React.PropTypes.bool,
   innerDivStyle: React.PropTypes.object
 };
-NotificationListItem.defaultProp = {
+NotificationListItem.defaultProps = {
   notification: null,
   selected: false,
   innerDivStyle: {}

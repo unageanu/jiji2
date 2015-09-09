@@ -133,6 +133,6 @@ export default class SMTPServerSettingView extends AbstractComponent {
 SMTPServerSettingView.propTypes = {
   model: React.PropTypes.object
 };
-SMTPServerSettingView.defaultProp = {
+SMTPServerSettingView.defaultProps = {
   model: null
 };

@@ -181,7 +181,7 @@ export default class PositionsTable extends AbstractComponent {
 PositionsTable.propTypes = {
   model: React.PropTypes.object
 };
-PositionsTable.defaultProp = {
+PositionsTable.defaultProps = {
   model: null
 };
 PositionsTable.contextTypes = {

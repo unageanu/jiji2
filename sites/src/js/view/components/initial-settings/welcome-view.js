@@ -29,6 +29,6 @@ export default class WelcomeView extends AbstractComponent {
 WelcomeView.propTypes = {
   model: React.PropTypes.object
 };
-WelcomeView.defaultProp = {
+WelcomeView.defaultProps = {
   model: null
 };

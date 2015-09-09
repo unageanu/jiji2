@@ -65,7 +65,7 @@ export default class LogViewer extends AbstractComponent {
 LogViewer.propTypes = {
   model: React.PropTypes.object
 };
-LogViewer.defaultProp = {
+LogViewer.defaultProps = {
   model: null
 };
 LogViewer.contextTypes = {

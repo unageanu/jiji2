@@ -36,6 +36,6 @@ export default class SettingMenuButton extends React.Component {
 SettingMenuButton.propTypes = {
   menuItems: React.PropTypes.array
 };
-SettingMenuButton.defaultProp = {
+SettingMenuButton.defaultProps = {
   menuItems: []
 };

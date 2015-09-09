@@ -59,6 +59,6 @@ export default class PositionDetailsView extends React.Component {
 PositionDetailsView.propTypes = {
   position: React.PropTypes.object
 };
-PositionDetailsView.defaultProp = {
+PositionDetailsView.defaultProps = {
   position: null
 };

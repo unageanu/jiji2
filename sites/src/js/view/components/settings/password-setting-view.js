@@ -101,6 +101,6 @@ export default class PasswordSettingView extends AbstractComponent {
 PasswordSettingView.propTypes = {
   model: React.PropTypes.object
 };
-PasswordSettingView.defaultProp = {
+PasswordSettingView.defaultProps = {
   model: null
 };

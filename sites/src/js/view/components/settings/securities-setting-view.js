@@ -117,6 +117,6 @@ export default class SecuritiesSettingView extends AbstractComponent {
 SecuritiesSettingView.propTypes = {
   model: React.PropTypes.object
 };
-SecuritiesSettingView.defaultProp = {
+SecuritiesSettingView.defaultProps = {
   model: null
 };

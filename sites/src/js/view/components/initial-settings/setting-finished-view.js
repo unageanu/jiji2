@@ -30,6 +30,6 @@ export default class SettingFinishedView extends AbstractComponent {
 SettingFinishedView.propTypes = {
   model: React.PropTypes.object
 };
-SettingFinishedView.defaultProp = {
+SettingFinishedView.defaultProps = {
   model: null
 };

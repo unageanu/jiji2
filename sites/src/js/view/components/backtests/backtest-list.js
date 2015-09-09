@@ -63,7 +63,7 @@ BacktestList.propTypes = {
   selectedId : React.PropTypes.string.isRequired,
   model: React.PropTypes.object.isRequired
 };
-BacktestList.defaultProp = {
+BacktestList.defaultProps = {
   selectedId : null,
   model: null
 };

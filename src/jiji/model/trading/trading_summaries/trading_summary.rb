@@ -205,7 +205,7 @@ module Jiji::Model::Trading::TradingSummaries
     end
 
     def process(position)
-      profit_or_loss = position.profit_or_loss
+      profit_or_loss = BigDecimal.new(position.profit_or_loss, 10)
       update_max_profit_and_max_loss(profit_or_loss)
       update_total_profit_and_total_loss(profit_or_loss)
     end

@@ -40,11 +40,11 @@ module Jiji::Model::Notification
         @time_source.now, @backtest, message, actions)
       n.save
       @push_notifier.notify({
-        title:   message,
-        message: n.title,
-        image:   n.agent.icon_id,
+        title:          message,
+        message:        n.title,
+        image:          n.agent.icon_id,
         notificationId: n.id.to_s,
-        backtestId: @backtest ? @backtest.id.to_s : nil
+        backtestId:     @backtest ? @backtest.id.to_s : nil
         # style: "inbox",
         # summaryText: "他 %n%件",
         # notId: 1

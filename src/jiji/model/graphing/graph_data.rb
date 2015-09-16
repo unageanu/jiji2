@@ -10,7 +10,7 @@ module Jiji::Model::Graphing
     include Mongoid::Document
     include Jiji::Web::Transport::Transportable
 
-    store_in collection: 'graph-data'
+    store_in collection: 'graph_data'
     belongs_to :graph
 
     field :value,     type: Array

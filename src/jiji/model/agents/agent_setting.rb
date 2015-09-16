@@ -10,7 +10,7 @@ module Jiji::Model::Agents
     include Mongoid::Document
     include Jiji::Web::Transport::Transportable
 
-    store_in collection: 'agent-settings'
+    store_in collection: 'agent_settings'
 
     belongs_to :backtest, {
       class_name: 'Jiji::Model::Trading::BackTestProperties'

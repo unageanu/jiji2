@@ -9,7 +9,7 @@ module Jiji::Web
     before do
       if AllowCrossDomainRequestFilter.allow_cross_domain_request?
         headers({
-          'Access-Control-Allow-Origin' => 'null',
+          'Access-Control-Allow-Origin' => '*',
           'Access-Control-Max-Age'      => 10 * 24 * 60 * 60
         })
       end

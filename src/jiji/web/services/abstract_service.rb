@@ -88,18 +88,19 @@ module Jiji::Web
     end
 
     def allow(allow_methods)
-      publish_access_control_allow_header_if_allow_crossdomain_request
+      publish_access_control_allow_header_if_allow_crossdomain(allow_methods)
       headers({
         'Allow' => allow_methods
       })
     end
 
-    def publish_access_control_allow_header_if_allow_crossdomain_request
+    def publish_access_control_allow_header_if_allow_crossdomain(allow_methods)
       return unless AllowCrossDomainRequestFilter.allow_cross_domain_request?
       headers({
         'Access-Control-Allow-Headers' =>
           'X-Requested-With, X-HTTP-Method-Override, ' \
-          + 'Content-Type, Cache-Control, Accept, Authorization'
+          + 'Content-Type, Cache-Control, Accept, Authorization',
+        'Access-Control-Allow-Methods' => allow_methods
       })
     end
 

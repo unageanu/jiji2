@@ -129,7 +129,7 @@ describe("InitialSettingsPageModel", () => {
     it("通信エラーの場合、エラーが表示される", () => {
       model.setMailAddressAndPassword("foo@var.com", "11111", "11111");
       xhrManager.requests[0].reject({
-        status: 400
+        statusCode: 400
       });
       expect(model.isInitialized).toEqual(false);
       expect(model.phase).toEqual("mailAddressAndPassword");
@@ -244,7 +244,7 @@ describe("InitialSettingsPageModel", () => {
       model.securitiesSetting.activeSecuritiesId = "aa";
       model.setSecurities({});
       xhrManager.requests[0].reject({
-        status: 400
+        statusCode: 400
       });
 
       expect(model.isInitialized).toEqual(true);
@@ -362,7 +362,7 @@ describe("InitialSettingsPageModel", () => {
         password: "password"
       });
       xhrManager.requests[0].reject({
-        status: 500
+        statusCode: 500
       });
 
       expect(model.isInitialized).toEqual(true);

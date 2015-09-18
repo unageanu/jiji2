@@ -39,7 +39,7 @@ describe("PasswordSettingModel", () => {
     it("旧パスワードが不正な場合、エラーが表示される", () => {
       model.save( "11111", "11111", "22222" );
       xhrManager.requests[0].reject({
-        status: 401
+        statusCode: 401
       });
       expect(model.error).toEqual(
         "現在のパスワードが一致していません。入力した値をご確認ください");
@@ -48,7 +48,7 @@ describe("PasswordSettingModel", () => {
     it("通信エラーの場合、エラーが表示される", () => {
       model.save( "11111", "11111", "22222" );
       xhrManager.requests[0].reject({
-        status: 500
+        statusCode: 500
       });
       expect(model.error).toEqual(
         "サーバーが混雑しています。しばらく待ってからやり直してください");

@@ -5,7 +5,7 @@ import ContainerFactory from "../../utils/test-container-factory";
 
 function createErrorResponse(status) {
   return {
-    status: status
+    statusCode: status
   };
 }
 
@@ -38,7 +38,7 @@ describe("XhrManager", () => {
       let ajaxSettings = manager.requests[0].ajaxRequests[0].settings;
       expect(ajaxSettings.method).toBe("GET");
       expect(ajaxSettings.headers[HTTPHeaderField.AUTHORIZATION]).toBe(undefined);
-      expect(ajaxSettings.data).toBe(undefined);
+      expect(ajaxSettings.body).not.toBe(undefined);
       expect(ajaxSettings.url).toBe("/test");
 
       // ログインしてPOSTリクエストを発行
@@ -52,7 +52,7 @@ describe("XhrManager", () => {
       ajaxSettings = manager.requests[1].ajaxRequests[0].settings;
       expect(ajaxSettings.method).toBe("POST");
       expect(ajaxSettings.headers[HTTPHeaderField.AUTHORIZATION]).toBe("X-JIJI-AUTHENTICATE dummyToken");
-      expect(ajaxSettings.data.length).toBe(2);
+      expect(ajaxSettings.body).not.toBe(undefined);
       expect(ajaxSettings.url).toBe("/test");
     });
 
@@ -283,7 +283,7 @@ describe("XhrManager", () => {
       let xhr2 = manager.xhr("/test2", "GET");
       let xhr3 = manager.xhr("/test3", "POST");
       let xhr4 = manager.xhr("/test4", "DELETE");
-      let xhr5 = manager.xhr("/test5", "PUT", {}, {}, true);
+      let xhr5 = manager.xhr("/test5", "PUT", {}, {isBackground:true});
 
       expect(manager.isLoading()).toBe(true);
       expect(manager.requests.length).toBe(5);

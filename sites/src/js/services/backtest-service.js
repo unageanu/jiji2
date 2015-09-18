@@ -3,8 +3,8 @@ import AbstractService from "./abstract-service"
 export default class BacktestService extends AbstractService {
 
   getAll(ids=null) {
-    return this.xhrManager.xhr( this.serviceUrl(), "GET",
-      null, ids ? {ids: ids.join(",")} : null);
+    const url = this.serviceUrl("", ids ? {ids: ids.join(",")} : {});
+    return this.xhrManager.xhr( url, "GET" );
   }
 
   get(id) {

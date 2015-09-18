@@ -4,7 +4,7 @@
   "description": "FX auto trading system.",
   "main": "",
   "dependencies": {
-    "axios": "0.5.4",
+    "xhr": "2.1.0",
     "change-case": "2.3.0",
     "container-js": "1.0.6",
     "date-format": "0.0.2",

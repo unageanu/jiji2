@@ -246,7 +246,7 @@ describe("SMTPServerSettingModel", () => {
         password: "password"
       });
       xhrManager.requests[2].reject({
-        status: 500
+        statusCode: 500
       });
       expect(model.setting).toEqual({
         smtpHost: "smtp.example.com",

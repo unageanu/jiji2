@@ -1,5 +1,5 @@
 import Deferred        from "../utils/deferred";
-import axios           from "axios"
+import xhr             from "xhr"
 import Msgpack         from "msgpack"
 import HTTPHeaderField from "./http-header-field";
 import Error           from "../model/error";
@@ -7,13 +7,13 @@ import Transformer     from "./transformer";
 
 export default class XhrRequest {
 
-  constructor(manager, url, method, body, params, isBackground = false) {
+  constructor(manager, url, method, body, options) {
     this.url = url;
     this.body = body;
     this.manager = manager;
     this.method = method;
-    this.params = params;
-    this.isBackground = isBackground;
+    this.options = options;
+    this.isBackground = options.isBackground || false;
     this.deferred = new Deferred();
 
     this.transformer = new Transformer();
@@ -54,24 +54,23 @@ export default class XhrRequest {
   }
 
   buildConfig() {
-    const base = {
+    const base = Object.assign({
       url: this.url,
       method: this.method,
       params: this.params,
-      timeout: 1000 * 60 * 3,
-      transformRequest: [this.transformRequest.bind(this)],
-      transformResponse: [this.transformResponse.bind(this)],
-      data: this.body,
-      responseType: "arraybuffer",
+      body: this.transformRequest(this.body),
+      withCredentials: false,
       headers: {
         "Content-Type": "application/x-msgpack"
-      }
-    };
+      },
+      responseType: "arraybuffer"
+    }, this.options);
     this.addAuthorizationHeader(base.headers);
     return base;
   }
 
   transformRequest(data) {
+    if (data == null) return null;
     let transformed = this.transformer.transformRequest(data);
     return new Uint8Array(Msgpack.msgpack.pack(transformed));
   }
@@ -89,7 +88,20 @@ export default class XhrRequest {
   }
 
   sendRequest(setting) {
-    return axios(setting);
+    const d = new Deferred();
+    xhr(setting, (err, resp, body) => {
+      if (err) {
+        d.reject(error);
+      } else {
+        if (resp.statusCode >= 400) {
+          d.reject(resp);
+        } else {
+          resp.data = this.transformResponse(resp.body);
+          d.resolve(resp);
+        }
+      }
+    });
+    return d;
   }
 
   isAuthRequest() {
@@ -107,7 +119,8 @@ export default class XhrRequest {
   }
 
   convertErrorCode(response) {
-    switch (response.status) {
+    if (response.statusCode == null) return Error.Code.NETWORK_ERROR;
+    switch (response.statusCode) {
       case 400:
         return Error.Code.INVALID_VALUE;
       case 401:

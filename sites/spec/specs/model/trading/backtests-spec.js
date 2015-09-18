@@ -155,7 +155,6 @@ describe("Backtests", () => {
 
   it("updateState で状態を更新できる", () => {
     target.updateState();
-    expect(xhrManager.requests[0].params.ids).toEqual("5,4,2,3");
     xhrManager.requests[0].resolve([
       {id: "4", name:"dd", status: "finished",
         createdAt: date(4), progress:1,   currentTime: date(100)},
@@ -176,7 +175,6 @@ describe("Backtests", () => {
     ]);
 
     target.updateState();
-    expect(xhrManager.requests[1].params.ids).toEqual("5,2,3");
     xhrManager.requests[1].resolve([
       {id: "2", name:"cc", status: "finished"},
       {id: "3", name:"bb", status: "cancelled"},

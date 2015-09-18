@@ -3,6 +3,11 @@ import XhrRequest  from "./xhr-request";
 import Observable  from "../utils/observable";
 import Error       from "../model/error";
 
+const defaultOptions = {
+  timeout: 1000 * 60 * 3,
+  isBackground: false
+}
+
 const States = {
   ACCEPTING: {
     send(request, manager) {
@@ -65,9 +70,8 @@ export default class XhrManager extends Observable {
     this.loaderCount = 0;
   }
 
-  xhr(url, method, body = null, params = {}, isBackground=false ) {
-    const request = new XhrRequest(this,
-      url, method, body, params, isBackground);
+  xhr(url, method, body = null, options = defaultOptions ) {
+    const request = new XhrRequest(this, url, method, body, options);
     return this.handleRequest(request);
   }
   handleRequest(request) {

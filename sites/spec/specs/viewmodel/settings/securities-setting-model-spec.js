@@ -22,7 +22,7 @@ describe("SecuritiesSettingModel", () => {
         { securitiesId: "bb", name:"bbb" }
       ]);
       xhrManager.requests[1].reject({
-        status: 404
+        statusCode: 404
       });
       xhrManager.requests[2].resolve([
         { id: "config1", description: "config1" },
@@ -232,7 +232,7 @@ describe("SecuritiesSettingModel", () => {
 
       model.save({config1: "yyy"});
       xhrManager.requests[6].reject({
-        status: 400
+        statusCode: 400
       });
       expect(model.error).toEqual(
         "証券会社に接続できませんでした。<br/>アクセストークンを確認してください。");
@@ -240,7 +240,7 @@ describe("SecuritiesSettingModel", () => {
 
       model.save({config1: "yyy2"});
       xhrManager.requests[7].reject({
-        status: 500
+        statusCode: 500
       });
       expect(model.error).toEqual(
         "サーバーが混雑しています。しばらく待ってからやり直してください");

@@ -94,7 +94,7 @@ describe("MailAddressSettingModel", () => {
 
       model.save( "foo2@var.com" );
       xhrManager.requests[1].reject({
-        status: 500
+        statusCode: 500
       });
       expect(model.mailAddress).toEqual("foo@var.com");
       expect(model.error).toEqual(

@@ -91,7 +91,7 @@ export default {
     noSpecials : true,
     maxLength: 1000,
     pattern : {
-      regexp : /^https?\:\/\/.*/,
+      regexp : /^https?\:\/\/.+/,
       code: "PATTERN"
     }
   }),

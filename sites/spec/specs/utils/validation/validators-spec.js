@@ -234,6 +234,12 @@ describe("Validators", () => {
       expect( () => {
         Validators.serverUrl.validate("http:/aaa/bbb");
       }).toBeValidationError("PATTERN");
+      expect( () => {
+        Validators.serverUrl.validate("http://");
+      }).toBeValidationError("PATTERN");
+      expect( () => {
+        Validators.serverUrl.validate("https://");
+      }).toBeValidationError("PATTERN");
     });
   });
 

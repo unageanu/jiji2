@@ -1,6 +1,7 @@
 export default {
   Code: {
     CANCELED: "CANCELED",
+    NETWORK_ERROR: "NETWORK_ERROR",
 
     SERVER_BUSY: "SERVER_BUSY",
 
@@ -8,7 +9,7 @@ export default {
     OPERATION_NOT_ALLOWED: "OPERATION_NOT_ALLOWED",
 
     NOT_FOUND: "NOT_FOUND",
-    INVALID_VALUE: "INVALID_VALUE"
+    INVALID_VALUE: "INVALID_VALUE",
   },
 
   create(params={}) {

@@ -4,6 +4,7 @@ import Error         from "../model/error"
 
 
 const messages = {
+  NETWORK_ERROR: "サーバーに接続できませんでした。ネットワーク接続を確認してください",
   SERVER_ERROR: "サーバーでエラーが発生しました",
 
   OPERATION_NOT_ALLOWED: "操作が許可されていません",

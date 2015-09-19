@@ -81,10 +81,8 @@ module Jiji::Model::Notification
     end
 
     def insert_agent_information_to_hash(hash)
-      hash[:backtest_id] = backtest_id
-      return unless agent
-
-      hash[:agent]    = agent.display_info
+      hash[:backtest] = backtest ? backtest.display_info : {}
+      hash[:agent]    = agent ? agent.display_info : {}
     end
 
   end

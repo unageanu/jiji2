@@ -11,14 +11,14 @@ module Jiji::Model::Trading::Internal
     include Jiji::Model::Trading
     include Jiji::Model::Trading::Utils
 
-    def initialize(backtest_id = nil)
-      @backtest_id = backtest_id
+    def initialize(backtest = nil)
+      @backtest = backtest
     end
 
     def build_from_tick(internal_id,
         pair_name, units, sell_or_buy, tick, options = {})
       position = Position.new do |p|
-        initialize_trading_information(p, @backtest_id,
+        initialize_trading_information(p, @backtest,
           internal_id, pair_name, units, sell_or_buy)
         initialize_price_and_time_from_tick(p, tick, pair_name, sell_or_buy)
         p.closing_policy = ClosingPolicy.create(options)
@@ -28,7 +28,7 @@ module Jiji::Model::Trading::Internal
 
     def build_from_order(order, tick, agent_id = nil)
       position = Position.new do |p|
-        initialize_trading_information(p, @backtest_id, order.internal_id,
+        initialize_trading_information(p, @backtest, order.internal_id,
           order.pair_name, order.units, order.sell_or_buy)
         initialize_price_and_time(p, order.price, tick.timestamp)
         initialize_agent_information(p, agent_id)
@@ -97,25 +97,25 @@ module Jiji::Model::Trading::Internal
     end
 
     def initialize_trading_information_from_position(position, from, units)
-      initialize_trading_information(position, from.backtest_id,
+      initialize_trading_information(position, from.backtest,
         from.internal_id + '_', from.pair_name, units, from.sell_or_buy)
     end
 
     def initialize_trading_information_from_trade(position, trade)
       pair_name = Jiji::Model::Securities::Internal::Oanda::Converter\
                   .convert_instrument_to_pair_name(trade.instrument)
-      initialize_trading_information(position, @backtest_idl,
+      initialize_trading_information(position, @backtest,
         trade.id, pair_name, trade.units, trade.side.to_sym)
     end
 
     def initialize_trading_information(position,
-        backtest_id, internal_id, pair_name, units, sell_or_buy)
+        backtest, internal_id, pair_name, units, sell_or_buy)
       position.pair_name           = pair_name
       position.units               = units
       position.sell_or_buy         = sell_or_buy
       position.internal_id         = internal_id
       position.status              = :live
-      position.backtest_id         = backtest_id
+      position.backtest            = backtest
     end
 
   end

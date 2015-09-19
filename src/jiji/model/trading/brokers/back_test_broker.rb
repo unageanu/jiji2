@@ -13,15 +13,15 @@ module Jiji::Model::Trading::Brokers
 
     attr_reader :position_builder, :securities
 
-    def initialize(backtest_id, start_time, end_time,
+    def initialize(backtest, start_time, end_time,
       pairs, balance, tick_repository)
       super()
 
       config = create_securities_configuration(
-        backtest_id, start_time, end_time, pairs)
+        backtest.id, start_time, end_time, pairs)
       @securities = VirtualSecurities.new(tick_repository, config)
-      @backtest_id = backtest_id
-      @position_builder = PositionBuilder.new(backtest_id)
+      @backtest_id = backtest.id
+      @position_builder = PositionBuilder.new(backtest)
 
       init_account(balance)
       init_positions

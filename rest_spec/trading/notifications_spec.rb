@@ -28,7 +28,7 @@ describe '通知取得' do
     expect(r.body.length).to be 2
 
     notification = r.body[0]
-    expect(notification['backtest_id']).to eq nil
+    expect(notification['backtest']).to eq({})
     expect(notification['agent']['id']).not_to be nil
     expect(notification['agent']['name']).to eq 'test1'
     expect(notification['agent']['icon_id']).not_to be nil
@@ -38,7 +38,7 @@ describe '通知取得' do
     expect(Time.iso8601(notification['read_at'])).to eq Time.at(500)
 
     notification = r.body[1]
-    expect(notification['backtest_id']).to eq nil
+    expect(notification['backtest']).to eq({})
     expect(notification['agent']['id']).not_to be nil
     expect(notification['agent']['name']).to eq 'test1'
     expect(notification['agent']['icon_id']).not_to be nil
@@ -58,7 +58,8 @@ describe '通知取得' do
     expect(r.body.length).to be 2
 
     notification = r.body[0]
-    expect(notification['backtest_id']).to eq @test._id.to_s
+    expect(notification['backtest']['id']).to eq @test._id.to_s
+    expect(notification['backtest']['name']).to eq 'テスト1'
     expect(notification['agent']['id']).not_to be nil
     expect(notification['agent']['name']).to eq 'test1'
     expect(notification['agent']['icon_id']).not_to be nil
@@ -68,7 +69,8 @@ describe '通知取得' do
     expect(Time.iso8601(notification['read_at'])).to eq Time.at(500)
 
     notification = r.body[1]
-    expect(notification['backtest_id']).to eq @test._id.to_s
+    expect(notification['backtest']['id']).to eq @test._id.to_s
+    expect(notification['backtest']['name']).to eq 'テスト1'
     expect(notification['agent']['id']).not_to be nil
     expect(notification['agent']['name']).to eq 'test1'
     expect(notification['agent']['icon_id']).not_to be nil

@@ -6,6 +6,7 @@ require 'jiji/model/trading/brokers/broker_examples'
 describe Jiji::Model::Trading::Brokers::BackTestBroker do
   include_context 'use backtests'
   let(:position_repository) { container.lookup(:position_repository) }
+  let(:backtest) { backtests[0] }
   let(:backtest_id) { backtests[0].id }
   let(:repository) do
     repository = Jiji::Model::Trading::TickRepository.new
@@ -26,7 +27,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
     ]
   end
   let(:broker) do
-    Jiji::Model::Trading::Brokers::BackTestBroker.new(backtest_id,
+    Jiji::Model::Trading::Brokers::BackTestBroker.new(backtest,
       Time.utc(2015, 5, 1), Time.utc(2015, 5, 1, 0, 10),
       pairs, 100_000, repository)
   end

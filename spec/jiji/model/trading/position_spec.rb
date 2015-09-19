@@ -4,14 +4,17 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::Position do
-  include_context 'use data_builder'
+  include_context 'use backtests'
   let(:agent_setting) do
     data_builder.register_agent_setting
+  end
+  let(:backtest) do
+    backtests[0]
   end
 
   it 'バックテスト向け設定でPositionを作成できる' do
     position_builder =
-      Jiji::Model::Trading::Internal::PositionBuilder.new('test')
+      Jiji::Model::Trading::Internal::PositionBuilder.new(backtest)
     position = position_builder.build_from_tick(
       nil, :EURJPY, 10_000, :buy, data_builder.new_tick(1), {
         take_profit:     102,
@@ -19,10 +22,10 @@ describe Jiji::Model::Trading::Position do
         trailing_stop:   5,
         trailing_amount: 10
     })
-    position.agent_id   = agent_setting.id
+    position.agent   = agent_setting
     position.save
 
-    expect(position.backtest_id).to eq('test')
+    expect(position.backtest).to eq(backtest)
     expect(position.internal_id).to eq(nil)
     expect(position.pair_name).to eq(:EURJPY)
     expect(position.units).to eq(10_000)
@@ -34,7 +37,7 @@ describe Jiji::Model::Trading::Position do
     expect(position.exit_price).to eq(nil)
     expect(position.exited_at).to eq(nil)
     expect(position.status).to eq(:live)
-    expect(position.agent_id).to eq(agent_setting.id)
+    expect(position.agent).to eq(agent_setting)
     expect(position.closing_policy.take_profit).to eq(102)
     expect(position.closing_policy.stop_loss).to eq(100)
     expect(position.closing_policy.trailing_stop).to eq(5)
@@ -46,7 +49,7 @@ describe Jiji::Model::Trading::Position do
       nil, :EURUSD, 20_000, :sell, data_builder.new_tick(1))
     position.save
 
-    expect(position.backtest_id).to eq('test')
+    expect(position.backtest).to eq(backtest)
     expect(position.internal_id).to eq(nil)
     expect(position.pair_name).to eq(:EURUSD)
     expect(position.units).to eq(20_000)
@@ -58,7 +61,7 @@ describe Jiji::Model::Trading::Position do
     expect(position.exit_price).to eq(nil)
     expect(position.exited_at).to eq(nil)
     expect(position.status).to eq(:live)
-    expect(position.agent_id).to eq(nil)
+    expect(position.agent).to eq(nil)
     expect(position.closing_policy.take_profit).to eq(0)
     expect(position.closing_policy.stop_loss).to eq(0)
     expect(position.closing_policy.trailing_stop).to eq(0)
@@ -76,7 +79,7 @@ describe Jiji::Model::Trading::Position do
         trailing_stop:   5,
         trailing_amount: 10
     })
-    position.agent_id   = agent_setting.id
+    position.agent   = agent_setting
     position.save
 
     expect(position.backtest_id).to eq(nil)
@@ -91,7 +94,7 @@ describe Jiji::Model::Trading::Position do
     expect(position.exit_price).to eq(nil)
     expect(position.exited_at).to eq(nil)
     expect(position.status).to eq(:live)
-    expect(position.agent_id).to eq(agent_setting.id)
+    expect(position.agent).to eq(agent_setting)
     expect(position.closing_policy.take_profit).to eq(102)
     expect(position.closing_policy.stop_loss).to eq(100)
     expect(position.closing_policy.trailing_stop).to eq(5)
@@ -217,14 +220,14 @@ describe Jiji::Model::Trading::Position do
     expect(position.status).to eq(:closed)
 
     position_builder =
-      Jiji::Model::Trading::Internal::PositionBuilder.new('test')
+      Jiji::Model::Trading::Internal::PositionBuilder.new(backtest)
     position = position_builder.build_from_tick(
       nil, :EURUSD, 10_000, :sell, data_builder.new_tick(1))
 
     position.update_price(data_builder.new_tick(2, Time.at(100)))
 
     position.update_state_to_closed(103, Time.at(300))
-    expect(position.backtest_id).to eq('test')
+    expect(position.backtest).to eq(backtest)
     expect(position.internal_id).to eq(nil)
     expect(position.pair_name).to eq(:EURUSD)
     expect(position.units).to eq(10_000)
@@ -270,11 +273,11 @@ describe Jiji::Model::Trading::Position do
         trailing_stop:   5,
         trailing_amount: 10
     })
-    original.agent_id   = agent_setting.id
+    original.agent   = agent_setting
     original.save
 
     position = Jiji::Model::Trading::Position.find(original.id)
-    expect(position.backtest_id).to eq(nil)
+    expect(position.backtest).to eq(nil)
     expect(position.internal_id).to eq('1')
     expect(position.pair_name).to eq(:EURUSD)
     expect(position.units).to eq(1_000_000)
@@ -286,14 +289,14 @@ describe Jiji::Model::Trading::Position do
     expect(position.exit_price).to be nil
     expect(position.exited_at).to be nil
     expect(position.status).to eq(:live)
-    expect(position.agent_id).to eq(agent_setting.id)
+    expect(position.agent).to eq(agent_setting)
     expect(position.closing_policy).to eq(original.closing_policy)
 
     original.closing_policy.trailing_amount = 11
     original.save
 
     position = Jiji::Model::Trading::Position.find(original.id)
-    expect(position.backtest_id).to eq(nil)
+    expect(position.backtest).to eq(nil)
     expect(position.internal_id).to eq('1')
     expect(position.pair_name).to eq(:EURUSD)
     expect(position.units).to eq(1_000_000)
@@ -305,13 +308,14 @@ describe Jiji::Model::Trading::Position do
     expect(position.exit_price).to be nil
     expect(position.exited_at).to be nil
     expect(position.status).to eq(:live)
-    expect(position.agent_id).to eq(agent_setting.id)
+    expect(position.agent).to eq(agent_setting)
     expect(position.closing_policy).to eq(original.closing_policy)
   end
 
   describe '#to_h' do
-    it 'agentが設定されてる場合' do
-      position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
+    it 'agentとbacktestが設定されてる場合' do
+      position_builder =
+        Jiji::Model::Trading::Internal::PositionBuilder.new(backtest)
       position = position_builder.build_from_tick(
         '1', :EURUSD, 1_000_000, :sell, data_builder.new_tick(2), {
           take_profit:     102,
@@ -319,11 +323,13 @@ describe Jiji::Model::Trading::Position do
           trailing_stop:   5,
           trailing_amount: 10
       })
-      position.agent_id   = agent_setting.id
+      position.agent   = agent_setting
 
       hash = position.to_h
 
-      expect(hash[:backtest_id]).to eq(nil)
+      expect(hash[:backtest]).to eq({
+        id: backtest.id, name: 'テスト1'
+      })
       expect(hash[:internal_id]).to eq('1')
       expect(hash[:pair_name]).to eq(:EURUSD)
       expect(hash[:units]).to eq(1_000_000)
@@ -345,7 +351,7 @@ describe Jiji::Model::Trading::Position do
       expect(hash[:closing_policy][:trailing_stop]).to eq(5)
       expect(hash[:closing_policy][:trailing_amount]).to eq(10)
     end
-    it 'agentが未設定の場合' do
+    it 'agentとbacktestが未設定の場合' do
       position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
       position = position_builder.build_from_tick(
         '1', :EURUSD, 1_000_000, :sell, data_builder.new_tick(2), {
@@ -357,7 +363,7 @@ describe Jiji::Model::Trading::Position do
 
       hash = position.to_h
 
-      expect(hash[:backtest_id]).to eq(nil)
+      expect(hash[:backtest]).to eq({})
       expect(hash[:internal_id]).to eq('1')
       expect(hash[:pair_name]).to eq(:EURUSD)
       expect(hash[:units]).to eq(1_000_000)
@@ -369,7 +375,7 @@ describe Jiji::Model::Trading::Position do
       expect(hash[:exit_price]).to eq(nil)
       expect(hash[:exited_at]).to eq(nil)
       expect(hash[:status]).to eq(:live)
-      expect(hash[:agent]).to eq(nil)
+      expect(hash[:agent]).to eq({})
       expect(hash[:closing_policy][:take_profit]).to eq(102)
       expect(hash[:closing_policy][:stop_loss]).to eq(100)
       expect(hash[:closing_policy][:trailing_stop]).to eq(5)

@@ -39,7 +39,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     result = broker.buy(:EURJPY, 10_000)
     expected_position1 = Jiji::Model::Trading::Position.new do |p|
-      p.backtest_id   = backtest_id
+      p.backtest      = backtest
       p.internal_id   = result.trade_opened.internal_id
       p.pair_name     = :EURJPY
       p.units         = 10_000
@@ -84,7 +84,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     result = broker.sell(:EURUSD, 10_000, :market, {}, agent_setting.id)
     expected_position2 = Jiji::Model::Trading::Position.new do |p|
-      p.backtest_id   = backtest_id
+      p.backtest      = backtest
       p.internal_id   = result.trade_opened.internal_id
       p.pair_name     = :EURUSD
       p.units         = 10_000
@@ -364,7 +364,7 @@ shared_examples 'brokerの基本操作ができる' do
     ])
 
     expected_position1 = Jiji::Model::Trading::Position.new do |p|
-      p.backtest_id   = backtest_id
+      p.backtest      = backtest
       p.internal_id   = r1.internal_id
       p.pair_name     = :EURJPY
       p.units         = 10_000
@@ -382,7 +382,7 @@ shared_examples 'brokerの基本操作ができる' do
       })
     end
     expected_position2 = Jiji::Model::Trading::Position.new do |p|
-      p.backtest_id   = backtest_id
+      p.backtest      = backtest
       p.internal_id   = r2.internal_id
       p.pair_name     = :USDJPY
       p.units         = 10_000
@@ -476,7 +476,7 @@ shared_examples 'brokerの基本操作ができる' do
     expect(broker.orders).to eq([])
 
     expected_position3 = Jiji::Model::Trading::Position.new do |p|
-      p.backtest_id   = backtest_id
+      p.backtest      = backtest
       p.internal_id   = r3.internal_id
       p.pair_name     = :EURUSD
       p.units         = 10_000
@@ -592,7 +592,7 @@ shared_examples 'brokerの基本操作ができる' do
       stop_loss: 130
     }, agent_setting.id)
     expected_position = Jiji::Model::Trading::Position.new do |p|
-      p.backtest_id   = backtest_id
+      p.backtest      = backtest
       p.internal_id   = result.trade_opened.internal_id
       p.pair_name     = :EURJPY
       p.units         = 10_000

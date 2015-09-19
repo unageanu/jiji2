@@ -54,7 +54,6 @@ module Jiji::Model::Trading::Internal
     end
 
     def insert_trading_information_to_hash(h)
-      h[:backtest_id]          = backtest_id
       h[:internal_id]          = internal_id
       h[:pair_name]            = pair_name
       h[:units]                = units
@@ -73,8 +72,11 @@ module Jiji::Model::Trading::Internal
     end
 
     def insert_agent_information_to_hash(h)
-      return unless agent
-      h[:agent] = agent.display_info
+      h[:agent] = agent ? agent.display_info : {}
+    end
+
+    def insert_backtest_information_to_hash(h)
+      h[:backtest] = backtest ? backtest.display_info : {}
     end
 
     def calculate_profit_or_loss

@@ -67,6 +67,7 @@ module Jiji::Model::Trading
       h = {}
       insert_trading_information_to_hash(h)
       insert_price_and_time_information_to_hash(h)
+      insert_backtest_information_to_hash(h)
       insert_agent_information_to_hash(h)
       h[:closing_policy] = closing_policy.to_h
       h

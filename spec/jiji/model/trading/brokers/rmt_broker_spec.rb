@@ -9,6 +9,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
     @container.lookup(:position_repository)
   end
   let(:backtest_id) { nil }
+  let(:backtest) { nil }
 
   before(:example) do
     @container    = Jiji::Test::TestContainerFactory.instance.new_container

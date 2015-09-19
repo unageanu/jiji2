@@ -163,6 +163,13 @@ module Jiji::Model::Trading
       backtest.balance    = hash['balance'] || 0
     end
 
+    def display_info
+      {
+        id:   _id,
+        name: name
+      }
+    end
+
     private
 
     def create_default_jobs
@@ -181,7 +188,7 @@ module Jiji::Model::Trading
 
     def create_broker
       pairs = (pair_names || []).map { |p| @pairs.get_by_name(p) }
-      Brokers::BackTestBroker.new(_id, start_time, end_time,
+      Brokers::BackTestBroker.new(self, start_time, end_time,
         pairs, balance, @tick_repository)
     end
 

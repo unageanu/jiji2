@@ -16,7 +16,7 @@ describe Jiji::Model::Notification::Notification do
     notification = Jiji::Model::Notification::Notification.create(
       agent_setting, Time.at(100), nil, 'message', actions)
 
-    expect(notification.backtest_id).to be nil
+    expect(notification.backtest).to be nil
     expect(notification.agent_id).to eq agent_setting.id
     expect(notification.agent.name).to eq 'test1'
     expect(notification.agent.icon_id).to eq agent_setting.icon_id
@@ -27,7 +27,7 @@ describe Jiji::Model::Notification::Notification do
     notification.save
 
     notification = Jiji::Model::Notification::Notification.find(notification.id)
-    expect(notification.backtest_id).to be nil
+    expect(notification.backtest).to be nil
     expect(notification.agent_id).to eq agent_setting.id
     expect(notification.agent.name).to eq 'test1'
     expect(notification.agent.icon_id).to eq agent_setting.icon_id
@@ -38,7 +38,7 @@ describe Jiji::Model::Notification::Notification do
     notification = Jiji::Model::Notification::Notification.create(
       agent_setting, Time.at(200), backtests[0], 'message2', actions)
 
-    expect(notification.backtest_id).to be backtests[0].id
+    expect(notification.backtest).to be backtests[0]
     expect(notification.agent_id).to eq agent_setting.id
     expect(notification.agent.name).to eq 'test1'
     expect(notification.agent.icon_id).to eq agent_setting.icon_id
@@ -70,20 +70,38 @@ describe Jiji::Model::Notification::Notification do
       { 'label' => 'い', 'action' => 'bbb' }
     ]
     notification = Jiji::Model::Notification::Notification.create(
-      agent_setting.id,  Time.at(100), nil, 'message', actions)
+      agent_setting.id,  Time.at(100), backtests[0], 'message', actions)
 
     expect(notification.to_h).to eq({
-      id:          notification.id,
-      backtest_id: nil,
-      agent:       {
+      id:        notification.id,
+      backtest:  {
+        id:   backtests[0].id,
+        name: 'テスト1'
+      },
+      agent:     {
         id:      agent_setting.id,
         icon_id: agent_setting.icon_id,
         name:    'test1'
       },
-      timestamp:   Time.at(100),
-      message:     'message',
-      actions:     actions,
-      read_at:     nil
+      timestamp: Time.at(100),
+      message:   'message',
+      actions:   actions,
+      read_at:   nil
+    })
+
+    notification = Jiji::Model::Notification::Notification.create(
+      nil,  Time.at(100), nil, 'message', actions)
+
+    expect(notification.to_h).to eq({
+      id:        notification.id,
+      backtest:  {
+      },
+      agent:     {
+      },
+      timestamp: Time.at(100),
+      message:   'message',
+      actions:   actions,
+      read_at:   nil
     })
   end
 end

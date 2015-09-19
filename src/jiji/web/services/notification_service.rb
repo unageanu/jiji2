@@ -55,6 +55,16 @@ module Jiji::Web
       no_content
     end
 
+    options '/:notification_id' do
+      allow('GET,OPTIONS')
+    end
+
+    get '/:notification_id' do
+      id = BSON::ObjectId.from_string(params[:notification_id])
+      notification = repository.get_by_id(id)
+      ok(notification.to_h)
+    end
+
     options '/:notification_id/read' do
       allow('PUT,OPTIONS')
     end

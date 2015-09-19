@@ -147,6 +147,30 @@ describe '通知取得' do
     expect(r.body['not_read']).to be 2
   end
 
+  it 'GET /notifications/:notificatio_id で通知を取得できる' do
+    r = @client.get('notifications',  {
+      'order'       => 'timestamp',
+      'direction'   => 'asc',
+      'offset'      => 0,
+      'limit'       => 10,
+      'backtest_id' => 'rmt'
+    })
+    expect(r.status).to eq 200
+    expect(r.body.length).to be 3
+    expect(r.body[0]['read_at']).to be nil
+    notification_id = r.body[0]['id']
+
+    r = @client.get("notifications/#{notification_id}")
+    expect(r.status).to eq 200
+    expect(r.body['agent']['id']).not_to be nil
+    expect(r.body['agent']['name']).to eq 'test1'
+    expect(r.body['agent']['icon_id']).not_to be nil
+    expect(r.body['message']).to eq 'message'
+    expect(r.body['actions']).to eq []
+    expect(Time.iso8601(r.body['timestamp'])).to eq Time.at(100)
+    expect(r.body['read_at']).to eq nil
+  end
+
   it 'PUT /notifications/:notificatio_id/read で通知を既読にできる' do
     r = @client.get('notifications',  {
       'order'       => 'timestamp',

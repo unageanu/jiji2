@@ -91,7 +91,7 @@ export default class XhrRequest {
     const d = new Deferred();
     xhr(setting, (err, resp, body) => {
       if (err) {
-        d.reject(error);
+        d.reject(err);
       } else {
         if (resp.statusCode >= 400) {
           d.reject(resp);

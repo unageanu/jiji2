@@ -3,7 +3,9 @@ import AbstractService from "./abstract-service"
 export default class InitialSettingService extends AbstractService {
 
   isInitialized() {
-    return this.xhrManager.xhr( this.serviceUrl("initialized"), "GET" );
+    return this.xhrManager.xhr( this.serviceUrl("initialized"), "GET", {}, {
+      timeout: 1000 * 10
+    });
   }
 
   initialize(mailAddress, password) {

@@ -2,7 +2,7 @@ import AbstractService from "./abstract-service"
 
 export default class NotificationService extends AbstractService {
 
-  fetchNotifications( offset, limit, sortOrder, filterCondition) {
+  fetch( offset, limit, sortOrder, filterCondition) {
     const url = this.serviceUrl( "", Object.assign({
       offset:        offset,
       limit:         limit,
@@ -12,7 +12,11 @@ export default class NotificationService extends AbstractService {
     return this.xhrManager.xhr(url, "GET");
   }
 
-  countNotifications( filterCondition ) {
+  get( notificationId ) {
+    return this.xhrManager.xhr(this.serviceUrl( notificationId ), "GET");
+  }
+
+  count( filterCondition ) {
     const url = this.serviceUrl( "count", filterCondition);
     return this.xhrManager.xhr(url, "GET");
   }

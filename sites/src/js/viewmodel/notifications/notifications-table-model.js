@@ -13,11 +13,11 @@ class Loader {
     this.notificationService = notificationService;
   }
   load( offset, limit, sortOrder, filterCondition) {
-    return this.notificationService.fetchNotifications(
+    return this.notificationService.fetch(
       offset, limit, sortOrder, filterCondition);
   }
   count(filterCondition) {
-    return this.notificationService.countNotifications(filterCondition);
+    return this.notificationService.count(filterCondition);
   }
 }
 
@@ -76,6 +76,7 @@ export default class NotificationsTableModel extends TableModel {
   }
 
   loadItems() {
+    this.selectedNotificationId = null;
     this.selectedNotification = null;
     super.loadItems();
   }
@@ -134,6 +135,27 @@ export default class NotificationsTableModel extends TableModel {
         + " : アクション実行時にエラーが発生しました。"
         + "ログを確認してください。"
     };
+  }
+
+  findNotificationFromItems(notificationId) {
+    return this.selectedNotification
+      = this.items.find((n) => n.id == notificationId);
+  }
+  loadNotification(notificationId) {
+    this.selectedNotification = null;
+    this.notificationService.get(notificationId).then( (notification)=> {
+      this.selectedNotification = this.convertItem(notification);
+    });
+  }
+
+  set selectedNotificationId( notificationId ) {
+    this.setProperty("selectedNotificationId", notificationId);
+    if (notificationId == null) return;
+    this.findNotificationFromItems(notificationId)
+    || this.loadNotification(notificationId);
+  }
+  get selectedNotificationId( ) {
+    return this.getProperty("selectedNotificationId");
   }
 
   set selectedNotification( notification ) {

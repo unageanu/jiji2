@@ -82,9 +82,25 @@ describe("NotificationsTableModel", () => {
       xhrManager.requests[1].resolve(createItems(20));
 
       expect(model.items[1].readAt).toBe( null );
-      model.selectedNotification = model.items[1];
+      model.selectedNotificationId = model.items[1].id;
       expect(model.selectedNotification).toBe( model.items[1] );
       expect(model.items[1].readAt).not.toBe( null );
+    });
+    it("存在しない通知を選択するとサーバーから取得される", () => {
+      model.load();
+      xhrManager.requests[0].resolve({
+        count: 50
+      });
+      xhrManager.requests[1].resolve(createItems(20));
+
+      expect(model.items[1].readAt).toBe( null );
+      model.selectedNotificationId = "unknown";
+
+      xhrManager.requests[2].resolve(createItems(4)[3]);
+
+      expect(model.selectedNotification.id).toBe( 3 );
+      expect(model.selectedNotification.message).toBe( "message3" );
+      expect(model.selectedNotification.readAt).not.toBe( null );
     });
     it("次へ/前へを押してページを切り替えると、選択が解除される", () => {
       model.load();
@@ -93,15 +109,17 @@ describe("NotificationsTableModel", () => {
       });
       xhrManager.requests[1].resolve(createItems(20));
 
-      model.selectedNotification = model.items[0];
+      model.selectedNotificationId = model.items[0].id;
       model.next();
       xhrManager.requests[2].resolve(createItems(20));
       expect(model.selectedNotification).toBe( null );
+      expect(model.selectedNotificationId).toBe( null );
 
-      model.selectedNotification = model.items[0];
+      model.selectedNotificationId = model.items[0].id;
       model.prev();
       xhrManager.requests[3].resolve(createItems(20));
       expect(model.selectedNotification).toBe( null );
+      expect(model.selectedNotificationId).toBe( null );
     });
     it("ソート順を変更すると、選択が解除される", () => {
       model.load();
@@ -110,10 +128,11 @@ describe("NotificationsTableModel", () => {
       });
       xhrManager.requests[1].resolve(createItems(20));
 
-      model.selectedNotification = model.items[0];
+      model.selectedNotificationId = model.items[0].id;
       model.sortBy({order:"timestamp", direction: "asc"});
       xhrManager.requests[2].resolve(createItems(20));
       expect(model.selectedNotification).toBe( null );
+      expect(model.selectedNotificationId).toBe( null );
     });
     it("一覧を再読み込みすると、選択が解除される", () => {
       model.load();
@@ -122,13 +141,14 @@ describe("NotificationsTableModel", () => {
       });
       xhrManager.requests[1].resolve(createItems(20));
 
-      model.selectedNotification = model.items[0];
+      model.selectedNotificationId = model.items[0].id;
       model.load();
       xhrManager.requests[2].resolve({
         count: 50
       });
       xhrManager.requests[3].resolve(createItems(20));
       expect(model.selectedNotification).toBe( null );
+      expect(model.selectedNotificationId).toBe( null );
     });
   });
 

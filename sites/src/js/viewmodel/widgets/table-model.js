@@ -82,11 +82,13 @@ export default class TableModel extends Observable {
 
   loadItems() {
     this.items  = null;
+    this.loading = true;
     return this.loader.load( this.offset, this.pageSize,
       this.sortOrder, this.filterCondition ).then((items) => {
-        this.items      = this.convertItems(items);
+        this.loading = false;
+        this.items   = this.convertItems(items);
         this.updateState();
-    });
+    }, (error) => this.loading = false );
   }
 
   updateState() {
@@ -138,7 +140,12 @@ export default class TableModel extends Observable {
   get filterCondition() {
     return this.getProperty("filterCondition");
   }
-
+  set loading(loading) {
+    this.setProperty("loading", loading);
+  }
+  get loading() {
+    return this.getProperty("loading");
+  }
 
   set totalCount(totalCount) {
     this.setProperty("totalCount", totalCount);

@@ -59,8 +59,8 @@ export default class AgentSourceList extends React.Component {
       <ListItem
         key={agentSource.id}
         className={selected ? "mui-selected" : ""}
-        onTouchTap={tapAction}>
-        {agentSource.name}
+        onTouchTap={tapAction}
+        primaryText={agentSource.name}>
       </ListItem>
     );
   }

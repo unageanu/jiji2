@@ -45,8 +45,8 @@ export default class BacktestList extends AbstractComponent {
       <ListItem
         key={backtest.id}
         className={selected ? "mui-selected" : ""}
-        onTouchTap={tapAction}>
-        {backtest.name + " " + backtest.status + " " + (backtest.progress*100)}
+        onTouchTap={tapAction}
+        primaryText={backtest.name + " " + backtest.status + " " + (backtest.progress*100)}>
       </ListItem>
     );
   }

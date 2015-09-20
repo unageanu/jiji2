@@ -27,8 +27,8 @@ export default class AgentClassSelector extends React.Component {
     return (
       <ListItem
         key={agentClass.name}
-        onTouchTap={tapAction}>
-        {agentClass.name}
+        onTouchTap={tapAction}
+        primaryText={agentClass.name}>
       </ListItem>
     );
   }

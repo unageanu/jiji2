@@ -82,8 +82,8 @@ export default class AgentSettingEditor extends AbstractComponent {
       return <ListItem
             key={index}
             className={selected ? "mui-selected" : ""}
-            onTouchTap={tapAction}>
-            {agent.agentName}
+            onTouchTap={tapAction}
+            primaryText={agent.agentName}>
           </ListItem>;
     });
   }

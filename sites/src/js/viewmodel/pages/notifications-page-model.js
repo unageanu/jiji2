@@ -10,12 +10,14 @@ export default class NotificationsPageModel extends Observable {
 
   postCreate() {
     this.notificationsTable =
-      this.viewModelFactory.createNotificationsTableModel(100);
+      this.viewModelFactory.createNotificationsTableModel(10);
   }
 
-  initialize( ) {
+  initialize( selectedNotificationId ) {
     this.notificationsTable.initialize();
-    this.notificationsTable.load();
+    this.notificationsTable.load().then( () => {
+      this.notificationsTable.selectedNotificationId = selectedNotificationId
+    });
   }
 
 }

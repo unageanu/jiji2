@@ -32,7 +32,10 @@ export default (
       <Route path=":id" handler={BackTests} ignoreScrollBehavior={true}>
       </Route>
     </Route>
-    <Route path="notifications"        handler={Notifications} />
+    <Route path="notifications"        handler={Notifications}>
+      <Route path=":id" handler={Notifications} ignoreScrollBehavior={true}>
+      </Route>
+    </Route>
     <Route path="agents"               handler={Agents} />
     <Route path="settings"             handler={Settings} />
 

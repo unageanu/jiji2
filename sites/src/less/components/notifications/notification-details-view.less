@@ -1,0 +1,46 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+@notifications-page-avatar-panel-width:  @grid * 5;
+
+.notifications-page {
+  .details {
+    padding: @grid*6 0;
+
+    .two-column-layout-parent( @notifications-page-avatar-panel-width );
+
+    .avatar-panel {
+      .two-column-layout-left( @notifications-page-avatar-panel-width );
+      padding-left: @grid*6;
+    }
+    .content-panel {
+      .two-column-layout-right( @notifications-page-avatar-panel-width + @grid*8 );
+      padding-right: @grid*6;
+
+      .message {
+        font-size: @font-size-normal;
+        color: @font-color-normal;
+      }
+      .agent-name {
+        margin-top: @grid;
+      }
+      .timestamp, .agent-name {
+        font-size: @font-size-small;
+        color: @font-color-light;
+      }
+      .action-buttons {
+        margin-top: @grid*2;
+        text-align: right;
+
+        .action-button {
+          margin-bottom: @grid;
+        }
+      }
+    }
+
+    .info {
+      text-align: center;
+      padding: @grid*10 @grid*2
+    }
+  }
+}

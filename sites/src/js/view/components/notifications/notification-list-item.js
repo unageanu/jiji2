@@ -2,6 +2,7 @@ import React               from "react"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
 import TextInRadius        from "../widgets/text-in-radius"
+import Theme        from "../../theme"
 
 const ListItem   = MUI.ListItem;
 const Avatar     = MUI.Avatar;
@@ -21,12 +22,17 @@ export default class NotificationListItem extends React.Component {
     return (
       <ListItem
         innerDivStyle={
-          Object.assign({ paddingRight:"72px"}, this.props.innerDivStyle)
+          Object.assign({
+            paddingRight:"72px",
+            backgroundColor: this.props.selected
+              ? Theme.getPalette().backgroundColorDarkAlpha : "rgba(0,0,0,0)"
+          }, this.props.innerDivStyle)
         }
         leftAvatar={this.createAvatar(notification)}
         primaryText={notification.message}
         secondaryText={this.createSecondaryText(notification)}
-        rightIcon={this.createRightIcon(notification)} />
+        rightIcon={this.createRightIcon(notification)}
+        onTouchTap={this.props.onTouchTap} />
     );
   }
   createPrimaryTextt(notification) {
@@ -55,10 +61,12 @@ export default class NotificationListItem extends React.Component {
 NotificationListItem.propTypes = {
   notification: React.PropTypes.object,
   selected: React.PropTypes.bool,
-  innerDivStyle: React.PropTypes.object
+  innerDivStyle: React.PropTypes.object,
+  onTouchTap: React.PropTypes.func
 };
 NotificationListItem.defaultProps = {
   notification: null,
   selected: false,
-  innerDivStyle: {}
+  innerDivStyle: {},
+  onTouchTap: () => {}
 };

@@ -7,7 +7,7 @@ import LoadingImage         from "../widgets/loading-image"
 const List   = MUI.List;
 
 const keys = new Set([
-  "items", "selectedNotification"
+  "items", "selectedNotification",  "selectedNotificationId"
 ]);
 
 export default class NotificationList extends AbstractComponent {
@@ -28,17 +28,30 @@ export default class NotificationList extends AbstractComponent {
       return <div className="info"><LoadingImage /></div>;
     }
     if (this.state.items.length <= 0) {
-      return <div className="info">未読の通知はありません</div>;
+      return <div className="info">{this.props.emptyLabel}</div>;
     }
-    return <List style={{paddingTop:0}}>{this.createListItems()}</List>;
+    return <List
+      className="list"
+      style={{
+        paddingTop:0,
+        backgroundColor: "rgba(0,0,0,0)"}}>
+        {this.createListItems()}
+    </List>;
   }
   createListItems() {
     return this.state.items.map((notification, index) => {
-       return <NotificationListItem
-          key={index}
-          notification={notification}
-          innerDivStyle={this.props.innerDivStyle}
-          selected={this.props.selectable && this.state.selectedIndex === index } /> ;
+      const touchAction = this.props.selectable
+        ? () => this.props.model.selectedNotificationId = notification.id
+        : () => {};
+      return <NotificationListItem
+        key={index}
+        notification={notification}
+        innerDivStyle={this.props.innerDivStyle}
+        selected={
+          this.props.selectable
+          && this.state.selectedNotificationId === notification.id
+        }
+        onTouchTap={touchAction} /> ;
     });
   }
 
@@ -47,7 +60,9 @@ NotificationList.propTypes = {
   model: React.PropTypes.object.isRequired,
   selectable: React.PropTypes.bool.isRequired,
   innerDivStyle: React.PropTypes.object,
+  emptyLabel:  React.PropTypes.string
 };
 NotificationList.defaultProps = {
-  innerDivStyle: {}
+  innerDivStyle: {},
+  emptyLabel: "未読の通知はありません"
 };

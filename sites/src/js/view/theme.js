@@ -28,7 +28,8 @@ export default {
       borderColor: Colors.grey300,
       disabledColor: ColorManipulator.fade("#666666", 0.3),
       backgroundColor: "#FFF",
-      backgroundColorDark: "#F0F0F0"
+      backgroundColorDark: "#F0F0F0",
+      backgroundColorDarkAlpha: "rgba(128, 128, 128, 0.11)"
     };
   },
   getComponentThemes(palette, spacing) {

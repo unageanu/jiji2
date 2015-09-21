@@ -1,0 +1,17 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+@import "../../mixins/layout.less";
+
+@notifications-list-width:   @grid * 55;
+
+.notifications-page {
+  .two-column-layout-parent(@notifications-list-width);
+
+  .list-panel {
+    .two-column-layout-left(@notifications-list-width);
+  }
+
+  .details-panel {
+    .two-column-layout-right(@notifications-list-width);
+  }
+}

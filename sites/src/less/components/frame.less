@@ -1,5 +1,6 @@
 @import "../colors.less";
 @import "../sizes.less";
+@import "../mixins/layout.less";
 
 @navi-width:   @grid * 36;
 
@@ -12,19 +13,13 @@
 }
 
 .container {
-  width: 100%;
-  float: right;
-  margin-left: @navi-width * -1 ;
+  .two-column-layout-parent(@navi-width)
 }
 
 .content {
-  position: relative;
-  margin: 0 0 0 @navi-width;
-  padding: @grid *2;
+  .two-column-layout-right(@navi-width)
 }
 
 .left-navi {
-  width: @navi-width;
-  float: left;
-  z-index: 100000;
+  .two-column-layout-left(@navi-width)
 }

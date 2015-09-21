@@ -23,7 +23,8 @@ var base = {
       exclude:  /(node_modules|lib)/,
       loader:  'babel-loader',
       query: {
-        experimental: true
+        stage : 0,
+        cacheDirectory: "cache/babel-cache"
       }
     }, {
       test:     /\.jsx/,

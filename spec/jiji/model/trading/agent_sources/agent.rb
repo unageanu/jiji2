@@ -87,6 +87,19 @@ class SendNotificationAgent
     @send = true
   end
 
+  def execute_action(action)
+    if (action == "mail")
+      notifier.compose_text_mail('foo@example.com', 'テスト2', '本文')
+    else
+      notifier.push_notification(action, [
+        { 'label' => '通知を送る',   'action' => 'push-aaa' },
+        { 'label' => '通知を送る2',  'action' => 'push-bbb' },
+        { 'label' => 'メールを送る', 'action' => 'mail' }
+      ])
+    end
+    'OK'
+  end
+
 end
 
 class ErrorAgent

@@ -78,7 +78,7 @@ export default class NotificationsTableModel extends TableModel {
   loadItems() {
     this.selectedNotificationId = null;
     this.selectedNotification = null;
-    super.loadItems();
+    return super.loadItems();
   }
 
   convertItems(items) {
@@ -106,7 +106,7 @@ export default class NotificationsTableModel extends TableModel {
 
   markAsRead(notification) {
     notification.readAt = new Date();
-    this.setProperty("items", this.items);
+    this.setProperty("items", this.items, () => false );
     this.notRead = this.notRead > 0 ? this.notRead-1 : 0;
     this.notificationService.markAsRead( notification.id );
   }
@@ -139,7 +139,7 @@ export default class NotificationsTableModel extends TableModel {
 
   findNotificationFromItems(notificationId) {
     return this.selectedNotification
-      = this.items.find((n) => n.id == notificationId);
+      = this.items && this.items.find((n) => n.id == notificationId);
   }
   loadNotification(notificationId) {
     this.selectedNotification = null;

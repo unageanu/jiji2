@@ -1,4 +1,5 @@
 import Observable         from "../../utils/observable"
+import Deferred           from "../../utils/deferred"
 
 export default class TableModel extends Observable {
 
@@ -20,17 +21,21 @@ export default class TableModel extends Observable {
   }
 
   load() {
+    const d = new Deferred ();
     this.loader.count(this.filterCondition).then((count)=>{
       this.totalCount = count.count;
       this.processCount(count);
       this.offset = this.getDefaultOffset();
       if (this.totalCount > 0) {
-        this.loadItems();
+        this.loadItems().then(
+          (r) => d.resolve(this.items), (e) => d.reject(e) );
       } else {
         this.items = [];
         this.updateState();
+        d.resolve(this.items)
       }
-    });
+    }, (e) => d.reject(e));
+    return d;
   }
 
   goTo(offset) {

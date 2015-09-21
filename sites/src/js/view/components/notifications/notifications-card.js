@@ -48,7 +48,7 @@ export default class NotificationsCard extends AbstractCard {
 
   createBody() {
     return <NotificationList
-            selectable={false}
+            selectable={true}
             {...this.props} />;
   }
 

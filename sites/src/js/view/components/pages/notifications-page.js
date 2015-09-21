@@ -14,12 +14,11 @@ export default class NotificationsPage extends AbstractPage {
 
   componentWillMount() {
     const model = this.model();
-    model.initialize();
-    model.selectedNotificationId = this.props.params.id;
+    model.initialize(this.props.params.id);
   }
 
   componentWillReceiveProps(nextProps) {
-    this.model().selectedNotificationId = nextProps.params.id;
+    this.model().notificationsTable.selectedNotificationId = nextProps.params.id;
   }
 
   render() {

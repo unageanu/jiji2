@@ -41,7 +41,7 @@ export default class NotificationList extends AbstractComponent {
   createListItems() {
     return this.state.items.map((notification, index) => {
       const touchAction = this.props.selectable
-        ? () => this.props.model.selectedNotificationId = notification.id
+        ? () => this.context.router.transitionTo("/notifications/"+notification.id)
         : () => {};
       return <NotificationListItem
         key={index}
@@ -65,4 +65,7 @@ NotificationList.propTypes = {
 NotificationList.defaultProps = {
   innerDivStyle: {},
   emptyLabel: "未読の通知はありません"
+};
+NotificationList.contextTypes = {
+  router: React.PropTypes.func
 };

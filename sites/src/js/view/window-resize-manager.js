@@ -4,17 +4,35 @@ export default class WindowResizeManager extends Observable {
 
   constructor() {
     super();
-    this.registerEventHandler();
+    this.registerResizeEventHandler();
+    this.registerScrollEventHandler();
   }
 
-  registerEventHandler() {
-    const handler = (ev) => {
+  registerResizeEventHandler() {
+    this.registerEventHandler("resize", (ev) => {
       this.fire("windowResized", this.windowSize);
-    };
+    });
+  }
+
+  registerScrollEventHandler() {
+    this.registerEventHandler("scroll", (ev) => {
+      const scrollHeight   = this.contentSize.h;
+      const scrollPosition = this.windowSize.h +
+        (window.scrollY||window.pageYOffset||document.body.scrollTop);
+      if ( (scrollHeight - scrollPosition) <= 200) {
+        this.fire("scrolledBottom", {
+          height: scrollHeight,
+          position: scrollPosition
+        });
+      }
+    });
+  }
+
+  registerEventHandler(key, handler) {
     if (window.addEventListener) {
-      window.addEventListener("resize", handler, false);
+      window.addEventListener(key, handler, false);
     } else {
-      window.attachEvent("resize", handler);
+      window.attachEvent(key, handler);
     }
   }
 

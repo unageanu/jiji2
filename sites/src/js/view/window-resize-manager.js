@@ -17,8 +17,7 @@ export default class WindowResizeManager extends Observable {
   registerScrollEventHandler() {
     this.registerEventHandler("scroll", (ev) => {
       const scrollHeight   = this.contentSize.h;
-      const scrollPosition = this.windowSize.h +
-        (window.scrollY||window.pageYOffset||document.body.scrollTop);
+      const scrollPosition = this.windowSize.h + this.scrollPosition.top;
       if ( (scrollHeight - scrollPosition) <= 200) {
         this.fire("scrolledBottom", {
           height: scrollHeight,
@@ -45,5 +44,12 @@ export default class WindowResizeManager extends Observable {
     const width  = (window.innerWidth||document.documentElement.clientWidth||0);
     const height = (window.innerHeight||document.documentElement.clientHeight||0);
     return { w: width, h:height };
+  }
+  get scrollPosition() {
+    const doc = document.documentElement;
+    return {
+      left:  window.pageXOffset || doc.scrollLeft,
+      top:   window.pageYOffset || doc.scrollTop
+    }
   }
 }

@@ -47,19 +47,28 @@ export default class NotificationList extends AbstractComponent {
   }
   createListItems() {
     return this.state.items.map((notification, index) => {
-      const touchAction = this.props.selectable
-        ? () => this.context.router.transitionTo("/notifications/"+notification.id)
-        : () => {};
       return <NotificationListItem
         key={index}
         notification={notification}
+        onTouchTap={this.createAction(notification)}
+        mobile={this.props.mobile}
         innerDivStyle={this.props.innerDivStyle}
         selected={
           this.props.selectable
           && this.state.selectedNotificationId === notification.id
-        }
-        onTouchTap={touchAction} /> ;
+        } />;
     });
+  }
+
+  createAction(notification) {
+    if (this.props.selectable) {
+      return (ev) => {
+        this.context.router.transitionTo("/notifications/"+notification.id);
+        ev.preventDefault();
+      };
+    } else {
+      return null;
+    }
   }
 
   registerAutoFillHandler() {
@@ -80,12 +89,14 @@ NotificationList.propTypes = {
   selectable: React.PropTypes.bool.isRequired,
   innerDivStyle: React.PropTypes.object,
   emptyLabel:  React.PropTypes.string,
-  autoFill: React.PropTypes.bool
+  autoFill: React.PropTypes.bool,
+  mobile: React.PropTypes.bool
 };
 NotificationList.defaultProps = {
   innerDivStyle: {},
   emptyLabel: "未読の通知はありません",
-  autoFill: false
+  autoFill: false,
+  mobile: false
 };
 NotificationList.contextTypes = {
   router: React.PropTypes.func,

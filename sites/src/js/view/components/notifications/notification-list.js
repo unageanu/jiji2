@@ -64,10 +64,13 @@ export default class NotificationList extends AbstractComponent {
 
   registerAutoFillHandler() {
     this.context.windowResizeManager.addObserver("scrolledBottom", () => {
-      if ( this.state.filling || !this.props.model.hasNext ) return;
+      if ( this.filling || !this.props.model.hasNext ) return;
       this.setState({filling: true});
-      this.props.model.fillNext().always(
-        () => this.setState({filling: false}) );
+      this.filling = true;
+      this.props.model.fillNext().always(() => {
+        this.filling = false;
+        this.setState({filling: false});
+      });
     });
   }
 

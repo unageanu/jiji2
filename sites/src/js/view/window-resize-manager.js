@@ -18,7 +18,7 @@ export default class WindowResizeManager extends Observable {
     this.registerEventHandler("scroll", (ev) => {
       const scrollHeight   = this.contentSize.h;
       const scrollPosition = this.windowSize.h + this.scrollPosition.top;
-      if ( (scrollHeight - scrollPosition) <= 200) {
+      if ( (scrollHeight - scrollPosition) <= 50) {
         this.fire("scrolledBottom", {
           height: scrollHeight,
           position: scrollPosition

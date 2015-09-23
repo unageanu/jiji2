@@ -30,6 +30,7 @@ export default class NotificationsPage extends AbstractPage {
             />
           <NotificationList
             model={this.model().notificationsTable}
+            autoFill={false}
             emptyLabel="通知はありません"
             selectable={true} />
         </div>

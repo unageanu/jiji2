@@ -21,6 +21,8 @@ export default class NotificationList extends AbstractComponent {
     this.registerPropertyChangeListener(this.props.model, keys);
     const state = this.collectInitialState(this.props.model, keys);
     this.setState(state);
+
+    if (this.props.autoFill) this.registerAutoFillHandler();
   }
 
   render() {
@@ -30,13 +32,18 @@ export default class NotificationList extends AbstractComponent {
     if (this.state.items.length <= 0) {
       return <div className="info">{this.props.emptyLabel}</div>;
     }
-    return <List
-      className="list"
-      style={{
-        paddingTop:0,
-        backgroundColor: "rgba(0,0,0,0)"}}>
-        {this.createListItems()}
-    </List>;
+    const filling = this.state.filling
+      ? <div className="info"><LoadingImage /></div> : null;
+    return <div>
+      <List
+        className="list"
+        style={{
+          paddingTop:0,
+          backgroundColor: "rgba(0,0,0,0)"}}>
+          {this.createListItems()}
+      </List>
+      {filling}
+    </div>;
   }
   createListItems() {
     return this.state.items.map((notification, index) => {
@@ -55,17 +62,29 @@ export default class NotificationList extends AbstractComponent {
     });
   }
 
+  registerAutoFillHandler() {
+    this.context.windowResizeManager.addObserver("scrolledBottom", () => {
+      if ( this.state.filling || !this.props.model.hasNext ) return;
+      this.setState({filling: true});
+      this.props.model.fillNext().always(
+        () => this.setState({filling: false}) );
+    });
+  }
+
 }
 NotificationList.propTypes = {
   model: React.PropTypes.object.isRequired,
   selectable: React.PropTypes.bool.isRequired,
   innerDivStyle: React.PropTypes.object,
-  emptyLabel:  React.PropTypes.string
+  emptyLabel:  React.PropTypes.string,
+  autoFill: React.PropTypes.bool
 };
 NotificationList.defaultProps = {
   innerDivStyle: {},
-  emptyLabel: "未読の通知はありません"
+  emptyLabel: "未読の通知はありません",
+  autoFill: false
 };
 NotificationList.contextTypes = {
-  router: React.PropTypes.func
+  router: React.PropTypes.func,
+  windowResizeManager: React.PropTypes.object
 };

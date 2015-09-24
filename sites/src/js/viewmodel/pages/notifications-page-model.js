@@ -16,10 +16,10 @@ export default class NotificationsPageModel extends Observable {
     this.selection.attach(this.notificationsTable);
   }
 
-  initialize( selectedNotificationId ) {
+  initialize( selectedId ) {
     this.notificationsTable.initialize();
     this.notificationsTable.load().then( () => {
-      this.selection.selectedNotificationId = selectedNotificationId
+      this.selection.selectedId = selectedId
     });
   }
 

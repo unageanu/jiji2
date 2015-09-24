@@ -1,11 +1,8 @@
-import TableModel        from "../widgets/table-model"
-import NumberFormatter   from "../utils/number-formatter"
-import DateFormatter     from "../utils/date-formatter"
+import SelectionModel    from "../widgets/selection-model"
 import Deferred          from "../../utils/deferred"
-import Observable        from "../../utils/observable"
 import NotificationModel from "./notification-model"
 
-export default class NotificationSelectionModel extends Observable {
+export default class NotificationSelectionModel extends SelectionModel {
 
   constructor( notificationService,
     actionService, eventQueue, urlResolver) {
@@ -14,32 +11,16 @@ export default class NotificationSelectionModel extends Observable {
     this.actionService = actionService;
     this.urlResolver = urlResolver;
     this.eventQueue = eventQueue;
-
-    this.selectedNotificationId = null;
-    this.selectedNotification   = null;
-  }
-
-  attach(tableModel) {
-    this.tableModel = tableModel;
-    this.tableModel.addObserver("beforeLoadItems", () => {
-      this.selectedNotification = null;
-      this.selectedNotificationId = null;
-    });
   }
 
   convertItem(item) {
     return new NotificationModel(item, this.urlResolver);
   }
 
-  findNotificationFromItems(notificationId) {
-    if (!this.tableModel || !this.tableModel.items) return false;
-    return this.selectedNotification =
-        this.tableModel.items.find((n) => n.id == notificationId);
-  }
-  loadNotification(notificationId) {
-    this.selectedNotification = null;
+  loadItem(notificationId) {
+    this.selected = null;
     this.notificationService.get(notificationId).then( (notification)=> {
-      this.selectedNotification = this.convertItem(notification);
+      this.selected = this.convertItem(notification);
     });
   }
 
@@ -79,23 +60,13 @@ export default class NotificationSelectionModel extends Observable {
     };
   }
 
-  set selectedNotificationId( notificationId ) {
-    this.setProperty("selectedNotificationId", notificationId);
-    if (notificationId == null) return;
-    this.findNotificationFromItems(notificationId)
-    || this.loadNotification(notificationId);
-  }
-  get selectedNotificationId( ) {
-    return this.getProperty("selectedNotificationId");
-  }
-
-  set selectedNotification( notification ) {
-    this.setProperty("selectedNotification", notification);
+  set selected( notification ) {
+    this.setProperty("selected", notification);
     if (notification && !notification.readAt) {
       this.markAsRead(notification);
     }
   }
-  get selectedNotification( ) {
-    return this.getProperty("selectedNotification");
+  get selected( ) {
+    return this.getProperty("selected");
   }
 }

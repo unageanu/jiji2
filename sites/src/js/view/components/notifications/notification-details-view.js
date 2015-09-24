@@ -7,7 +7,7 @@ const Avatar       = MUI.Avatar;
 const RaisedButton   = MUI.RaisedButton;
 
 const keys = new Set([
-  "selectedNotificationId", "selectedNotification"
+  "selectedId", "selected"
 ]);
 
 export default class NotificationDetailsView extends AbstractComponent {
@@ -25,8 +25,8 @@ export default class NotificationDetailsView extends AbstractComponent {
   }
 
   render() {
-    const notification   = this.state.selectedNotification;
-    const notificationId = this.state.selectedNotificationId;
+    const notification   = this.state.selected;
+    const notificationId = this.state.selectedId;
 
     if ( notificationId == null ) {
       return this.createEmptyView();

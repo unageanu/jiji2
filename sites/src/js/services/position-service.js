@@ -2,27 +2,34 @@ import AbstractService from "./abstract-service"
 
 export default class PositionService extends AbstractService {
 
-  fetchPositionsWithin( start, end, backtestId="rmt" ) {
-    const url = this.serviceUrl( backtestId, {
-      start : start,
-      end   : end
+  fetchWithin( start, end, backtestId="rmt" ) {
+    const url = this.serviceUrl( "", {
+      backtestId: backtestId,
+      start:      start,
+      end:        end
     });
     return this.xhrManager.xhr(url, "GET");
   }
 
-  fetchPositions( offset, limit, sortOrder, backtestId="rmt", status=null ) {
-    const url = this.serviceUrl( backtestId, {
-      offset:    offset,
-      limit:     limit,
-      status:    status,
-      order:     sortOrder.order,
-      direction: sortOrder.direction
+  fetch( offset, limit, sortOrder, backtestId="rmt", status=null ) {
+    const url = this.serviceUrl( "", {
+      backtestId: backtestId,
+      offset:     offset,
+      limit:      limit,
+      status:     status,
+      order:      sortOrder.order,
+      direction:  sortOrder.direction
     });
     return this.xhrManager.xhr(url, "GET");
   }
 
-  countPositions( backtestId="rmt" ) {
-    const url = this.serviceUrl( backtestId+"/count");
+  count( backtestId="rmt" ) {
+    const url = this.serviceUrl( "count");
+    return this.xhrManager.xhr(url, "GET");
+  }
+
+  get( positionId ) {
+    const url = this.serviceUrl( positionId );
     return this.xhrManager.xhr(url, "GET");
   }
 

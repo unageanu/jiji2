@@ -79,7 +79,7 @@ export default class Positions extends Observable {
 
   update() {
     if (!this.currentRange) return;
-    this.positionService.fetchPositionsWithin(
+    this.positionService.fetchWithin(
       this.currentRange.start,
       this.currentRange.end,
       this.context.backtestId

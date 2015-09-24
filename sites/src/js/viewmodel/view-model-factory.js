@@ -3,8 +3,9 @@ import AccountViewModel           from "./accounts/account-view-model"
 import Chart                      from "./chart/chart"
 import BacktestListModel          from "./backtests/backtest-list-model"
 import PositionsTableModel        from "./positions/positions-table-model"
+import PositionSelectionModel     from "./positions/position-selection-model"
 import NotificationsTableModel    from "./notifications/notifications-table-model"
-import NotificationSelectionModel from "./notifications/notification-selection-model";
+import NotificationSelectionModel from "./notifications/notification-selection-model"
 import TradingSummaryViewModel    from "./trading-summary/trading-summary-view-model"
 import LogViewerModel             from "./logs/log-viewer-model"
 import SecuritiesSettingModel     from "./settings/securities-setting-model"
@@ -47,10 +48,14 @@ export default class ViewModelFactory {
     return new PositionsTableModel(
       pageSize, sortOrder, this.positionService, this.urlResolver );
   }
+  createPositionSelectionModel() {
+    return new PositionSelectionModel(
+      this.positionService, this.urlResolver );
+  }
   createNotificationsTableModel(pageSize=100,
     sortOrder={order:"timestamp", direction:"desc"}) {
     return new NotificationsTableModel(
-      pageSize, sortOrder, this.notificationService, 
+      pageSize, sortOrder, this.notificationService,
       this.backtests,  this.urlResolver, this.pushNotifier );
   }
   createNotificationSelectionModel() {

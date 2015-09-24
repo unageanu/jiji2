@@ -10,7 +10,7 @@ const modelKeys = new Set([
   "items"
 ]);
 const selectionModelKeys = new Set([
-  "selectedNotification",  "selectedNotificationId"
+  "selected",  "selectedId"
 ]);
 
 export default class NotificationList extends AbstractComponent {
@@ -66,7 +66,7 @@ export default class NotificationList extends AbstractComponent {
         mobile={this.props.mobile}
         innerDivStyle={this.props.innerDivStyle}
         selected={
-          this.state.selectedNotificationId === notification.id
+          this.state.selectedId === notification.id
         } />;
     });
   }

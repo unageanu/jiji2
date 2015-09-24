@@ -20,7 +20,7 @@ export default class NotificationsPage extends AbstractPage {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.model().selection.selectedNotificationId = nextProps.params.id;
+    this.model().selection.selectedId = nextProps.params.id;
   }
 
   render() {

@@ -4,6 +4,7 @@ import ContainerFactory from "../../../utils/test-container-factory"
 describe("PositionsTableModel", () => {
 
   var model;
+  var selectionModel;
   var xhrManager;
 
   beforeEach(() => {
@@ -11,6 +12,8 @@ describe("PositionsTableModel", () => {
     let d = container.get("viewModelFactory");
     const factory = ContainerJS.utils.Deferred.unpack(d);
     model = factory.createPositionsTableModel(20);
+    selectionModel = factory.createPositionSelectionModel();
+    selectionModel.attach(model);
     model.initialize("rmt");
     xhrManager = model.positionService.xhrManager;
   });
@@ -26,7 +29,7 @@ describe("PositionsTableModel", () => {
       xhrManager.requests[1].resolve(createItems(20));
 
       expect(xhrManager.requests[1].url).toEqual(
-        "/api/positions/rmt?offset=0&limit=20&order=profit_or_loss&direction=desc");
+        "/api/positions?backtest_id=rmt&offset=0&limit=20&order=profit_or_loss&direction=desc");
       expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "desc"});
 
       expect(model.items[0].enteredAt).toEqual( new Date(0) );
@@ -68,7 +71,7 @@ describe("PositionsTableModel", () => {
       expect(model.items[1].closingPolicy.formatedLossCut).toEqual( "1,011" );
       expect(model.hasNext).toEqual( true );
       expect(model.hasPrev).toEqual( false );
-      expect(model.selectedPosition).toBe( null );
+      expect(selectionModel.selected).toBe( null );
     });
 
     it("データ数0の場合、ロードは行われない。", () => {
@@ -81,7 +84,7 @@ describe("PositionsTableModel", () => {
       expect(model.items).toEqual( [] );
       expect(model.hasNext).toEqual( false );
       expect(model.hasPrev).toEqual( false );
-      expect(model.selectedPosition).toBe( null );
+      expect(selectionModel.selected).toBe( null );
     });
 
   });
@@ -94,8 +97,8 @@ describe("PositionsTableModel", () => {
       });
       xhrManager.requests[1].resolve(createItems(20));
 
-      model.selectedPosition = model.items[0];
-      expect(model.selectedPosition).toBe( model.items[0] );
+      selectionModel.selected = model.items[0];
+      expect(selectionModel.selected).toBe( model.items[0] );
     });
     it("次へ/前へを押してページを切り替えると、選択が解除される", () => {
       model.load();
@@ -104,15 +107,15 @@ describe("PositionsTableModel", () => {
       });
       xhrManager.requests[1].resolve(createItems(20));
 
-      model.selectedPosition = model.items[0];
+      selectionModel.selected = model.items[0];
       model.next();
       xhrManager.requests[2].resolve(createItems(20));
-      expect(model.selectedPosition).toBe( null );
+      expect(selectionModel.selected).toBe( null );
 
-      model.selectedPosition = model.items[0];
+      selectionModel.selected = model.items[0];
       model.prev();
       xhrManager.requests[3].resolve(createItems(20));
-      expect(model.selectedPosition).toBe( null );
+      expect(selectionModel.selected).toBe( null );
     });
     it("ソート順を変更すると、選択が解除される", () => {
       model.load();
@@ -121,10 +124,10 @@ describe("PositionsTableModel", () => {
       });
       xhrManager.requests[1].resolve(createItems(20));
 
-      model.selectedPosition = model.items[0];
+      selectionModel.selected = model.items[0];
       model.sortBy({order:"timestamp", direction: "asc"});
       xhrManager.requests[2].resolve(createItems(20));
-      expect(model.selectedPosition).toBe( null );
+      expect(selectionModel.selected).toBe( null );
     });
     it("一覧を再読み込みすると、選択が解除される", () => {
       model.load();
@@ -133,13 +136,13 @@ describe("PositionsTableModel", () => {
       });
       xhrManager.requests[1].resolve(createItems(20));
 
-      model.selectedPosition = model.items[0];
+      selectionModel.selected = model.items[0];
       model.load();
       xhrManager.requests[2].resolve({
         count: 50
       });
       xhrManager.requests[3].resolve(createItems(20));
-      expect(model.selectedPosition).toBe( null );
+      expect(selectionModel.selected).toBe( null );
     });
   });
 
@@ -155,48 +158,48 @@ describe("PositionsTableModel", () => {
     xhrManager.requests[2].resolve(createItems(20));
 
     expect(xhrManager.requests[2].url).toEqual(
-      "/api/positions/rmt?offset=20&limit=20&order=profit_or_loss&direction=desc");
+      "/api/positions?backtest_id=rmt&offset=20&limit=20&order=profit_or_loss&direction=desc");
     expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "desc"});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
-    expect(model.selectedPosition).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
 
     model.next();
     xhrManager.requests[3].resolve(createItems(20));
 
     expect(xhrManager.requests[3].url).toEqual(
-      "/api/positions/rmt?offset=40&limit=20&order=profit_or_loss&direction=desc");
+      "/api/positions?backtest_id=rmt&offset=40&limit=20&order=profit_or_loss&direction=desc");
     expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "desc"});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( true );
-    expect(model.selectedPosition).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
 
     model.prev();
     xhrManager.requests[4].resolve(createItems(20));
 
     expect(xhrManager.requests[4].url).toEqual(
-      "/api/positions/rmt?offset=20&limit=20&order=profit_or_loss&direction=desc");
+      "/api/positions?backtest_id=rmt&offset=20&limit=20&order=profit_or_loss&direction=desc");
     expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "desc"});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
-    expect(model.selectedPosition).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
 
     model.prev();
     xhrManager.requests[5].resolve(createItems(20));
 
     expect(xhrManager.requests[5].url).toEqual(
-      "/api/positions/rmt?offset=0&limit=20&order=profit_or_loss&direction=desc");
+      "/api/positions?backtest_id=rmt&offset=0&limit=20&order=profit_or_loss&direction=desc");
     expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "desc"});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
-    expect(model.selectedPosition).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
   });
 
@@ -211,34 +214,34 @@ describe("PositionsTableModel", () => {
     xhrManager.requests[2].resolve(createItems(20));
 
     expect(xhrManager.requests[2].url).toEqual(
-      "/api/positions/rmt?offset=0&limit=20&order=profit_or_loss&direction=desc");
+      "/api/positions?backtest_id=rmt&offset=0&limit=20&order=profit_or_loss&direction=desc");
     expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "desc"});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
-    expect(model.selectedPosition).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
     model.next();
     xhrManager.requests[3].resolve(createItems(20));
 
     expect(xhrManager.requests[3].url).toEqual(
-      "/api/positions/rmt?offset=20&limit=20&order=profit_or_loss&direction=desc");
+      "/api/positions?backtest_id=rmt&offset=20&limit=20&order=profit_or_loss&direction=desc");
     expect(model.sortOrder).toEqual({order:"profit_or_loss", direction: "desc"});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
-    expect(model.selectedPosition).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
     model.sortBy({order:"entered_at", direction: "asc"});
     xhrManager.requests[4].resolve(createItems(20));
 
     expect(xhrManager.requests[4].url).toEqual(
-      "/api/positions/rmt?offset=0&limit=20&order=entered_at&direction=asc");
+      "/api/positions?backtest_id=rmt&offset=0&limit=20&order=entered_at&direction=asc");
     expect(model.sortOrder).toEqual({order:"entered_at", direction: "asc"});
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
-    expect(model.selectedPosition).toBe( null );
+    expect(selectionModel.selected).toBe( null );
   });
 
   function createItems(count) {

@@ -50,7 +50,7 @@ describe("NotificationsTableModel", () => {
       expect(model.notRead).toEqual( 25 );
       expect(model.hasNext).toEqual( true );
       expect(model.hasPrev).toEqual( false );
-      expect(selectionModel.selectedNotification).toBe( null );
+      expect(selectionModel.selected).toBe( null );
       expect(model.availableFilterConditions).toEqual([
         { id: "all", text:"すべて",        condition: {backtestId: null} },
         { id: "rmt", text:"リアルトレード", condition: {backtestId: "rmt"} },
@@ -71,7 +71,7 @@ describe("NotificationsTableModel", () => {
       expect(model.notRead).toEqual( 0 );
       expect(model.hasNext).toEqual( false );
       expect(model.hasPrev).toEqual( false );
-      expect(selectionModel.selectedNotification).toBe( null );
+      expect(selectionModel.selected).toBe( null );
     });
 
   });
@@ -85,8 +85,8 @@ describe("NotificationsTableModel", () => {
       xhrManager.requests[1].resolve(createItems(20));
 
       expect(model.items[1].readAt).toBe( null );
-      selectionModel.selectedNotificationId = model.items[1].id;
-      expect(selectionModel.selectedNotification).toBe( model.items[1] );
+      selectionModel.selectedId = model.items[1].id;
+      expect(selectionModel.selected).toBe( model.items[1] );
       expect(model.items[1].readAt).not.toBe( null );
     });
     it("存在しない通知を選択するとサーバーから取得される", () => {
@@ -97,13 +97,13 @@ describe("NotificationsTableModel", () => {
       xhrManager.requests[1].resolve(createItems(20));
 
       expect(model.items[1].readAt).toBe( null );
-      selectionModel.selectedNotificationId = "unknown";
+      selectionModel.selectedId = "unknown";
 
       xhrManager.requests[2].resolve(createItems(4)[3]);
 
-      expect(selectionModel.selectedNotification.id).toBe( 3 );
-      expect(selectionModel.selectedNotification.message).toBe( "message3" );
-      expect(selectionModel.selectedNotification.readAt).not.toBe( null );
+      expect(selectionModel.selected.id).toBe( 3 );
+      expect(selectionModel.selected.message).toBe( "message3" );
+      expect(selectionModel.selected.readAt).not.toBe( null );
     });
     it("次へ/前へを押してページを切り替えると、選択が解除される", () => {
       model.load();
@@ -112,17 +112,17 @@ describe("NotificationsTableModel", () => {
       });
       xhrManager.requests[1].resolve(createItems(20));
 
-      selectionModel.selectedNotificationId = model.items[0].id;
+      selectionModel.selectedId = model.items[0].id;
       model.next();
       xhrManager.requests[2].resolve(createItems(20));
-      expect(selectionModel.selectedNotification).toBe( null );
-      expect(selectionModel.selectedNotificationId).toBe( null );
+      expect(selectionModel.selected).toBe( null );
+      expect(selectionModel.selectedId).toBe( null );
 
-      selectionModel.selectedNotificationId = model.items[0].id;
+      selectionModel.selectedId = model.items[0].id;
       model.prev();
       xhrManager.requests[3].resolve(createItems(20));
-      expect(selectionModel.selectedNotification).toBe( null );
-      expect(selectionModel.selectedNotificationId).toBe( null );
+      expect(selectionModel.selected).toBe( null );
+      expect(selectionModel.selectedId).toBe( null );
     });
     it("ソート順を変更すると、選択が解除される", () => {
       model.load();
@@ -131,11 +131,11 @@ describe("NotificationsTableModel", () => {
       });
       xhrManager.requests[1].resolve(createItems(20));
 
-      selectionModel.selectedNotificationId = model.items[0].id;
+      selectionModel.selectedId = model.items[0].id;
       model.sortBy({order:"timestamp", direction: "asc"});
       xhrManager.requests[2].resolve(createItems(20));
-      expect(selectionModel.selectedNotification).toBe( null );
-      expect(selectionModel.selectedNotificationId).toBe( null );
+      expect(selectionModel.selected).toBe( null );
+      expect(selectionModel.selectedId).toBe( null );
     });
     it("一覧を再読み込みすると、選択が解除される", () => {
       model.load();
@@ -144,14 +144,14 @@ describe("NotificationsTableModel", () => {
       });
       xhrManager.requests[1].resolve(createItems(20));
 
-      selectionModel.selectedNotificationId = model.items[0].id;
+      selectionModel.selectedId = model.items[0].id;
       model.load();
       xhrManager.requests[2].resolve({
         count: 50
       });
       xhrManager.requests[3].resolve(createItems(20));
-      expect(selectionModel.selectedNotification).toBe( null );
-      expect(selectionModel.selectedNotificationId).toBe( null );
+      expect(selectionModel.selected).toBe( null );
+      expect(selectionModel.selectedId).toBe( null );
     });
   });
 
@@ -174,7 +174,7 @@ describe("NotificationsTableModel", () => {
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
-    expect(selectionModel.selectedNotification).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
 
     model.next();
@@ -188,7 +188,7 @@ describe("NotificationsTableModel", () => {
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( true );
-    expect(selectionModel.selectedNotification).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
 
     model.prev();
@@ -202,7 +202,7 @@ describe("NotificationsTableModel", () => {
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
-    expect(selectionModel.selectedNotification).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
 
     model.prev();
@@ -216,7 +216,7 @@ describe("NotificationsTableModel", () => {
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
-    expect(selectionModel.selectedNotification).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
   });
 
@@ -238,7 +238,7 @@ describe("NotificationsTableModel", () => {
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
-    expect(selectionModel.selectedNotification).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
     model.next();
     xhrManager.requests[3].resolve(createItems(20));
@@ -251,7 +251,7 @@ describe("NotificationsTableModel", () => {
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
-    expect(selectionModel.selectedNotification).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
     model.sortBy({order:"agent_name", direction: "desc"});
     xhrManager.requests[4].resolve(createItems(20));
@@ -264,7 +264,7 @@ describe("NotificationsTableModel", () => {
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
-    expect(selectionModel.selectedNotification).toBe( null );
+    expect(selectionModel.selected).toBe( null );
   });
 
   it("filterで一覧の絞り込みができる", () => {
@@ -288,7 +288,7 @@ describe("NotificationsTableModel", () => {
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
-    expect(selectionModel.selectedNotification).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
     model.next();
     xhrManager.requests[4].resolve(createItems(10));
@@ -301,7 +301,7 @@ describe("NotificationsTableModel", () => {
     expect(model.items.length).toEqual( 10 );
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( true );
-    expect(selectionModel.selectedNotification).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
     model.filter(model.availableFilterConditions[2].condition);
     xhrManager.requests[5].resolve({
@@ -317,7 +317,7 @@ describe("NotificationsTableModel", () => {
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
-    expect(selectionModel.selectedNotification).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
     model.next();
     xhrManager.requests[7].resolve(createItems(20));
@@ -330,7 +330,7 @@ describe("NotificationsTableModel", () => {
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
-    expect(selectionModel.selectedNotification).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
     model.sortBy({order:"agent_name", direction: "desc"});
     xhrManager.requests[8].resolve(createItems(20));
@@ -343,7 +343,7 @@ describe("NotificationsTableModel", () => {
     expect(model.items.length).toEqual( 20 );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
-    expect(selectionModel.selectedNotification).toBe( null );
+    expect(selectionModel.selected).toBe( null );
 
 
     model.filter(model.availableFilterConditions[0].condition);
@@ -355,7 +355,7 @@ describe("NotificationsTableModel", () => {
     expect(model.items.length).toEqual( 0 );
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( false );
-    expect(selectionModel.selectedNotification).toBe( null );
+    expect(selectionModel.selected).toBe( null );
   });
 
   describe("executeAction", () => {

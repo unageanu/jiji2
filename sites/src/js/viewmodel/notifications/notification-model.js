@@ -17,4 +17,13 @@ export default class NotificationModel {
     return this.urlResolver.resolveServiceUrl(
       "icon-images/" + (iconId || "default"));
   }
+  get agentAndBacktestName() {
+    let result = "";
+    if ( this.agent && this.agent.name != null ) {
+      result += this.agent.name;
+    }
+    result += (result ? " - " : "") +
+      (this.backtest.name || "リアルトレード");
+    return result;
+  }
 }

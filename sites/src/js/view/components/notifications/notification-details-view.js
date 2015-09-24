@@ -53,7 +53,7 @@ export default class NotificationDetailsView extends AbstractComponent {
           {notification.message}
         </div>
         <div className="agent-name">
-          {this.createAgentName(notification)}
+          {notification.agentAndBacktestName}
         </div>
         <div className="timestamp">
           {notification.formatedTimestamp}
@@ -63,15 +63,6 @@ export default class NotificationDetailsView extends AbstractComponent {
         </div>
       </div>
     </div>;
-  }
-  createAgentName(notification) {
-    let result = "";
-    if ( notification.agent && notification.agent.name != null ) {
-      result += notification.agent.name;
-    }
-    result += (result ? " - " : "") +
-      (notification.backtest.name || "リアルトレード");
-    return result;
   }
   createAvatar(notification) {
     return <Avatar className="left-icon" src={notification.agentIconUrl} />

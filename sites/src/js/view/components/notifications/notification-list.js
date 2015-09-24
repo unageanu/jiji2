@@ -48,7 +48,7 @@ export default class NotificationList extends AbstractComponent {
       ? <div className="info"><LoadingImage /></div> : null;
     return <div>
       <List
-        className="list"
+        className="notification-list list"
         style={{
           paddingTop:0,
           backgroundColor: "rgba(0,0,0,0)"}}>

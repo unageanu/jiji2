@@ -21,33 +21,38 @@ export default class NotificationListItem extends React.Component {
   render() {
     const notification = this.props.notification || nullNotification;
     const props = {
+      className: "list-item",
       innerDivStyle : Object.assign({
         paddingRight:"72px",
         backgroundColor: this.props.selected
           ? Theme.getPalette().backgroundColorDarkAlpha : "rgba(0,0,0,0)"
       }, this.props.innerDivStyle),
       leftAvatar: this.createAvatar(notification),
-      primaryText: notification.message,
+      primaryText: this.createPrimaryText(notification),
       secondaryText: this.createSecondaryText(notification),
-      rightIcon: this.createRightIcon(notification),
+      secondaryTextLines: 2,
       onTouchTap: this.props.onTouchTap,
+      rightIcon: this.createRightIcon(notification)
     };
     return this.props.mobile
       ? <MobileListItem {...props} />
       : <ListItem {...props} />;
   }
-  createPrimaryTextt(notification) {
-    return <span className="primary-text">{this.notification.message}</span>;
+  createPrimaryText(notification) {
+    return <span
+      className={"primary-text " + (!notification.readAt ? "not-read" : "" )}>
+      {notification.message}
+    </span>;
   }
   createSecondaryText(notification) {
-    let result = "";
+    const content = [];
     if ( notification.formatedTimestamp != null ) {
-      result += notification.formatedTimestamp;
+      content.push( <div>{notification.formatedTimestamp}</div> );
     }
     if ( notification.agent && notification.agent.name != null ) {
-      result += (result ? " - " : "") + notification.agent.name;
+      content.push( <div>{notification.agentAndBacktestName}</div> );
     }
-    return result;
+    return <div>{content}</div>;
   }
   createRightIcon(notification) {
       if (notification.readAt) return null;

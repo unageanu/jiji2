@@ -47,10 +47,10 @@ export default class NotificationListItem extends React.Component {
   createSecondaryText(notification) {
     const content = [];
     if ( notification.formatedTimestamp != null ) {
-      content.push( <div>{notification.formatedTimestamp}</div> );
+      content.push( <div key="time">{notification.formatedTimestamp}</div> );
     }
     if ( notification.agent && notification.agent.name != null ) {
-      content.push( <div>{notification.agentAndBacktestName}</div> );
+      content.push( <div key="agentName">{notification.agentAndBacktestName}</div> );
     }
     return <div>{content}</div>;
   }

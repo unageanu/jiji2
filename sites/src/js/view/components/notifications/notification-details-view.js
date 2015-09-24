@@ -69,12 +69,12 @@ export default class NotificationDetailsView extends AbstractComponent {
   }
   createActionButtons(notification) {
     return (notification.actions || []).map(
-      (action)=> this.createActionButton(notification, action));
+      (action, index)=> this.createActionButton(notification, action, index));
   }
 
-  createActionButton(item, action) {
+  createActionButton(item, action, index) {
     const execute = () => this.props.model.executeAction(item, action.action);
-    return <div className="action-button">
+    return <div key={index} className="action-button">
       <RaisedButton
         label={action.label}
         onClick={execute}

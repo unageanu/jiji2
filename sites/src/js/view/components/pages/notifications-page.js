@@ -5,6 +5,8 @@ import NotificationList        from "../notifications/notification-list"
 import NotificationListMenuBar from "../notifications/notification-list-menu-bar"
 import NotificationDetailsView from "../notifications/notification-details-view"
 
+const Card       = MUI.Card;
+
 export default class NotificationsPage extends AbstractPage {
 
   constructor(props) {
@@ -36,9 +38,11 @@ export default class NotificationsPage extends AbstractPage {
             selectable={true} />
         </div>
         <div className="details-panel">
-          <NotificationDetailsView
-            model={this.model().selection}
-          />
+          <Card initiallyExpanded={true} className="card">
+            <NotificationDetailsView
+              model={this.model().selection}
+            />
+          </Card>
         </div>
       </div>
     );

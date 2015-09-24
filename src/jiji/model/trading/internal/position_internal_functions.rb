@@ -54,6 +54,7 @@ module Jiji::Model::Trading::Internal
     end
 
     def insert_trading_information_to_hash(h)
+      h[:id]                   = id
       h[:internal_id]          = internal_id
       h[:pair_name]            = pair_name
       h[:units]                = units

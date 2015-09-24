@@ -6,23 +6,23 @@ require 'jiji/web/services/abstract_service'
 module Jiji::Web
   class PositionsService < Jiji::Web::AuthenticationRequiredService
 
-    options '/rmt/exited' do
+    options '/exited-rmt-positions' do
       allow('DELETE,OPTIONS')
     end
 
-    delete '/rmt/exited' do
+    delete '/exited-rmt-positions' do
       expires = get_time_from_query_param('expires')
       repository.delete_exited_positions_of_rmt(expires)
       no_content
     end
 
-    options '/:backtest_id' do
+    options '/' do
       allow('GET,OPTIONS')
     end
 
-    get '/:backtest_id' do
+    get '/' do
       period_condition = read_period_filter_condition
-      id = get_backtest_id_from_path_param
+      id = convert_to_backtest_id(request['backtest_id'])
       if period_condition
         ok(retirieve_positions_widthin(id, period_condition))
       else
@@ -30,18 +30,28 @@ module Jiji::Web
       end
     end
 
-    options '/:backtest_id/count' do
+    options '/count' do
       allow('GET,OPTIONS')
     end
 
-    get '/:backtest_id/count' do
-      id = get_backtest_id_from_path_param
+    get '/count' do
+      id = convert_to_backtest_id(request['backtest_id'])
       filter = read_filter_condition
       ok({
         count:      repository.count_positions(id, filter),
         not_exited: repository.count_positions(
           id, ({ status: :live }).merge(filter))
       })
+    end
+
+    options '/:position_id' do
+      allow('GET,OPTIONS')
+    end
+
+    get '/:position_id' do
+      id = BSON::ObjectId.from_string(params[:position_id])
+      position = repository.get_by_id(id)
+      ok(position.to_h)
     end
 
     def repository

@@ -49,7 +49,7 @@ module Jiji::Web
     end
 
     def convert_to_backtest_id(id_str)
-      return nil if id_str.nil?
+      return nil if id_str.nil? || id_str.empty?
       id_str == 'rmt' ? nil : BSON::ObjectId.from_string(id_str)
     end
 

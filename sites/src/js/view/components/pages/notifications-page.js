@@ -18,7 +18,7 @@ export default class NotificationsPage extends AbstractPage {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.model().notificationsTable.selectedNotificationId = nextProps.params.id;
+    this.model().selection.selectedNotificationId = nextProps.params.id;
   }
 
   render() {
@@ -30,13 +30,14 @@ export default class NotificationsPage extends AbstractPage {
             />
           <NotificationList
             model={this.model().notificationsTable}
+            selectionModel={this.model().selection}
             autoFill={false}
             emptyLabel="通知はありません"
             selectable={true} />
         </div>
         <div className="details-panel">
           <NotificationDetailsView
-            model={this.model().notificationsTable}
+            model={this.model().selection}
           />
         </div>
       </div>

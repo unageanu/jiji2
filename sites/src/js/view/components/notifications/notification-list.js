@@ -6,8 +6,11 @@ import LoadingImage         from "../widgets/loading-image"
 
 const List   = MUI.List;
 
-const keys = new Set([
-  "items", "selectedNotification",  "selectedNotificationId"
+const modelKeys = new Set([
+  "items"
+]);
+const selectionModelKeys = new Set([
+  "selectedNotification",  "selectedNotificationId"
 ]);
 
 export default class NotificationList extends AbstractComponent {
@@ -18,8 +21,17 @@ export default class NotificationList extends AbstractComponent {
   }
 
   componentWillMount() {
-    this.registerPropertyChangeListener(this.props.model, keys);
-    const state = this.collectInitialState(this.props.model, keys);
+    this.registerPropertyChangeListener(this.props.model, modelKeys);
+    let state = this.collectInitialState(this.props.model, modelKeys);
+
+    if (this.props.selectionModel) {
+      this.registerPropertyChangeListener(
+        this.props.selectionModel, selectionModelKeys);
+      state = Object.assign(
+        state,
+        this.collectInitialState(this.props.selectionModel, selectionModelKeys));
+    }
+
     this.setState(state);
 
     if (this.props.autoFill) this.registerAutoFillHandler();
@@ -54,21 +66,16 @@ export default class NotificationList extends AbstractComponent {
         mobile={this.props.mobile}
         innerDivStyle={this.props.innerDivStyle}
         selected={
-          this.props.selectable
-          && this.state.selectedNotificationId === notification.id
+          this.state.selectedNotificationId === notification.id
         } />;
     });
   }
 
   createAction(notification) {
-    if (this.props.selectable) {
-      return (ev) => {
-        this.context.router.transitionTo("/notifications/"+notification.id);
-        ev.preventDefault();
-      };
-    } else {
-      return null;
-    }
+    return (ev) => {
+      this.context.router.transitionTo("/notifications/"+notification.id);
+      ev.preventDefault();
+    };
   }
 
   registerAutoFillHandler() {
@@ -86,13 +93,14 @@ export default class NotificationList extends AbstractComponent {
 }
 NotificationList.propTypes = {
   model: React.PropTypes.object.isRequired,
-  selectable: React.PropTypes.bool.isRequired,
+  selectionModel: React.PropTypes.object,
   innerDivStyle: React.PropTypes.object,
   emptyLabel:  React.PropTypes.string,
   autoFill: React.PropTypes.bool,
   mobile: React.PropTypes.bool
 };
 NotificationList.defaultProps = {
+  selectionModel: null,
   innerDivStyle: {},
   emptyLabel: "未読の通知はありません",
   autoFill: false,

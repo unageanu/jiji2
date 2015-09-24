@@ -1,15 +1,16 @@
-import ContainerJS             from "container-js"
-import AccountViewModel        from "./accounts/account-view-model"
-import Chart                   from "./chart/chart"
-import BacktestListModel       from "./backtests/backtest-list-model"
-import PositionsTableModel     from "./positions/positions-table-model"
-import NotificationsTableModel from "./notifications/notifications-table-model"
-import TradingSummaryViewModel from "./trading-summary/trading-summary-view-model"
-import LogViewerModel          from "./logs/log-viewer-model"
-import SecuritiesSettingModel  from "./settings/securities-setting-model"
-import MailAddressSettingModel from "./settings/mail-address-setting-model"
-import PasswordSettingModel    from "./settings/password-setting-model"
-import SMTPServerSettingModel  from "./settings/smtp-server-setting-model"
+import ContainerJS                from "container-js"
+import AccountViewModel           from "./accounts/account-view-model"
+import Chart                      from "./chart/chart"
+import BacktestListModel          from "./backtests/backtest-list-model"
+import PositionsTableModel        from "./positions/positions-table-model"
+import NotificationsTableModel    from "./notifications/notifications-table-model"
+import NotificationSelectionModel from "./notifications/notification-selection-model";
+import TradingSummaryViewModel    from "./trading-summary/trading-summary-view-model"
+import LogViewerModel             from "./logs/log-viewer-model"
+import SecuritiesSettingModel     from "./settings/securities-setting-model"
+import MailAddressSettingModel    from "./settings/mail-address-setting-model"
+import PasswordSettingModel       from "./settings/password-setting-model"
+import SMTPServerSettingModel     from "./settings/smtp-server-setting-model"
 
 export default class ViewModelFactory {
 
@@ -49,8 +50,12 @@ export default class ViewModelFactory {
   createNotificationsTableModel(pageSize=100,
     sortOrder={order:"timestamp", direction:"desc"}) {
     return new NotificationsTableModel(
-      pageSize, sortOrder, this.notificationService, this.actionService,
-      this.backtests, this.eventQueue, this.urlResolver, this.pushNotifier );
+      pageSize, sortOrder, this.notificationService, 
+      this.backtests,  this.urlResolver, this.pushNotifier );
+  }
+  createNotificationSelectionModel() {
+    return new NotificationSelectionModel( this.notificationService,
+      this.actionService, this.eventQueue, this.urlResolver );
   }
   createTradingSummaryViewModel(enablePeriodSelector=false) {
     const model = new TradingSummaryViewModel( this.tradingSummariesService );

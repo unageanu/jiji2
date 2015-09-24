@@ -1,7 +1,8 @@
-import TableModel      from "../widgets/table-model"
-import NumberFormatter from "../utils/number-formatter"
-import DateFormatter   from "../utils/date-formatter"
-import Deferred        from "../../utils/deferred"
+import TableModel        from "../widgets/table-model"
+import NumberFormatter   from "../utils/number-formatter"
+import DateFormatter     from "../utils/date-formatter"
+import Deferred          from "../../utils/deferred"
+import NotificationModel from "./notification-model"
 
 const defaultFilterConditions = [
   { id: "all", text:"すべて",        condition: {backtestId: null} },
@@ -21,34 +22,13 @@ class Loader {
   }
 }
 
-class NotificationModel {
-
-  constructor(position, urlResolver) {
-    for (let i in position) {
-      this[i] = position[i];
-    }
-    this.urlResolver = urlResolver;
-  }
-  get formatedTimestamp() {
-    return DateFormatter.format(this.timestamp);
-  }
-  get agentIconUrl() {
-    const iconId = this.agent ? this.agent.iconId : null;
-    return this.urlResolver.resolveServiceUrl(
-      "icon-images/" + (iconId || "default"));
-  }
-}
-
 export default class NotificationsTableModel extends TableModel {
-  constructor( pageSize, defaultSortOrder, notificationService,
-    actionService, backtests, eventQueue, urlResolver, pushNotifier) {
+  constructor( pageSize, defaultSortOrder,
+    notificationService, backtests, urlResolver, pushNotifier) {
     super( defaultSortOrder, pageSize );
     this.backtests = backtests;
     this.defaultSortOrder = defaultSortOrder;
     this.notificationService = notificationService;
-    this.actionService = actionService;
-    this.eventQueue = eventQueue;
-    this.selectedNotification = null;
     this.availableFilterConditions = defaultFilterConditions;
     this.urlResolver = urlResolver;
     this.pushNotifier = pushNotifier;
@@ -76,8 +56,7 @@ export default class NotificationsTableModel extends TableModel {
   }
 
   loadItems() {
-    this.selectedNotificationId = null;
-    this.selectedNotification = null;
+    this.fire("beforeLoadItems");
     return super.loadItems();
   }
 
@@ -102,70 +81,6 @@ export default class NotificationsTableModel extends TableModel {
 
   processCount(count) {
     this.notRead = count.notRead;
-  }
-
-  markAsRead(notification) {
-    notification.readAt = new Date();
-    this.setProperty("items", this.items, () => false );
-    this.notRead = this.notRead > 0 ? this.notRead-1 : 0;
-    this.notificationService.markAsRead( notification.id );
-  }
-
-  executeAction( notification, action ) {
-    this.actionService.post(notification.backtestId,
-      notification.agent.id, action).then((result) => {
-      this.eventQueue.push(
-        this.createResponseMessage(result, notification, action));
-    }, (error)  => {
-      error.preventDefault = true;
-      this.eventQueue.push(this.createErrorMessage(error, notification));
-    });
-  }
-  createResponseMessage(result, notification, action) {
-    return {
-      type: "info",
-      message: notification.agent.name + " : "
-        + (result.message || "アクション \"" + action + "\" を実行しました")
-    };
-  }
-  createErrorMessage(error, notification) {
-    return {
-      type: "error",
-      message: notification.agent.name
-        + " : アクション実行時にエラーが発生しました。"
-        + "ログを確認してください。"
-    };
-  }
-
-  findNotificationFromItems(notificationId) {
-    return this.selectedNotification
-      = this.items && this.items.find((n) => n.id == notificationId);
-  }
-  loadNotification(notificationId) {
-    this.selectedNotification = null;
-    this.notificationService.get(notificationId).then( (notification)=> {
-      this.selectedNotification = this.convertItem(notification);
-    });
-  }
-
-  set selectedNotificationId( notificationId ) {
-    this.setProperty("selectedNotificationId", notificationId);
-    if (notificationId == null) return;
-    this.findNotificationFromItems(notificationId)
-    || this.loadNotification(notificationId);
-  }
-  get selectedNotificationId( ) {
-    return this.getProperty("selectedNotificationId");
-  }
-
-  set selectedNotification( notification ) {
-    this.setProperty("selectedNotification", notification);
-    if (notification && !notification.readAt) {
-      this.markAsRead(notification);
-    }
-  }
-  get selectedNotification( ) {
-    return this.getProperty("selectedNotification");
   }
 
   set availableFilterConditions( availableFilterConditions ) {

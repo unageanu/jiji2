@@ -24,10 +24,10 @@ export default class PositionList extends AbstractComponent {
   }
   render() {
     if (this.state.items == null) {
-      return <div className="info"><LoadingImage /></div>;
+      return <div className="center-information"><LoadingImage /></div>;
     }
     if (this.state.items.length <= 0) {
-      return <div className="info">建玉はありません</div>;
+      return <div className="center-information">建玉はありません</div>;
     }
     return <List style={{paddingTop:0}}>{this.createListItems()}</List>;
   }

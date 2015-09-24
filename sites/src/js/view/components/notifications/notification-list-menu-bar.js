@@ -30,7 +30,7 @@ export default class NotificationListMenuBar extends AbstractComponent {
   }
 
   render() {
-    return <div className="app-bar">
+    return <div className="notification-list-menu-bar ">
       <DropDownMenu
         style={{width:"256px"}}
         menuItems={this.state.availableFilterConditions}

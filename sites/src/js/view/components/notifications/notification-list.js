@@ -39,10 +39,10 @@ export default class NotificationList extends AbstractComponent {
 
   render() {
     if (this.state.items == null) {
-      return <div className="info"><LoadingImage /></div>;
+      return <div className="center-information"><LoadingImage /></div>;
     }
     if (this.state.items.length <= 0) {
-      return <div className="info">{this.props.emptyLabel}</div>;
+      return <div className="center-information">{this.props.emptyLabel}</div>;
     }
     const filling = this.state.filling
       ? <div className="info"><LoadingImage /></div> : null;

@@ -41,10 +41,10 @@ export default class NotificationDetailsView extends AbstractComponent {
     return null;
   }
   createLoadingView() {
-    return <div className="info"><LoadingImage /></div>;
+    return <div className="center-information"><LoadingImage /></div>;
   }
   createDetailsView(notification) {
-    return <div className="details">
+    return <div className="notification-details">
       <div className="avatar-panel">
         {this.createAvatar(notification)}
       </div>

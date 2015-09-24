@@ -79,7 +79,7 @@ module Jiji::Model::Agents::Internal
     end
 
     def inject_components_to(agent, setting)
-      broker = BrokerProxy.new(@components[:broker], setting.id)
+      broker = BrokerProxy.new(@components[:broker], setting)
 
       agent.broker          = broker
       agent.graph_factory   = @components[:graph_factory]

@@ -30,11 +30,13 @@ module Jiji::Test
         (BigDecimal.new(100.003, 10) + seed).to_f)
     end
 
-    def new_position(seed, backtest_id = nil,
+    def new_position(seed, backtest = nil, agent = nil,
         pair_name = :EURJPY, timestamp = Time.at(seed))
-      position_builder = Internal::PositionBuilder.new(backtest_id)
-      position_builder.build_from_tick(seed, pair_name,
+      position_builder = Internal::PositionBuilder.new(backtest)
+      position = position_builder.build_from_tick(seed, pair_name,
         seed * 10_000, seed.even? ? :buy : :sell, new_tick(seed, timestamp))
+      position.agent = agent
+      position
     end
 
     def new_agent_body(seed, parent = nil)
@@ -139,13 +141,14 @@ BODY
         order_opened, trade_opened, trade_reduced, trades_closed)
     end
 
-    def new_notification(seed, backtest_id = nil, timestamp = Time.at(seed))
+    def new_notification(seed, agent_setting = nil,
+      backtest = nil, timestamp = Time.at(seed))
       actions = [
         { 'label' => 'あ', 'action' => 'aaa' },
         { 'label' => 'い', 'action' => 'bbb' }
       ]
       Jiji::Model::Notification::Notification.create(
-        "agent#{seed}", Time.at(seed), backtest_id, "message#{seed}", actions)
+        agent_setting, Time.at(seed), backtest, "message#{seed}", actions)
     end
 
     def register_backtest(seed, repository,

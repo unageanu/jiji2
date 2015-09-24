@@ -26,12 +26,12 @@ module Jiji::Model::Trading::Internal
       position
     end
 
-    def build_from_order(order, tick, agent_id = nil)
+    def build_from_order(order, tick, agent = nil)
       position = Position.new do |p|
         initialize_trading_information(p, @backtest, order.internal_id,
           order.pair_name, order.units, order.sell_or_buy)
         initialize_price_and_time(p, order.price, tick.timestamp)
-        initialize_agent_information(p, agent_id)
+        initialize_agent_information(p, agent)
         p.closing_policy = ClosingPolicy.create(order.extract_options)
       end
       position.update_price(tick)
@@ -48,10 +48,10 @@ module Jiji::Model::Trading::Internal
     end
 
     def split_and_close(position, units,
-      price, time, agent_id = nil)
+      price, time, agent = nil)
       position.update_state_for_reduce(units, time)
       create_splited_position(position, units,
-        price, time, agent_id)
+        price, time, agent)
     end
 
     private
@@ -66,11 +66,11 @@ module Jiji::Model::Trading::Internal
     end
 
     def create_splited_position(position,
-        units, price, time, agent_id)
+        units, price, time, agent)
       new_position = Position.new do |p|
         initialize_trading_information_from_position(p, position, units)
         initialize_price_and_time(p, position.entry_price, position.entered_at)
-        initialize_agent_information(p, agent_id)
+        initialize_agent_information(p, agent)
         p.closing_policy = ClosingPolicy.create(position.closing_policy.to_h)
       end
       new_position.update_state_to_closed(price, time)
@@ -92,8 +92,8 @@ module Jiji::Model::Trading::Internal
       position.updated_at    = tick.timestamp
     end
 
-    def initialize_agent_information(position, agent_id)
-      position.agent_id   = agent_id
+    def initialize_agent_information(position, agent)
+      position.agent   = agent
     end
 
     def initialize_trading_information_from_position(position, from, units)

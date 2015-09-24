@@ -8,13 +8,18 @@ module Jiji::Model::Trading
     include Encase
     include Jiji::Errors
 
+    def get_by_id(position_id)
+      Position.includes(:agent, :backtest).find(position_id) \
+      || not_found(Position, id: position_id)
+    end
+
     def retrieve_positions(backtest_id = nil,
       sort_order = { entered_at: :asc, id: :asc },
       offset = 0, limit = 20, filter_conditions = {})
       filter_conditions = { backtest_id: backtest_id }.merge(filter_conditions)
       query = Jiji::Utils::Pagenation::Query.new(
         filter_conditions, sort_order, offset, limit)
-      query.execute(Position.includes(:agent)).map { |x| x }
+      query.execute(Position.includes(:agent, :backtest)).map { |x| x }
     end
 
     def count_positions(backtest_id = nil, filter_conditions = {})
@@ -35,7 +40,7 @@ module Jiji::Model::Trading
     def retrieve_living_positions_of_rmt
       query = Jiji::Utils::Pagenation::Query.new(
         { backtest_id: nil, status: :live }, entered_at: :asc)
-      query.execute(Position.includes(:agent)).map { |x| x }
+      query.execute(Position.includes(:agent, :backtest)).map { |x| x }
     end
 
     def delete_all_positions_of_backtest(backtest_id)

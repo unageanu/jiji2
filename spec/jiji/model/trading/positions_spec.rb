@@ -31,7 +31,9 @@ describe Jiji::Model::Trading::Positions do
         :USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04)
     ]
   end
-
+  let(:agent_setting) do
+    data_builder.register_agent_setting
+  end
   before(:example) do
     original.each { |o| o.save }
     original[2].closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
@@ -212,7 +214,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 104.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = positions['3']
       expect(position._id).to eq original[2]._id
@@ -225,7 +227,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 104.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 3
@@ -240,7 +242,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 104.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
@@ -253,7 +255,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq 104
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 104
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
@@ -266,7 +268,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 104.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
     end
   end
 
@@ -293,7 +295,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.current_price).to eq 104.003
       expect(position.closing_policy.trailing_stop).to eq 0
       expect(position.closing_policy.trailing_amount).to eq 0
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = positions['2']
       expect(position._id).to eq original[1]._id
@@ -308,7 +310,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.current_price).to eq 104
       expect(position.closing_policy.trailing_stop).to eq 0
       expect(position.closing_policy.trailing_amount).to eq 0
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = positions['3']
       expect(position._id).to eq original[2]._id
@@ -323,7 +325,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.current_price).to eq 104.003
       expect(position.closing_policy.trailing_stop).to eq 10
       expect(position.closing_policy.trailing_amount).to eq 104.103
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 3
@@ -340,7 +342,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.current_price).to eq 104.003
       expect(position.closing_policy.trailing_stop).to eq 0
       expect(position.closing_policy.trailing_amount).to eq 0
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
@@ -355,7 +357,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.current_price).to eq 104
       expect(position.closing_policy.trailing_stop).to eq 0
       expect(position.closing_policy.trailing_amount).to eq 0
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
@@ -370,7 +372,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.current_price).to eq 104.003
       expect(position.closing_policy.trailing_stop).to eq 10
       expect(position.closing_policy.trailing_amount).to eq 104.103
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
     end
   end
 
@@ -381,7 +383,7 @@ describe Jiji::Model::Trading::Positions do
       tick = data_builder.new_tick(4, Time.at(100))
 
       positions.apply_order_result(
-        order_result, tick, 'test1')
+        order_result, tick, agent_setting)
 
       expect(account.balance).to eq(1_000_000)
       expect(account.profit_or_loss).to eq(-600_180)
@@ -400,7 +402,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 101.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = positions['2']
       expect(position._id).to eq original[1]._id
@@ -413,7 +415,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = positions['3']
       expect(position._id).to eq original[2]._id
@@ -426,7 +428,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 103.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = positions['10']
       expect(position._id).not_to be nil
@@ -441,7 +443,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 110
       expect(position.current_price).to eq 104
-      expect(position.agent_id).to eq 'test1'
+      expect(position.agent.id).to eq agent_setting.id
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 4
@@ -456,7 +458,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 101.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
@@ -469,7 +471,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
@@ -482,7 +484,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 103.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '10' }
       expect(position._id).not_to be nil
@@ -497,7 +499,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 110
       expect(position.current_price).to eq 104
-      expect(position.agent_id).to eq 'test1'
+      expect(position.agent.id).to eq agent_setting.id
     end
 
     it '取引単位が減った建玉がある場合、建玉が分割されて一部だけ決済済み状態になる' do
@@ -506,7 +508,7 @@ describe Jiji::Model::Trading::Positions do
       tick = data_builder.new_tick(4, Time.at(100))
 
       positions.apply_order_result(
-        order_result, tick, 'test1')
+        order_result, tick, agent_setting)
 
       expect(account.balance).to eq(1_076_967)
       expect(account.profit_or_loss).to eq(-147)
@@ -525,7 +527,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 101.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = positions['2']
       expect(position._id).to eq original[1]._id
@@ -538,7 +540,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = positions['3']
       expect(position._id).to eq original[2]._id
@@ -551,7 +553,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 103.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 4
@@ -566,7 +568,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 101.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
@@ -579,7 +581,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '2_' }
       expect(position._id).not_to be nil
@@ -592,7 +594,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq 109
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 109
-      expect(position.agent_id).to eq 'test1'
+      expect(position.agent.id).to eq agent_setting.id
 
       position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
@@ -605,7 +607,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 103.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
     end
 
     it '決済された建玉がある場合、決済済み状態になる' do
@@ -617,7 +619,7 @@ describe Jiji::Model::Trading::Positions do
       tick = data_builder.new_tick(4, Time.at(100))
 
       positions.apply_order_result(
-        order_result, tick, 'test1')
+        order_result, tick, agent_setting)
       expect(account.balance).to eq(176_967.0)
       expect(account.profit_or_loss).to eq(-27)
       expect(account.margin_used).to eq 36_721.08
@@ -636,7 +638,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 4
@@ -651,7 +653,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq 110
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 110
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
@@ -664,7 +666,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '2_' }
       expect(position._id).not_to be nil
@@ -677,7 +679,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq 109
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 109
-      expect(position.agent_id).to eq 'test1'
+      expect(position.agent.id).to eq agent_setting.id
 
       position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
@@ -690,7 +692,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq 130
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 130
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
     end
 
     it '新規に注文が生成されただけの場合は、建玉は生成されない' do
@@ -699,7 +701,7 @@ describe Jiji::Model::Trading::Positions do
       tick = data_builder.new_tick(4, Time.at(100))
 
       positions.apply_order_result(
-        order_result, tick, 'test1')
+        order_result, tick, agent_setting)
       expect(account.balance).to eq(1_000_000)
       expect(account.profit_or_loss).to eq(-180)
       expect(account.margin_used).to eq 245_602.4
@@ -717,7 +719,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 101.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = positions['2']
       expect(position._id).to eq original[1]._id
@@ -730,7 +732,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = positions['3']
       expect(position._id).to eq original[2]._id
@@ -743,7 +745,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 103.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 3
@@ -758,7 +760,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 101.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
@@ -771,7 +773,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
@@ -784,7 +786,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 103.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
     end
   end
 
@@ -809,7 +811,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = positions['3']
       expect(position._id).to eq original[2]._id
@@ -822,7 +824,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 103.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       loaded = repository.retrieve_positions
       expect(loaded.length).to be 3
@@ -837,7 +839,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq 110
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 110
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '2' }
       expect(position._id).to eq original[1]._id
@@ -850,7 +852,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 102
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '3' }
       expect(position._id).to eq original[2]._id
@@ -863,7 +865,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.exit_price).to eq nil
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 103.003
-      expect(position.agent_id).to eq nil
+      expect(position.agent).to eq nil
     end
   end
 

@@ -8,23 +8,27 @@ describe Jiji::Model::Trading::PositionRepository do
   let(:test1) { backtests[0] }
   let(:test2) { backtests[1] }
   let(:test3) { backtests[2] }
+  let(:agent_setting) do
+    data_builder.register_agent_setting
+  end
+
   before(:example) do
     register_rmt_positions
-    register_backtest_positions(test1._id)
-    register_backtest_positions(test2._id)
+    register_backtest_positions(test1)
+    register_backtest_positions(test2)
   end
 
   def register_rmt_positions
     register_positions(nil)
   end
 
-  def register_backtest_positions(backtest_id)
-    register_positions(backtest_id)
+  def register_backtest_positions(backtest)
+    register_positions(backtest)
   end
 
-  def register_positions(backtest_id)
+  def register_positions(backtest)
     100.times do |i|
-      position = data_builder.new_position(i, backtest_id)
+      position = data_builder.new_position(i, backtest, agent_setting)
       if i < 10
         position.update_state_to_lost
       elsif i < 50
@@ -217,5 +221,23 @@ describe Jiji::Model::Trading::PositionRepository do
     expect(positions[19].backtest_id).to eq(nil)
     expect(positions[19].entered_at).to eq(Time.at(69))
     expect(positions[19].exited_at).to eq(nil)
+  end
+
+  describe '#get_by_id' do
+    it 'idを指定して通知を取得できる' do
+      positions = position_repository.retrieve_positions(test1.id)
+
+      position = position_repository.get_by_id(positions[0])
+      expect(position.backtest.id).to eq(test1.id)
+      expect(position.backtest.name).to eq('テスト1')
+      expect(position.agent.name).to eq('test1')
+      expect(position.entered_at).to eq(Time.at(0))
+    end
+
+    it 'idに対応する通知が存在しない場合、エラーになる' do
+      expect do
+        position_repository.get_by_id('not_found')
+      end.to raise_error(Jiji::Errors::NotFoundException)
+    end
   end
 end

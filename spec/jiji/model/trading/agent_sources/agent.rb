@@ -88,7 +88,7 @@ class SendNotificationAgent
   end
 
   def execute_action(action)
-    if (action == "mail")
+    if (action == 'mail')
       notifier.compose_text_mail('foo@example.com', 'テスト2', '本文')
     else
       notifier.push_notification(action, [

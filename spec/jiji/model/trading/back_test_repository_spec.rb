@@ -62,7 +62,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(agent_settings[0].properties).to eq({})
     agent = test.agents[agent_settings[0].id]
     expect(agent.agent_name).to eq 'TestAgent2@bbb'
-    expect(agent.broker.agent_id).to eq agent_settings[0].id
+    expect(agent.broker.agent.id).to eq agent_settings[0].id
 
     expect(agent_settings[1].id).not_to be nil
     expect(agent_settings[1].agent_class).to eq 'TestAgent1@aaa'
@@ -70,7 +70,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(agent_settings[1].properties).to eq({ 'a' => 1, 'b' => 'bb' })
     agent = test.agents[agent_settings[1].id]
     expect(agent.agent_name).to eq 'テスト1'
-    expect(agent.broker.agent_id).to eq agent_settings[1].id
+    expect(agent.broker.agent.id).to eq agent_settings[1].id
 
     expect(agent_settings[2].id).not_to be nil
     expect(agent_settings[2].agent_class).to eq 'TestAgent1@aaa'
@@ -78,7 +78,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(agent_settings[2].properties).to eq({})
     agent = test.agents[agent_settings[2].id]
     expect(agent.agent_name).to eq 'テスト2'
-    expect(agent.broker.agent_id).to eq agent_settings[2].id
+    expect(agent.broker.agent.id).to eq agent_settings[2].id
 
     expect(test.status).to eq :running
 
@@ -114,7 +114,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'bb' })
     agent = test2.agents[agent_settings[0].id]
     expect(agent.agent_name).to eq 'TestAgent1@aaa'
-    expect(agent.broker.agent_id).to eq agent_settings[0].id
+    expect(agent.broker.agent.id).to eq agent_settings[0].id
 
     expect(test2.status).to eq :running
 
@@ -162,7 +162,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
       agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq agent_settings[0].id
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
       expect(test.status).to eq :running
       expect(test.retrieve_process_status).to eq :running
 
@@ -180,7 +180,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
       agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq agent_settings[0].id
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
       expect(test.status).to eq :running
       expect(test.retrieve_process_status).to eq :running
 
@@ -198,7 +198,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
       agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq agent_settings[0].id
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
       expect(test.status).to eq :running
       expect(test.retrieve_process_status).to eq :wait_for_start
 
@@ -224,7 +224,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
       agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq agent_settings[0].id
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
       expect(test.status).to eq :cancelled
       expect(test.retrieve_process_status).to eq :wait_for_start
 
@@ -242,7 +242,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
       agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq agent_settings[0].id
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
       expect(test.status).to eq :cancelled
       expect(test.retrieve_process_status).to eq :wait_for_start
 
@@ -260,7 +260,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
       agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq agent_settings[0].id
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
       expect(test.status).to eq :running
       expect(test.retrieve_process_status).to eq :running
 
@@ -289,7 +289,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
       agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq agent_settings[0].id
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
       expect(test.status).to eq :cancelled
 
       test = @repository.all[1]
@@ -306,7 +306,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
       agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq agent_settings[0].id
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
       expect(test.status).to eq :cancelled
 
       test = @repository.all[2]
@@ -323,7 +323,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
       agent = test.agents[agent_settings[0].id]
       expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent_id).to eq agent_settings[0].id
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
       expect(test.status).to eq :finished
     end
 
@@ -378,8 +378,8 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(graph_data.length).to be 1
 
       position_repository = @container.lookup(:position_repository)
-      data_builder.new_position(1, backtests[1].id).save
-      data_builder.new_position(2, backtests[1].id).save
+      data_builder.new_position(1, backtests[1]).save
+      data_builder.new_position(2, backtests[1]).save
       positions = position_repository.retrieve_positions(backtests[1].id)
       expect(positions.length).to be > 0
 

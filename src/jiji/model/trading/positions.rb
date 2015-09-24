@@ -40,9 +40,9 @@ module Jiji::Model::Trading
     end
 
     # for internal use.
-    def apply_order_result(result, tick, agent_id = nil)
-      add(result.trade_opened, tick, agent_id) if result.trade_opened
-      split(result.trade_reduced, agent_id) if result.trade_reduced
+    def apply_order_result(result, tick, agent = nil)
+      add(result.trade_opened, tick, agent) if result.trade_opened
+      split(result.trade_reduced, agent) if result.trade_reduced
       result.trades_closed.each do |closed|
         close(closed.internal_id, closed.price, closed.timestamp)
       end
@@ -90,19 +90,19 @@ module Jiji::Model::Trading
       end
     end
 
-    def add(order, tick, agent_id)
-      position = @position_builder.build_from_order(order, tick, agent_id)
+    def add(order, tick, agent)
+      position = @position_builder.build_from_order(order, tick, agent)
       position.save
       @positions << position
       @map[position.internal_id] = position
     end
 
-    def split(result, agent_id)
+    def split(result, agent)
       return unless @map.include?(result.internal_id)
       position = @map[result.internal_id]
 
       new_position = @position_builder.split_and_close(position,
-        position.units - result.units, result.price, result.timestamp, agent_id)
+        position.units - result.units, result.price, result.timestamp, agent)
       position.save
       new_position.save
 

@@ -61,7 +61,7 @@ describe Jiji::Model::Agents::Internal::AgentsUpdater do
       agent1   = agents[setting1.id]
       expect(agent1).not_to be nil
       expect(agent1.properties).to eq({ 'a' => 100, 'b' => 'bb' })
-      expect(agent1.broker.agent_id).to eq setting1.id
+      expect(agent1.broker.agent.id).to eq setting1.id
       expect(agent1.graph_factory).to eq :graph_factory
       expect(agent1.notifier.agent.id).to eq setting1.id
       expect(agent1.logger).to be logger
@@ -76,7 +76,7 @@ describe Jiji::Model::Agents::Internal::AgentsUpdater do
       agent2   = agents[setting2.id]
       expect(agent2).not_to be nil
       expect(agent2.properties).to eq({})
-      expect(agent2.broker.agent_id).to eq setting2.id
+      expect(agent2.broker.agent.id).to eq setting2.id
       expect(agent2.graph_factory).to eq :graph_factory
       expect(agent2.notifier.agent.id).to eq setting2.id
       expect(agent2.logger).to be logger
@@ -91,7 +91,7 @@ describe Jiji::Model::Agents::Internal::AgentsUpdater do
       agent3   = agents[setting3.id]
       expect(agent3).not_to be nil
       expect(agent3.properties).to eq({})
-      expect(agent3.broker.agent_id).to eq setting3.id
+      expect(agent3.broker.agent.id).to eq setting3.id
       expect(agent3.graph_factory).to eq :graph_factory
       expect(agent3.notifier.agent.id).to eq setting3.id
       expect(agent3.logger).to be logger
@@ -188,7 +188,7 @@ describe Jiji::Model::Agents::Internal::AgentsUpdater do
       setting2 = settings.find { |a| a.name == 'テスト11' }
       agent2 = agents[setting2.id]
       expect(agent2.properties).to eq({ 'a' => 200, 'b' => 'xx' })
-      expect(agent2.broker.agent_id).to eq setting2.id
+      expect(agent2.broker.agent.id).to eq setting2.id
       expect(agent2.graph_factory).to eq :graph_factory
       expect(agent2.notifier.agent.id).to eq setting2.id
       expect(agent2.logger).to be logger
@@ -203,7 +203,7 @@ describe Jiji::Model::Agents::Internal::AgentsUpdater do
       agent3 = agents[setting3.id]
       expect(agent3).not_to be nil
       expect(agent3.properties).to eq({ 'a' => 10 })
-      expect(agent3.broker.agent_id).to eq setting3.id
+      expect(agent3.broker.agent.id).to eq setting3.id
       expect(agent3.graph_factory).to eq :graph_factory
       expect(agent3.notifier.agent.id).to eq setting3.id
       expect(agent3.logger).to be logger
@@ -218,7 +218,7 @@ describe Jiji::Model::Agents::Internal::AgentsUpdater do
       agent4 = agents[setting4.id]
       expect(agent4).not_to be nil
       expect(agent4.properties).to eq({ 'a' => 20 })
-      expect(agent4.broker.agent_id).to eq setting4.id
+      expect(agent4.broker.agent.id).to eq setting4.id
       expect(agent4.graph_factory).to eq :graph_factory
       expect(agent4.notifier.agent.id).to eq setting4.id
       expect(agent4.logger).to be logger
@@ -355,7 +355,7 @@ describe Jiji::Model::Agents::Internal::AgentsUpdater do
       setting2 = settings.find { |a| a.name == 'テスト11' }
       agent2 = agents[setting2.id]
       expect(agent2.properties).to eq({ 'a' => 200, 'b' => 'xx' })
-      expect(agent2.broker.agent_id).to eq setting2.id
+      expect(agent2.broker.agent.id).to eq setting2.id
       expect(agent2.graph_factory).to eq :graph_factory
       expect(agent2.notifier.agent.id).to eq setting2.id
       expect(agent2.logger).to be logger
@@ -368,7 +368,7 @@ describe Jiji::Model::Agents::Internal::AgentsUpdater do
       agent3 = agents[setting3.id]
       expect(agent3).not_to be nil
       expect(agent3.properties).to eq({ 'a' => 10 })
-      expect(agent3.broker.agent_id).to eq setting3.id
+      expect(agent3.broker.agent.id).to eq setting3.id
       expect(agent3.graph_factory).to eq :graph_factory
       expect(agent3.notifier.agent.id).to eq setting3.id
       expect(agent3.logger).to be logger
@@ -381,7 +381,7 @@ describe Jiji::Model::Agents::Internal::AgentsUpdater do
       agent4 = agents[setting4.id]
       expect(agent4).not_to be nil
       expect(agent4.properties).to eq({ 'a' => 20 })
-      expect(agent4.broker.agent_id).to eq setting4.id
+      expect(agent4.broker.agent.id).to eq setting4.id
       expect(agent4.graph_factory).to eq :graph_factory
       expect(agent4.notifier.agent.id).to eq setting4.id
       expect(agent4.logger).to be logger

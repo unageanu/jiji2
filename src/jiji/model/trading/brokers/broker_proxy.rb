@@ -12,19 +12,19 @@ module Jiji::Model::Trading::Brokers
     def_delegators :@broker, :pairs, :tick, :positions, :orders,
       :modify_order, :cancel_order, :modify_position, :close_position
 
-    attr_reader :agent_id
+    attr_reader :agent
 
-    def initialize(broker, agent_id)
+    def initialize(broker, agent)
       @broker     = broker
-      @agent_id   = agent_id
+      @agent   = agent
     end
 
     def buy(pair_name, units, type = :market, options = {})
-      @broker.buy(pair_name, units, type, options, @agent_id)
+      @broker.buy(pair_name, units, type, options, @agent)
     end
 
     def sell(pair_name, units, type = :market, options = {})
-      @broker.sell(pair_name, units, type, options, @agent_id)
+      @broker.sell(pair_name, units, type, options, @agent)
     end
 
   end

@@ -44,7 +44,7 @@ describe Jiji::Model::Trading::RMT do
     expect(agent_setting[0].properties).to eq({})
     agent = @rmt.agents[agent_setting[0].id]
     expect(agent.agent_name).to eq 'TestAgent2@bbb'
-    expect(agent.broker.agent_id).to eq agent_setting[0].id
+    expect(agent.broker.agent.id).to eq agent_setting[0].id
 
     expect(agent_setting[1].id).not_to be nil
     expect(agent_setting[1].agent_class).to eq 'TestAgent1@aaa'
@@ -52,7 +52,7 @@ describe Jiji::Model::Trading::RMT do
     expect(agent_setting[1].properties).to eq({ 'a' => 100, 'b' => 'bb' })
     agent = @rmt.agents[agent_setting[1].id]
     expect(agent.agent_name).to eq 'テスト1'
-    expect(agent.broker.agent_id).to eq agent_setting[1].id
+    expect(agent.broker.agent.id).to eq agent_setting[1].id
 
     expect(agent_setting[2].id).not_to be nil
     expect(agent_setting[2].agent_class).to eq 'TestAgent1@aaa'
@@ -60,7 +60,7 @@ describe Jiji::Model::Trading::RMT do
     expect(agent_setting[2].properties).to eq({})
     agent = @rmt.agents[agent_setting[2].id]
     expect(agent.agent_name).to eq 'テスト2'
-    expect(agent.broker.agent_id).to eq agent_setting[2].id
+    expect(agent.broker.agent.id).to eq agent_setting[2].id
 
     new_setting = [{
       id:          agent_setting[1].id,
@@ -80,7 +80,7 @@ describe Jiji::Model::Trading::RMT do
     expect(new_agent_setting[0].properties).to eq({ 'a' => 200, 'b' => 'bb' })
     agent = @rmt.agents[new_agent_setting[0].id]
     expect(agent.agent_name).to eq 'テスト3'
-    expect(agent.broker.agent_id).to eq new_agent_setting[0].id
+    expect(agent.broker.agent.id).to eq new_agent_setting[0].id
   end
 
   it '永続化したデータから状態を復元できる' do
@@ -111,7 +111,7 @@ describe Jiji::Model::Trading::RMT do
     expect(agent_setting[0].properties).to eq({})
     agent = @rmt.agents[agent_setting[0].id]
     expect(agent.agent_name).to eq 'TestAgent2@bbb'
-    expect(agent.broker.agent_id).to eq agent_setting[0].id
+    expect(agent.broker.agent.id).to eq agent_setting[0].id
 
     expect(agent_setting[1].id).not_to be nil
     expect(agent_setting[1].agent_class).to eq 'TestAgent1@aaa'
@@ -119,7 +119,7 @@ describe Jiji::Model::Trading::RMT do
     expect(agent_setting[1].properties).to eq({ 'a' => 100, 'b' => 'bb' })
     agent = @rmt.agents[agent_setting[1].id]
     expect(agent.agent_name).to eq 'テスト1'
-    expect(agent.broker.agent_id).to eq agent_setting[1].id
+    expect(agent.broker.agent.id).to eq agent_setting[1].id
 
     expect(agent_setting[2].id).not_to be nil
     expect(agent_setting[2].agent_class).to eq 'TestAgent1@aaa'
@@ -127,7 +127,7 @@ describe Jiji::Model::Trading::RMT do
     expect(agent_setting[2].properties).to eq({})
     agent = @rmt.agents[agent_setting[2].id]
     expect(agent.agent_name).to eq 'テスト2'
-    expect(agent.broker.agent_id).to eq agent_setting[2].id
+    expect(agent.broker.agent.id).to eq agent_setting[2].id
   end
 
   describe 'balance_of_yesterday' do

@@ -5,15 +5,17 @@ require 'jiji/test/test_configuration'
 describe Jiji::Model::Notification::NotificationRepository do
   include_context 'use backtests'
   let(:notification_repository) { container.lookup(:notification_repository) }
-
+  let(:agent_setting) do
+    data_builder.register_agent_setting
+  end
   before(:example) do
     register_notifications
-    register_notifications(backtests[0]._id)
+    register_notifications(backtests[0])
   end
 
-  def register_notifications(backtest_id = nil)
+  def register_notifications(backtest = nil)
     100.times do |i|
-      notification = data_builder.new_notification(i, backtest_id)
+      notification = data_builder.new_notification(i, agent_setting, backtest)
       notification.save
     end
   end
@@ -117,11 +119,13 @@ describe Jiji::Model::Notification::NotificationRepository do
   describe '#get_by_id' do
     it 'idを指定して通知を取得できる' do
       notifications = notification_repository.retrieve_notifications({
-        backtest_id: nil
+        backtest_id: backtests[0].id
       }, { timestamp: :asc, id: :asc })
 
       notification = notification_repository.get_by_id(notifications[0])
-      expect(notification.backtest_id).to eq(nil)
+      expect(notification.backtest.id).to eq(backtests[0].id)
+      expect(notification.backtest.name).to eq('テスト1')
+      expect(notification.agent.name).to eq('test1')
       expect(notification.timestamp).to eq(Time.at(0))
     end
 

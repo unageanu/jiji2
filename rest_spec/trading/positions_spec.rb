@@ -202,18 +202,23 @@ describe '建玉取得' do
       :agent, data_builder.new_agent_body(1))
     @test = data_builder.register_backtest(1, backtest_repository)
 
-    register_position(data_builder)
-    register_position(data_builder, @test._id)
+    setting = data_builder.register_agent_setting
+    setting.backtest = @test
+    setting.save
+    rmt_setting = data_builder.register_agent_setting
+
+    register_position(data_builder, setting)
+    register_position(data_builder, rmt_setting, @test)
   end
 
-  def register_position(data_builder, backtest_id = nil)
+  def register_position(data_builder, agent_setting, backtest_id = nil)
     position1 = data_builder.new_position(1,
-      backtest_id, :EURJPY, Time.new(2015, 5, 2))
+      backtest, agent_setting, :EURJPY, Time.new(2015, 5, 2))
     position1.update_state_to_closed
     position1.save
 
     position1 = data_builder.new_position(1,
-      backtest_id, :USDJPY, Time.new(2015, 5, 3))
+      backtest, agent_setting, :USDJPY, Time.new(2015, 5, 3))
     position1.save
   end
 end

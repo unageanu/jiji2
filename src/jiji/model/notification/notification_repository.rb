@@ -9,7 +9,7 @@ module Jiji::Model::Notification
     include Jiji::Errors
 
     def get_by_id(notification_id)
-      Notification.includes(:agent).find(notification_id) \
+      Notification.includes(:agent, :backtest).find(notification_id) \
       || not_found(Notification, id: notification_id)
     end
 
@@ -18,7 +18,7 @@ module Jiji::Model::Notification
       sort_order = insert_default_sort_order(sort_order)
       query = Jiji::Utils::Pagenation::Query.new(
         filter_conditions, sort_order, offset, limit)
-      query.execute(Notification.includes(:agent)).map { |x| x }
+      query.execute(Notification.includes(:agent, :backtest)).map { |x| x }
     end
 
     def count_notifications(filter_conditions = {})

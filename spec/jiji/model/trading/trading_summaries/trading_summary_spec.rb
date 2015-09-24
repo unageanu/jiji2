@@ -45,7 +45,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
     end
 
     it '取引結果が1つの場合' do
-      position1 = data_builder.new_position(1, nil, :EURJPY)
+      position1 = data_builder.new_position(1, nil, nil, :EURJPY)
       position1.update_state_to_closed(102, Time.at(100))
 
       summary.process_positions([

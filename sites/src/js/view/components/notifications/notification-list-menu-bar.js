@@ -48,14 +48,14 @@ export default class NotificationListMenuBar extends AbstractComponent {
     return [
       <IconButton
         key="prev"
-        tooltip="前の20件"
+        tooltip={"前の" + this.props.model.pageSize +  "件"}
         disabled={this.state.loading || !this.state.hasPrev}
         onClick={prev}>
         <FontIcon className="md-navigate-before"/>
       </IconButton>,
       <IconButton
         key="next"
-        tooltip="次の20件"
+        tooltip={"次の" + this.props.model.pageSize +  "件"}
         disabled={this.state.loading || !this.state.hasNext}
         onClick={next}>
         <FontIcon className="md-navigate-next"/>

@@ -12,13 +12,19 @@ export default class RMTPositionsPage extends AbstractPage {
 
   componentWillMount() {
     const model = this.model();
-    model.initialize();
+    model.initialize(this.props.params.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.model().selection.selectedId = nextProps.params.id;
   }
 
   render() {
     return (
-      <div>
-        <PositionsTable model={this.model().positionTable} />
+      <div className="rmt-positions-page">
+        <PositionsTable
+          model={this.model().positionTable}
+          selectionModel={this.model().selection} />
       </div>
     );
   }

@@ -1,0 +1,65 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.positions-table {
+  margin: @grid*2;
+
+  .actions {
+    text-align: right;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+
+    td.profitOrLoss {
+      width: 150px;
+    }
+    td.pairName {
+      width: 80px;
+    }
+    td.sellOrBuy {
+      width: 50px;
+    }
+    td.units {
+      width: 80px;
+    }
+    td.entryPrice {
+      width: 150px;
+    }
+    td.exitPrice {
+      width: 150px;
+    }
+
+    thead {
+      tr {
+        background-color: @accent-color-normal;
+
+        th {
+          color: white;
+          font-size: @font-size-small;
+          font-weight: normal;
+          padding: 5px 5px;
+
+          a {
+            color: white;
+          }
+        }
+      }
+    }
+    tbody {
+      tr {
+        color: @font-color-normal;
+        border-bottom: 1px solid @border-color;
+      }
+    }
+    tbody:nth-child(odd) {
+      background:@background-color-dark;
+    }
+  }
+
+  .center-information {
+    padding-top: @grid *4;
+    border-bottom: 1px solid @border-color;
+  }
+}

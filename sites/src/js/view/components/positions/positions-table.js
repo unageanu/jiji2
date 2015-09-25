@@ -2,9 +2,12 @@ import React               from "react"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
 import PositionDetailsView from "./position-details-view"
+import LoadingImage         from "../widgets/loading-image"
 
 const Table        = MUI.Table;
 const FlatButton   = MUI.FlatButton;
+const IconButton   = MUI.IconButton;
+const FontIcon     = MUI.FontIcon;
 
 const defaultSortOrder = {
   order:     "profit_or_loss",
@@ -16,7 +19,7 @@ const columns = [
     id:"profitOrLoss",
     name:"損益",
     key:"profitOrLoss",
-    sort: "profit_or_loss"
+    sort: "profit_or_loss",
   }, {
     id:"pairName",
     name:"通貨ペア",
@@ -60,40 +63,37 @@ const columns = [
   }
 ];
 
+const keys = new Set([
+  "items", "sortOrder", "hasNext", "hasPrev"
+]);
+const selectionKeys = new Set([
+  "selecedId"
+]);
+
 export default class PositionsTable extends AbstractComponent {
 
   constructor(props) {
     super(props);
-    this.state = {
-      hasNext :         false,
-      hasPrev :         false,
-      items :           [],
-      selectedPosition: null,
-      sortOrder:        defaultSortOrder
-    };
+    this.state = {};
   }
 
   componentWillMount() {
-    this.registerPropertyChangeListener(this.props.model);
-    this.setState({
-      hasNext :         this.props.model.hasNext,
-      hasPrev :         this.props.model.hasPrev,
-      items :           this.props.model.items,
-      selectedPosition: this.props.model.selectedPosition,
-      sortOrder:        this.props.model.sortOrder
-    });
-  }
-  componentWillUnmount() {
-    this.props.model.removeAllObservers(this);
+    this.registerPropertyChangeListener(this.props.model, keys);
+    this.registerPropertyChangeListener(this.props.selectionModel, selectionKeys);
+    const state = Object.assign(
+      this.collectInitialState(this.props.model, keys),
+      this.collectInitialState(this.props.selectionModel, selectionKeys));
+    this.setState(state);
   }
 
   render() {
     const headers       = this.createHeaderContent();
     const body          = this.createBodyContent();
+    const loading       = this.createLoading();
     const actionContent = this.createActionContent();
     return (
       <div className="positions-table">
-        <PositionDetailsView position={this.state.selectedPosition} />
+        <PositionDetailsView position={this.state.selected} />
         <div className="actions">
           {actionContent}
         </div>
@@ -105,6 +105,7 @@ export default class PositionsTable extends AbstractComponent {
             {body}
           </tbody>
         </table>
+        {loading}
       </div>
     );
   }
@@ -113,16 +114,20 @@ export default class PositionsTable extends AbstractComponent {
     const prev = () => this.props.model.prev();
     const next = () => this.props.model.next();
     return [
-      <FlatButton
-        label="前の100件"
-        disabled={!this.state.hasPrev}
-        onClick={prev}
-      />,
-      <FlatButton
-        label="次の100件"
-        disabled={!this.state.hasNext}
-        onClick={next}
-      />
+      <IconButton
+        key="prev"
+        tooltip={"前の" + this.props.model.pageSize +  "件"}
+        disabled={this.state.loading || !this.state.hasPrev}
+        onClick={prev}>
+        <FontIcon className="md-navigate-before"/>
+      </IconButton>,
+      <IconButton
+        key="next"
+        tooltip={"次の" + this.props.model.pageSize +  "件"}
+        disabled={this.state.loading || !this.state.hasNext}
+        onClick={next}>
+        <FontIcon className="md-navigate-next"/>
+      </IconButton>
     ];
   }
 
@@ -131,23 +136,24 @@ export default class PositionsTable extends AbstractComponent {
       const isCurrentSortKey = this.state.sortOrder.order === column.sort;
       const onClick = (e) => this.onHeaderTapped(e, column);
       const orderMark = isCurrentSortKey
-        ? (this.state.sortOrder.direction === "asc" ? "△" : "▽")
+        ? (this.state.sortOrder.direction === "asc" ? "▲" : "▼")
         : "";
       return <th
         className={column.id + (isCurrentSortKey ? " sortBy" : "")}
         key={column.id}>
-        <FlatButton
-          label={column.name + " " + orderMark}
-          onClick={onClick}
-        />
+        <a href="javascript:void(0)" alt={column.name} onClick={onClick}>
+          {column.name + " " + orderMark}
+        </a>
       </th>;
     });
   }
+
   createBodyContent() {
+    if (!this.state.items) return null;
     return this.state.items.map((item) => {
       const onClick  = (ev) => this.onItemTapped(ev, item);
-      const selected = this.state.selectedPosition
-        && item.id === this.state.selectedPosition.id;
+      const selected = this.state.selected
+        && item.id === this.state.selectedId;
       return <tr
           key={item.id}
           className={selected ? "selected" : ""}
@@ -164,8 +170,19 @@ export default class PositionsTable extends AbstractComponent {
     });
   }
 
-  onItemTapped(e, position) {
-    this.props.model.selectedPosition = position;
+  createLoading() {
+    if (this.state.items == null) {
+      return <div className="center-information"><LoadingImage /></div>;
+    }
+    if (this.state.items.length <= 0) {
+      return <div className="center-information">建玉はありません</div>;
+    }
+    return null;
+  }
+
+  onItemTapped(ev, position) {
+    this.context.router.transitionTo("/positions/"+position.id);
+    ev.preventDefault();
   }
   onHeaderTapped(e, column) {
     const isCurrentSortKey = this.state.sortOrder.order === column.sort;

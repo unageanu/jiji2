@@ -26,7 +26,6 @@ export default class PositionsTableModel extends TableModel {
     super( defaultSortOrder, pageSize );
     this.defaultSortOrder = defaultSortOrder;
     this.positionService = positionService;
-    this.selectedPosition = null;
     this.urlResolver = urlResolver;
   }
 

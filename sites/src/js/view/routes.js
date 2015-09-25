@@ -24,14 +24,19 @@ export default (
     <DefaultRoute                      handler={Home} />
     <Route path="rmt/trading-summary"  handler={RMTTradingSummary} />
     <Route path="rmt/chart"            handler={RMTChart} />
-    <Route path="rmt/positions"        handler={RMTPositions} />
+    <Route path="rmt/positions"        handler={RMTPositions}>
+      <Route path=":id" handler={RMTPositions} ignoreScrollBehavior={true}>
+      </Route>
+    </Route>
     <Route path="rmt/agent-setting"    handler={RMTAgentSetting} />
     <Route path="rmt/logs"             handler={RMTLogs} />
+
     <Route path="backtests/new"        handler={NewBackTest} />
     <Route path="backtests/list"       handler={BackTests}>
       <Route path=":id" handler={BackTests} ignoreScrollBehavior={true}>
       </Route>
     </Route>
+
     <Route path="notifications"        handler={Notifications}>
       <Route path=":id" handler={Notifications} ignoreScrollBehavior={true}>
       </Route>

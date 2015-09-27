@@ -13,7 +13,7 @@ export default class PositionSelectionModel extends SelectionModel {
     return new PositionModel(item, this.urlResolver);
   }
 
-  loadItem(positionIdd) {
+  loadItem(positionId) {
     this.selected = null;
     this.positionService.get(positionId).then( (position)=> {
       this.selected = this.convertItem(position);

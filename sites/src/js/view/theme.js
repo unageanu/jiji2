@@ -23,7 +23,7 @@ export default {
       textColor:      "#666666",
       textColorLight: "#999999",
       positiveColor:  "#00BFA5",
-      nagativeColor:  "#FF3350",
+      negativeColor:  "#FF3350",
       canvasColor: Colors.white,
       borderColor: Colors.grey300,
       disabledColor: ColorManipulator.fade("#666666", 0.3),

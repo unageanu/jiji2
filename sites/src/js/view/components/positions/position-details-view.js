@@ -1,7 +1,7 @@
 import React                from "react"
 import MUI                  from "material-ui"
 import AbstractComponent    from "../widgets/abstract-component"
-import ViewUtils            from "../../utils/view-utils"
+import PriceUtils           from "../../../viewmodel/utils/price-utils"
 import LoadingImage         from "../widgets/loading-image"
 import PositionStatus       from "./position-status"
 
@@ -64,7 +64,7 @@ export default class PositionDetailsView extends AbstractComponent {
         <div className="profit-or-loss">
           {this.createAvatar(position)}
           <span
-            className={"price " + ViewUtils.resolvePriceClass(position.profitOrLoss)}>
+            className={"price " + PriceUtils.resolvePriceClass(position.profitOrLoss)}>
             ￥ {(position.profitOrLoss > 0 ? "+" : "") + position.formatedProfitOrLoss}
           </span>
         </div>

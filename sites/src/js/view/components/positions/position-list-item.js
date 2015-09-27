@@ -2,6 +2,7 @@ import React               from "react"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
 import PositionStatus      from "./position-status"
+import MobileListItem      from "../widgets/mobile/list-item"
 
 const ListItem   = MUI.ListItem;
 const Avatar     = MUI.Avatar;

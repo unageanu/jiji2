@@ -18,8 +18,9 @@ export default class PositionList extends AbstractList {
   createListItem(position, index) {
     return <PositionListItem
       key={index}
-      onTouchTap={this.createAction(position)}
       position={position}
+      onTouchTap={this.createAction(position)}
+      mobile={this.props.mobile}
       innerDivStyle={this.props.innerDivStyle}
       selected={
         this.state.selectedId === position.id

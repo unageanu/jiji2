@@ -1,5 +1,5 @@
 import React        from "react"
-import ViewUtils    from "../../utils/view-utils"
+import PriceUtils   from "../../../viewmodel/utils/price-utils"
 
 export default class TrendIcon extends React.Component {
 
@@ -15,7 +15,7 @@ export default class TrendIcon extends React.Component {
   }
 
   get type() {
-    return ViewUtils.resolvePriceClass(this.props.value);
+    return PriceUtils.resolvePriceClass(this.props.value);
   }
 }
 TrendIcon.propTypes = {

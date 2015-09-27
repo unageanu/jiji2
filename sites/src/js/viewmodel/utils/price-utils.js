@@ -1,4 +1,4 @@
-export default class ViewUtils {
+export default class PriceUtils {
 
   static resolvePriceClass(price) {
     if (price == null) {

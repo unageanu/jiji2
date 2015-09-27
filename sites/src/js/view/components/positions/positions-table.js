@@ -2,7 +2,7 @@ import React               from "react"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
 import LoadingImage        from "../widgets/loading-image"
-import ViewUtils           from "../../utils/view-utils"
+import PositionColumns     from "../../../viewmodel/positions/position-columns"
 
 const Table        = MUI.Table;
 const FlatButton   = MUI.FlatButton;
@@ -13,79 +13,6 @@ const defaultSortOrder = {
   order:     "profit_or_loss",
   direction: "desc"
 };
-
-const columns = [
-  {
-    id:"profitOrLoss",
-    name:"損益",
-    key:"formatedProfitOrLoss",
-    sort: "profit_or_loss",
-    formatter(value, item) {
-      const className = ViewUtils.resolvePriceClass(item.profitOrLoss);
-      const profitOrLoss =
-        (item.profitOrLoss > 0 ? "+" : "") + item.formatedProfitOrLoss;
-      return <span className={className}>{profitOrLoss}</span>;
-    }
-  }, {
-    id:"status",
-    name:"状態",
-    key:"formatedStatus",
-    sort: "status",
-    formatter(value, item) {
-      if (item.status == "live" ) {
-         return <span className="live">{item.formatedStatus}</span>;
-      } else {
-        return item.formatedStatus;
-      }
-    }
-  },{
-    id:"pairName",
-    name:"通貨ペア",
-    key:"pairName",
-    sort: "pair_name"
-  }, {
-    id:"sellOrBuy",
-    name:"売/買",
-    key:"formatedSellOrBuy",
-    sort: "sell_or_buy"
-  }, {
-    id:"units",
-    name:"数量",
-    key:"formatedUnits",
-    sort: "units"
-  }, {
-    id:"entryPrice",
-    name:"購入価格",
-    key:"formatedEntryPrice",
-    sort: "entry_price"
-  }, {
-    id:"exitPrice",
-    name:"決済価格",
-    key:"formatedExitPrice",
-    sort: "exit_price"
-  }, {
-    id:"enteredAt",
-    name:"購入日時",
-    key:"formatedEnteredAt",
-    sort: "entered_at",
-    formatter(value, item) {
-      return value || "-";
-    }
-  }, {
-    id:"exitedAt",
-    name:"決済日時",
-    key:"formatedExitedAt",
-    sort: "exited_at",
-    formatter(value, item) {
-      return value || "-";
-    }
-  }, {
-    id:"agentName",
-    name:"エージェント",
-    key:"agentName",
-    sort: "agent_name"
-  }
-];
 
 const keys = new Set([
   "items", "sortOrder", "hasNext", "hasPrev"
@@ -155,7 +82,7 @@ export default class PositionsTable extends AbstractComponent {
   }
 
   createHeaderContent() {
-    return columns.map((column) => {
+    return PositionColumns.map((column) => {
       const isCurrentSortKey = this.state.sortOrder.order === column.sort;
       const onClick = (e) => this.onHeaderTapped(e, column);
       const orderMark = isCurrentSortKey
@@ -185,7 +112,7 @@ export default class PositionsTable extends AbstractComponent {
     });
   }
   createRow(item) {
-    return columns.map((column) => {
+    return PositionColumns.map((column) => {
       let content = item[column.key];
       if (column.formatter) content = column.formatter(content, item);
       return <td className={column.id} key={column.id}>

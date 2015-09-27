@@ -44,7 +44,7 @@ export default class AbstractList extends AbstractComponent {
       return <div className="center-information">{this.props.emptyLabel}</div>;
     }
     const filling = this.state.filling
-      ? <div className="info"><LoadingImage /></div> : null;
+      ? <div className="center-information"><LoadingImage /></div> : null;
     return <div>
       <List
         className={"list " + this.className}

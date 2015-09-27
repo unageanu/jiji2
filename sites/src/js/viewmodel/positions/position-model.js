@@ -40,6 +40,15 @@ export default class PositionModel {
       return "買";
     }
   }
+  get formatedStatus() {
+    if (this.status === "live") {
+      return "未決済";
+    } else if (this.status === "closed"){
+      return "決済済";
+    } else if (this.status === "lost"){
+      return "ロスト";
+    }
+  }
   get formatedUnits() {
     return NumberFormatter.insertThousandsSeparator(this.units);
   }
@@ -64,5 +73,8 @@ export default class PositionModel {
     const iconId = this.agent ? this.agent.iconId : null;
     return this.urlResolver.resolveServiceUrl(
       "icon-images/" + (iconId || "default"));
+  }
+  get agentName() {
+    return this.agent ? this.agent.name : null;
   }
 }

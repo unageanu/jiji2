@@ -35,7 +35,7 @@ export default class PositionsTableModel extends TableModel {
 
   loadItems() {
     this.fire("beforeLoadItems");
-    super.loadItems();
+    return super.loadItems();
   }
 
   convertItems(items) {

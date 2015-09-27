@@ -1,7 +1,10 @@
-import React            from "react"
-import MUI              from "material-ui"
-import AbstractPage     from "./abstract-page"
-import PositionsTable   from "../positions/positions-table"
+import React               from "react"
+import MUI                 from "material-ui"
+import AbstractPage        from "./abstract-page"
+import PositionsTable      from "../positions/positions-table"
+import PositionDetailsView from "../positions/position-details-view"
+
+const Card       = MUI.Card;
 
 export default class RMTPositionsPage extends AbstractPage {
 
@@ -22,6 +25,9 @@ export default class RMTPositionsPage extends AbstractPage {
   render() {
     return (
       <div className="rmt-positions-page">
+        <div className="card">
+          <PositionDetailsView model={this.model().selection} />
+        </div>
         <PositionsTable
           model={this.model().positionTable}
           selectionModel={this.model().selection} />

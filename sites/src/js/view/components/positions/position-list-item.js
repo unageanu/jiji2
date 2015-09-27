@@ -1,7 +1,7 @@
 import React               from "react"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
-import TextInRadius        from "../widgets/text-in-radius"
+import PositionStatus      from "./position-status"
 
 const ListItem   = MUI.ListItem;
 const Avatar     = MUI.Avatar;
@@ -17,16 +17,22 @@ export default class PositionListItem extends React.Component {
 
   render() {
     const position = this.props.position || nullPosition;
-    return (
-      <ListItem
-        innerDivStyle={
-          Object.assign({ paddingRight:"72px"}, this.props.innerDivStyle)
-        }
-        leftAvatar={this.createAvatar(position)}
-        primaryText={this.createPrimaryText(position)}
-        secondaryText={this.createSecondaryText(position)}
-        rightIcon={this.createRightIcon(position)} />
-    );
+    const props = {
+      className: "list-item",
+      innerDivStyle : Object.assign({
+        paddingRight:"72px",
+        backgroundColor: this.props.selected
+          ? Theme.getPalette().backgroundColorDarkAlpha : "rgba(0,0,0,0)"
+      }, this.props.innerDivStyle),
+      leftAvatar: this.createAvatar(position),
+      primaryText: this.createPrimaryText(position),
+      secondaryText: this.createSecondaryText(position),
+      onTouchTap: this.props.onTouchTap,
+      rightIcon: this.createRightIcon(position)
+    };
+    return this.props.mobile
+      ? <MobileListItem {...props} />
+      : <ListItem {...props} />;
   }
 
   createPrimaryText(position) {
@@ -70,7 +76,7 @@ export default class PositionListItem extends React.Component {
   createRightIcon(position) {
       if (position.status != "live") return null;
       return <span className="right-icon" style={{width:"auto"}}>
-        <TextInRadius text="未決済" />
+        <PositionStatus status={position.formatedStatus} />
       </span>;
   }
   createAvatar(position) {

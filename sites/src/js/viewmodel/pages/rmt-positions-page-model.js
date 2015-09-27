@@ -11,7 +11,7 @@ export default class RMTPositionsPageModel extends Observable {
   postCreate() {
     this.positionTable =
       this.viewModelFactory.createPositionsTableModel(50, {
-        order:     "profit_or_loss",
+        order:     "entered_at",
         direction: "desc"
       });
     this.selection =
@@ -20,9 +20,10 @@ export default class RMTPositionsPageModel extends Observable {
   }
 
   initialize( selectedId ) {
-    this.positionTable.initialize("rmt", "live");
+    this.positionTable.initialize("rmt");
     this.positionTable.load().then(
-      () => this.selection.selectedId = selectedId );
+      () => this.selection.selectedId = selectedId
+    , ( error ) => console.log(error) );
   }
 
 }

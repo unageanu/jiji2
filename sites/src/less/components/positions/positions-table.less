@@ -2,7 +2,7 @@
 @import "../../sizes.less";
 
 .positions-table {
-  margin: @grid*2;
+  margin: 0  @grid*2  @grid*2 @grid*2;
 
   .actions {
     text-align: right;
@@ -12,24 +12,42 @@
     width: 100%;
     border-collapse: collapse;
 
+    td {
+      text-align: center;
+      font-size:  @font-size-small;
+      text-overflow: ellipsis;
+    }
+
     td.profitOrLoss {
-      width: 150px;
+      width: 80px;
+      text-align: right;
     }
     td.pairName {
-      width: 80px;
+      width: 90px;
+    }
+    td.status {
+      width: 60px;
+
+      .live {
+        color: @nagative-color;
+      }
     }
     td.sellOrBuy {
-      width: 50px;
+      width: 60px;
     }
     td.units {
-      width: 80px;
+      width: 60px;
+      text-align: right;
     }
     td.entryPrice {
-      width: 150px;
+      width: 90px;
+      text-align: right;
     }
     td.exitPrice {
-      width: 150px;
+      width: 90px;
+      text-align: right;
     }
+
 
     thead {
       tr {
@@ -43,6 +61,8 @@
 
           a {
             color: white;
+            cursor: pointer;
+            text-decoration: underline;
           }
         }
       }
@@ -51,10 +71,11 @@
       tr {
         color: @font-color-normal;
         border-bottom: 1px solid @border-color;
+        cursor: pointer;
       }
-    }
-    tbody:nth-child(odd) {
-      background:@background-color-dark;
+      tr.selected, tr:hover {
+        background:@background-color-dark;
+      }
     }
   }
 

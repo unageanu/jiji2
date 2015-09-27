@@ -27,7 +27,7 @@ export default class PositionList extends AbstractList {
   }
   createAction(position) {
     return (ev) => {
-      this.context.router.transitionTo("/positions/"+position.id);
+      this.context.router.transitionTo("/rmt/positions/"+position.id);
       ev.preventDefault();
     };
   }

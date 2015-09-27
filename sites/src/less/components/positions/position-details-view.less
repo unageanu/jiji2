@@ -1,0 +1,79 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.position-details {
+  padding: @grid*2;
+  font-size: @font-size-normal;
+  color: @font-color-normal;
+
+  .profit-or-loss {
+    font-size: @font-size-large;
+    padding-bottom: @grid;
+
+    span.price {
+      margin-left: @grid*2;
+    }
+    span, img {
+      vertical-align: middle;
+    }
+  }
+
+  .informations {
+    display: table;
+    width: 100%;
+  }
+
+  .category {
+    display: table-cell;
+    padding-left: @grid*2;
+  }
+  .category.first {
+    padding-left: 0;
+    .item {
+      .label {
+        display: table-cell;
+        min-width: 40px;
+      }
+    }
+  }
+
+  .item {
+    margin-right: @grid*2;
+    display: table-row;
+
+    .label {
+      display: table-cell;
+      min-width: 60px;
+      padding: 3px 4px;
+      margin-right: @grid;
+      font-size: @font-size-super-small;
+      color: @font-color-light;
+    }
+    .value {
+      display: table-cell;
+      padding: 3px 4px;
+
+      .live {
+        color: @nagative-color;
+      }
+    }
+  }
+
+  .category.closing-policy　{
+    border: 1px solid @border-color;
+    padding: 0 @grid*2 @grid*2 @grid*2;
+  }
+
+  .category.closing-policy:before {
+    content:"決済条件";
+    font-size: @font-size-small;
+    color: @font-color-light;
+    display:inline-block;
+    position:relative;
+    top: -12px;
+    background-color:#FFF;
+    padding:0px @grid;
+  }
+
+
+}

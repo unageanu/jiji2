@@ -1,8 +1,8 @@
 import React               from "react"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
-import PositionDetailsView from "./position-details-view"
-import LoadingImage         from "../widgets/loading-image"
+import LoadingImage        from "../widgets/loading-image"
+import ViewUtils           from "../../utils/view-utils"
 
 const Table        = MUI.Table;
 const FlatButton   = MUI.FlatButton;
@@ -18,9 +18,27 @@ const columns = [
   {
     id:"profitOrLoss",
     name:"損益",
-    key:"profitOrLoss",
+    key:"formatedProfitOrLoss",
     sort: "profit_or_loss",
+    formatter(value, item) {
+      const className = ViewUtils.resolvePriceClass(item.profitOrLoss);
+      const profitOrLoss =
+        (item.profitOrLoss > 0 ? "+" : "") + item.formatedProfitOrLoss;
+      return <span className={className}>{profitOrLoss}</span>;
+    }
   }, {
+    id:"status",
+    name:"状態",
+    key:"formatedStatus",
+    sort: "status",
+    formatter(value, item) {
+      if (item.status == "live" ) {
+         return <span className="live">{item.formatedStatus}</span>;
+      } else {
+        return item.formatedStatus;
+      }
+    }
+  },{
     id:"pairName",
     name:"通貨ペア",
     key:"pairName",
@@ -36,11 +54,6 @@ const columns = [
     key:"formatedUnits",
     sort: "units"
   }, {
-    id:"agentName",
-    name:"エージェント",
-    key:"agentName",
-    sort: "agent_name"
-  }, {
     id:"entryPrice",
     name:"購入価格",
     key:"formatedEntryPrice",
@@ -54,12 +67,23 @@ const columns = [
     id:"enteredAt",
     name:"購入日時",
     key:"formatedEnteredAt",
-    sort: "entered_at"
+    sort: "entered_at",
+    formatter(value, item) {
+      return value || "-";
+    }
   }, {
     id:"exitedAt",
     name:"決済日時",
     key:"formatedExitedAt",
-    sort: "exited_at"
+    sort: "exited_at",
+    formatter(value, item) {
+      return value || "-";
+    }
+  }, {
+    id:"agentName",
+    name:"エージェント",
+    key:"agentName",
+    sort: "agent_name"
   }
 ];
 
@@ -67,7 +91,7 @@ const keys = new Set([
   "items", "sortOrder", "hasNext", "hasPrev"
 ]);
 const selectionKeys = new Set([
-  "selecedId"
+  "selectedId"
 ]);
 
 export default class PositionsTable extends AbstractComponent {
@@ -93,7 +117,6 @@ export default class PositionsTable extends AbstractComponent {
     const actionContent = this.createActionContent();
     return (
       <div className="positions-table">
-        <PositionDetailsView position={this.state.selected} />
         <div className="actions">
           {actionContent}
         </div>
@@ -141,7 +164,7 @@ export default class PositionsTable extends AbstractComponent {
       return <th
         className={column.id + (isCurrentSortKey ? " sortBy" : "")}
         key={column.id}>
-        <a href="javascript:void(0)" alt={column.name} onClick={onClick}>
+        <a alt={column.name} onClick={onClick}>
           {column.name + " " + orderMark}
         </a>
       </th>;
@@ -152,8 +175,7 @@ export default class PositionsTable extends AbstractComponent {
     if (!this.state.items) return null;
     return this.state.items.map((item) => {
       const onClick  = (ev) => this.onItemTapped(ev, item);
-      const selected = this.state.selected
-        && item.id === this.state.selectedId;
+      const selected = item.id === this.state.selectedId;
       return <tr
           key={item.id}
           className={selected ? "selected" : ""}
@@ -164,8 +186,10 @@ export default class PositionsTable extends AbstractComponent {
   }
   createRow(item) {
     return columns.map((column) => {
+      let content = item[column.key];
+      if (column.formatter) content = column.formatter(content, item);
       return <td className={column.id} key={column.id}>
-              {item[column.key]}
+              {content}
              </td>;
     });
   }
@@ -181,7 +205,7 @@ export default class PositionsTable extends AbstractComponent {
   }
 
   onItemTapped(ev, position) {
-    this.context.router.transitionTo("/positions/"+position.id);
+    this.context.router.transitionTo("/rmt/positions/"+position.id);
     ev.preventDefault();
   }
   onHeaderTapped(e, column) {
@@ -202,5 +226,6 @@ PositionsTable.defaultProps = {
   model: null
 };
 PositionsTable.contextTypes = {
-  application: React.PropTypes.object.isRequired
+  router: React.PropTypes.func,
+  windowResizeManager: React.PropTypes.object
 };

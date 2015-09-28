@@ -12,12 +12,22 @@ export default class RMTChartPage extends AbstractPage {
 
   render() {
     return (
-      <div>
+      <div className="rmt-chart-page">
         <ChartView
           model={this.model().chart}
-          size={{w:600, h:500, profitAreaHeight:100, graphAreaHeight:100}}/>
+          size={this.calculateChartSize()}/>
       </div>
     );
+  }
+
+  calculateChartSize() {
+    const windowSize = this.context.windowResizeManager.windowSize;
+    return {
+      w: windowSize.w - 288 - 16*2,
+      h: windowSize.h - 100 - 16*2 - 250,
+      profitAreaHeight:100,
+      graphAreaHeight:100
+    };
   }
 
   model() {
@@ -26,5 +36,6 @@ export default class RMTChartPage extends AbstractPage {
 }
 RMTChartPage.contextTypes = {
   application: React.PropTypes.object.isRequired,
+  windowResizeManager: React.PropTypes.object.isRequired,
   router: React.PropTypes.func
 };

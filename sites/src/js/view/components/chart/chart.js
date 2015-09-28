@@ -44,8 +44,6 @@ export default class Chart extends React.Component {
 
   render() {
     const r = this.props.devicePixelRatio;
-    const slider = this.props.enableSlider ?
-      <Slider chartModel={this.props.model}></Slider> : null;
     return (
       <div>
         <canvas ref="canvas"
@@ -56,7 +54,6 @@ export default class Chart extends React.Component {
             height: this.props.size.h+"px"
         }}>
         </canvas>
-        {slider}
       </div>
     );
   }
@@ -134,13 +131,11 @@ export default class Chart extends React.Component {
   }
 }
 Chart.propTypes = {
-  enableSlider : React.PropTypes.bool.isRequired,
   devicePixelRatio: React.PropTypes.number.isRequired,
   size: React.PropTypes.object.isRequired,
   model: React.PropTypes.object.isRequired
 };
 Chart.defaultProps = {
-  enableSlider : true,
   devicePixelRatio: window.devicePixelRatio || 1,
   size: {w:600, h:500}
 };

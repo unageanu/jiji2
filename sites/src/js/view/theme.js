@@ -218,10 +218,10 @@ export default {
       fontSize: "24px"
     },
     pairSelector: {
-      width: "120px"
+      width: "130px"
     },
     intervalSelector: {
-      width: "136px"
+      width: "130px"
     }
   },
   snackbar: {}

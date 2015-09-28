@@ -4,20 +4,28 @@
 .slider {
   .bar {
     position: relative;
-    background-color: @background-color-dark;
+    background-color: @background-color-dark-alpha;
     height: 30px;
     line-height: 0px;
     width: 300px;
   }
   .handle {
+    cursor: pointer;
     position: relative;
     display: none;
     height: 30px;
-    background-color: @primary-color-dark;
+    background-color: @accent-color-normal; //@primary-color-dark;
+    background-size:  30px 30px;
+    background-image: url('../images/chart-handle.gif');
   }
   .range {
-    font-size: @font-size-small;
     color: @font-color-light;
+    margin-bottom: 4px;
+
+    .label {
+      font-size: @font-size-small;
+      margin-right: @grid;
+    }
   }
 }
 
@@ -30,6 +38,9 @@
       font-size: @font-size-large;
       color: @font-color-light;
       vertical-align: inherit;
+    }
+    .pair-selector {
+      margin: 0px @grid*2 0px @grid;
     }
 
     .setting-menu {
@@ -61,4 +72,24 @@
     margin-right: @grid;
   }
 
+}
+
+.chart-view {
+  .menu {
+    padding: @grid @grid*2 @grid*2 @grid*2;
+  }
+  .chart {
+    background-color: @background-color-dark-alpha;
+    padding: @grid*2;
+  }
+  .rate-view {
+    margin-bottom: @grid * 2;
+  }
+  .slider-panel {
+    margin-top: @grid*2;
+    padding: 0 @grid*2 @grid*2 @grid*2;
+  }
+  .pair-selector {
+    margin-right: @grid*2;
+  }
 }

@@ -31,7 +31,9 @@ export default class RangeView extends React.Component {
     const displayRange = this.format(this.state.range.start)
               + " ～ " + this.format(this.state.range.end);
     return (
-      <div className="range">{displayRange}</div>
+      <div className="range">
+        <span className="label">表示期間:</span>
+        {displayRange}</div>
     );
   }
   format(date) {

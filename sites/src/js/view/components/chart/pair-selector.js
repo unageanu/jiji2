@@ -56,11 +56,11 @@ export default class PairSelector extends React.Component {
         style={{width:Theme.chart.pairSelector.width}}
         labelStyle={
           Object.assign({
-            padding: "0px",
+            padding: "0 0 0 16px",
             color: Theme.getPalette().textColorLight
-          }, Theme.chart.selector)
+          }, Theme.chart.selector, this.props.labelStyle)
         }
-        iconStyle={{right:"0px"}}
+        iconStyle={{right:"8px"}}
         underlineStyle={{margin: "0px"}}
         autoWidth={false}
         zDepth={5}
@@ -86,5 +86,9 @@ export default class PairSelector extends React.Component {
   }
 }
 PairSelector.propTypes = {
-  model: React.PropTypes.object.isRequired
+  model: React.PropTypes.object.isRequired,
+  labelStyle: React.PropTypes.object
+};
+PairSelector.defaultProps = {
+  labelStyle: {}
 };

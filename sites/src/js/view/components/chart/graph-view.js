@@ -102,9 +102,10 @@ export default class GraphView extends AbstractChartComponent {
     const axisPosition = this.chartModel.candleSticks.axisPosition;
     const last  = series.line[series.line.length-1];
     const first = series.line[0];
+    const bottom = axisPosition.verticalSpliter || axisPosition.vertical;
     g = g.lineTo( axisPosition.horizontal, last.y )
-         .lineTo( axisPosition.horizontal, axisPosition.vertical )
-         .lineTo( 0, axisPosition.vertical )
+         .lineTo( axisPosition.horizontal, bottom )
+         .lineTo( 0, bottom )
          .lineTo( 0, first.y )
          .closePath();
     g = g.endFill();

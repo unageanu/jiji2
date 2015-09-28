@@ -3,8 +3,13 @@ import MUI           from "material-ui"
 import Draggable     from "react-draggable"
 import DateFormatter from "../../../viewmodel/utils/date-formatter"
 import RangeView     from "./range-view"
+import AbstractComponent  from "../widgets/abstract-component"
 
-export default class Slider extends React.Component {
+const keys = new Set([
+  "pageWidth", "positionX", "temporaryPositionX", "width"
+]);
+
+export default class Slider extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -16,15 +21,7 @@ export default class Slider extends React.Component {
   }
 
   componentWillMount() {
-    this.props.chartModel.slider.addObserver("propertyChanged", (n, e) => {
-      if ( e.key === "pageWidth" ) {
-        this.setState({ handleWidth: e.newValue});
-      } else if ( e.key === "positionX" || e.key === "temporaryPositionX") {
-        this.setState({ handlePosition: e.newValue});
-      } else if ( e.key === "width") {
-        this.setState({ barWidth: e.newValue});
-      }
-    }, this);
+    this.registerPropertyChangeListener(  this.props.chartModel.slider, keys);
     this.setState({
       barWidth       : this.props.chartModel.slider.width,
       handlePosition : this.props.chartModel.slider.positionX,
@@ -32,8 +29,14 @@ export default class Slider extends React.Component {
     });
   }
 
-  componentWillUnmount() {
-    this.props.chartModel.slider.removeAllObservers(this);
+  onPropertyChanged(k, e) {
+    if ( e.key === "pageWidth" ) {
+      this.setState({ handleWidth: e.newValue});
+    } else if ( e.key === "positionX" || e.key === "temporaryPositionX") {
+      this.setState({ handlePosition: e.newValue});
+    } else if ( e.key === "width") {
+      this.setState({ barWidth: e.newValue});
+    }
   }
 
   render() {

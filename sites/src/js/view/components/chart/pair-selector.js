@@ -1,11 +1,16 @@
-import React     from "react"
-import MUI       from "material-ui"
-import Theme     from "../../theme"
+import React              from "react"
+import MUI                from "material-ui"
+import Theme              from "../../theme"
+import AbstractComponent  from "../widgets/abstract-component"
+
+const keys = new Set([
+  "pairs"
+]);
 
 const DropDownMenu = MUI.DropDownMenu;
 const emptyItems   = [{text:""}];
 
-export default class PairSelector extends React.Component {
+export default class PairSelector extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -16,15 +21,11 @@ export default class PairSelector extends React.Component {
   }
 
   componentWillMount() {
-    this.pairs().addObserver("propertyChanged",
-      this.onPairsPropertyChanged.bind(this), this);
+    this.registerPropertyChangeListener( this.pairs(), keys);
     this.updateState();
   }
-  componentWillUnmount() {
-    this.pairs().removeAllObservers(this);
-  }
 
-  onPairsPropertyChanged(n, e) {
+  onPropertyChanged(k, e) {
     if (e.key !== "pairs") return;
     this.updateState();
   }

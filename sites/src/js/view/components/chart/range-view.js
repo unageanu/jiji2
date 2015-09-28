@@ -1,8 +1,13 @@
-import React         from "react"
-import MUI           from "material-ui"
-import DateFormatter from "../../../viewmodel/utils/date-formatter"
+import React              from "react"
+import MUI                from "material-ui"
+import DateFormatter      from "../../../viewmodel/utils/date-formatter"
+import AbstractComponent  from "../widgets/abstract-component"
 
-export default class RangeView extends React.Component {
+const keys = new Set([
+  "currentRange", "temporaryCurrentRange"
+]);
+
+export default class RangeView extends AbstractComponent {
   constructor(props) {
     super(props);
     this.state = {
@@ -10,21 +15,19 @@ export default class RangeView extends React.Component {
     };
   }
   componentWillMount() {
-    this.props.chartModel.slider.addObserver("propertyChanged", (n, e) => {
-      if (e.key !== "currentRange"
-       && e.key !== "temporaryCurrentRange" ) {
-        return;
-      }
-      this.setState({
-        range: e.newValue || {}
-      });
-    }, this);
+    this.registerPropertyChangeListener( this.props.chartModel.slider, keys);
     this.setState({
       range: this.props.chartModel.slider.currentRange || {}
     });
   }
-  componentWillUnmount() {
-    this.props.chartModel.slider.removeAllObservers(this);
+  onPropertyChanged(k, e) {
+    if (e.key !== "currentRange"
+     && e.key !== "temporaryCurrentRange" ) {
+      return;
+    }
+    this.setState({
+      range: e.newValue || {}
+    });
   }
 
   render() {

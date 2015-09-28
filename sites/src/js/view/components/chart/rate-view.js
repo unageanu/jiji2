@@ -1,11 +1,16 @@
-import React           from "react"
-import MUI             from "material-ui"
-import Draggable       from "react-draggable"
-import DateFormatter   from "../../../viewmodel/utils/date-formatter"
-import NumberFormatter from "../../../viewmodel/utils/number-formatter"
-import RangeView       from "./range-view"
+import React              from "react"
+import MUI                from "material-ui"
+import Draggable          from "react-draggable"
+import DateFormatter      from "../../../viewmodel/utils/date-formatter"
+import NumberFormatter    from "../../../viewmodel/utils/number-formatter"
+import RangeView          from "./range-view"
+import AbstractComponent  from "../widgets/abstract-component"
 
-export default class RateView extends React.Component {
+const keys = new Set([
+  "rate", "time"
+]);
+
+export default class RateView extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -16,24 +21,9 @@ export default class RateView extends React.Component {
   }
 
   componentWillMount() {
-    this.props.chartModel.pointer.addObserver("propertyChanged",
-      this.onPropertyChanged.bind(this), this);
-    this.setState({
-      rate : this.props.chartModel.pointer.rate,
-      time : this.props.chartModel.pointer.time
-    });
-  }
-
-  onPropertyChanged(n, e) {
-    if (e.key == "rate") {
-      this.setState({ "rate": e.newValue });
-    } else if (e.key == "time") {
-      this.setState({ "time": e.newValue });
-    }
-  }
-
-  componentWillUnmount() {
-    this.props.chartModel.slider.removeAllObservers(this);
+    this.registerPropertyChangeListener(this.props.chartModel.pointer, keys);
+    const state = this.collectInitialState(this.props.chartModel.pointer, keys);
+    this.setState(state);
   }
 
   render() {

@@ -40,6 +40,7 @@ export default class Chart extends React.Component {
     this.candleSticks.unregisterObservers();
     this.graphView.unregisterObservers();
     this.positionsView.unregisterObservers();
+    this.pointer.unregisterObservers();
   }
 
   render() {

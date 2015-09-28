@@ -54,14 +54,17 @@ export default class PairSelector extends AbstractComponent {
         valueMember="value"
         menuItems={this.state.items}
         selectedIndex={this.state.selectedIndex}
-        style={{width:Theme.chart.pairSelector.width}}
+        style={
+          Object.assign(
+            {width:Theme.chart.pairSelector.width}, this.props.style)
+        }
         labelStyle={
           Object.assign({
-            padding: "0 0 0 16px",
+            padding: "0px",
             color: Theme.getPalette().textColorLight
           }, Theme.chart.selector, this.props.labelStyle)
         }
-        iconStyle={{right:"8px"}}
+        iconStyle={Object.assign({right:"8px"}, this.props.iconStyle)}
         underlineStyle={{margin: "0px"}}
         autoWidth={false}
         zDepth={5}
@@ -88,8 +91,12 @@ export default class PairSelector extends AbstractComponent {
 }
 PairSelector.propTypes = {
   model: React.PropTypes.object.isRequired,
-  labelStyle: React.PropTypes.object
+  style: React.PropTypes.object,
+  labelStyle: React.PropTypes.object,
+  iconStyle: React.PropTypes.object
 };
 PairSelector.defaultProps = {
-  labelStyle: {}
+  style: {},
+  labelStyle: {},
+  iconStyle: {}
 };

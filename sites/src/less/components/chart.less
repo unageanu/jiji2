@@ -30,8 +30,9 @@
 }
 .chart {
   .loading {
-    float: right;
-    padding: @grid @grid 0 0;
+    position: absolute;
+    top: 16px;
+    right: 16px;
   }
 }
 
@@ -46,7 +47,7 @@
       vertical-align: inherit;
     }
     .pair-selector {
-      margin: 0px @grid*2 0px @grid;
+      margin: 0px @grid*2 0px 0px;
     }
 
     .setting-menu {
@@ -54,6 +55,7 @@
     }
   }
   .chart {
+    position: relative;
     background-color: @background-color-dark;
     padding: @grid*2;
     margin-bottom: @grid*2;
@@ -82,9 +84,10 @@
 
 .chart-view {
   .menu {
-    padding: @grid @grid*2 @grid*2 @grid*2;
+    padding: @grid*2;
   }
   .chart {
+    position: relative;
     background-color: @background-color-dark-alpha;
     padding: @grid*2;
   }

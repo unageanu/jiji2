@@ -9,6 +9,20 @@ import RateView          from "../chart/rate-view"
 import Slider            from "../chart/slider"
 import LoadingView       from "../widgets/loading-view"
 
+const conpactSelectorStyles = {
+  style: {
+    height: "32px"
+  },
+  labelStyle: {
+    fontSize: "16px",
+    lineHeight: "normal",
+    top: "6px"
+  },
+  iconStyle: {
+    top: "4px"
+  }
+};
+
 export default class ChartView extends AbstractComponent {
 
   constructor(props) {
@@ -20,12 +34,8 @@ export default class ChartView extends AbstractComponent {
     return (
       <div className="chart-view">
         <div className="menu">
-          <PairSelector model={this.props.model} labelStyle={{
-            fontSize: "16px",
-          }} />
-          <IntervalSelector model={this.props.model} labelStyle={{
-            fontSize: "16px",
-          }} />
+          <PairSelector model={this.props.model} {...conpactSelectorStyles} />
+          <IntervalSelector model={this.props.model} {...conpactSelectorStyles} />
         </div>
         <div className="chart">
           <div className="loading">

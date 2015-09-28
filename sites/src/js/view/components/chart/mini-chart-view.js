@@ -7,6 +7,7 @@ import IntervalSelector  from "../chart/interval-selector"
 import PairSelector      from "../chart/pair-selector"
 import RateView          from "../chart/rate-view"
 import SettingMenuButton from "../widgets/setting-menu-button"
+import LoadingView       from "../widgets/loading-view"
 
 export default class MiniChartView extends AbstractCard {
 
@@ -40,11 +41,16 @@ export default class MiniChartView extends AbstractCard {
   }
   createBody() {
     return <div className="chart">
-        <RateView chartModel={this.props.model} />
-        <Chart
-          {...this.props}
-          enableSlider={false} />
-      </div>;
+      <div className="loading">
+        <LoadingView xhrManager={
+            this.props.model.positionService.xhrManager
+        } type="gray" />
+      </div>
+      <RateView chartModel={this.props.model} />
+      <Chart
+        {...this.props}
+        enableSlider={false} />
+    </div>;
   }
 
   onMenuItemTouchTap(e, item) {

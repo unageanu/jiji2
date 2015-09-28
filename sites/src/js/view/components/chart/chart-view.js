@@ -7,6 +7,7 @@ import IntervalSelector  from "../chart/interval-selector"
 import PairSelector      from "../chart/pair-selector"
 import RateView          from "../chart/rate-view"
 import Slider            from "../chart/slider"
+import LoadingView       from "../widgets/loading-view"
 
 export default class ChartView extends AbstractComponent {
 
@@ -27,6 +28,11 @@ export default class ChartView extends AbstractComponent {
           }} />
         </div>
         <div className="chart">
+          <div className="loading">
+            <LoadingView xhrManager={
+                this.props.model.positionService.xhrManager
+            } type="gray" />
+          </div>
           <RateView chartModel={this.props.model} />
           <Chart {...this.props} />
         </div>

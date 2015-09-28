@@ -9,7 +9,13 @@ export default class LoadingImage extends React.Component {
 
   render() {
     return (
-      <span className="loading-image"></span>
+      <span className={"loading-image " + this.props.type} ></span>
     );
   }
 }
+LoadingImage.propTypes = {
+  type: React.PropTypes.string
+};
+LoadingImage.defaultProps = {
+  type: "white"
+};

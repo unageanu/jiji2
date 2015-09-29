@@ -134,7 +134,7 @@ export default class Pointer extends Observable {
     const padding      = CoordinateCalculator.padding();
     const axisPosition = this.coordinateCalculator.axisPosition;
     if (x < padding) x = padding;
-    if (x >= axisPosition.horizontal) x = axisPosition.horizontal-1;
+    if (x >= axisPosition.horizontal-sticeWidth) x = axisPosition.horizontal-sticeWidth;
     return Math.floor((x-padding)/sticeWidth)*sticeWidth+sticeWidth/2 + padding;
   }
   normalizeY(y) {

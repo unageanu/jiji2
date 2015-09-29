@@ -79,7 +79,8 @@ export default class AbstractList extends AbstractComponent {
         this.filling = false;
         this.setState({filling: false});
       });
-    });
+    }, this);
+    this.registerObservable(this.context.windowResizeManager);
   }
 
 }

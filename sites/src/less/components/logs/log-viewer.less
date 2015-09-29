@@ -1,0 +1,25 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.log-viewer {
+
+
+  .page-selector{
+    margin: @grid*2 @grid*2 0 @grid*2;
+
+    .separator {
+      margin-right: @grid*2;
+    }
+  }
+
+  .body {
+    pre {
+      margin: @grid*2;
+      overflow: scroll;
+      background-color: #333;
+      padding: @grid*2;
+      font-size: @font-size-super-small;
+      color: #EEE;
+    }
+  }
+}

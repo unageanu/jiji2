@@ -5,6 +5,8 @@ import LoadingImage      from "../widgets/loading-image"
 import Theme             from "../../theme"
 
 const FlatButton   = MUI.FlatButton;
+const IconButton   = MUI.IconButton;
+const Card         = MUI.Card;
 
 const keys = new Set([
   "items", "pageSelectors"
@@ -28,10 +30,14 @@ export default class LogViewer extends AbstractComponent {
 
   render() {
     const pageSelectorElements = this.createPageSelectorElements();
+    const scroller = this.createScrollerElements();
     const body = this.createBodyContnet();
     return (
       <div className="log-viewer">
-        <div className="page-selector">{pageSelectorElements}</div>
+        <Card className="menu">
+          <span className="page-selector">{pageSelectorElements}</span>
+          <span className="scroller">{scroller}</span>
+        </Card>
         <div className="body">
           {body}
         </div>
@@ -48,7 +54,27 @@ export default class LogViewer extends AbstractComponent {
       </div>;
     }
   }
-
+  createScrollerElements() {
+    const contentSize = this.context.windowResizeManager.contentSize;
+    const windowSize  = this.context.windowResizeManager.windowSize;
+    return [{
+      icon:"expand-less",
+      action: () => window.scrollTo(0, 0),
+      tooltip: "一番上へ"
+    }, {
+      icon:"expand-more",
+      action: () => window.scrollTo(0, contentSize.h - windowSize.h),
+      tooltip: "一番下へ"
+    }].map((info, index)=> {
+      return <IconButton
+          key={info.icon}
+          className="scroller-button"
+          tooltip={info.tooltip}
+          iconClassName={"md-"+info.icon}
+          onTouchTap={info.action}
+        />;
+    });
+  }
   createPageSelectorElements() {
     return this.state.pageSelectors.map((selector, index)=> {
       return this.createPageSelectorElement(selector, index);
@@ -66,10 +92,10 @@ export default class LogViewer extends AbstractComponent {
           label={""+selector.label}
           onClick={selector.action}
           style={{
-            minWidth: "40px",
+            minWidth: "36px",
             border: "1px solid " +
               (selector.selected ? palette.accent1Color : palette.borderColor),
-            marginRight: "16px",
+            marginRight: "8px",
             borderRadius: "0px"
           }}
           labelStyle={{
@@ -94,5 +120,5 @@ LogViewer.defaultProps = {
   model: null
 };
 LogViewer.contextTypes = {
-  application: React.PropTypes.object.isRequired
+  windowResizeManager: React.PropTypes.object.isRequired
 };

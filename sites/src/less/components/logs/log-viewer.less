@@ -2,20 +2,36 @@
 @import "../../sizes.less";
 
 .log-viewer {
+  .menu {
+    position: fixed;
+    bottom: @grid*4;
+    right: @grid*4;
+    background-color: #FFF;
+    padding: @grid*2;
+    width: 40%;
 
+    .page-selector{
+      display: inline-block;
+      padding: 6px 0px 0px 6px;
 
-  .page-selector{
-    margin: @grid*2 @grid*2 0 @grid*2;
+      .separator {
+        margin-right: @grid;
+      }
+    }
 
-    .separator {
-      margin-right: @grid*2;
+    .scroller {
+      float: right;
+
+      .scroller-buttons {
+        margin-left: @grid;
+      }
     }
   }
 
   .body {
     pre {
       margin: @grid*2;
-      overflow: scroll;
+      overflow-x: scroll;
       background-color: #333;
       padding: @grid*2;
       font-size: @font-size-super-small;

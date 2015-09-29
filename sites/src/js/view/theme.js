@@ -34,11 +34,14 @@ export default {
   },
   getComponentThemes(palette, spacing) {
     spacing = spacing || Spacing;
-    let obj = {
+    var obj = {
       appBar: {
         color: palette.primary1Color,
         textColor: Colors.darkWhite,
         height: spacing.desktopKeylineIncrement
+      },
+      avatar: {
+        borderColor: 'rgba(0, 0, 0, 0.08)'
       },
       button: {
         height: 36,
@@ -77,9 +80,15 @@ export default {
         secondaryColor: palette.primary1Color,
         secondaryIconColor: Colors.white
       },
+      inkBar: {
+        backgroundColor: palette.accent1Color
+      },
       leftNav: {
         width: 288,
         color: Colors.white
+      },
+      listItem: {
+        nestedLevelDepth: 18
       },
       menu: {
         backgroundColor: Colors.white,
@@ -101,7 +110,7 @@ export default {
         backgroundColor: Colors.white
       },
       radioButton: {
-        borderColor:  palette.textColor,
+        borderColor: palette.textColor,
         backgroundColor: Colors.white,
         checkedColor: palette.primary1Color,
         requiredColor: palette.primary1Color,
@@ -118,12 +127,17 @@ export default {
         secondaryColor: palette.primary1Color,
         secondaryTextColor: Colors.white
       },
+      refreshIndicator: {
+        strokeColor: Colors.grey300,
+        loadingStrokeColor: palette.primary1Color
+      },
       slider: {
         trackSize: 2,
         trackColor: Colors.minBlack,
         trackColorSelected: Colors.grey500,
         handleSize: 12,
         handleSizeDisabled: 8,
+        handleSizeActive: 18,
         handleColorZero: Colors.grey400,
         handleFillColor: Colors.white,
         selectionColor: palette.primary3Color,
@@ -131,7 +145,7 @@ export default {
       },
       snackbar: {
         textColor: Colors.white,
-        backgroundColor: "#323232",
+        backgroundColor: '#323232',
         actionColor: palette.accent1Color
       },
       table: {
@@ -143,7 +157,7 @@ export default {
       tableHeaderColumn: {
         textColor: Colors.lightBlack,
         height: 56,
-        spacing: 28
+        spacing: 24
       },
       tableFooter: {
         borderColor: palette.borderColor,
@@ -158,7 +172,7 @@ export default {
       },
       tableRowColumn: {
         height: 48,
-        spacing: 28
+        spacing: 24
       },
       timePicker: {
         color: Colors.white,
@@ -180,12 +194,12 @@ export default {
         labelDisabledColor: palette.disabledColor
       },
       toolbar: {
-        backgroundColor: ColorManipulator.darken("#eeeeee", 0.05),
+        backgroundColor: ColorManipulator.darken('#eeeeee', 0.05),
         height: 56,
         titleFontSize: 20,
-        iconColor: "rgba(0, 0, 0, .40)",
-        separatorColor: "rgba(0, 0, 0, .175)",
-        menuHoverColor: "rgba(0, 0, 0, .10)"
+        iconColor: 'rgba(0, 0, 0, .40)',
+        separatorColor: 'rgba(0, 0, 0, .175)',
+        menuHoverColor: 'rgba(0, 0, 0, .10)'
       },
       tabs: {
         backgroundColor: palette.primary1Color
@@ -197,17 +211,17 @@ export default {
         disabledTextColor: palette.disabledColor,
         errorColor: Colors.red500,
         focusColor: palette.primary1Color,
-        backgroundColor: "transparent",
+        backgroundColor: 'transparent',
         borderColor: palette.borderColor
       }
     };
 
+    // Properties based on previous properties
     obj.flatButton.disabledTextColor = ColorManipulator.fade(obj.flatButton.textColor, 0.3);
     obj.floatingActionButton.disabledColor = ColorManipulator.darken(Colors.white, 0.1);
     obj.floatingActionButton.disabledTextColor = ColorManipulator.fade(palette.textColor, 0.3);
     obj.raisedButton.disabledColor = ColorManipulator.darken(obj.raisedButton.color, 0.1);
     obj.raisedButton.disabledTextColor = ColorManipulator.fade(obj.raisedButton.textColor, 0.3);
-    obj.slider.handleSizeActive = obj.slider.handleSize * 2;
     obj.toggle.trackRequiredColor = ColorManipulator.fade(obj.toggle.thumbRequiredColor, 0.5);
 
     return obj;

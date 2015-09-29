@@ -51,7 +51,7 @@ export default class LogViewer extends AbstractComponent {
         <FlatButton
             className={className}
             key={index}
-            label={selector.label}
+            label={""+selector.label}
             onClick={selector.action}
           />
       );

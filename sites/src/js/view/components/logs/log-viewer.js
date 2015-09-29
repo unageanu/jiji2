@@ -4,6 +4,10 @@ import AbstractComponent from "../widgets/abstract-component";
 
 const FlatButton   = MUI.FlatButton;
 
+const keys = new Set([
+  "items", "pageSelectors"
+]);
+
 export default class LogViewer extends AbstractComponent {
 
   constructor(props) {
@@ -15,49 +19,48 @@ export default class LogViewer extends AbstractComponent {
   }
 
   componentWillMount() {
-    this.registerPropertyChangeListener(this.props.model);
-    this.setState({
-      items :        this.props.model.items,
-      pageSelectors: this.props.model.pageSelectors
-    });
-  }
-  componentWillUnmount() {
-    this.props.model.removeAllObservers(this);
+    this.registerPropertyChangeListener(this.props.model, keys);
+    const state = this.collectInitialState(this.props.model, keys);
+    this.setState(state);
   }
 
   render() {
-    const pageSelectorElements = this.createPageselectorElements();
+    const pageSelectorElements = this.createPageSelectorElements();
     const body = this.state.items && this.state.items.length > 0
       ? this.state.items[0].body : "";
     return (
-      <div>
-        <div>{pageSelectorElements}</div>
-        <div>
+      <div className="log-viewer">
+        <div className="page-selector">{pageSelectorElements}</div>
+        <div className="body">
           <pre>{body}</pre>
         </div>
       </div>
     );
   }
 
-  createPageselectorElements() {
-    return this.state.pageSelectors.map((selector)=> {
-      return this.createPageselectorElement(selector);
+  createPageSelectorElements() {
+    return this.state.pageSelectors.map((selector, index)=> {
+      return this.createPageSelectorElement(selector, index);
     });
   }
 
-  createPageselectorElement(selector) {
+  createPageSelectorElement(selector, index) {
     if (selector.action) {
       const className = selector.selected ? "selected" : "";
       return (
         <FlatButton
             className={className}
-            key={selector.label}
+            key={index}
             label={selector.label}
             onClick={selector.action}
           />
       );
     } else {
-      return <span className="separator">{selector.label}</span>;
+      return <span
+        key={index}
+        className="separator">
+        {selector.label}
+      </span>;
     }
   }
 

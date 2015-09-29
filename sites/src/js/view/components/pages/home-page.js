@@ -27,7 +27,8 @@ export default class HomePage extends AbstractPage {
           visibleTradingSummary={model.visibleTradingSummary}
           tradingSummary={model.tradingSummary} />
         <MiniChart
-          model={model.miniChart}/>
+          model={model.miniChart}
+          size={this.calculateChartSize()}/>
         <NotificationsCard
           model={model.notifications} />
         <PositionsCard
@@ -36,11 +37,21 @@ export default class HomePage extends AbstractPage {
     );
   }
 
+  calculateChartSize() {
+    const windowSize = this.context.windowResizeManager.windowSize;
+    return {
+      w: windowSize.w - 288 - 16*5,
+      h: 300,
+      profitAreaHeight: 80
+    };
+  }
+
   model() {
     return this.context.application.homePageModel;
   }
 }
 HomePage.contextTypes = {
   application: React.PropTypes.object.isRequired,
+  windowResizeManager: React.PropTypes.object.isRequired,
   router: React.PropTypes.func
 };

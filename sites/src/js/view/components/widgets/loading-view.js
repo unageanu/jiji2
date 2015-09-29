@@ -19,7 +19,9 @@ export default class LoadingView extends React.Component {
   }
 
   render() {
-    return this.state.loading ? <LoadingImage {...this.props} /> : null;
+    return <LoadingImage 
+      status={this.state.loading ? "loading" : "hide"}
+      {...this.props} />;
   }
 }
 LoadingView.propTypes = {

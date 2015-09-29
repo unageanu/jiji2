@@ -129,7 +129,7 @@ export default {
       },
       refreshIndicator: {
         strokeColor: Colors.grey300,
-        loadingStrokeColor: palette.primary1Color
+        loadingStrokeColor: palette.accent1Color // palette.primary1Color
       },
       slider: {
         trackSize: 2,

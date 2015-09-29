@@ -1,4 +1,7 @@
-import React        from "react"
+import React   from "react"
+import MUI     from "material-ui"
+
+const RefreshIndicator = MUI.RefreshIndicator;
 
 export default class LoadingImage extends React.Component {
 
@@ -9,13 +12,22 @@ export default class LoadingImage extends React.Component {
 
   render() {
     return (
-      <span className={"loading-image " + this.props.type} ></span>
+      <span style={{position:"relative"}} >
+        <RefreshIndicator
+          left={this.props.left}
+          top={this.props.top}
+          status={this.props.status} />
+      </span>
     );
   }
 }
 LoadingImage.propTypes = {
-  type: React.PropTypes.string
+  status: React.PropTypes.string,
+  left: React.PropTypes.number,
+  top: React.PropTypes.number
 };
 LoadingImage.defaultProps = {
-  type: "white"
+  status: "loading",
+  left: 0,
+  top: 0
 };

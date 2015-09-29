@@ -40,8 +40,8 @@ export default class ChartView extends AbstractComponent {
         <div className="chart">
           <div className="loading">
             <LoadingView xhrManager={
-                this.props.model.positionService.xhrManager
-            } type="gray" />
+              this.props.model.positionService.xhrManager
+            } left={-40} />
           </div>
           <RateView chartModel={this.props.model} />
           <Chart {...this.props} />

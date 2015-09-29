@@ -123,7 +123,7 @@ export default class PositionsTable extends AbstractComponent {
 
   createLoading() {
     if (this.state.items == null) {
-      return <div className="center-information"><LoadingImage /></div>;
+      return <div className="center-information loading"><LoadingImage /></div>;
     }
     if (this.state.items.length <= 0) {
       return <div className="center-information">建玉はありません</div>;

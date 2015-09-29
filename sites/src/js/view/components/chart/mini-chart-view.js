@@ -40,7 +40,7 @@ export default class MiniChartView extends AbstractCard {
       <div className="loading">
         <LoadingView xhrManager={
             this.props.model.positionService.xhrManager
-        } type="gray" />
+        } left={-40} />
       </div>
       <RateView chartModel={this.props.model} />
       <Chart

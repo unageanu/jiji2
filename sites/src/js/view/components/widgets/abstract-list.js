@@ -38,13 +38,14 @@ export default class AbstractList extends AbstractComponent {
 
   render() {
     if (this.state.items == null) {
-      return <div className="center-information"><LoadingImage /></div>;
+      return <div className="center-information loading"><LoadingImage left={-20}/></div>;
     }
     if (this.state.items.length <= 0) {
       return <div className="center-information">{this.props.emptyLabel}</div>;
     }
     const filling = this.state.filling
-      ? <div className="center-information"><LoadingImage /></div> : null;
+      ? <div className="center-information "><LoadingImage top={-80} left={-20} /></div>
+      : null;
     return <div>
       <List
         className={"list " + this.className}

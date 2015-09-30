@@ -57,11 +57,11 @@ describe Jiji::Model::Logging::LogData do
     expect(loaded.body.length).to eq 10
   end
 
-  it 'サイズが500Kを超えると、full?がtrueを返す' do
+  it 'サイズが100Kを超えると、full?がtrueを返す' do
     data = Jiji::Model::Logging::LogData.create(Time.at(100))
     expect(data.full?).to be false
 
-    499.times { data << 'x' * 1024 }
+    99.times { data << 'x' * 1024 }
     expect(data.full?).to be false
 
     data << 'x' * 1024
@@ -69,8 +69,8 @@ describe Jiji::Model::Logging::LogData do
 
     loaded = Jiji::Model::Logging::LogData.find(data._id)
     expect(loaded.backtest_id).to be nil
-    expect(loaded.size).to eq 500 * 1024
-    expect(loaded.body.length).to eq 500
+    expect(loaded.size).to eq 100 * 1024
+    expect(loaded.body.length).to eq 100
   end
 
   def count

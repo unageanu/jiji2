@@ -30,13 +30,13 @@ describe Jiji::Model::Logging::Log do
     puts log_data.to_h[:body]
   end
 
-  it '500kを超えると、別のデータに分割される' do
+  it '100kを超えると、別のデータに分割される' do
     1001.times do |i|
       time_source.set(Time.at(i * 100))
       logger.info('x' * 1024)
     end
 
-    expect(log.count).to be 3
+    expect(log.count).to be 11
     log.each do |log_data|
       expect(log_data.size).to be > 0
       expect(log_data.timestamp).not_to be nil
@@ -48,7 +48,7 @@ describe Jiji::Model::Logging::Log do
   it 'Logを再作成した場合、最新のLogDataがフルでなければ、それに追記する' do
     11.times do |i|
       time_source.set(Time.at(i * 10))
-      logger.info('x' * 1024 * 100)
+      logger.info('x' * 1024 * 20)
     end
     expect(log.count).to be 3
 
@@ -71,7 +71,7 @@ describe Jiji::Model::Logging::Log do
     it '指定したインデックスのログデータを取得できる' do
       11.times do |i|
         time_source.set(Time.at(i * 100))
-        logger.info('x' * 1024 * 100)
+        logger.info('x' * 1024 * 20)
       end
 
       expect(log.count).to be 3
@@ -100,7 +100,7 @@ describe Jiji::Model::Logging::Log do
   it 'delete_before で指定日時より前のログを削除できる' do
     11.times do |i|
       time_source.set(Time.at(i * 100))
-      logger.info('x' * 1024 * 100)
+      logger.info('x' * 1024 * 20)
     end
     expect(log.count).to be 3
 

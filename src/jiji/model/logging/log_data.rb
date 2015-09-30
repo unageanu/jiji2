@@ -41,7 +41,7 @@ module Jiji::Model::Logging
     end
 
     def full?
-      size >= 500 * 1024
+      size >= 100 * 1024
     end
 
     def to_h

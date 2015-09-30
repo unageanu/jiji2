@@ -44,6 +44,7 @@ export default class Chart extends Observable {
   }
 
   initialize( ) {
+    this.pointer.initialize();
     return Deferred.when([
       this.pairs.initialize(),
       this.context.initialize()

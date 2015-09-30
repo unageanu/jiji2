@@ -44,6 +44,15 @@ export default class Pointer extends Observable {
     }, this);
   }
 
+  initialize() {
+    this.setProperty("time", null);
+    this.setProperty("balance", null);
+    this.setProperty("price", null);
+    this.setProperty("rate", null);
+    this.x = null;
+    this.y = null;
+  }
+
   unregisterObservers() {
     this.graphs.removeAllObservers(this);
     this.candleSticks.removeAllObservers(this);
@@ -130,6 +139,7 @@ export default class Pointer extends Observable {
   }
 
   normalizeX(x) {
+    if (x==null) return x;
     const sticeWidth   = CoordinateCalculator.stickWidthAndGap();
     const padding      = CoordinateCalculator.padding();
     const axisPosition = this.coordinateCalculator.axisPosition;
@@ -138,6 +148,7 @@ export default class Pointer extends Observable {
     return Math.floor((x-padding)/sticeWidth)*sticeWidth+sticeWidth/2 + padding;
   }
   normalizeY(y) {
+    if (y==null) return y;
     const padding      = CoordinateCalculator.padding();
     const axisPosition = this.coordinateCalculator.axisPosition;
     if (y < padding) y = padding;

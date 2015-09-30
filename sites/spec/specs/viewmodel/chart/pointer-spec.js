@@ -111,26 +111,35 @@ describe("Pointer", () => {
     expect(target.balance).toEqual(null);
 
     target.x = 295;
-    expect(target.x).toEqual(245);
+    expect(target.x).toEqual(239);
     expect(target.y).toEqual(101);
-    expect(target.time).toEq(Dates.date("2015-05-10T01:00:00Z"));
-    expect(target.rate).toEqual(undefined);
+    expect(target.time).toEq(Dates.date("2015-05-10T00:00:00Z"));
+    expect(target.rate.data).toEqual(operator.createRates([{
+      high:179.0, low:177.7, open:177.7, close:178.5,
+      timestamp:Dates.date("2015-05-10T00:00:00Z")
+    }])[0]);
     expect(target.price).toEqual(178.5);
     expect(target.balance).toEqual(null);
 
     target.y = 0;
-    expect(target.x).toEqual(245);
+    expect(target.x).toEqual(239);
     expect(target.y).toEqual(8);
-    expect(target.time).toEq(Dates.date("2015-05-10T01:00:00Z"));
-    expect(target.rate).toEqual(undefined);
+    expect(target.time).toEq(Dates.date("2015-05-10T00:00:00Z"));
+    expect(target.rate.data).toEqual(operator.createRates([{
+      high:179.0, low:177.7, open:177.7, close:178.5,
+      timestamp:Dates.date("2015-05-10T00:00:00Z")
+    }])[0]);
     expect(target.price).toEqual("180.030");
     expect(target.balance).toEqual(null);
 
     target.y = 390;
-    expect(target.x).toEqual(245);
+    expect(target.x).toEqual(239);
     expect(target.y).toEqual(375);
-    expect(target.time).toEq(Dates.date("2015-05-10T01:00:00Z"));
-    expect(target.rate).toEqual(undefined);
+    expect(target.time).toEq(Dates.date("2015-05-10T00:00:00Z"));
+    expect(target.rate.data).toEqual(operator.createRates([{
+      high:179.0, low:177.7, open:177.7, close:178.5,
+      timestamp:Dates.date("2015-05-10T00:00:00Z")
+    }])[0]);
     expect(target.price).toEqual(null);
     expect(target.balance).toEqual(null);
   });

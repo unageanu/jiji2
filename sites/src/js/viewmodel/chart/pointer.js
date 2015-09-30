@@ -44,6 +44,15 @@ export default class Pointer extends Observable {
     }, this);
   }
 
+  initialize() {
+    this.setProperty("time", null);
+    this.setProperty("balance", null);
+    this.setProperty("price", null);
+    this.setProperty("rate", null);
+    this.x = null;
+    this.y = null;
+  }
+
   unregisterObservers() {
     this.graphs.removeAllObservers(this);
     this.candleSticks.removeAllObservers(this);

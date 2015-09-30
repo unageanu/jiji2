@@ -8,7 +8,6 @@ function model(binder) {
   binder.bind("pairs").to("model.trading.Pairs");
   binder.bind("rates").to("model.trading.Rates");
   binder.bind("backtests").to("model.trading.Backtests");
-  binder.bind("backtestBuilder").to("model.trading.BacktestBuilder");
 
   binder.bind("agentSources").to("model.agents.AgentSources");
   binder.bind("agentClasses").to("model.agents.AgentClasses");
@@ -54,6 +53,9 @@ function viewModel(binder) {
   binder.bind("initialSettingsPageModel")
       .to("viewmodel.pages.InitialSettingsPageModel")
       .onInitialize("postCreate");
+
+  binder.bind("backtestBuilder")
+    .to("viewmodel.backtests.BacktestBuilder");
 
   binder.bind("agentSourceEditor")
     .to("viewmodel.agents.AgentSourceEditor")

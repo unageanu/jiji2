@@ -22,7 +22,7 @@ describe("ErrorHandler", () => {
     });
     expect(errorEventQueue.queue).toEqual([{
       type: "error",
-      message: "ファイル名を入力してください"
+      message: "ファイル名が設定されていません"
     }]);
   });
 

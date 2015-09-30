@@ -20,7 +20,7 @@ const messages = {
   EXPIRED : "入力された<%- field %>は有効期限が切れているため、ご利用頂けません",
 
   NOT_NULL : "<%- field %>を入力してください",
-  NOT_EMPTY : "<%- field %>を入力してください",
+  NOT_EMPTY : "<%- field %>が設定されていません",
   MAX_LENGTH : "<%- field %>が長すぎます",
   MIN_LENGTH : "<%- field %>が短すぎます",
   PATTERN :    "<%- field %>の形式が不正です",

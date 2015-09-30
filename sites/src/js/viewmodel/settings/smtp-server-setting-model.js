@@ -3,6 +3,7 @@ import Deferred        from "../../utils/deferred"
 import Error           from "../../model/error"
 import ErrorMessages   from "../../errorhandling/error-messages"
 import Validators      from "../../utils/validation/validators"
+import ValidationUtils from "../utils/validation-utils"
 
 export default class SMTPServerSettingModel extends Observable {
 
@@ -80,44 +81,20 @@ export default class SMTPServerSettingModel extends Observable {
     );
   }
   validateHost(host) {
-    this.hostError = null;
-    try {
-      Validators.smtpServer.host.validate(host);
-      return true;
-    } catch (error) {
-      this.hostError = ErrorMessages.getMessageFor(error, {field: "SMTPサーバー"});
-      return false;
-    }
+    return ValidationUtils.validate(Validators.smtpServer.host, host,
+        {field: "SMTPサーバー"}, (error) => this.hostError = error );
   }
   validatePort(port) {
-    this.portError = null;
-    try {
-      Validators.smtpServer.port.validate(port);
-      return true;
-    } catch (error) {
-      this.portError = ErrorMessages.getMessageFor(error, {field: "SMTPポート"});
-      return false;
-    }
+    return ValidationUtils.validate(Validators.smtpServer.port, port,
+        {field: "SMTPポート"}, (error) => this.portError = error );
   }
   validateUserName(userName) {
-    this.userNameError = null;
-    try {
-      Validators.smtpServer.userName.validate(userName);
-      return true;
-    } catch (error) {
-      this.userNameError = ErrorMessages.getMessageFor(error, {field: "ユーザー名"});
-      return false;
-    }
+    return ValidationUtils.validate(Validators.smtpServer.userName, userName,
+        {field: "ユーザー名"}, (error) => this.userNameError = error );
   }
   validatePassword(password) {
-    this.passwordError = null;
-    try {
-      Validators.smtpServer.password.validate(password);
-      return true;
-    } catch (error) {
-      this.passwordError = ErrorMessages.getMessageFor(error, {field: "パスワード"});
-      return false;
-    }
+    return ValidationUtils.validate(Validators.smtpServer.password, password,
+        {field: "パスワード"}, (error) => this.passwordError = error );
   }
 
   get enablePostmark() {

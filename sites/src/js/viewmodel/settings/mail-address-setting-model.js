@@ -3,6 +3,7 @@ import Deferred        from "../../utils/deferred"
 import Error           from "../../model/error"
 import ErrorMessages   from "../../errorhandling/error-messages"
 import Validators      from "../../utils/validation/validators"
+import ValidationUtils from "../utils/validation-utils"
 
 export default class MailAddressSettingModel extends Observable {
 
@@ -46,14 +47,8 @@ export default class MailAddressSettingModel extends Observable {
   }
 
   validate(mailAddress) {
-    this.error = null;
-    try {
-      Validators.mailAddress.validate(mailAddress);
-      return true;
-    } catch (error) {
-      this.error = ErrorMessages.getMessageFor(error, {field: "メールアドレス"});
-      return false;
-    }
+    return ValidationUtils.validate(Validators.mailAddress, mailAddress,
+      {field: "メールアドレス"}, (error) => this.error = error );
   }
 
   get mailAddress() {

@@ -3,6 +3,7 @@ import Deferred        from "../../utils/deferred"
 import Error           from "../../model/error"
 import ErrorMessages   from "../../errorhandling/error-messages"
 import Validators      from "../../utils/validation/validators"
+import ValidationUtils from "../utils/validation-utils"
 
 export default class PasswordSettingModel extends Observable {
 
@@ -36,13 +37,8 @@ export default class PasswordSettingModel extends Observable {
       this.error = field+ "が一致していません";
       return false;
     }
-    try {
-      Validators.password.validate(newPassword);
-      return true;
-    } catch (error) {
-      this.error = ErrorMessages.getMessageFor(error, {field:  field});
-      return false;
-    }
+    return ValidationUtils.validate(Validators.password, newPassword,
+      {field: field}, (error) => this.error = error );
   }
 
   get error() {

@@ -8,6 +8,7 @@ function model(binder) {
   binder.bind("pairs").to("model.trading.Pairs");
   binder.bind("rates").to("model.trading.Rates");
   binder.bind("backtests").to("model.trading.Backtests");
+  binder.bind("icons").to("model.icons.icons");
 
   binder.bind("agentSources").to("model.agents.AgentSources");
   binder.bind("agentClasses").to("model.agents.AgentClasses");
@@ -45,14 +46,14 @@ function viewModel(binder) {
     .to("viewmodel.pages.NotificationsPageModel")
     .onInitialize("postCreate");
   binder.bind("settingsPageModel")
-      .to("viewmodel.pages.SettingsPageModel")
-      .onInitialize("postCreate");
+    .to("viewmodel.pages.SettingsPageModel")
+    .onInitialize("postCreate");
   binder.bind("loginPageModel")
-      .to("viewmodel.pages.LoginPageModel")
-      .onInitialize("postCreate");
+    .to("viewmodel.pages.LoginPageModel")
+    .onInitialize("postCreate");
   binder.bind("initialSettingsPageModel")
-      .to("viewmodel.pages.InitialSettingsPageModel")
-      .onInitialize("postCreate");
+    .to("viewmodel.pages.InitialSettingsPageModel")
+    .onInitialize("postCreate");
 
   binder.bind("backtestBuilder")
     .to("viewmodel.backtests.BacktestBuilder");
@@ -108,6 +109,7 @@ function services(binder) {
     .to("services.PasswordResettingService");
   binder.bind("initialSettingService").to("services.InitialSettingService");
   binder.bind("deviceService").to("services.DeviceService");
+  binder.bind("iconService").to("services.IconService");
 }
 
 function stores(binder) {

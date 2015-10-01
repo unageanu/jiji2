@@ -3,16 +3,19 @@ import Observable      from "../../utils/observable"
 import Deferred        from "../../utils/deferred"
 import Validators      from "../../utils/validation/validators"
 import ValidationUtils from "../utils/validation-utils"
+import IconSelector    from "../icons/icon-selector-model"
 
 export default class AgentSettingBuilder extends Observable {
 
-  constructor(agentClasses, validator=null) {
+  constructor(agentClasses, icons, validator=null) {
     super();
     this.agentClasses = agentClasses;
     this.validator    = validator;
 
     this.availableAgents = [];
     this.agentSetting    = [];
+
+    this.iconSelector = new IconSelector(this.icons);
   }
 
   initialize(agents=[]) {

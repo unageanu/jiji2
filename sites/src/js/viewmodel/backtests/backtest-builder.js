@@ -18,6 +18,7 @@ export default class BacktestBuilder extends Observable {
     this.backtestService = ContainerJS.Inject;
     this.rates           = ContainerJS.Inject;
     this.pairs           = ContainerJS.Inject;
+    this.icons           = ContainerJS.Inject;
 
     this.rangeSelectorModel = new RangeSelectorModel(
       Validators.backtest.startTime,
@@ -29,7 +30,7 @@ export default class BacktestBuilder extends Observable {
 
   initialize(agents=[]) {
     this.agentSettingBuilder = new AgentSettingBuilder(
-      this.agentClasses, Validators.backtest.agentSetting);
+      this.agentClasses, this.icons, Validators.backtest.agentSetting);
     this.initializeBuilderState();
     return Deferred.when([
       this.agentSettingBuilder.initialize(agents),

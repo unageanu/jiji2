@@ -37,7 +37,7 @@ export default class BalancePanel extends AbstractComponent {
 
   createContent() {
     if (!this.state.formatedBalance) {
-      return <div className="center-information"><LoadingImage /></div>;
+      return <div className="center-information"><LoadingImage left={-20} /></div>;
     }
     return [
       <div key="balance" className="balance">￥{this.state.formatedBalance}</div>,

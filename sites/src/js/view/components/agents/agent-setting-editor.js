@@ -1,6 +1,6 @@
 import React              from "react"
 import MUI                from "material-ui"
-import AbstractComponent  from "./abstract-component"
+import AbstractComponent  from "../widgets/abstract-component"
 import AgentClassSelector from "./agent-class-selector"
 
 const RaisedButton = MUI.RaisedButton;
@@ -8,6 +8,11 @@ const List         = MUI.List;
 const ListItem     = MUI.ListItem;
 const Dialog       = MUI.Dialog;
 const TextField    = MUI.TextField;
+
+const keys = new Set([
+  "availableAgents", "agentSetting", "agentSettingError"
+]);
+
 
 export default class AgentSettingEditor extends AbstractComponent {
 
@@ -21,15 +26,14 @@ export default class AgentSettingEditor extends AbstractComponent {
   }
 
   componentWillMount() {
-    this.registerObservers();
-    this.setState({
-      availableAgents:    this.props.model.availableAgents,
-      agentSetting:       this.props.model.agentSetting,
-      selectedAgentIndex: -1
-    });
-  }
-  componentWillUnmount() {
-    this.unregisterObservers();
+    const model = this.props.model;
+    const observer = (n, ev) => this.setState({agents:ev.agents});
+    ["agentAdded", "agentRemoved"].forEach(
+      (e) => model.addObserver(e, observer, this)
+    );
+    this.registerPropertyChangeListener(model, keys);
+    const state = this.collectInitialState(model, keys);
+    this.setState(state);
   }
 
   render() {
@@ -39,8 +43,9 @@ export default class AgentSettingEditor extends AbstractComponent {
     ];
     const agentDetails  = this.createAgentDetail();
     return (
-      <div>
-        <div className="agents">
+      <div className="agent-setting-editor">
+        <div className="error">{this.state.agentSettingError}</div>
+        <div className="action">
           <RaisedButton
             label="エージェントを追加"
             onClick={this.showAgentSelector.bind(this)}
@@ -165,30 +170,13 @@ export default class AgentSettingEditor extends AbstractComponent {
     this.setState({selectedAgentIndex:index});
   }
 
-  registerObservers() {
-    const builder  = this.props.model;
-    const observer = (n, ev) => this.setState({agents:ev.agents});
-    ["agentAdded", "agentRemoved"].forEach(
-      (e) => builder.addObserver(e, observer, this)
-    );
-    this.registerPropertyChangeListener(builder);
-  }
-
   onPropertyChanged(k, ev) {
     if (ev.key === "agentSetting") {
       this.setState({selectedAgentIndex: -1});
     }
     super.onPropertyChanged(k, ev);
   }
-
-  unregisterObservers() {
-    this.props.model.removeAllObservers(this);
-  }
 }
 AgentSettingEditor.propTypes = {
   model : React.PropTypes.object.isRequired
-};
-AgentSettingEditor.contextTypes = {
-  application: React.PropTypes.object.isRequired,
-  router: React.PropTypes.func
 };

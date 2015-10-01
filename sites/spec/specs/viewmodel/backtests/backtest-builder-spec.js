@@ -53,7 +53,7 @@ describe("BacktestBuiler", () => {
     expect( target.nameError ).toBe("テスト名を入力してください");
     expect( target.memoError ).toBe(null);
     expect( target.balanceError ).toBe(null);
-    expect( target.agentSettingError ).toBe("エージェントが設定されていません");
+    expect( target.agentSettingBuilder.agentSettingError ).toBe("エージェントが設定されていません");
     expect( target.rangeSelectorModel.startTimeError ).toBe(null);
     expect( target.rangeSelectorModel.endTimeError ).toBe(null);
     expect( target.pairSelectorModel.pairNamesError ).toBe("通貨ペアが設定されていません");
@@ -111,7 +111,7 @@ describe("BacktestBuiler", () => {
     expect( target.nameError ).toBe(null);
     expect( target.memoError ).toBe(null);
     expect( target.balanceError ).toBe(null);
-    expect( target.agentSettingError ).toBe(null);
+    expect( target.agentSettingBuilder.agentSettingError ).toBe(null);
     expect( target.rangeSelectorModel.startTimeError ).toBe(null);
     expect( target.rangeSelectorModel.endTimeError ).toBe(null);
     expect( target.pairSelectorModel.pairNamesError ).toBe(null);
@@ -143,7 +143,7 @@ describe("BacktestBuiler", () => {
     expect( target.nameError ).toBe(null);
     expect( target.memoError ).toBe(null);
     expect( target.balanceError ).toBe(null);
-    expect( target.agentSettingError ).toBe(null);
+    expect( target.agentSettingBuilder.agentSettingError ).toBe(null);
     expect( target.rangeSelectorModel.startTimeError ).toBe(null);
     expect( target.rangeSelectorModel.endTimeError ).toBe(null);
     expect( target.pairSelectorModel.pairNamesError ).toBe(null);
@@ -188,7 +188,7 @@ describe("BacktestBuiler", () => {
       expect( target.nameError ).toBe("テスト名を入力してください");
       expect( target.memoError ).toBe(null);
       expect( target.balanceError ).toBe(null);
-      expect( target.agentSettingError ).toBe(null);
+      expect( target.agentSettingBuilder.agentSettingError ).toBe(null);
       expect( target.rangeSelectorModel.startTimeError ).toBe(null);
       expect( target.rangeSelectorModel.endTimeError ).toBe(null);
       expect( target.pairSelectorModel.pairNamesError ).toBe(null);
@@ -201,7 +201,7 @@ describe("BacktestBuiler", () => {
       expect( target.nameError ).toBe(null);
       expect( target.memoError ).toBe(null);
       expect( target.balanceError ).toBe(null);
-      expect( target.agentSettingError ).toBe("エージェントが設定されていません");
+      expect( target.agentSettingBuilder.agentSettingError ).toBe("エージェントが設定されていません");
       expect( target.rangeSelectorModel.startTimeError ).toBe(null);
       expect( target.rangeSelectorModel.endTimeError ).toBe(null);
       expect( target.pairSelectorModel.pairNamesError ).toBe(null);
@@ -214,7 +214,7 @@ describe("BacktestBuiler", () => {
       expect( target.nameError ).toBe(null);
       expect( target.memoError ).toBe(null);
       expect( target.balanceError ).toBe(null);
-      expect( target.agentSettingError ).toBe(null);
+      expect( target.agentSettingBuilder.agentSettingError ).toBe(null);
       expect( target.rangeSelectorModel.startTimeError ).toBe(null);
       expect( target.rangeSelectorModel.endTimeError ).toBe(null);
       expect( target.pairSelectorModel.pairNamesError ).toBe(
@@ -228,7 +228,7 @@ describe("BacktestBuiler", () => {
       expect( target.nameError ).toBe(null);
       expect( target.memoError ).toBe(null);
       expect( target.balanceError ).toBe("初期資金は半角数字で入力してください");
-      expect( target.agentSettingError ).toBe(null);
+      expect( target.agentSettingBuilder.agentSettingError ).toBe(null);
       expect( target.rangeSelectorModel.startTimeError ).toBe(null);
       expect( target.rangeSelectorModel.endTimeError ).toBe(null);
       expect( target.pairSelectorModel.pairNamesError ).toBe(null);
@@ -245,7 +245,7 @@ describe("BacktestBuiler", () => {
       expect( target.nameError ).toBe(null);
       expect( target.memoError ).toBe("メモが長すぎます");
       expect( target.balanceError ).toBe(null);
-      expect( target.agentSettingError ).toBe(null);
+      expect( target.agentSettingBuilder.agentSettingError ).toBe(null);
       expect( target.rangeSelectorModel.startTimeError ).toBe(null);
       expect( target.rangeSelectorModel.endTimeError ).toBe(null);
       expect( target.pairSelectorModel.pairNamesError ).toBe(null);
@@ -259,7 +259,7 @@ describe("BacktestBuiler", () => {
       expect( target.nameError ).toBe(null);
       expect( target.memoError ).toBe(null);
       expect( target.balanceError ).toBe(null);
-      expect( target.agentSettingError ).toBe(null);
+      expect( target.agentSettingBuilder.agentSettingError ).toBe(null);
       expect( target.rangeSelectorModel.startTimeError ).toBe("開始日時を入力してください");
       expect( target.rangeSelectorModel.endTimeError ).toBe("終了日時を入力してください");
       expect( target.pairSelectorModel.pairNamesError ).toBe(null);

@@ -1,7 +1,7 @@
 import ContainerJS         from "container-js"
 import Observable          from "../../utils/observable"
 import Validators          from "../../utils/validation/validators"
-import AgentSettingBuilder from "../../model/trading/agent-setting-builder"
+import AgentSettingBuilder from "../agents/agent-setting-builder"
 import _                   from "underscore"
 import Deferred            from "../../utils/deferred"
 import RangeSelectorModel  from "../widgets/range-selector-model"
@@ -28,7 +28,8 @@ export default class BacktestBuilder extends Observable {
   }
 
   initialize(agents=[]) {
-    this.agentSettingBuilder = new AgentSettingBuilder(this.agentClasses);
+    this.agentSettingBuilder = new AgentSettingBuilder(
+      this.agentClasses, Validators.backtest.agentSetting);
     this.initializeBuilderState();
     return Deferred.when([
       this.agentSettingBuilder.initialize(agents),
@@ -95,8 +96,7 @@ export default class BacktestBuilder extends Observable {
         {field: "メモ"}, (error) => this.memoError = error ),
       ValidationUtils.validate(Validators.backtest.balance, this.balance,
         {field: "初期資金"}, (error) => this.balanceError = error ),
-      ValidationUtils.validate(Validators.backtest.agentSetting, this.agentSetting,
-        {field: "エージェント"}, (error) => this.agentSettingError = error ),
+      this.agentSettingBuilder.validate(),
       this.pairSelectorModel.validate(),
       this.rangeSelectorModel.validate()
     );
@@ -143,11 +143,5 @@ export default class BacktestBuilder extends Observable {
 
   get agentSetting() {
     return this.agentSettingBuilder.agentSetting;
-  }
-  get agentSettingError() {
-    return this.getProperty("agentSettingError");
-  }
-  set agentSettingError(error) {
-    this.setProperty("agentSettingError", error);
   }
 }

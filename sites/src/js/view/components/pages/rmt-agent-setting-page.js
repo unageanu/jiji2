@@ -1,7 +1,7 @@
-import React            from "react"
-import MUI              from "material-ui"
-import AbstractPage     from "./abstract-page"
-import AgentSettingEditor from "../widgets/agent-setting-editor"
+import React              from "react"
+import MUI                from "material-ui"
+import AbstractPage       from "./abstract-page"
+import AgentSettingEditor from "../agents/agent-setting-editor"
 
 const RaisedButton = MUI.RaisedButton;
 

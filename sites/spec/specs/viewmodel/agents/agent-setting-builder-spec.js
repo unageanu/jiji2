@@ -1,6 +1,6 @@
 import ContainerJS          from "container-js"
 import ContainerFactory     from "../../../utils/test-container-factory"
-import  AgentSettingBuilder from "src/model/trading/agent-setting-builder"
+import AgentSettingBuilder from "src/viewmodel/agents/agent-setting-builder"
 
 describe("AgentSettingBuilder", () => {
 

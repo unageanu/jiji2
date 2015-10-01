@@ -68,6 +68,7 @@ export default class BacktestBuilder extends Observable {
     backtest.startTime = this.rangeSelectorModel.startTime;
     backtest.endTime   = this.rangeSelectorModel.endTime;
     backtest.pairNames = this.pairSelectorModel.pairNames;
+    backtest.balance   = Number.parseInt(backtest.balance, 10)
     return this.backtestService.register(backtest);
   }
 

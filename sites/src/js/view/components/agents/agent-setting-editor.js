@@ -2,6 +2,7 @@ import React              from "react"
 import MUI                from "material-ui"
 import AbstractComponent  from "../widgets/abstract-component"
 import AgentClassSelector from "./agent-class-selector"
+import IconSelector       from "../icons/icon-selector"
 
 const RaisedButton = MUI.RaisedButton;
 const List         = MUI.List;
@@ -29,8 +30,7 @@ export default class AgentSettingEditor extends AbstractComponent {
     const model = this.props.model;
     const observer = (n, ev) => this.setState({agents:ev.agents});
     ["agentAdded", "agentRemoved"].forEach(
-      (e) => model.addObserver(e, observer, this)
-    );
+      (e) => model.addObserver(e, observer, this));
     this.registerPropertyChangeListener(model, keys);
     const state = this.collectInitialState(model, keys);
     this.setState(state);
@@ -45,6 +45,7 @@ export default class AgentSettingEditor extends AbstractComponent {
     return (
       <div className="agent-setting-editor">
         <div className="error">{this.state.agentSettingError}</div>
+        <IconSelector model={this.props.model.iconSelector} />
         <div className="action">
           <RaisedButton
             label="エージェントを追加"

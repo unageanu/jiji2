@@ -30,10 +30,13 @@ export default class Icons extends Observable {
     });
   }
 
-  add(id) {
-    // TODO
-    this.load();
-    return this.byId[id];
+  add(file) {
+    const d = this.iconService.post(file);
+    d.then((icon) => {
+      this.reload();
+      return icon;
+    });
+    return d;
   }
 
   set icons( icons ) {

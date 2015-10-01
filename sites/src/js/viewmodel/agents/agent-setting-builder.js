@@ -15,10 +15,11 @@ export default class AgentSettingBuilder extends Observable {
     this.availableAgents = [];
     this.agentSetting    = [];
 
-    this.iconSelector = new IconSelector(this.icons);
+    this.iconSelector = new IconSelector(icons);
   }
 
   initialize(agents=[]) {
+    this.iconSelector.initialize(null);
     this.agentSetting = agents || [];
     this.agentSettingError = null;
     return this.agentClasses.load().then(() => {

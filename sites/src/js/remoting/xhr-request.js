@@ -60,7 +60,7 @@ export default class XhrRequest {
       params: this.params,
       body: this.transformRequest(this.body),
       withCredentials: false,
-      headers: {
+      headers: this.options.multipart ? {} : {
         "Content-Type": "application/x-msgpack"
       },
       responseType: "arraybuffer"
@@ -71,6 +71,7 @@ export default class XhrRequest {
 
   transformRequest(data) {
     if (data == null) return null;
+    if (this.options.multipart) return data;
     let transformed = this.transformer.transformRequest(data);
     return new Uint8Array(Msgpack.msgpack.pack(transformed));
   }

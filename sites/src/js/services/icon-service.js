@@ -6,12 +6,11 @@ export default class IconService extends AbstractService {
     return this.xhrManager.xhr( this.serviceUrl(""), "GET");
   }
 
-  post( backtestId, agentId, action ) {
-    const url = this.serviceUrl( "" );
-    return this.xhrManager.xhr(url, "POST", {
-      backtestId:   backtestId,
-      agentId:      agentId,
-      action:       action
+  post( file ) {
+    const formData = new FormData();
+    formData.append("file", file);
+    return this.xhrManager.xhr(this.serviceUrl(""), "POST", formData, {
+      multipart: true
     });
   }
 

@@ -15,7 +15,7 @@ module Jiji::Web
     end
 
     def load_icon_image
-      repository.get(icon_id).image
+      repository.get(icon_id).image.data
     rescue Jiji::Errors::NotFoundException, BSON::ObjectId::Invalid
       load_default_icon
     end

@@ -1,9 +1,6 @@
 import ContainerJS         from "container-js"
 import Observable          from "../../utils/observable"
 import Validators          from "../../utils/validation/validators"
-import AgentSettingBuilder from "../../model/trading/agent-setting-builder"
-import _                   from "underscore"
-import Deferred            from "../../utils/deferred"
 import ValidationUtils     from "../utils/validation-utils"
 
 export default class RangeSelectorModel extends Observable {

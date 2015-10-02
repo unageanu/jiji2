@@ -1,6 +1,6 @@
 import ContainerJS         from "container-js"
 import Observable          from "../../utils/observable"
-import AgentSettingBuilder from "../../model/trading/agent-setting-builder"
+import AgentSettingBuilder from "../agents/agent-setting-builder"
 
 export default class RMTAgentSettingPageModel extends Observable {
 

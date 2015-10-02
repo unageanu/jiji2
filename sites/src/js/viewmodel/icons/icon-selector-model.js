@@ -11,7 +11,7 @@ export default class IconSelectorModel extends Observable {
 
   initialize(selectdIconId) {
     this.icons.initialize().then(() => {
-      this.selectdIconId = selectdIconId;
+      this.selectdId = selectdIconId;
     });
   }
 

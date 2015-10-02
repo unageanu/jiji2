@@ -3,8 +3,8 @@ import MUI                from "material-ui"
 import Dropzone           from "react-dropzone"
 import AbstractComponent  from "../widgets/abstract-component"
 import LoadingImage       from "../widgets/loading-image"
+import AgentIcon          from "../widgets/agent-icon"
 
-const Avatar     = MUI.Avatar;
 const FlatButton = MUI.FlatButton;
 const Dialog     = MUI.Dialog;
 
@@ -35,7 +35,9 @@ export default class IconSelector extends AbstractComponent  {
     return (
       <div className="icon-selector">
         <div className="icon">
-          <Avatar src={this.createIconUrl(this.state.selectedId)} />
+          <AgentIcon
+            iconId={this.state.selectedId}
+            urlResolver={this.props.model.icons.iconService.urlResolver} />
         </div>
         <div className="action">
           <a onTouchTap={this.showDialog.bind(this)}>変更...</a>
@@ -81,18 +83,16 @@ export default class IconSelector extends AbstractComponent  {
   }
 
   createIcons() {
-    return (this.state.icons||[]).map((icon) => {
+    return (this.state.icons||[]).map((icon, index) => {
       return <FlatButton
         className="icon"
+        key={index}
         onTouchTap={(ev) => this.onIconSelected(ev, icon)} >
-        <Avatar src={this.createIconUrl(icon.id)} />
+        <AgentIcon
+          iconId={icon.id}
+          urlResolver={this.props.model.icons.iconService.urlResolver} />
       </FlatButton>;
     });
-  }
-
-  createIconUrl(iconId) {
-    return this.props.model.icons.iconService.urlResolver.resolveServiceUrl(
-        "icon-images/" + (iconId || "default"));
   }
 
   onIconSelected(ev, icon) {

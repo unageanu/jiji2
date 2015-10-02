@@ -65,8 +65,8 @@ export default class BacktestBuilder extends Observable {
   }
 
   build() {
-    const backtest = _.defaults(this.backtest,
-      {agentSetting: this.agentSettingBuilder.agentSetting});
+    const backtest = _.defaults(
+      {agentSetting: this.agentSettingBuilder.agentSetting}, this.backtest);
     backtest.startTime = this.rangeSelectorModel.startTime;
     backtest.endTime   = this.rangeSelectorModel.endTime;
     backtest.pairNames = this.pairSelectorModel.pairNames;
@@ -74,19 +74,19 @@ export default class BacktestBuilder extends Observable {
     return this.backtestService.register(backtest);
   }
 
-  getAgentClass(index) {
-    return this.agentSettingBuilder.getAgentClass(index);
+  getAgentClassForSelected() {
+    return this.agentSettingBuilder.getAgentClassForSelected();
   }
 
   addAgent( agentClass, configuration={} ) {
     return this.agentSettingBuilder.addAgent( agentClass, configuration );
   }
-  removeAgent( index ) {
-    return this.agentSettingBuilder.removeAgent( index );
+  removeSelectedAgent( ) {
+    return this.agentSettingBuilder.removeSelectedAgent();
   }
-  updateAgentConfiguration(index, name, configuration) {
-    this.agentSettingBuilder.updateAgentConfiguration(
-      index, name, configuration);
+  updateSelectedAgent(name, iconId, configuration) {
+    this.agentSettingBuilder.updateSelectedAgent(
+      name, iconId, configuration);
   }
 
   validate() {

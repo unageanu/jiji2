@@ -116,3 +116,6 @@ BacktestBuilder.propTypes = {
 };
 BacktestBuilder.defaultProps = {
 };
+BacktestBuilder.contextTypes = {
+  router: React.PropTypes.func
+};

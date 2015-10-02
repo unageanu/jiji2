@@ -9,13 +9,18 @@ describe("AgentSettingBuilder", () => {
 
   beforeEach(() => {
     let container = new ContainerFactory().createContainer();
-    let d = container.get("agentClasses");
+    let d  = container.get("agentClasses");
     const agentClasses = ContainerJS.utils.Deferred.unpack(d);
-    target = new AgentSettingBuilder(agentClasses);
+    let d2 = container.get("icons");
+    const icons = ContainerJS.utils.Deferred.unpack(d2);
+    target = new AgentSettingBuilder(agentClasses, icons);
     xhrManager = agentClasses.agentService.xhrManager;
 
     target.initialize();
     xhrManager.requests[0].resolve([
+      {id:1}
+    ]);
+    xhrManager.requests[1].resolve([
       {name:"TestClassA@あ", description:"aaa"},
       {name:"TestClassB@あ", description:"bbb"},
       {name:"TestClassC@い", description:"ccc"}
@@ -29,9 +34,16 @@ describe("AgentSettingBuilder", () => {
   });
 
   it("エージェントを追加できる", () => {
-    expect(target.addAgent("TestClassA@あ")).toEqual(0);
-    expect(target.addAgent("TestClassA@あ", {a:"aa"})).toEqual(1);
-    expect(target.addAgent("TestClassC@い", {b:"bb"})).toEqual(2);
+    target.addAgent("TestClassA@あ");
+    expect(target.selectedAgent).toEqual(
+      {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}});
+    target.addAgent("TestClassA@あ", {a:"aa"});
+    expect(target.selectedAgent).toEqual(
+      {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {a:"aa"}});
+    target.addAgent("TestClassC@い", {b:"bb"});
+    expect(target.selectedAgent).toEqual(
+      {agentClass:"TestClassC@い", agentName:"TestClassC@い", properties: {b:"bb"}});
+
     expect(target.agentSetting).toEqual([
       {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}},
       {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {a:"aa"}},
@@ -40,44 +52,56 @@ describe("AgentSettingBuilder", () => {
   });
 
   it("エージェントを削除できる", () => {
-    expect(target.addAgent("TestClassA@あ")).toEqual(0);
-    expect(target.addAgent("TestClassA@あ", {a:"aa"})).toEqual(1);
-    expect(target.addAgent("TestClassC@い", {b:"bb"})).toEqual(2);
+    target.addAgent("TestClassA@あ");
+    target.addAgent("TestClassA@あ", {a:"aa"});
+    target.addAgent("TestClassC@い", {b:"bb"});
 
-    target.removeAgent(1);
+    target.selectedAgent = target.agentSetting[1];
+    target.removeSelectedAgent();
     expect(target.agentSetting).toEqual([
       {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}},
       {agentClass:"TestClassC@い", agentName:"TestClassC@い", properties: {b:"bb"}}
     ]);
-    target.removeAgent(1);
+    expect(target.selectedAgent).toEqual(
+      {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}});
+
+    target.removeSelectedAgent();
     expect(target.agentSetting).toEqual([
-      {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}}
+      {agentClass:"TestClassC@い", agentName:"TestClassC@い", properties: {b:"bb"}}
     ]);
-    target.removeAgent(0);
-    expect(target.agentSetting).toEqual([]);
+    expect(target.selectedAgent).toEqual(
+      {agentClass:"TestClassC@い", agentName:"TestClassC@い", properties: {b:"bb"}});
+
+    target.removeSelectedAgent();
+    expect(target.selectedAgent).toEqual(null);
   });
 
   it("エージェントのプロパティを更新できる", () => {
-    expect(target.addAgent("TestClassA@あ")).toEqual(0);
-    expect(target.addAgent("TestClassA@あ", {a:"aa"})).toEqual(1);
-    expect(target.addAgent("TestClassC@い", {b:"bb"})).toEqual(2);
+    target.addAgent("TestClassA@あ");
+    target.addAgent("TestClassA@あ", {a:"aa"});
+    target.addAgent("TestClassC@い", {b:"bb"});
 
-    target.updateAgentConfiguration(1, "テスト", {c:"cc"});
-    target.updateAgentConfiguration(0, "", {a:"aa"});
+    target.selectedAgent = target.agentSetting[1];
+    target.updateSelectedAgent("テスト", "aaa", {c:"cc"});
+
+    target.selectedAgent = target.agentSetting[0];
+    target.updateSelectedAgent("", null, {a:"aa"});
     expect(target.agentSetting).toEqual([
-      {agentClass:"TestClassA@あ", agentName: "", properties: {a:"aa"}},
-      {agentClass:"TestClassA@あ", agentName: "テスト", properties: {c:"cc"}},
+      {agentClass:"TestClassA@あ", agentName: "",  iconId: null, properties: {a:"aa"}},
+      {agentClass:"TestClassA@あ", agentName: "テスト", iconId: "aaa", properties: {c:"cc"}},
       {agentClass:"TestClassC@い", agentName: "TestClassC@い", properties: {b:"bb"}}
     ]);
   });
 
   it("getAgentClassでエージェントの定義を取得できる", () => {
-    expect(target.addAgent("TestClassA@あ")).toEqual(0);
-    expect(target.addAgent("TestClassC@い", {b:"bb"})).toEqual(1);
+    target.addAgent("TestClassA@あ");
+    target.addAgent("TestClassC@い", {b:"bb"});
 
-    expect(target.getAgentClass(0)).toEqual(
+    target.selectedAgent = target.agentSetting[0];
+    expect(target.getAgentClassForSelected()).toEqual(
       {name:"TestClassA@あ", description:"aaa"});
-    expect(target.getAgentClass(1)).toEqual(
+    target.selectedAgent = target.agentSetting[1];
+    expect(target.getAgentClassForSelected()).toEqual(
       {name:"TestClassC@い", description:"ccc"});
   });
 

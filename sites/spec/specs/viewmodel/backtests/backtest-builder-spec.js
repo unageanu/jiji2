@@ -17,16 +17,19 @@ describe("BacktestBuiler", () => {
 
     target.initialize();
     xhrManager.requests[0].resolve([
+      {id:1}
+    ]);
+    xhrManager.requests[1].resolve([
       {name:"TestClassA@あ", description:"aaa"},
       {name:"TestClassB@あ", description:"bbb"},
       {name:"TestClassC@い", description:"ccc"}
     ]);
-    xhrManager.requests[1].resolve([
+    xhrManager.requests[2].resolve([
       {name: "EURJPY", internalId: "EUR_JPY"},
       {name: "USDJPY", internalId: "USD_JPY"},
       {name: "EURUSD", internalId: "EUR_USD"}
     ]);
-    xhrManager.requests[2].resolve({
+    xhrManager.requests[3].resolve({
       start: new Date(2015, 4, 1,  10, 0,  0),
       end:   new Date(2015, 6, 10, 21, 0, 10)
     });
@@ -60,9 +63,9 @@ describe("BacktestBuiler", () => {
   });
 
   it("エージェントを追加できる", () => {
-    expect(target.addAgent("TestClassA@あ")).toEqual(0);
-    expect(target.addAgent("TestClassA@あ", {a:"aa"})).toEqual(1);
-    expect(target.addAgent("TestClassC@い", {b:"bb"})).toEqual(2);
+    target.addAgent("TestClassA@あ");
+    target.addAgent("TestClassA@あ", {a:"aa"});
+    target.addAgent("TestClassC@い", {b:"bb"});
     expect(target.agentSetting).toEqual([
       {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}},
       {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {a:"aa"}},
@@ -71,33 +74,37 @@ describe("BacktestBuiler", () => {
   });
 
   it("エージェントを削除できる", () => {
-    expect(target.addAgent("TestClassA@あ")).toEqual(0);
-    expect(target.addAgent("TestClassA@あ", {a:"aa"})).toEqual(1);
-    expect(target.addAgent("TestClassC@い", {b:"bb"})).toEqual(2);
+    target.addAgent("TestClassA@あ");
+    target.addAgent("TestClassA@あ", {a:"aa"});
+    target.addAgent("TestClassC@い", {b:"bb"});
 
-    target.removeAgent(1);
+    target.agentSettingBuilder.selectedAgent = target.agentSetting[1];
+    target.removeSelectedAgent();
     expect(target.agentSetting).toEqual([
       {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}},
       {agentClass:"TestClassC@い", agentName:"TestClassC@い", properties: {b:"bb"}}
     ]);
-    target.removeAgent(1);
+    target.agentSettingBuilder.selectedAgent = target.agentSetting[1];
+    target.removeSelectedAgent();
     expect(target.agentSetting).toEqual([
       {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}}
     ]);
-    target.removeAgent(0);
+    target.removeSelectedAgent();
     expect(target.agentSetting).toEqual([]);
   });
 
   it("エージェントのプロパティを更新できる", () => {
-    expect(target.addAgent("TestClassA@あ")).toEqual(0);
-    expect(target.addAgent("TestClassA@あ", {a:"aa"})).toEqual(1);
-    expect(target.addAgent("TestClassC@い", {b:"bb"})).toEqual(2);
+    target.addAgent("TestClassA@あ");
+    target.addAgent("TestClassA@あ", {a:"aa"});
+    target.addAgent("TestClassC@い", {b:"bb"});
 
-    target.updateAgentConfiguration(1, "テスト", {c:"cc"});
-    target.updateAgentConfiguration(0, "", {a:"aa"});
+    target.agentSettingBuilder.selectedAgent = target.agentSetting[1];
+    target.updateSelectedAgent( "テスト", "bbb", {c:"cc"});
+    target.agentSettingBuilder.selectedAgent = target.agentSetting[0];
+    target.updateSelectedAgent( "", null, {a:"aa"});
     expect(target.agentSetting).toEqual([
-      {agentClass:"TestClassA@あ", agentName: "", properties: {a:"aa"}},
-      {agentClass:"TestClassA@あ", agentName: "テスト", properties: {c:"cc"}},
+      {agentClass:"TestClassA@あ", agentName: "", iconId: null,properties: {a:"aa"}},
+      {agentClass:"TestClassA@あ", agentName: "テスト", iconId: "bbb", properties: {c:"cc"}},
       {agentClass:"TestClassC@い", agentName: "TestClassC@い", properties: {b:"bb"}}
     ]);
   });
@@ -134,8 +141,10 @@ describe("BacktestBuiler", () => {
     target.rangeSelectorModel.startTime = new Date(2015, 3, 17);
     target.addAgent("TestClassA@あ", {a:"aa"});
     target.addAgent("TestClassC@い", {b:"bb"});
-    target.removeAgent(1);
-    target.updateAgentConfiguration(1, "テスト", {c:"cc"});
+    target.agentSettingBuilder.selectedAgent = target.agentSetting[1];
+    target.removeSelectedAgent();
+    target.agentSettingBuilder.selectedAgent = target.agentSetting[1];
+    target.updateSelectedAgent("テスト", "ccc", {c:"cc"});
     target.pairSelectorModel.pairNames = ["EURJPY", "USDJPY", "EURUSD", "AUDJPY", "CADJPY"];
     target.balance   = 2000000;
 
@@ -156,7 +165,7 @@ describe("BacktestBuiler", () => {
       endTime:      new Date(2015, 5, 3),
       agentSetting: [
         {agentClass:"TestClassA@あ", agentName: "TestClassA@あ", properties: {}},
-        {agentClass:"TestClassC@い", agentName: "テスト", properties: {c:"cc"}}
+        {agentClass:"TestClassC@い", agentName: "テスト", iconId: "ccc", properties: {c:"cc"}}
       ],
       pairNames:    ["EURJPY", "USDJPY", "EURUSD", "AUDJPY", "CADJPY"],
       balance:      2000000
@@ -164,12 +173,14 @@ describe("BacktestBuiler", () => {
   });
 
   it("getAgentClassでエージェントの定義を取得できる", () => {
-    expect(target.addAgent("TestClassA@あ")).toEqual(0);
-    expect(target.addAgent("TestClassC@い", {b:"bb"})).toEqual(1);
+    target.addAgent("TestClassA@あ");
+    target.addAgent("TestClassC@い", {b:"bb"});
 
-    expect(target.getAgentClass(0)).toEqual(
+    target.agentSettingBuilder.selectedAgent = target.agentSetting[0];
+    expect(target.getAgentClassForSelected()).toEqual(
       {name:"TestClassA@あ", description:"aaa"});
-    expect(target.getAgentClass(1)).toEqual(
+    target.agentSettingBuilder.selectedAgent = target.agentSetting[1];
+    expect(target.getAgentClassForSelected()).toEqual(
       {name:"TestClassC@い", description:"ccc"});
   });
 
@@ -195,7 +206,7 @@ describe("BacktestBuiler", () => {
     });
 
     it("エージェントが未登録の場合", () => {
-      target.removeAgent(0);
+      target.removeSelectedAgent();
 
       expect( target.validate() ).toBe(false);
       expect( target.nameError ).toBe(null);

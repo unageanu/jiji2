@@ -21,16 +21,17 @@ export default class AgentSettingBuilder extends Observable {
   initialize(agents=[]) {
     this.iconSelector.initialize(null);
     this.agentSetting = agents || [];
+    this.selectedAgent = null;
     this.agentSettingError = null;
     return this.agentClasses.load().then(() => {
       this.availableAgents = this.agentClasses.classes;
     });
   }
 
-  getAgentClass(index) {
-    const setting = this.agentSetting[index];
+  getAgentClassForSelected() {
+    if (this.selectedAgent == null) return;
     return this.agentClasses.classes.find(
-      (a) => a.name === setting.agentClass );
+      (a) => a.name === this.selectedAgent.agentClass );
   }
 
   addAgent( agentClass, configuration={} ) {
@@ -39,16 +40,20 @@ export default class AgentSettingBuilder extends Observable {
       agentName:  agentClass,
       properties: configuration
     });
+    this.selectedAgent = this.agentSetting[this.agentSetting.length-1];
     this.fire("agentAdded", {agents:this.settings});
-    return this.agentSetting.length -1;
   }
-  removeAgent( index ) {
-    this.agentSetting.splice(index, 1);
+  removeSelectedAgent( ) {
+    if (this.selectedAgent == null) return;
+    this.agentSetting = this.agentSetting.filter( (a) => a != this.selectedAgent );
+    this.selectedAgent = this.agentSetting.length > 0 ? this.agentSetting[0] : null;
     this.fire("agentRemoved", {agents:this.settings});
   }
-  updateAgentConfiguration(index, name, configuration) {
-    this.agentSetting[index].agentName  = name;
-    this.agentSetting[index].properties = configuration;
+  updateSelectedAgent(name, iconId=null, configuration={}) {
+    if (this.selectedAgent == null) return;
+    this.selectedAgent.agentName  = name;
+    this.selectedAgent.iconId     = iconId;
+    this.selectedAgent.properties = configuration;
   }
 
   validate() {
@@ -59,7 +64,7 @@ export default class AgentSettingBuilder extends Observable {
 
   convert(agents) {
     return agents.map((a) => {
-      a.agentName = a.name;
+      a.agentName = a.name || a.agentName;
       return a;
     });
   }
@@ -72,10 +77,18 @@ export default class AgentSettingBuilder extends Observable {
   }
 
   set agentSetting(setting) {
-    return this.setProperty("agentSetting", this.convert(setting));
+    this.setProperty("agentSetting", this.convert(setting));
   }
   get agentSetting() {
     return this.getProperty("agentSetting");
+  }
+
+  set selectedAgent(selectedAgent) {
+    this.setProperty("selectedAgent", selectedAgent);
+    this.iconSelector.selectedId = selectedAgent ? selectedAgent.iconId : null;
+  }
+  get selectedAgent() {
+    return this.getProperty("selectedAgent");
   }
 
   get agentSettingError() {

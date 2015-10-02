@@ -3,6 +3,7 @@ import MUI                from "material-ui"
 import AbstractComponent  from "../widgets/abstract-component"
 import AgentClassSelector from "./agent-class-selector"
 import IconSelector       from "../icons/icon-selector"
+import AgentIcon          from "../widgets/agent-icon"
 
 const RaisedButton = MUI.RaisedButton;
 const List         = MUI.List;
@@ -11,9 +12,10 @@ const Dialog       = MUI.Dialog;
 const TextField    = MUI.TextField;
 
 const keys = new Set([
-  "availableAgents", "agentSetting", "agentSettingError"
+  "availableAgents", "agentSetting", "agentSettingError", "selectedAgent"
 ]);
 
+let counter = 0;
 
 export default class AgentSettingEditor extends AbstractComponent {
 
@@ -45,7 +47,6 @@ export default class AgentSettingEditor extends AbstractComponent {
     return (
       <div className="agent-setting-editor">
         <div className="error">{this.state.agentSettingError}</div>
-        <IconSelector model={this.props.model.iconSelector} />
         <div className="action">
           <RaisedButton
             label="エージェントを追加"
@@ -80,14 +81,18 @@ export default class AgentSettingEditor extends AbstractComponent {
 
   createAgents() {
     return this.state.agentSetting.map((agent, index) => {
-      const selected  = this.state.selectedAgentIndex === index;
+      const selected  = this.state.selectedAgent === agent;
       const tapAction = (ev) => {
         this.applyAgentConfiguration();
-        this.setState({selectedAgentIndex:index});
+        this.props.model.selectedAgent = agent;
       };
+      const avatar =  <AgentIcon
+            iconId={agent.iconId}
+            urlResolver={this.props.model.agentClasses.agentService.urlResolver} />;
       return <ListItem
             key={index}
-            className={selected ? "mui-selected" : ""}
+            className={selected ? "selected" : ""}
+            leftAvatar={avatar}
             onTouchTap={tapAction}
             primaryText={agent.agentName}>
           </ListItem>;
@@ -95,17 +100,20 @@ export default class AgentSettingEditor extends AbstractComponent {
   }
 
   createAgentDetail() {
-    const selectedAgent = this.getSelectedAgent();
-    const agentClass    = this.getAgentClass();
+    const selectedAgent = this.state.selectedAgent;
+    if (selectedAgent == null) return null;
+
+    const agentClass =  this.props.model.getAgentClassForSelected();
     const agentPropertyEditors =
       this.createAgentPropertyEditor(selectedAgent, agentClass);
     const agentNameEditor =
       this.createAgentNameEditor(selectedAgent, agentClass);
-    return <div className="agent-details" key={this.state.selectedAgentIndex}>
-      <div>{selectedAgent ? selectedAgent.agentClass : ""}</div>
-      <div>{agentClass ? agentClass.description : ""}</div>
-      <div>{agentNameEditor}</div>
-      <div>
+    return <div className="agent-details" key={counter++}>
+      <div className="agent-class">{selectedAgent ? selectedAgent.agentClass : ""}</div>
+      <div className="description">{agentClass ? agentClass.description : ""}</div>
+      <div className="icon"><IconSelector model={this.props.model.iconSelector} /></div>
+      <div className="agentName">{agentNameEditor}</div>
+      <div className="properties">
         {agentPropertyEditors}
       </div>
     </div>;
@@ -126,37 +134,23 @@ export default class AgentSettingEditor extends AbstractComponent {
       const value = selectedAgent.properties[p.id] || p.default;
       return  <TextField
           ref={"agent_properties_" + p.id}
+          key={p.id}
           floatingLabelText={p.name}
           defaultValue={value} />;
     });
   }
 
   applyAgentConfiguration() {
-    const selectedAgent = this.getSelectedAgent();
-    const agentClass    = this.getAgentClass();
-    if (!selectedAgent) return;
+    if (this.state.selectedAgent == null) return;
+    const agentClass =  this.props.model.getAgentClassForSelected();
     const agentName = this.refs.agent_name.getValue();
+    const iconId = this.props.model.iconSelector.selectedId;
     const configuration = agentClass.properties.reduce((r, p) => {
       r[p.id] = this.refs["agent_properties_" + p.id].getValue();
       return r;
     }, {});
-    this.props.model.updateAgentConfiguration(
-      this.state.selectedAgentIndex, agentName, configuration);
-  }
-
-  getSelectedAgent() {
-    if (this.state.selectedAgentIndex >= 0) {
-      return this.props.model.agentSetting[this.state.selectedAgentIndex];
-    } else {
-      return null;
-    }
-  }
-  getAgentClass() {
-    if (this.state.selectedAgentIndex >= 0) {
-      return this.props.model.getAgentClass(this.state.selectedAgentIndex);
-    } else {
-      return null;
-    }
+    this.props.model.updateSelectedAgent(
+      agentName, iconId, configuration);
   }
 
   showAgentSelector() {
@@ -164,18 +158,9 @@ export default class AgentSettingEditor extends AbstractComponent {
   }
 
   addAgent(agent) {
-    const index = this.props.model.addAgent( agent.name );
-    this.refs.agentSelectorDialog.dismiss();
-
     this.applyAgentConfiguration();
-    this.setState({selectedAgentIndex:index});
-  }
-
-  onPropertyChanged(k, ev) {
-    if (ev.key === "agentSetting") {
-      this.setState({selectedAgentIndex: -1});
-    }
-    super.onPropertyChanged(k, ev);
+    this.props.model.addAgent( agent.name );
+    this.refs.agentSelectorDialog.dismiss();
   }
 }
 AgentSettingEditor.propTypes = {

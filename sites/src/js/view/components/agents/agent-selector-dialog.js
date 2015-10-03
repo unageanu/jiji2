@@ -17,12 +17,15 @@ export default class AgentSelectorDialog extends React.Component {
         ref="dialog"
         title=""
         actions={[{text: "キャンセル"}]}
-        modal={true}>
-        <div className="desc">追加するエージェントを選択してください。</div>
-        <AgentClassSelector
-          classes={this.props.availableAgents}
-          onSelect={this.props.onSelect}
-        />
+        modal={true}
+        className="dialog">
+        <div className="dialog-content">
+          <div className="dialog-description">追加するエージェントを選択してください。</div>
+          <AgentClassSelector
+            classes={this.props.availableAgents}
+            onSelect={this.props.onSelect}
+          />
+        </div>
       </Dialog>
     );
   }

@@ -33,7 +33,7 @@ export default class AgentSettingEditor extends AbstractComponent {
     return (
       <div className="agent-setting-editor">
         {error}
-        <div>
+        <div className="parent">
           <AgentList model={this.props.model} />
           <AgentPropertyEditor
             ref="agentPropertyEditor"

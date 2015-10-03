@@ -7,7 +7,7 @@ import AgentListItem          from "./agent-list-item"
 const List         = MUI.List;
 
 const keys = new Set([
-  "availableAgents", "agentSetting"
+  "availableAgents", "agentSetting", "selectedAgent"
 ]);
 
 export default class AgentList extends AbstractComponent {
@@ -35,7 +35,7 @@ export default class AgentList extends AbstractComponent {
     return (
       <div className="agent-list">
         <AgentSettingEditorMenu model={this.props.model}/>
-        <List>{this.createAgents()}</List>
+        <List className="list">{this.createAgents()}</List>
       </div>
     );
   }

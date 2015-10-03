@@ -1,0 +1,43 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.agent-property-editor {
+  margin: @grid*2;
+  padding: @grid*3;
+  border: 1px solid @border-color;
+  min-height: 50px;
+
+  .agent-details {
+    .agent-class, .icon-and-name, .description {
+      display: flex;
+
+      .item-label, .icon {
+        width: 90px;
+        color: @font-color-light;
+        font-size: @font-size-small;
+      }
+      .item-value, .agent-name {
+        padding-left: @grid*2;
+        flex: 1;
+        width: 80px;
+        color: @font-color-normal;
+        font-size: @font-size-normal;
+      }
+    }
+    .description {
+      margin-top: @grid;
+    }
+    .icon-and-name > .icon {
+      padding-top: @grid*3;
+    }
+
+    .description {
+      pre {
+        overflow: scroll;
+        font-size: @font-size-small;
+        color: @font-color-normal;
+        margin: 0px;
+      }
+    }
+  }
+}

@@ -45,10 +45,24 @@ export default class AgentPropertyEditor extends AbstractComponent {
     const agentNameEditor =
       this.createAgentNameEditor(selectedAgent, agentClass);
     return <div className="agent-details" key={counter++}>
-      <div className="agent-class">{selectedAgent ? selectedAgent.agentClass : ""}</div>
-      <div className="description">{agentClass ? agentClass.description : ""}</div>
-      <div className="icon"><IconSelector model={this.props.model.iconSelector} /></div>
-      <div className="agentName">{agentNameEditor}</div>
+      <div className="agent-class">
+        <span className="item-label">クラス:</span>
+        <span className="item-value">{selectedAgent ? selectedAgent.agentClass : ""}</span>
+      </div>
+      <div className="description">
+        <span className="item-label">説明:</span>
+        <div className="item-value">
+          <pre>
+            {agentClass ? agentClass.description : ""}
+          </pre>
+        </div>
+      </div>
+      <div className="icon-and-name">
+        <div className="icon">
+          <IconSelector model={this.props.model.iconSelector} />
+        </div>
+        <div className="agent-name">{agentNameEditor}</div>
+      </div>
       <div className="properties">
         {agentPropertyEditors}
       </div>
@@ -61,18 +75,26 @@ export default class AgentPropertyEditor extends AbstractComponent {
     return <TextField
       ref={"agent_name"}
       floatingLabelText="エージェントの名前"
-      defaultValue={name} />;
+      defaultValue={name}
+      style={{
+        width: "100%"
+      }} />;
   }
 
   createAgentPropertyEditor(selectedAgent, agentClass) {
     if (!selectedAgent || !agentClass) return null;
     return agentClass.properties.map((p) => {
       const value = selectedAgent.properties[p.id] || p.default;
-      return  <TextField
-          ref={"agent_properties_" + p.id}
-          key={p.id}
-          floatingLabelText={p.name}
-          defaultValue={value} />;
+      return <div className="property">
+          <TextField
+            ref={"agent_properties_" + p.id}
+            key={p.id}
+            floatingLabelText={p.name}
+            defaultValue={value}
+            style={{
+              width: "100%"
+            }}/>
+        </div>;
     });
   }
 

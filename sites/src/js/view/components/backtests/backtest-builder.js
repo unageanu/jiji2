@@ -43,44 +43,72 @@ export default class BacktestBuilder extends AbstractComponent {
       <div className="backtest-builder">
         <div className="top-button">
           <RaisedButton
-            label="バックテストを開始"
+            label="以下の設定でバックテストを開始"
+            primary={true}
             onClick={this.registerBacktest.bind(this)}
           />
         </div>
-        <div className="inputs">
+        <div className="inputs table">
           <div className="item">
-            <TextField
-              ref="name"
-              floatingLabelText="バックテストの名前"
-              defaultValue={this.state.name}
-              errorText={this.state.nameError}/>
+            <div className="label">バックテスト名</div>
+            <div className="input">
+              <TextField
+                ref="name"
+                hintText="バックテストの名前"
+                defaultValue={this.state.name}
+                errorText={this.state.nameError}/>
+            </div>
           </div>
           <div className="item">
-            <RangeSelector
-              ref="rangeSelector"
-              model={this.model().rangeSelectorModel} />
+            <div className="label">テスト期間</div>
+            <div className="input">
+              <RangeSelector
+                ref="rangeSelector"
+                model={this.model().rangeSelectorModel} />
+            </div>
           </div>
           <div className="item">
-            <TextField
-              ref="balance"
-              floatingLabelText="初期資金"
-              defaultValue={this.state.balance}
-              errorText={this.state.balanceError} />
+            <div className="label">初期資金</div>
+            <div className="input">
+              <TextField
+                ref="balance"
+                hintText="初期資金"
+                defaultValue={this.state.balance}
+                errorText={this.state.balanceError} />
+            </div>
           </div>
           <div className="item">
+            <div className="label">メモ</div>
+            <div className="input">
+              <TextField
+                ref="memo"
+                multiLine={true}
+                hintText="メモ"
+                defaultValue={this.state.memo}
+                errorText={this.state.memoError}
+                style={{
+                  width: "600px"
+                }} />
+            </div>
+          </div>
+        </div>
+        <div  className="inputs">
+          <div className="item">
+            <div className="label">使用する通貨ペア</div>
+            <ul className="desc">
+              <li>バックテストで使用する通貨ペアを選択してください。</li>
+              <li>通貨ペアは最大5つまで選択できます。</li>
+              <li>利用する通貨ペアが増えると、バックテストの所要時間も増加しますのでご注意ください。</li>
+            </ul>
             <PairSelector
               ref="pairSelector"
               model={this.model().pairSelectorModel} />
           </div>
-          <div className="item">
-            <TextField
-              ref="memo"
-              multiLine={true}
-              floatingLabelText="メモ"
-              defaultValue={this.state.memo}
-              errorText={this.state.memoError} />
-          </div>
-          <div className="item">
+          <div className="item horizontal">
+            <div className="label">エージェント</div>
+            <ul className="desc">
+              <li>バックテストで動作させるエージェントを設定します。</li>
+            </ul>
             <AgentSettingEditor
               ref="agentSettingEditor"
               model={this.model().agentSettingBuilder}/>

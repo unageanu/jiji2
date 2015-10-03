@@ -1,0 +1,53 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.backtest-builder {
+  padding: @grid*4;
+
+  .top-button {
+    padding: 0 0 @grid*4 0;
+    border-bottom: 1px solid @border-color-dark;
+    margin-bottom: @grid*2;
+  }
+
+  .inputs {
+    .item {
+      margin-top: @grid*3;
+
+      .label {
+        font-size: @font-size-normal;
+        color: @font-color-normal;
+      }
+      .desc {
+        font-size: @font-size-small;
+        color: @font-color-light;
+        margin: @grid 0px;
+      }
+    }
+  }
+
+  .inputs.table {
+    display: table;
+
+    .item {
+      display: table-row;
+
+      .label, .input {
+        display: table-cell;
+      }
+      .label {
+        padding-top: @grid*3+6s;
+        vertical-align: top;
+      }
+      .input {
+        padding-top: @grid*2;
+        padding-left: @grid*3;
+      }
+    }
+  }
+
+  .pair-selector {
+    margin: @grid*2;
+  }
+
+}

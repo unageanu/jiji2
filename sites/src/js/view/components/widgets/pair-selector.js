@@ -22,12 +22,15 @@ export default class PairSelector extends AbstractComponent  {
   }
 
   render() {
+    const error = this.state.pairNamesError
+      ? <div className="error">{this.state.pairNamesError}</div>
+      : null;
     return (
       <div className="pair-selector">
+        {error}
         <div className="selector">
           {this.createSelectors()}
         </div>
-        <div className="error">{this.state.pairNamesError}</div>
       </div>
     );
   }
@@ -43,7 +46,7 @@ export default class PairSelector extends AbstractComponent  {
         value={pair.name}
         label={pair.name}
         style={{
-          width:   "180px",
+          width:   "120px",
           display: "inline-block"
         }} />;
     });

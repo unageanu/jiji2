@@ -1,0 +1,94 @@
+import React                  from "react"
+import MUI                    from "material-ui"
+import AbstractComponent      from "../widgets/abstract-component"
+import IconSelector           from "../icons/icon-selector"
+
+const TextField    = MUI.TextField;
+
+const keys = new Set([
+  "selectedAgent"
+]);
+
+let counter = 0;
+
+export default class AgentPropertyEditor extends AbstractComponent {
+
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  componentWillMount() {
+    const model = this.props.model;
+    model.addObserver("beforeSeletionChange",
+      this.applyAgentConfiguration.bind(this), this);
+    this.registerPropertyChangeListener(model, keys);
+    const state = this.collectInitialState(model, keys);
+    this.setState(state);
+  }
+
+  render() {
+    return (
+      <div className="agent-property-editor">
+        {this.createEditor()}
+      </div>
+    );
+  }
+
+  createEditor() {
+    const selectedAgent = this.state.selectedAgent;
+    if (selectedAgent == null) return null;
+
+    const agentClass =  this.props.model.getAgentClassForSelected();
+    const agentPropertyEditors =
+      this.createAgentPropertyEditor(selectedAgent, agentClass);
+    const agentNameEditor =
+      this.createAgentNameEditor(selectedAgent, agentClass);
+    return <div className="agent-details" key={counter++}>
+      <div className="agent-class">{selectedAgent ? selectedAgent.agentClass : ""}</div>
+      <div className="description">{agentClass ? agentClass.description : ""}</div>
+      <div className="icon"><IconSelector model={this.props.model.iconSelector} /></div>
+      <div className="agentName">{agentNameEditor}</div>
+      <div className="properties">
+        {agentPropertyEditors}
+      </div>
+    </div>;
+  }
+
+  createAgentNameEditor(selectedAgent, agentClass) {
+    if (!selectedAgent || !agentClass) return null;
+    const name = selectedAgent.agentName || selectedAgent.agentClass;
+    return <TextField
+      ref={"agent_name"}
+      floatingLabelText="エージェントの名前"
+      defaultValue={name} />;
+  }
+
+  createAgentPropertyEditor(selectedAgent, agentClass) {
+    if (!selectedAgent || !agentClass) return null;
+    return agentClass.properties.map((p) => {
+      const value = selectedAgent.properties[p.id] || p.default;
+      return  <TextField
+          ref={"agent_properties_" + p.id}
+          key={p.id}
+          floatingLabelText={p.name}
+          defaultValue={value} />;
+    });
+  }
+
+  applyAgentConfiguration() {
+    if (this.state.selectedAgent == null) return;
+    const agentClass =  this.props.model.getAgentClassForSelected();
+    const agentName = this.refs.agent_name.getValue();
+    const iconId = this.props.model.iconSelector.selectedId;
+    const configuration = agentClass.properties.reduce((r, p) => {
+      r[p.id] = this.refs["agent_properties_" + p.id].getValue();
+      return r;
+    }, {});
+    this.props.model.updateSelectedAgent(
+      agentName, iconId, configuration);
+  }
+}
+AgentPropertyEditor.propTypes = {
+  model : React.PropTypes.object.isRequired
+};

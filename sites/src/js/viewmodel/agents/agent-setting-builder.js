@@ -84,6 +84,8 @@ export default class AgentSettingBuilder extends Observable {
   }
 
   set selectedAgent(selectedAgent) {
+    this.fire("beforeSeletionChange",
+      {current: this.selectedAgent, new:selectedAgent});
     this.setProperty("selectedAgent", selectedAgent);
     this.iconSelector.selectedId = selectedAgent ? selectedAgent.iconId : null;
   }

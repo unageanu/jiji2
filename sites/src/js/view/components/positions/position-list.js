@@ -20,7 +20,6 @@ export default class PositionList extends AbstractList {
       key={index}
       position={position}
       onTouchTap={this.createAction(position)}
-      mobile={this.props.mobile}
       innerDivStyle={this.props.innerDivStyle}
       selected={
         this.state.selectedId === position.id
@@ -38,15 +37,13 @@ PositionList.propTypes = {
   selectionModel: React.PropTypes.object,
   innerDivStyle: React.PropTypes.object,
   emptyLabel:  React.PropTypes.string,
-  autoFill: React.PropTypes.bool,
-  mobile: React.PropTypes.bool
+  autoFill: React.PropTypes.bool
 };
 PositionList.defaultProps = {
   selectionModel: null,
   innerDivStyle: {},
   emptyLabel: "建玉はありません",
-  autoFill: false,
-  mobile: false
+  autoFill: false
 };
 PositionList.contextTypes = {
   router: React.PropTypes.func,

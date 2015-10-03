@@ -19,7 +19,6 @@ export default class NotificationList extends AbstractList {
       key={index}
       notification={notification}
       onTouchTap={this.createAction(notification)}
-      mobile={this.props.mobile}
       innerDivStyle={this.props.innerDivStyle}
       selected={
         this.state.selectedId === notification.id
@@ -38,15 +37,13 @@ NotificationList.propTypes = {
   selectionModel: React.PropTypes.object,
   innerDivStyle: React.PropTypes.object,
   emptyLabel:  React.PropTypes.string,
-  autoFill: React.PropTypes.bool,
-  mobile: React.PropTypes.bool
+  autoFill: React.PropTypes.bool
 };
 NotificationList.defaultProps = {
   selectionModel: null,
   innerDivStyle: {},
   emptyLabel: "未読の通知はありません",
-  autoFill: false,
-  mobile: false
+  autoFill: false
 };
 NotificationList.contextTypes = {
   router: React.PropTypes.func,

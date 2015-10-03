@@ -3,7 +3,7 @@ import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
 import TextInRadius        from "../widgets/text-in-radius"
 import Theme               from "../../theme"
-import MobileListItem      from "../widgets/mobile/list-item"
+import Environment         from "../../environment"
 
 const Avatar     = MUI.Avatar;
 const ListItem   = MUI.ListItem;
@@ -34,9 +34,7 @@ export default class NotificationListItem extends React.Component {
       onTouchTap: this.props.onTouchTap,
       rightIcon: this.createRightIcon(notification)
     };
-    return this.props.mobile
-      ? <MobileListItem {...props} />
-      : <ListItem {...props} />;
+    return Environment.get().createListItem(props);
   }
   createPrimaryText(notification) {
     return <span
@@ -68,13 +66,11 @@ NotificationListItem.propTypes = {
   notification: React.PropTypes.object,
   selected: React.PropTypes.bool,
   innerDivStyle: React.PropTypes.object,
-  onTouchTap: React.PropTypes.func,
-  mobile: React.PropTypes.bool
+  onTouchTap: React.PropTypes.func
 };
 NotificationListItem.defaultProps = {
   notification: null,
   selected: false,
   innerDivStyle: {},
-  onTouchTap: null,
-  mobile: false
+  onTouchTap: null
 };

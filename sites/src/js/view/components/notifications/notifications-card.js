@@ -61,9 +61,7 @@ NotificationsCard.propTypes = {
   model: React.PropTypes.object.isRequired,
   selectionModel: React.PropTypes.object,
   innerDivStyle: React.PropTypes.object,
-  mobile: React.PropTypes.bool
 };
 NotificationsCard.defaultProps = {
   selectionModel: null,
-  mobile: false
 };

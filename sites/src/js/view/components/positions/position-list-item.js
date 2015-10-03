@@ -2,7 +2,7 @@ import React               from "react"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
 import PositionStatus      from "./position-status"
-import MobileListItem      from "../widgets/mobile/list-item"
+import Environment         from "../../environment"
 
 const ListItem   = MUI.ListItem;
 const Avatar     = MUI.Avatar;
@@ -31,9 +31,7 @@ export default class PositionListItem extends React.Component {
       onTouchTap: this.props.onTouchTap,
       rightIcon: this.createRightIcon(position)
     };
-    return this.props.mobile
-      ? <MobileListItem {...props} />
-      : <ListItem {...props} />;
+    return Environment.get().createListItem(props);
   }
 
   createPrimaryText(position) {

@@ -3,6 +3,7 @@ import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
 import PositionStatus      from "./position-status"
 import Environment         from "../../environment"
+import Theme               from "../../theme"
 
 const ListItem   = MUI.ListItem;
 const Avatar     = MUI.Avatar;
@@ -20,11 +21,11 @@ export default class PositionListItem extends React.Component {
     const position = this.props.position || nullPosition;
     const props = {
       className: "list-item",
-      innerDivStyle : Object.assign({
+      innerDivStyle : Object.assign( {}, Theme.listItem.innerDivStyle, {
         paddingRight:"72px",
         backgroundColor: this.props.selected
           ? Theme.getPalette().backgroundColorDarkAlpha : "rgba(0,0,0,0)"
-      }, this.props.innerDivStyle),
+      }),
       leftAvatar: this.createAvatar(position),
       primaryText: this.createPrimaryText(position),
       secondaryText: this.createSecondaryText(position),
@@ -35,12 +36,12 @@ export default class PositionListItem extends React.Component {
   }
 
   createPrimaryText(position) {
-    return <span className="primary-text">
+    return <div className="primary-text">
       <span key="pair" className="pair">{position.pairName}</span>
       <span key="separator" className="separator">/</span>
       <span key="sell-or-buy" className="sell-or-buy">{position.formatedSellOrBuy}</span>
       {this.createProfitOrLossElement(position)}
-    </span>;
+    </div>;
   }
   createProfitOrLossElement(position) {
     const type = this.resolveProfitOrLossClass(position.profitOrLoss);
@@ -84,11 +85,9 @@ export default class PositionListItem extends React.Component {
 }
 PositionListItem.propTypes = {
   position: React.PropTypes.object,
-  selected: React.PropTypes.bool,
-  innerDivStyle: React.PropTypes.object
+  selected: React.PropTypes.bool
 };
 PositionListItem.defaultProps = {
   position: null,
-  selected: false,
-  innerDivStyle: {}
+  selected: false
 };

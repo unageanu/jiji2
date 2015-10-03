@@ -238,5 +238,10 @@ export default {
       width: "130px"
     }
   },
-  snackbar: {}
+  snackbar: {},
+
+  listItem: {
+    innerDivStyle: {
+    }
+  }
 }

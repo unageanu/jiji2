@@ -87,14 +87,12 @@ export default class AbstractList extends AbstractComponent {
 AbstractList.propTypes = {
   model: React.PropTypes.object.isRequired,
   selectionModel: React.PropTypes.object,
-  innerDivStyle: React.PropTypes.object,
   emptyLabel:  React.PropTypes.string,
   autoFill: React.PropTypes.bool,
   mobile: React.PropTypes.bool
 };
 AbstractList.defaultProps = {
   selectionModel: null,
-  innerDivStyle: {},
   emptyLabel: "",
   autoFill: false,
   mobile: false

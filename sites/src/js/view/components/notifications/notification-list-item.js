@@ -22,11 +22,11 @@ export default class NotificationListItem extends React.Component {
     const notification = this.props.notification || nullNotification;
     const props = {
       className: "list-item",
-      innerDivStyle : Object.assign({
+      innerDivStyle : Object.assign( {}, Theme.listItem.innerDivStyle, {
         paddingRight:"72px",
         backgroundColor: this.props.selected
           ? Theme.getPalette().backgroundColorDarkAlpha : "rgba(0,0,0,0)"
-      }, this.props.innerDivStyle),
+      }),
       leftAvatar: this.createAvatar(notification),
       primaryText: this.createPrimaryText(notification),
       secondaryText: this.createSecondaryText(notification),
@@ -37,10 +37,10 @@ export default class NotificationListItem extends React.Component {
     return Environment.get().createListItem(props);
   }
   createPrimaryText(notification) {
-    return <span
+    return <div
       className={"primary-text " + (!notification.readAt ? "not-read" : "" )}>
       {notification.message}
-    </span>;
+    </div>;
   }
   createSecondaryText(notification) {
     const content = [];
@@ -65,12 +65,10 @@ export default class NotificationListItem extends React.Component {
 NotificationListItem.propTypes = {
   notification: React.PropTypes.object,
   selected: React.PropTypes.bool,
-  innerDivStyle: React.PropTypes.object,
   onTouchTap: React.PropTypes.func
 };
 NotificationListItem.defaultProps = {
   notification: null,
   selected: false,
-  innerDivStyle: {},
   onTouchTap: null
 };

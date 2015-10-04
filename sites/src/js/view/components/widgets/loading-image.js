@@ -16,7 +16,9 @@ export default class LoadingImage extends React.Component {
         <RefreshIndicator
           left={this.props.left}
           top={this.props.top}
-          status={this.props.status} />
+          status={this.props.status}
+          size={this.props.size}
+           />
       </span>
     );
   }
@@ -24,10 +26,12 @@ export default class LoadingImage extends React.Component {
 LoadingImage.propTypes = {
   status: React.PropTypes.string,
   left: React.PropTypes.number,
-  top: React.PropTypes.number
+  top: React.PropTypes.number,
+  size: React.PropTypes.number
 };
 LoadingImage.defaultProps = {
   status: "loading",
   left: 0,
-  top: 0
+  top: 0,
+  size: 40
 };

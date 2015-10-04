@@ -74,6 +74,7 @@ export default class AgentPropertyEditor extends AbstractComponent {
     const name = selectedAgent.agentName || selectedAgent.agentClass;
     return <TextField
       ref={"agent_name"}
+      key={"agent_name"}
       floatingLabelText="エージェントの名前"
       defaultValue={name}
       style={{
@@ -85,7 +86,7 @@ export default class AgentPropertyEditor extends AbstractComponent {
     if (!selectedAgent || !agentClass) return null;
     return agentClass.properties.map((p) => {
       const value = selectedAgent.properties[p.id] || p.default;
-      return <div className="property">
+      return <div key={p.id} className="property">
           <TextField
             ref={"agent_properties_" + p.id}
             key={p.id}

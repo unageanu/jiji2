@@ -19,9 +19,9 @@ export default class ConfirmDialog extends React.Component {
         actions={this.createActions()}
         modal={true}
       >
-      <div className="dialog-contnet">
-        <div className="dialog-description">{this.props.text}</div>
-      </div>
+        <div className="dialog-contnet">
+          <div className="dialog-description">{this.props.text}</div>
+        </div>
       </Dialog>
     );
   }
@@ -45,7 +45,7 @@ export default class ConfirmDialog extends React.Component {
 }
 ConfirmDialog.propTypes = {
   text:    React.PropTypes.string.isRequired,
-  actions: React.PropTypes.string
+  actions: React.PropTypes.array
 };
 ConfirmDialog.defaultProps = {
   actions: [

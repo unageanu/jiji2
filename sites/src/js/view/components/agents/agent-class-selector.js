@@ -36,8 +36,8 @@ export default class AgentClassSelector extends React.Component {
   }
 }
 AgentClassSelector.propTypes = {
-  classses : React.PropTypes.array.isRequired,
-  onSelect : React.PropTypes.func.isRequired
+  classses : React.PropTypes.array,
+  onSelect : React.PropTypes.func
 };
 AgentClassSelector.defaultProps = {
   classses: [],

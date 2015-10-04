@@ -19,7 +19,7 @@ export default class ConfirmDialog extends React.Component {
         actions={this.createActions()}
         modal={true}
       >
-        <div className="dialog-contnet">
+        <div className="dialog-content">
           <div className="dialog-description">{this.props.text}</div>
         </div>
       </Dialog>

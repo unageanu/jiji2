@@ -43,7 +43,7 @@ export default class RMTAgentSettingPage extends AbstractPage {
           />
           <span className="saved-label">{
             this.state.isSaving
-              ? <LoadingImage width={20} />
+              ? <LoadingImage size={20} />
               : this.state.savedLabel
           }</span>
         </div>

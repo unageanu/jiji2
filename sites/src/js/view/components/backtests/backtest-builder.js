@@ -12,7 +12,8 @@ const RaisedButton = MUI.RaisedButton;
 
 const keys = new Set([
   "name", "memo", "balance",
-  "nameError", "memoError", "balanceError"
+  "nameError", "memoError", "balanceError",
+  "isSaving"
 ]);
 
 export default class BacktestBuilder extends AbstractComponent {
@@ -45,8 +46,12 @@ export default class BacktestBuilder extends AbstractComponent {
           <RaisedButton
             label="以下の設定でバックテストを開始"
             primary={true}
+            disabled={this.state.isSaving}
             onClick={this.registerBacktest.bind(this)}
           />
+          <span className="loading">
+            {this.state.isSaving ? <LoadingImage size={20} /> : null}
+          </span>
         </div>
         <div className="inputs table">
           <div className="item">

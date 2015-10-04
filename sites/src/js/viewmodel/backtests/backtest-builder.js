@@ -71,7 +71,11 @@ export default class BacktestBuilder extends Observable {
     backtest.endTime   = this.rangeSelectorModel.endTime;
     backtest.pairNames = this.pairSelectorModel.pairNames;
     backtest.balance   = Number.parseInt(backtest.balance, 10)
-    return this.backtestService.register(backtest);
+
+    this.isSaving = true;
+    const d = this.backtestService.register(backtest)
+    d.always(() => this.isSaving = false );
+    return d;
   }
 
   getAgentClassForSelected() {
@@ -144,5 +148,12 @@ export default class BacktestBuilder extends Observable {
 
   get agentSetting() {
     return this.agentSettingBuilder.agentSetting;
+  }
+
+  set isSaving(isSaving) {
+    this.setProperty("isSaving", isSaving);
+  }
+  get isSaving() {
+    return this.getProperty("isSaving");
   }
 }

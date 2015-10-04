@@ -28,10 +28,11 @@ export default class ConfirmDialog extends React.Component {
 
   createActions() {
     return this.props.actions.map((a) => {
-      a.onTouchTap = () => {
+      a.onTouchTap = (ev) => {
         this.refs.dialog.dismiss();
         this.d.resolve(a.id);
         this.d = null;
+        ev.preventDefault();
       }
       return a;
     })

@@ -1,7 +1,7 @@
 import React              from "react"
 import MUI                from "material-ui"
 import AgentClassSelector from "./agent-class-selector"
-import Theme       from "../../theme"
+import Theme              from "../../theme"
 
 const Dialog       = MUI.Dialog;
 

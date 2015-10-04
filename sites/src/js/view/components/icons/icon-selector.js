@@ -4,6 +4,7 @@ import Dropzone           from "react-dropzone"
 import AbstractComponent  from "../widgets/abstract-component"
 import LoadingImage       from "../widgets/loading-image"
 import AgentIcon          from "../widgets/agent-icon"
+import Theme              from "../../theme"
 
 const FlatButton = MUI.FlatButton;
 const Dialog     = MUI.Dialog;
@@ -47,7 +48,7 @@ export default class IconSelector extends AbstractComponent  {
           actions={[{ text: 'キャンセル' }]}
           modal={true}
           className="dialog"
-        >
+          contentStyle={Theme.dialog.contentStyle}>
           <div className="dialog-content">
             <div className="dialog-description">使用するアイコンを選択してください。</div>
             <div className="icons">

@@ -1,6 +1,7 @@
-import React  from "react"
-import Router from "react-router"
-import MUI    from "material-ui"
+import React       from "react"
+import Router      from "react-router"
+import MUI         from "material-ui"
+import Environment from "../../environment"
 
 const List         = MUI.List;
 const ListItem     = MUI.ListItem;
@@ -23,16 +24,18 @@ export default class AgentClassSelector extends React.Component {
   }
 
   createItemcomponent(agentClass) {
-    const tapAction = (e) => this.props.onSelect(agentClass);
-    return (
-      <ListItem
-        className="list-item"
-        key={agentClass.name}
-        onTouchTap={tapAction}
-        primaryText={<div className="primaryText">{agentClass.name}</div>}
-        secondaryText={agentClass.description}>
-      </ListItem>
-    );
+    const tapAction = (e) => {
+      this.props.onSelect(agentClass);
+      e.preventDefault();
+    };
+    const props = {
+      className: "list-item",
+      key: agentClass.name,
+      onTouchTap: tapAction,
+      primaryText: <div className="primaryText">{agentClass.name}</div>,
+      secondaryText: agentClass.description
+    };
+    return Environment.get().createListItem(props);
   }
 }
 AgentClassSelector.propTypes = {

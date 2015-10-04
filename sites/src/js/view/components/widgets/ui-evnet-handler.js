@@ -38,7 +38,7 @@ export default class UIEventHandler extends AbstractComponent {
 
   onActionTouchTap(ev) {
     if ( this.state.event.type == "notificationReceived" ) {
-      // TODO
+      // TODO 通知詳細に遷移
     }
     this.refs["message-bar"].dismiss();
   }

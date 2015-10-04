@@ -1,7 +1,6 @@
 import React                  from "react"
 import MUI                    from "material-ui"
 import AbstractComponent      from "../widgets/abstract-component"
-import AgentSettingEditorMenu from "./agent-setting-editor-menu"
 import AgentListItem          from "./agent-list-item"
 
 const List         = MUI.List;
@@ -16,8 +15,7 @@ export default class AgentList extends AbstractComponent {
     super(props);
     this.state = {
       availableAgents:    [],
-      agentSetting:       [],
-      selectedAgentIndex: -1
+      agentSetting:       []
     };
   }
 
@@ -33,10 +31,7 @@ export default class AgentList extends AbstractComponent {
 
   render() {
     return (
-      <div className="agent-list">
-        <AgentSettingEditorMenu model={this.props.model}/>
-        <List className="list">{this.createAgents()}</List>
-      </div>
+      <List className="list">{this.createAgents()}</List>
     );
   }
 

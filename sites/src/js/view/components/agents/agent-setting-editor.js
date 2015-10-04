@@ -3,6 +3,7 @@ import MUI                    from "material-ui"
 import AbstractComponent      from "../widgets/abstract-component"
 import AgentList              from "./agent-list"
 import AgentPropertyEditor    from "./agent-property-editor"
+import AgentSettingEditorMenu from "./agent-setting-editor-menu"
 
 const keys = new Set([
   "agentSettingError"
@@ -34,7 +35,10 @@ export default class AgentSettingEditor extends AbstractComponent {
       <div className="agent-setting-editor">
         {error}
         <div className="parent">
-          <AgentList model={this.props.model} />
+          <div className="agent-list">
+            <AgentSettingEditorMenu model={this.props.model}/>
+            <AgentList model={this.props.model} />
+          </div>
           <AgentPropertyEditor
             ref="agentPropertyEditor"
             model={this.props.model} />

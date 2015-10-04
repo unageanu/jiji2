@@ -29,7 +29,6 @@ export default class AgentSettingEditorMenu extends AbstractComponent {
   }
 
   render() {
-    try {
     return (
       <div className="agent-setting-editor-menu">
         <IconButton
@@ -54,10 +53,6 @@ export default class AgentSettingEditorMenu extends AbstractComponent {
           text="選択したエージェントを削除します。よろしいですか?" />
       </div>
     );
-  } catch(error) {
-    console.log(error);
-    console.log(error.stack);
-  }
   }
 
   showAgentSelector() {

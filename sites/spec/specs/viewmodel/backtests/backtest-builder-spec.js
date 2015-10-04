@@ -89,6 +89,7 @@ describe("BacktestBuiler", () => {
     expect(target.agentSetting).toEqual([
       {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}}
     ]);
+    target.agentSettingBuilder.selectedAgent = target.agentSetting[0];
     target.removeSelectedAgent();
     expect(target.agentSetting).toEqual([]);
   });

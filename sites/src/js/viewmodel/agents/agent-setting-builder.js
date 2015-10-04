@@ -46,7 +46,7 @@ export default class AgentSettingBuilder extends Observable {
   removeSelectedAgent( ) {
     if (this.selectedAgent == null) return;
     this.agentSetting = this.agentSetting.filter( (a) => a != this.selectedAgent );
-    this.selectedAgent = this.agentSetting.length > 0 ? this.agentSetting[0] : null;
+    this.selectedAgent = null;
     this.fire("agentRemoved", {agents:this.settings});
   }
   updateSelectedAgent(name, iconId=null, configuration={}) {

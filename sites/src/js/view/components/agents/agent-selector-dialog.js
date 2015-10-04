@@ -1,6 +1,7 @@
 import React              from "react"
 import MUI                from "material-ui"
 import AgentClassSelector from "./agent-class-selector"
+import Theme       from "../../theme"
 
 const Dialog       = MUI.Dialog;
 
@@ -18,7 +19,8 @@ export default class AgentSelectorDialog extends React.Component {
         title=""
         actions={[{text: "キャンセル"}]}
         modal={true}
-        className="dialog">
+        className="dialog"
+        contentStyle={Theme.dialog.contentStyle}>
         <div className="dialog-content">
           <div className="dialog-description">追加するエージェントを選択してください。</div>
           <AgentClassSelector

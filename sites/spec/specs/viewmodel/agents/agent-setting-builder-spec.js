@@ -62,16 +62,16 @@ describe("AgentSettingBuilder", () => {
       {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}},
       {agentClass:"TestClassC@い", agentName:"TestClassC@い", properties: {b:"bb"}}
     ]);
-    expect(target.selectedAgent).toEqual(
-      {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}});
+    expect(target.selectedAgent).toEqual(null);
 
+    target.selectedAgent = target.agentSetting[0];
     target.removeSelectedAgent();
     expect(target.agentSetting).toEqual([
       {agentClass:"TestClassC@い", agentName:"TestClassC@い", properties: {b:"bb"}}
     ]);
-    expect(target.selectedAgent).toEqual(
-      {agentClass:"TestClassC@い", agentName:"TestClassC@い", properties: {b:"bb"}});
+    expect(target.selectedAgent).toEqual(null);
 
+    target.selectedAgent = target.agentSetting[0];
     target.removeSelectedAgent();
     expect(target.selectedAgent).toEqual(null);
   });

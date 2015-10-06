@@ -6,6 +6,8 @@ import Environment   from "../../environment"
 import Theme         from "../../theme"
 import DateFormatter from "../../../viewmodel/utils/date-formatter"
 
+const FontIcon   = MUI.FontIcon;
+
 export default class AgentSourceListItem extends React.Component {
 
   constructor(props) {
@@ -42,7 +44,11 @@ export default class AgentSourceListItem extends React.Component {
   createRightIcon() {
     const agentSource = this.props.agentSource;
     if (agentSource.status !== "error") return null;
-    return <span className="right-icon warn md-warning"></span>;
+    return <span className="right-icon warn">
+      <FontIcon
+        style={{color: Theme.getPalette().negativeColor}}
+        className="md-warning"/>
+    </span>;
   }
 }
 AgentSourceListItem .propTypes = {

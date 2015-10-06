@@ -96,6 +96,15 @@ export default {
     }
   }),
 
+  agentFileName: builder.build({
+    notNull: true,
+    noSpecials : true,
+    noExternalCharacters : true,
+    noHankakuKana : true,
+    prohibitedCharacter: "\"(),:;<>[\\]!#$&'*^`{|}~",
+    maxLength: 100
+  }),
+
   all() {
     for (let i=0, n=arguments.length; i<n; i++) {
       if (!arguments[i]) return false;

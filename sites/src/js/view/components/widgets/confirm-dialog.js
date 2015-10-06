@@ -32,7 +32,6 @@ export default class ConfirmDialog extends React.Component {
         this.refs.dialog.dismiss();
         this.d.resolve(a.id);
         this.d = null;
-        ev.preventDefault();
       }
       return a;
     })

@@ -38,7 +38,11 @@ export default class AgentSourceList extends AbstractComponent {
     const buttonAction = () => this.editor().newSourceFile();
     return (
       <div className="agent-source-list">
-        <List>{items}</List>
+        <List className="list" style={{
+          paddingTop:0,
+          backgroundColor: "rgba(0,0,0,0)"}}>
+          {items}
+        </List>
       </div>
     );
   }

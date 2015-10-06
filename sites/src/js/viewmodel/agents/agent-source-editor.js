@@ -1,5 +1,7 @@
-import ContainerJS  from "container-js"
-import Observable   from "../../utils/observable"
+import ContainerJS     from "container-js"
+import Observable      from "../../utils/observable"
+import Validators      from "../../utils/validation/validators"
+import ValidationUtils from "../utils/validation-utils"
 
 export default class AgentSourceEditor extends Observable {
 
@@ -37,6 +39,7 @@ export default class AgentSourceEditor extends Observable {
   save(name, body) {
     const target = this.getProperty("editTarget");
     if (target == null) return;
+    if (!this.validate(name)) return;
 
     this.agentSources.update(target.id, name, body).then((source) => {
       this.setProperty("editTarget", source);
@@ -54,6 +57,11 @@ export default class AgentSourceEditor extends Observable {
     });
   }
 
+  validate(name) {
+    return ValidationUtils.validate(Validators.agentFileName, name,
+      {field: "ファイル名"}, (error) => this.fileNameError = error );
+  }
+
   onSourcesChanged() {
     this.setProperty("sources", this.agentSources.sources);
   }
@@ -63,6 +71,13 @@ export default class AgentSourceEditor extends Observable {
   }
   get targetBody() {
     return this.getProperty("targetBody");
+  }
+
+  get fileNameError() {
+    return this.getProperty("fileNameError");
+  }
+  set fileNameError(fileNameError) {
+    this.setProperty("fileNameError", fileNameError);
   }
 
   newSourceFileName() {

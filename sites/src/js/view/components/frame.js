@@ -22,7 +22,7 @@ export default class Frame extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="root">
         <div className="topbar"></div>
         <div className="container">
           <LeftNavi />

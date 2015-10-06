@@ -1,0 +1,21 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+@import "../../mixins/layout.less";
+
+@list-width:   @grid * 45;
+
+.agents-page {
+  .two-column-layout-parent(@list-width);
+
+  .agent-list-panel {
+    .two-column-layout-left(@list-width);
+
+    .agent-source-list {
+      margin-top: @grid;
+    }
+  }
+
+  .agent-editor-panel {
+    .two-column-layout-right(@list-width);
+  }
+}

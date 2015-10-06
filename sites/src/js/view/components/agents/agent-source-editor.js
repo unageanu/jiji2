@@ -19,7 +19,7 @@ const IconButton = MUI.IconButton;
 const FontIcon   = MUI.FontIcon;
 
 const keys = new Set([
-  "targetBody",  "editTarget", "sources"
+  "targetBody",  "editTarget", "sources", "fileNameError"
 ]);
 
 export default class AgentSourceEditor extends AbstractComponent {
@@ -62,6 +62,7 @@ export default class AgentSourceEditor extends AbstractComponent {
     if (this.updateEditorSizerequest) return;
     this.updateEditorSizerequest = setTimeout(()=> {
       const elm = React.findDOMNode(this.refs.editor);
+      const editor = this.refs.editor.editor;
       // const w = elm.scrollWidth;
       // const h = elm.scrollHeight;
       const wsize = this.context.windowResizeManager.windowSize;
@@ -72,9 +73,11 @@ export default class AgentSourceEditor extends AbstractComponent {
       //   editorWidth: (wsize.w - 650) + "px",
       //   editorHeight: (wsize.h - 220) + "px"
       // });
-      elm.style.width  = (wsize.w - 650) + "px";
-      elm.style.height = (wsize.h - 220) + "px";
-      this.refs.editor.editor.resize();
+      elm.style.width  = (wsize.w - (360+288+16*3)) + "px";
+      elm.style.height = (Math.max(wsize.h, csize.h)
+        - (100+77+72+16*2) -
+        (this.state.editTarget && this.state.editTarget.error ? 40  : 0 )) + "px";
+      editor.resize();
       this.updateEditorSizerequest = null;
     }, 100);
   }
@@ -84,11 +87,19 @@ export default class AgentSourceEditor extends AbstractComponent {
     const name = this.state.editTarget ? this.state.editTarget.name : "";
     return (
       <div className="agent-source-editor">
+        <ul className="info">
+          <li>エージェントの作り方は<a href="http://" target="blank">こちら</a>をご確認ください。</li>
+          <li>
+            現在動作しているエージェントのコードを変更しても、動作は即座には変わりません。
+            変更後のコードは、新しくエージェントを作成した場合に有効になります。
+          </li>
+        </ul>
         <div className="header">
           <TextField
             ref="name"
             hintText="agent.rb"
-            floatingLabelText="名前"
+            floatingLabelText="ファイル名"
+            errorText={this.state.fileNameError}
             disabled={!this.state.editTarget}
             onChange={this.onFileNameChanged.bind(this)}
             value={this.state.fileName} />
@@ -124,11 +135,27 @@ export default class AgentSourceEditor extends AbstractComponent {
             width="0px"
             height="0px"
             value={this.state.targetBody}
+            readOnly={this.state.editTarget == null }
             name="agent-source-editor_editor"
+            onLoad={this.initEditor.bind(this)}
           />
         </div>
       </div>
     );
+  }
+
+  initEditor(editor) {
+    editor.commands.addCommand({
+        name: 'save',
+        bindKey: {win: 'Ctrl-S',  mac: 'Command-S'},
+        exec: (editor) => {
+          this.save();
+        },
+        readOnly: true
+    });
+    editor.$blockScrolling = Infinity;
+    editor.gotoLine(0);
+    this.updateEditorSize();
   }
 
   createErrorElement() {

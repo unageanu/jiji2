@@ -24,11 +24,13 @@ export default class AgentsPage extends AbstractPage {
   render() {
     return (
       <div className="agents-page">
-        <div className="agent-list">
+        <div className="agent-list-panel">
           <AgentSourceListMenu model={this.model().agentSourceEditor} />
           <AgentSourceList model={this.model().agentSourceEditor}/>
         </div>
-        <AgentSourceEditor model={this.model().agentSourceEditor} />
+        <div className="agent-editor-panel">
+          <AgentSourceEditor model={this.model().agentSourceEditor} />
+        </div>
       </div>
     );
   }

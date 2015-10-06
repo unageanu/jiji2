@@ -4,6 +4,13 @@
 
 @navi-width:   @grid * 36;
 
+.root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .topbar {
   width: 100%;
   height: 100px;
@@ -13,6 +20,8 @@
 }
 
 .container {
+  flex: 1;
+
   .two-column-layout-parent(@navi-width)
 }
 

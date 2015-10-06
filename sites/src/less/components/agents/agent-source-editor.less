@@ -1,0 +1,25 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.agent-source-editor {
+
+  margin: 0 @grid*2;
+
+  .header {
+    margin-bottom: @grid*2;
+  }
+
+  .info {
+    margin-bottom: 0px;
+    font-size: @font-size-small;
+    color: @font-color-light;
+  }
+
+  .ace_editor .ace_text-layer, .ace_editor .ace_text-input {
+    * {
+      font: 12px/normal 'Monaco', 'Menlo', 'Ubuntu Mono',
+        'Consolas', 'source-code-pro', monospace !important;
+    }
+  }
+
+}

@@ -2,15 +2,11 @@
 @import "../sizes.less";
 
 .two-column-layout-parent(@left-panel-width) {
-  width: 100%;
-  float: right;
-  margin-left: @left-panel-width * -1 ;
+  display: flex;
 }
 .two-column-layout-left(@left-panel-width) {
   width: @left-panel-width;
-  float: left;
 }
 .two-column-layout-right(@left-panel-width) {
-  position: relative;
-  margin: 0 0 0 @left-panel-width;
+  flex: 1;
 }

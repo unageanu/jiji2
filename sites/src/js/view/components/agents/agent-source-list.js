@@ -1,52 +1,44 @@
-import React  from "react"
-import Router from "react-router"
-import MUI    from "material-ui"
+import React               from "react"
+import MUI                 from "material-ui"
+import AbstractComponent   from "../widgets/abstract-component"
+import AgentSourceListItem from "./agent-source-list-item"
+import LoadingImage        from "../widgets/loading-image"
 
 const List         = MUI.List;
 const ListItem     = MUI.ListItem;
 const RaisedButton = MUI.RaisedButton;
 
-export default class AgentSourceList extends React.Component {
+const keys = new Set([
+  "sources", "editTarget"
+]);
+
+export default class AgentSourceList extends AbstractComponent {
 
   constructor(props) {
     super(props);
     this.state = {
-      sources :    [],
+      sources :    null,
       editTarget : null
     };
   }
 
   componentWillMount() {
-    this.editor().addObserver("propertyChanged", (n, e) => {
-      let newState = null;
-      if (e.key === "sources") {
-        newState = {sources: e.newValue};
-      } else if (e.key === "editTarget") {
-        newState = {editTarget: e.newValue};
-      }
-      if (newState) this.setState(newState);
-    }, this);
-    this.editor().load();
-  }
-  componentWillUnmount() {
-    this.editor().removeAllObservers(this);
+    const model = this.editor();
+    this.registerPropertyChangeListener(model, keys);
+    let state = this.collectInitialState(model, keys);
+    this.setState(state);
   }
 
   render() {
+    if ( !this.state.sources ) {
+      return <div className="center-information loading"><LoadingImage left={-20}/></div>;
+    }
     const items = this.state.sources.map(
       (source) => this.createItemComponent(source));
     const buttonAction = () => this.editor().newSourceFile();
     return (
       <div className="agent-source-list">
-        <div className="buttons">
-          <RaisedButton
-            label="新規作成"
-            onTouchTap={buttonAction}
-             />
-        </div>
-        <div className="list">
-          <List>{items}</List>
-        </div>
+        <List>{items}</List>
       </div>
     );
   }
@@ -56,23 +48,23 @@ export default class AgentSourceList extends React.Component {
     const selected  =
       this.state.editTarget && this.state.editTarget.id === agentSource.id;
     return (
-      <ListItem
-        key={agentSource.id}
-        className={selected ? "mui-selected" : ""}
-        onTouchTap={tapAction}
-        primaryText={agentSource.name}>
-      </ListItem>
+      <AgentSourceListItem
+        agentSource={agentSource}
+        selected={selected}
+        onTouchTap={tapAction}>
+      </AgentSourceListItem>
     );
   }
 
   onItemTapped(e, source) {
     this.editor().startEdit(source.id);
+    e.preventDefault();
   }
 
   editor() {
-    return this.context.application.agentSourceEditor;
+    return this.props.model;
   }
 }
-AgentSourceList.contextTypes = {
-  application: React.PropTypes.object.isRequired
+AgentSourceList.propTypes = {
+  model: React.PropTypes.object.isRequired
 };

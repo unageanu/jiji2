@@ -1,7 +1,9 @@
-import React     from "react"
-import Router    from "react-router"
-import MUI       from "material-ui"
-import AceEditor from "react-ace"
+import React             from "react"
+import Router            from "react-router"
+import MUI       　　　　 from "material-ui"
+import AbstractComponent from "../widgets/abstract-component"
+import AceEditor         from "react-ace"
+import ConfirmDialog     from "../widgets/confirm-dialog"
 
 import "brace/mode/ruby"
 import "brace/theme/github"
@@ -13,7 +15,14 @@ const TextField    = MUI.TextField;
 const RaisedButton = MUI.RaisedButton;
 const FlatButton   = MUI.FlatButton;
 
-export default class AgentSourceEditor extends React.Component {
+const IconButton = MUI.IconButton;
+const FontIcon   = MUI.FontIcon;
+
+const keys = new Set([
+  "targetBody",  "editTarget", "sources"
+]);
+
+export default class AgentSourceEditor extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -25,34 +34,33 @@ export default class AgentSourceEditor extends React.Component {
   }
 
   componentWillMount() {
-    this.editor().addObserver("propertyChanged", (n, e) => {
-      let newState = null;
-      if (e.key === "targetBody") {
-        newState = {targetBody: e.newValue};
-      } else if (e.key === "editTarget") {
-        newState = {
-          editTarget: e.newValue,
-          fileName:   e.newValue ? e.newValue.name : ""
-        };
-      } else if (e.key === "sources") {
-        this.updateEditorSize();
-      }
-      if (newState) this.setState(newState);
-    }, this);
+    const model = this.editor();
+    this.registerPropertyChangeListener(model, keys);
+    let state = this.collectInitialState(model, keys);
+    this.setState(state);
 
     this.context.windowResizeManager.addObserver("windowResized", (n, ev) => {
       this.updateEditorSize();
     }, this);
-  }
-  componentWillUnmount() {
-    this.editor().removeAllObservers(this);
-    this.context.windowResizeManager.removeAllObservers(this);
+    this.registerObservable(this.context.windowResizeManager);
   }
 
+  onPropertyChanged(n, e) {
+    if (e.key === "editTarget") {
+      this.setState({
+        editTarget: e.newValue,
+        fileName:   e.newValue ? e.newValue.name : ""
+      });
+    } else if (e.key === "sources") {
+      this.updateEditorSize();
+    } else {
+      super.onPropertyChanged(n, e);
+    }
+  }
 
   updateEditorSize() {
     if (this.updateEditorSizerequest) return;
-    setTimeout(()=> {
+    this.updateEditorSizerequest = setTimeout(()=> {
       const elm = React.findDOMNode(this.refs.editor);
       // const w = elm.scrollWidth;
       // const h = elm.scrollHeight;
@@ -67,16 +75,13 @@ export default class AgentSourceEditor extends React.Component {
       elm.style.width  = (wsize.w - 650) + "px";
       elm.style.height = (wsize.h - 220) + "px";
       this.refs.editor.editor.resize();
+      this.updateEditorSizerequest = null;
     }, 100);
   }
 
   render() {
     const errorElement = this.createErrorElement();
     const name = this.state.editTarget ? this.state.editTarget.name : "";
-    const dialogActions=[
-      { text: "いいえ", onTouchTap: this.cancelRemove.bind(this) },
-      { text: "はい", onTouchTap: this.remove.bind(this), ref: "submit" }
-    ];
     return (
       <div className="agent-source-editor">
         <div className="header">
@@ -88,24 +93,28 @@ export default class AgentSourceEditor extends React.Component {
             onChange={this.onFileNameChanged.bind(this)}
             value={this.state.fileName} />
             &nbsp;
-          <RaisedButton
-            label="保存"
-            disabled={!this.state.editTarget}
-            onClick={this.save.bind(this)}
-          />
-          &nbsp;
-          <FlatButton
-            label="...削除"
-            disabled={!this.state.editTarget}
-            onClick={this.confirmRemove.bind(this)}
-          />
+          <span className="buttons">
+            <IconButton
+              className="save-button"
+              key="add"
+              tooltip={"保存"}
+              disabled={!this.state.editTarget}
+              onClick={this.save.bind(this)}>
+              <FontIcon className="md-save"/>
+            </IconButton>
+            <IconButton
+              className="remove-button"
+              key="remove"
+              tooltip={"削除..."}
+              disabled={!this.state.editTarget}
+              onClick={this.confirmRemove.bind(this)}>
+              <FontIcon className="md-delete"/>
+            </IconButton>
+          </span>
           {errorElement}
-          <Dialog
-            ref="dialog"
-            title="ファイルを削除します。よろしいですか?"
-            actions={dialogActions}
-            modal={true}
-          />
+          <ConfirmDialog
+            ref="confirmDialog"
+            text="ファイルを削除します。よろしいですか?" />
         </div>
         <div className="editor">
           <AceEditor
@@ -137,14 +146,10 @@ export default class AgentSourceEditor extends React.Component {
   }
 
   confirmRemove() {
-    this.refs.dialog.show();
-  }
-  cancelRemove() {
-    this.refs.dialog.dismiss();
-  }
-  remove() {
-    this.editor().remove();
-    this.refs.dialog.dismiss();
+    this.refs.confirmDialog.confilm().then((id)=> {
+      if (id != "yes") return;
+      this.editor().remove();
+    });
   }
 
   onFileNameChanged(event) {
@@ -152,10 +157,12 @@ export default class AgentSourceEditor extends React.Component {
   }
 
   editor() {
-    return this.context.application.agentSourceEditor;
+    return this.props.model;
   }
 }
+AgentSourceEditor.propTypes = {
+  model: React.PropTypes.object.isRequired
+};
 AgentSourceEditor.contextTypes = {
-  application: React.PropTypes.object.isRequired,
   windowResizeManager: React.PropTypes.object
 };

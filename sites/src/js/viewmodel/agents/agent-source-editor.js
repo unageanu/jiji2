@@ -2,16 +2,21 @@ import ContainerJS     from "container-js"
 import Observable      from "../../utils/observable"
 import Validators      from "../../utils/validation/validators"
 import ValidationUtils from "../utils/validation-utils"
+import DateFormatter   from "../utils/date-formatter"
 
 export default class AgentSourceEditor extends Observable {
 
   constructor() {
     super();
     this.agentSources = ContainerJS.Inject;
+    this.timeSource   = ContainerJS.Inject;
   }
 
   initialize() {
     this.registerObservers();
+
+    this.isSaving   = false;
+    this.savedLabel = null;
   }
 
   registerObservers() {
@@ -44,10 +49,15 @@ export default class AgentSourceEditor extends Observable {
     if (target == null) return;
     if (!this.validate(name)) return;
 
+    this.isSaving = true;
+    this.savedLabel = null;
     this.agentSources.update(target.id, name, body).then((source) => {
       this.setProperty("editTarget", source);
       this.setProperty("targetBody", body);
-    });
+      this.isSaving   = false;
+      this.savedLabel = "※保存しました。 ( " +
+        DateFormatter.format(this.timeSource.now) + " )";
+    }, () => this.isSaving = false );
   }
 
   remove() {
@@ -85,6 +95,20 @@ export default class AgentSourceEditor extends Observable {
 
   get sources() {
     return this.getProperty("sources");
+  }
+
+  get isSaving() {
+    return this.getProperty("isSaving");
+  }
+  set isSaving(isSaving) {
+    this.setProperty("isSaving", isSaving);
+  }
+
+  get savedLabel() {
+    return this.getProperty("savedLabel");
+  }
+  set savedLabel(savedLabel) {
+    this.setProperty("savedLabel", savedLabel);
   }
 
   newSourceFileName() {

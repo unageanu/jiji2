@@ -3,13 +3,14 @@ import Router            from "react-router"
 import MUI       　　　　 from "material-ui"
 import AbstractComponent from "../widgets/abstract-component"
 import ConfirmDialog     from "../widgets/confirm-dialog"
+import LoadingImage      from "../widgets/loading-image"
 
 const Dialog       = MUI.Dialog;
 const IconButton = MUI.IconButton;
 const FontIcon   = MUI.FontIcon;
 
 const keys = new Set([
-  "editTarget"
+  "editTarget", "isSaving"
 ]);
 
 export default class AgentSourceEditorMenu extends AbstractComponent {
@@ -35,7 +36,7 @@ export default class AgentSourceEditorMenu extends AbstractComponent {
           className="save-button"
           key="add"
           tooltip={"保存"}
-          disabled={!this.state.editTarget}
+          disabled={this.state.isSaving || !this.state.editTarget}
           onClick={this.props.onSave}>
           <FontIcon className="md-save"/>
         </IconButton>
@@ -43,10 +44,15 @@ export default class AgentSourceEditorMenu extends AbstractComponent {
           className="remove-button"
           key="remove"
           tooltip={"削除..."}
-          disabled={!this.state.editTarget}
+          disabled={this.state.isSaving || !this.state.editTarget}
           onClick={this.confirmRemove.bind(this)}>
           <FontIcon className="md-delete"/>
         </IconButton>
+        <span className="loading">{
+          this.state.isSaving
+            ? <LoadingImage size={20} top={-6} />
+            : null
+        }</span>
         <ConfirmDialog
           ref="confirmDialog"
           text="ファイルを削除します。よろしいですか?" />

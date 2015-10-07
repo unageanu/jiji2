@@ -35,6 +35,7 @@ export default class AgentSourceEditor extends Observable {
   }
 
   startEdit(id) {
+    this.savedLabel = null;
     const editTarget = this.agentSources.get(id);
     this.setProperty("editTarget", editTarget);
     this.setProperty("targetBody", null);

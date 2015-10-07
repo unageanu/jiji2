@@ -15,7 +15,8 @@ module Jiji::Web
         'Content-Security-Policy'           =>
               'default-src \'self\' \'unsafe-eval\'; ' \
             + 'style-src ' + FONT_AND_STYLE_SRC + ' \'unsafe-inline\'; ' \
-            + 'font-src  ' + FONT_AND_STYLE_SRC + ' fonts.gstatic.com;',
+            + 'font-src  ' + FONT_AND_STYLE_SRC + ' fonts.gstatic.com; ' \
+            + 'img-src \'self\' data:',
         'X-Download-Options'                => 'noopen',
         'X-Permitted-Cross-Domain-Policies' => 'master-only',
         'X-XSS-Protection'                  => '1; mode=block'

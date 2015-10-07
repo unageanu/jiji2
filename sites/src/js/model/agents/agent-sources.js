@@ -21,7 +21,7 @@ export default class AgentSources extends Observable {
   }
 
   get(id) {
-    return this.byId[id];
+    return this.byId[id] || null;
   }
 
   getBody(id) {

@@ -30,10 +30,13 @@ export default class AgentSourceEditor extends Observable {
   }
 
   startEdit(id) {
-    this.setProperty("editTarget", this.agentSources.get(id));
+    const editTarget = this.agentSources.get(id);
+    this.setProperty("editTarget", editTarget);
     this.setProperty("targetBody", null);
-    this.agentSources.getBody(id).then(
-      (body) => this.setProperty("targetBody", body) );
+    if (editTarget) {
+      this.agentSources.getBody(id).then(
+        (body) => this.setProperty("targetBody", body) );
+    }
   }
 
   save(name, body) {

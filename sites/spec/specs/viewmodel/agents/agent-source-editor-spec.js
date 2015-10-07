@@ -42,19 +42,34 @@ describe("AgentSourceEditor", () => {
     ]);
   });
 
-  it("startEditで編集を開始できる", () => {
-    target.startEdit("2");
-    expect(target.editTarget).toEqual({id: "2", name:"ccc"});
-    expect(target.targetBody).toEqual(null);
+  describe("#startEdit", () => {
+    it("startEditで編集を開始できる", () => {
+      target.startEdit("2");
+      expect(target.editTarget).toEqual({id: "2", name:"ccc"});
+      expect(target.targetBody).toEqual(null);
 
-    xhrManager.requests[0].resolve({
-      id:   "2",
-      name: "ccc",
-      body: "body"
+      xhrManager.requests[0].resolve({
+        id:   "2",
+        name: "ccc",
+        body: "body"
+      });
+
+      expect(target.editTarget).toEqual({id: "2", name:"ccc", body: "body"});
+      expect(target.targetBody).toEqual("body");
     });
 
-    expect(target.editTarget).toEqual({id: "2", name:"ccc", body: "body"});
-    expect(target.targetBody).toEqual("body");
+    it("編集対象が存在しない場合、未編集状態になる", () => {
+      target.startEdit("2");
+      xhrManager.requests[0].resolve({
+        id:   "2",
+        name: "ccc",
+        body: "body"
+      });
+
+      target.startEdit("notFound");
+      expect(target.editTarget).toEqual(null);
+      expect(target.targetBody).toEqual(null);
+    });
   });
 
   it("newSourceFileで新しいファイルを作成して編集を開始できる", () => {

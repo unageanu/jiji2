@@ -25,7 +25,7 @@ module Jiji::Web
     end
 
     options '/sources/:id' do
-      allow('GET,PUT,OPTIONS')
+      allow('GET,PUT,DELETE,OPTIONS')
     end
     get '/sources/:id' do
       ok(registry.find_agent_source_by_id(create_id(params[:id])))

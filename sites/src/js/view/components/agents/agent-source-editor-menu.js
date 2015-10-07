@@ -5,7 +5,7 @@ import AbstractComponent from "../widgets/abstract-component"
 import ConfirmDialog     from "../widgets/confirm-dialog"
 import LoadingImage      from "../widgets/loading-image"
 
-const Dialog       = MUI.Dialog;
+const Dialog     = MUI.Dialog;
 const IconButton = MUI.IconButton;
 const FontIcon   = MUI.FontIcon;
 

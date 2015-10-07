@@ -83,6 +83,10 @@ export default class AgentSourceEditor extends Observable {
     this.setProperty("fileNameError", fileNameError);
   }
 
+  get sources() {
+    return this.getProperty("sources");
+  }
+
   newSourceFileName() {
     let i = 0;
     let name = "new_agent.rb";

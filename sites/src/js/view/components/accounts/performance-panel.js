@@ -28,7 +28,7 @@ export default class PerformancePanel extends AbstractComponent {
         </div>
         <div className="item">
           <span className="label">損益</span>
-          <span className="value">￥{summary.formatedProfitOrLoss}</span>
+          <span className="value">¥{summary.formatedProfitOrLoss}</span>
           <TrendIcon value={summary.profitOrLoss.totalProfitOrLoss} />
         </div>
         <div className="item">

@@ -40,7 +40,7 @@ export default class BalancePanel extends AbstractComponent {
       return <div className="center-information"><LoadingImage left={-20} /></div>;
     }
     return [
-      <div key="balance" className="balance">￥{this.state.formatedBalance}</div>,
+      <div key="balance" className="balance">¥{this.state.formatedBalance}</div>,
       <div key="changes-from-previous-day" className="changes-from-previous-day">
         {this.createPriceAndRatio()}
         <TrendIcon value={this.state.changesFromPreviousDay} />
@@ -49,7 +49,7 @@ export default class BalancePanel extends AbstractComponent {
   }
 
   createPriceAndRatio() {
-    let result = "前日比: ￥";
+    let result = "前日比: ¥";
     result += this.state.formatedChangesFromPreviousDay || " - ";
     result += " ( " + (this.state.formatedChangeRatioFromPreviousDay || "-%") + " )";
     return result;

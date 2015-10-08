@@ -65,7 +65,7 @@ export default class PositionDetailsView extends AbstractComponent {
           {this.createAvatar(position)}
           <span
             className={"price " + PriceUtils.resolvePriceClass(position.profitOrLoss)}>
-            ￥ {(position.profitOrLoss > 0 ? "+" : "") + position.formatedProfitOrLoss}
+            ¥ {(position.profitOrLoss > 0 ? "+" : "") + position.formatedProfitOrLoss}
           </span>
         </div>
         <div className="informations">

@@ -55,8 +55,8 @@ describe("StringFormatter", () => {
     });
     it("記号その他", () => {
       expect( StringFormatter.toAscii("!\"#$%&'()=~|{`+*}_?><[];:/\\") ).toBe( "!\"#$%&'()=~|{`+*}_?><[];:/\\");
-      expect( StringFormatter.toAscii("！”＃＄％＆’（）＝￣｜｛‘＋＊｝＿？＞＜［］；：／￥") )
-          .toBe( "！”＃＄％＆’（）＝￣｜｛‘＋＊｝＿？＞＜［］；：／￥");
+      expect( StringFormatter.toAscii("！”＃＄％＆’（）＝‾｜｛‘＋＊｝＿？＞＜［］；：／¥") )
+          .toBe( "！”＃＄％＆’（）＝‾｜｛‘＋＊｝＿？＞＜［］；：／¥");
       expect( StringFormatter.toAscii("あいうえお") ).toBe( "あいうえお" );
     });
   });

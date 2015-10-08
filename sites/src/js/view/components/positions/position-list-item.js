@@ -46,7 +46,7 @@ export default class PositionListItem extends React.Component {
   createProfitOrLossElement(position) {
     const type = this.resolveProfitOrLossClass(position.profitOrLoss);
     return <span key="profitOrLoss" className={"profit-or-loss " + type}>
-      ￥{type == "up" ? "+" : ""}{position.formatedProfitOrLoss}
+      ¥{type == "up" ? "+" : ""}{position.formatedProfitOrLoss}
     </span>;
   }
   resolveProfitOrLossClass(profitOrLoss) {

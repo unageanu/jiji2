@@ -41,6 +41,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual(null);
       expect(model.testMailMessage).toEqual(null);
+      expect(model.isSaving).toEqual(false);
     });
     it("設定済みの場合", () => {
       model.initialize();
@@ -68,6 +69,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual(null);
       expect(model.testMailMessage).toEqual(null);
+      expect(model.isSaving).toEqual(false);
     });
   });
 
@@ -90,6 +92,7 @@ describe("SMTPServerSettingModel", () => {
         userName: "test",
         password: "password"
       });
+      expect(model.isSaving).toEqual(true);
       xhrManager.requests[2].resolve({});
 
       expect(model.error).toEqual(null);
@@ -99,6 +102,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual(null);
       expect(model.testMailMessage).toEqual("登録されているメールアドレスにテストメールを送信しました。ご確認ください");
+      expect(model.isSaving).toEqual(false);
     });
 
     it("入力内容に不備がある場合、メッセージが表示される", () => {
@@ -127,6 +131,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual(null);
       expect(model.testMailMessage).toEqual(null);
+      expect(model.isSaving).toEqual(false);
     });
 
     it("エラーの場合、メッセージが表示される", () => {
@@ -147,6 +152,7 @@ describe("SMTPServerSettingModel", () => {
         userName: "test",
         password: "password"
       });
+      expect(model.isSaving).toEqual(true);
       xhrManager.requests[2].reject({});
 
       expect(model.error).toEqual("メールの送信でエラーが発生しました。接続先SMTPサーバーの設定を確認してください");
@@ -156,6 +162,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual(null);
       expect(model.testMailMessage).toEqual(null);
+      expect(model.isSaving).toEqual(false);
     });
   });
 
@@ -178,6 +185,7 @@ describe("SMTPServerSettingModel", () => {
         userName: "test",
         password: "password"
       });
+      expect(model.isSaving).toEqual(true);
       xhrManager.requests[2].resolve({});
 
       expect(model.setting).toEqual({
@@ -193,6 +201,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual("設定を変更しました");
       expect(model.testMailMessage).toEqual(null);
+      expect(model.isSaving).toEqual(false);
     });
     it("入力値が不正な場合、エラーが表示される", () => {
       model.initialize();
@@ -226,6 +235,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.passwordError).toEqual("パスワードに不正な文字が含まれています");
       expect(model.message).toEqual(null);
       expect(model.testMailMessage).toEqual(null);
+      expect(model.isSaving).toEqual(false);
     });
     it("通信エラーの場合、エラーが表示される", () => {
       model.initialize();
@@ -245,6 +255,7 @@ describe("SMTPServerSettingModel", () => {
         userName: "test",
         password: "password"
       });
+      expect(model.isSaving).toEqual(true);
       xhrManager.requests[2].reject({
         statusCode: 500
       });
@@ -262,6 +273,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual(null);
       expect(model.testMailMessage).toEqual(null);
+      expect(model.isSaving).toEqual(false);
     });
   });
 });

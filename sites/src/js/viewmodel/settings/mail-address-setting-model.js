@@ -18,6 +18,7 @@ export default class MailAddressSettingModel extends Observable {
   initialize() {
     this.error = null;
     this.message = null;
+    this.isSaving = false;
     this.mailAddress = null;
     const d = this.userSettingService.getMailAddress();
     d.done((result) => {
@@ -35,12 +36,15 @@ export default class MailAddressSettingModel extends Observable {
   save(mailAddress) {
     this.message = null;
     if (!this.validate(mailAddress)) return;
+    this.isSaving = true;
     this.userSettingService.setMailAddress(mailAddress).then(
         (result) => {
+          this.isSaving = false;
           this.mailAddress = mailAddress;
           this.message = "メールアドレスを変更しました";
         },
         (error) => {
+          this.isSaving = false;
           this.error = ErrorMessages.getMessageFor(error);
           error.preventDefault = true;
         });
@@ -69,5 +73,11 @@ export default class MailAddressSettingModel extends Observable {
   }
   set message(message) {
     this.setProperty("message", message);
+  }
+  get isSaving() {
+    return this.getProperty("isSaving");
+  }
+  set isSaving(isSaving) {
+    this.setProperty("isSaving", isSaving);
   }
 }

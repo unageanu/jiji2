@@ -24,6 +24,7 @@ describe("MailAddressSettingModel", () => {
       expect(model.mailAddress).toEqual(null);
       expect(model.error).toEqual(null);
       expect(model.message).toEqual(null);
+      expect(model.isSaving).toEqual(false);
     });
     it("アドレス設定済みの場合", () => {
       model.initialize();
@@ -34,6 +35,7 @@ describe("MailAddressSettingModel", () => {
       expect(model.mailAddress).toEqual("foo@var.com");
       expect(model.error).toEqual(null);
       expect(model.message).toEqual(null);
+      expect(model.isSaving).toEqual(false);
     });
   });
 
@@ -58,11 +60,13 @@ describe("MailAddressSettingModel", () => {
       });
 
       model.save( "foo@var.com" );
+      expect(model.isSaving).toEqual(true);
       xhrManager.requests[1].resolve();
 
       expect(model.mailAddress).toEqual("foo@var.com");
       expect(model.error).toEqual(null);
       expect(model.message).toEqual("メールアドレスを変更しました");
+      expect(model.isSaving).toEqual(false);
     });
     it("メールアドレスが不正な場合、エラーが表示される", () => {
       model.initialize();
@@ -74,17 +78,20 @@ describe("MailAddressSettingModel", () => {
       expect(model.mailAddress).toEqual("foo@var.com");
       expect(model.error).toEqual("メールアドレスの形式が不正です");
       expect(model.message).toEqual(null);
+      expect(model.isSaving).toEqual(false);
 
       model.save( "" );
       expect(model.mailAddress).toEqual("foo@var.com");
       expect(model.error).toEqual("メールアドレスを入力してください");
       expect(model.message).toEqual(null);
+      expect(model.isSaving).toEqual(false);
 
       model.save( "foo$@bat.com" );
       expect(model.mailAddress).toEqual("foo@var.com");
       expect(model.error).toEqual(
         "メールアドレスに使用できない文字「$」が含まれています");
       expect(model.message).toEqual(null);
+      expect(model.isSaving).toEqual(false);
     });
     it("通信エラーの場合、エラーが表示される", () => {
       model.initialize();
@@ -93,6 +100,7 @@ describe("MailAddressSettingModel", () => {
       });
 
       model.save( "foo2@var.com" );
+      expect(model.isSaving).toEqual(true);
       xhrManager.requests[1].reject({
         statusCode: 500
       });
@@ -100,6 +108,7 @@ describe("MailAddressSettingModel", () => {
       expect(model.error).toEqual(
         "サーバーが混雑しています。しばらく待ってからやり直してください");
       expect(model.message).toEqual(null);
+      expect(model.isSaving).toEqual(false);
     });
   });
 });

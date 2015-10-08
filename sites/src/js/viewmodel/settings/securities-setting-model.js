@@ -18,6 +18,7 @@ export default class SecuritiesSettingModel extends Observable {
     this.setProperty("availableSecurities", []);
     this.error = null;
     this.message = null;
+    this.isSaving = false
     this.activeSecuritiesId = null;
     const d = new Deferred();
     this.securitiesSettingService.getAvailableSecurities().done((securities) => {
@@ -40,12 +41,17 @@ export default class SecuritiesSettingModel extends Observable {
   save(configurations) {
     this.error = null;
     this.message = null;
-    const d = this.securitiesSettingService.setActiveSecurities(
-      this.activeSecuritiesId, configurations);
-    d.then(
-      (result) => this.message = "証券会社の設定を変更しました",
-      (error)  => this.handleError(error));
-    return d;
+    this.isSaving = true;
+    return this.securitiesSettingService.setActiveSecurities(
+      this.activeSecuritiesId, configurations).then(
+      (result) => {
+        this.isSaving = false;
+        this.message = "証券会社の設定を変更しました";
+      },
+      (error)  => {
+        this.isSaving = false;
+        this.handleError(error);
+      });
   }
 
   handleError(error) {
@@ -117,5 +123,11 @@ export default class SecuritiesSettingModel extends Observable {
   }
   set message(message) {
     this.setProperty("message", message);
+  }
+  get isSaving() {
+    return this.getProperty("isSaving");
+  }
+  set isSaving(isSaving) {
+    this.setProperty("isSaving", isSaving);
   }
 }

@@ -29,6 +29,7 @@ export default class SMTPServerSettingModel extends Observable {
     this.testMailMessage = null;
     this.enablePostmark = true;
     this.setting = {};
+    this.isSaving = false;
     const d = Deferred.when([
       this.smtpServerSettingService.getStatus(),
       this.smtpServerSettingService.getSMTPServerSetting()
@@ -45,10 +46,14 @@ export default class SMTPServerSettingModel extends Observable {
     this.message = null;
     this.testMailMessage = null;
     if (!this.validate(setting)) return;
+    this.isSaving = true;
     this.smtpServerSettingService.composeTestMail(setting).then(
-      (result) => this.testMailMessage =
-        "登録されているメールアドレスにテストメールを送信しました。ご確認ください",
-      (error) => {
+      (result) => {
+        this.testMailMessage =
+          "登録されているメールアドレスにテストメールを送信しました。ご確認ください";
+        this.isSaving = false;
+      }, (error) => {
+        this.isSaving = false;
         this.error = "メールの送信でエラーが発生しました。接続先SMTPサーバーの設定を確認してください";
         error.preventDefault = true;
       });
@@ -59,17 +64,19 @@ export default class SMTPServerSettingModel extends Observable {
     this.message = null;
     this.testMailMessage = null;
     if (!this.validate(setting)) return Deferred.errorOf(null);
-    const d = this.smtpServerSettingService.setSMTPServerSetting(setting);
-    d.then(
+    this.isSaving = true;
+    return this.smtpServerSettingService.setSMTPServerSetting(setting).then(
       (result) => {
+        this.isSaving = false
         this.setting = setting;
         this.message = "設定を変更しました";
       },
       (error) => {
+        this.isSaving = false
         this.error = ErrorMessages.getMessageFor(error);
         error.preventDefault = true;
+        throw error;
       });
-    return d;
   }
 
   validate(setting) {
@@ -152,5 +159,11 @@ export default class SMTPServerSettingModel extends Observable {
   }
   set testMailMessage(testMailMessage) {
     this.setProperty("testMailMessage", testMailMessage);
+  }
+  get isSaving() {
+    return this.getProperty("isSaving");
+  }
+  set isSaving(isSaving) {
+    this.setProperty("isSaving", isSaving);
   }
 }

@@ -39,6 +39,7 @@ describe("SecuritiesSettingModel", () => {
         { id: "config1", description: "config1", value: null },
         { id: "config2", description: "config2", value: null }
       ]);
+      expect(model.isSaving).toEqual(false);
     });
 
     it("選択されている証券会社がある場合、それが選択された状態になる", () => {
@@ -67,6 +68,7 @@ describe("SecuritiesSettingModel", () => {
         { id: "config_a", description: "config1", value: "xxx" },
         { id: "config_b", description: "config2", value: null }
       ]);
+      expect(model.isSaving).toEqual(false);
     });
 
 
@@ -92,6 +94,7 @@ describe("SecuritiesSettingModel", () => {
       expect(model.availableSecurities).toEqual([]);
       expect(model.activeSecuritiesId).toEqual(null);
       expect(model.activeSecuritiesConfiguration).toEqual([]);
+      expect(model.isSaving).toEqual(false);
 
       xhrManager.requests[4].resolve([
         { securitiesId: "aa", name:"aax" },
@@ -117,6 +120,7 @@ describe("SecuritiesSettingModel", () => {
         { id: "config_a", description: "config1", value: "xxx" },
         { id: "config_b", description: "config2", value: null }
       ]);
+      expect(model.isSaving).toEqual(false);
     });
   });
 
@@ -201,6 +205,7 @@ describe("SecuritiesSettingModel", () => {
       });
 
       model.save({config1: "yyy"});
+      expect(model.isSaving).toEqual(true);
       xhrManager.requests[6].resolve({});
       expect(xhrManager.requests[6].body).toEqual({
         "securities_id": "bb",
@@ -208,6 +213,7 @@ describe("SecuritiesSettingModel", () => {
       });
       expect(model.error).toEqual(null);
       expect(model.message).toEqual("証券会社の設定を変更しました");
+      expect(model.isSaving).toEqual(false);
     });
     it("設定でエラーになった場合、メッセージが表示される", () => {
       model.initialize();
@@ -231,20 +237,24 @@ describe("SecuritiesSettingModel", () => {
       });
 
       model.save({config1: "yyy"});
+      expect(model.isSaving).toEqual(true);
       xhrManager.requests[6].reject({
         statusCode: 400
       });
       expect(model.error).toEqual(
         "証券会社に接続できませんでした。<br/>アクセストークンを確認してください。");
       expect(model.message).toEqual(null);
+      expect(model.isSaving).toEqual(false);
 
       model.save({config1: "yyy2"});
+      expect(model.isSaving).toEqual(true);
       xhrManager.requests[7].reject({
         statusCode: 500
       });
       expect(model.error).toEqual(
         "サーバーが混雑しています。しばらく待ってからやり直してください");
       expect(model.message).toEqual(null);
+      expect(model.isSaving).toEqual(false);
     });
   });
 });

@@ -1,10 +1,16 @@
 import React               from "react"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
+import LoadingImage        from "../widgets/loading-image"
 
 const RaisedButton = MUI.RaisedButton;
 const TextField    = MUI.TextField;
 const DropDownMenu = MUI.DropDownMenu;
+
+const keys = new Set([
+  "availableSecurities", "activeSecuritiesConfiguration",
+  "error", "message", "isSaving"
+]);
 
 export default class SecuritiesSettingView extends AbstractComponent {
 
@@ -21,19 +27,11 @@ export default class SecuritiesSettingView extends AbstractComponent {
 
   componentWillMount() {
     const model = this.model();
-    this.registerPropertyChangeListener(model);
-    const selectedIndex = this.getSelectedSecuritiesIndex(
+    this.registerPropertyChangeListener(model, keys);
+    let state = this.collectInitialState(model, keys);
+    state.selectedIndex = this.getSelectedSecuritiesIndex(
       model.activeSecuritiesId, model.availableSecurities);
-    this.setState({
-      availableSecurities:            model.availableSecurities,
-      activeSecuritiesConfiguration:  model.activeSecuritiesConfiguration,
-      error:                          model.error,
-      message:                        model.message,
-      selectedSecuritiesIndex:        selectedIndex
-    });
-  }
-  componentWillUnmount() {
-    this.model().removeAllObservers(this);
+    this.setState(state);
   }
 
   render() {
@@ -46,12 +44,16 @@ export default class SecuritiesSettingView extends AbstractComponent {
         <div>
           {activeSecuritiesConfigurator}
         </div>
-        <br/>
-        <RaisedButton
-          label="設定"
-          disabled={!this.state.availableSecurities.length > 0}
-          onClick={this.save.bind(this)}
-        />
+        <div>
+          <RaisedButton
+            label="設定"
+            disabled={this.state.availableSecurities.length == 0 || this.state.isSaving}
+            onClick={this.save.bind(this)}
+          />
+          <span className="loading">
+            {this.state.isSaving ? <LoadingImage size={20} /> : null}
+          </span>
+        </div>
         <div className="message">{this.state.message}</div>
         <div className="error">{this.state.error}</div>
       </div>

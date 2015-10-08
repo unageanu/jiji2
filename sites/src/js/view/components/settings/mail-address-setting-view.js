@@ -1,9 +1,14 @@
 import React               from "react"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
+import LoadingImage        from "../widgets/loading-image"
 
 const RaisedButton = MUI.RaisedButton;
 const TextField    = MUI.TextField;
+
+const keys = new Set([
+  "mailAddress", "error", "message", "isSaving"
+]);
 
 export default class MailAddressSettingView extends AbstractComponent {
 
@@ -17,15 +22,10 @@ export default class MailAddressSettingView extends AbstractComponent {
   }
 
   componentWillMount() {
-    this.registerPropertyChangeListener(this.props.model);
-    this.setState({
-      mailAddress:   this.props.model.mailAddress,
-      error:         this.props.model.error,
-      message:       this.props.model.message
-    });
-  }
-  componentWillUnmount() {
-    this.props.model.removeAllObservers(this);
+    const model = this.props.model;
+    this.registerPropertyChangeListener(model, keys);
+    let state = this.collectInitialState(model, keys);
+    this.setState(state);
   }
 
   render() {
@@ -40,11 +40,16 @@ export default class MailAddressSettingView extends AbstractComponent {
            onChange={this.onMailAddressChanged.bind(this)}
            value={this.state.mailAddress} />
         </div>
-        <br/>
-        <RaisedButton
-          label="設定"
-          onClick={this.save.bind(this)}
-        />
+        <div>
+          <RaisedButton
+            label="設定"
+            disabled={this.state.isSaving}
+            onClick={this.save.bind(this)}
+          />
+          <span className="loading">
+            {this.state.isSaving ? <LoadingImage size={20} /> : null}
+          </span>
+        </div>
         <div className="message">{this.state.message}</div>
       </div>
     );

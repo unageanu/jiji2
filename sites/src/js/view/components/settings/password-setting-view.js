@@ -1,9 +1,14 @@
 import React               from "react"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
+import LoadingImage        from "../widgets/loading-image"
 
 const RaisedButton = MUI.RaisedButton;
 const TextField    = MUI.TextField;
+
+const keys = new Set([
+  "error", "message", "isSaving"
+]);
 
 export default class PasswordSettingView extends AbstractComponent {
 
@@ -13,17 +18,15 @@ export default class PasswordSettingView extends AbstractComponent {
       newPassword1:  null,
       newPassword2:  null,
       oldPassword:   null,
-      error:         null,
-      message:       null,
       editPassword:  false
     };
   }
 
   componentWillMount() {
-    this.registerPropertyChangeListener(this.props.model);
-  }
-  componentWillUnmount() {
-    this.props.model.removeAllObservers(this);
+    const model = this.props.model;
+    this.registerPropertyChangeListener(model, keys);
+    let state = this.collectInitialState(model, keys);
+    this.setState(state);
   }
 
   render() {
@@ -69,11 +72,16 @@ export default class PasswordSettingView extends AbstractComponent {
          value={this.state.oldPassword}>
          <input type="password" />
       </TextField>
-      <br/>
-      <RaisedButton
-        label="変更"
-        onClick={this.save.bind(this)}
-      />
+      <div>
+        <RaisedButton
+          label="変更"
+          disabled={this.state.isSaving}
+          onClick={this.save.bind(this)}
+        />
+        <span className="loading">
+          {this.state.isSaving ? <LoadingImage size={20} /> : null}
+        </span>
+      </div>
       <div className="message">{this.state.message}</div>
       <div className="error">{this.state.error}</div>
     </div>;

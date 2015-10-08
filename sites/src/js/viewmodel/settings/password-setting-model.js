@@ -12,14 +12,21 @@ export default class PasswordSettingModel extends Observable {
     this.userSettingService = userSettingService;
     this.error = null;
     this.message = null;
+    this.isSaving = false;
   }
 
   save(newPassword, newPassword2, oldPassword) {
     this.message = null;
     if (!this.validate(newPassword, newPassword2)) return;
+    this.isSaving = true;
     this.userSettingService.setPassword(oldPassword, newPassword).then(
-        (result) => this.message = "パスワードを変更しました",
-        (error)  => this.handleError(error));
+        (result) => {
+          this.isSaving = false;
+          this.message = "パスワードを変更しました";
+        }, (error)  => {
+          this.isSaving = false;
+          this.handleError(error)
+        });
   }
 
   handleError(error) {
@@ -52,5 +59,11 @@ export default class PasswordSettingModel extends Observable {
   }
   set message(message) {
     this.setProperty("message", message);
+  }
+  get isSaving() {
+    return this.getProperty("isSaving");
+  }
+  set isSaving(isSaving) {
+    this.setProperty("isSaving", isSaving);
   }
 }

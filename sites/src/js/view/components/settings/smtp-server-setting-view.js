@@ -1,11 +1,17 @@
 import React               from "react"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
+import LoadingImage        from "../widgets/loading-image"
 
 const RaisedButton = MUI.RaisedButton;
 const TextField    = MUI.TextField;
 
 const defaultPort = 587;
+
+const keys = new Set([
+  "host", "error", "message", "isSaving", "enablePostmark",
+  "hostError", "portError", "userNameError", "passwordError"
+]);
 
 export default class SMTPServerSettingView extends AbstractComponent {
 
@@ -28,23 +34,14 @@ export default class SMTPServerSettingView extends AbstractComponent {
 
   componentWillMount() {
     const model = this.model();
-    this.registerPropertyChangeListener(model);
-    this.setState({
+    this.registerPropertyChangeListener(model, keys);
+    let state = Object.assign({
       host:           model.setting.smtpHost,
       port:           model.setting.smtpPort || defaultPort,
       userName:       model.setting.userName,
-      password:       model.setting.password,
-      error:          model.error,
-      hostError:      model.hostError,
-      portError:      model.portError,
-      userNameError:  model.userNameError,
-      passwordError:  model.passwordError,
-      message:        model.message,
-      enablePostmark: model.enablePostmark
-    });
-  }
-  componentWillUnmount() {
-    this.model().removeAllObservers(this);
+      password:       model.setting.password
+    }, this.collectInitialState(model, keys));
+    this.setState(state);
   }
 
   render() {
@@ -53,15 +50,21 @@ export default class SMTPServerSettingView extends AbstractComponent {
       <div className="smtp-server-setting">
         <h3>SMTPサーバーの設定</h3>
         {this.createInputFields()}
-        <br/>
-        <RaisedButton
-          label="テストメール送信"
-          onClick={this.composeTestMail.bind(this)}
-        />
-        <RaisedButton
-          label="設定"
-          onClick={this.save.bind(this)}
-        />
+        <div>
+          <RaisedButton
+            label="テストメール送信"
+            disabled={this.state.isSaving}
+            onClick={this.composeTestMail.bind(this)}
+          />
+          <RaisedButton
+            label="設定"
+            disabled={this.state.isSaving}
+            onClick={this.save.bind(this)}
+          />
+          <span className="loading">
+            {this.state.isSaving ? <LoadingImage size={20} /> : null}
+          </span>
+        </div>
         <div className="message">{this.state.message}</div>
         <div className="error">{this.state.error}</div>
       </div>

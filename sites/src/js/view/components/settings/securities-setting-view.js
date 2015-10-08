@@ -9,7 +9,7 @@ const DropDownMenu = MUI.DropDownMenu;
 
 const keys = new Set([
   "availableSecurities", "activeSecuritiesConfiguration",
-  "error", "message", "isSaving"
+  "activeSecuritiesId", "error", "message", "isSaving"
 ]);
 
 export default class SecuritiesSettingView extends AbstractComponent {

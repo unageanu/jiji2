@@ -1,0 +1,32 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.smtp-server-setting {
+  .host-and-port {
+    display: flex;
+    width: 600px;
+
+    .host {
+      flex-grow: 1;
+    }
+    .port {
+      padding-left: @grid*2;
+      width: 200px;
+    }
+  }
+  .username-and-password {
+    display: flex;
+    width: 600px;
+
+    .username, .password {
+      flex-grow: 1;
+    }
+    .password {
+      padding-left: @grid*2;
+    }
+  }
+
+  .setting-button {
+    margin-left: @grid;
+  }
+}

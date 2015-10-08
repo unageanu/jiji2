@@ -4,12 +4,14 @@ import Error           from "../../model/error"
 import ErrorMessages   from "../../errorhandling/error-messages"
 import Validators      from "../../utils/validation/validators"
 import ValidationUtils from "../utils/validation-utils"
+import DateFormatter   from "../utils/date-formatter"
 
 export default class SMTPServerSettingModel extends Observable {
 
-  constructor(smtpServerSettingService) {
+  constructor(smtpServerSettingService, timeSource) {
     super();
     this.smtpServerSettingService  = smtpServerSettingService;
+    this.timeSource = timeSource;
     this.error = null;
     this.hostError = null;
     this.portError = null;
@@ -50,7 +52,8 @@ export default class SMTPServerSettingModel extends Observable {
     this.smtpServerSettingService.composeTestMail(setting).then(
       (result) => {
         this.testMailMessage =
-          "登録されているメールアドレスにテストメールを送信しました。ご確認ください";
+          "登録されているメールアドレスにテストメールを送信しました。ご確認ください。 ("
+            + DateFormatter.format(this.timeSource.now) + ")";
         this.isSaving = false;
       }, (error) => {
         this.isSaving = false;
@@ -69,7 +72,8 @@ export default class SMTPServerSettingModel extends Observable {
       (result) => {
         this.isSaving = false
         this.setting = setting;
-        this.message = "設定を変更しました";
+        this.message = "設定を変更しました。 ("
+          + DateFormatter.format(this.timeSource.now) + ")";
       },
       (error) => {
         this.isSaving = false

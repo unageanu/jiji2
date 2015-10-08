@@ -1,0 +1,51 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.setting {
+
+  h3 {
+    color: @font-color-normal;
+    font-size: @font-size-normal;
+    padding-bottom: 4px;
+    border-bottom: 1px solid @border-color-dark;
+    margin: 0px;
+    font-weight: normal;
+  }
+
+  .setting-body {
+    margin-left: @grid*2;
+
+    .mail-address, .passwords {
+      width: 600px;
+    }
+  }
+
+  ul.description {
+    margin-bottom: 0px;
+    color: @font-color-light;
+    font-size: @font-size-small;
+  }
+
+  .buttons {
+    margin-top: @grid*2;
+
+    .button {
+      margin-right: @grid
+    }
+  }
+
+  .loading {
+    margin-left: @grid;
+  }
+
+  .error {
+    width: 600px;
+    margin-bottom: @grid*2;
+  }
+
+  .message {
+    margin-top: @grid;
+    color: @accent-color-normal;
+    font-size: @font-size-small;
+  }
+}

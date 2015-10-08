@@ -12,6 +12,7 @@ describe("SMTPServerSettingModel", () => {
     const factory = ContainerJS.utils.Deferred.unpack(d);
     model = factory.createSMTPServerSettingModel();
     xhrManager = model.smtpServerSettingService.xhrManager;
+    factory.timeSource.now = new Date(2015, 9, 10, 12, 4, 23);
   });
 
   describe("initialize", () => {
@@ -101,7 +102,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.userNameError).toEqual(null);
       expect(model.passwordError).toEqual(null);
       expect(model.message).toEqual(null);
-      expect(model.testMailMessage).toEqual("登録されているメールアドレスにテストメールを送信しました。ご確認ください");
+      expect(model.testMailMessage).toEqual("登録されているメールアドレスにテストメールを送信しました。ご確認ください。 (2015-10-10 12:04:23)");
       expect(model.isSaving).toEqual(false);
     });
 
@@ -199,7 +200,7 @@ describe("SMTPServerSettingModel", () => {
       expect(model.portError).toEqual(null);
       expect(model.userNameError).toEqual(null);
       expect(model.passwordError).toEqual(null);
-      expect(model.message).toEqual("設定を変更しました");
+      expect(model.message).toEqual("設定を変更しました。 (2015-10-10 12:04:23)");
       expect(model.testMailMessage).toEqual(null);
       expect(model.isSaving).toEqual(false);
     });

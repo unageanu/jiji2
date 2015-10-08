@@ -4,12 +4,14 @@ import Error           from "../../model/error"
 import ErrorMessages   from "../../errorhandling/error-messages"
 import Validators      from "../../utils/validation/validators"
 import ValidationUtils from "../utils/validation-utils"
+import DateFormatter   from "../utils/date-formatter"
 
 export default class PasswordSettingModel extends Observable {
 
-  constructor(userSettingService) {
+  constructor(userSettingService, timeSource) {
     super();
     this.userSettingService = userSettingService;
+    this.timeSource = timeSource;
     this.error = null;
     this.message = null;
     this.isSaving = false;
@@ -22,7 +24,8 @@ export default class PasswordSettingModel extends Observable {
     this.userSettingService.setPassword(oldPassword, newPassword).then(
         (result) => {
           this.isSaving = false;
-          this.message = "パスワードを変更しました";
+          this.message = "パスワードを変更しました。 ("
+            + DateFormatter.format(this.timeSource.now) + ")";
         }, (error)  => {
           this.isSaving = false;
           this.handleError(error)

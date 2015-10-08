@@ -3,12 +3,14 @@ import Deferred        from "../../utils/deferred"
 import Error           from "../../model/error"
 import ErrorMessages   from "../../errorhandling/error-messages"
 import StringFormatter from "../utils/string-formatter"
+import DateFormatter   from "../utils/date-formatter"
 
 export default class SecuritiesSettingModel extends Observable {
 
-  constructor(securitiesSettingService) {
+  constructor(securitiesSettingService, timeSource) {
     super();
     this.securitiesSettingService = securitiesSettingService;
+    this.timeSource = timeSource;
     this.setProperty("availableSecurities", []);
     this.error = null;
     this.message = null;
@@ -46,7 +48,8 @@ export default class SecuritiesSettingModel extends Observable {
       this.activeSecuritiesId, configurations).then(
       (result) => {
         this.isSaving = false;
-        this.message = "証券会社の設定を変更しました";
+        this.message = "証券会社の設定を変更しました。 ("
+          + DateFormatter.format(this.timeSource.now) + ")";
       },
       (error)  => {
         this.isSaving = false;
@@ -56,7 +59,7 @@ export default class SecuritiesSettingModel extends Observable {
 
   handleError(error) {
     if (error.code === Error.Code.INVALID_VALUE ) {
-      this.error = "証券会社に接続できませんでした。<br/>アクセストークンを確認してください。";
+      this.error = "証券会社に接続できませんでした。アクセストークンを確認してください。";
     } else {
       this.error = ErrorMessages.getMessageFor(error);
     }

@@ -9,7 +9,7 @@ const TextField    = MUI.TextField;
 const defaultPort = 587;
 
 const keys = new Set([
-  "host", "error", "message", "isSaving", "enablePostmark",
+  "setting", "error", "message", "isSaving", "enablePostmark",
   "hostError", "portError", "userNameError", "passwordError"
 ]);
 
@@ -47,57 +47,80 @@ export default class SMTPServerSettingView extends AbstractComponent {
   render() {
     if (this.state.enablePostmark !== false) return null;
     return (
-      <div className="smtp-server-setting">
+      <div className="smtp-server-setting setting">
         <h3>SMTPサーバーの設定</h3>
-        {this.createInputFields()}
-        <div>
-          <RaisedButton
-            label="テストメール送信"
-            disabled={this.state.isSaving}
-            onClick={this.composeTestMail.bind(this)}
-          />
-          <RaisedButton
-            label="設定"
-            disabled={this.state.isSaving}
-            onClick={this.save.bind(this)}
-          />
-          <span className="loading">
-            {this.state.isSaving ? <LoadingImage size={20} /> : null}
-          </span>
+        <ul className="description">
+          <li>エージェントからのメール送信時に使用するSMTPサーバーを設定します。</li>
+        </ul>
+        <div className="setting-body">
+          {this.createInputFields()}
+          <div className="buttons">
+            {
+              this.state.error ? <div className="error">{this.state.error}</div> : null
+            }
+            <RaisedButton
+              label="テストメール送信"
+              disabled={this.state.isSaving}
+              onClick={this.composeTestMail.bind(this)}
+            />
+            <span className="setting-button">
+              <RaisedButton
+                label="設定"
+                primary={true}
+                disabled={this.state.isSaving}
+                onClick={this.save.bind(this)}
+              />
+            </span>
+            <span className="loading">
+              {this.state.isSaving ? <LoadingImage size={20} /> : null}
+            </span>
+          </div>
+          <div className="message">{this.state.message}</div>
         </div>
-        <div className="message">{this.state.message}</div>
-        <div className="error">{this.state.error}</div>
       </div>
     );
   }
 
   createInputFields() {
-    return <div>
-      <TextField
-         floatingLabelText="SMTPサーバー"
-         errorText={this.state.hostError}
-         onChange={(e) => this.setState({host: e.target.value}) }
-         value={this.state.host} />
-      <br/>
-      <TextField
-         floatingLabelText="SMTPサーバーポート"
-         errorText={this.state.portError}
-         onChange={(e) => this.setState({port: e.target.value}) }
-         value={this.state.port} />
-      <br/>
-      <TextField
-         floatingLabelText="ユーザー名"
-         errorText={this.state.userNameError}
-         onChange={(e) => this.setState({userName: e.target.value}) }
-         value={this.state.userName} />
-      <br/>
-      <TextField
-        floatingLabelText="パスワード"
-        errorText={this.state.passwordError}
-        onChange={(e) => this.setState({password: e.target.value}) }
-        value={this.state.password}>
-         <input type="password" value={this.state.password} />
-      </TextField>
+    return <div className="inputs">
+      <div className="host-and-port">
+        <div className="host">
+          <TextField
+             floatingLabelText="SMTPサーバー"
+             errorText={this.state.hostError}
+             onChange={(e) => this.setState({host: e.target.value}) }
+             value={this.state.host}
+             style={{ width: "100%" }} />
+        </div>
+        <div className="port">
+          <TextField
+             floatingLabelText="SMTPサーバーポート"
+             errorText={this.state.portError}
+             onChange={(e) => this.setState({port: e.target.value}) }
+             value={this.state.port}
+             style={{ width: "100%" }} />
+        </div>
+      </div>
+      <div className="username-and-password">
+        <div className="username">
+          <TextField
+             floatingLabelText="ユーザー名"
+             errorText={this.state.userNameError}
+             onChange={(e) => this.setState({userName: e.target.value}) }
+             value={this.state.userName}
+             style={{ width: "100%" }} />
+        </div>
+        <div className="password">
+          <TextField
+            floatingLabelText="パスワード"
+            errorText={this.state.passwordError}
+            onChange={(e) => this.setState({password: e.target.value}) }
+            value={this.state.password}
+            style={{ width: "100%" }}>
+             <input type="password" value={this.state.password} />
+          </TextField>
+        </div>
+      </div>
     </div>;
   }
 

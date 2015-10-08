@@ -12,6 +12,7 @@ describe("PasswordSettingModel", () => {
     const factory = ContainerJS.utils.Deferred.unpack(d);
     model = factory.createPasswordSettingModel();
     xhrManager = model.userSettingService.xhrManager;
+    factory.timeSource.now = new Date(2015, 9, 10, 12, 4, 23);
   });
 
   describe("#save", () => {
@@ -23,7 +24,7 @@ describe("PasswordSettingModel", () => {
       xhrManager.requests[0].resolve({});
 
       expect(model.error).toEqual(null);
-      expect(model.message).toEqual("パスワードを変更しました");
+      expect(model.message).toEqual("パスワードを変更しました。 (2015-10-10 12:04:23)");
       expect(model.isSaving).toEqual(false);
     });
     it("パスワードが一致しない場合、エラーが表示される", () => {

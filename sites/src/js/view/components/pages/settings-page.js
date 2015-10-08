@@ -19,11 +19,19 @@ export default class SettingsPage extends AbstractPage {
 
   render() {
     return (
-      <div>
-        <MailAddressSettingView model={this.model().mailAddressSetting} />
-        <PasswordSettingView model={this.model().passwordSetting} />
-        <SecuritiesSettingView model={this.model().securitiesSetting} />
-        <SMTPServerSettingView model={this.model().smtpServerSetting} />
+      <div className="settings-page">
+        <div className="item">
+          <MailAddressSettingView model={this.model().mailAddressSetting} />
+        </div>
+        <div className="item">
+          <PasswordSettingView model={this.model().passwordSetting} />
+        </div>
+        <div className="item">
+          <SecuritiesSettingView model={this.model().securitiesSetting} />
+        </div>
+        <div className="item">
+          <SMTPServerSettingView model={this.model().smtpServerSetting} />
+        </div>
       </div>
     );
   }

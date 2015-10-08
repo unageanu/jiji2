@@ -36,6 +36,7 @@ export default class ViewModelFactory {
     this.passwordResettingService = ContainerJS.Inject;
     this.initialSettingService    = ContainerJS.Inject;
     this.pushNotifier             = ContainerJS.Inject;
+    this.timeSource               = ContainerJS.Inject;
   }
   createAccountViewModel() {
     return new AccountViewModel( this.rmtService );
@@ -74,16 +75,19 @@ export default class ViewModelFactory {
     return new LogViewerModel( this.logService );
   }
   createSecuritiesSettingModel() {
-    return new SecuritiesSettingModel( this.securitiesSettingService );
+    return new SecuritiesSettingModel(
+      this.securitiesSettingService, this.timeSource );
   }
   createMailAddressSettingModel() {
     return new MailAddressSettingModel(
-      this.userSettingService, this.smtpServerSettingService );
+      this.userSettingService, this.smtpServerSettingService, this.timeSource );
   }
   createPasswordSettingModel() {
-    return new PasswordSettingModel( this.userSettingService );
+    return new PasswordSettingModel(
+      this.userSettingService, this.timeSource );
   }
   createSMTPServerSettingModel() {
-    return new SMTPServerSettingModel( this.smtpServerSettingService );
+    return new SMTPServerSettingModel(
+      this.smtpServerSettingService, this.timeSource );
   }
 }

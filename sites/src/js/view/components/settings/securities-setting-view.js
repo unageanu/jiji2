@@ -38,24 +38,35 @@ export default class SecuritiesSettingView extends AbstractComponent {
     const securitiesSelector = this.creattSecuritiesSelector();
     const activeSecuritiesConfigurator = this.createConfigurator();
     return (
-      <div className="securities-setting">
+      <div className="securities-setting setting">
         <h3>証券会社の設定</h3>
-        {securitiesSelector}
-        <div>
-          {activeSecuritiesConfigurator}
+        <ul className="description">
+          <li>使用する証券会社を設定します。</li>
+          <li>
+            アクセストークンの取得方法は<a href="/">こちら</a>をご覧ください。
+          </li>
+        </ul>
+        <div className="setting-body">
+          {securitiesSelector}
+          <div className="securities">
+            {activeSecuritiesConfigurator}
+          </div>
+          <div className="buttons">
+            {
+              this.state.error ? <div className="error">{this.state.error}</div> : null
+            }
+            <RaisedButton
+              label="設定"
+              primary={true}
+              disabled={this.state.availableSecurities.length == 0 || this.state.isSaving}
+              onClick={this.save.bind(this)}
+            />
+            <span className="loading">
+              {this.state.isSaving ? <LoadingImage size={20} /> : null}
+            </span>
+          </div>
+          <div className="message">{this.state.message}</div>
         </div>
-        <div>
-          <RaisedButton
-            label="設定"
-            disabled={this.state.availableSecurities.length == 0 || this.state.isSaving}
-            onClick={this.save.bind(this)}
-          />
-          <span className="loading">
-            {this.state.isSaving ? <LoadingImage size={20} /> : null}
-          </span>
-        </div>
-        <div className="message">{this.state.message}</div>
-        <div className="error">{this.state.error}</div>
       </div>
     );
   }
@@ -65,7 +76,11 @@ export default class SecuritiesSettingView extends AbstractComponent {
     return <DropDownMenu
       menuItems={this.state.availableSecurities}
       selectedIndex={this.state.selectedSecuritiesIndex}
-      onChange={this.onChangeSecurities.bind(this)}/>;
+      onChange={this.onChangeSecurities.bind(this)}
+      labelStyle={{
+        padding: "0px"
+      }}
+      underlineStyle={{margin: "0px"}} />;
   }
   createConfigurator() {
     if (this.state.availableSecurities.length <= 0) return null;
@@ -74,7 +89,8 @@ export default class SecuritiesSettingView extends AbstractComponent {
       return  <TextField
           ref={"securities_configuration_" + c.id}
           floatingLabelText={c.description}
-          defaultValue={c.value} />;
+          defaultValue={c.value}
+          style={{ width: "100%" }} />;
     });
   }
 

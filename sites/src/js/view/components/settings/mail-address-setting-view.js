@@ -30,27 +30,38 @@ export default class MailAddressSettingView extends AbstractComponent {
 
   render() {
     return (
-      <div className="securities-setting">
+      <div className="mail-address-setting setting">
         <h3>メールアドレスの設定</h3>
-        <div>
-        <TextField
-           ref="mailAddress"
-           floatingLabelText="メールアドレス"
-           errorText={this.state.error}
-           onChange={this.onMailAddressChanged.bind(this)}
-           value={this.state.mailAddress} />
+        <ul className="description">
+          <li>システムで使用するメールアドレスを設定します。</li>
+          <li>
+            メールアドレスは、パスワードを忘れて再設定するときに使用されます。
+            必ず、メールを受信可能なアドレスを設定してください。
+          </li>
+        </ul>
+        <div className="setting-body">
+          <div className="mail-address">
+            <TextField
+              ref="mailAddress"
+              floatingLabelText="メールアドレス"
+              errorText={this.state.error}
+              onChange={this.onMailAddressChanged.bind(this)}
+              value={this.state.mailAddress}
+              style={{ width: "100%" }} />
+          </div>
+          <div className="buttons">
+            <RaisedButton
+              label="設定"
+              primary={true}
+              disabled={this.state.isSaving}
+              onClick={this.save.bind(this)}
+            />
+            <span className="loading">
+              {this.state.isSaving ? <LoadingImage size={20} /> : null}
+            </span>
+          </div>
+          <div className="message">{this.state.message}</div>
         </div>
-        <div>
-          <RaisedButton
-            label="設定"
-            disabled={this.state.isSaving}
-            onClick={this.save.bind(this)}
-          />
-          <span className="loading">
-            {this.state.isSaving ? <LoadingImage size={20} /> : null}
-          </span>
-        </div>
-        <div className="message">{this.state.message}</div>
       </div>
     );
   }

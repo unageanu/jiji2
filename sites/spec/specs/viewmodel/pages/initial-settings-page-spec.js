@@ -11,6 +11,7 @@ describe("InitialSettingsPageModel", () => {
     let d = container.get("initialSettingsPageModel");
     model = ContainerJS.utils.Deferred.unpack(d);
     xhrManager = model.initialSettingService.xhrManager;
+    model.mailAddressSetting.timeSource.now = new Date(2015, 9, 10, 12, 4, 23);
   });
 
   describe("initialize", () => {
@@ -251,7 +252,7 @@ describe("InitialSettingsPageModel", () => {
       expect(model.phase).toEqual("securities");
       expect(model.error).toEqual(null);
       expect(model.securitiesSetting.error).toEqual(
-        "証券会社に接続できませんでした。<br/>アクセストークンを確認してください。");
+        "証券会社に接続できませんでした。アクセストークンを確認してください。");
       expect(model.securitiesSetting.message).toEqual(null);
     });
   });
@@ -324,7 +325,7 @@ describe("InitialSettingsPageModel", () => {
       expect(model.smtpServerSetting.portError).toEqual(null);
       expect(model.smtpServerSetting.userNameError).toEqual(null);
       expect(model.smtpServerSetting.passwordError).toEqual(null);
-      expect(model.smtpServerSetting.message).toEqual("設定を変更しました");
+      expect(model.smtpServerSetting.message).toEqual("設定を変更しました。 (2015-10-10 12:04:23)");
     });
     it("入力値が不正な場合、エラーが表示される", () => {
       model.setSMTPServerSetting({

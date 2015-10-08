@@ -34,47 +34,61 @@ export default class PasswordSettingView extends AbstractComponent {
       ? this.createPasswordChanger()
       : this.createEditPasswordButton();
     return (
-      <div className="securities-setting">
+      <div className="securities-setting setting">
         <h3>パスワードの変更</h3>
-        <div>
-        {body}
+        <ul className="description">
+          <li>システムのアクセスパスワードを変更できます。</li>
+        </ul>
+        <div className="setting-body">
+          {body}
         </div>
       </div>
     );
   }
 
   createEditPasswordButton() {
-    return <RaisedButton
+    return <div className="buttons">
+      <RaisedButton
         label="パスワードを変更する"
         onClick={this.startToEditPassword.bind(this)}
-      />;
+      />
+    </div>;
   }
   createPasswordChanger() {
     return <div>
-      <TextField
-         ref="newPassword1"
-         floatingLabelText="新しいパスワード"
-         onChange={this.onNewPassword1Changed.bind(this)}
-         value={this.state.newPassword1}>
-         <input type="password" />
-      </TextField><br/>
-      <TextField
-         ref="newPassword2"
-         floatingLabelText="新しいパスワード(確認のため、もう一度入力してください)"
-         onChange={this.onNewPassword2Changed.bind(this)}
-         value={this.state.newPassword2}>
-         <input type="password" />
-      </TextField><br/>
-      <TextField
-         ref="oldPassword"
-         floatingLabelText="現在のパスワード"
-         onChange={this.onOldPasswordChanged.bind(this)}
-         value={this.state.oldPassword}>
-         <input type="password" />
-      </TextField>
-      <div>
+      <div className="passwords">
+        <TextField
+           ref="newPassword1"
+           floatingLabelText="新しいパスワード"
+           onChange={this.onNewPassword1Changed.bind(this)}
+           value={this.state.newPassword1}
+           style={{ width: "100%" }}>
+           <input type="password" />
+        </TextField><br/>
+        <TextField
+           ref="newPassword2"
+           floatingLabelText="新しいパスワード(確認のため、もう一度入力してください)"
+           onChange={this.onNewPassword2Changed.bind(this)}
+           value={this.state.newPassword2}
+           style={{ width: "100%" }}>
+           <input type="password" />
+        </TextField><br/>
+        <TextField
+           ref="oldPassword"
+           floatingLabelText="現在のパスワード"
+           onChange={this.onOldPasswordChanged.bind(this)}
+           value={this.state.oldPassword}
+           style={{ width: "100%" }}>
+           <input type="password" />
+        </TextField>
+      </div>
+      <div className="buttons">
+        {
+          this.state.error ? <div className="error">{this.state.error}</div> : null
+        }
         <RaisedButton
           label="変更"
+          primary={true}
           disabled={this.state.isSaving}
           onClick={this.save.bind(this)}
         />
@@ -83,7 +97,6 @@ export default class PasswordSettingView extends AbstractComponent {
         </span>
       </div>
       <div className="message">{this.state.message}</div>
-      <div className="error">{this.state.error}</div>
     </div>;
   }
 

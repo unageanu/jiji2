@@ -12,6 +12,7 @@ describe("MailAddressSettingModel", () => {
     const factory = ContainerJS.utils.Deferred.unpack(d);
     model = factory.createMailAddressSettingModel();
     xhrManager = model.userSettingService.xhrManager;
+    factory.timeSource.now = new Date(2015, 9, 10, 12, 4, 23);
   });
 
   describe("initialize", () => {
@@ -65,7 +66,7 @@ describe("MailAddressSettingModel", () => {
 
       expect(model.mailAddress).toEqual("foo@var.com");
       expect(model.error).toEqual(null);
-      expect(model.message).toEqual("メールアドレスを変更しました");
+      expect(model.message).toEqual("メールアドレスを変更しました。 (2015-10-10 12:04:23)");
       expect(model.isSaving).toEqual(false);
     });
     it("メールアドレスが不正な場合、エラーが表示される", () => {

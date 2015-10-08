@@ -12,6 +12,7 @@ describe("SecuritiesSettingModel", () => {
     const factory = ContainerJS.utils.Deferred.unpack(d);
     model = factory.createSecuritiesSettingModel();
     xhrManager = model.securitiesSettingService.xhrManager;
+    factory.timeSource.now = new Date(2015, 9, 10, 12, 4, 23);
   });
 
   describe("initialize", () => {
@@ -212,7 +213,7 @@ describe("SecuritiesSettingModel", () => {
         configurations: {config1: "yyy"}
       });
       expect(model.error).toEqual(null);
-      expect(model.message).toEqual("証券会社の設定を変更しました");
+      expect(model.message).toEqual("証券会社の設定を変更しました。 (2015-10-10 12:04:23)");
       expect(model.isSaving).toEqual(false);
     });
     it("設定でエラーになった場合、メッセージが表示される", () => {
@@ -242,7 +243,7 @@ describe("SecuritiesSettingModel", () => {
         statusCode: 400
       });
       expect(model.error).toEqual(
-        "証券会社に接続できませんでした。<br/>アクセストークンを確認してください。");
+        "証券会社に接続できませんでした。アクセストークンを確認してください。");
       expect(model.message).toEqual(null);
       expect(model.isSaving).toEqual(false);
 

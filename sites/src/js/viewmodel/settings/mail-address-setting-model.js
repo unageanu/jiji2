@@ -4,13 +4,15 @@ import Error           from "../../model/error"
 import ErrorMessages   from "../../errorhandling/error-messages"
 import Validators      from "../../utils/validation/validators"
 import ValidationUtils from "../utils/validation-utils"
+import DateFormatter   from "../utils/date-formatter"
 
 export default class MailAddressSettingModel extends Observable {
 
-  constructor(userSettingService, smtpServerSettingService) {
+  constructor(userSettingService, smtpServerSettingService, timeSource) {
     super();
     this.userSettingService = userSettingService;
     this.smtpServerSettingService  = smtpServerSettingService;
+    this.timeSource = timeSource;
     this.error = null;
     this.message = null;
   }
@@ -41,7 +43,8 @@ export default class MailAddressSettingModel extends Observable {
         (result) => {
           this.isSaving = false;
           this.mailAddress = mailAddress;
-          this.message = "メールアドレスを変更しました";
+          this.message = "メールアドレスを変更しました。 (" 
+            + DateFormatter.format(this.timeSource.now) + ")" ;
         },
         (error) => {
           this.isSaving = false;

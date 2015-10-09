@@ -67,12 +67,15 @@ export default class PasswordSettingView extends AbstractComponent {
         </TextField><br/>
         <TextField
            ref="newPassword2"
-           floatingLabelText="新しいパスワード(確認のため、もう一度入力してください)"
+           floatingLabelText="新しいパスワード (確認用)"
            onChange={this.onNewPassword2Changed.bind(this)}
            value={this.state.newPassword2}
            style={{ width: "100%" }}>
            <input type="password" />
-        </TextField><br/>
+        </TextField>
+        <div className="description">
+          ※確認のため、新しいパスワードを再入力してください。
+        </div>
         <TextField
            ref="oldPassword"
            floatingLabelText="現在のパスワード"

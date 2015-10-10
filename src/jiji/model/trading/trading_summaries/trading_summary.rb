@@ -6,8 +6,9 @@ require 'thread'
 module Jiji::Model::Trading::TradingSummaries
   class CompositeSummary
 
-    def initialize
+    def initialize(name=nil)
       @categories = create_categories
+      @name       = name
     end
 
     def process(position)
@@ -17,7 +18,8 @@ module Jiji::Model::Trading::TradingSummaries
     end
 
     def to_h
-      @categories.each_with_object({}) do |category, r|
+      initial_value = @name ? {name: @name} : {}
+      @categories.each_with_object(initial_value) do |category, r|
         r[category.name]  = category.to_h
       end
     end
@@ -79,11 +81,12 @@ module Jiji::Model::Trading::TradingSummaries
     end
 
     def process(position)
+      agent_id   = (position.agent && position.agent.id) || ''
       agent_name = (position.agent && position.agent.name) || ''
-      unless @agent_summary.include?(agent_name)
-        @agent_summary[agent_name] = CompositeSummary.new
+      unless @agent_summary.include?(agent_id)
+        @agent_summary[agent_id] = CompositeSummary.new(agent_name)
       end
-      @agent_summary[agent_name].process(position)
+      @agent_summary[agent_id].process(position)
     end
 
     def to_h

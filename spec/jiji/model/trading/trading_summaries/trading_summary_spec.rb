@@ -8,8 +8,8 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
   let(:summary) { Jiji::Model::Trading::TradingSummaries::TradingSummary.new }
   let(:agent_sttings) do
     [
-      data_builder.register_agent_setting('test1'),
-      data_builder.register_agent_setting('test2')
+      data_builder.register_agent_setting('test1@var.rb'),
+      data_builder.register_agent_setting('テスト2@var.rb')
     ]
   end
 
@@ -87,6 +87,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
         },
         agent_summary:   {
           '' => {
+            name: '',
             states:          {
               count:  1,
               exited: 1
@@ -177,7 +178,8 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
           avg_units: 980
         },
         agent_summary:   {
-          'test1' => {
+          agent_sttings[0].id => {
+            name: 'test1@var.rb',
             states:          {
               count:  5,
               exited: 4
@@ -213,7 +215,8 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
               avg_units: 980
             }
           },
-          'test2' => {
+          agent_sttings[1].id => {
+            name: 'テスト2@var.rb',
             states:          {
               count:  5,
               exited: 4

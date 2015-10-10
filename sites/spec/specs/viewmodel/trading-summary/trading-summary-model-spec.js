@@ -163,28 +163,28 @@ describe("TradingSummaryModel", () => {
       label: "EURJPY",
       value: 6,
       valueAndRatio: "6 (60.0%)",
-      color: "#F7464A",
-      highlight: "#FF5A5E"
+      color: '#00BFA5',
+     highlight: '#4CD2C0'
     }, {
       label: "USDJPY",
       value: 4,
       valueAndRatio: "4 (40.0%)",
-      color: "#46BFBD",
-      highlight: "#5AD3D1"
+      color: '#666699',
+      highlight: '#9494B7'
     }]);
   });
 
   it("sellOrBuyData", () => {
     expect(model.sellOrBuyData).toEqual([{
       label: "買",
-      color: "#F7464A",
-      highlight: "#FF5A5E",
+      color: '#FD8A6A',
+      highlight: '#FD8A6A',
       value: 4,
       valueAndRatio: "4 (40.0%)"
     }, {
       label: "売",
-      color: "#46BFBD",
-      highlight: "#5AD3D1",
+      color: '#FFCC66',
+      highlight: '#FFDB94',
       value: 6,
       valueAndRatio: "6 (60.0%)"
     }]);

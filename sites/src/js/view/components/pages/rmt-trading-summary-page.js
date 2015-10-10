@@ -3,6 +3,8 @@ import MUI                from "material-ui"
 import AbstractPage       from "./abstract-page"
 import TradingSummaryView from "../trading-summary/trading-summary-view"
 
+const Card = MUI.Card;
+
 export default class RMTTradingSummaryPage extends AbstractPage {
 
   constructor(props) {
@@ -10,14 +12,12 @@ export default class RMTTradingSummaryPage extends AbstractPage {
     this.state = {};
   }
 
-  componentWillMount() {
-    this.model().tradingSummary.load("rmt");
-  }
-
   render() {
     return (
-      <div>
-        <TradingSummaryView model={this.model().tradingSummary} />
+      <div className="rmt-trading-summary-page">
+        <Card>
+          <TradingSummaryView model={this.model().tradingSummary} />
+        </Card>
       </div>
     );
   }

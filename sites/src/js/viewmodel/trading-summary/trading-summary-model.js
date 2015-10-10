@@ -4,9 +4,15 @@ import DateFormatter   from "../utils/date-formatter"
 import _               from "underscore"
 
 const colorPattern = [
-  { color: "#F7464A", highlight: "#FF5A5E" },
-  { color: "#46BFBD", highlight: "#5AD3D1" },
-  { color: "#FDB45C", highlight: "#FFC870" }
+  { color: "#00BFA5", highlight: "#4CD2C0" },
+  { color: "#666699", highlight: "#9494B7" },
+  { color: "#4B4560", highlight: "#817C8F" },
+  { color: "#996666", highlight: "#B79494" },
+  { color: "#DF4C52", highlight: "#E98186" },
+  { color: "#FD8A6A", highlight: "#FD8A6A" },
+  { color: "#FFCC66", highlight: "#FFDB94" },
+  { color: "#E8CBAB", highlight: "#EFDAC4" },
+  { color: "#ADC383", highlight: "#C5D5A8" }
 ];
 
 export default class TradingSummaryModel extends Observable {
@@ -39,14 +45,14 @@ export default class TradingSummaryModel extends Observable {
   get sellOrBuyData() {
     return [{
       label: "買",
-      color: "#F7464A",
-      highlight: "#FF5A5E",
+      color: colorPattern[5].color,
+      highlight: colorPattern[5].highlight,
       value: this.sellOrBuy.buy,
       valueAndRatio: this.valueAndRatio( this.sellOrBuy.buy )
     }, {
       label: "売",
-      color: "#46BFBD",
-      highlight: "#5AD3D1",
+      color: colorPattern[6].color,
+      highlight: colorPattern[6].highlight,
       value: this.sellOrBuy.sell,
       valueAndRatio: this.valueAndRatio( this.sellOrBuy.sell )
     }];
@@ -75,6 +81,17 @@ export default class TradingSummaryModel extends Observable {
     }];
   }
 
+  get agentsData() {
+    return _.sortBy(_.keys(this.agentSummary).map((key, i) => {
+      const color = colorPattern[i % colorPattern.length];
+      return _.defaults({
+        label: this.agentSummary[key].name || "不明",
+        value: this.agentSummary[key].states.count,
+        valueAndRatio: this.valueAndRatio( this.agentSummary[key].states.count )
+      }, color);
+    }), (v) => v.value * -1 );
+  }
+
   get formatedWinPercentage() {
     if (!this.states.count) return "-%";
     const values = this.winsAndLosses;
@@ -91,27 +108,27 @@ export default class TradingSummaryModel extends Observable {
 
   get formatedMaxProfit() {
     return NumberFormatter.insertThousandsSeparator(
-      this.profitOrLoss.maxProfit);
+      NumberFormatter.formatDecimal(this.profitOrLoss.maxProfit,3));
   }
   get formatedMaxLoss() {
     return NumberFormatter.insertThousandsSeparator(
-      this.profitOrLoss.maxLoss);
+      NumberFormatter.formatDecimal(this.profitOrLoss.maxLoss,3));
   }
   get formatedAvgProfit() {
     return NumberFormatter.insertThousandsSeparator(
-      this.profitOrLoss.avgProfit);
+      NumberFormatter.formatDecimal(this.profitOrLoss.avgProfit,3));
   }
   get formatedAvgLoss() {
     return NumberFormatter.insertThousandsSeparator(
-      this.profitOrLoss.avgLoss);
+      NumberFormatter.formatDecimal(this.profitOrLoss.avgLoss,3));
   }
   get formatedTotalProfit() {
     return NumberFormatter.insertThousandsSeparator(
-      this.profitOrLoss.totalProfit);
+      NumberFormatter.formatDecimal(this.profitOrLoss.totalProfit,3));
   }
   get formatedTotalLoss() {
     return NumberFormatter.insertThousandsSeparator(
-      this.profitOrLoss.totalLoss);
+      NumberFormatter.formatDecimal(this.profitOrLoss.totalLoss,3));
   }
   get formatedProfitFactor() {
     return NumberFormatter.formatDecimal(this.profitOrLoss.profitFactor, 3);
@@ -127,14 +144,14 @@ export default class TradingSummaryModel extends Observable {
     return DateFormatter.formatPeriod(this.holdingPeriod.avgPeriod);
   }
 
-  get formatedMaxUnit() {
-    return NumberFormatter.insertThousandsSeparator(this.units.maxUnit);
+  get formatedMaxUnits() {
+    return NumberFormatter.insertThousandsSeparator(this.units.maxUnits);
   }
-  get formatedMinUnit() {
-    return NumberFormatter.insertThousandsSeparator(this.units.minUnit);
+  get formatedMinUnits() {
+    return NumberFormatter.insertThousandsSeparator(this.units.minUnits);
   }
-  get formatedAvgUnit() {
-    return NumberFormatter.insertThousandsSeparator(this.units.avgUnit);
+  get formatedAvgUnits() {
+    return NumberFormatter.insertThousandsSeparator(this.units.avgUnits);
   }
 
   valueAndRatio( value, count=this.states.count ) {

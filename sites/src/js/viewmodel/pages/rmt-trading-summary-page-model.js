@@ -13,4 +13,8 @@ export default class HomePageModel extends Observable {
       this.viewModelFactory.createTradingSummaryViewModel(true);
   }
 
+  initialize() {
+    this.tradingSummary.startTime =
+      this.tradingSummary.availableAggregationPeriods[0].time;
+  }
 }

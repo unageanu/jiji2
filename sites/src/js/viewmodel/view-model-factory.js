@@ -64,7 +64,8 @@ export default class ViewModelFactory {
       this.actionService, this.eventQueue, this.urlResolver );
   }
   createTradingSummaryViewModel(enablePeriodSelector=false) {
-    const model = new TradingSummaryViewModel( this.tradingSummariesService );
+    const model = new TradingSummaryViewModel(
+      this.tradingSummariesService, this.timeSource );
     model.enablePeriodSelector = enablePeriodSelector;
     return model;
   }

@@ -12,6 +12,11 @@ export default class RMTTradingSummaryPage extends AbstractPage {
     this.state = {};
   }
 
+  componentWillMount() {
+    const model = this.model();
+    model.initialize();
+  }
+
   render() {
     return (
       <div className="rmt-trading-summary-page">

@@ -29,17 +29,19 @@ export default class CircleGraph extends React.Component {
     return (
       <div className="circle-graph">
         <div className="title">{this.props.title}</div>
-        <div className="chart">
-          <span>
-            <DoughnutChart
-              redraw={true}
-              data={this.props.data}
-              options={doughnutChartOptions}
-              width="200" height="200" />
-          </span>
-        </div>
-        <div className="tables">
-          {this.createTableRows()}
+        <div className="circle-graph-body">
+          <div className="chart">
+            <span>
+              <DoughnutChart
+                redraw={true}
+                data={this.props.data}
+                options={this.getDoughnutChartOptions()}
+                width={this.props.size} height={this.props.size} />
+            </span>
+          </div>
+          <div className="tables">
+            {this.createTableRows()}
+          </div>
         </div>
       </div>
     );
@@ -53,12 +55,18 @@ export default class CircleGraph extends React.Component {
       </div>
     });
   }
+
+  getDoughnutChartOptions() {
+    return doughnutChartOptions;
+  }
 }
 
 CircleGraph.propTypes = {
   title: React.PropTypes.string.isRequired,
-  data:  React.PropTypes.array
+  data:  React.PropTypes.array,
+  size:  React.PropTypes.number
 };
 CircleGraph.defaultProps = {
-  data: []
+  data: [],
+  size: 200
 };

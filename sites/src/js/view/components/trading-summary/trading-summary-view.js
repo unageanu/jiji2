@@ -80,8 +80,8 @@ export default class TradingSummaryView extends AbstractComponent {
             label="Profit Factor"
             value={summary.formatedProfitFactor}
             subContents={[
-              {label: "最大ドローダウン", value: summary.formatedMaxLoss },
-              {label: "平均ドローダウン", value: summary.formatedAvgLoss }
+              {label: "最大損失", value: summary.formatedMaxLoss },
+              {label: "平均損失", value: summary.formatedAvgLoss }
             ]} />
         </div>
         <div className="charts">

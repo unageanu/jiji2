@@ -105,6 +105,10 @@ export default {
     maxLength: 100
   }),
 
+  token: builder.build({
+    notNull: true
+  }),
+
   all() {
     for (let i=0, n=arguments.length; i<n; i++) {
       if (!arguments[i]) return false;

@@ -29,10 +29,12 @@ export default class LoginPage extends AbstractPage {
   }
 
   componentWillMount() {
-      this.registerPropertyChangeListener(this.model(), keys);
-      const state = this.collectInitialState(this.model(), keys);
-      state.showPasswordResetter = false;
-      this.setState(state);
+    this.registerPropertyChangeListener(this.model(), keys);
+    const state = this.collectInitialState(this.model(), keys);
+    state.showPasswordResetter = false;
+    this.setState(state);
+
+    this.model().initialize();
   }
 
   render() {
@@ -96,7 +98,7 @@ export default class LoginPage extends AbstractPage {
       </div>
       <div className="section">
         <div className="info">
-          <span className="number">1.</span> システムに登録しているメールアドレスを入力して、[パスワード再設定メールを送る]ボタンを押してください。
+          <span className="number">1.</span> システムに登録しているメールアドレスを入力して、 [パスワード再設定メールを送る] ボタンを押してください。
         </div>
         <div className="input">
           <TextField
@@ -122,7 +124,7 @@ export default class LoginPage extends AbstractPage {
       </div>
       <div className="section">
         <div className="info">
-         <span className="number">2.</span> 登録されているメールアドレスに[パスワード再設定メール]が送信されます。メールを開封し、記載されている[トークン]と新しいパスワードを入力して、パスワードを再設定してください。
+         <span className="number">2.</span> 登録されているメールアドレスに [パスワード再設定メール] が送信されます。メールを開封し、記載されている [トークン] と新しいパスワードを入力して、パスワードを再設定してください。
         </div>
         <div className="input">
           <TextField

@@ -86,8 +86,8 @@ export default class LoginPageModel extends AbstractPageModel {
     });
   }
 
-  resetPassword(token, newPasword) {
-    if (!this.validateNewPasswordAndToken(token, newPasword)) {
+  resetPassword(token, newPasword, newPasword2) {
+    if (!this.validateNewPasswordAndToken(token, newPasword, newPasword2)) {
       return Deferred.errorOf({});
     }
     this.newPasswordError = null;
@@ -119,13 +119,21 @@ export default class LoginPageModel extends AbstractPageModel {
     return ValidationUtils.validate(Validators.mailAddress, mailAddress,
       {field: "メールアドレス"}, (error) => this.resettinMailSendingError = error );
   }
-  validateNewPasswordAndToken(token, password) {
+  validateNewPasswordAndToken(token, password, password2) {
     return Validators.all(
-      ValidationUtils.validate(Validators.password, password,
-        {field: "パスワード"}, (error) => this.newPasswordError = error ),
+      this.validateNewPassword(password, password2),
       ValidationUtils.validate(Validators.token, token,
         {field: "トークン"}, (error) => this.tokenError = error )
     );
+  }
+  validateNewPassword(password, password2) {
+    this.newPasswordError = null;
+    if (password !== password2) {
+      this.newPasswordError = "パスワードが一致していません";
+      return false;
+    }
+    return  ValidationUtils.validate(Validators.password, password,
+        {field: "パスワード"}, (error) => this.newPasswordError = error );
   }
 
   get error() {

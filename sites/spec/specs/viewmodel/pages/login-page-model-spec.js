@@ -195,7 +195,7 @@ describe("LoginPageModel", () => {
 
   describe("resetPassword", () => {
     it("パスワードをリセットできる", () => {
-      const d = model.resetPassword("token", "test");
+      const d = model.resetPassword("token", "test", "test");
       expect(model.tokenError).toEqual(null);
       expect(model.newPasswordError).toEqual(null);
       expect(model.passwordResettingError).toEqual(null);
@@ -218,13 +218,27 @@ describe("LoginPageModel", () => {
       expect(Deferred.unpack(d)).not.toBe(null);
     });
     it("パスワード/トークンが不正な場合", () => {
-      const d = model.resetPassword("", "tes");
+      let d = model.resetPassword("", "tes", "test");
       expect(model.error).toEqual(null);
       expect(model.isAuthenticating).toEqual(false);
       expect(model.resettinMailSendingError).toEqual(null);
       expect(model.resettinMailSentMessage).toEqual(null);
       expect(model.isSendingMail).toEqual(false);
       expect(model.tokenError).toEqual("トークンを入力してください");
+      expect(model.newPasswordError).toEqual("パスワードが一致していません");
+      expect(model.passwordResettingError).toEqual(null);
+      expect(model.passwordResettingMessage).toEqual(null);
+      expect(model.isResettingPassword).toEqual(false);
+      expect(() => Deferred.unpack(d)).toThrow();
+      expect(eventQueue.queue).toEqual([]);
+
+      d = model.resetPassword("aaaa", "tes", "tes");
+      expect(model.error).toEqual(null);
+      expect(model.isAuthenticating).toEqual(false);
+      expect(model.resettinMailSendingError).toEqual(null);
+      expect(model.resettinMailSentMessage).toEqual(null);
+      expect(model.isSendingMail).toEqual(false);
+      expect(model.tokenError).toEqual(null);
       expect(model.newPasswordError).toEqual("パスワードが短すぎます");
       expect(model.passwordResettingError).toEqual(null);
       expect(model.passwordResettingMessage).toEqual(null);
@@ -233,7 +247,7 @@ describe("LoginPageModel", () => {
       expect(eventQueue.queue).toEqual([]);
     });
     it("メールアドレスが一致していない場合", () => {
-      const d = model.resetPassword("token", "test");
+      const d = model.resetPassword("token", "test", "test");
       expect(model.tokenError).toEqual(null);
       expect(model.newPasswordError).toEqual(null);
       expect(model.passwordResettingError).toEqual(null);
@@ -256,7 +270,7 @@ describe("LoginPageModel", () => {
       expect(eventQueue.queue).toEqual([]);
     });
     it("通信エラーになった場合", () => {
-      const d = model.resetPassword("token", "test");
+      const d = model.resetPassword("token", "test", "test");
       expect(model.tokenError).toEqual(null);
       expect(model.newPasswordError).toEqual(null);
       expect(model.passwordResettingError).toEqual(null);

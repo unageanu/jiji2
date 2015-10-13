@@ -23,8 +23,11 @@ export default class ErrorHandler {
     this.xhrManager.addObserver("fail", (n, error) => this.handle(error));
   }
   registerUnauthorizedErrorHandler() {
-    this.xhrManager.addObserver("startBlocking", () => {
-      this.eventQueue.push({type:"routing", route: "/login"});
-    });
+    this.xhrManager.addObserver(
+      "startBlocking", this.onStartBlocking.bind(this));
+  }
+
+  onStartBlocking() {
+    this.eventQueue.push({type:"routing", route: "/login"});
   }
 }

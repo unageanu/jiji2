@@ -1,0 +1,96 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.login-page {
+  background-color: @background-color-dark-alpha;
+  padding: @grid*3;
+
+  .card {
+    padding:@grid*10;
+    width: 750px;
+    margin: 0 auto;
+
+    .login-panel {
+      margin: 0 @grid*6;
+    }
+
+    h3 {
+      font-size: 20px;
+      color: @font-color-light;
+      margin-bottom: @grid*2;
+      font-weight: normal;
+    }
+
+    .inputs {
+      margin-bottom: @grid*4;
+    }
+
+    .error {
+      margin-bottom: @grid*2;
+    }
+
+    .resetter-link {
+      text-align: right;
+      margin-top: @grid*2;
+    }
+
+    a {
+      cursor: pointer;
+      text-decoration: underline;
+      font-size: @font-size-small;
+    }
+
+    .loading {
+      margin-left: @grid;
+    }
+
+    .password-resetter {
+      line-height: 170%;
+
+      .description {
+        margin-top: @grid*4;
+        color: @font-color-normal;
+        font-size: @font-size-normal;
+        margin-bottom: @grid*4;
+      }
+      .section {
+        margin-top: @grid*5;
+        padding-top: @grid*5;
+        border-top: 1px solid @border-color-dark;
+
+        .info {
+          color: @font-color-normal;
+          font-size: @font-size-normal;
+
+          .number {
+            font-size: @font-size-xlarge;
+            margin-right: @grid;
+          }
+        }
+      }
+      .input {
+        width: 400px;
+        margin-left: @grid*2;
+
+        .description {
+          font-size: @font-size-small;
+          color: @font-color-light;
+          margin: 0px;
+        }
+      }
+      .buttons {
+        margin-top: @grid*2;
+        margin-left: @grid*2;
+      }
+      .error {
+        margin-left: @grid*2;
+      }
+      .message {
+        margin-top: @grid;
+        margin-left: @grid*2;
+        font-size: @font-size-small;
+        color: @accent-color-normal;
+      }
+    }
+  }
+}

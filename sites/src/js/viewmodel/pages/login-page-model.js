@@ -80,6 +80,8 @@ export default class LoginPageModel extends AbstractPageModel {
           "入力されたメールアドレスがシステムに登録されているものと一致しませんでした。"
           + "メールアドレスを確認してください。";
         error.preventDefault = true;
+      } else {
+        error.message =　"メールの送信に失敗しました";
       }
       this.isSendingMail = false;
       throw error;

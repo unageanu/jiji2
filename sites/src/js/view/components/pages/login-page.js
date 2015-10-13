@@ -36,126 +36,148 @@ export default class LoginPage extends AbstractPage {
   }
 
   render() {
-    const error = this.state.error
-      ? <div className="error">{this.state.error}</div>
-      : null;
-    return (
-      <div className="login-page">
-        <Card className="card">
-          <div className="inputs">
-            <TextField
-               ref="password"
-               floatingLabelText="パスワード"
-               onChange={(ev) => this.setState({password: ev.target.value}) }
-               value={this.state.password}
-               style={{ width: "100%" }}>
-               <input type="password" />
-            </TextField>
-          </div>
-          {error}
-          <div className="buttons">
-            <RaisedButton
-              label="ログイン"
-              primary={true}
-              disabled={this.state.isAuthenticating}
-              onClick={this.login.bind(this)}
-              style={{ width: "100%" }}
-            />
-            <span className="loading">
-              {this.state.isAuthenticating ? <LoadingImage size={20} /> : null}
-            </span>
-          </div>
-          <div>
-            {this.createPasswordResetter()}
-          </div>
-        </Card>
-      </div>
-    );
+    return <div className="login-page">
+      <Card className="card">
+        {
+          !this.state.showPasswordResetter
+            ? this.createLoginPanel()
+            :  this.createPasswordResetterPanel()
+        }
+      </Card>
+    </div>;
   }
 
-  createPasswordResetter() {
-    if ( !this.state.showPasswordResetter ) {
-      return <a onClick={() => this.setState({showPasswordResetter:true})}>
-        パスワードを忘れた場合...
-      </a>;
-    } else {
-      return <div>
-        <div className="description">
-          以下の手順に従って、パスワードを再設定してください。
+  createLoginPanel() {
+    return <div className="login-panel">
+      <h3>ログイン</h3>
+      <div className="inputs">
+        <TextField
+           ref="password"
+           floatingLabelText="パスワード"
+           onChange={(ev) => this.setState({password: ev.target.value}) }
+           value={this.state.password}
+           errorText={this.state.error}
+           style={{ width: "100%" }}>
+           <input type="password" />
+        </TextField>
+      </div>
+      <div className="buttons">
+        <RaisedButton
+          label="ログイン"
+          primary={true}
+          disabled={this.state.isAuthenticating}
+          onClick={this.login.bind(this)}
+          style={{
+            width: "100%",
+            height:"50px"
+          }}
+          labelStyle={{
+            fontSize: "20px",
+            lineHeight:"50px"
+          }}/>
+      </div>
+      <div className="resetter-link">
+        <a onClick={() => this.setState({showPasswordResetter:true})}>
+          パスワードを忘れた場合...
+        </a>
+      </div>
+    </div>;
+  }
+
+  createPasswordResetterPanel() {
+    return <div className="password-resetter">
+      <div className="login-link">
+        <a onClick={() => this.setState({showPasswordResetter:false})}>
+          ← ログイン画面に戻る
+        </a>
+      </div>
+      <div className="description">
+        パスワードを忘れた方は、以下の手順に従ってパスワードを再設定してください。
+      </div>
+      <div className="section">
+        <div className="info">
+          <span className="number">1.</span> システムに登録しているメールアドレスを入力して、[パスワード再設定メールを送る]ボタンを押してください。
         </div>
-        <div className="section">
-          <div className="info">
-            ① システムに登録しているメールアドレスを入力して、[パスワード再設定メールを送る]ボタンを押してください。
-          </div>
-          <div className="input">
-            <TextField
-               floatingLabelText="登録済みメールアドレス"
-               onChange={(ev) => this.setState({mailAddress: ev.target.value}) }
-               value={this.state.mailAddress}
-               style={{ width: "100%" }}>
-            </TextField>
-          </div>
-          {this.createError(this.state.resettinMailSendingError)}
-          <div className="buttons">
-            <RaisedButton
-              label="パスワード再設定メールを送る"
-              primary={true}
-              disabled={this.state.isSendingMail}
-              onClick={this.sendPasswordResettingMail.bind(this)}
-              style={{ width: "100%" }}
-            />
-            <span className="loading">
-              {this.state.isSendingMail ? <LoadingImage size={20} /> : null}
-            </span>
-          </div>
-          <div className="message">{this.state.resettinMailSentMessage}</div>
+        <div className="input">
+          <TextField
+             floatingLabelText="登録済みメールアドレス"
+             onChange={(ev) => this.setState({mailAddress: ev.target.value}) }
+             value={this.state.mailAddress}
+             style={{ width: "100%" }}
+             errorText={this.state.resettinMailSendingError}>
+          </TextField>
         </div>
-        <div className="section">
-          ② 登録しているメールアドレスに[パスワード再設定メール]が送信されます。<br/>
-          　メールに記載されている[トークン]と新しいパスワードを入力して、パスワードを再設定してください。
-          <div className="input">
-            <TextField
-               floatingLabelText="トークン"
-               onChange={(ev) => this.setState({token: ev.target.value}) }
-               errorText={this.state.tokenError}
-               value={this.state.token}
-               style={{ width: "100%" }}>
-            </TextField>
-            <TextField
-               floatingLabelText="新しいパスワード"
-               onChange={(ev) => this.setState({newPassword1: ev.target.value}) }
-               value={this.state.newPassword1}
-               errorText={this.state.newPasswordError}
-               style={{ width: "100%" }}>
-               <input type="password" />
-            </TextField><br/>
-            <TextField
-               floatingLabelText="新しいパスワード (確認用)"
-               onChange={(ev) => this.setState({newPassword2: ev.target.value}) }
-               value={this.state.newPassword2}
-               style={{ width: "100%" }}>
-               <input type="password" />
-            </TextField>
-            <div className="description">
-              ※確認のため、新しいパスワードを再入力してください。
-            </div>
-          </div>
-          {this.createError(this.state.passwordResettingError)}
-          <div className="buttons">
-            <RaisedButton
-              label="パスワードを再設定する"
-              primary={true}
-              disabled={this.state.isResettingPassword}
-              onClick={this.resetPassword.bind(this)}
-              style={{ width: "100%" }}
-            />
-            <span className="loading">
-              {this.state.isResettingPassword ? <LoadingImage size={20} /> : null}
-            </span>
-          </div>
-          <div className="message">{this.state.passwordResettingMessage}</div>
+        <div className="buttons">
+          <RaisedButton
+            label="パスワード再設定メールを送る"
+            primary={true}
+            disabled={this.state.isSendingMail}
+            onClick={this.sendPasswordResettingMail.bind(this)}
+          />
+          <span className="loading">
+            {this.state.isSendingMail ? <LoadingImage size={20} /> : null}
+          </span>
         </div>
+        <div className="message">{this.state.resettinMailSentMessage}</div>
+      </div>
+      <div className="section">
+        <div className="info">
+         <span className="number">2.</span> 登録されているメールアドレスに[パスワード再設定メール]が送信されます。メールを開封し、記載されている[トークン]と新しいパスワードを入力して、パスワードを再設定してください。
+        </div>
+        <div className="input">
+          <TextField
+             floatingLabelText="トークン"
+             onChange={(ev) => this.setState({token: ev.target.value}) }
+             errorText={this.state.tokenError}
+             value={this.state.token}
+             style={{ width: "100%" }}>
+          </TextField>
+          <TextField
+             floatingLabelText="新しいパスワード"
+             onChange={(ev) => this.setState({newPassword1: ev.target.value}) }
+             value={this.state.newPassword1}
+             errorText={this.state.newPasswordError}
+             style={{ width: "100%" }}>
+             <input type="password" />
+          </TextField><br/>
+          <TextField
+             floatingLabelText="新しいパスワード (確認用)"
+             onChange={(ev) => this.setState({newPassword2: ev.target.value}) }
+             value={this.state.newPassword2}
+             style={{ width: "100%" }}>
+             <input type="password" />
+          </TextField>
+          <div className="description">
+            ※確認のため、新しいパスワードを再入力してください。
+          </div>
+        </div>
+        {this.createError(this.state.passwordResettingError)}
+        <div className="buttons">
+          <RaisedButton
+            label="パスワードを再設定する"
+            primary={true}
+            disabled={this.state.isResettingPassword}
+            onClick={this.resetPassword.bind(this)}
+          />
+          <span className="loading">
+            {this.state.isResettingPassword ? <LoadingImage size={20} /> : null}
+          </span>
+        </div>
+        {this.createResettingMessage()}
+      </div>
+    </div>;
+  }
+
+  createResettingMessage() {
+    if (this.state.passwordResettingMessage) {
+      return <div className="message">
+        {this.state.passwordResettingMessage}
+        <a onClick={() => this.setState({showPasswordResetter:false})}>
+          → ログイン画面に戻る
+        </a>
       </div>;
+    } else {
+      return null;
     }
   }
 

@@ -109,6 +109,7 @@ export default class XhrRequest {
     return (
       (this.url.match(/\/api\/authenticator$/) && this.method === "POST")
       || (this.url.match(/\/api\/settings\/user\/password$/) && this.method === "PUT")
+      || (this.url.match(/\/api\/settings\/password-resetter$/))
     );
   }
 

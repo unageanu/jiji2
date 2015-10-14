@@ -29,6 +29,7 @@ export default class LoginPage extends AbstractPage {
   }
 
   componentWillMount() {
+    const keys = this.getKeys();
     this.registerPropertyChangeListener(this.model(), keys);
     const state = this.collectInitialState(this.model(), keys);
     state.showPasswordResetter = false;
@@ -78,6 +79,7 @@ export default class LoginPage extends AbstractPage {
             lineHeight:"50px"
           }}/>
       </div>
+      {this.createLoginPanelBottomContent()}
       <div className="resetter-link">
         <a onClick={() => this.setState({showPasswordResetter:true})}>
           パスワードを忘れた場合...
@@ -196,6 +198,13 @@ export default class LoginPage extends AbstractPage {
 
   createError(error) {
     return error ? <div className="error">{error}</div> : null;
+  }
+  createLoginPanelBottomContent() {
+    return null;
+  }
+
+  getKeys() {
+    return keys;
   }
 
   model() {

@@ -7,7 +7,9 @@ import Environment         from "../../environment"
 import NumberFormatter     from "../../../viewmodel/utils/number-formatter"
 import DateFormatter       from "../../../viewmodel/utils/date-formatter"
 
-const ListItem   = MUI.ListItem;
+const ListItem       = MUI.ListItem;
+const LinearProgress = MUI.LinearProgress;
+const FontIcon       = MUI.FontIcon;
 
 const nullBacktest = {};
 
@@ -57,7 +59,9 @@ export default class BacktestListItem extends React.Component {
       case "cancelled" :
         return <span className={backtest.status}>キャンセル</span>;
       case "error" :
-        return <span className={backtest.status}>エラー</span>;
+        return <span className={backtest.status}>
+          <span className={"icon md-warning"} /> エラー
+        </span>;
       case "finished" :
         return <span className={backtest.status}>完了</span>;
       default :
@@ -70,7 +74,13 @@ export default class BacktestListItem extends React.Component {
     const formatedProgress = NumberFormatter.formatRatio(backtest.progress, 1);
     return <span className="progress">
       <span className="number">{formatedProgress}</span>
-      <LinearProgress mode="determinate" value={Math.round(progress)} />
+      <LinearProgress mode="determinate" className="bar"
+        min={0} max={100} value={Math.round(progress)} style={{
+          display: "inline-block",
+          width: "200px",
+          top: "-3px",
+          backgroundColor: Theme.getPalette().borderColor
+        }} />
     </span>
   }
 

@@ -14,10 +14,14 @@
     .backtest-list {
       .two-column-layout-left(@backtest-list-width);
       border-right: 1px solid @border-color;
+
+      > div {
+        border-right: 1px solid #FFF;
+        border-left:  1px solid #FFF;
+      }
     }
     .backtest-details-panel {
       .two-column-layout-right(@backtest-list-width);
-      border-left: 1px solid #FFF;
     }
   }
 }

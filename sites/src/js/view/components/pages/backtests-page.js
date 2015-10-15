@@ -4,6 +4,8 @@ import AbstractPage         from "./abstract-page"
 import BacktestList         from "../backtests/backtest-list"
 import BacktestDetailsPanel from "../backtests/backtest-details-panel"
 
+const Card = MUI.Card;
+
 export default class BacktestsPage extends AbstractPage {
 
   constructor(props) {
@@ -27,8 +29,10 @@ export default class BacktestsPage extends AbstractPage {
     const model      = this.model();
     return (
       <div className="backtests-page">
-        <BacktestList model={model} />
-        <BacktestDetailsPanel model={model} />
+        <Card className="card">
+          <BacktestList model={model} />
+          <BacktestDetailsPanel model={model} />
+        </Card>
       </div>
     );
   }

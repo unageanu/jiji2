@@ -1,0 +1,23 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+@backtest-list-width:   @grid * 35;
+
+.backtests-page {
+  padding: @grid*2;
+  background-color: @background-color-dark-alpha;
+
+  .card {
+    > div {
+       .two-column-layout-parent(@backtest-list-width);
+    }
+    .backtest-list {
+      .two-column-layout-left(@backtest-list-width);
+      border-right: 1px solid @border-color;
+    }
+    .backtest-details-panel {
+      .two-column-layout-right(@backtest-list-width);
+      border-left: 1px solid #FFF;
+    }
+  }
+}

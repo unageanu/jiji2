@@ -19,13 +19,13 @@ export default {
       accent1Color:   "#00BFA5",
       accent2Color:   "#1DE9B6", // light
       accent3Color:   "#64FFDA", // super light
-      accent4Color:   "#FF3366", // red
+      accent4Color:   "#F03950", // red
       textColor:      "#666666",
       textColorLight: "#999999",
       positiveColor:  "#00BFA5",
-      negativeColor:  "#FF3366",
+      negativeColor:  "#F03950",
       canvasColor: Colors.white,
-      borderColor: Colors.grey300,
+      borderColor: "#D3D3D3", //Colors.grey300,
       disabledColor: ColorManipulator.fade("#666666", 0.3),
       backgroundColor: "#FFF",
       backgroundColorDark: "#F0F0F0",
@@ -209,8 +209,8 @@ export default {
         hintColor: palette.disabledColor,
         floatingLabelColor: palette.textColor,
         disabledTextColor: palette.disabledColor,
-        errorColor: Colors.red500,
-        focusColor: palette.primary1Color,
+        errorColor: palette.negativeColor, //Colors.red500,
+        focusColor: palette.accent1Color, //palette.primary1Color,
         backgroundColor: 'transparent',
         borderColor: palette.borderColor
       }

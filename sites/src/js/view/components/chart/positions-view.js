@@ -100,7 +100,7 @@ export default class PositionsView extends AbstractChartComponent {
 
   calculateColor(position) {
     if ( position.profitOrLoss == 0 ) return "#AAAAAA";
-    return position.profitOrLoss > 0 ? "#00BFA5" : "#FF3366";
+    return position.profitOrLoss > 0 ? "#00BFA5" : "#F03950";
   }
 
   cache() {}

@@ -20,10 +20,14 @@ export default class BacktestsPageModel extends Observable {
       displayPositionsAndGraphs:true
     });
     this.positionTable =
-      this.viewModelFactory.createPositionsTableModel(100, {
+      this.viewModelFactory.createPositionsTableModel(50, {
         order:     "profit_or_loss",
         direction: "desc"
       });
+    this.selection =
+        this.viewModelFactory.createPositionSelectionModel();
+    this.selection.attach(this.positionTable);
+
     this.tradingSummary =
       this.viewModelFactory.createTradingSummaryViewModel();
     this.logViewer = this.viewModelFactory.createLogViewerModel();
@@ -52,12 +56,12 @@ export default class BacktestsPageModel extends Observable {
   }
   onBacktestChanged() {
     if (!this.selectedBacktest) return;
-    this.positionTable.initialize( this.selectedBacktest.id );
     this.initializeActiveTabData();
   }
 
   initializeActiveTabData() {
     if (this.activeTab === "trades") {
+      this.positionTable.initialize( this.selectedBacktest.id );
       this.positionTable.load();
     } else if (this.activeTab === "report") {
       this.tradingSummary.backtestId = this.selectedBacktest.id;

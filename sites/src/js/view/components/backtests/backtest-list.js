@@ -2,10 +2,16 @@ import React               from "react"
 import Router              from "react-router"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
+import BacktestListItem    from "./backtest-list-item"
 
 const List         = MUI.List;
-const ListItem     = MUI.ListItem;
-const RaisedButton = MUI.RaisedButton;
+
+const keys = new Set([
+  "selectedBacktestId"
+]);
+const listModelKeys = new Set([
+  "items"
+]);
 
 export default class BacktestList extends AbstractComponent {
 
@@ -17,37 +23,35 @@ export default class BacktestList extends AbstractComponent {
   }
 
   componentWillMount() {
-    this.registerPropertyChangeListener(this.props.model);
-    this.setState({
-      items : this.props.model.items
-    });
-  }
-  componentWillUnmount() {
-    this.model().removeAllObservers(this);
+    const model = this.model();
+    this.registerPropertyChangeListener(model, keys);
+    this.registerPropertyChangeListener(model.backtestList, listModelKeys);
+    this.setState(Object.assign(
+      this.collectInitialState(model, keys),
+      this.collectInitialState(model.backtestList, listModelKeys)
+    ));
   }
 
   render() {
     const items = this.state.items.map(
       (item) => this.createItemComponent(item));
     return (
-      <div className="backtest-list">
-        <div className="list">
-          <List>{items}</List>
-        </div>
+      <div className="backtest-list list">
+        <List>{items}</List>
       </div>
     );
   }
 
   createItemComponent(backtest) {
     const tapAction = (e) => this.onItemTapped(e, backtest);
-    const selected  = this.props.selectedId === backtest.id;
+    const selected  = this.state.selectedBacktestId === backtest.id;
     return (
-      <ListItem
+      <BacktestListItem
         key={backtest.id}
-        className={selected ? "mui-selected" : ""}
+        selected={selected}
         onTouchTap={tapAction}
-        primaryText={backtest.name + " " + backtest.status + " " + (backtest.progress*100)}>
-      </ListItem>
+        backtest={backtest}>
+      </BacktestListItem>
     );
   }
 
@@ -60,14 +64,11 @@ export default class BacktestList extends AbstractComponent {
   }
 }
 BacktestList.propTypes = {
-  selectedId : React.PropTypes.string.isRequired,
   model: React.PropTypes.object.isRequired
 };
 BacktestList.defaultProps = {
-  selectedId : null,
   model: null
 };
 BacktestList.contextTypes = {
-  application: React.PropTypes.object.isRequired,
   router: React.PropTypes.func
 };

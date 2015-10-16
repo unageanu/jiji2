@@ -351,87 +351,107 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(@repository.all.length).to be 4
     end
 
-    it 'テストを削除できる' do
-      backtests = @repository.all
-      expect(backtests.length).to be 3
-      graph_factory =
-        Jiji::Model::Graphing::GraphFactory.new(backtests[1])
-      graph = graph_factory.create(
-        'test1', :chart, :first, '#333', '#666', '#999')
+    describe '#delete' do
+      it 'テストを削除できる' do
+        backtests = @repository.all
+        expect(backtests.length).to be 3
+        graph_factory =
+          Jiji::Model::Graphing::GraphFactory.new(backtests[1])
+        graph = graph_factory.create(
+          'test1', :chart, :first, '#333', '#666', '#999')
 
-      graph << [10, 11, 12]
-      time = Time.new(2015, 4, 1)
-      graph.save_data(time)
+        graph << [10, 11, 12]
+        time = Time.new(2015, 4, 1)
+        graph.save_data(time)
 
-      graph << [20, 21, 22]
-      time = Time.new(2015, 4, 1, 0, 1, 0)
-      graph.save_data(time)
+        graph << [20, 21, 22]
+        time = Time.new(2015, 4, 1, 0, 1, 0)
+        graph.save_data(time)
 
-      graph_repository = @container.lookup(:graph_repository)
-      graphs = graph_repository.find(backtests[1].id)
-      expect(graphs.length).to be > 0
+        graph_repository = @container.lookup(:graph_repository)
+        graphs = graph_repository.find(backtests[1].id)
+        expect(graphs.length).to be > 0
 
-      graph = graphs[0]
-      graph_data = graph.fetch_data(
-        Time.new(2015, 4, 1),
-        Time.new(2015, 4, 2))
-      expect(graph_data.length).to be 1
+        graph = graphs[0]
+        graph_data = graph.fetch_data(
+          Time.new(2015, 4, 1),
+          Time.new(2015, 4, 2))
+        expect(graph_data.length).to be 1
 
-      position_repository = @container.lookup(:position_repository)
-      data_builder.new_position(1, backtests[1]).save
-      data_builder.new_position(2, backtests[1]).save
-      positions = position_repository.retrieve_positions(backtests[1].id)
-      expect(positions.length).to be > 0
+        position_repository = @container.lookup(:position_repository)
+        data_builder.new_position(1, backtests[1]).save
+        data_builder.new_position(2, backtests[1]).save
+        positions = position_repository.retrieve_positions(backtests[1].id)
+        expect(positions.length).to be > 0
 
-      data = Jiji::Model::Logging::LogData.create(
-        Time.at(100), nil, backtests[1].id)
-      data << 'test'
-      data.save
-      count = Jiji::Model::Logging::LogData
-              .where({ backtest_id: backtests[1].id }).count
-      expect(count).to be 1
+        data = Jiji::Model::Logging::LogData.create(
+          Time.at(100), nil, backtests[1].id)
+        data << 'test'
+        data.save
+        count = Jiji::Model::Logging::LogData
+                .where({ backtest_id: backtests[1].id }).count
+        expect(count).to be 1
 
-      notification = Jiji::Model::Notification::Notification.create(
-        'a', Time.at(100), backtests[1].id)
-      notification.save
-      count = Jiji::Model::Notification::Notification
-              .where({ backtest_id: backtests[1].id }).count
-      expect(count).to be 1
+        notification = Jiji::Model::Notification::Notification.create(
+          'a', Time.at(100), backtests[1].id)
+        notification.save
+        count = Jiji::Model::Notification::Notification
+                .where({ backtest_id: backtests[1].id }).count
+        expect(count).to be 1
 
-      @repository.delete(backtests[1].id)
+        @repository.delete(backtests[1].id)
 
-      graph_data = graph.fetch_data(
-        Time.new(2015, 4, 1),
-        Time.new(2015, 4, 2))
-      expect(graph_data.length).to be 0
+        graph_data = graph.fetch_data(
+          Time.new(2015, 4, 1),
+          Time.new(2015, 4, 2))
+        expect(graph_data.length).to be 0
 
-      graphs = graph_repository.find(backtests[1].id)
-      expect(graphs.length).to be 0
+        graphs = graph_repository.find(backtests[1].id)
+        expect(graphs.length).to be 0
 
-      positions = position_repository.retrieve_positions(backtests[1].id)
-      expect(positions.length).to be 0
+        positions = position_repository.retrieve_positions(backtests[1].id)
+        expect(positions.length).to be 0
 
-      count = Jiji::Model::Logging::LogData
-              .where({ backtest_id: backtests[1].id }).count
-      expect(count).to be 0
+        count = Jiji::Model::Logging::LogData
+                .where({ backtest_id: backtests[1].id }).count
+        expect(count).to be 0
 
-      count = Jiji::Model::Notification::Notification
-              .where({ backtest_id: backtests[1].id }).count
-      expect(count).to be 0
+        count = Jiji::Model::Notification::Notification
+                .where({ backtest_id: backtests[1].id }).count
+        expect(count).to be 0
 
-      backtests = @repository.all.sort_by { |p| p.name }
-      expect(backtests.length).to be 2
-      expect(backtests[0].name).to eq 'テスト0'
-      expect(backtests[1].name).to eq 'テスト2'
+        backtests = @repository.all.sort_by { |p| p.name }
+        expect(backtests.length).to be 2
+        expect(backtests[0].name).to eq 'テスト0'
+        expect(backtests[1].name).to eq 'テスト2'
 
-      @container    = Jiji::Test::TestContainerFactory.instance.new_container
-      @repository   = @container.lookup(:backtest_repository)
-      @repository.load
+        @container    = Jiji::Test::TestContainerFactory.instance.new_container
+        @repository   = @container.lookup(:backtest_repository)
+        @repository.load
 
-      backtests = @repository.all.sort_by { |p| p.name }
-      expect(backtests.length).to be 2
-      expect(backtests[0].name).to eq 'テスト0'
-      expect(backtests[1].name).to eq 'テスト2'
+        backtests = @repository.all.sort_by { |p| p.name }
+        expect(backtests.length).to be 2
+        expect(backtests[0].name).to eq 'テスト0'
+        expect(backtests[1].name).to eq 'テスト2'
+      end
+
+      it 'システムの再起動後でもテストを削除できる' do
+        @repository.stop
+
+        @container    = Jiji::Test::TestContainerFactory.instance.new_container
+        @repository   = @container.lookup(:backtest_repository)
+        @repository.load
+
+        backtests = @repository.all.sort_by { |p| p.name }
+        expect(backtests.length).to be 3
+
+        @repository.delete(backtests[1].id)
+
+        backtests = @repository.all.sort_by { |p| p.name }
+        expect(backtests.length).to be 2
+        expect(backtests[0].name).to eq 'テスト0'
+        expect(backtests[1].name).to eq 'テスト2'
+      end
     end
 
     it '#runnings で実行中のテストを取得できる' do

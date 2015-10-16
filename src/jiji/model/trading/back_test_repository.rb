@@ -55,8 +55,7 @@ module Jiji::Model::Trading
 
     def delete(id)
       backtest = get(id)
-      backtest.process.stop
-
+      backtest.stop
       backtest.destroy
       @backtests.delete(id)
     end

@@ -33,6 +33,9 @@ export default class IconSelector extends AbstractComponent  {
   }
 
   render() {
+    const editLink = !this.props.readOnly
+      ? <a onTouchTap={this.showDialog.bind(this)}>変更...</a>
+      : null;
     return (
       <div className="icon-selector">
         <div className="icon-and-action">
@@ -40,7 +43,7 @@ export default class IconSelector extends AbstractComponent  {
             iconId={this.state.selectedId}
             onTouchTap={this.showDialog.bind(this)}
             urlResolver={this.props.model.icons.iconService.urlResolver} />
-          <a onTouchTap={this.showDialog.bind(this)}>変更...</a>
+          {editLink}
         </div>
         <Dialog
           ref="iconSelectorDialog"
@@ -133,8 +136,10 @@ export default class IconSelector extends AbstractComponent  {
 }
 IconSelector.propTypes = {
   model: React.PropTypes.object.isRequired,
-  enableUpload: React.PropTypes.bool
+  enableUpload: React.PropTypes.bool,
+  readOnly : React.PropTypes.bool
 };
 IconSelector.defaultProps = {
-  enableUpload: false
+  enableUpload: false,
+  readOnly: false
 };

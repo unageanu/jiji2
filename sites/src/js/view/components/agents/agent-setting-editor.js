@@ -31,16 +31,20 @@ export default class AgentSettingEditor extends AbstractComponent {
     const error  = this.state.agentSettingError
       ? <div className="error">{this.state.agentSettingError}</div>
       : null
+    const menu   = !this.props.readOnly
+      ? <AgentSettingEditorMenu model={this.props.model} />
+      : null;
     return (
       <div className="agent-setting-editor">
         {error}
         <div className="parent">
           <div className="agent-list">
-            <AgentSettingEditorMenu model={this.props.model}/>
+            {menu}
             <AgentList model={this.props.model} />
           </div>
           <AgentPropertyEditor
             ref="agentPropertyEditor"
+            readOnly={this.props.readOnly}
             model={this.props.model} />
         </div>
       </div>
@@ -52,5 +56,9 @@ export default class AgentSettingEditor extends AbstractComponent {
   }
 }
 AgentSettingEditor.propTypes = {
-  model : React.PropTypes.object.isRequired
+  model : React.PropTypes.object.isRequired,
+  readOnly : React.PropTypes.bool
+};
+AgentSettingEditor.defaultProps = {
+  readOnly : false
 };

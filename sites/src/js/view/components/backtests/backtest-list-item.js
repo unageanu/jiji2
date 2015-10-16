@@ -6,10 +6,10 @@ import Theme               from "../../theme"
 import Environment         from "../../environment"
 import NumberFormatter     from "../../../viewmodel/utils/number-formatter"
 import DateFormatter       from "../../../viewmodel/utils/date-formatter"
+import Utils               from "./utils"
 
 const ListItem       = MUI.ListItem;
 const LinearProgress = MUI.LinearProgress;
-const FontIcon       = MUI.FontIcon;
 
 const nullBacktest = {};
 
@@ -43,7 +43,7 @@ export default class BacktestListItem extends React.Component {
   createSecondaryText(backtest) {
     return <div className="secondary-text">
       <div className="createdAt">
-        {this.formatDate(backtest.createdAt)}
+        {backtest.formatedCreatedAt}
       </div>
       <div className="status">{this.createStatusContent(backtest)}</div>
     </div>;
@@ -54,18 +54,8 @@ export default class BacktestListItem extends React.Component {
       case "wait_for_finished" :
       case "running" :
         return this.createProgress(backtest);
-      case "wait_for_start" :
-        return <span className={backtest.status}>待機中</span>;
-      case "cancelled" :
-        return <span className={backtest.status}>キャンセル</span>;
-      case "error" :
-        return <span className={backtest.status}>
-          <span className={"icon md-warning"} /> エラー
-        </span>;
-      case "finished" :
-        return <span className={backtest.status}>完了</span>;
       default :
-        return null;
+        return Utils.createStatusContent(backtest);
     }
   }
 
@@ -83,15 +73,12 @@ export default class BacktestListItem extends React.Component {
         }} />
     </span>
   }
-
-  formatDate(date) {
-    return DateFormatter.format(date, "yyyy-MM-dd hh:mm");
-  }
 }
 BacktestListItem.propTypes = {
   backtest: React.PropTypes.object,
   selected: React.PropTypes.bool,
-  onTouchTap: React.PropTypes.func
+  onTouchTap: React.PropTypes.func,
+  onDelete: React.PropTypes.func
 };
 BacktestListItem.defaultProps = {
   backtest: null,

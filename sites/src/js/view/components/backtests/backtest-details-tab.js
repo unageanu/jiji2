@@ -16,11 +16,11 @@ export default class BacktestDetailsTab extends AbstractComponent {
     return <Tabs
       onChange={this.onTabChanged.bind(this)}
       initialSelectedIndex={0}>
-      <Tab label="ホーム"   value=""></Tab>
-      <Tab label="レポート" value="report"></Tab>
-      <Tab label="チャート" value="chart"></Tab>
-      <Tab label="取引一覧" value="trades"></Tab>
-      <Tab label="ログ"    value="logs"></Tab>
+      <Tab label="テスト情報" value=""></Tab>
+      <Tab label="レポート"   value="report"></Tab>
+      <Tab label="チャート"   value="chart"></Tab>
+      <Tab label="取引一覧"   value="trades"></Tab>
+      <Tab label="ログ"      value="logs"></Tab>
     </Tabs>;
   }
 

@@ -3,6 +3,7 @@ import Router              from "react-router"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
 import BacktestListItem    from "./backtest-list-item"
+import ConfirmDialog       from "../widgets/confirm-dialog"
 
 const List         = MUI.List;
 
@@ -38,6 +39,9 @@ export default class BacktestList extends AbstractComponent {
     return (
       <div className="backtest-list list">
         <List>{items}</List>
+        <ConfirmDialog
+          ref="confirmDialog"
+          text="バックテストを削除します。よろしいですか?" />
       </div>
     );
   }

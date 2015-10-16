@@ -2,6 +2,8 @@ import ContainerJS         from "container-js"
 import Observable          from "../../utils/observable"
 import PositionsTableModel from "../positions/positions-table-model"
 import TradingSummaryModel from "../trading-summary/trading-summary-model"
+import BacktestModel       from "../backtests/backtest-model"
+import AgentSettingBuilder from "../agents/agent-setting-builder"
 
 export default class BacktestsPageModel extends Observable {
 
@@ -9,13 +11,17 @@ export default class BacktestsPageModel extends Observable {
     super();
     this.viewModelFactory = ContainerJS.Inject;
     this.backtests        = ContainerJS.Inject;
+    this.backtestService  = ContainerJS.Inject;
+    this.agentClasses     = ContainerJS.Inject;
+    this.icons            = ContainerJS.Inject;
 
     this.tradingSummariesService  = ContainerJS.Inject;
   }
 
   postCreate() {
     this.backtestList  = this.viewModelFactory.createBacktestListModel();
-    this.miniChart     = this.viewModelFactory.createChart();
+    this.agentSettingBuilder = new AgentSettingBuilder(
+      this.agentClasses, this.icons);
     this.chart         = this.viewModelFactory.createChart({
       displayPositionsAndGraphs:true
     });
@@ -47,11 +53,18 @@ export default class BacktestsPageModel extends Observable {
       () => this.onBacktestLoaded());
   }
 
+  remove(backtestId) {
+    return this.backtestList.remove(backtestId).then(
+      () => this.selectedBacktestId = null);
+  }
+
   onBacktestLoaded() {
-    this.selectedBacktest = this.backtests.get(this.selectedBacktestId);
+    const model = this.backtests.get(this.selectedBacktestId);
+    this.selectedBacktest = model ? new BacktestModel(model) : null;
   }
 
   onTabChanged() {
+    if (!this.selectedBacktest) return;
     this.initializeActiveTabData();
   }
   onBacktestChanged() {
@@ -71,7 +84,8 @@ export default class BacktestsPageModel extends Observable {
       this.logViewer.initialize(this.selectedBacktest.id);
       this.logViewer.load();
     } else {
-      this.miniChart.backtest =this.selectedBacktest;
+      this.backtestService.getAgentSettings(this.selectedBacktest.id).then(
+        (agents) => this.agentSettingBuilder.initialize(agents));
     }
   }
 

@@ -11,9 +11,14 @@ export default class BacktestService extends AbstractService {
     return this.xhrManager.xhr( this.serviceUrl(id), "GET");
   }
 
+  getAgentSettings(id) {
+    return this.xhrManager.xhr( this.serviceUrl(id+"/agent-settings"), "GET");
+  }
+
   register( testConfig ) {
     return this.xhrManager.xhr( this.serviceUrl(), "POST", testConfig);
   }
+  
   remove( id ) {
     return this.xhrManager.xhr( this.serviceUrl(id), "DELETE");
   }

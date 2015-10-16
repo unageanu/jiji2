@@ -1,12 +1,13 @@
-import React               from "react"
-import MUI                 from "material-ui"
-import AbstractComponent   from "../widgets/abstract-component"
-import MiniChartView       from "../chart/mini-chart-view"
-import ChartView           from "../chart/chart-view"
-import PositionsTable      from "../positions/positions-table"
-import TradingSummaryView  from "../trading-summary/trading-summary-view"
-import LogViewer           from "../logs/log-viewer"
-import BacktestDetailsTab  from "../backtests/backtest-details-tab"
+import React                  from "react"
+import MUI                    from "material-ui"
+import AbstractComponent      from "../widgets/abstract-component"
+import MiniChartView          from "../chart/mini-chart-view"
+import ChartView              from "../chart/chart-view"
+import PositionsTable         from "../positions/positions-table"
+import TradingSummaryView     from "../trading-summary/trading-summary-view"
+import LogViewer              from "../logs/log-viewer"
+import BacktestDetailsTab     from "../backtests/backtest-details-tab"
+import BacktestPropertiesView from "./backtest-properties-view"
 
 const keys = new Set([
   "selectedBacktest", "activeTab"
@@ -51,9 +52,7 @@ export default class BacktestDetailsPanel extends AbstractComponent {
     } else if ( this.state.activeTab === "logs" ) {
       return <LogViewer model={this.model().logViewer} />;
     } else {
-      return <MiniChartView
-        model={this.model().miniChart}
-        size={{w:600, h:500}} />;
+      return <BacktestPropertiesView model={this.model()} />;
     }
   }
 

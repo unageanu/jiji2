@@ -69,6 +69,19 @@ describe 'バックテスト' do
     expect(r.body['profit_or_loss']).to be >= 0
   end
 
+  it 'GET /backtests/:id/agent-settings でバックテストのエージェント設定を取得できる' do
+    r = @client.get('backtests')
+    id = r.body.find { |b| b['name'] == 'テスト' }['id']
+
+    r = @client.get("backtests/#{id}/agent-settings")
+    expect(r.status).to eq 200
+    expect(r.body.length).to be >= 0
+    r.body.each do |b|
+      expect(b['id']).not_to be nil
+      expect(b['name']).not_to be nil
+    end
+  end
+
   it 'DELETE /backtests/:id でバックテストを削除できる' do
     r = @client.get('backtests')
     id = r.body.find { |b| b['name'] == 'テスト' }['id']

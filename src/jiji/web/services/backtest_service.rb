@@ -44,6 +44,14 @@ module Jiji::Web
       ok(future.value)
     end
 
+    options '/:backtest_id/agent-settings' do
+      allow('GET,OPTIONS')
+    end
+    get '/:backtest_id/agent-settings' do
+      id = BSON::ObjectId.from_string(params[:backtest_id])
+      ok(repository.get(id).agent_settings)
+    end
+
     def repository
       lookup(:backtest_repository)
     end

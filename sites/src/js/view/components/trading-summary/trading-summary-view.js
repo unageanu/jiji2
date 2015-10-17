@@ -87,13 +87,16 @@ export default class TradingSummaryView extends AbstractComponent {
         <div className="charts">
           <CircleGraph
             title="通貨ペア"
-            data={summary.pairData} />
+            data={summary.pairData}
+            size={this.props.graphSize} />
           <CircleGraph
             title="売/買"
-            data={summary.sellOrBuyData} />
+            data={summary.sellOrBuyData}
+            size={this.props.graphSize} />
           <CircleGraph
             title="エージェント"
-            data={summary.agentsData} />
+            data={summary.agentsData}
+            size={this.props.graphSize} />
         </div>
         <div className="data">
           <div className="item">
@@ -169,8 +172,10 @@ export default class TradingSummaryView extends AbstractComponent {
   }
 }
 TradingSummaryView.propTypes = {
-  model: React.PropTypes.object
+  model: React.PropTypes.object,
+  graphSize:  React.PropTypes.number
 };
 TradingSummaryView.defaultProps = {
-  model: null
+  model: null,
+  graphSize: 200
 };

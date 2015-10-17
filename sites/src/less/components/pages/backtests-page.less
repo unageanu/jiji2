@@ -22,6 +22,37 @@
     }
     .backtest-details-panel {
       .two-column-layout-right(@backtest-list-width);
+
+      .trading-summary-view {
+        .summary-item {
+          .label {
+            height: 24px;
+          }
+          .primary-value {
+            font-size: 28px;
+            height: 42px;
+          }
+          .sub-contents .item {
+            .label {
+              height: 20px;
+            }
+            .value {
+              font-size: @font-size-normal;
+            }
+          }
+        }
+        .charts .circle-graph .tables .item {
+          .label {
+            max-width: 120px;
+          }
+          .value {
+            font-size: @font-size-normal;
+          }
+        }
+        .data .item .details .item .value {
+          font-size: @font-size-normal;
+        }
+      }
     }
   }
 }

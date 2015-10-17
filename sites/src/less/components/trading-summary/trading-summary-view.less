@@ -2,15 +2,15 @@
 @import "../../sizes.less";
 
 .trading-summary-view {
-
   min-height: 100px;
 
   .content {
+
     .summaries {
       display: flex;
       flex-direction: row;
       align-items: stretch;
-      margin: @grid*5 @grid*3 @grid*3 @grid*3;
+      margin: @grid*4 @grid*3 @grid*3 @grid*3;
 
       .summary-item {
         flex-grow: 1;
@@ -28,7 +28,7 @@
     background-color: @background-color-dark-alpha;
     border-left:  1px solid #FFF;
     border-right: 1px solid #FFF;
-      
+
     .circle-graph {
       flex-grow: 1;
       width: 33%;
@@ -38,7 +38,7 @@
   .data {
     display: flex;
     flex-direction: row;
-    margin: @grid*3 @grid*3 @grid*5 @grid*3;
+    margin: @grid*3 @grid*3 @grid*4 @grid*3;
 
     .item {
       flex-grow: 1;
@@ -62,21 +62,23 @@
   }
 
   .summary-item {
+
     .label {
       color: @font-color-light;
       text-align: right;
+      height: 28px;
     }
     .primary-value {
       color: @font-color-normal;
       font-size: 40px;
       line-height: 44px;
       text-align: right;
+      height: 50px;
+      border-bottom: 2px solid @accent-color-normal;
+      margin-left: @grid*2;
 
-      span {
-        vertical-align: middle;
-      }
       .icon {
-        margin-left: @grid;
+        margin-left: @grid/2;
       }
     }
     .sub-contents {
@@ -92,6 +94,7 @@
           display: table-cell;
           border-bottom: 1px solid @border-color;
           padding-top: @grid;
+          height: 20px;
         }
         .label {
           font-size: @font-size-super-small;
@@ -102,9 +105,13 @@
           font-size: 18px;
           text-align: right;
           padding-left: @grid*2;
-          padding-right: @grid;
         }
       }
+    }
+  }
+  .summary-item:nth-child(1) {
+    .primary-value {
+      margin-left: 0px;
     }
   }
 
@@ -161,11 +168,11 @@
     .item {
       .title {
         color: @font-color-light;
-        font-size: @font-size-large;
+        font-size: @font-size-normal;
       }
       .details {
         display: table;
-        width: 80%;
+        width: 90%;
         float: right;
         margin: @grid  @grid*2 0 @grid*2;
 

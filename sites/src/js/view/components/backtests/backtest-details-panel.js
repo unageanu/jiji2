@@ -44,7 +44,9 @@ export default class BacktestDetailsPanel extends AbstractComponent {
           size={{w:600, h:500, profitAreaHeight:100, graphAreaHeight:100}}
       />;
     } else if ( this.state.activeTab === "report" ) {
-      return <TradingSummaryView model={this.model().tradingSummary} />;
+      return <TradingSummaryView
+        model={this.model().tradingSummary}
+        graphSize={150} />;
     } else if ( this.state.activeTab === "trades" ) {
       return <PositionsTable
         model={this.model().positionTable}

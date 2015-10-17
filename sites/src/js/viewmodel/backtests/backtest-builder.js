@@ -16,6 +16,7 @@ export default class BacktestBuilder extends Observable {
     this.timeSource      = ContainerJS.Inject;
     this.agentClasses    = ContainerJS.Inject;
     this.backtestService = ContainerJS.Inject;
+    this.backtests       = ContainerJS.Inject;
     this.rates           = ContainerJS.Inject;
     this.pairs           = ContainerJS.Inject;
     this.icons           = ContainerJS.Inject;
@@ -73,7 +74,7 @@ export default class BacktestBuilder extends Observable {
     backtest.balance   = Number.parseInt(backtest.balance, 10)
 
     this.isSaving = true;
-    const d = this.backtestService.register(backtest)
+    const d = this.backtests.register(backtest)
     d.always(() => this.isSaving = false );
     return d;
   }

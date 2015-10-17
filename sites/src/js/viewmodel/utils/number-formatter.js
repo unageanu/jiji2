@@ -1,3 +1,4 @@
+import Numbers from "../../utils/numbers"
 
 export default class NumberFormatter {
 
@@ -37,6 +38,22 @@ export default class NumberFormatter {
   static formatRatio(ratio, digits=1) {
     if (ratio == null) return "";
     return NumberFormatter.formatDecimal(ratio*100, digits) + "%";
+  }
+
+  static formatPrice(price) {
+    if (price == null) return {};
+    const digits = Numbers.getPositiveDigits(Math.abs(price));
+    let unit = null;
+    if (digits > 6) {
+      price = Math.round(price/10000);
+      unit  = "万";
+    }
+    let fixed = NumberFormatter.formatDecimal(price,
+      digits > 3 ? 0 : 4 - Math.max(digits, 1) );
+    const str = NumberFormatter.insertThousandsSeparator(fixed);
+    return {
+      price: price, str: str, unit: unit
+    };
   }
 
 }

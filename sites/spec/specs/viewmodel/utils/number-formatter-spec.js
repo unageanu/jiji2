@@ -167,4 +167,124 @@ describe("NumberFormatter", () => {
     });
   });
 
+  describe("formatPrice", () => {
+    it("null", () => {
+      expect( NumberFormatter.formatPrice(null)).toEqual({});
+    });
+    it("0", () => {
+      expect( NumberFormatter.formatPrice(0)).toEqual({
+        price: 0, str: "0.000", unit: null
+      });
+    });
+    it("0.1111", () => {
+      expect( NumberFormatter.formatPrice(0.1111)).toEqual({
+        price: 0.1111, str: "0.111", unit: null
+      });
+    });
+    it("-0.1111", () => {
+      expect( NumberFormatter.formatPrice(-0.1111)).toEqual({
+        price: -0.1111, str: "-0.111", unit: null
+      });
+    });
+    it("0.1356", () => {
+      expect( NumberFormatter.formatPrice(0.1356)).toEqual({
+        price: 0.1356, str: "0.136", unit: null
+      });
+    });
+    it("-0.1356", () => {
+      expect( NumberFormatter.formatPrice(-0.1356)).toEqual({
+        price: -0.1356, str: "-0.136", unit: null
+      });
+    });
+    it("1.1356", () => {
+      expect( NumberFormatter.formatPrice(1.1356)).toEqual({
+        price: 1.1356, str: "1.136", unit: null
+      });
+    });
+    it("-1.1356", () => {
+      expect( NumberFormatter.formatPrice(-1.1356)).toEqual({
+        price: -1.1356, str: "-1.136", unit: null
+      });
+    });
+    it("19.1356", () => {
+      expect( NumberFormatter.formatPrice(19.1356)).toEqual({
+        price: 19.1356, str: "19.14", unit: null
+      });
+    });
+    it("-19.1356", () => {
+      expect( NumberFormatter.formatPrice(-19.1356)).toEqual({
+        price: -19.1356, str: "-19.14", unit: null
+      });
+    });
+    it("199.1356", () => {
+      expect( NumberFormatter.formatPrice(199.1356)).toEqual({
+        price: 199.1356, str: "199.1", unit: null
+      });
+    });
+    it("-199.1356", () => {
+      expect( NumberFormatter.formatPrice(-199.1356)).toEqual({
+        price: -199.1356, str: "-199.1", unit: null
+      });
+    });
+    it("2199.1356", () => {
+      expect( NumberFormatter.formatPrice(2199.1356)).toEqual({
+        price: 2199.1356, str: "2,199", unit: null
+      });
+    });
+    it("-2199.1356", () => {
+      expect( NumberFormatter.formatPrice(-2199.1356)).toEqual({
+        price: -2199.1356, str: "-2,199", unit: null
+      });
+    });
+    it("32199.1356", () => {
+      expect( NumberFormatter.formatPrice(32199.1356)).toEqual({
+        price: 32199.1356, str: "32,199", unit: null
+      });
+    });
+    it("-32199.1356", () => {
+      expect( NumberFormatter.formatPrice(-32199.1356)).toEqual({
+        price: -32199.1356, str: "-32,199", unit: null
+      });
+    });
+    it("432199.1356", () => {
+      expect( NumberFormatter.formatPrice(432199.1356)).toEqual({
+        price: 432199.1356, str: "432,199", unit: null
+      });
+    });
+    it("-432199.1356", () => {
+      expect( NumberFormatter.formatPrice(-432199.1356)).toEqual({
+        price: -432199.1356, str: "-432,199", unit: null
+      });
+    });
+    it("999999.1356", () => {
+      expect( NumberFormatter.formatPrice(999999.1356)).toEqual({
+        price: 999999.1356, str: "999,999", unit: null
+      });
+    });
+    it("-999999.1356", () => {
+      expect( NumberFormatter.formatPrice(-999999.1356)).toEqual({
+        price: -999999.1356, str: "-999,999", unit: null
+      });
+    });
+    it("1999999.1356", () => {
+      expect( NumberFormatter.formatPrice(1999999.1356)).toEqual({
+        price: 200, str: "200", unit: "万"
+      });
+    });
+    it("-199999.1356", () => {
+      expect( NumberFormatter.formatPrice(-1999999.1356)).toEqual({
+        price: -200, str: "-200", unit: "万"
+      });
+    });
+    it("19900000.1356", () => {
+      expect( NumberFormatter.formatPrice(19900000.1356)).toEqual({
+        price: 1990, str: "1,990", unit: "万"
+      });
+    });
+    it("-19900000.1356", () => {
+      expect( NumberFormatter.formatPrice(-19900000.1356)).toEqual({
+        price: -1990, str: "-1,990", unit: "万"
+      });
+    });
+  });
 });

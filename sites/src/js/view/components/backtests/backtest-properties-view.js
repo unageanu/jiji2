@@ -67,7 +67,7 @@ export default class BacktestPropertiesView extends AbstractComponent {
     return [
       this.createItem("名前",    backtest.name, "name"),
       this.createItem("登録日時", backtest.formatedCreatedAt, "created-at"),
-      this.createItem("状態",    Utils.createStatusContent(backtest), "status"),
+      this.createItem("状態",    this.createStatusContent(backtest), "status"),
       this.createItem("期間",    backtest.formatedPeriod, "period"),
       this.createItem("初期資金", "￥ " + backtest.formatedBalance, "balance"),
       this.createItem("通貨ペア", backtest.pairNames.join(" "), "pairs"),
@@ -80,6 +80,17 @@ export default class BacktestPropertiesView extends AbstractComponent {
       <div className="label">{label}</div>
       <div className="value">{value}</div>
     </div>;
+  }
+
+  createStatusContent(backtest) {
+    switch(backtest.status) {
+      case "error" :
+        return <span className="error">
+          <span className={"icon md-warning"} /> エラー (詳細はログを確認してください)
+        </span>;
+      default :
+        return Utils.createStatusContent(backtest);
+    }
   }
 
   delete(ev) {

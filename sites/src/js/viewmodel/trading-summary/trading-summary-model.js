@@ -112,46 +112,46 @@ export default class TradingSummaryModel extends Observable {
   }
   get formatedMaxLoss() {
     return NumberFormatter.insertThousandsSeparator(
-      NumberFormatter.formatDecimal(this.profitOrLoss.maxLoss,3));
+      NumberFormatter.formatDecimal(this.profitOrLoss.maxLoss||0,3));
   }
   get formatedAvgProfit() {
     return NumberFormatter.insertThousandsSeparator(
-      NumberFormatter.formatDecimal(this.profitOrLoss.avgProfit,3));
+      NumberFormatter.formatDecimal(this.profitOrLoss.avgProfit||0,3));
   }
   get formatedAvgLoss() {
     return NumberFormatter.insertThousandsSeparator(
-      NumberFormatter.formatDecimal(this.profitOrLoss.avgLoss,3));
+      NumberFormatter.formatDecimal(this.profitOrLoss.avgLoss||0,3));
   }
   get formatedTotalProfit() {
     return NumberFormatter.insertThousandsSeparator(
-      NumberFormatter.formatDecimal(this.profitOrLoss.totalProfit,3));
+      NumberFormatter.formatDecimal(this.profitOrLoss.totalProfit||0,3));
   }
   get formatedTotalLoss() {
     return NumberFormatter.insertThousandsSeparator(
-      NumberFormatter.formatDecimal(this.profitOrLoss.totalLoss,3));
+      NumberFormatter.formatDecimal(this.profitOrLoss.totalLoss||0,3));
   }
   get formatedProfitFactor() {
     return NumberFormatter.formatDecimal(this.profitOrLoss.profitFactor, 3);
   }
 
   get formatedMaxPeriod() {
-    return DateFormatter.formatPeriod(this.holdingPeriod.maxPeriod);
+    return DateFormatter.formatPeriod(this.holdingPeriod.maxPeriod||0);
   }
   get formatedMinPeriod() {
-    return DateFormatter.formatPeriod(this.holdingPeriod.minPeriod);
+    return DateFormatter.formatPeriod(this.holdingPeriod.minPeriod||0);
   }
   get formatedAvgPeriod() {
-    return DateFormatter.formatPeriod(this.holdingPeriod.avgPeriod);
+    return DateFormatter.formatPeriod(this.holdingPeriod.avgPeriod||0);
   }
 
   get formatedMaxUnits() {
-    return NumberFormatter.insertThousandsSeparator(this.units.maxUnits);
+    return NumberFormatter.insertThousandsSeparator(this.units.maxUnits||0);
   }
   get formatedMinUnits() {
-    return NumberFormatter.insertThousandsSeparator(this.units.minUnits);
+    return NumberFormatter.insertThousandsSeparator(this.units.minUnits||0);
   }
   get formatedAvgUnits() {
-    return NumberFormatter.insertThousandsSeparator(this.units.avgUnits);
+    return NumberFormatter.insertThousandsSeparator(this.units.avgUnits||0);
   }
 
   valueAndRatio( value, count=this.states.count ) {

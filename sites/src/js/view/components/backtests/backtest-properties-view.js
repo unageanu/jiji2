@@ -7,6 +7,7 @@ import Utils               from "./utils"
 import AgentSettingEditor  from "../agents/agent-setting-editor"
 import ConfirmDialog       from "../widgets/confirm-dialog"
 import ButtonIcon          from "../widgets/button-icon"
+import LoadingImage        from "../widgets/loading-image"
 
 const RaisedButton = MUI.RaisedButton;
 
@@ -18,7 +19,9 @@ export default class BacktestPropertiesView extends AbstractComponent {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      deleting: false
+    };
   }
 
   componentWillMount() {
@@ -28,14 +31,19 @@ export default class BacktestPropertiesView extends AbstractComponent {
   }
 
   render() {
+    const loading = this.state.deleting
+      ? <span className="loading"><LoadingImage size={20} left={-20} top={4} /></span>
+      : null;
     return <div className="backtest-properties-view">
       <div className="buttons">
         <RaisedButton
           label="バックテストを削除..."
           labelStyle={{padding:"0px 16px 0px 8px"}}
+          disabled={this.state.deleting}
           onClick={this.delete.bind(this)}>
           <ButtonIcon className="md-delete" />
         </RaisedButton>
+        {loading}
       </div>
       <div className="items">
         {this.createItems()}
@@ -50,7 +58,7 @@ export default class BacktestPropertiesView extends AbstractComponent {
       </div>
       <ConfirmDialog
         ref="confirmDialog"
-        text="バックテストを削除します。よろしいですか?" />
+        text="バックテストを削除します。よろしいですか? " />
     </div>;
   }
 
@@ -79,7 +87,9 @@ export default class BacktestPropertiesView extends AbstractComponent {
     if (!backtest) return;
     this.refs.confirmDialog.confilm().then((id)=> {
       if (id != "yes") return;
-      this.props.model.remove(backtest.id);
+      this.setState({deleting:true});
+      this.props.model.remove(backtest.id).fail(
+        () => this.setState({deleting:false}) );
     });
   }
 }

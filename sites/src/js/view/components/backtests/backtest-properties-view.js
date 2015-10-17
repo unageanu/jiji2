@@ -6,8 +6,9 @@ import DateFormatter       from "../../../viewmodel/utils/date-formatter"
 import Utils               from "./utils"
 import AgentSettingEditor  from "../agents/agent-setting-editor"
 import ConfirmDialog       from "../widgets/confirm-dialog"
+import ButtonIcon          from "../widgets/button-icon"
 
-const FlatButton = MUI.FlatButton;
+const RaisedButton = MUI.RaisedButton;
 
 const keys = new Set([
   "selectedBacktest"
@@ -29,18 +30,22 @@ export default class BacktestPropertiesView extends AbstractComponent {
   render() {
     return <div className="backtest-properties-view">
       <div className="buttons">
-        <FlatButton
-          label="削除"
-          onClick={this.delete.bind(this)}
-        />
+        <RaisedButton
+          label="バックテストを削除..."
+          labelStyle={{padding:"0px 16px 0px 8px"}}
+          onClick={this.delete.bind(this)}>
+          <ButtonIcon className="md-delete" />
+        </RaisedButton>
       </div>
-      {this.createItems()}
-      <div className="item agent-settings">
-        <div className="label">エージェント:</div>
-        <div>
-          <AgentSettingEditor
-            model={this.props.model.agentSettingBuilder}
-            readOnly={true} />
+      <div className="items">
+        {this.createItems()}
+        <div className="item agent-settings">
+          <div className="label">エージェント</div>
+          <div>
+            <AgentSettingEditor
+              model={this.props.model.agentSettingBuilder}
+              readOnly={true} />
+          </div>
         </div>
       </div>
       <ConfirmDialog
@@ -56,9 +61,9 @@ export default class BacktestPropertiesView extends AbstractComponent {
       this.createItem("登録日時", backtest.formatedCreatedAt, "created-at"),
       this.createItem("状態",    Utils.createStatusContent(backtest), "status"),
       this.createItem("期間",    backtest.formatedPeriod, "period"),
-      this.createItem("初期資金", backtest.formatedBalance, "balance"),
+      this.createItem("初期資金", "￥ " + backtest.formatedBalance, "balance"),
       this.createItem("通貨ペア", backtest.pairNames.join(" "), "pairs"),
-      this.createItem("メモ",    backtest.memo, "memo")
+      this.createItem("メモ",    <pre>{backtest.memo}</pre>, "memo")
     ];
   }
 

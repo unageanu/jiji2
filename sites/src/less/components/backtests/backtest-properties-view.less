@@ -1,0 +1,98 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.backtest-properties-view {
+
+  padding: @grid*2;
+
+  .buttons {
+    text-align: right;
+    margin-bottom: @grid*2;
+  }
+
+  .items {
+    width: 100%;
+
+    .item {
+      display: flex;
+      align-items: flex-start;
+      .label, .value {
+        padding: @grid 0px;
+      }
+    }
+    .item:nth-child(1) {
+      .label, .value {
+        padding-top: 0;
+      }
+    }
+    .label {
+      flex-shrink: 0;
+      vertical-align: top;
+      width: 150px;
+      font-size: @font-size-small;
+      color: @font-color-light;
+    }
+    .value {
+      font-size: @font-size-normal;
+      color: @font-color-normal;
+
+      pre {
+        margin: 0px;
+        line-height: 150%;
+        word-break: break-all;
+        white-space:pre-line;
+        min-height: 60px;
+      }
+    }
+    .item.agent-settings {
+      display: block;
+    }
+  }
+
+  .error {
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+
+    .icon {
+      font-size: @font-size-normal;
+    }
+
+    span {
+      vertical-align: middle;
+    }
+  }
+
+  .agent-setting-editor .parent .agent-list {
+    width: 300px;
+  }
+  .agent-property-editor {
+    margin-top: @grid;
+    margin-bottom: 0px;
+
+    .agent-details {
+      .item {
+        display: block;
+        margin-top: @grid*2;
+      }
+      .item:nth-child(1) {
+        margin-top: 0;
+      }
+      .item-label {
+        width: auto;
+        display: block;
+      }
+      .item-value, .agent-name {
+        width: auto;
+        padding-left: 0;
+      }
+      .icon-and-name {
+        margin-bottom: @grid*2;
+      }
+      .icon {
+        display: none;
+      }
+    }
+  }
+
+}

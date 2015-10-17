@@ -8,24 +8,30 @@
   min-height: 50px;
 
   .agent-details {
-    .agent-class, .icon-and-name, .description {
+    .item {
       display: flex;
+      margin-top: @grid;
 
       .item-label, .icon {
         width: 90px;
+        flex-shrink: 0;
         color: @font-color-light;
         font-size: @font-size-small;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
       .item-value, .agent-name {
         padding-left: @grid*2;
-        flex: 1;
+        flex-grow: 1;
         width: 80px;
         color: @font-color-normal;
         font-size: @font-size-normal;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
-    .description {
-      margin-top: @grid;
+    .item:nth-child(1) {
+      margin-top: 0;
     }
     .icon-and-name > .icon {
       padding-top: @grid*3;
@@ -34,9 +40,11 @@
     .description {
       pre {
         overflow: scroll;
+        white-space: pre-line;
         font-size: @font-size-small;
         color: @font-color-normal;
         margin: 0px;
+        padding: @grid;
       }
     }
   }

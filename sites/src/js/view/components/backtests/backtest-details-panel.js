@@ -41,7 +41,7 @@ export default class BacktestDetailsPanel extends AbstractComponent {
     if ( this.state.activeTab === "chart" ) {
       return <ChartView
           model={this.model().chart}
-          size={{w:600, h:500, profitAreaHeight:100, graphAreaHeight:100}}
+          size={this.calculateChartSize()}
       />;
     } else if ( this.state.activeTab === "report" ) {
       return <TradingSummaryView
@@ -58,10 +58,24 @@ export default class BacktestDetailsPanel extends AbstractComponent {
     }
   }
 
+
+  calculateChartSize() {
+    const windowSize = this.context.windowResizeManager.windowSize;
+    return {
+      w: windowSize.w - 288 - 16*4 - 280,
+      h: windowSize.h - 100 - 16*4 - 250 - 20,
+      profitAreaHeight:80,
+      graphAreaHeight:80
+    };
+  }
+
   model() {
     return this.props.model;
   }
 }
-BacktestDetailsTab.propTypes = {
+BacktestDetailsPanel.propTypes = {
   model: React.PropTypes.object
+};
+BacktestDetailsPanel.contextTypes = {
+  windowResizeManager: React.PropTypes.object.isRequired,
 };

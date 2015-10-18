@@ -106,10 +106,12 @@ export default class Slider extends Observable {
   }
 
   slideStart() {
+    if ( !this.enableSlide() ) return;
     this.temporaryPositionX = this.positionX;
   }
   slideByChart(step) {
-    if ( !this.existRequiredData() ) return 0;
+    if ( !this.existRequiredData() ) return;
+    if ( !this.enableSlide() ) return;
 
     const result =   this.calculateCurrentRangeBySlideStep(step);
     this.setProperty("temporaryCurrentRange", result.range);
@@ -118,6 +120,7 @@ export default class Slider extends Observable {
   slideByHandle(x) {
     if ( !this.existRequiredData() ) return;
     if ( x === this.temporaryPositionX ) return;
+    if ( !this.enableSlide() ) return;
 
     const result = this.calculateCurrentRangeByHanldePosition(x);
     if ( this.temporaryPositionX !== result.x ) {
@@ -126,6 +129,7 @@ export default class Slider extends Observable {
     this.setProperty("temporaryCurrentRange", result.range);
   }
   slideEnd() {
+    if ( !this.enableSlide() ) return;
     this.setProperty("currentRange", this.temporaryCurrentRange);
     this.setProperty("positionX",    this.temporaryPositionX);
   }
@@ -179,6 +183,10 @@ export default class Slider extends Observable {
   goTo( date ) {
     this.setProperty("positionX", this.calculatePositionXFromDate(date));
     this.updateCurrentRange();
+  }
+
+  enableSlide() {
+    return this.width > this.pageWidth;
   }
 
   existRequiredData() {

@@ -46,23 +46,28 @@ export default class Slider extends AbstractComponent {
         <div className="bar" style={{
           width:   this.state.barWidth+"px"
         }} >
-          <Draggable
-            axis="x"
-            handle=".handle"
-            start={{x: this.state.handlePosition, y: 0}}
-            bound="box all"
-            onStart={this.handleStart.bind(this)}
-            onDrag={this.handleDrag.bind(this)}
-            onStop={this.handleStop.bind(this)}>
-            <div className="handle" style={{
-              width:   this.state.handleWidth+"px",
-              display: this.state.handleWidth > 0 ? "inline-block" : "none"
-            }}>
-            </div>
-          </Draggable>
+          {this.createHandle()}
         </div>
       </div>
     );
+  }
+
+  createHandle() {
+    if ( this.state.handleWidth >= this.state.barWidth ) return null;
+    return <Draggable
+      axis="x"
+      handle=".handle"
+      start={{x: this.state.handlePosition, y: 0}}
+      bound="box all"
+      onStart={this.handleStart.bind(this)}
+      onDrag={this.handleDrag.bind(this)}
+      onStop={this.handleStop.bind(this)}>
+      <div className="handle" style={{
+        width:   this.state.handleWidth+"px",
+        display: this.state.handleWidth > 0 ? "inline-block" : "none"
+      }}>
+      </div>
+    </Draggable>;
   }
 
   handleStart(event, ui) {

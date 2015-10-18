@@ -24,7 +24,9 @@ export default class PositionService extends AbstractService {
   }
 
   count( backtestId="rmt" ) {
-    const url = this.serviceUrl( "count");
+    const url = this.serviceUrl( "count", {
+      backtestId: backtestId
+    });
     return this.xhrManager.xhr(url, "GET");
   }
 

@@ -27,7 +27,7 @@ export default class TradingSummaryModel extends Observable {
   }
 
   get formatedProfitOrLoss() {
-    return NumberFormatter.insertThousandsSeparator(
+    return NumberFormatter.formatPrice(
       this.profitOrLoss.totalProfitOrLoss );
   }
 
@@ -107,28 +107,22 @@ export default class TradingSummaryModel extends Observable {
   }
 
   get formatedMaxProfit() {
-    return NumberFormatter.insertThousandsSeparator(
-      NumberFormatter.formatDecimal(this.profitOrLoss.maxProfit,3));
+    return NumberFormatter.formatPrice(this.profitOrLoss.maxProfit||0);
   }
   get formatedMaxLoss() {
-    return NumberFormatter.insertThousandsSeparator(
-      NumberFormatter.formatDecimal(this.profitOrLoss.maxLoss||0,3));
+    return NumberFormatter.formatPrice(this.profitOrLoss.maxLoss||0);
   }
   get formatedAvgProfit() {
-    return NumberFormatter.insertThousandsSeparator(
-      NumberFormatter.formatDecimal(this.profitOrLoss.avgProfit||0,3));
+    return NumberFormatter.formatPrice(this.profitOrLoss.avgProfit||0);
   }
   get formatedAvgLoss() {
-    return NumberFormatter.insertThousandsSeparator(
-      NumberFormatter.formatDecimal(this.profitOrLoss.avgLoss||0,3));
+    return NumberFormatter.formatPrice(this.profitOrLoss.avgLoss||0);
   }
   get formatedTotalProfit() {
-    return NumberFormatter.insertThousandsSeparator(
-      NumberFormatter.formatDecimal(this.profitOrLoss.totalProfit||0,3));
+    return NumberFormatter.formatPrice(this.profitOrLoss.totalProfit||0);
   }
   get formatedTotalLoss() {
-    return NumberFormatter.insertThousandsSeparator(
-      NumberFormatter.formatDecimal(this.profitOrLoss.totalLoss||0,3));
+    return NumberFormatter.formatPrice(this.profitOrLoss.totalLoss||0);
   }
   get formatedProfitFactor() {
     return NumberFormatter.formatDecimal(this.profitOrLoss.profitFactor, 3);

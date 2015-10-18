@@ -1,6 +1,6 @@
 import React             from "react"
-import TrendIcon         from "../widgets/trend-icon"
 import AbstractComponent from "../widgets/abstract-component"
+import PriceView         from "../widgets/price-view"
 
 const keys = new Set(["summary"]);
 
@@ -28,8 +28,10 @@ export default class PerformancePanel extends AbstractComponent {
         </div>
         <div className="item">
           <span className="label">損益</span>
-          <span className="value">¥{summary.formatedProfitOrLoss}</span>
-          <TrendIcon value={summary.profitOrLoss.totalProfitOrLoss} />
+          <span className="value">
+            <PriceView price={summary.formatedProfitOrLoss}
+              showIcon={true} />
+          </span>
         </div>
         <div className="item">
           <span className="label">Profit Factor</span>

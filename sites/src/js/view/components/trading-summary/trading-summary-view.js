@@ -5,8 +5,8 @@ import ReactChart        from "react-chartjs"
 import AbstractComponent from "../widgets/abstract-component"
 import SummaryItem       from "./summary-item"
 import CircleGraph       from "./circle-graph"
-import TrendIcon         from "../widgets/trend-icon"
 import LoadingImage      from "../widgets/loading-image"
+import PriceView         from "../widgets/price-view"
 
 const DropDownMenu  = MUI.DropDownMenu;
 
@@ -55,13 +55,12 @@ export default class TradingSummaryView extends AbstractComponent {
         <div className="summaries">
           <SummaryItem
             label="損益合計"
-            value={[
-              <span key="1">¥{summary.formatedProfitOrLoss}</span>,
-              <TrendIcon key="2" value={summary.profitOrLoss.totalProfitOrLoss} />
-            ]}
+            value={
+              <PriceView price={summary.formatedProfitOrLoss} showIcon={true} />
+            }
             subContents={[
-              {label: "総利益", value: "¥" + (summary.formatedTotalProfit||"-") },
-              {label: "総損失", value: "¥" + (summary.formatedTotalLoss||"-") }
+              {label: "総利益", value: <PriceView price={summary.formatedTotalProfit} />},
+              {label: "総損失", value: <PriceView price={summary.formatedTotalLoss} /> }
             ]} />
           <SummaryItem
             label="勝率"
@@ -80,8 +79,8 @@ export default class TradingSummaryView extends AbstractComponent {
             label="Profit Factor"
             value={summary.formatedProfitFactor}
             subContents={[
-              {label: "最大損失", value: summary.formatedMaxLoss },
-              {label: "平均損失", value: summary.formatedAvgLoss }
+              {label: "最大損失", value: <PriceView price={summary.formatedMaxLoss} />  },
+              {label: "平均損失", value: <PriceView price={summary.formatedAvgLoss} />  }
             ]} />
         </div>
         <div className="charts">

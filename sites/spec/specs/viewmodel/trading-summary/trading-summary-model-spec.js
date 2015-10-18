@@ -155,7 +155,8 @@ describe("TradingSummaryModel", () => {
   });
 
   it("formatedProfitOrLoss", () => {
-    expect(model.formatedProfitOrLoss).toEqual( "1,800" );
+    expect(model.formatedProfitOrLoss).toEqual(
+      { price: 1800, str: '1,800', unit: null });
   });
 
   it("pairData", () => {
@@ -217,8 +218,10 @@ describe("TradingSummaryModel", () => {
   });
 
   it("agentSummary", () => {
-    expect(model.agentSummary.a1.formatedProfitOrLoss).toEqual( "400" );
-    expect(model.agentSummary.a2.formatedProfitOrLoss).toEqual( "400" );
+    expect(model.agentSummary.a1.formatedProfitOrLoss).toEqual(
+      { price: 400, str: '400.0', unit: null } );
+    expect(model.agentSummary.a2.formatedProfitOrLoss).toEqual(
+      { price: 400, str: '400.0', unit: null } );
   });
 
   it("formatedWinPercentage", () => {

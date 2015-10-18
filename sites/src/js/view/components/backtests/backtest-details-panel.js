@@ -4,6 +4,7 @@ import AbstractComponent      from "../widgets/abstract-component"
 import MiniChartView          from "../chart/mini-chart-view"
 import ChartView              from "../chart/chart-view"
 import PositionsTable         from "../positions/positions-table"
+import PositionDetailsView    from "../positions/position-details-view"
 import TradingSummaryView     from "../trading-summary/trading-summary-view"
 import LogViewer              from "../logs/log-viewer"
 import BacktestDetailsTab     from "../backtests/backtest-details-tab"
@@ -48,9 +49,13 @@ export default class BacktestDetailsPanel extends AbstractComponent {
         model={this.model().tradingSummary}
         graphSize={150} />;
     } else if ( this.state.activeTab === "trades" ) {
-      return <PositionsTable
-        model={this.model().positionTable}
-        selectionModel={this.model().selection} />;
+      return <div>
+        <PositionDetailsView model={this.model().selection} />
+        <PositionsTable
+          model={this.model().positionTable}
+          selectionModel={this.model().selection}
+          onItemTapped={(ev,item) => this.model().selection.selectedId = item.id } />
+      </div>;
     } else if ( this.state.activeTab === "logs" ) {
       return <LogViewer model={this.model().logViewer} />;
     } else {

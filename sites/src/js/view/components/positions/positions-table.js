@@ -132,7 +132,11 @@ export default class PositionsTable extends AbstractComponent {
   }
 
   onItemTapped(ev, position) {
-    this.context.router.transitionTo("/rmt/positions/"+position.id);
+    if ( this.props.onItemTapped ) {
+      this.props.onItemTapped(ev, position);
+    } else {
+      this.context.router.transitionTo("/rmt/positions/"+position.id);
+    }
     ev.preventDefault();
   }
   onHeaderTapped(e, column) {
@@ -147,10 +151,12 @@ export default class PositionsTable extends AbstractComponent {
   }
 }
 PositionsTable.propTypes = {
-  model: React.PropTypes.object
+  model: React.PropTypes.object,
+  onItemTapped: React.PropTypes.func
 };
 PositionsTable.defaultProps = {
-  model: null
+  model: null,
+  onItemTapped: null
 };
 PositionsTable.contextTypes = {
   router: React.PropTypes.func,

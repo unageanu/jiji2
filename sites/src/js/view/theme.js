@@ -28,7 +28,7 @@ export default {
       borderColor: "#D3D3D3", //Colors.grey300,
       disabledColor: ColorManipulator.fade("#666666", 0.3),
       backgroundColor: "#FFF",
-      backgroundColorDark: "#F0F0F0",
+      backgroundColorDark: "#F1F1F1",
       backgroundColorDarkAlpha: "rgba(128, 128, 128, 0.11)"
     };
   },

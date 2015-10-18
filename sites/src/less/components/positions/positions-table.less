@@ -2,7 +2,7 @@
 @import "../../sizes.less";
 
 .positions-table {
-  margin: 0  @grid*2  @grid*2 @grid*2;
+  margin: 0  @grid*3  @grid*3 @grid*3;
 
   .actions {
     text-align: right;
@@ -13,6 +13,7 @@
     border-collapse: collapse;
 
     td {
+      padding: @grid 2px;
       text-align: center;
       font-size:  @font-size-small;
       text-overflow: ellipsis;
@@ -57,7 +58,7 @@
           color: white;
           font-size: @font-size-small;
           font-weight: normal;
-          padding: 5px 5px;
+          padding: @grid @grid/2;
 
           a {
             color: white;
@@ -74,7 +75,10 @@
         cursor: pointer;
       }
       tr.selected, tr:hover {
-        background:@background-color-dark;
+        background: @background-color-dark-alpha;
+      }
+      tr:nth-child(odd) {
+        //background: @background-color-dark-alpha;
       }
     }
   }

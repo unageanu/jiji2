@@ -29,15 +29,11 @@ export default class LogViewer extends AbstractComponent {
   }
 
   render() {
-    const pageSelectorElements = this.createPageSelectorElements();
-    const scroller = this.createScrollerElements();
+    const menu = this.createMenu();
     const body = this.createBodyContnet();
     return (
       <div className="log-viewer">
-        <Card className="menu">
-          <span className="page-selector">{pageSelectorElements}</span>
-          <span className="scroller">{scroller}</span>
-        </Card>
+        {menu}
         <div className="body">
           {body}
         </div>
@@ -45,13 +41,27 @@ export default class LogViewer extends AbstractComponent {
     );
   }
 
+  createMenu() {
+    if (!this.existLog()) return null;
+    const pageSelectorElements = this.createPageSelectorElements();
+    const scroller = this.createScrollerElements();
+    return <Card className="menu">
+      <span className="page-selector">{pageSelectorElements}</span>
+      <span className="scroller">{scroller}</span>
+    </Card>;
+  }
+
   createBodyContnet() {
-    if (this.state.items && this.state.items.length > 0) {
-      return <pre>{ this.state.items[0].body}</pre>;
-    } else {
+    if (!this.state.items) {
       return <div className="center-information loading">
         <LoadingImage left={-20}/>
       </div>;
+    } else if (!this.existLog()) {
+      return <div className="center-information">
+        ログはありません
+      </div>;
+    } else {
+      return <pre>{this.state.items[0].body}</pre>;
     }
   }
   createScrollerElements() {
@@ -112,6 +122,13 @@ export default class LogViewer extends AbstractComponent {
       </span>;
     }
   }
+
+  existLog() {
+    return this.state.items
+        && this.state.items.length > 0
+        && this.state.items[0].body;
+  }
+
 }
 LogViewer.propTypes = {
   model: React.PropTypes.object

@@ -3,6 +3,8 @@ import MUI               from "material-ui"
 import AbstractPage      from "./abstract-page"
 import LogViewer         from "../logs/log-viewer"
 
+const Card = MUI.Card;
+
 export default class RMTLogPage extends AbstractPage {
 
   constructor(props) {
@@ -17,8 +19,10 @@ export default class RMTLogPage extends AbstractPage {
 
   render() {
     return (
-      <div>
-        <LogViewer model={this.model().logViewerModel} />
+      <div className="rmt-log-page">
+        <Card className="card">
+          <LogViewer model={this.model().logViewerModel} />
+        </Card>
       </div>
     );
   }

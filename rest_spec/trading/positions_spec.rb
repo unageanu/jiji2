@@ -120,7 +120,7 @@ describe '建玉取得' do
   end
 
   it 'GET /positions?backtest_id=:backtest_id でバックテストの建玉を取得できる' do
-    r = @client.get("positions",  {
+    r = @client.get('positions',  {
       'backtest_id' => @test.id,
       'start'       => Time.new(2015, 5, 1).iso8601,
       'end'         => Time.new(2015, 5, 9).iso8601
@@ -134,7 +134,7 @@ describe '建玉取得' do
       expect(position['entered_at']).not_to be nil
     end
 
-    r = @client.get("positions",  {
+    r = @client.get('positions',  {
       'backtest_id' => @test.id,
       'start'       => Time.new(2015, 4, 1).iso8601,
       'end'         => Time.new(2015, 4, 3).iso8601
@@ -144,7 +144,7 @@ describe '建玉取得' do
   end
 
   it 'GET /positions/?backtest_id=:backtest_id で取得数を指定してバックテストの建玉を取得できる' do
-    r = @client.get("positions",  {
+    r = @client.get('positions',  {
       'backtest_id' => @test.id,
       'order'       => 'entered_at',
       'direction'   => 'desc',
@@ -160,7 +160,7 @@ describe '建玉取得' do
     entered_at = Time.iso8601(position['entered_at']).to_i
     expect(entered_at).to eq Time.new(2015, 5, 2).to_i
 
-    r = @client.get("positions",  {
+    r = @client.get('positions',  {
       'backtest_id' => @test.id,
       'order'       => 'entered_at',
       'direction'   => 'asc',
@@ -176,7 +176,7 @@ describe '建玉取得' do
     entered_at = Time.iso8601(position['entered_at']).to_i
     expect(entered_at).to eq Time.new(2015, 5, 3).to_i
 
-    r = @client.get("positions",  {
+    r = @client.get('positions',  {
       'backtest_id' => @test.id,
       'order'       => 'entered_at',
       'direction'   => 'desc',
@@ -194,14 +194,14 @@ describe '建玉取得' do
   end
 
   it 'GET /positions/count?backtest_id=:backtest_id でバックテストの建玉数を取得できる' do
-    r = @client.get("positions/count")
+    r = @client.get('positions/count')
     expect(r.status).to eq 200
     expect(r.body['count']).to be 2
     expect(r.body['not_exited']).to be 1
   end
 
   it 'GET /positions/:position_id で建玉を取得できる' do
-    r = @client.get("positions")
+    r = @client.get('positions')
     expect(r.status).to eq 200
 
     id = r.body[0]['id']

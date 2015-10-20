@@ -82,7 +82,7 @@ describe Jiji::Model::Logging::Log do
     expect(log2.count).to be 1
     log_data = log2.get(0)
     expect(log_data.timestamp).to eq Time.at(0)
-    expect(etract_log_content(log_data.body).length).to eq(1024*4)
+    expect(etract_log_content(log_data.body).length).to eq(1024 * 4)
   end
 
   describe '#get' do
@@ -95,23 +95,23 @@ describe Jiji::Model::Logging::Log do
       expect(log.count).to be 3
       log_data = log.get(0)
       expect(log_data.timestamp).to eq Time.at(0)
-      expect(etract_log_content(log_data.body).length).to eq (1024 * 2 * 49)
+      expect(etract_log_content(log_data.body).length).to eq(1024 * 2 * 49)
       log_data = log.get(1)
       expect(log_data.timestamp).to eq Time.at(48 * 10)
-      expect(etract_log_content(log_data.body).length).to eq (1024 * 2 * 49)
+      expect(etract_log_content(log_data.body).length).to eq(1024 * 2 * 49)
       log_data = log.get(2)
       expect(log_data.timestamp).to eq Time.at(97 * 10)
-      expect(etract_log_content(log_data.body).length).to eq (1024 * 2 * 12)
+      expect(etract_log_content(log_data.body).length).to eq(1024 * 2 * 12)
 
       log_data = log.get(0, :desc)
       expect(log_data.timestamp).to eq Time.at(97 * 10)
-      expect(etract_log_content(log_data.body).length).to eq (1024 * 2 * 12)
+      expect(etract_log_content(log_data.body).length).to eq(1024 * 2 * 12)
       log_data = log.get(1, :desc)
       expect(log_data.timestamp).to eq Time.at(48 * 10)
-      expect(etract_log_content(log_data.body).length).to eq (1024 * 2 * 49)
+      expect(etract_log_content(log_data.body).length).to eq(1024 * 2 * 49)
       log_data = log.get(2, :desc)
       expect(log_data.timestamp).to eq Time.at(0)
-      expect(etract_log_content(log_data.body).length).to eq (1024 * 2 * 49)
+      expect(etract_log_content(log_data.body).length).to eq(1024 * 2 * 49)
     end
 
     it '不正なindexを指定した場合、nullが返される' do
@@ -119,7 +119,6 @@ describe Jiji::Model::Logging::Log do
       expect(log.get(1)).to be nil
       expect(log.get(-1)).to be nil
     end
-
   end
 
   it 'delete_before で指定日時より前のログを削除できる' do
@@ -164,6 +163,6 @@ describe Jiji::Model::Logging::Log do
   end
 
   def etract_log_content(body)
-    body.map {|l| l.split(' -- : ')[1].chop }.join('')
+    body.map { |l| l.split(' -- : ')[1].chop }.join('')
   end
 end

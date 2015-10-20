@@ -87,7 +87,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
         },
         agent_summary:   {
           '' => {
-            name: '',
+            name:            '',
             states:          {
               count:  1,
               exited: 1
@@ -179,7 +179,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
         },
         agent_summary:   {
           agent_sttings[0].id => {
-            name: 'test1@var.rb',
+            name:            'test1@var.rb',
             states:          {
               count:  5,
               exited: 4
@@ -216,7 +216,7 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
             }
           },
           agent_sttings[1].id => {
-            name: 'テスト2@var.rb',
+            name:            'テスト2@var.rb',
             states:          {
               count:  5,
               exited: 4

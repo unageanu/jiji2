@@ -3,6 +3,7 @@
 require 'rack'
 require 'singleton'
 require 'jiji/composing/container_factory'
+require 'thread'
 
 module Jiji::Web
   class WebApplication
@@ -11,6 +12,8 @@ module Jiji::Web
 
     def initialize
       @container = Jiji::Composing::ContainerFactory.instance.new_container
+      @exit_action_queue = Queue.new
+      @future = Jiji::Utils::Future.new
       setup
     end
 
@@ -18,9 +21,28 @@ module Jiji::Web
       @application = @container.lookup(:application)
       @application.setup
       app = @application
-      at_exit do
-        app.tear_down
+
+      start_cleanup_thread(app)
+      trap(0) do
+        @exit_action_queue << true
+        @future.value
       end
+    end
+
+    def start_cleanup_thread(application)
+      Thread.new(application) do |app|
+        loop do
+          break unless @exit_action_queue.pop
+          cleanup(app)
+        end
+      end
+    end
+
+    def cleanup(app)
+      app.tear_down
+      @future.value = true
+    rescue => e
+      @future.error = e
     end
 
     def build

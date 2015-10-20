@@ -6,7 +6,7 @@ require 'thread'
 module Jiji::Model::Trading::TradingSummaries
   class CompositeSummary
 
-    def initialize(name=nil)
+    def initialize(name = nil)
       @categories = create_categories
       @name       = name
     end
@@ -18,7 +18,7 @@ module Jiji::Model::Trading::TradingSummaries
     end
 
     def to_h
-      initial_value = @name ? {name: @name} : {}
+      initial_value = @name ? { name: @name } : {}
       @categories.each_with_object(initial_value) do |category, r|
         r[category.name]  = category.to_h
       end

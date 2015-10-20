@@ -40,12 +40,13 @@ module Jiji::Model::Logging
     end
 
     def close
-      @mutex.synchronize do
-        @loggers.values.each { |logger| logger.close }
-        @loggers = {}
-
-        @system_logger.close if @system_logger
-      end
+      locked = @mutex.try_lock
+      @loggers.values.each { |logger| logger.close }
+      @loggers = {}
+      @logs.values.each { |log| log.close }
+      @logs = {}
+      @system_logger.close if @system_logger
+      @mutex.unlock if locked
     end
 
     private

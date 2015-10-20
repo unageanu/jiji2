@@ -8,7 +8,7 @@ module Jiji::Model::Trading::Internal
     def initialize(wait_time = (ENV['TICK_INTERVAL'] || 15).to_i)
       @wait_time = wait_time
       @running   = true
-      @mutext    = Mutex.new
+      @mutex    = Mutex.new
       @job       = NotifyNextTickJobForRMT.new
     end
 
@@ -22,13 +22,13 @@ module Jiji::Model::Trading::Internal
     end
 
     def stop
-      @mutext.synchronize do
-        @running = false
-      end
+      locked = @mutex.try_lock
+      @running = false
+      @mutex.unlock if locked
     end
 
     def active?
-      @mutext.synchronize do
+      @mutex.synchronize do
         @running
       end
     end

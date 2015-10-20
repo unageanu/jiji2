@@ -17,6 +17,8 @@ module Jiji::Model::Logging
       query = Query.new(filter, { timestamp: order }, index, 1)
       data = query.execute(LogData)
       data && data.length > 0 ? data[0] : nil
+      return nil if !data || data.length <= 0
+      return @current && data[0].id == @current.id ? @current : data[0]
     end
 
     def count

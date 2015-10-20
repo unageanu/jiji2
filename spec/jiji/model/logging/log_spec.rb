@@ -67,27 +67,51 @@ describe Jiji::Model::Logging::Log do
     expect(log_data.body.length).to be 2
   end
 
+  it 'close でバッファのデータが永続化される' do
+    time_source.set(Time.at(0))
+    logger.info('x' * 1024 * 2)
+    logger.info('x' * 1024 * 2)
+
+    log2 = Jiji::Model::Logging::Log.new(time_source)
+    expect(log2.count).to be 1
+    log_data = log2.get(0)
+    expect(log_data.timestamp).to eq Time.at(0)
+    expect(etract_log_content(log_data.body).length).to eq 0
+
+    logger.close
+    expect(log2.count).to be 1
+    log_data = log2.get(0)
+    expect(log_data.timestamp).to eq Time.at(0)
+    expect(etract_log_content(log_data.body).length).to eq(1024*4)
+  end
+
   describe '#get' do
     it '指定したインデックスのログデータを取得できる' do
-      11.times do |i|
-        time_source.set(Time.at(i * 100))
-        logger.info('x' * 1024 * 20)
+      110.times do |i|
+        time_source.set(Time.at(i * 10))
+        logger.info('x' * 1024 * 2)
       end
 
       expect(log.count).to be 3
       log_data = log.get(0)
       expect(log_data.timestamp).to eq Time.at(0)
+      expect(etract_log_content(log_data.body).length).to eq (1024 * 2 * 49)
       log_data = log.get(1)
-      expect(log_data.timestamp).to eq Time.at(4 * 100)
+      expect(log_data.timestamp).to eq Time.at(48 * 10)
+      expect(etract_log_content(log_data.body).length).to eq (1024 * 2 * 49)
       log_data = log.get(2)
-      expect(log_data.timestamp).to eq Time.at(9 * 100)
+      expect(log_data.timestamp).to eq Time.at(97 * 10)
+      expect(etract_log_content(log_data.body).length).to eq (1024 * 2 * 12)
 
       log_data = log.get(0, :desc)
-      expect(log_data.timestamp).to eq Time.at(9 * 100)
+      expect(log_data.timestamp).to eq Time.at(97 * 10)
+      expect(etract_log_content(log_data.body).length).to eq (1024 * 2 * 12)
       log_data = log.get(1, :desc)
-      expect(log_data.timestamp).to eq Time.at(4 * 100)
+      expect(log_data.timestamp).to eq Time.at(48 * 10)
+      expect(etract_log_content(log_data.body).length).to eq (1024 * 2 * 49)
       log_data = log.get(2, :desc)
       expect(log_data.timestamp).to eq Time.at(0)
+      expect(etract_log_content(log_data.body).length).to eq (1024 * 2 * 49)
     end
 
     it '不正なindexを指定した場合、nullが返される' do
@@ -95,6 +119,7 @@ describe Jiji::Model::Logging::Log do
       expect(log.get(1)).to be nil
       expect(log.get(-1)).to be nil
     end
+
   end
 
   it 'delete_before で指定日時より前のログを削除できる' do
@@ -136,5 +161,9 @@ describe Jiji::Model::Logging::Log do
 
     backtest_log.delete_before(Time.at(200))
     expect(backtest_log.count).to be 0
+  end
+
+  def etract_log_content(body)
+    body.map {|l| l.split(' -- : ')[1].chop }.join('')
   end
 end

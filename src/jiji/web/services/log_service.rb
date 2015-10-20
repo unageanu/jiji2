@@ -30,6 +30,10 @@ module Jiji::Web
       lookup(:backtest_repository)
     end
 
+    def logger_factory
+      lookup(:logger_factory)
+    end
+
     def time_source
       lookup(:time_source)
     end
@@ -40,7 +44,7 @@ module Jiji::Web
     end
 
     def get_log(backtest_id)
-      Jiji::Model::Logging::Log.new(time_source, backtest_id)
+      logger_factory.get_or_create_log(backtest_id)
     end
 
   end

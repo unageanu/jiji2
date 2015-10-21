@@ -7,9 +7,12 @@ export default class PairSelectorModel extends Observable {
   constructor(validator) {
     super();
     this.validator = validator;
+
+    this.pairNamesError = null;
   }
 
   initialize(availablePairs, defaultSelectedPairNames=[]) {
+    this.pairNamesError = null;
     this.availablePairs = availablePairs;
     this.pairNames = defaultSelectedPairNames;
   }

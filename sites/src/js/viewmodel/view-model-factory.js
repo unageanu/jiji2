@@ -12,29 +12,31 @@ import SecuritiesSettingModel     from "./settings/securities-setting-model"
 import MailAddressSettingModel    from "./settings/mail-address-setting-model"
 import PasswordSettingModel       from "./settings/password-setting-model"
 import SMTPServerSettingModel     from "./settings/smtp-server-setting-model"
+import PairSettingModel           from "./settings/pair-setting-model"
 
 export default class ViewModelFactory {
 
   constructor() {
-    this.rates                   = ContainerJS.Inject;
-    this.pairs                   = ContainerJS.Inject;
-    this.preferences             = ContainerJS.Inject;
-    this.rateService             = ContainerJS.Inject;
-    this.rmtService              = ContainerJS.Inject;
-    this.positionService         = ContainerJS.Inject;
-    this.notificationService     = ContainerJS.Inject;
-    this.actionService           = ContainerJS.Inject;
-    this.graphService            = ContainerJS.Inject;
-    this.logService              = ContainerJS.Inject;
-    this.tradingSummariesService = ContainerJS.Inject;
-    this.backtests               = ContainerJS.Inject;
-    this.eventQueue              = ContainerJS.Inject;
-    this.urlResolver             = ContainerJS.Inject;
+    this.rates                    = ContainerJS.Inject;
+    this.pairs                    = ContainerJS.Inject;
+    this.preferences              = ContainerJS.Inject;
+    this.rateService              = ContainerJS.Inject;
+    this.rmtService               = ContainerJS.Inject;
+    this.positionService          = ContainerJS.Inject;
+    this.notificationService      = ContainerJS.Inject;
+    this.actionService            = ContainerJS.Inject;
+    this.graphService             = ContainerJS.Inject;
+    this.logService               = ContainerJS.Inject;
+    this.tradingSummariesService  = ContainerJS.Inject;
+    this.backtests                = ContainerJS.Inject;
+    this.eventQueue               = ContainerJS.Inject;
+    this.urlResolver              = ContainerJS.Inject;
     this.securitiesSettingService = ContainerJS.Inject;
     this.smtpServerSettingService = ContainerJS.Inject;
     this.userSettingService       = ContainerJS.Inject;
     this.passwordResettingService = ContainerJS.Inject;
     this.initialSettingService    = ContainerJS.Inject;
+    this.pairSettingService       = ContainerJS.Inject;
     this.pushNotifier             = ContainerJS.Inject;
     this.timeSource               = ContainerJS.Inject;
   }
@@ -90,5 +92,9 @@ export default class ViewModelFactory {
   createSMTPServerSettingModel() {
     return new SMTPServerSettingModel(
       this.smtpServerSettingService, this.timeSource );
+  }
+  createPairSettingModel() {
+    return new PairSettingModel(
+      this.pairSettingService, this.pairs, this.timeSource );
   }
 }

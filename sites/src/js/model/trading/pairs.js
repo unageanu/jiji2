@@ -5,7 +5,7 @@ import Deferred     from "../../utils/deferred";
 export default class Pairs extends Observable {
   constructor() {
     super();
-    this.rateService = ContainerJS.Inject;
+    this.pairSettingService = ContainerJS.Inject;
     this.pairs = [];
   }
 
@@ -23,7 +23,7 @@ export default class Pairs extends Observable {
   }
 
   reload() {
-    const d = this.rateService.getPairs();
+    const d = this.pairSettingService.getPairs();
     d.done( (pairs) => this.pairs = pairs );
     return d;
   }

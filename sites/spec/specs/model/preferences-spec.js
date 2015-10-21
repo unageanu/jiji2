@@ -12,7 +12,7 @@ describe("Preferences", () => {
     preferences = ContainerJS.utils.Deferred.unpack(d);
 
     preferences.pairs.initialize();
-    preferences.pairs.rateService.xhrManager.requests[0].resolve([
+    preferences.pairs.pairSettingService.xhrManager.requests[0].resolve([
       {name:"USDJPY", pairId:1},
       {name:"EURUSD", pairId:2},
       {name:"EURJPY", pairId:3}
@@ -82,7 +82,7 @@ describe("Preferences", () => {
     expect(preferences.preferredPairs.length).toBe(5);
 
     preferences.pairs.reload();
-    preferences.pairs.rateService.xhrManager.requests[1].resolve([
+    preferences.pairs.pairSettingService.xhrManager.requests[1].resolve([
       {name:"USDJPY", pairId:1},
       {name:"EURUSD", pairId:2}
     ]);

@@ -110,6 +110,8 @@ function services(binder) {
   binder.bind("userSettingService").to("services.UserSettingService");
   binder.bind("passwordResettingService")
     .to("services.PasswordResettingService");
+  binder.bind("pairSettingService")
+      .to("services.PairSettingService");
   binder.bind("initialSettingService").to("services.InitialSettingService");
   binder.bind("deviceService").to("services.DeviceService");
   binder.bind("iconService").to("services.IconService");

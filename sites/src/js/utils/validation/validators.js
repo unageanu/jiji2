@@ -109,6 +109,11 @@ export default {
     notNull: true
   }),
 
+  pairNames: builder.build({
+    notEmpty: true,
+    size: 10
+  }),
+
   all() {
     for (let i=0, n=arguments.length; i<n; i++) {
       if (!arguments[i]) return false;

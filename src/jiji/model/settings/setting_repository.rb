@@ -15,7 +15,8 @@ module Jiji::Model::Settings
         mail_composer: MailComposerSetting,
         securities:    SecuritiesSetting,
         security:      SecuritySetting,
-        rmt:           RMTSetting
+        rmt:           RMTSetting,
+        pair:          PairSetting
       }
     end
 
@@ -33,6 +34,10 @@ module Jiji::Model::Settings
 
     def rmt_setting
       load_or_create(:rmt)
+    end
+
+    def pair_setting
+      load_or_create(:pair)
     end
 
     private

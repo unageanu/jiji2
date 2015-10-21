@@ -14,33 +14,6 @@ describe 'レート取得' do
     expect(r.body['end']).not_to be nil
   end
 
-  it 'GET /rates/pairs で通貨ペアの一覧を取得できる' do
-    r = @client.get('/rates/pairs')
-    expect(r.status).to eq 200
-    expect(r.body).to eq([{
-      'name' => 'EURJPY',
-      'internal_id' => 'EUR_JPY',
-      'pip' => 0.01,
-      'max_trade_units' => 10_000_000,
-      'precision' => 0.001,
-      'margin_rate' => 0.04
-    }, {
-      'name' => 'EURUSD',
-      'internal_id' => 'EUR_USD',
-      'pip' => 0.0001,
-      'max_trade_units' => 10_000_000,
-      'precision' => 1.0e-05,
-      'margin_rate' => 0.04
-    }, {
-      'name' => 'USDJPY',
-      'internal_id' => 'USD_JPY',
-      'pip' => 0.01,
-      'max_trade_units' => 10_000_000,
-      'precision' => 0.001,
-      'margin_rate' => 0.04
-    }])
-  end
-
   it 'GET /rates/$pair_name/$interval でレートを取得できる' do
     r = @client.get('/rates/range')
     start_time = Time.now - 60 * 60 * 24 * 10

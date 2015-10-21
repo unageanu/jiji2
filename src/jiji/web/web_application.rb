@@ -97,6 +97,7 @@ module Jiji::Web
       builder.map("#{base}/user")              { run UserSettingService }
       builder.map("#{base}/password-resetter") { run PasswordResettingService }
       builder.map("#{base}/smtp-server")       { run SMTPServerSettingService }
+      builder.map("#{base}/pairs")             { run PairSettingService }
     end
 
     def register_testing_services(builder)

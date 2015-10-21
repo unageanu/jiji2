@@ -16,14 +16,6 @@ module Jiji::Web
       ok(tick_repository.range)
     end
 
-    options '/pairs' do
-      allow('GET,OPTIONS')
-    end
-
-    get '/pairs' do
-      ok(pairs.all)
-    end
-
     options '/:pair_name/:interval' do
       allow('GET,OPTIONS')
     end

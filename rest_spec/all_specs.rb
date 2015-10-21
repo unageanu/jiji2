@@ -7,6 +7,7 @@ require 'settings/securities_setting_spec'
 require 'settings/user_setting_spec'
 require 'settings/password_resetter_spec'
 require 'settings/smtp_server_setting_spec'
+require 'settings/pair_setting_spec'
 
 require 'trading/agents_spec'
 require 'trading/device_spec'

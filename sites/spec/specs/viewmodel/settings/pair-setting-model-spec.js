@@ -20,12 +20,12 @@ describe("PairSettingModel", () => {
       model.initialize();
       xhrManager.requests[0].resolve([
         {"pair_id": 0, "name": "USDJPY"},
-        {"pair_id": 1, "name": "EURJPY"},
-        {"pair_id": 2, "name": "EURUSD"}
+        {"pair_id": 1, "name": "EURJPY"}
       ]);
       xhrManager.requests[1].resolve([
         {"pair_id": 0, "name": "USDJPY"},
-        {"pair_id": 1, "name": "EURJPY"}
+        {"pair_id": 1, "name": "EURJPY"},
+        {"pair_id": 2, "name": "EURUSD"}
       ]);
 
       expect(model.pairNames).toEqual([
@@ -47,12 +47,12 @@ describe("PairSettingModel", () => {
       model.initialize();
       xhrManager.requests[0].resolve([
         {"pair_id": 0, "name": "USDJPY"},
-        {"pair_id": 1, "name": "EURJPY"},
-        {"pair_id": 2, "name": "EURUSD"}
+        {"pair_id": 1, "name": "EURJPY"}
       ]);
       xhrManager.requests[1].resolve([
         {"pair_id": 0, "name": "USDJPY"},
-        {"pair_id": 1, "name": "EURJPY"}
+        {"pair_id": 1, "name": "EURJPY"},
+        {"pair_id": 2, "name": "EURUSD"}
       ]);
 
       model.pairNames = ["USDJPY"];
@@ -74,12 +74,12 @@ describe("PairSettingModel", () => {
       model.initialize();
       xhrManager.requests[0].resolve([
         {"pair_id": 0, "name": "USDJPY"},
-        {"pair_id": 1, "name": "EURJPY"},
-        {"pair_id": 2, "name": "EURUSD"}
+        {"pair_id": 1, "name": "EURJPY"}
       ]);
       xhrManager.requests[1].resolve([
         {"pair_id": 0, "name": "USDJPY"},
-        {"pair_id": 1, "name": "EURJPY"}
+        {"pair_id": 1, "name": "EURJPY"},
+        {"pair_id": 2, "name": "EURUSD"}
       ]);
 
       model.pairNames = [];
@@ -99,12 +99,12 @@ describe("PairSettingModel", () => {
       model.initialize();
       xhrManager.requests[0].resolve([
         {"pair_id": 0, "name": "USDJPY"},
-        {"pair_id": 1, "name": "EURJPY"},
-        {"pair_id": 2, "name": "EURUSD"}
+        {"pair_id": 1, "name": "EURJPY"}
       ]);
       xhrManager.requests[1].resolve([
         {"pair_id": 0, "name": "USDJPY"},
-        {"pair_id": 1, "name": "EURJPY"}
+        {"pair_id": 1, "name": "EURJPY"},
+        {"pair_id": 2, "name": "EURUSD"}
       ]);
 
       model.pairNames = ["USDJPY"];

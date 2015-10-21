@@ -230,7 +230,7 @@ describe("BacktestBuiler", () => {
       expect( target.rangeSelectorModel.startTimeError ).toBe(null);
       expect( target.rangeSelectorModel.endTimeError ).toBe(null);
       expect( target.pairSelectorModel.pairNamesError ).toBe(
-        "通貨ペアは5つ以上選択できません");
+        "通貨ペアは5つまで選択できます");
     });
 
     it("初期資金が数値でない場合", () => {

@@ -22,6 +22,19 @@ export default class PairSelectorModel extends Observable {
       {field: "通貨ペア"}, (error) => this.pairNamesError = error );
   }
 
+  update(checked, pair) {
+    const pairNames = this.pairNames;
+    if (checked) {
+      if (!pairNames.find((p) => p == pair.name)) {
+        pairNames.push(pair.name);
+        this.setProperty("pairNames", pairNames, () => false);
+      }
+    } else {
+      this.setProperty("pairNames",
+        pairNames.filter((p) => p != pair.name), () => false);
+    }
+  }
+
   get pairNames() {
     return this.getProperty("pairNames");
   }

@@ -35,7 +35,7 @@ const messages = {
   MAX : "<%- field %>に最大値より大きい値が設定されています",
   MIN : "<%- field %>に最小値より小さい値が設定されています",
   RANGE : "<%- field %>の値が範囲外です",
-  SIZE : "<%- field %>は<%- size%>つ以上選択できません",
+  SIZE : "<%- field %>は<%- size%>つまで選択できます",
   INVALID_VALUE : "<%- field %>が正しく入力されていません"
 };
 

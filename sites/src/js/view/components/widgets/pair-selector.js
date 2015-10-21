@@ -41,7 +41,8 @@ export default class PairSelector extends AbstractComponent  {
       return <Checkbox
         ref={pair.name}
         key={pair.name}
-        defaultChecked={selected.has(pair.name)}
+        checked={selected.has(pair.name)}
+        onCheck={(ev, checked) => this.onCheck(ev, checked, pair) }
         name={pair.name}
         value={pair.name}
         label={pair.name}
@@ -52,14 +53,8 @@ export default class PairSelector extends AbstractComponent  {
     });
   }
 
-  applySetting() {
-    this.props.model.pairNames = this.selectedPairNames;
-  }
-
-  get selectedPairNames() {
-    return this.state.availablePairs
-      .filter((pair) => this.refs[pair.name].isChecked())
-      .map((pair) => pair.name );
+  onCheck(ev, checked, pair) {
+    this.props.model.update(checked, pair);
   }
 }
 PairSelector.propTypes = {

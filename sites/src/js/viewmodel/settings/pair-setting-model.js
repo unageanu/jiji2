@@ -23,11 +23,12 @@ export default class PairSettingModel extends PairSelectorModel {
       this.pairSettingService.getPairs(),
       this.pairSettingService.getAllPairs()
     ]).then( (results) => {
-      super.initialize(results[0], results[1].map((p) => p.name));
+      super.initialize(results[1], results[0].map((p) => p.name));
     });
   }
 
   save() {
+    this.message = null;
     if (!this.validate()) return;
     this.isSaving = true;
     const pairs = this.pairNames.map((p) => { return { name:p } });

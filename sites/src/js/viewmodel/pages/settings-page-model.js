@@ -17,11 +17,14 @@ export default class SettingsPageModel extends Observable {
       this.viewModelFactory.createSecuritiesSettingModel();
     this.smtpServerSetting =
       this.viewModelFactory.createSMTPServerSettingModel();
+    this.pairSetting =
+      this.viewModelFactory.createPairSettingModel();
   }
 
   initialize() {
     this.mailAddressSetting.initialize();
     this.securitiesSetting.initialize();
     this.smtpServerSetting.initialize();
+    this.pairSetting.initialize();
   }
 }

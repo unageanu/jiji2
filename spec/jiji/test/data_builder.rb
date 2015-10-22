@@ -197,6 +197,7 @@ BODY
       Jiji::Model::Notification::Notification.delete_all
       Jiji::Model::Icons::Icon.delete_all
       Jiji::Messaging::Device.delete_all
+      Jiji::Db::SchemeStatus.delete_all
       Mail::TestMailer.deliveries.clear
     end
 

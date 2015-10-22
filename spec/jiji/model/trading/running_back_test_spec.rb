@@ -1,6 +1,7 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
+require 'jiji/utils/requires'
 
 describe Jiji::Model::Trading::BackTest do
   include_context 'use data_builder'
@@ -15,9 +16,15 @@ describe Jiji::Model::Trading::BackTest do
   before(:example) do
     backtest_repository.load
 
-    %w(signals agent cross).each do |file|
+    root = Jiji::Utils::Requires.root
+    %w(signals moving_average_agent cross).each do |file|
       source = agent_registory.add_source("#{file}.rb", '', :agent,
-        IO.read(File.expand_path("../agent_sources/#{file}.rb", __FILE__)))
+        IO.read("#{root}/src/jiji/model/agents/builtin_files/#{file}.rb"))
+      p source.error
+    end
+    %w(error_agent).each do |file|
+      f = File.expand_path("../../agents/builtin_files/#{file}.rb", __FILE__)
+      source = agent_registory.add_source("#{file}.rb", '', :agent, IO.read(f))
       p source.error
     end
   end
@@ -36,11 +43,11 @@ describe Jiji::Model::Trading::BackTest do
       'pair_names'    => [:USDJPY, :EURUSD],
       'agent_setting' => [
         {
-          agent_class: 'MovingAverageAgent@agent.rb',
+          agent_class: 'MovingAverageAgent@moving_average_agent.rb',
           agent_name:  'テスト1',
           properties:  { 'short': 25, 'long': 75 }
         }, {
-          agent_class: 'MovingAverageAgent@agent.rb',
+          agent_class: 'MovingAverageAgent@moving_average_agent.rb',
           agent_name:  'テスト2',
           properties:  { 'short': 40, 'long': 80 }
         }
@@ -94,7 +101,7 @@ describe Jiji::Model::Trading::BackTest do
       'pair_names'    => [:USDJPY, :EURUSD],
       'agent_setting' => [
         {
-          agent_class: 'SendNotificationAgent@agent.rb',
+          agent_class: 'SendNotificationAgent@error_agent.rb',
           agent_name:  'テスト1',
           icon_id:     icon_id
         }
@@ -143,7 +150,7 @@ describe Jiji::Model::Trading::BackTest do
       'pair_names'    => [:USDJPY, :EURUSD],
       'agent_setting' => [
         {
-          agent_class: 'ErrorAgent@agent.rb',
+          agent_class: 'ErrorAgent@error_agent.rb',
           properties:  { 'short': 25, 'long': 75 }
         }
       ]
@@ -162,7 +169,7 @@ describe Jiji::Model::Trading::BackTest do
         'pair_names'    => [:USDJPY, :EURUSD],
         'agent_setting' => [
           {
-            agent_class: 'ErrorOnCreateAgent@agent.rb'
+            agent_class: 'ErrorOnCreateAgent@error_agent.rb'
           }
         ]
       })
@@ -177,7 +184,7 @@ describe Jiji::Model::Trading::BackTest do
         'pair_names'    => [:USDJPY, :EURUSD],
         'agent_setting' => [
           {
-            agent_class: 'ErrorOnPostCreateAgent@agent.rb'
+            agent_class: 'ErrorOnPostCreateAgent@error_agent.rb'
           }
         ]
       })

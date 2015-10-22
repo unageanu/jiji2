@@ -1,7 +1,7 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
-require 'jiji/model/trading/agent_sources/signals'
+require 'jiji/model/agents/builtin_files/signals'
 
 describe Signals do
   Rate = Struct.new(:start, :end, :max, :min)

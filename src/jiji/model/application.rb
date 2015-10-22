@@ -13,9 +13,11 @@ module Jiji::Model
     needs :backtest_repository
     needs :index_builder
     needs :logger_factory
+    needs :migrator
 
     def setup
       @index_builder.create_indexes
+      @migrator.migrate
       @rmt.setup
       @backtest_repository.load
     end

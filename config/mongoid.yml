@@ -1,6 +1,6 @@
 
 default:
-  sessions:
+  clients:
     default:
       hosts: &hosts
         - 127.0.0.1:27017
@@ -8,21 +8,21 @@ default:
     raise_not_found_error: false
 
 production:
-  sessions:
+  clients:
     default:
       database: jiji
       hosts:   *hosts
   options: *options
 
 development:
-  sessions:
+  clients:
     default:
       database: jiji_dev
       hosts:   *hosts
   options: *options
 
 test:
-  sessions:
+  clients:
     default:
       database: jiji_test
       hosts:   *hosts

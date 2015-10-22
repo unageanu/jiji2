@@ -17,7 +17,7 @@ gem 'rack',      '1.5.2'
 gem 'sinatra',   '1.4.5'
 gem 'puma',      '2.11.1'
 
-gem 'mongoid',   '4.0.0'
+gem 'mongoid',   '5.0.0'
 
 gem 'oanda_api',         '0.9.0'
 

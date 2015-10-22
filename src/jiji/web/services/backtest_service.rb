@@ -49,7 +49,7 @@ module Jiji::Web
     end
     get '/:backtest_id/agent-settings' do
       id = BSON::ObjectId.from_string(params[:backtest_id])
-      ok(repository.get(id).agent_settings)
+      ok(repository.get(id).agent_settings.to_a)
     end
 
     def repository

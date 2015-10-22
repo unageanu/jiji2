@@ -1,6 +1,5 @@
 # coding: utf-8
 require 'time'
-require 'moped'
 
 class Time
 

@@ -41,15 +41,13 @@ module Jiji::Model::Graphing
 
     def self.get_or_create(label, type,
       colors, aggregation_type = :agerage, backtest = nil)
-      graph = Graph.find_by({
-        backtest: backtest,
-        label:    label
-      })
-      return graph if graph
-
-      graph = Graph.new(backtest, type, aggregation_type, label, colors)
-      graph.save
-      graph
+      Jiji::Utils::PersistenceUtils.get_or_create(
+        proc { Graph.find_by({ backtest: backtest, label: label }) },
+        proc do
+          graph = Graph.new(backtest, type, aggregation_type, label, colors)
+          graph.save
+          graph
+        end)
     end
 
     def initialize(backtest, type, aggregation_type, label, colors)

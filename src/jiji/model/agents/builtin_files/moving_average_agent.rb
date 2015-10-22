@@ -1,4 +1,7 @@
 
+require 'jiji/model/agents/context'
+require 'jiji/model/agents/agent'
+
 # 移動平均を使うエージェント
 class MovingAverageAgent
 

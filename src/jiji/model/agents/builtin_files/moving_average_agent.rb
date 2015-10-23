@@ -43,14 +43,17 @@ class MovingAverageAgent
   def next_tick(tick)
     # 移動平均を計算
     res = @mvs.map { |mv| mv.next_data(tick[:USDJPY].bid) }
-
     return if  !res[0] || !res[1]
 
     # グラフに出力
     @graph << res
-
     # ゴールデンクロス/デッドクロスを判定
     @cross.next_data(*res)
+
+    do_trade
+  end
+
+  def do_trade
     if  @cross.cross_up?
       # ゴールデンクロス
       # 売り建玉があれば全て決済

@@ -233,16 +233,11 @@ module Signals
   #
   def bollinger_bands(data, pivot = [0, 1, 2], &block)
     ma = block_given? ? yield(data) : ma(data)
-    total = data.reduce(0.0) do|t, s|
-      t + (s - ma)**2
-    end
-    sd = Math.sqrt(total / data.length)
-    res = []
-    pivot.each do |r|
+    sd = standard_division(data) { |s| s - ma }
+    pivot.each_with_object([]) do |r, res|
       res.unshift(ma + sd * r)
       res.push(ma + sd * r * -1) if r != 0
     end
-    res
   end
 
   #===一定期間の値の傾きを計算します。
@@ -259,18 +254,14 @@ module Signals
     # 最小二乗法を使う。
     total = { x: 0.0, y: 0.0, xx: 0.0, xy: 0.0, yy: 0.0 }
     data.each_index do|i|
+      v = data[i]
       total[:x] += i
-      total[:y] += data[i]
+      total[:y] += v
       total[:xx] += i * i
-      total[:xy] += i * data[i]
-      total[:yy] += data[i] * data[i]
+      total[:xy] += i * v
+      total[:yy] += v * v
     end
-    n = data.length
-    d = total[:xy]
-    c = total[:y]
-    e = total[:x]
-    b = total[:xx]
-    (n * d - c * e) / (n * b - e * e)
+    calculate_vector(data, total)
   end
 
   #===MACDを計算します。
@@ -295,7 +286,7 @@ module Signals
       r[i > prev ? 0 : 1] += (i - prev).abs if prev
       prev = i
     end
-    (tmp[0] + tmp[1]) == 0 ? 0.0 : tmp[0] / (tmp[0] + tmp[1]) * 100
+    calculate_rsi(tmp)
   end
 
   #===DMIを計算します。
@@ -319,41 +310,11 @@ module Signals
   # data::  値の配列(4本値を指定すること!)
   # 戻り値:: {:pdi=pdi, :mdi=mdi, :dx=dx }
   def dmi(data)
-    prev = nil
-    tmp = data.each_with_object([[], [], []]) do|i, r|
-      if prev
-        dm = _dmi(i, prev)
-        r[0] << dm[0] # TR
-        r[1] << dm[1] # +DM
-        r[2] << dm[2] # -DM
-      end
-      prev = i
-    end
+    tmp = calculate_dmi_from_data(data)
     atr = ma(tmp[0])
     pdi = ma(tmp[1]) / atr * 100
     mdi = ma(tmp[2]) / atr * 100
-    dx  = (pdi - mdi).abs / (pdi + mdi)  * 100
-    { pdi: pdi, mdi: mdi, dx: dx }
-  end
-
-  # TR,+DM,-DMを計算します。
-  # 戻り値:: [ tr, +DM, -DM ]
-  def _dmi(rate, rate_prev) #:nodoc:
-    pdm = rate.max > rate_prev.max ? rate.max - rate_prev.max : 0
-    mdm = rate.min < rate_prev.min ? rate_prev.min - rate.min : 0
-
-    if  pdm > mdm
-      mdm = 0
-    elsif  pdm < mdm
-      pdm = 0
-    end
-
-    a = rate.max - rate.min
-    b = rate.max - rate_prev.end
-    c = rate_prev.end - rate.min
-    tr = [a, b, c].max
-
-    [tr, pdm, mdm]
+    { pdi: pdi, mdi: mdi, dx: calculate_dx(pdi, mdi) }
   end
 
   #===ROCを計算します。
@@ -364,4 +325,71 @@ module Signals
   def roc(data)
     (data.first - data.last) / data.last * 100
   end
+
+  private
+
+  def standard_division(data, &block)
+    total = data.reduce(0.0) do |t, s|
+      t + block.call(s)**2
+    end
+    Math.sqrt(total / data.length)
+  end
+
+  def calculate_vector(data, total)
+    n = data.length
+    d = total[:xy]
+    c = total[:y]
+    e = total[:x]
+    b = total[:xx]
+    (n * d - c * e) / (n * b - e * e)
+  end
+
+  def calculate_rsi(data)
+    (data[0] + data[1]) == 0 ? 0.0 : data[0] / (data[0] + data[1]) * 100
+  end
+
+  def calculate_dmi_from_data(data)
+    prev = nil
+    data.each_with_object([[], [], []]) do|i, r|
+      if prev
+        dm = calculate_dmi(i, prev)
+        r[0] << dm[0] # TR
+        r[1] << dm[1] # +DM
+        r[2] << dm[2] # -DM
+      end
+      prev = i
+    end
+  end
+
+  # TR,+DM,-DMを計算します。
+  # 戻り値:: [ tr, +DM, -DM ]
+  def calculate_dmi(rate, rate_prev) #:nodoc:
+    pdm = calculate_pdm(rate, rate_prev)
+    mdm = calculate_mdm(rate, rate_prev)
+    [
+      calculate_tr(rate, rate_prev),
+      pdm < mdm ? 0 : pdm,
+      pdm > mdm ? 0 : mdm
+    ]
+  end
+
+  def calculate_pdm(rate, rate_prev)
+    rate.max > rate_prev.max ? rate.max - rate_prev.max : 0
+  end
+
+  def calculate_mdm(rate, rate_prev)
+    rate.min < rate_prev.min ? rate_prev.min - rate.min : 0
+  end
+
+  def calculate_tr(rate, rate_prev)
+    a = rate.max - rate.min
+    b = rate.max - rate_prev.end
+    c = rate_prev.end - rate.min
+    [a, b, c].max
+  end
+
+  def calculate_dx(pdi, mdi)
+    (pdi - mdi).abs / (pdi + mdi)  * 100
+  end
 end
+ 

@@ -13,7 +13,7 @@ describe 'エージェント' do
     r = @client.get('agents/sources')
     expect(r.status).to eq 200
 
-    expect(r.body).to eq []
+    expect(r.body.length).to eq 3
   end
 
   it 'POST /agents/sources でエージェントを登録できる' do
@@ -60,7 +60,7 @@ describe 'エージェント' do
     r = @client.get('agents/sources')
     expect(r.status).to eq 200
 
-    expect(r.body.length).to be 3
+    expect(r.body.length).to be 6
     r.body.each do |a|
       expect(a['id']).not_to be nil
       expect(a['status']).not_to be nil
@@ -166,6 +166,19 @@ describe 'エージェント' do
     r = @client.get('agents/classes')
     expect(r.status).to eq 200
     expect(r.body.sort_by { |i| i['name'] }).to eq([{
+      'name' => 'MovingAverageAgent@moving_average_agent.rb',
+      'description' => "移動平均を使うエージェントです。\n" \
+       + " -ゴールデンクロスで買い&売り建て玉をコミット。\n" \
+       + " -デッドクロスで売り&買い建て玉をコミット。\n" \
+       + " - -1000でトレーリングストップ\n",
+      'properties' => [{
+          'id' => 'short', 'name' => '短期移動平均線',
+          'type' => 'number', 'default' => 25
+      }, {
+          'id' => 'long', 'name' => '長期移動平均線',
+          'type' => 'number', 'default' => 75
+      }]
+    }, {
       'name' => 'TestAgent1@テスト1',
       'description' => 'description1',
       'properties' => [

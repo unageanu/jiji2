@@ -4,8 +4,7 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::Positions do
-  include_context 'use data_builder'
-  include_context 'use container'
+  include_context 'use agent_setting'
   let(:builder)      { container.lookup(:position_builder) }
   let(:repository)   { container.lookup(:position_repository) }
   let(:original)  do
@@ -30,9 +29,6 @@ describe Jiji::Model::Trading::Positions do
       Jiji::Model::Trading::Pair.new(
         :USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04)
     ]
-  end
-  let(:agent_setting) do
-    data_builder.register_agent_setting
   end
   before(:example) do
     original.each { |o| o.save }

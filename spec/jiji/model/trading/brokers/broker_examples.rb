@@ -1,8 +1,5 @@
 
 shared_examples 'brokerの基本操作ができる' do
-  let(:agent_setting) do
-    data_builder.register_agent_setting
-  end
 
   it 'rate,pairが取得できる' do
     pairs = broker.pairs

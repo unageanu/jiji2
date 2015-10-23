@@ -3,11 +3,8 @@
 require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Notification::NotificationRepository do
-  include_context 'use backtests'
+  include_context 'use agent_setting'
   let(:notification_repository) { container.lookup(:notification_repository) }
-  let(:agent_setting) do
-    data_builder.register_agent_setting
-  end
   before(:example) do
     register_notifications
     register_notifications(backtests[0])

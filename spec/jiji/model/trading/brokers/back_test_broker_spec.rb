@@ -4,7 +4,7 @@ require 'jiji/test/test_configuration'
 require 'jiji/model/trading/brokers/broker_examples'
 
 describe Jiji::Model::Trading::Brokers::BackTestBroker do
-  include_context 'use backtests'
+  include_context 'use agent_setting'
   let(:position_repository) { container.lookup(:position_repository) }
   let(:backtest) { backtests[0] }
   let(:backtest_id) { backtests[0].id }

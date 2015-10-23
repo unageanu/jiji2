@@ -3,16 +3,13 @@
 require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Notification::Notificator do
-  include_context 'use backtests'
+  include_context 'use agent_setting'
 
   let(:push_notifier) do
     double('notifier')
   end
   let(:time_source) do
     container.lookup(:time_source)
-  end
-  let(:agent_setting) do
-    data_builder.register_agent_setting
   end
   let(:logger) do
     Logger.new STDOUT

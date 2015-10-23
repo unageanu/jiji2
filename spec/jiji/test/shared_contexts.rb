@@ -36,3 +36,10 @@ RSpec.shared_context 'use backtests' do
     backtest_repository.stop
   end
 end
+
+RSpec.shared_context 'use agent_setting' do
+  include_context 'use backtests'
+  let(:agent_setting) do
+    data_builder.register_agent_setting
+  end
+end

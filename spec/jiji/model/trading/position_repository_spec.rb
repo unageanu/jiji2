@@ -3,14 +3,11 @@
 require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Trading::PositionRepository do
-  include_context 'use backtests'
+  include_context 'use agent_setting'
   let(:position_repository) { container.lookup(:position_repository) }
   let(:test1) { backtests[0] }
   let(:test2) { backtests[1] }
   let(:test3) { backtests[2] }
-  let(:agent_setting) do
-    data_builder.register_agent_setting
-  end
 
   before(:example) do
     register_rmt_positions

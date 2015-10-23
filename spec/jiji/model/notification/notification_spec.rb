@@ -3,10 +3,7 @@
 require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Notification::Notification do
-  include_context 'use backtests'
-  let(:agent_setting) do
-    data_builder.register_agent_setting
-  end
+  include_context 'use agent_setting'
 
   it 'Notificationを作成して永続化できる' do
     actions = [

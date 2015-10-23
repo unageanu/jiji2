@@ -4,10 +4,7 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::Position do
-  include_context 'use backtests'
-  let(:agent_setting) do
-    data_builder.register_agent_setting
-  end
+  include_context 'use agent_setting'
   let(:backtest) do
     backtests[0]
   end

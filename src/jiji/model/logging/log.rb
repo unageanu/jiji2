@@ -6,6 +6,7 @@ require 'jiji/utils/pagenation'
 module Jiji::Model::Logging
   class Log
 
+    include Enumerable
     include Jiji::Utils::Pagenation
 
     def initialize(time_source, backtest_id = nil)
@@ -36,7 +37,7 @@ module Jiji::Model::Logging
     end
 
     def write(message)
-      @current = create_or_open_log_data unless @current
+      @current = create_log_data unless @current
       @current << message
       shift if @current.full?
     end
@@ -52,23 +53,8 @@ module Jiji::Model::Logging
       @current = create_log_data
     end
 
-    def latest_data
-      get(0, :desc)
-    end
-
-    def create_or_open_log_data
-      latest = latest_data
-      if latest && !latest.full?
-        latest
-      else
-        create_log_data
-      end
-    end
-
     def create_log_data
-      data = LogData.create(@time_source.now, nil, @backtest_id)
-      data.save
-      data
+      LogData.create(@time_source.now, nil, @backtest_id)
     end
 
     def save_current_log_data

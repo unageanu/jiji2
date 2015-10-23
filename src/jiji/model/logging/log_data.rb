@@ -37,7 +37,6 @@ module Jiji::Model::Logging
     def <<(data)
       body << data
       self.size += data.bytesize
-      save if exceed_save_limit?(data)
     end
 
     def full?
@@ -50,13 +49,6 @@ module Jiji::Model::Logging
         timestamp: timestamp,
         size:      size
       }
-    end
-
-    private
-
-    def exceed_save_limit?(data)
-      save_limit = 10 * 1024
-      (size / save_limit).round > ((size - data.bytesize) / save_limit).round
     end
 
   end

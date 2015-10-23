@@ -36,7 +36,7 @@ describe Jiji::Model::Logging::Log do
       logger.info('x' * 1024)
     end
 
-    expect(log.count).to be 11
+    expect(log.count).to be 10
     log.each do |log_data|
       expect(log_data.size).to be > 0
       expect(log_data.timestamp).not_to be nil
@@ -45,12 +45,12 @@ describe Jiji::Model::Logging::Log do
     end
   end
 
-  it 'Logを再作成した場合、最新のLogDataがフルでなければ、それに追記する' do
+  it 'Logを再作成した場合、新しいLogDataが作成される' do
     11.times do |i|
       time_source.set(Time.at(i * 10))
       logger.info('x' * 1024 * 20)
     end
-    expect(log.count).to be 3
+    expect(log.count).to be 2
 
     time_source.set(Time.at(200))
     new_log = Jiji::Model::Logging::Log.new(time_source)
@@ -63,8 +63,8 @@ describe Jiji::Model::Logging::Log do
 
     log_data = new_log.get(2)
     expect(log_data.size).to be > 0
-    expect(log_data.timestamp).to eq Time.at(90)
-    expect(log_data.body.length).to be 2
+    expect(log_data.timestamp).to eq Time.at(200)
+    expect(log_data.body.length).to be 1
   end
 
   it 'close でバッファのデータが永続化される' do
@@ -73,10 +73,7 @@ describe Jiji::Model::Logging::Log do
     logger.info('x' * 1024 * 2)
 
     log2 = Jiji::Model::Logging::Log.new(time_source)
-    expect(log2.count).to be 1
-    log_data = log2.get(0)
-    expect(log_data.timestamp).to eq Time.at(0)
-    expect(etract_log_content(log_data.body).length).to eq 0
+    expect(log2.count).to be 0
 
     logger.close
     expect(log2.count).to be 1
@@ -91,6 +88,7 @@ describe Jiji::Model::Logging::Log do
         time_source.set(Time.at(i * 10))
         logger.info('x' * 1024 * 2)
       end
+      logger.close
 
       expect(log.count).to be 3
       log_data = log.get(0)
@@ -126,6 +124,8 @@ describe Jiji::Model::Logging::Log do
       time_source.set(Time.at(i * 100))
       logger.info('x' * 1024 * 20)
     end
+    logger.close
+
     expect(log.count).to be 3
 
     log.delete_before(Time.at(4 * 100 - 1))

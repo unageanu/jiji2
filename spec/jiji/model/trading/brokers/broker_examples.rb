@@ -1,6 +1,5 @@
 
 shared_examples 'brokerの基本操作ができる' do
-
   it 'rate,pairが取得できる' do
     pairs = broker.pairs
     expect(pairs.length).to eq 3

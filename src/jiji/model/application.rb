@@ -16,8 +16,8 @@ module Jiji::Model
     needs :migrator
 
     def setup
-      @index_builder.create_indexes
       @migrator.migrate
+      @index_builder.create_indexes
       @rmt.setup
       @backtest_repository.load
     end

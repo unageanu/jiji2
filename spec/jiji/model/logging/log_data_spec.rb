@@ -35,28 +35,6 @@ describe Jiji::Model::Logging::LogData do
     })
   end
 
-  it 'サイズが既定値を超えると、自動保存される' do
-    data = Jiji::Model::Logging::LogData.create(Time.at(100))
-    expect(count).to be 0
-
-    data << 'x' * 1024
-    expect(count).to be 0
-
-    data << 'x' * 1024
-    expect(count).to be 0
-
-    7.times { data << 'x' * 1024 }
-    expect(count).to be 0
-
-    data << 'x' * 1024
-    expect(count).to be 1
-
-    loaded = Jiji::Model::Logging::LogData.find(data._id)
-    expect(loaded.backtest_id).to be nil
-    expect(loaded.size).to eq 10 * 1024
-    expect(loaded.body.length).to eq 10
-  end
-
   it 'サイズが100Kを超えると、full?がtrueを返す' do
     data = Jiji::Model::Logging::LogData.create(Time.at(100))
     expect(data.full?).to be false
@@ -66,11 +44,6 @@ describe Jiji::Model::Logging::LogData do
 
     data << 'x' * 1024
     expect(data.full?).to be true
-
-    loaded = Jiji::Model::Logging::LogData.find(data._id)
-    expect(loaded.backtest_id).to be nil
-    expect(loaded.size).to eq 100 * 1024
-    expect(loaded.body.length).to eq 100
   end
 
   def count

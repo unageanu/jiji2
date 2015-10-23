@@ -13,7 +13,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
   let(:agent_setting) do
     data_builder.register_agent_setting
   end
-  
+
   before(:example) do
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
     @provider     = @container.lookup(:securities_provider)

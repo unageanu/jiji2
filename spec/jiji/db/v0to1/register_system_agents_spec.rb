@@ -5,7 +5,7 @@ require 'jiji/test/test_configuration'
 describe Jiji::Db::RegisterSystemAgents do
   include_context 'use container'
 
-  let(:script) { container.lookup(:v0to1_register_system_agent) }
+  let(:script) { container.lookup(:v0to1_register_system_agents) }
   let(:agent_registry) { container.lookup(:agent_registry) }
 
   it '#id' do

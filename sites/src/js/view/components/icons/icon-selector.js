@@ -70,10 +70,8 @@ export default class IconSelector extends AbstractComponent  {
         <LoadingImage left={-20}/>
       </div>;
     } else {
-      const error = this.state.error
-        ? <div className="error">{this.state.error}</div>: null
       return <Dropzone onDrop={this.onDrop.bind(this)} className="drop-area">
-        {error}
+        {this.createErrorContent(this.state.error)}
         <div>アイコンを追加したい場合は、画像をここにドロップしてください。</div>
         <ul>
           <li>png/jpg/gif形式の画像を登録できます。</li>

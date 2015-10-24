@@ -43,4 +43,8 @@ export default class AbstractComponent extends React.Component {
     this.observables.add(observable);
   }
 
+  createErrorContent(error) {
+    return error ? <div className="error">{error}</div> : null;
+  }
+
 }

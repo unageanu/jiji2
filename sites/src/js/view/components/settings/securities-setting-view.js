@@ -52,9 +52,7 @@ export default class SecuritiesSettingView extends AbstractComponent {
             {activeSecuritiesConfigurator}
           </div>
           <div className="buttons">
-            {
-              this.state.error ? <div className="error">{this.state.error}</div> : null
-            }
+            {this.createErrorContent(this.state.error)}
             <RaisedButton
               label="設定"
               primary={true}

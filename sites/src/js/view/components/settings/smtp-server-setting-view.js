@@ -55,9 +55,7 @@ export default class SMTPServerSettingView extends AbstractComponent {
         <div className="setting-body">
           {this.createInputFields()}
           <div className="buttons">
-            {
-              this.state.error ? <div className="error">{this.state.error}</div> : null
-            }
+            {this.createErrorContent(this.state.error)}
             <RaisedButton
               label="テストメール送信"
               disabled={this.state.isSaving}

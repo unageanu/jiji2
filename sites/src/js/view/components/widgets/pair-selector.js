@@ -22,12 +22,9 @@ export default class PairSelector extends AbstractComponent  {
   }
 
   render() {
-    const error = this.state.pairNamesError
-      ? <div className="error">{this.state.pairNamesError}</div>
-      : null;
     return (
       <div className="pair-selector">
-        {error}
+        {this.createErrorContent(this.state.pairNamesError)}
         <div className="selector">
           {this.createSelectors()}
         </div>

@@ -24,11 +24,6 @@ export default class RangeSelector extends AbstractComponent {
   }
 
   render() {
-    const error = this.state.startTimeError || this.state.endTimeError
-      ? <div className="error">
-          {this.state.startTimeError} {this.state.endTimeError}
-        </div>
-      : null;
     return (
       <div className="range-selector">
         <div className="selector">
@@ -36,7 +31,8 @@ export default class RangeSelector extends AbstractComponent {
         <span className="separator">～</span>
         {this.createDatePicker("endTime", "終了", this.state.endTime)}
         </div>
-        {error}
+        {this.createErrorContent(
+          this.state.startTimeError || this.state.endTimeError)}
       </div>
     );
   }

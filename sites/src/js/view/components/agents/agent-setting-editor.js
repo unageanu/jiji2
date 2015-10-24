@@ -28,15 +28,12 @@ export default class AgentSettingEditor extends AbstractComponent {
   }
 
   render() {
-    const error  = this.state.agentSettingError
-      ? <div className="error">{this.state.agentSettingError}</div>
-      : null
     const menu   = !this.props.readOnly
       ? <AgentSettingEditorMenu model={this.props.model} />
       : null;
     return (
       <div className="agent-setting-editor">
-        {error}
+        {this.createErrorContent(this.state.agentSettingError)}
         <div className="parent">
           <div className="agent-list">
             {menu}

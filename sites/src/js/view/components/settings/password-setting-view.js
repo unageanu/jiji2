@@ -86,9 +86,7 @@ export default class PasswordSettingView extends AbstractComponent {
         </TextField>
       </div>
       <div className="buttons">
-        {
-          this.state.error ? <div className="error">{this.state.error}</div> : null
-        }
+        {this.createErrorContent(this.state.error)}
         <RaisedButton
           label="変更"
           primary={true}

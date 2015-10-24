@@ -94,7 +94,7 @@ export default class AgentSourceEditor extends AbstractComponent {
 
   createErrorElement() {
     if (this.state.editTarget && this.state.editTarget.status === "error") {
-      return <div className="error">{this.state.editTarget.error}</div>;
+      return this.createErrorContent(this.state.editTarget.error);
     } else {
       return null;
     }

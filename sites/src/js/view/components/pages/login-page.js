@@ -155,7 +155,7 @@ export default class LoginPage extends AbstractPage {
             ※確認のため、新しいパスワードを再入力してください。
           </div>
         </div>
-        {this.createError(this.state.passwordResettingError)}
+        {this.createErrorContent(this.state.passwordResettingError)}
         <div className="buttons">
           <RaisedButton
             label="パスワードを再設定する"
@@ -196,9 +196,6 @@ export default class LoginPage extends AbstractPage {
       this.state.newPassword1, this.state.newPassword2);
   }
 
-  createError(error) {
-    return error ? <div className="error">{error}</div> : null;
-  }
   createLoginPanelBottomContent() {
     return null;
   }

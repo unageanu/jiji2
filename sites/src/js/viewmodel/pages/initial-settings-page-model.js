@@ -16,6 +16,8 @@ export default class InitialSettingsPageModel extends Observable {
     this.setProperty("isInitialized", false);
     this.setProperty("phase", "none");
     this.error = null;
+    this.acceptLicence = false;
+    this.acceptionError = null;
   }
 
   postCreate() {
@@ -30,6 +32,10 @@ export default class InitialSettingsPageModel extends Observable {
   }
 
   initialize() {
+    this.error = null;
+    this.acceptLicence = false;
+    this.acceptionError = null;
+
     const d = this.initialSettingService.isInitialized();
     d.done((result) => {
       this.setProperty("isInitialized", result.initialized);
@@ -39,6 +45,11 @@ export default class InitialSettingsPageModel extends Observable {
   }
 
   changePhaseToSetMailAddressAndPassword() {
+    if ( !this.acceptLicence ) {
+      this.acceptionError = "利用規約に同意してください";
+      return;
+    }
+    this.acceptionError = null;
     this.setProperty("phase", "mailAddressAndPassword");
   }
   changePhaseToSetSecurities() {
@@ -110,5 +121,18 @@ export default class InitialSettingsPageModel extends Observable {
   }
   set error(error) {
     this.setProperty("error", error);
+  }
+
+  get acceptLicence() {
+    return this.getProperty("acceptLicence");
+  }
+  set acceptLicence(acceptLicence) {
+    this.setProperty("acceptLicence", acceptLicence);
+  }
+  get acceptionError() {
+    return this.getProperty("acceptionError");
+  }
+  set acceptionError(acceptionError) {
+    this.setProperty("acceptionError", acceptionError);
   }
 }

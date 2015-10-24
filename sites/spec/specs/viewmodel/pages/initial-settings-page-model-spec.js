@@ -23,6 +23,8 @@ describe("InitialSettingsPageModel", () => {
       expect(model.isInitialized).toEqual(true);
       expect(model.phase).toEqual("none");
       expect(model.error).toEqual(null);
+      expect(model.acceptLicence).toEqual(false);
+      expect(model.acceptionError).toEqual(null);
       expect(model.sessionManager.getToken()).toEqual(null);
     });
     it("未初期化の場合", () => {
@@ -33,6 +35,8 @@ describe("InitialSettingsPageModel", () => {
       expect(model.isInitialized).toEqual(false);
       expect(model.phase).toEqual("welcome");
       expect(model.error).toEqual(null);
+      expect(model.acceptLicence).toEqual(false);
+      expect(model.acceptionError).toEqual(null);
       expect(model.sessionManager.getToken()).toEqual(null);
     });
   });
@@ -46,11 +50,25 @@ describe("InitialSettingsPageModel", () => {
       xhrManager.requests = [];
     });
 
-    it("メールアドレス、パスワード設定画面に移動できる", () => {
+    it("利用規約に同意した場合、メールアドレス、パスワード設定画面に移動できる", () => {
+      model.acceptLicence = true;
       model.startSetting();
       expect(model.isInitialized).toEqual(false);
       expect(model.phase).toEqual("mailAddressAndPassword");
       expect(model.error).toEqual(null);
+      expect(model.acceptLicence).toEqual(true);
+      expect(model.acceptionError).toEqual(null);
+      expect(model.mailAddressSetting.mailAddress).toEqual(undefined);
+      expect(model.sessionManager.getToken()).toEqual(null);
+    });
+
+    it("利用規約に同意していない場合、メッセージが表示される", () => {
+      model.startSetting();
+      expect(model.isInitialized).toEqual(false);
+      expect(model.phase).toEqual("welcome");
+      expect(model.error).toEqual(null);
+      expect(model.acceptLicence).toEqual(false);
+      expect(model.acceptionError).toEqual("利用規約に同意してください");
       expect(model.mailAddressSetting.mailAddress).toEqual(undefined);
       expect(model.sessionManager.getToken()).toEqual(null);
     });
@@ -62,6 +80,7 @@ describe("InitialSettingsPageModel", () => {
       xhrManager.requests[0].resolve({
         initialized: false
       });
+      model.acceptLicence = true;
       model.startSetting();
       xhrManager.requests = [];
     });
@@ -148,6 +167,7 @@ describe("InitialSettingsPageModel", () => {
       xhrManager.requests[0].resolve({
         initialized: false
       });
+      model.acceptLicence = true;
       model.startSetting();
       model.setMailAddressAndPassword("foo@var.com", "11111", "11111");
       xhrManager.requests[1].resolve({
@@ -265,6 +285,7 @@ describe("InitialSettingsPageModel", () => {
       xhrManager.requests[0].resolve({
         initialized: false
       });
+      model.acceptLicence = true;
       model.startSetting();
       model.setMailAddressAndPassword("foo@var.com", "11111", "11111");
       xhrManager.requests[1].resolve({
@@ -393,6 +414,7 @@ describe("InitialSettingsPageModel", () => {
       xhrManager.requests[0].resolve({
         initialized: false
       });
+      model.acceptLicence = true;
       model.startSetting();
       model.setMailAddressAndPassword("foo@var.com", "11111", "11111");
       xhrManager.requests[1].resolve({

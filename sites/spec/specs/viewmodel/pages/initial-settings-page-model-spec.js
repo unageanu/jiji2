@@ -132,6 +132,7 @@ describe("InitialSettingsPageModel", () => {
       xhrManager.requests[0].reject({
         statusCode: 400
       });
+      expect(xhrManager.requests.length).toEqual(1);
       expect(model.isInitialized).toEqual(false);
       expect(model.phase).toEqual("mailAddressAndPassword");
       expect(model.error).toEqual("値が正しく入力されていません");
@@ -247,6 +248,7 @@ describe("InitialSettingsPageModel", () => {
       xhrManager.requests[0].reject({
         statusCode: 400
       });
+      expect(xhrManager.requests.length).toEqual(1);
 
       expect(model.isInitialized).toEqual(true);
       expect(model.phase).toEqual("securities");

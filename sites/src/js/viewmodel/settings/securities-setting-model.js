@@ -54,6 +54,7 @@ export default class SecuritiesSettingModel extends Observable {
       (error)  => {
         this.isSaving = false;
         this.handleError(error);
+        throw error;
       });
   }
 

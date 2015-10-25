@@ -46,7 +46,7 @@ export default class TradingSummaryView extends AbstractComponent {
   createContnet() {
     const summary = this.state.summary;
     if (!summary) {
-      return <div className="center-information">
+      return <div className="center-information loading">
         <LoadingImage left={-20}/>
       </div>;
     }

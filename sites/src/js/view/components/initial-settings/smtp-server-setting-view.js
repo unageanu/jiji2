@@ -50,7 +50,7 @@ export default class SMTPServerSettingView extends Base {
               style={{height: "50px"}}
             />
           </span>
-          <span className="loading">
+          <span className="loading-for-button-action">
             {this.state.isSaving ? <LoadingImage size={20} /> : null}
           </span>
         </div>

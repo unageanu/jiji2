@@ -36,7 +36,7 @@ export default class BacktestBuilder extends AbstractComponent {
 
   render() {
     if (this.state.loading) {
-      return <div className="backtest-builder center-information">
+      return <div className="backtest-builder center-information loading">
         <LoadingImage left={-20}/>
       </div>;
     }
@@ -49,7 +49,7 @@ export default class BacktestBuilder extends AbstractComponent {
             disabled={this.state.isSaving}
             onClick={this.registerBacktest.bind(this)}
           />
-          <span className="loading">
+          <span className="loading-for-button-action">
             {this.state.isSaving ? <LoadingImage size={20} /> : null}
           </span>
         </div>

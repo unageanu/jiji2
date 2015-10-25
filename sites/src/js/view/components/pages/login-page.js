@@ -118,8 +118,8 @@ export default class LoginPage extends AbstractPage {
             disabled={this.state.isSendingMail}
             onClick={this.sendPasswordResettingMail.bind(this)}
           />
-          <span className="loading">
-            {this.state.isSendingMail ? <LoadingImage size={20} /> : null}
+          <span className="loading-for-button-action">
+            {!this.state.isSendingMail ? <LoadingImage size={20} /> : null}
           </span>
         </div>
         <div className="message">{this.state.resettinMailSentMessage}</div>
@@ -163,7 +163,7 @@ export default class LoginPage extends AbstractPage {
             disabled={this.state.isResettingPassword}
             onClick={this.resetPassword.bind(this)}
           />
-          <span className="loading">
+          <span className="loading-for-button-action">
             {this.state.isResettingPassword ? <LoadingImage size={20} /> : null}
           </span>
         </div>

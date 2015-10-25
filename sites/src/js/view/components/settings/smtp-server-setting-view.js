@@ -69,7 +69,7 @@ export default class SMTPServerSettingView extends AbstractComponent {
                 onClick={this.save.bind(this)}
               />
             </span>
-            <span className="loading">
+            <span className="loading-for-button-action">
               {this.state.isSaving ? <LoadingImage size={20} /> : null}
             </span>
           </div>

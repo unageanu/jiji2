@@ -109,7 +109,7 @@ extends AbstractComponent {
             primary={true}
             style={{width:"300px", height: "50px"}}
           />
-          <span className="loading">
+          <span className="loading-for-button-action">
             {this.state.isSaving ? <LoadingImage size={20} /> : null}
           </span>
         </div>

@@ -48,7 +48,7 @@ export default class AgentSourceEditorMenu extends AbstractComponent {
           onClick={this.confirmRemove.bind(this)}>
           <FontIcon className="md-delete"/>
         </IconButton>
-        <span className="loading">{
+        <span className="loading-for-button-action">{
           this.state.isSaving
             ? <LoadingImage size={20} top={-6} />
             : null

@@ -32,7 +32,9 @@ export default class BacktestPropertiesView extends AbstractComponent {
 
   render() {
     const loading = this.state.deleting
-      ? <span className="loading"><LoadingImage size={20} left={-20} top={4} /></span>
+      ? <span className="loading-for-button-action">
+          <LoadingImage size={20} left={-20} top={4} />
+        </span>
       : null;
     return <div className="backtest-properties-view">
       <div className="buttons">

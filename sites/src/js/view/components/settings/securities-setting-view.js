@@ -59,7 +59,7 @@ export default class SecuritiesSettingView extends AbstractComponent {
               disabled={this.state.availableSecurities.length == 0 || this.state.isSaving}
               onClick={this.save.bind(this)}
             />
-            <span className="loading">
+            <span className="loading-for-button-action">
               {this.state.isSaving ? <LoadingImage size={20} /> : null}
             </span>
           </div>

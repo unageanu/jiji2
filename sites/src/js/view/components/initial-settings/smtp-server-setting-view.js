@@ -1,6 +1,7 @@
 import React                  from "react"
 import MUI                    from "material-ui"
 import Base                   from "../settings/smtp-server-setting-view"
+import LoadingImage           from "../widgets/loading-image"
 
 const RaisedButton = MUI.RaisedButton;
 const FlatButton   = MUI.FlatButton;
@@ -13,27 +14,46 @@ export default class SMTPServerSettingView extends Base {
 
   render() {
     return (
-      <div>
+      <div className="smtp-server-setting-view">
         <h3>SMTPサーバーの設定</h3>
-        <div>
+        <div className="description">
           メール送信時に使用するSMTPサーバーを設定してください。<br/>
           ※あとで設定することもできます。
         </div>
-        {this.createInputFields()}
-        <br/>
-        <RaisedButton
-          label="テストメール送信"
-          onClick={this.composeTestMail.bind(this)}
-        />
-        <RaisedButton
-          label="次へ"
-          onClick={this.next.bind(this)}
-        />
-        <FlatButton
-          label="スキップ"
-          onClick={this.skip.bind(this)}
-        />
-        <div className="error">{this.state.error}</div>
+        <div className="inputs">
+          {this.createInputFields()}
+        </div>
+        {this.createErrorContent(this.state.error)}
+        <div className="buttons">
+          <span className="button">
+            <RaisedButton
+              label="テストメール送信"
+              disabled={this.state.isSaving}
+              onClick={this.composeTestMail.bind(this)}
+              style={{width:"200px", height: "50px"}}
+            />
+          </span>
+          <span className="button">
+            <RaisedButton
+              label="設定して次へ"
+              primary={true}
+              disabled={this.state.isSaving}
+              onClick={this.next.bind(this)}
+              style={{width:"250px", height: "50px"}}
+            />
+          </span>
+          <span className="button">
+            <FlatButton
+              label="設定をスキップ"
+              disabled={this.state.isSaving}
+              onClick={this.skip.bind(this)}
+              style={{height: "50px"}}
+            />
+          </span>
+          <span className="loading">
+            {this.state.isSaving ? <LoadingImage size={20} /> : null}
+          </span>
+        </div>
       </div>
     );
   }

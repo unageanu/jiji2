@@ -1,9 +1,14 @@
 import React                  from "react"
 import MUI                    from "material-ui"
 import AbstractComponent      from "../widgets/abstract-component"
+import LoadingImage           from "../widgets/loading-image"
 
 const RaisedButton = MUI.RaisedButton;
 const TextField    = MUI.TextField;
+
+const keys = new Set([
+  "error", "isSaving"
+]);
 
 export default class MailaddressAndPasswordSettingView
 extends AbstractComponent {
@@ -16,7 +21,8 @@ extends AbstractComponent {
       password1:     null,
       password2:     null,
       passwordError: null,
-      error:         null
+      error:         null,
+      isSaving:      false
     };
   }
 
@@ -29,16 +35,14 @@ extends AbstractComponent {
     passwordSetting.addObserver("propertyChanged", (k, ev) => {
       if (ev.key === "error") this.setState({passwordError:ev.newValue});
     }, this);
-    this.props.model.addObserver("propertyChanged", (k, ev) => {
-      if (ev.key === "error") this.setState({error:ev.newValue});
-    }, this);
+    this.registerPropertyChangeListener(this.props.model, keys);
 
-    this.setState({
+    this.setState(Object.assign({
       mailError:     mailSetting.error,
-      passwordError: passwordSetting.error,
-      error:         this.props.model.error
-    });
+      passwordError: passwordSetting.error
+    }, this.collectInitialState(this.props.model, keys)));
   }
+
   componentWillUnmount() {
     this.props.model.mailAddressSetting.removeAllObservers(this);
     this.props.model.passwordSetting.removeAllObservers(this);
@@ -47,46 +51,68 @@ extends AbstractComponent {
 
   render() {
     return (
-      <div>
+      <div className="mailaddress-and-password-setting-view">
         <h3>メールアドレスとパスワードの設定</h3>
-        <div>
+        <div className="description">
           初めに、メールアドレスとシステムのログインパスワードを設定してください。
         </div>
-        <ul>
+        <ul className="description">
           <li>パスワードはシステムを利用する際に必要になります。</li>
           <li>
             メールアドレスは、パスワードを忘れて再設定するときに使用されます。
             必ず、メールを受信可能なアドレスを設定してください。
           </li>
         </ul>
-        <TextField
-           ref="mailAddress"
-           floatingLabelText="メールアドレス"
-           errorText={this.state.mailError}
-           onChange={(e) => this.setState({mailAddress: e.target.value}) }
-           value={this.state.mailAddress} /><br/>
-        <TextField
-            ref="newPassword1"
-            floatingLabelText="新しいパスワード"
-            onChange={(e) => this.setState({password1: e.target.value}) }
-            errorText={this.state.passwordError}
-            value={this.state.password1}>
-            <input type="password" />
-        </TextField><br/>
-        <TextField
-            ref="newPassword2"
-            floatingLabelText="新しいパスワード(確認のため、もう一度入力してください)"
-            onChange={(e) => this.setState({password2: e.target.value}) }
-            errorText={this.state.passwordError}
-            value={this.state.password2}>
-            <input type="password" />
-        </TextField>
-        <br/><br/>
-        <RaisedButton
-          label="次へ"
-          onClick={this.next.bind(this)}
-        />
-        <div className="error">{this.state.error}</div>
+        <div className="inputs">
+          <div className="mail-address">
+            <TextField
+               ref="mailAddress"
+               floatingLabelText="メールアドレス"
+               errorText={this.state.mailError}
+               onChange={(e) => this.setState({mailAddress: e.target.value}) }
+               value={this.state.mailAddress}
+               style={{ width: "100%" }}
+                />
+          </div>
+          <div className="password">
+            <TextField
+                ref="newPassword1"
+                floatingLabelText="パスワード"
+                onChange={(e) => this.setState({password1: e.target.value}) }
+                errorText={this.state.passwordError}
+                value={this.state.password1}
+                style={{ width: "100%" }}>
+                <input type="password" />
+            </TextField>
+          </div>
+          <div className="password">
+            <TextField
+                ref="newPassword2"
+                floatingLabelText="パスワード (確認用)"
+                onChange={(e) => this.setState({password2: e.target.value}) }
+                errorText={this.state.passwordError}
+                value={this.state.password2}
+                style={{ width: "100%" }}>
+                <input type="password" />
+            </TextField>
+            <div className="description">
+              ※確認のため、新しいパスワードを再入力してください。
+            </div>
+          </div>
+        </div>
+        {this.createErrorContent(this.state.error)}
+        <div className="buttons">
+          <RaisedButton
+            label="次へ"
+            onClick={this.next.bind(this)}
+            disabled={this.state.loading}
+            primary={true}
+            style={{width:"300px", height: "50px"}}
+          />
+          <span className="loading">
+            {this.state.isSaving ? <LoadingImage size={20} /> : null}
+          </span>
+        </div>
       </div>
     );
   }

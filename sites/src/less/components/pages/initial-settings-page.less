@@ -1,0 +1,69 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.initial-settings-page {
+  padding: @grid*3;
+
+  .card {
+    padding:@grid*8;
+    width: 800px;
+    margin: 0 auto;
+  }
+
+  h3 {
+    color: @font-color-normal;
+    font-size: 20px;
+    border-bottom: 1px solid @border-color-dark;
+    padding-bottom: @grid;
+    margin-bottom: @grid*3;
+  }
+
+  .description {
+    color: @font-color-normal;
+    font-size: @font-size-normal;
+  }
+  ul.description {
+    color: @font-color-normal;
+    font-size: @font-size-small;
+  }
+
+  .inputs {
+    margin: 0 0 @grid*4 0;
+  }
+
+  .buttons {
+    padding-top: @grid*4;
+    text-align: center;
+  }
+
+  .welcome-view {
+    .description {
+      font-size: 20px;
+    }
+    .license {
+      background-color: @background-color-dark;
+      padding: @grid*3;
+      margin-top: @grid*4;
+    }
+    .accept-license {
+      margin-top: @grid;
+    }
+  }
+
+  .mailaddress-and-password-setting-view {
+    .inputs .description {
+      font-size: @font-size-small;
+      color: @font-color-light;
+    }
+  }
+  .smtp-server-setting-view {
+    .buttons {
+      .button {
+        margin-left: @grid;
+      }
+      .button:nth-child(1) {
+        margin-left: 0;
+      }
+    }
+  }
+}

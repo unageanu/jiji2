@@ -29,7 +29,7 @@ export default class SecuritiesSettingView extends AbstractComponent {
     const model = this.model();
     this.registerPropertyChangeListener(model, keys);
     let state = this.collectInitialState(model, keys);
-    state.selectedIndex = this.getSelectedSecuritiesIndex(
+    state.selectedSecuritiesIndex = this.getSelectedSecuritiesIndex(
       model.activeSecuritiesId, model.availableSecurities);
     this.setState(state);
   }

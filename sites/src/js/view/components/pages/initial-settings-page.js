@@ -7,6 +7,7 @@ import SecuritiesSettingView  from "../initial-settings/securities-setting-view"
 import SMTPServerSettingView  from "../initial-settings/smtp-server-setting-view"
 import SettingFinishedView    from "../initial-settings/setting-finished-view"
 
+const Card = MUI.Card;
 
 export default class InitialSettingsPage extends AbstractPage {
 
@@ -32,8 +33,10 @@ export default class InitialSettingsPage extends AbstractPage {
 
   render() {
     return (
-      <div>
-        {this.createBody()}
+      <div className="initial-settings-page">
+        <Card className="card">
+          {this.createBody()}
+        </Card>
       </div>
     );
   }

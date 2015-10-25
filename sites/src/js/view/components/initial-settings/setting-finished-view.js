@@ -14,15 +14,25 @@ export default class SettingFinishedView extends AbstractComponent {
 
   render() {
     return (
-      <div>
-        <div>
-          設定が完了しました。お疲れ様でした。
-          詳しい使い方はこちらをご覧ください。
+      <div className="setting-finished-view">
+        <h3>完了</h3>
+        <div className="description">
+          すべての設定が完了しました。
         </div>
-        <RaisedButton
-          label="利用を開始する"
-          onClick={() => this.props.model.exit()}
-        />
+        <ul className="description">
+          <li>システムの詳しい使い方は<a href="" target="_blank">こちら</a>をご覧ください。</li>
+          <li>
+            モバイル版アプリも、ぜひご利用ください。
+          </li>
+        </ul>
+        <div className="buttons">
+          <RaisedButton
+            label="利用を開始する"
+            onClick={() => this.props.model.exit()}
+            primary={true}
+            style={{width:"300px", height: "50px"}}
+          />
+        </div>
       </div>
     );
   }

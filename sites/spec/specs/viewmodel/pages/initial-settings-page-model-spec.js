@@ -23,6 +23,7 @@ describe("InitialSettingsPageModel", () => {
       expect(model.isInitialized).toEqual(true);
       expect(model.phase).toEqual("none");
       expect(model.error).toEqual(null);
+      expect(model.isSaving).toEqual(false);
       expect(model.acceptLicence).toEqual(false);
       expect(model.acceptionError).toEqual(null);
       expect(model.sessionManager.getToken()).toEqual(null);
@@ -35,6 +36,7 @@ describe("InitialSettingsPageModel", () => {
       expect(model.isInitialized).toEqual(false);
       expect(model.phase).toEqual("welcome");
       expect(model.error).toEqual(null);
+      expect(model.isSaving).toEqual(false);
       expect(model.acceptLicence).toEqual(false);
       expect(model.acceptionError).toEqual(null);
       expect(model.sessionManager.getToken()).toEqual(null);
@@ -56,6 +58,7 @@ describe("InitialSettingsPageModel", () => {
       expect(model.isInitialized).toEqual(false);
       expect(model.phase).toEqual("mailAddressAndPassword");
       expect(model.error).toEqual(null);
+      expect(model.isSaving).toEqual(false);
       expect(model.acceptLicence).toEqual(true);
       expect(model.acceptionError).toEqual(null);
       expect(model.mailAddressSetting.mailAddress).toEqual(undefined);
@@ -67,6 +70,7 @@ describe("InitialSettingsPageModel", () => {
       expect(model.isInitialized).toEqual(false);
       expect(model.phase).toEqual("welcome");
       expect(model.error).toEqual(null);
+      expect(model.isSaving).toEqual(false);
       expect(model.acceptLicence).toEqual(false);
       expect(model.acceptionError).toEqual("利用規約に同意してください");
       expect(model.mailAddressSetting.mailAddress).toEqual(undefined);
@@ -87,6 +91,8 @@ describe("InitialSettingsPageModel", () => {
 
     it("メールアドレス、パスワードを設定できる", () => {
       model.setMailAddressAndPassword("foo@var.com", "11111", "11111");
+      expect(model.isSaving).toEqual(true);
+
       xhrManager.requests[0].resolve({
         token: "abcdef"
       });
@@ -106,6 +112,7 @@ describe("InitialSettingsPageModel", () => {
       expect(model.isInitialized).toEqual(true);
       expect(model.phase).toEqual("securities");
       expect(model.error).toEqual(null);
+      expect(model.isSaving).toEqual(false);
       expect(model.sessionManager.getToken()).toEqual("abcdef");
       expect(model.securitiesSetting.availableSecurities).toEqual([
         { securitiesId: "aa", name:"aaa", id: "aa", text:"aaa" },
@@ -124,6 +131,7 @@ describe("InitialSettingsPageModel", () => {
       expect(model.isInitialized).toEqual(false);
       expect(model.phase).toEqual("mailAddressAndPassword");
       expect(model.error).toEqual(null);
+      expect(model.isSaving).toEqual(false);
       expect(model.sessionManager.getToken()).toEqual(null);
       expect(model.mailAddressSetting.error).toEqual("メールアドレスの形式が不正です");
       expect(model.passwordSetting.error).toEqual(null);
@@ -133,6 +141,7 @@ describe("InitialSettingsPageModel", () => {
       expect(model.isInitialized).toEqual(false);
       expect(model.phase).toEqual("mailAddressAndPassword");
       expect(model.error).toEqual(null);
+      expect(model.isSaving).toEqual(false);
       expect(model.sessionManager.getToken()).toEqual(null);
       expect(model.mailAddressSetting.error).toEqual(null);
       expect(model.passwordSetting.error).toEqual("パスワードが一致していません");
@@ -142,12 +151,15 @@ describe("InitialSettingsPageModel", () => {
       expect(model.isInitialized).toEqual(false);
       expect(model.phase).toEqual("mailAddressAndPassword");
       expect(model.error).toEqual(null);
+      expect(model.isSaving).toEqual(false);
       expect(model.sessionManager.getToken()).toEqual(null);
       expect(model.mailAddressSetting.error).toEqual("メールアドレスを入力してください");
       expect(model.passwordSetting.error).toEqual("パスワードを入力してください");
     });
     it("通信エラーの場合、エラーが表示される", () => {
       model.setMailAddressAndPassword("foo@var.com", "11111", "11111");
+      expect(model.isSaving).toEqual(true);
+
       xhrManager.requests[0].reject({
         statusCode: 400
       });
@@ -155,6 +167,7 @@ describe("InitialSettingsPageModel", () => {
       expect(model.isInitialized).toEqual(false);
       expect(model.phase).toEqual("mailAddressAndPassword");
       expect(model.error).toEqual("値が正しく入力されていません");
+      expect(model.isSaving).toEqual(false);
       expect(model.sessionManager.getToken()).toEqual(null);
       expect(model.mailAddressSetting.error).toEqual(null);
       expect(model.passwordSetting.error).toEqual(null);

@@ -15,6 +15,7 @@ export default class InitialSettingsPageModel extends Observable {
 
     this.setProperty("isInitialized", false);
     this.setProperty("phase", "none");
+    this.isSaving = false;
     this.error = null;
     this.acceptLicence = false;
     this.acceptionError = null;
@@ -35,6 +36,7 @@ export default class InitialSettingsPageModel extends Observable {
     this.error = null;
     this.acceptLicence = false;
     this.acceptionError = null;
+    this.isSaving = false;
 
     const d = this.initialSettingService.isInitialized();
     d.done((result) => {
@@ -75,14 +77,18 @@ export default class InitialSettingsPageModel extends Observable {
       password1, password2)) {
         return;
     }
+    this.isSaving = true;
     this.initialSettingService.initialize(mailAddress, password1).then(
       (result) => {
+        this.isSaving = false;
         this.setProperty("isInitialized", true);
         this.sessionManager.setToken(result.token);
         this.changePhaseToSetSecurities();
       }, (error)  => {
+        this.isSaving = false;
         this.error = ErrorMessages.getMessageFor(error);
         error.preventDefault = true;
+        throw error;
       });
   }
   setSecurities( configurations ) {
@@ -134,5 +140,11 @@ export default class InitialSettingsPageModel extends Observable {
   }
   set acceptionError(acceptionError) {
     this.setProperty("acceptionError", acceptionError);
+  }
+  get isSaving() {
+    return this.getProperty("isSaving");
+  }
+  set isSaving(isSaving) {
+    this.setProperty("isSaving", isSaving);
   }
 }

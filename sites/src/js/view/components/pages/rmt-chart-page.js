@@ -3,6 +3,8 @@ import MUI              from "material-ui"
 import AbstractPage     from "./abstract-page"
 import ChartView        from "../chart/chart-view"
 
+const Card = MUI.Card;
+
 export default class RMTChartPage extends AbstractPage {
 
   constructor(props) {
@@ -12,10 +14,12 @@ export default class RMTChartPage extends AbstractPage {
 
   render() {
     return (
-      <div className="rmt-chart-page">
-        <ChartView
-          model={this.model().chart}
-          size={this.calculateChartSize()}/>
+      <div className="rmt-chart-page page">
+        <Card className="main-card">
+          <ChartView
+            model={this.model().chart}
+            size={this.calculateChartSize()}/>
+        </Card>
       </div>
     );
   }
@@ -23,7 +27,7 @@ export default class RMTChartPage extends AbstractPage {
   calculateChartSize() {
     const windowSize = this.context.windowResizeManager.windowSize;
     return {
-      w: windowSize.w - 288 - 16*2,
+      w: windowSize.w - 288 - 16*2 - 16*2 -16,
       h: windowSize.h - 100 - 16*2 - 250,
       profitAreaHeight:100,
       graphAreaHeight:100

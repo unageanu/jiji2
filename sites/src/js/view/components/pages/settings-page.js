@@ -22,8 +22,8 @@ export default class SettingsPage extends AbstractPage {
 
   render() {
     return (
-      <div className="settings-page">
-        <Card className="card">
+      <div className="settings-page page">
+        <Card className="main-card">
           <div className="item">
             <MailAddressSettingView model={this.model().mailAddressSetting} />
           </div>

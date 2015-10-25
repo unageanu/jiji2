@@ -5,17 +5,20 @@
 @list-width:   @grid * 45;
 
 .agents-page {
-  .two-column-layout-parent(@list-width);
-
-  .agent-list-panel {
-    .two-column-layout-left(@list-width);
-
-    .agent-source-list {
-      margin-top: @grid;
+  .main-card {
+     > div {
+       .two-column-layout-parent(@list-width);
     }
-  }
+    .agent-list-panel {
+      .two-column-layout-left(@list-width);
 
-  .agent-editor-panel {
-    .two-column-layout-right(@list-width);
+      .agent-source-list {
+        margin-top: @grid;
+      }
+    }
+
+    .agent-editor-panel {
+      .two-column-layout-right(@list-width);
+    }
   }
 }

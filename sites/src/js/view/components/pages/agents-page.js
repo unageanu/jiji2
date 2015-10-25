@@ -9,6 +9,8 @@ import "brace/mode/ruby"
 import "brace/theme/github"
 import "brace/ext/searchbox"
 
+const Card = MUI.Card;
+
 export default class AgentsPage extends AbstractPage {
 
   constructor(props) {
@@ -23,14 +25,16 @@ export default class AgentsPage extends AbstractPage {
 
   render() {
     return (
-      <div className="agents-page">
-        <div className="agent-list-panel">
-          <AgentSourceListMenu model={this.model().agentSourceEditor} />
-          <AgentSourceList model={this.model().agentSourceEditor}/>
-        </div>
-        <div className="agent-editor-panel">
-          <AgentSourceEditor model={this.model().agentSourceEditor} />
-        </div>
+      <div className="agents-page page">
+        <Card className="main-card">
+          <div className="agent-list-panel">
+            <AgentSourceListMenu model={this.model().agentSourceEditor} />
+            <AgentSourceList model={this.model().agentSourceEditor}/>
+          </div>
+          <div className="agent-editor-panel">
+            <AgentSourceEditor model={this.model().agentSourceEditor} />
+          </div>
+        </Card>
       </div>
     );
   }

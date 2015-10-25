@@ -19,8 +19,8 @@ export default class RMTTradingSummaryPage extends AbstractPage {
 
   render() {
     return (
-      <div className="rmt-trading-summary-page">
-        <Card>
+      <div className="rmt-trading-summary-page page">
+        <Card className="main-card">
           <TradingSummaryView model={this.model().tradingSummary} />
         </Card>
       </div>

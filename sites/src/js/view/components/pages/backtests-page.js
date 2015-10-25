@@ -28,8 +28,8 @@ export default class BacktestsPage extends AbstractPage {
   render() {
     const model      = this.model();
     return (
-      <div className="backtests-page">
-        <Card className="card">
+      <div className="backtests-page page">
+        <Card className="main-card">
           <BacktestList model={model} />
           <BacktestDetailsPanel model={model} />
         </Card>

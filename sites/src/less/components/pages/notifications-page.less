@@ -5,22 +5,24 @@
 @notifications-list-width:   @grid * 55;
 
 .notifications-page {
-  .two-column-layout-parent(@notifications-list-width);
+  .main-card {
+    .two-column-layout-parent(@notifications-list-width);
 
-  .list-panel {
-    .two-column-layout-left(@notifications-list-width);
+    .list-panel {
+      .two-column-layout-left(@notifications-list-width);
 
-    .notification-list {
-      margin-top: @grid;
+      .notification-list {
+        margin-top: @grid;
+      }
     }
-  }
 
-  .details-panel {
-    .two-column-layout-right(@notifications-list-width);
+    .details-panel {
+      .two-column-layout-right(@notifications-list-width);
 
-    .card {
-      margin: @grid*2;
-      min-height: 100px;
+      .card {
+        margin: @grid*2;
+        min-height: 100px;
+      }
     }
   }
 }

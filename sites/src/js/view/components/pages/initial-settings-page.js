@@ -33,8 +33,8 @@ export default class InitialSettingsPage extends AbstractPage {
 
   render() {
     return (
-      <div className="initial-settings-page">
-        <Card className="card">
+      <div className="initial-settings-page page">
+        <Card className="main-card">
           {this.createBody()}
         </Card>
       </div>

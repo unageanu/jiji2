@@ -7,8 +7,8 @@ import AgentSourceEditorMenu from "./agent-source-editor-menu"
 
 const TextField    = MUI.TextField;
 
-const outerWidth  = 360+288+16*3;
-const outerHeight = 100+77+72+16*2;
+const outerWidth  = 360+288+16*3+16*2;
+const outerHeight = 100+77+72+16*2+16*2;
 
 
 const keys = new Set([

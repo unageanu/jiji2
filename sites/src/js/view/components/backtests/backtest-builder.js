@@ -48,6 +48,7 @@ export default class BacktestBuilder extends AbstractComponent {
             primary={true}
             disabled={this.state.isSaving}
             onClick={this.registerBacktest.bind(this)}
+            style={{width:"300px"}}
           />
           <span className="loading-for-button-action">
             {this.state.isSaving ? <LoadingImage size={20} /> : null}

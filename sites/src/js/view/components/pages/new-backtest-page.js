@@ -5,6 +5,8 @@ import DateFormatter      from "../../../viewmodel/utils/date-formatter"
 import BacktestBuilder    from "../backtests/backtest-builder"
 
 
+const Card = MUI.Card;
+
 export default class NewBacktestPage extends AbstractPage {
 
   constructor(props) {
@@ -14,8 +16,10 @@ export default class NewBacktestPage extends AbstractPage {
 
   render() {
       return (
-      <div className="new-backtest">
-         <BacktestBuilder model={this.backtestBuilder()} />
+      <div className="new-backtest page">
+        <Card className="main-card">
+          <BacktestBuilder model={this.backtestBuilder()} />
+        </Card>
       </div>
     );
   }

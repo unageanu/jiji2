@@ -39,8 +39,8 @@ export default class LoginPage extends AbstractPage {
   }
 
   render() {
-    return <div className="login-page">
-      <Card className="card">
+    return <div className="login-page page">
+      <Card className="main-card">
         {
           !this.state.showPasswordResetter
             ? this.createLoginPanel()

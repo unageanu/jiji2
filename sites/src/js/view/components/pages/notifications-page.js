@@ -25,25 +25,25 @@ export default class NotificationsPage extends AbstractPage {
 
   render() {
     return (
-      <div className="notifications-page">
-        <div className="list-panel">
-          <NotificationListMenuBar
-            model={this.model().notificationsTable}
-            />
-          <NotificationList
-            model={this.model().notificationsTable}
-            selectionModel={this.model().selection}
-            autoFill={false}
-            emptyLabel="通知はありません"
-            selectable={true} />
-        </div>
-        <div className="details-panel">
-          <Card initiallyExpanded={true} className="card">
+      <div className="notifications-page page">
+        <Card className="main-card">
+          <div className="list-panel">
+            <NotificationListMenuBar
+              model={this.model().notificationsTable}
+              />
+            <NotificationList
+              model={this.model().notificationsTable}
+              selectionModel={this.model().selection}
+              autoFill={false}
+              emptyLabel="通知はありません"
+              selectable={true} />
+          </div>
+          <div className="details-panel">
             <NotificationDetailsView
               model={this.model().selection}
             />
-          </Card>
-        </div>
+          </div>
+        </Card>
       </div>
     );
   }

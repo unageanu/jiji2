@@ -2,17 +2,26 @@
 @import "../../sizes.less";
 
 .rmt-agent-setting-page {
-  padding: @grid*4;
+  .main-card {
+    padding: @grid*4;
 
-  .top-button {
-    padding: 0 0 @grid*4 0;
-    border-bottom: 1px solid @border-color-dark;
-    margin-bottom: @grid*2;
-
-    .saved-label {
-      color: @negative-color;
-      margin-left: @grid*2;
+    .description {
       font-size: @font-size-small;
+      color: @font-color-light;
+      margin: 0px 0px @grid*4 0px;
+      padding-left: 2em;
+    }
+
+    .top-button {
+      padding: 0 0 @grid*4 0;
+      border-bottom: 1px solid @border-color-dark;
+      margin-bottom: @grid*2;
+
+      .saved-label {
+        color: @negative-color;
+        margin-left: @grid*2;
+        font-size: @font-size-small;
+      }
     }
   }
 }

@@ -19,8 +19,8 @@ export default class RMTLogPage extends AbstractPage {
 
   render() {
     return (
-      <div className="rmt-log-page">
-        <Card className="card">
+      <div className="rmt-log-page page">
+        <Card className="main-card">
           <LogViewer model={this.model().logViewerModel} />
         </Card>
       </div>

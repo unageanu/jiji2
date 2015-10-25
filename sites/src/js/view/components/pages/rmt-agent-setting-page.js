@@ -5,6 +5,7 @@ import AgentSettingEditor from "../agents/agent-setting-editor"
 import LoadingImage       from "../widgets/loading-image"
 
 const RaisedButton = MUI.RaisedButton;
+const Card = MUI.Card;
 
 const keys = new Set([
   "isSaving", "isLoading", "savedLabel"
@@ -27,19 +28,33 @@ export default class RMTAgentSettingPage extends AbstractPage {
   }
 
   render() {
+    return (
+      <div className="rmt-agent-setting-page page">
+        <Card className="main-card">
+          {this.createContent()}
+        </Card>
+      </div>
+    );
+  }
+
+  createContent() {
     if (this.state.isLoading) {
       return <div className="center-information">
         <LoadingImage left={-20}/>
       </div>;
     }
     return (
-      <div className="rmt-agent-setting-page">
+      <div>
+        <ul className="description">
+          <li>リアルトレードで動作させるエージェントを設定します。</li>
+        </ul>
         <div className="top-button">
           <RaisedButton
             label="設定を反映"
             primary={true}
             disabled={this.state.isSaving}
             onClick={this.save.bind(this)}
+            style={{width:"200px"}}
           />
           <span className="saved-label">{
             this.state.isSaving

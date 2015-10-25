@@ -24,8 +24,8 @@ export default class RMTPositionsPage extends AbstractPage {
 
   render() {
     return (
-      <div className="rmt-positions-page">
-        <Card className="card">
+      <div className="rmt-positions-page page">
+        <Card className="main-card">
           <PositionDetailsView model={this.model().selection} />
           <PositionsTable
             model={this.model().positionTable}

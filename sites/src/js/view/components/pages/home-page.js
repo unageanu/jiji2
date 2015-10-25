@@ -21,7 +21,7 @@ export default class HomePage extends AbstractPage {
   render() {
     const model = this.model();
     return (
-      <div className="home-page">
+      <div className="home-page page">
         <AccountSummaryCard
           accounts={model.accounts}
           visibleTradingSummary={model.visibleTradingSummary}

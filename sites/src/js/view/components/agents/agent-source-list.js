@@ -30,20 +30,27 @@ export default class AgentSourceList extends AbstractComponent {
   }
 
   render() {
+    return <div className="agent-source-list list">
+      {this.createContent()}
+    </div>;
+  }
+
+  createContent() {
     if ( !this.state.sources ) {
       return <div className="center-information loading"><LoadingImage left={-20}/></div>;
+    }
+    if (this.state.sources.length <= 0) {
+      return <div className="center-information">ファイルはありません</div>;
     }
     const items = this.state.sources.map(
       (source) => this.createItemComponent(source));
     const buttonAction = () => this.editor().newSourceFile();
     return (
-      <div className="agent-source-list">
-        <List className="list" style={{
-          paddingTop:0,
-          backgroundColor: "rgba(0,0,0,0)"}}>
-          {items}
-        </List>
-      </div>
+      <List style={{
+        paddingTop:0,
+        backgroundColor: "rgba(0,0,0,0)"}}>
+        {items}
+      </List>
     );
   }
 

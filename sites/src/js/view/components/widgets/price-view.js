@@ -12,7 +12,9 @@ export default class PriceView extends React.Component {
 
   render() {
     const price = this.props.price || {};
-    const className = PriceUtils.resolvePriceClass(price.price);
+    const className = this.props.color
+      ? PriceUtils.resolvePriceClass(price.price)
+      : "";
     return <span className={"price-view " + className}>
       { this.props.iconPosition != "right" ? this.createIcon(price) : null}
       {this.createMark()}
@@ -39,11 +41,13 @@ PriceView.propTypes = {
   price: React.PropTypes.object,
   showMark: React.PropTypes.bool,
   showIcon: React.PropTypes.bool,
+  color: React.PropTypes.bool,
   iconPosition: React.PropTypes.string
 };
 PriceView.defaultProps = {
   price: null,
   showMark: true,
   showIcon: false,
+  color: false,
   iconPosition: "right"
 };

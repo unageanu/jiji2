@@ -6,7 +6,9 @@
 
 .notifications-page {
   .main-card {
-    .two-column-layout-parent(@notifications-list-width);
+    > div {
+      .two-column-layout-parent(@notifications-list-width);
+    }
 
     .list-panel {
       .two-column-layout-left(@notifications-list-width);

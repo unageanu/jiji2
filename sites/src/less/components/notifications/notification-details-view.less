@@ -4,17 +4,18 @@
 @notifications-page-avatar-panel-width:  @grid * 5;
 
 .notification-details {
-  padding: @grid*4 0;
+  padding: @grid*4;
 
   .two-column-layout-parent( @notifications-page-avatar-panel-width );
 
   .avatar-panel {
     .two-column-layout-left( @notifications-page-avatar-panel-width );
-    padding-left: @grid*4;
   }
+
   .content-panel {
-    .two-column-layout-right( @notifications-page-avatar-panel-width + @grid*6 );
-    padding-right: @grid*4;
+    .two-column-layout-right( @notifications-page-avatar-panel-width );
+
+    padding-left: @grid*2;
 
     .message {
       font-size: @font-size-normal;
@@ -32,7 +33,9 @@
       text-align: right;
 
       .action-button {
+        margin-left: @grid;
         margin-bottom: @grid;
+        display:inline-block;
       }
     }
   }

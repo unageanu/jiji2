@@ -37,6 +37,11 @@ export default class AbstractList extends AbstractComponent {
   }
 
   render() {
+    return <div className={"list " + this.className}>
+      {this.createContnet()}
+    </div>;
+  }
+  createContnet() {
     if (this.state.items == null) {
       return <div className="center-information loading"><LoadingImage left={-20}/></div>;
     }
@@ -46,16 +51,15 @@ export default class AbstractList extends AbstractComponent {
     const filling = this.state.filling
       ? <div className="center-information "><LoadingImage top={-80} left={-20} /></div>
       : null;
-    return <div>
+    return [
       <List
-        className={"list " + this.className}
         style={{
           paddingTop:0,
           backgroundColor: "rgba(0,0,0,0)"}}>
           {this.createListItems()}
-      </List>
+      </List>,
       {filling}
-    </div>;
+    ];
   }
 
   get className() {

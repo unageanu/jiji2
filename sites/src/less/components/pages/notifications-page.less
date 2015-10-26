@@ -10,9 +10,18 @@
 
     .list-panel {
       .two-column-layout-left(@notifications-list-width);
+      border-right: 1px solid @border-color;
 
       .notification-list {
         margin-top: @grid;
+
+        > div {
+          border-right: 1px solid #FFF;
+          border-left:  1px solid #FFF;
+        }
+        .center-information {
+          padding: @grid*4 @grid*2;
+        }
       }
     }
 

@@ -30,8 +30,8 @@ describe("LogViewerModel", () => {
       });
 
       expect(xhrManager.requests[1].url).toEqual(
-        "/api/logs/rmt?offset=2&direction=asc");
-      expect(model.sortOrder).toEqual({direction: "asc"});
+        "/api/logs/rmt?offset=2");
+      expect(model.sortOrder).toEqual({});
       expect(model.items[0].body).toEqual( "test3" );
       expect(model.hasNext).toEqual( false );
       expect(model.hasPrev).toEqual( true );
@@ -45,7 +45,7 @@ describe("LogViewerModel", () => {
       xhrManager.requests[0].resolve({
         count: 0
       });
-      expect(model.sortOrder).toEqual({direction: "asc"});
+      expect(model.sortOrder).toEqual({});
       expect(model.items).toEqual( [] );
       expect(model.hasNext).toEqual( false );
       expect(model.hasPrev).toEqual( false );
@@ -66,8 +66,8 @@ describe("LogViewerModel", () => {
       });
 
       expect(xhrManager.requests[1].url).toEqual(
-        "/api/logs/rmt?offset=0&direction=asc");
-      expect(model.sortOrder).toEqual({direction: "asc"});
+        "/api/logs/rmt?offset=0");
+      expect(model.sortOrder).toEqual({});
       expect(model.items[0].body).toEqual( "test1" );
       expect(model.hasNext).toEqual( false );
       expect(model.hasPrev).toEqual( false );
@@ -96,8 +96,8 @@ describe("LogViewerModel", () => {
     });
 
     expect(xhrManager.requests[2].url).toEqual(
-      "/api/logs/rmt?offset=1&direction=asc");
-    expect(model.sortOrder).toEqual({direction: "asc"});
+      "/api/logs/rmt?offset=1");
+    expect(model.sortOrder).toEqual({});
     expect(model.items[0].body).toEqual( "test2" );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
@@ -112,8 +112,8 @@ describe("LogViewerModel", () => {
     });
 
     expect(xhrManager.requests[3].url).toEqual(
-      "/api/logs/rmt?offset=0&direction=asc");
-    expect(model.sortOrder).toEqual({direction: "asc"});
+      "/api/logs/rmt?offset=0");
+    expect(model.sortOrder).toEqual({});
     expect(model.items[0].body).toEqual( "test" );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
@@ -128,8 +128,8 @@ describe("LogViewerModel", () => {
     });
 
     expect(xhrManager.requests[4].url).toEqual(
-      "/api/logs/rmt?offset=1&direction=asc");
-    expect(model.sortOrder).toEqual({direction: "asc"});
+      "/api/logs/rmt?offset=1");
+    expect(model.sortOrder).toEqual({});
     expect(model.items[0].body).toEqual( "test2" );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
@@ -144,8 +144,8 @@ describe("LogViewerModel", () => {
     });
 
     expect(xhrManager.requests[5].url).toEqual(
-      "/api/logs/rmt?offset=2&direction=asc");
-    expect(model.sortOrder).toEqual({direction: "asc"});
+      "/api/logs/rmt?offset=2");
+    expect(model.sortOrder).toEqual({});
     expect(model.items[0].body).toEqual( "test3" );
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( true );
@@ -173,8 +173,8 @@ describe("LogViewerModel", () => {
       size: 4
     });
     expect(xhrManager.requests[2].url).toEqual(
-      "/api/logs/rmt?offset=1&direction=asc");
-    expect(model.sortOrder).toEqual({direction: "asc"});
+      "/api/logs/rmt?offset=1");
+    expect(model.sortOrder).toEqual({});
     expect(model.items[0].body).toEqual( "test2" );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( true );
@@ -188,8 +188,8 @@ describe("LogViewerModel", () => {
       size: 4
     });
     expect(xhrManager.requests[3].url).toEqual(
-      "/api/logs/rmt?offset=0&direction=asc");
-    expect(model.sortOrder).toEqual({direction: "asc"});
+      "/api/logs/rmt?offset=0");
+    expect(model.sortOrder).toEqual({});
     expect(model.items[0].body).toEqual( "test" );
     expect(model.hasNext).toEqual( true );
     expect(model.hasPrev).toEqual( false );
@@ -203,8 +203,8 @@ describe("LogViewerModel", () => {
       size: 4
     });
     expect(xhrManager.requests[4].url).toEqual(
-      "/api/logs/rmt?offset=2&direction=asc");
-    expect(model.sortOrder).toEqual({direction: "asc"});
+      "/api/logs/rmt?offset=2");
+    expect(model.sortOrder).toEqual({});
     expect(model.items[0].body).toEqual( "test3" );
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( true );
@@ -218,8 +218,8 @@ describe("LogViewerModel", () => {
       size: 4
     });
     expect(xhrManager.requests[5].url).toEqual(
-      "/api/logs/rmt?offset=2&direction=asc");
-    expect(model.sortOrder).toEqual({direction: "asc"});
+      "/api/logs/rmt?offset=2");
+    expect(model.sortOrder).toEqual({});
     expect(model.items[0].body).toEqual( "test3" );
     expect(model.hasNext).toEqual( false );
     expect(model.hasPrev).toEqual( true );
@@ -505,8 +505,8 @@ describe("LogViewerModel", () => {
         size: 4
       });
       expect(xhrManager.requests[2].url).toEqual(
-        "/api/logs/rmt?offset=0&direction=asc");
-      expect(model.sortOrder).toEqual({direction: "asc"});
+        "/api/logs/rmt?offset=0");
+      expect(model.sortOrder).toEqual({});
       expect(model.items[0].body).toEqual( "test2" );
       expect(model.hasNext).toEqual( true );
       expect(model.hasPrev).toEqual( false );

@@ -2,9 +2,9 @@ import AbstractService from "./abstract-service"
 
 export default class BacktestService extends AbstractService {
 
-  getAll(ids=null) {
+  getAll(ids=null, background=false) {
     const url = this.serviceUrl("", ids ? {ids: ids.join(",")} : {});
-    return this.xhrManager.xhr( url, "GET" );
+    return this.xhrManager.xhr( url, "GET", null, {isBackground:background});
   }
 
   get(id) {
@@ -18,7 +18,7 @@ export default class BacktestService extends AbstractService {
   register( testConfig ) {
     return this.xhrManager.xhr( this.serviceUrl(), "POST", testConfig);
   }
-  
+
   remove( id ) {
     return this.xhrManager.xhr( this.serviceUrl(id), "DELETE");
   }

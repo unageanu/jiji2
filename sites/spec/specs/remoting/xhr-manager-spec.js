@@ -56,6 +56,20 @@ describe("XhrManager", () => {
       expect(ajaxSettings.url).toBe("/test");
     });
 
+    it("バックグラウンドリクエストの場合、通信中もisLoadingはtrueにならない", () => {
+
+      let manager = ContainerJS.utils.Deferred.unpack(d);
+
+      expect(manager.requests.length).toBe(0);
+      expect(manager.isLoading()).toBe(false);
+
+      manager.xhr("/test", "GET", null, {isBackground:true});
+
+      expect(manager.isLoading()).toBe(false);
+      expect(manager.requests.length).toBe(1);
+      expect(manager.requests[0].ajaxRequests.length).toBe(1);
+    });
+
     it("レスポンスをDeferredから取得できる。", () => {
       let manager = ContainerJS.utils.Deferred.unpack(d);
 

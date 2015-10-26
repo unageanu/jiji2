@@ -29,7 +29,7 @@ export default class XhrRequest {
 
   send() {
     const config = this.buildConfig();
-    this.manager.startLoading();
+    if (!this.isBackground) this.manager.startLoading();
     this.sendRequest(config).then(
       this.onSuccess.bind(this),
       this.onFail.bind(this));
@@ -37,13 +37,13 @@ export default class XhrRequest {
 
   onSuccess(response) {
     if (this.canceled) return;
-    this.manager.endLoading();
+    if (!this.isBackground) this.manager.endLoading();
     this.manager.handleResponse(this, response.data);
   }
 
   onFail(response) {
     if (this.canceled) return;
-    this.manager.endLoading();
+    if (!this.isBackground) this.manager.endLoading();
     this.manager.handleError(this, this.convertError(response));
   }
 

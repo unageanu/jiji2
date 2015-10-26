@@ -85,7 +85,7 @@ export default class Backtests extends Observable {
   updateState() {
     const runningTestsIds = this.getRunningTests().map( (test) => test.id );
     if (runningTestsIds.length <= 0) return;
-    this.backtestService.getAll(runningTestsIds).then((tests) => {
+    this.backtestService.getAll(runningTestsIds, true).then((tests) => {
       tests.forEach((test) => {
         const dst = this.byId[test.id];
         if (dst) {

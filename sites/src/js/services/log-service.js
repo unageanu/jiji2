@@ -2,10 +2,9 @@ import AbstractService from "./abstract-service"
 
 export default class LogService extends AbstractService {
 
-  get( index, direction="asc", backtestId="rmt" ) {
+  get( index, backtestId="rmt" ) {
     const url = this.serviceUrl( backtestId, {
-      offset:    index,
-      direction: direction
+      offset:    index
     });
     return this.xhrManager.xhr(url, "GET");
   }

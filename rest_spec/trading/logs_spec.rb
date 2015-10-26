@@ -37,7 +37,7 @@ describe 'ログ取得' do
   it 'GET /logs/rmt/count でリアルトレードのログ数を取得できる' do
     r = @client.get('logs/rmt/count')
     expect(r.status).to eq 200
-    expect(r.body['count']).to be 1
+    expect(r.body['count']).to be 2
   end
 
   it 'GET /logs/:backtest_id/count でバックテストのログ数を取得できる' do

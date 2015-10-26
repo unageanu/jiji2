@@ -12,9 +12,8 @@ module Jiji::Web
 
     get '/:backtest_id' do
       index     = request['offset']    ? request['offset'].to_i : 0
-      direction = request['direction'] ? request['direction'].to_sym : :asc
       id        = get_backtest_id_from_path_param
-      ok(retrive_log_data(id, index, direction))
+      ok(retrive_log_data(id, index))
     end
 
     options '/:backtest_id/count' do
@@ -38,9 +37,9 @@ module Jiji::Web
       lookup(:time_source)
     end
 
-    def retrive_log_data(backtest_id, index, direction)
+    def retrive_log_data(backtest_id, index)
       log = get_log(backtest_id)
-      log.get(index, direction)
+      log.get(index)
     end
 
     def get_log(backtest_id)

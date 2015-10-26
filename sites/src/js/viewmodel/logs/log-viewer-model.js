@@ -8,7 +8,7 @@ class Loader {
     this.backtestId = backtestId;
   }
   load(offset, pageSize, sortOrder) {
-    return this.logService.get(offset, sortOrder.direction, this.backtestId);
+    return this.logService.get(offset, this.backtestId);
   }
   count() {
     const d = new Deferred();
@@ -21,7 +21,7 @@ class Loader {
 export default class LogViewerModel extends TableModel {
 
   constructor(logService) {
-    super({direction: "asc"}, 1);
+    super({}, 1);
     this.logService = logService;
     this.pageSelectors = [];
   }

@@ -57,9 +57,9 @@ describe Jiji::Db::CreateCappedCollections do
       logger.info('x' * 10_000)
     end
 
-    expect(log.count).to be 2
-    timestamps = log.map { |n| n.timestamp.to_i }
-    expect(timestamps).to eq([21_000, 32_000])
+    expect(log.count).to be 3
+    timestamps = log.count.times.map { |i| log.get(i).timestamp.to_i }
+    expect(timestamps).to eq([21_000, 32_000, 43_000])
   end
 
   def drop_collections

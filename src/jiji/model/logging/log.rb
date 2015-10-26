@@ -14,26 +14,20 @@ module Jiji::Model::Logging
       @time_source = time_source
     end
 
-    def get(index, order = :asc)
-      query = Query.new(filter, { timestamp: order }, index, 1)
+    def get(index)
+      query = Query.new(filter, { timestamp: :asc }, index, 1)
       data = query.execute(LogData)
-      return nil if !data || data.length <= 0
-      @current && data[0].id == @current.id ? @current : data[0]
+      return @current if @current && data.length == index
+      data[0]
     end
 
     def count
-      LogData.where(filter).count
+      count = LogData.where(filter).count
+      @current ? count + 1 : count
     end
 
     def delete_before(time)
       LogData.where(filter.merge({ :timestamp.lte => time })).delete
-    end
-
-    def each
-      query = Query.new(filter, { timestamp: :asc })
-      query.execute(LogData).each do |data|
-        yield data
-      end
     end
 
     def write(message)
@@ -59,6 +53,7 @@ module Jiji::Model::Logging
 
     def save_current_log_data
       @current.save if @current
+      @current = nil
     end
 
     def filter

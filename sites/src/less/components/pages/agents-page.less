@@ -11,9 +11,15 @@
     }
     .agent-list-panel {
       .two-column-layout-left(@list-width);
+      border-right: 1px solid @border-color;
 
       .agent-source-list {
         margin-top: @grid;
+
+        > div {
+          border-right: 1px solid #FFF;
+          border-left:  1px solid #FFF;
+        }
       }
     }
 

@@ -51,11 +51,7 @@ export default class AgentSourceEditor extends AbstractComponent {
     return (
       <div className="agent-source-editor">
         <ul className="info">
-          <li>エージェントの作り方は<a href="http://" target="blank">こちら</a>をご確認ください。</li>
-          <li>
-            現在動作しているエージェントのコードを変更しても、動作は即座には変わりません。
-            変更後のコードは、新しくエージェントを作成した場合に有効になります。
-          </li>
+          <li>エージェントの詳しい作り方は<a href="http://" target="blank">こちら</a>をご覧ください。</li>
         </ul>
         <div className="header">
           <TextField

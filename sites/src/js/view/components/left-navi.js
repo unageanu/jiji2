@@ -56,7 +56,7 @@ export default class LeftNavi extends React.Component {
   }
 
   createListItem(item, index) {
-    const selected = this.router().isActive(item.route);
+    const selected = this.isActive(item.route);
     const action   = (e) => this.onLeftNavChange(e, null, item);
     const icon     = <div className={ "menu-icon " + item.iconClassName} />;
     return (
@@ -68,6 +68,12 @@ export default class LeftNavi extends React.Component {
         onTouchTap={action}>
       </ListItem>
     );
+  }
+
+  isActive(route) {
+    const currentPath = this.router().getCurrentPath();
+    if (route === "/") return currentPath === "/";
+    return currentPath.indexOf(route) === 0;
   }
 
   onLeftNavChange(e, key, payload) {

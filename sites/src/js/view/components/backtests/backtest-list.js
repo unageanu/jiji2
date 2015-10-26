@@ -2,6 +2,7 @@ import React               from "react"
 import Router              from "react-router"
 import MUI                 from "material-ui"
 import AbstractComponent   from "../widgets/abstract-component"
+import LoadingImage        from "../widgets/loading-image"
 import BacktestListItem    from "./backtest-list-item"
 
 const List         = MUI.List;
@@ -33,12 +34,26 @@ export default class BacktestList extends AbstractComponent {
   }
 
   render() {
+    return <div className="backtest-list list">
+      {this.createContent()}
+    </div>;
+  }
+
+  createContent() {
+    if ( !this.state.items ) {
+      return <div className="center-information loading"><LoadingImage left={-20}/></div>;
+    }
+    if (this.state.items.length <= 0) {
+      return <div className="center-information">バックテストはありません</div>;
+    }
     const items = this.state.items.map(
       (item) => this.createItemComponent(item));
     return (
-      <div className="backtest-list list">
-        <List>{items}</List>
-      </div>
+      <List style={{
+        paddingTop:0,
+        backgroundColor: "rgba(0,0,0,0)"}}>
+        {items}
+      </List>
     );
   }
 

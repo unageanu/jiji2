@@ -20,17 +20,17 @@ class MovingAverageAgent
   # UIから設定可能なプロパティの一覧を返す。
   def self.property_infos
     [
-      Property.new('short', '短期移動平均線', 25, :number),
-      Property.new('long',  '長期移動平均線', 75, :number)
+      Property.new('short', '短期移動平均線', 25),
+      Property.new('long',  '長期移動平均線', 75)
     ]
   end
 
   def post_create
     # 移動平均の算出クラス
-    # 共有ライブラリのクラスを利用。(JIJI::Agent::Sharedモジュールに定義される。)
+    # 共有ライブラリのクラスを利用。
     @mvs = [
-      Signals::MovingAverage.new(@short),
-      Signals::MovingAverage.new(@long)
+      Signals::MovingAverage.new(@short.to_i),
+      Signals::MovingAverage.new(@long.to_i)
     ]
     @cross = Cross.new
 

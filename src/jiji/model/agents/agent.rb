@@ -77,12 +77,12 @@ module Jiji::Model::Agents::Agent
     # name:: UIでの表示名
     # default_value:: プロパティの初期値
     # type:: 種類
-    def initialize(id, name, default_value = nil, type = :string)
+    def initialize(id, name, default_value = nil)
       @id = id
       @name = name
       @default = default_value
-      @type = type
     end
+
     # プロパティID。
     # JIJI::Agent#properties=(props)で渡されるハッシュのキーになります。設定必須です。
     attr_accessor :id
@@ -90,15 +90,13 @@ module Jiji::Model::Agents::Agent
     attr_accessor :name
     # プロパティの初期値。
     attr_accessor :default
-    # 種類。:string or :numberが指定可能。指定しない場合、:stringが指定されたものとみなされます。
-    attr_accessor :type
 
     def values
       [@id, @name, @type, @default]
     end
 
     def to_h # nodoc
-      { id: id, name: name, type: type, default: default }
+      { id: id, name: name, default: default }
     end
 
   end

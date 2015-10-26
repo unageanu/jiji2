@@ -2,16 +2,16 @@
 @import "../../sizes.less";
 
 .agent-source-editor {
-
+  display: flex;
+  flex-direction: column;
+  width: 100%;
   margin: @grid*3;
+  overflow: hidden;
 
   .header {
     margin-bottom: @grid*2;
 
     .error {
-      max-height: 40px;
-      overflow-y: scroll;
-      text-overflow: ellipsis;
       word-break: break-all;
       margin: 0px;
       padding: 0px;
@@ -23,6 +23,10 @@
     font-size: @font-size-small;
     color: @font-color-light;
     padding-left: 1em;
+  }
+
+  .editor {
+    flex-grow: 1;
   }
 
   .ace_editor .ace_text-layer, .ace_editor .ace_text-input {

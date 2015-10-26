@@ -31,6 +31,20 @@ export default class AgentSourceEditor extends AbstractComponent {
     this.registerPropertyChangeListener(model, keys);
     let state = this.collectInitialState(model, keys);
     this.setState(state);
+
+    this.context.windowResizeManager.addObserver("windowResized", (n, ev) => {
+      this.updateEditorSize();
+    }, this);
+  }
+
+  updateEditorSize() {
+    if (this.updateEditorSizerequest) return;
+    this.updateEditorSizerequest = setTimeout(()=> {
+      this.updateEditorSizerequest = null;
+      if (!this.refs.editorPanel || !this.refs.editor) return;
+      const elm = React.findDOMNode(this.refs.editorPanel);
+      this.refs.editor.resize(elm.offsetWidth, elm.offsetHeight);
+    }, 100);
   }
 
   onPropertyChanged(n, e) {
@@ -47,6 +61,7 @@ export default class AgentSourceEditor extends AbstractComponent {
   }
 
   render() {
+    this.updateEditorSize();
     const errorElement = this.createErrorElement();
     return (
       <div className="agent-source-editor">
@@ -68,7 +83,7 @@ export default class AgentSourceEditor extends AbstractComponent {
             onSave={this.save.bind(this)} />
           {errorElement}
         </div>
-        <div className="editor">
+        <div className="editor" ref="editorPanel">
           {this.createEditor()}
         </div>
       </div>
@@ -112,4 +127,7 @@ export default class AgentSourceEditor extends AbstractComponent {
 }
 AgentSourceEditor.propTypes = {
   model: React.PropTypes.object.isRequired
+};
+AgentSourceEditor.contextTypes = {
+  windowResizeManager: React.PropTypes.object
 };

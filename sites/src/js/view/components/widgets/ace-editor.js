@@ -16,37 +16,13 @@ export default class AceEditor extends AbstractComponent {
     this.state = {};
   }
 
-  componentWillMount() {
-    this.context.windowResizeManager.addObserver("windowResized", (n, ev) => {
-      this.updateEditorSize();
-    }, this);
-    this.registerObservable(this.context.windowResizeManager);
-  }
-
-  updateEditorSize() {
-    if (this.updateEditorSizerequest) return;
-    this.updateEditorSizerequest = setTimeout(()=> {
-      if (!this.refs.editor) return;
-      const elm = React.findDOMNode(this.refs.editor);
-      const editor = this.refs.editor.editor;
-
-      // const w = elm.scrollWidth;
-      // const h = elm.scrollHeight;
-      const wsize = this.context.windowResizeManager.windowSize;
-      const csize = this.context.windowResizeManager.contentSize;
-      // console.log("w:" + wsize.w  + " h:" + wsize.h );
-      // console.log("w:" + csize.w  + " h:" + csize.h );
-      // this.setState({
-      //   editorWidth: (wsize.w - 650) + "px",
-      //   editorHeight: (wsize.h - 220) + "px"
-      // });
-
-      elm.style.width  = (wsize.w - this.props.outerWidth) + "px";
-      elm.style.height = (Math.max(wsize.h, csize.h) - this.props.outerHeight) + "px";
-      editor.resize();
-
-      this.updateEditorSizerequest = null;
-    }, 100);
+  resize(width, height) {
+    if (!this.refs.editor) return;
+    const elm = React.findDOMNode(this.refs.editor);
+    const editor = this.refs.editor.editor;
+    elm.style.width  = width + "px";
+    elm.style.height = height + "px";
+    editor.resize();
   }
 
   render() {
@@ -83,7 +59,6 @@ export default class AceEditor extends AbstractComponent {
     });
     editor.$blockScrolling = Infinity;
     editor.gotoLine(0);
-    this.updateEditorSize();
   }
 
   get value() {
@@ -92,14 +67,9 @@ export default class AceEditor extends AbstractComponent {
 }
 AceEditor.propTypes = {
   targetBody: React.PropTypes.string,
-  onSave: React.PropTypes.func,
-  outerWidth: React.PropTypes.number.isRequired,
-  outerHeight: React.PropTypes.number.isRequired
+  onSave: React.PropTypes.func
 };
 AceEditor.defaultProps = {
   targetBody: null,
   onSave: () => {}
-};
-AceEditor.contextTypes = {
-  windowResizeManager: React.PropTypes.object
 };

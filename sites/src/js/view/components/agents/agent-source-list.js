@@ -53,6 +53,7 @@ export default class AgentSourceList extends AbstractComponent {
       this.state.editTarget && this.state.editTarget.id === agentSource.id;
     return (
       <AgentSourceListItem
+        key={agentSource.id}
         agentSource={agentSource}
         selected={selected}
         onTouchTap={tapAction}>

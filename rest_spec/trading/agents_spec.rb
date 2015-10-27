@@ -171,26 +171,23 @@ describe 'エージェント' do
        + " -ゴールデンクロスで買い&売り建て玉をコミット。\n" \
        + " -デッドクロスで売り&買い建て玉をコミット。\n" \
        + " - -1000でトレーリングストップ\n",
-      'properties' => [{
-          'id' => 'short', 'name' => '短期移動平均線',
-          'type' => 'number', 'default' => 25
-      }, {
-          'id' => 'long', 'name' => '長期移動平均線',
-          'type' => 'number', 'default' => 75
-      }]
+      'properties' => [
+        { 'id' => 'short', 'name' => '短期移動平均線', 'default' => 25 },
+        { 'id' => 'long',  'name' => '長期移動平均線', 'default' => 75 }
+      ]
     }, {
       'name' => 'TestAgent1@テスト1',
       'description' => 'description1',
       'properties' => [
-        { 'id' => 'a', 'name' => 'aa', 'type' => 'string', 'default' => 1 },
-        { 'id' => 'b', 'name' => 'bb', 'type' => 'string', 'default' => 1 }
+        { 'id' => 'a', 'name' => 'aa', 'default' => 1 },
+        { 'id' => 'b', 'name' => 'bb', 'default' => 1 }
       ]
     }, {
       'name' => 'TestAgent4@テスト/テスト4',
       'description' => 'description4',
       'properties' => [
-        { 'id' => 'a', 'name' => 'aa', 'type' => 'string', 'default' => 1 },
-        { 'id' => 'b', 'name' => 'bb', 'type' => 'string', 'default' => 4 }
+        { 'id' => 'a', 'name' => 'aa', 'default' => 1 },
+        { 'id' => 'b', 'name' => 'bb', 'default' => 4 }
       ]
     }])
   end

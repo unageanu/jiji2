@@ -50,7 +50,7 @@ export default class BacktestList extends AbstractComponent {
       (item) => this.createItemComponent(item));
     return (
       <List style={{
-        paddingTop:0,
+        paddingTop: "8px",
         backgroundColor: "rgba(0,0,0,0)"}}>
         {items}
       </List>

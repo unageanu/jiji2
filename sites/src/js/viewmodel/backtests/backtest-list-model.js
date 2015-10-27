@@ -7,7 +7,7 @@ export default class BacktestListModel extends Observable {
   constructor(backtests) {
     super();
     this.backtests = backtests;
-    this.setProperty("items", [] );
+    this.setProperty("items", null );
     this.registerObservers();
   }
 

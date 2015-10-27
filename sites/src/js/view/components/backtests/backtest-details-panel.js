@@ -67,7 +67,7 @@ export default class BacktestDetailsPanel extends AbstractComponent {
   calculateChartSize() {
     const windowSize = this.context.windowResizeManager.windowSize;
     return {
-      w: windowSize.w - 288 - 16*4 - 280,
+      w: windowSize.w - 288 - 16*5 - 280,
       h: windowSize.h - 100 - 16*4 - 250 - 20,
       profitAreaHeight:80,
       graphAreaHeight:80

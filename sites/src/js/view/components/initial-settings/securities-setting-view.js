@@ -38,13 +38,15 @@ export default class SecuritiesSettingView extends Base {
         </div>
         {this.createErrorContent(this.state.error)}
         <div className="buttons">
-          <RaisedButton
-            label="次へ"
-            disabled={this.state.isSaving}
-            onClick={this.next.bind(this)}
-            primary={true}
-            style={{width:"300px", height: "50px"}}
-          />
+          <span className="button">
+            <RaisedButton
+              label="次へ"
+              disabled={this.state.isSaving}
+              onClick={this.next.bind(this)}
+              primary={true}
+              style={{width:"100%", height: "50px"}}
+            />
+          </span>
           <span className="loading-for-button-action">
             {this.state.isSaving ? <LoadingImage size={20} /> : null}
           </span>

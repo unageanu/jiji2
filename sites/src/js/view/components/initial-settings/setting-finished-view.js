@@ -26,12 +26,14 @@ export default class SettingFinishedView extends AbstractComponent {
           </li>
         </ul>
         <div className="buttons">
-          <RaisedButton
-            label="利用を開始する"
-            onClick={() => this.props.model.exit()}
-            primary={true}
-            style={{width:"300px", height: "50px"}}
-          />
+          <span className="button">
+            <RaisedButton
+              label="利用を開始する"
+              onClick={() => this.props.model.exit()}
+              primary={true}
+              style={{width:"100%", height: "50px"}}
+            />
+          </span>
         </div>
       </div>
     );

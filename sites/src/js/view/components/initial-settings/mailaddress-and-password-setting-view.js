@@ -54,7 +54,7 @@ extends AbstractComponent {
       <div className="mailaddress-and-password-setting-view">
         <h3>メールアドレスとパスワードの設定</h3>
         <div className="description">
-          初めに、メールアドレスとシステムのログインパスワードを設定してください。
+          メールアドレスとシステムのログインパスワードを設定してください。
         </div>
         <ul className="description">
           <li>パスワードはシステムを利用する際に必要になります。</li>
@@ -102,13 +102,15 @@ extends AbstractComponent {
         </div>
         {this.createErrorContent(this.state.error)}
         <div className="buttons">
-          <RaisedButton
-            label="次へ"
-            onClick={this.next.bind(this)}
-            disabled={this.state.loading}
-            primary={true}
-            style={{width:"300px", height: "50px"}}
-          />
+          <span className="button">
+            <RaisedButton
+              label="次へ"
+              onClick={this.next.bind(this)}
+              disabled={this.state.loading}
+              primary={true}
+              style={{width:"100%", height: "50px"}}
+            />
+          </span>
           <span className="loading-for-button-action">
             {this.state.isSaving ? <LoadingImage size={20} /> : null}
           </span>

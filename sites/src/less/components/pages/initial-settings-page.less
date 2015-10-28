@@ -34,6 +34,11 @@
   .buttons {
     padding-top: @grid*4;
     text-align: center;
+
+    .button {
+      display: inline-block;
+      width: 300px;
+    }
   }
 
   .welcome-view {
@@ -60,6 +65,15 @@
     .buttons {
       .button {
         margin-left: @grid;
+      }
+      .button.test-mail {
+        width: 220px;
+      }
+      .button.next {
+        width: 220px;
+      }
+      .button.skip {
+        width: 150px;
       }
       .button:nth-child(1) {
         margin-left: 0;

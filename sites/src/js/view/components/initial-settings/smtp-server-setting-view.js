@@ -25,29 +25,29 @@ export default class SMTPServerSettingView extends Base {
         </div>
         {this.createErrorContent(this.state.error)}
         <div className="buttons">
-          <span className="button">
+          <span className="button test-mail">
             <RaisedButton
               label="テストメール送信"
               disabled={this.state.isSaving}
               onClick={this.composeTestMail.bind(this)}
-              style={{width:"200px", height: "50px"}}
+              style={{width:"100%", height: "50px"}}
             />
           </span>
-          <span className="button">
+          <span className="button next">
             <RaisedButton
               label="設定して次へ"
               primary={true}
               disabled={this.state.isSaving}
               onClick={this.next.bind(this)}
-              style={{width:"250px", height: "50px"}}
+              style={{width:"100%", height: "50px"}}
             />
           </span>
-          <span className="button">
+          <span className="button skip">
             <FlatButton
               label="設定をスキップ"
               disabled={this.state.isSaving}
               onClick={this.skip.bind(this)}
-              style={{height: "50px"}}
+              style={{width:"100%", height: "50px"}}
             />
           </span>
           <span className="loading-for-button-action">

@@ -24,7 +24,7 @@ export default {
       textColorLight: "#999999",
       positiveColor:  "#00BFA5",
       negativeColor:  "#F03950",
-      canvasColor: "rgba(128, 128, 128, 0.22)",
+      canvasColor: "#FFF", //"rgba(128, 128, 128, 0.22)",
       borderColor: "#D3D3D3", //Colors.grey300,
       disabledColor: ColorManipulator.fade("#666666", 0.3),
       backgroundColor: "#FFF",

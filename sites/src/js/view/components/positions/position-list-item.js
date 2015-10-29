@@ -4,6 +4,7 @@ import AbstractComponent   from "../widgets/abstract-component"
 import PositionStatus      from "./position-status"
 import Environment         from "../../environment"
 import Theme               from "../../theme"
+import PriceUtils          from "../../../viewmodel/utils/price-utils"
 
 const ListItem   = MUI.ListItem;
 const Avatar     = MUI.Avatar;
@@ -29,6 +30,7 @@ export default class PositionListItem extends React.Component {
       leftAvatar: this.createAvatar(position),
       primaryText: this.createPrimaryText(position),
       secondaryText: this.createSecondaryText(position),
+      secondaryTextLines: 2,
       onTouchTap: this.props.onTouchTap,
       rightIcon: this.createRightIcon(position)
     };
@@ -37,26 +39,14 @@ export default class PositionListItem extends React.Component {
 
   createPrimaryText(position) {
     return <div className="primary-text">
-      <span key="pair" className="pair">{position.pairName}</span>
-      <span key="separator" className="separator">/</span>
-      <span key="sell-or-buy" className="sell-or-buy">{position.formatedSellOrBuy}</span>
       {this.createProfitOrLossElement(position)}
     </div>;
   }
   createProfitOrLossElement(position) {
-    const type = this.resolveProfitOrLossClass(position.profitOrLoss);
+    const type = PriceUtils.resolvePriceClass(position.profitOrLoss);
     return <span key="profitOrLoss" className={"profit-or-loss " + type}>
       ¥{type == "up" ? "+" : ""}{position.formatedProfitOrLoss}
     </span>;
-  }
-  resolveProfitOrLossClass(profitOrLoss) {
-    if (profitOrLoss == 0) {
-      return "flat";
-    } else if (profitOrLoss > 0) {
-      return "up";
-    } else if (profitOrLoss < 0) {
-      return "down";
-    }
   }
   createSecondaryText(position) {
     let time = "";
@@ -67,9 +57,13 @@ export default class PositionListItem extends React.Component {
       time += position.formatedExitedAtShort;
     }
     return [
+      <span key="pair" className="pair">{position.pairName}</span>,
+      <span key="separator" className="separator">/</span>,
+      <span key="sell-or-buy" className="sell-or-buy">{position.formatedSellOrBuy}</span>,
+      <span key="separator2" className="separator">/</span>,
       <span key="units" className="units">{position.units}</span>,
       <span key="units-suffix" className="suffix">単位</span>,
-      <span key="separator" className="separator">/</span>,
+      <br/>,
       <span key="time" className="time">{time}</span>
     ];
   }

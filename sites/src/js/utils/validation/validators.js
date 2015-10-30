@@ -111,7 +111,7 @@ export default {
 
   pairNames: builder.build({
     notEmpty: true,
-    size: 10
+    size: 20
   }),
 
   all() {

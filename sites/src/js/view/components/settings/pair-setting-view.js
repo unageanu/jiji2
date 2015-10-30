@@ -30,7 +30,7 @@ export default class PairSettingView extends AbstractComponent {
         <h3>通貨ペアの設定</h3>
         <ul className="description">
           <li>システムで利用する通貨ペアを設定します。</li>
-          <li>通貨ペアは、最大10個まで選択できます。</li>
+          <li>通貨ペアは、最大20個まで選択できます。</li>
         </ul>
         <div className="setting-body">
           <PairSelector ref="pairSelector" model={this.model()}/>

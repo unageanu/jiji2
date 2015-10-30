@@ -23,6 +23,7 @@ export default class RMTAgentSettingPageModel extends AbstractPageModel {
   }
 
   initialize() {
+    this.savedLabel = null;
     return this.rmtService.getAgentSetting().then((setting) => {
       this.isLoading = false;
       this.agentSettingBuilder.initialize(setting);

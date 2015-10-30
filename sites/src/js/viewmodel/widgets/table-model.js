@@ -30,6 +30,7 @@ export default class TableModel extends Observable {
         this.loadItems().then(
           (r) => d.resolve(this.items), (e) => d.reject(e) );
       } else {
+        this.fire("beforeLoadItems");
         this.items = [];
         this.updateState();
         d.resolve(this.items)
@@ -86,6 +87,7 @@ export default class TableModel extends Observable {
   }
 
   loadItems() {
+    this.fire("beforeLoadItems");
     this.items  = null;
     this.loading = true;
     return this.loader.load( this.offset, this.pageSize,

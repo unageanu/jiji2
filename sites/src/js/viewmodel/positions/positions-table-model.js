@@ -33,11 +33,6 @@ export default class PositionsTableModel extends TableModel {
     super.initialize(new Loader(this.positionService, backtestId, status));
   }
 
-  loadItems() {
-    this.fire("beforeLoadItems");
-    return super.loadItems();
-  }
-
   convertItems(items) {
     return items.map((item) => this.convertItem(item));
   }

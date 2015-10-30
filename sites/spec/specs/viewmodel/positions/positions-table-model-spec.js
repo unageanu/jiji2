@@ -144,6 +144,22 @@ describe("PositionsTableModel", () => {
       xhrManager.requests[3].resolve(createItems(20));
       expect(selectionModel.selected).toBe( null );
     });
+
+    it("一覧を再読み込みした際に、要素数が0の場合でも選択は解除される", () => {
+      model.load();
+      xhrManager.requests[0].resolve({
+        count: 50
+      });
+      xhrManager.requests[1].resolve(createItems(20));
+
+      selectionModel.selected = model.items[0];
+      model.load();
+      xhrManager.requests[2].resolve({
+        count: 0
+      });
+      expect(selectionModel.selected).toBe( null );
+      expect(selectionModel.selectedId).toBe( null );
+    });
   });
 
   it("next/prevで次/前の一覧を取得できる", () => {

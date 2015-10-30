@@ -55,11 +55,6 @@ export default class NotificationsTableModel extends TableModel {
       this.availableFilterConditions = this.createAvailableFilterConditions());
   }
 
-  loadItems() {
-    this.fire("beforeLoadItems");
-    return super.loadItems();
-  }
-
   convertItems(items) {
     return items.map((item) => this.convertItem(item));
   }

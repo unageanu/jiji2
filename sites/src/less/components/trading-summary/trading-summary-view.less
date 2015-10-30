@@ -2,6 +2,8 @@
 @import "../../sizes.less";
 
 .trading-summary-view {
+  padding-bottom: @grid*3;
+
 
   .content {
 
@@ -37,7 +39,7 @@
   .data {
     display: flex;
     flex-direction: row;
-    margin: @grid*3 @grid*3 @grid*4 @grid*3;
+    margin: @grid*3 @grid*3 0 @grid*3;
 
     .item {
       flex-grow: 1;
@@ -73,7 +75,7 @@
       line-height: 44px;
       text-align: right;
       height: 50px;
-      border-bottom: 2px solid @accent-color-normal;
+      border-bottom: 1px solid @accent-color-normal;
       margin-left: @grid*2;
 
       .icon {

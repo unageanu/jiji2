@@ -49,7 +49,7 @@ export default class BacktestDetailsPanel extends AbstractComponent {
         model={this.model().tradingSummary}
         graphSize={150} />;
     } else if ( this.state.activeTab === "trades" ) {
-      return <div>
+      return <div className="positions">
         <PositionDetailsView model={this.model().selection} />
         <PositionsTable
           model={this.model().positionTable}

@@ -112,10 +112,10 @@ export default class SMTPServerSettingView extends AbstractComponent {
           <TextField
             floatingLabelText="パスワード"
             errorText={this.state.passwordError}
-            onChange={(e) => this.setState({password: e.target.value}) }
-            value={this.state.password}
             style={{ width: "100%" }}>
-             <input type="password" value={this.state.password} />
+             <input type="password"
+             onChange={(e) => this.setState({password: e.target.value}) }
+             value={this.state.password} />
           </TextField>
         </div>
       </div>

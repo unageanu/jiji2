@@ -85,6 +85,7 @@ export default class SecuritiesSettingView extends AbstractComponent {
     if (!this.state.activeSecuritiesConfiguration) return null;
     return this.state.activeSecuritiesConfiguration.map((c) => {
       return  <TextField
+          key={c.id}
           ref={"securities_configuration_" + c.id}
           floatingLabelText={c.description}
           defaultValue={c.value}

@@ -63,7 +63,7 @@ export default class PositionListItem extends React.Component {
       <span key="separator2" className="separator">/</span>,
       <span key="units" className="units">{position.units}</span>,
       <span key="units-suffix" className="suffix">単位</span>,
-      <br/>,
+      <br key="br" />,
       <span key="time" className="time">{time}</span>
     ];
   }

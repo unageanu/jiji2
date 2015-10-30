@@ -31,23 +31,8 @@ const MENU_ITEMS = [
 
 export default class Navigator extends Observable {
 
-  show() {
-    this.fire("requestShow");
-  }
   menuItems() {
     return MENU_ITEMS;
   }
 
-  getSelectedIndex(matcher) {
-    const menuItems = this.menuItems();
-    var current = null;
-    for (let i = 0; i < menuItems.length; i++) {
-      current = menuItems[i];
-      if (!current.route) continue;
-      if (matcher(current.route)) return i;
-    }
-  }
-  getSelectedRoute(matcher) {
-    return this.menuItems()[this.getSelectedIndex(matcher)];
-  }
 }

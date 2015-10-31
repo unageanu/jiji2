@@ -96,7 +96,7 @@ extends AbstractComponent {
                 <input type="password" />
             </TextField>
             <div className="description">
-              ※確認のため、新しいパスワードを再入力してください。
+              ※確認のため、パスワードを再入力してください。
             </div>
           </div>
         </div>

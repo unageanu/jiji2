@@ -36,6 +36,7 @@ export default class AgentSourceEditorMenu extends AbstractComponent {
           className="save-button"
           key="add"
           tooltip={"保存"}
+          tooltipPosition="top-center"
           disabled={this.state.isSaving || !this.state.editTarget}
           onClick={this.props.onSave}>
           <FontIcon className="md-save"/>
@@ -43,6 +44,7 @@ export default class AgentSourceEditorMenu extends AbstractComponent {
         <IconButton
           className="remove-button"
           key="remove"
+          tooltipPosition="top-center"
           tooltip={"削除..."}
           disabled={this.state.isSaving || !this.state.editTarget}
           onClick={this.confirmRemove.bind(this)}>

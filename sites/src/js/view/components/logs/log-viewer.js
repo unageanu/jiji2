@@ -80,6 +80,7 @@ export default class LogViewer extends AbstractComponent {
           key={info.icon}
           className="scroller-button"
           tooltip={info.tooltip}
+          tooltipPosition="top-center"
           iconClassName={"md-"+info.icon}
           onTouchTap={info.action}
         />;

@@ -12,7 +12,7 @@ export default class LoadingImage extends React.Component {
 
   render() {
     return (
-      <span style={{position:"relative"}} >
+      <span className={this.props.className} style={{position:"relative"}} >
         <RefreshIndicator
           left={this.props.left}
           top={this.props.top}
@@ -24,12 +24,14 @@ export default class LoadingImage extends React.Component {
   }
 }
 LoadingImage.propTypes = {
+  className: React.PropTypes.string,
   status: React.PropTypes.string,
   left: React.PropTypes.number,
   top: React.PropTypes.number,
   size: React.PropTypes.number
 };
 LoadingImage.defaultProps = {
+  className: "",
   status: "loading",
   left: 0,
   top: 0,

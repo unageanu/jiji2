@@ -17,7 +17,7 @@ export default class InitialSettingsPageModel extends Observable {
     this.setProperty("phase", "none");
     this.isSaving = false;
     this.error = null;
-    this.acceptLicence = false;
+    this.acceptLicense = false;
     this.acceptionError = null;
   }
 
@@ -34,7 +34,7 @@ export default class InitialSettingsPageModel extends Observable {
 
   initialize() {
     this.error = null;
-    this.acceptLicence = false;
+    this.acceptLicense = false;
     this.acceptionError = null;
     this.isSaving = false;
 
@@ -47,7 +47,7 @@ export default class InitialSettingsPageModel extends Observable {
   }
 
   changePhaseToSetMailAddressAndPassword() {
-    if ( !this.acceptLicence ) {
+    if ( !this.acceptLicense ) {
       this.acceptionError = "利用規約に同意してください";
       return;
     }
@@ -129,11 +129,11 @@ export default class InitialSettingsPageModel extends Observable {
     this.setProperty("error", error);
   }
 
-  get acceptLicence() {
-    return this.getProperty("acceptLicence");
+  get acceptLicense() {
+    return this.getProperty("acceptLicense");
   }
-  set acceptLicence(acceptLicence) {
-    this.setProperty("acceptLicence", acceptLicence);
+  set acceptLicense(acceptLicense) {
+    this.setProperty("acceptLicense", acceptLicense);
   }
   get acceptionError() {
     return this.getProperty("acceptionError");

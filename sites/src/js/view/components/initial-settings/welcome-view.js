@@ -6,7 +6,7 @@ const RaisedButton = MUI.RaisedButton;
 const Checkbox = MUI.Checkbox;
 
 const keys = new Set([
-  "acceptLicence", "acceptionError"
+  "acceptLicense", "acceptionError"
 ]);
 
 export default class WelcomeView extends AbstractComponent {
@@ -35,8 +35,8 @@ export default class WelcomeView extends AbstractComponent {
           </div>
           <div className="accept-license">
             <Checkbox
-              checked={this.state.acceptLicence}
-              onCheck={(ev, checked) => this.props.model.acceptLicence = checked }
+              checked={this.state.acceptLicense}
+              onCheck={(ev, checked) => this.props.model.acceptLicense = checked }
               name={"accept"}
               value={"accept"}
               label={"利用規約に同意する"}

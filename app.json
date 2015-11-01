@@ -1,0 +1,33 @@
+{
+  "name": "Jiji",
+  "description": "FX System Trade Framework",
+  "keywords": [
+    "FX",
+    "System Trade"
+  ],
+  "website": "https://jiji.unageanu.com/",
+  "repository": "https://github.com/unageanu/jiji2",
+  "logo": "https://jiji.unageanu.com/images/logo.png",
+  "success_url": "/",
+  "scripts": { },
+  "env": {
+    "SECRET": {
+      "description": "A secret key for encripting the personal information.",
+      "generator": "secret"
+    },
+    "RACK_ENV": {
+      "description": "deployment environment",
+      "value": "production"
+    }
+  },
+  "addons": [
+    "mongolab:sandbox",
+    "postmark:10k",
+    "newrelic:wayne"
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/stomita/heroku-buildpack-phantomjs"
+    }
+  ]
+}

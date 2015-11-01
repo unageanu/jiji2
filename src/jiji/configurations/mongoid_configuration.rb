@@ -19,7 +19,7 @@ if ENV['MONGOLAB_URI'] || ENV['MONGODB_URI']
   sessions['database'] = u.path.gsub(/\//, '')
   sessions['username'] = u.user || ''
   sessions['password'] = u.password || ''
-
+  p sessions
   Mongoid.load_configuration(config)
 else
   Mongoid.load!(mongoid_setting_file, ENV['RACK_ENV'] || :development)

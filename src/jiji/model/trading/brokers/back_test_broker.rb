@@ -3,6 +3,7 @@
 require 'securerandom'
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/errors/errors'
+require 'jiji/model/trading/brokers/abstract_broker'
 
 module Jiji::Model::Trading::Brokers
   class BackTestBroker < AbstractBroker

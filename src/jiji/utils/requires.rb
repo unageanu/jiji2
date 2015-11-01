@@ -7,7 +7,7 @@ module Jiji::Utils
     end
 
     def self.require_all(path, base = 'src')
-      Dir["#{root}/#{base}/#{path}/**/*.rb"].each do |f|
+      Dir["#{root}/#{base}/#{path}/**/*.rb"].sort.each do |f|
         require f[(root.length + base.length + 2)..-4]
       end
     end

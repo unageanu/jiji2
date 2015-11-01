@@ -3,6 +3,7 @@
 require 'encase'
 require 'thread'
 require 'jiji/errors/errors'
+require 'jiji/model/trading/brokers/abstract_broker'
 
 module Jiji::Model::Trading::Brokers
   class RMTBroker < AbstractBroker

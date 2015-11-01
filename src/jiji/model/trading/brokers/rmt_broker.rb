@@ -1,5 +1,6 @@
 # coding: utf-8
 
+require 'encase'
 require 'thread'
 require 'jiji/errors/errors'
 

@@ -1,5 +1,6 @@
 # coding: utf-8
 
+require 'encase'
 require 'aws-sdk'
 require 'jiji/errors/errors'
 

@@ -1,4 +1,5 @@
 
+require 'encase'
 require 'jiji/db/abstract_script'
 require 'jiji/utils/requires'
 

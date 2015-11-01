@@ -1,6 +1,9 @@
 # coding: utf-8
 
 require 'oanda_api'
+require 'jiji/model/securities/internal/virtual/ordering'
+require 'jiji/model/securities/internal/virtual/rate_retriever'
+require 'jiji/model/securities/internal/virtual/trading'
 
 module Jiji::Model::Securities
   class VirtualSecurities

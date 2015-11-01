@@ -6,6 +6,7 @@ require 'msgpack'
 require 'time'
 require 'jiji/web/middlewares/base'
 require 'jiji/web/middlewares/authentication_filter'
+require 'jiji/web/middlewares/security_filter'
 require 'jiji/web/transport/json'
 require 'jiji/web/transport/messagepack'
 

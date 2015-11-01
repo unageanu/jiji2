@@ -2,6 +2,10 @@
 
 require 'oanda_api'
 require 'jiji/model/securities/internal/oanda/converter'
+require 'jiji/model/securities/internal/oanda/ordering'
+require 'jiji/model/securities/internal/oanda/rate_retriever'
+require 'jiji/model/securities/internal/oanda/trading'
+require 'jiji/model/securities/internal/oanda/transaction_retriever'
 
 module Jiji::Model::Securities
   OandaAPI.configure do |config|

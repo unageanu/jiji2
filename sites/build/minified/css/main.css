@@ -1,27 +1,336 @@
 @charset "UTF-8";
 @import url(http://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
-@import url(http://fonts.googleapis.com/css?family=Roboto%7CRoboto+Condensed);
+@import url(http://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed);
 .slider .bar,.slider .handle{position:relative;height:30px}
-.agent-source-list,.new-backtest .agent-list{width:300px;float:left}
 *{font-family:Roboto,'Roboto Condensed','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'Noto Sans Japanese',sans-serif}
-.slider .bar{background-color:#f0f0f0;line-height:0;width:300px}
-.slider .handle{display:none;background-color:#407f7f}
-.slider .range{font-size:14px;color:#999}
+.slider .bar{background-color:rgba(128,128,128,.11);line-height:0;width:300px}
+.slider .handle{cursor:pointer;display:none;background-color:#00bfa5;background-size:30px 30px;background-image:url(../images/chart-handle.gif);background-repeat:no-repeat;background-position:center}
+.slider .range{color:#999;margin-bottom:4px}
+.slider .range .label{font-size:14px;margin-right:8px}
+.chart .loading{position:absolute;top:1pc;right:1pc}
+.card.mini-chart .header{padding:0 8px 8px 1pc}
+.card.mini-chart .header .icon{margin:0 8px 8px 0;font-size:24px;color:#999;vertical-align:inherit}
+.card.mini-chart .header .pair-selector{margin:0 1pc 0 0}
+.card.mini-chart .header .setting-menu{margin-top:8px}
+.card.mini-chart .chart{position:relative;background-color:#f1f1f1;border-left:1px solid #FFF;border-right:1px solid #FFF;padding:1pc;margin-bottom:1pc;overflow:hidden}
+.rate-view{border-left:4px solid #CCC;padding-left:8px;margin-bottom:8px;color:#999;font-size:1pc}
+.chart-view .chart,.left-navi{border-left:1px solid #FFF;border-right:1px solid #FFF}
+.rate-view .time{margin-bottom:4px}
+.rate-view .label{font-size:11px;margin-right:4px}
+.rate-view .value{margin-right:8px}
+.chart-view .menu{padding:1pc}
+.chart-view .chart{position:relative;background-color:rgba(128,128,128,.11);padding:1pc;overflow:hidden}
+.chart-view .rate-view{margin-bottom:1pc}
+.chart-view .slider-panel{margin-top:1pc;padding:0 1pc 1pc}
+.chart-view .pair-selector{margin-right:1pc}
+.left-navi{box-shadow:0 1px 6px rgba(0,0,0,.12),0 1px 4px rgba(0,0,0,.24);background-color:#FFF}
 .left-navi .menu-icon{font-size:24px}
-.left-navi .mui-menu-item{color:#999!important;font-size:16px}
-.left-navi .mui-menu-item.mui-is-selected{color:#666!important;background-color:#f0f0f0!important}
-.left-navi .mui-subheader{color:#aaa;font-size:14px;padding-left:16px;padding-right:16px;line-height:46px;height:auto}
-.agent-source-list .mui-selected,.backtests .backtest-list .mui-selected,.new-backtest .agent-list .mui-selected{color:#666!important;background-color:#f0f0f0!important}
-.backtests .details,.content{position:relative;padding:24px}
-.agent-source-editor{float:left;margin-right:-300px}
-.backtests{width:100%;float:right;margin-left:-300px}
-.backtests .backtest-list{width:300px;float:left}
-.backtests .details{margin:0 0 0 300px}
-body{margin:0}
-.topbar{width:100%;height:100px;background-color:#407f7f}
-.container{width:100%;float:right;margin-left:-300px}
-.content{margin:0 0 0 300px}
-.left-navi{width:300px;float:left;z-index:100000}
+.left-navi .mui-menu-item{color:#666!important;font-size:1pc}
+.left-navi .mui-menu-item.mui-is-selected{color:#00bfa5!important;background-color:#f1f1f1!important}
+.left-navi .mui-menu-item.mui-is-selected .menu-icon{color:#00bfa5!important}
+.left-navi .mui-subheader{color:#999;font-size:14px;padding-left:1pc;padding-right:1pc;line-height:46px;height:auto}
+.error{font-size:9pt;color:#f03950;border-bottom:2px solid #f03950;padding:4px;margin:8px 0}
+.agent-setting-editor-menu,.agent-source-list-menu{border-bottom:1px solid #d3d3d3}
+.account-view{padding:1pc}
+.account-view .panel.balance{float:left}
+.account-view .panel.performance{width:33%;float:right;padding-left:1pc;border-left:1px solid #d3d3d3}
+.account-view .panel.performance .item{margin-top:8px}
+.account-view .panel.performance .item.first{margin-top:0}
+.account-view .panel.performance .item.first .value{font-size:24px}
+.account-view .panel.performance .item.first .label,.account-view .panel.performance .item.first .value{line-height:24px;vertical-align:bottom}
+.account-view .panel.balance .changes-from-previous-day *,.account-view .title *{vertical-align:middle}
+.account-view .panel.performance .label{color:#999;font-size:1pc;line-height:1pc}
+.account-view .panel.performance .icon{line-height:1pc}
+.account-view .panel.performance .value{color:#666;font-size:18px;float:right;line-height:1pc}
+.account-view .title{color:#999;font-size:24px;margin-bottom:1pc}
+.account-view .title .icon{margin-right:8px}
+.account-view .panel.balance .balance,.account-view .panel.balance .changes-from-previous-day{text-align:right}
+.account-view .panel.balance .balance{padding-top:8px;color:#666;font-size:2pc;line-height:2pc}
+.account-view .panel.balance .changes-from-previous-day{margin-top:1pc;color:#999;font-size:1pc;line-height:1pc}
+.account-view .panel.balance .changes-from-previous-day .label,.account-view .panel.balance .changes-from-previous-day .price{padding-right:8px}
+.account-view .panel.balance .changes-from-previous-day .icon{margin-left:8px}
+.agent-setting-editor .parent{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:flex-start;-ms-flex-align:start;align-items:flex-start}
+.agent-setting-editor .parent .agent-list{width:25pc}
+.agent-setting-editor .parent .agent-property-editor{-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1}
+.agent-property-editor{margin:1pc 0 1pc 1pc;padding:24px;border:1px solid #d3d3d3;min-height:50px}
+.agent-property-editor .agent-details .item{display:-webkit-flex;display:-ms-flexbox;display:flex;margin-top:8px}
+.agent-property-editor .agent-details .item .icon,.agent-property-editor .agent-details .item .item-label{width:90px;-webkit-flex-shrink:0;-ms-flex-negative:0;flex-shrink:0;color:#999;font-size:14px;overflow:hidden;text-overflow:ellipsis}
+.agent-property-editor .agent-details .item .agent-name,.agent-property-editor .agent-details .item .item-value{padding-left:1pc;-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;width:5pc;color:#666;font-size:1pc;overflow:hidden;text-overflow:ellipsis}
+.agent-property-editor .agent-details .item:nth-child(1){margin-top:0}
+.agent-property-editor .agent-details .icon-and-name>.icon{padding-top:24px}
+.agent-property-editor .agent-details .description pre{overflow:scroll;white-space:pre-line;font-size:14px;color:#666;margin:0;padding:8px}
+.agent-class-list{max-height:500px;overflow-y:scroll}
+.agent-source-list-menu{padding:8px}
+.agent-source-editor{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;width:100%;margin:24px;overflow:hidden}
+.agent-source-editor .header{margin-bottom:1pc}
+.agent-source-editor .header .error{word-break:break-all;margin:0;padding:0}
+.agent-source-editor .info{margin:0;font-size:14px;color:#999;padding-left:1em}
+.agent-source-editor .editor{-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1}
+.agent-source-editor .ace_editor .ace_text-input *,.agent-source-editor .ace_editor .ace_text-layer *{font:9pt/normal Monaco,Menlo,'Ubuntu Mono',Consolas,source-code-pro,monospace!important}
+.backtest-builder{padding:2pc}
+.backtest-builder .top-button{padding:0 0 2pc;border-bottom:1px solid silver;margin-bottom:1pc}
+.backtest-builder .inputs .item{margin-top:2pc}
+.backtest-builder .inputs .item .label{font-size:1pc;color:#666}
+.backtest-builder .inputs .item .desc{font-size:14px;color:#999;margin:8px 0}
+.backtest-builder .inputs.table{display:table}
+.backtest-builder .inputs.table .item{display:table-row}
+.backtest-builder .inputs.table .item .input,.backtest-builder .inputs.table .item .label{display:table-cell}
+.backtest-builder .inputs.table .item .label{padding-top:30px;vertical-align:top}
+.backtest-builder .inputs.table .item .input{padding-top:1pc;padding-left:24px}
+.backtest-builder .pair-selector{margin:1pc}
+.backtest-list .progress .number{color:#00bfa5;margin-right:8px}
+.backtest-list .progress .bar>div{background-color:#00bfa5!important}
+.backtest-list .error{padding:0;margin:0;border:0}
+.backtest-list .error .icon{font-size:1pc}
+.backtest-list .error span{vertical-align:middle}
+.backtest-properties-view{padding:24px}
+.backtest-properties-view .buttons{text-align:right;margin-bottom:1pc}
+.backtest-properties-view .buttons .loading{display:inline-block;height:20px;width:34px}
+.backtest-properties-view .items{width:100%}
+.backtest-properties-view .items .item{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:flex-start;-ms-flex-align:start;align-items:flex-start}
+.backtest-properties-view .items .item .label,.backtest-properties-view .items .item .value{padding:8px 0}
+.backtest-properties-view .items .item:nth-child(1) .label,.backtest-properties-view .items .item:nth-child(1) .value{padding-top:0}
+.backtest-properties-view .items .label{-webkit-flex-shrink:0;-ms-flex-negative:0;flex-shrink:0;vertical-align:top;width:150px;font-size:14px;color:#999}
+.backtest-properties-view .items .value{font-size:1pc;color:#666}
+.backtest-properties-view .items .value pre{margin:0;line-height:150%;word-break:break-all;white-space:pre-line;min-height:60px}
+.backtest-properties-view .items .item.agent-settings{display:block}
+.backtest-properties-view .error{padding:0;margin:0;border:0;font-size:1pc}
+.backtest-properties-view .error span{vertical-align:middle}
+.backtest-properties-view .agent-setting-editor{min-height:0}
+.backtest-properties-view .agent-setting-editor .parent .agent-list{width:300px}
+.backtest-properties-view .agent-property-editor{margin-top:8px;margin-bottom:0}
+.backtest-properties-view .agent-property-editor .agent-details .item{display:block;margin-top:1pc}
+.backtest-properties-view .agent-property-editor .agent-details .item:nth-child(1){margin-top:0}
+.backtest-properties-view .agent-property-editor .agent-details .item-label{width:auto;display:block}
+.backtest-properties-view .agent-property-editor .agent-details .agent-name,.backtest-properties-view .agent-property-editor .agent-details .item-value{width:auto;padding-left:0}
+.backtest-properties-view .agent-property-editor .agent-details .icon-and-name{margin-bottom:1pc}
+.backtest-properties-view .agent-property-editor .agent-details .icon{display:none}
+.log-viewer .menu{position:fixed;bottom:4pc;right:8px;background-color:#FFF;padding:1pc;width:40%;overflow:visible!important}
+.log-viewer .menu .page-selector{display:inline-block;padding:6px 0 0 6px}
+.log-viewer .menu .page-selector .separator{margin-right:8px}
+.log-viewer .menu .scroller{float:right}
+.log-viewer .menu .scroller .scroller-buttons{margin-left:8px}
+.log-viewer .body pre{margin:0;overflow-x:scroll;background-color:#333;padding:1pc;font-size:9pt;color:#EEE;min-height:500px}
+.icon-selector .icon-and-action .icon,.icon-selector .icon-and-action a{vertical-align:middle;cursor:pointer}
+.icon-selector .icon-and-action a{margin-left:8px;text-decoration:underline}
+.icon-selector .icons{max-height:500px;overflow-y:scroll}
+.icon-selector .drop-area{cursor:pointer;margin-top:24px;border:1px solid #d3d3d3;padding:1pc;font-size:14px;color:#999;background-color:#f5f5f5;box-shadow:inset 0 0 10px rgba(0,0,0,.2);border-radius:2px}
+.icon-selector .drop-area .error{margin-bottom:1pc}
+.notifications-card{width:calc(50% - 8px);margin-right:1pc;display:inline-block;vertical-align:top}
+.notification-list .list-item .not-read{font-weight:700}
+.notification-details{padding:2pc;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch}
+.notification-details .avatar-panel{width:40px}
+.notification-details .content-panel{-webkit-flex:1;-ms-flex:1;flex:1;padding-left:1pc}
+.notification-details .content-panel .message{font-size:1pc;color:#666}
+.notification-details .content-panel .agent-name{margin-top:8px}
+.notification-details .content-panel .agent-name,.notification-details .content-panel .timestamp{font-size:14px;color:#999}
+.notification-details .content-panel .action-buttons{margin-top:2pc;text-align:right}
+.notification-details .content-panel .action-buttons .action-button{margin-left:8px;margin-bottom:8px;display:inline-block}
+.notification-list-menu-bar{border-bottom:1px solid #d3d3d3;padding:8px}
+.notification-list-menu-bar .buttons{display:inline-block;float:right}
+.positions-card{width:calc(50% - 8px);display:inline-block;vertical-align:top}
+.position-list .profit-or-loss{font-size:20px}
+.position-list .suffix{font-size:11px}
+.position-list .separator{margin:0 4px}
+.positions-table .actions{text-align:right}
+.positions-table table{width:100%;border-collapse:collapse}
+.positions-table table td{padding:8px 2px;text-align:center;font-size:14px;text-overflow:ellipsis}
+.positions-table table td.profitOrLoss{width:5pc;text-align:right}
+.positions-table table td.pairName{width:90px}
+.positions-table table td.sellOrBuy,.positions-table table td.status{width:60px}
+.positions-table table td.status .live{color:#f03950}
+.positions-table table td.units{width:60px;text-align:right}
+.positions-table table td.entryPrice,.positions-table table td.exitPrice{width:90px;text-align:right}
+.positions-table table thead tr{background-color:#00bfa5}
+.positions-table table thead tr th{color:#fff;font-size:14px;font-weight:400;padding:8px 4px}
+.positions-table table thead tr th a{color:#fff;cursor:pointer;text-decoration:underline}
+.positions-table table tbody tr{color:#666;border-bottom:1px solid #d3d3d3;cursor:pointer}
+.positions-table table tbody tr.selected,.positions-table table tbody tr:hover{background:rgba(128,128,128,.11)}
+.positions-table table tbody tr.selected:hover{background:rgba(128,128,128,.22)}
+.positions-table .center-information{padding:2pc 0;border-bottom:1px solid #d3d3d3}
+.position-details{font-size:1pc;color:#666}
+.position-details .profit-or-loss{font-size:24px;padding-bottom:8px}
+.position-details .profit-or-loss span.price{margin-left:1pc}
+.position-details .profit-or-loss img,.position-details .profit-or-loss span{vertical-align:middle}
+.position-details .informations{display:table;width:100%}
+.position-details .category{display:table-cell;padding-left:1pc}
+.position-details .category.first{padding-left:0}
+.position-details .category.first .item .label{display:table-cell;min-width:40px}
+.position-details .item{margin-right:1pc;display:table-row}
+.position-details .item .label,.position-details .item .value{display:table-cell;padding:3px 4px}
+.position-details .item .label{min-width:60px;margin-right:8px;font-size:9pt;color:#999}
+.position-details .item .value .live{color:#f03950}
+.position-details .category.closing-policy{border:1px solid #d3d3d3;padding:0 1pc 1pc}
+.position-details .category.closing-policy:before{content:"決済条件";font-size:14px;color:#999;display:inline-block;position:relative;top:-9pt;background-color:#FFF;padding:0 8px}
+.page{padding:1pc}
+.login-page{padding:24px}
+.login-page .main-card{padding:5pc;width:750px;margin:0 auto}
+.login-page .main-card .login-panel{margin:0 3pc}
+.login-page .main-card h3{font-size:20px;color:#999;margin-bottom:1pc;font-weight:400}
+.login-page .main-card .inputs{margin-bottom:2pc}
+.login-page .main-card .error{margin-bottom:1pc}
+.login-page .main-card .resetter-link{text-align:right;margin-top:1pc}
+.login-page .main-card a{cursor:pointer;text-decoration:underline;font-size:14px}
+.login-page .main-card .password-resetter .description{margin-top:2pc;color:#666;font-size:1pc;margin-bottom:2pc}
+.login-page .main-card .password-resetter .section{margin-top:40px;padding-top:40px;border-top:1px solid silver}
+.login-page .main-card .password-resetter .section .info{color:#666;font-size:1pc;line-height:160%}
+.login-page .main-card .password-resetter .section .info .number{font-size:2pc;margin-right:8px}
+.login-page .main-card .password-resetter .input{width:25pc;margin-left:1pc}
+.login-page .main-card .password-resetter .input .description{font-size:14px;color:#999;margin:0}
+.login-page .main-card .password-resetter .buttons{margin-top:1pc;margin-left:1pc}
+.login-page .main-card .password-resetter .error{margin-left:1pc}
+.login-page .main-card .password-resetter .message{margin-top:8px;margin-left:1pc;font-size:14px;color:#00bfa5}
+.backtests-page .main-card>div{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch}
+.backtests-page .main-card .backtest-list{width:280px;border-right:1px solid #d3d3d3}
+.backtests-page .main-card .backtest-list>div,.home-page .notification-list>div,.home-page .position-list>div{border-right:1px solid #FFF;border-left:1px solid #FFF}
+.backtests-page .main-card .backtest-list .center-information{margin:2pc 1pc}
+.backtests-page .main-card .backtest-details-panel{-webkit-flex:1;-ms-flex:1;flex:1}
+.backtests-page .main-card .backtest-details-panel .positions{padding:1pc}
+.backtests-page .main-card .backtest-details-panel .trading-summary-view .summary-item .label{height:24px}
+.backtests-page .main-card .backtest-details-panel .trading-summary-view .summary-item .primary-value{font-size:28px;height:42px}
+.backtests-page .main-card .backtest-details-panel .trading-summary-view .charts .circle-graph .tables .item .value,.backtests-page .main-card .backtest-details-panel .trading-summary-view .data .item .details .item .value,.backtests-page .main-card .backtest-details-panel .trading-summary-view .summary-item .sub-contents .item .value{font-size:1pc}
+.backtests-page .main-card .backtest-details-panel .trading-summary-view .summary-item .sub-contents .item .label{height:20px}
+.backtests-page .main-card .backtest-details-panel .trading-summary-view .charts .circle-graph .tables .item .label{max-width:90pt}
+.notifications-page .main-card>div{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch}
+.notifications-page .main-card .list-panel{width:440px;border-right:1px solid #d3d3d3}
+.notifications-page .main-card .list-panel .notification-list{margin-top:8px}
+.notifications-page .main-card .list-panel .notification-list>div{border-right:1px solid #FFF;border-left:1px solid #FFF}
+.notifications-page .main-card .list-panel .notification-list .center-information{padding:2pc 1pc}
+.notifications-page .main-card .details-panel{-webkit-flex:1;-ms-flex:1;flex:1}
+.notifications-page .main-card .details-panel .card{margin:1pc;min-height:75pt}
+.rmt-log-page .main-card{padding:1pc}
+.rmt-positions-page .main-card{padding:24px}
+.rmt-agent-setting-page .main-card{padding:2pc}
+.rmt-agent-setting-page .main-card .description{font-size:14px;color:#999;margin:0 0 2pc;padding-left:2em}
+.rmt-agent-setting-page .main-card .top-button{padding:0 0 2pc;border-bottom:1px solid silver;margin-bottom:1pc}
+.rmt-agent-setting-page .main-card .top-button .saved-label{color:#00bfa5;margin-left:1pc;font-size:14px}
+.agents-page .main-card>div{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch}
+.agents-page .main-card .agent-list-panel{width:360px;border-right:1px solid #d3d3d3}
+.agents-page .main-card .agent-list-panel .agent-source-list>div,.trading-summary-view .charts{border-left:1px solid #FFF;border-right:1px solid #FFF}
+.agents-page .main-card .agent-list-panel .agent-source-list{margin-top:8px}
+.agents-page .main-card .agent-editor-panel{-webkit-flex:1;-ms-flex:1;flex:1;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch;min-height:700px}
+.settings-page .main-card{padding:2pc}
+.settings-page .item{margin-bottom:5pc}
+.settings-page .item:nth-last-child(1){margin-bottom:0}
+.initial-settings-page{padding:24px}
+.initial-settings-page .main-card{padding:4pc;width:50pc;margin:0 auto}
+.initial-settings-page h3{color:#666;font-size:20px;border-bottom:1px solid silver;padding-bottom:8px;margin-bottom:24px}
+.initial-settings-page .description{color:#666;font-size:1pc}
+.initial-settings-page ul.description{color:#666;font-size:14px}
+.initial-settings-page .inputs{margin:0 0 2pc}
+.initial-settings-page .buttons{padding-top:2pc;text-align:center}
+.initial-settings-page .buttons .button{display:inline-block;width:300px}
+.initial-settings-page .welcome-view .description{font-size:20px}
+.initial-settings-page .welcome-view .license{background-color:#f1f1f1;padding:24px;margin-top:2pc}
+.initial-settings-page .welcome-view .accept-license{margin-top:8px}
+.initial-settings-page .mailaddress-and-password-setting-view .inputs .description{font-size:14px;color:#999}
+.initial-settings-page .smtp-server-setting-view .buttons .button{margin-left:8px}
+.initial-settings-page .smtp-server-setting-view .buttons .button.next,.initial-settings-page .smtp-server-setting-view .buttons .button.test-mail{width:220px}
+.initial-settings-page .smtp-server-setting-view .buttons .button.skip{width:150px}
+.initial-settings-page .smtp-server-setting-view .buttons .button:nth-child(1){margin-left:0}
+.setting h3{color:#666;font-size:1pc;padding-bottom:4px;border-bottom:1px solid silver;margin:0;font-weight:400}
+.setting .setting-body{margin-left:1pc}
+.setting .setting-body .mail-address,.setting .setting-body .passwords{width:600px}
+.setting .description{margin-bottom:0;color:#999;font-size:14px}
+.setting .buttons{margin-top:1pc}
+.setting .buttons .button{margin-right:8px}
+.setting .error{width:600px;margin-bottom:1pc}
+.setting .message{margin-top:8px;color:#00bfa5;font-size:14px}
+.smtp-server-setting .host-and-port{display:-webkit-flex;display:-ms-flexbox;display:flex;width:600px}
+.smtp-server-setting .host-and-port .host{-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1}
+.smtp-server-setting .host-and-port .port{padding-left:1pc;width:200px}
+.smtp-server-setting .username-and-password{display:-webkit-flex;display:-ms-flexbox;display:flex;width:600px}
+.smtp-server-setting .username-and-password .password,.smtp-server-setting .username-and-password .username{-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1}
+.smtp-server-setting .username-and-password .password{padding-left:1pc}
+.smtp-server-setting .setting-button{margin-left:8px}
+.pair-setting .pair-selector{margin-top:1pc}
+.trading-summary-view{padding-bottom:24px}
+.trading-summary-view .content .summaries{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch;margin:2pc 24px 24px}
+.trading-summary-view .content .summaries .summary-item{-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;width:25%}
+.trading-summary-view .charts{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch;padding:24px;margin-bottom:24px;background-color:rgba(128,128,128,.11)}
+.root,.trading-summary-view .data{display:-webkit-flex;display:-ms-flexbox}
+.trading-summary-view .charts .circle-graph{-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;width:33%}
+.trading-summary-view .data{display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;margin:24px 24px 0}
+.trading-summary-view .data .item{-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;width:50%}
+.trading-summary-view .selector-bar{padding:8px 8px 0 0;text-align:right}
+.trading-summary-view .selector-bar .label{color:#999;height:3pc;display:inline-block}
+.trading-summary-view .selector-bar span{vertical-align:middle;text-align:left}
+.trading-summary-view .summary-item .label{color:#999;text-align:right;height:28px}
+.trading-summary-view .summary-item .primary-value{color:#666;font-size:40px;line-height:44px;text-align:right;height:50px;border-bottom:1px solid #00bfa5;margin-left:1pc}
+.trading-summary-view .summary-item .primary-value .icon{margin-left:4px}
+.trading-summary-view .summary-item .sub-contents{display:table;margin-top:8px;float:right}
+.trading-summary-view .summary-item .sub-contents .item{display:table-row;margin-top:1pc}
+.trading-summary-view .summary-item .sub-contents .item .label,.trading-summary-view .summary-item .sub-contents .item .value{display:table-cell;border-bottom:1px solid #d3d3d3;padding-top:8px;height:20px}
+.trading-summary-view .summary-item .sub-contents .item .label{font-size:9pt;padding-left:8px}
+.trading-summary-view .summary-item .sub-contents .item .value{color:#666;font-size:18px;text-align:right;padding-left:1pc}
+.trading-summary-view .summary-item:nth-child(1) .primary-value{margin-left:0}
+.trading-summary-view .charts .circle-graph .title{color:#666;text-align:center}
+.trading-summary-view .charts .circle-graph .chart{margin:1pc 0;text-align:center}
+.trading-summary-view .charts .circle-graph .chart span{display:inline-block}
+.trading-summary-view .charts .circle-graph .tables{display:table;width:70%;padding:0 15%}
+.trading-summary-view .charts .circle-graph .tables .item{display:table-row}
+.trading-summary-view .charts .circle-graph .tables .item .label,.trading-summary-view .charts .circle-graph .tables .item .value{display:table-cell;border-bottom:1px solid #d3d3d3;padding-top:8px}
+.trading-summary-view .charts .circle-graph .tables .item .label{font-size:14px;color:#999;padding-left:8px;text-align:left;max-width:150px;overflow:hidden;text-overflow:ellipsis}
+.trading-summary-view .charts .circle-graph .tables .item .value{color:#666;font-size:18px;text-align:right;padding-left:1pc;padding-right:8px}
+.trading-summary-view .data .item .title{color:#999;font-size:1pc}
+.trading-summary-view .data .item .details{display:table;width:90%;float:right;margin:8px 1pc 0}
+.trading-summary-view .data .item .details .item{display:table-row}
+.trading-summary-view .data .item .details .item .label,.trading-summary-view .data .item .details .item .value{display:table-cell;border-bottom:1px solid #d3d3d3;padding-top:8px}
+.trading-summary-view .data .item .details .item .label{font-size:14px;color:#999;padding-left:8px;text-align:left;overflow:hidden;text-overflow:ellipsis}
+.card,.main-card{overflow:visible!important}
+.trading-summary-view .data .item .details .item .value{color:#666;font-size:18px;text-align:right;padding-left:2pc;padding-right:8px}
+.card .header .icon,.card .header .title{font-size:24px;color:#999;vertical-align:middle}
+.card{margin-bottom:1pc}
+.card .header{padding:8px 8px 8px 1pc}
+.card .header .title{display:inline-block;margin:8px 0}
+.card .header .icon{margin:8px 8px 8px 0}
+.card .header .radius{margin-left:1pc;margin-bottom:3px;vertical-align:middle}
+.card:nth-last-child(1){margin-bottom:0}
+.dialog-content .dialog-description{font-size:1pc;color:#666;margin-bottom:8px}
+.center-information{font-size:1pc;color:#999;text-align:center;padding:1pc}
+.list .primary-text{overflow:hidden;text-overflow:ellipsis}
+.loading-for-button-action{margin-left:8px}
+.center-information.loading>span{height:40px;display:inline-block}
+.radius{display:inline-block;border:1px solid #FFF;font-size:11px;line-height:19px;text-align:center;padding:1px 6px;min-width:2pc;border-radius:19px}
+.range-selector .separator{margin:0 8px;color:#999}
+.snackbar button{margin-left:0!important;min-width:0!important}
+.snackbar .notification .left-icon{float:left}
+.snackbar .notification .content{float:left;margin-left:1pc;width:calc(100% - 75pt);display:inline-block}
+.snackbar .notification .content .message,.snackbar .notification .content .title{width:100%;white-space:nowrap;text-overflow:ellipsis;overflow:hidden;display:inline-block}
+.snackbar .notification .content .title{color:#FFF;font-size:14px}
+.snackbar .notification .content .message{color:#aaa;font-size:9pt}
+.price-view .mark{margin-right:.1em}
+.price-view .unit{font-size:60%;margin-left:.1em}
+.price-view .icon{margin-left:.2em}
+.darken{overflow:hidden;position:relative}
+.darken::before{content:"";width:100%;height:100%;position:absolute;pointer-events:none;opacity:0;background:#bbb}
+.darken.on::before{-webkit-animation:darken .5s ease-out;animation:darken .5s ease-out}
+@-webkit-keyframes darken{from{opacity:.9}
+to{opacity:0}
+}
+@keyframes darken{from{opacity:.9}
+to{opacity:0}
+}
+.icon{display:inline-block;overflow:hidden;background-repeat:no-repeat}
+.icon.trend{width:17px;height:1pc;background-image:url(../images/trends.png);background-position:30px 30px}
+.icon.trend.up{background-position:0 -33px}
+.icon.trend.down{background-position:-17px -33px}
+.icon.trend.flat{background-position:-36px -33px}
+@media only screen and (-webkit-min-device-pixel-ratio:2),only screen and (min-device-pixel-ratio:2){.icon.trend{background-size:52px 29px}
+.icon.trend.up{background-position:1px 0}
+.icon.trend.down{background-position:-1pc 0}
+.icon.trend.flat{background-position:-33px 0}
+}
+body{margin:0;background-color:rgba(128,128,128,.22)}
+.up{color:#00bfa5}
+.down{color:#f03950}
+a{color:#313d7a}
+a:visited{color:#761d7a}
+.root{min-height:100vh;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column}
+.topbar{width:100%;height:75pt;background-color:#356868;box-shadow:0 1px 6px rgba(0,0,0,.12),0 1px 4px rgba(0,0,0,.24)}
+.container{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch}
+.content{-webkit-flex:1;-ms-flex:1;flex:1}
+.left-navi{width:3in}
 /*!
  *  Material Design Iconic Font 1.0.1 by Sergey Kupletsky (@zavoloklom) - http://zavoloklom.github.io/material-design-iconic-font/
  *  License - https://github.com/zavoloklom/material-design-iconic-font/blob/gh-pages/License.md (Attribution-ShareAlike 4.0 International license)

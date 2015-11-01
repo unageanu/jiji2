@@ -1,5 +1,6 @@
 # coding: utf-8
 require 'time'
+require 'mongoid'
 
 class Time
 

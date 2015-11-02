@@ -36,8 +36,8 @@ module Jiji::Messaging
     end
 
     def smtp_server
+      return postmark_smtp_server     if postmark_smtp_server.available?
       return user_setting_smtp_server if user_setting_smtp_server.available?
-      return postmark_smtp_server    if postmark_smtp_server.available?
       illegal_state('SMTP server is not set.')
     end
 
@@ -58,9 +58,10 @@ module Jiji::Messaging
     class PostmarkSMTPServer < SMTPServer
 
       def available?
-        ENV['POSTMARK_SMTP_SERVER'] \
-        && ENV['POSTMARK_API_TOKEN'] \
-        && ENV['POSTMARK_API_KEY']
+        !ENV['POSTMARK_SMTP_SERVER'].nil? \
+        && !ENV['POSTMARK_SMTP_SERVER'].empty? \
+        && !ENV['POSTMARK_API_TOKEN'].nil? \
+        && !ENV['POSTMARK_API_TOKEN'].empty?
       end
 
       def setting
@@ -83,17 +84,16 @@ module Jiji::Messaging
 
       def available?
         mail_composer_setting = setting_repository.mail_composer_setting
-        mail_composer_setting.smtp_host \
-        && mail_composer_setting.smtp_port \
-        && mail_composer_setting.user_name \
-        && mail_composer_setting.password
+        !mail_composer_setting.smtp_host.nil? \
+        && !mail_composer_setting.smtp_host.empty? \
+        && !mail_composer_setting.smtp_port.nil?
       end
 
       def setting
         mail_composer_setting = setting_repository.mail_composer_setting
         {
           address:   mail_composer_setting.smtp_host,
-          port:      mail_composer_setting.smtp_port,
+          port:      mail_composer_setting.smtp_port.to_i,
           domain:    DOMAIN,
           user_name: mail_composer_setting.user_name,
           password:  mail_composer_setting.password

@@ -30,6 +30,19 @@ describe Jiji::Messaging::MailComposer do
     expect(server_setting[:domain]).to eq 'unageanu.net'
     expect(server_setting[:user_name]).to eq 'aaa'
     expect(server_setting[:password]).to eq 'bbb'
+
+    setting.smtp_host = 'foo.com'
+    setting.smtp_port = 588
+    setting.user_name = nil
+    setting.password  = nil
+    setting.save
+
+    server_setting = composer.smtp_server.setting
+    expect(server_setting[:address]).to eq 'foo.com'
+    expect(server_setting[:port]).to eq 588
+    expect(server_setting[:domain]).to eq 'unageanu.net'
+    expect(server_setting[:user_name]).to eq nil
+    expect(server_setting[:password]).to eq nil
   end
 
   it 'postmarkの設定がある場合、postmarkでメールが送信される' do

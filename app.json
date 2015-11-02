@@ -22,7 +22,6 @@
   },
   "addons": [
     "mongolab:sandbox",
-    "postmark:10k",
     "newrelic:wayne"
   ],
   "buildpacks": [

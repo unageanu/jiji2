@@ -10,7 +10,8 @@ const defaultPort = 587;
 
 const keys = new Set([
   "setting", "error", "message", "isSaving", "enablePostmark",
-  "hostError", "portError", "userNameError", "passwordError"
+  "hostError", "portError", "userNameError", "passwordError",
+  "testMailMessage"
 ]);
 
 export default class SMTPServerSettingView extends AbstractComponent {
@@ -73,7 +74,7 @@ export default class SMTPServerSettingView extends AbstractComponent {
               {this.state.isSaving ? <LoadingImage size={20} /> : null}
             </span>
           </div>
-          <div className="message">{this.state.message}</div>
+          <div className="message">{this.state.message || this.state.testMailMessage }</div>
         </div>
       </div>
     );

@@ -17,9 +17,9 @@ if ENV['MONGOLAB_URI'] || ENV['MONGODB_URI']
   sessions = config['clients']['default']
   sessions['hosts']    = [u.host + ':' + (u.port ? u.port.to_s : '')]
   sessions['database'] = u.path.gsub(/\//, '')
-  sessions['username'] = u.user || ''
-  sessions['password'] = u.password || ''
-  p sessions
+  sessions['options']  = sessions['options'] || {}
+  sessions['options']['user'] = u.user || ''
+  sessions['options']['password'] = u.password || ''
   Mongoid.load_configuration(config)
 else
   Mongoid.load!(mongoid_setting_file, ENV['RACK_ENV'] || :development)

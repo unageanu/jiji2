@@ -106,7 +106,7 @@ extends AbstractComponent {
             <RaisedButton
               label="次へ"
               onClick={this.next.bind(this)}
-              disabled={this.state.loading}
+              disabled={this.state.isSaving}
               primary={true}
               style={{width:"100%", height: "50px"}}
             />

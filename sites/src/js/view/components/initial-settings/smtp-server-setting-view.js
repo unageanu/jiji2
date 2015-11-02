@@ -53,6 +53,7 @@ export default class SMTPServerSettingView extends Base {
           <span className="loading-for-button-action">
             {this.state.isSaving ? <LoadingImage size={20} /> : null}
           </span>
+          <div className="message">{this.state.testMailMessage}</div>
         </div>
       </div>
     );

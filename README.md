@@ -6,3 +6,8 @@
 
 FXシステムトレードフレームワーク (開発中)<br/>
 旧バージョンはこちら。 → http://jiji.unageanu.net/
+
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/heroku/node-js-sample)
+
+※α版/いろいろバグがあります。

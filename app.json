@@ -14,6 +14,14 @@
     "SECRET": {
       "description": "A secret key for encripting the personal information.",
       "generator": "secret"
+    },
+    "LANG": {
+      "description": "",
+      "value": "ja_JP.UTF-8"
+    },
+    "TZ": {
+      "description": "",
+      "value": "Asia/Tokyo"
     }
   },
   "addons": [

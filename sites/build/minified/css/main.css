@@ -1,6 +1,6 @@
 @charset "UTF-8";
-@import url(http://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
-@import url(http://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed);
+@import url(https://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
+@import url(https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed);
 .slider .bar,.slider .handle{position:relative;height:30px}
 *{font-family:Roboto,'Roboto Condensed','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'Noto Sans Japanese',sans-serif}
 .slider .bar{background-color:rgba(128,128,128,.11);line-height:0;width:300px}
@@ -220,6 +220,7 @@
 .initial-settings-page .inputs{margin:0 0 2pc}
 .initial-settings-page .buttons{padding-top:2pc;text-align:center}
 .initial-settings-page .buttons .button{display:inline-block;width:300px}
+.initial-settings-page .message{margin-top:8px;color:#00bfa5;font-size:14px}
 .initial-settings-page .welcome-view .description{font-size:20px}
 .initial-settings-page .welcome-view .license{background-color:#f1f1f1;padding:24px;margin-top:2pc}
 .initial-settings-page .welcome-view .accept-license{margin-top:8px}

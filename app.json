@@ -14,10 +14,6 @@
     "SECRET": {
       "description": "A secret key for encripting the personal information.",
       "generator": "secret"
-    },
-    "RACK_ENV": {
-      "description": "deployment environment",
-      "value": "production"
     }
   },
   "addons": [

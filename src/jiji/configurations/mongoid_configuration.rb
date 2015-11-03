@@ -7,8 +7,8 @@ require 'jiji/utils/requires'
 
 mongoid_setting_file = "#{Jiji::Utils::Requires.root}/config/mongoid.yml"
 
-Mongoid.logger.level = Logger::WARN
-Mongo::Logger.logger.level = Logger::WARN
+Mongoid.logger.level = Logger::DEBUG
+Mongo::Logger.logger.level = Logger::DEBUG
 
 if ENV['MONGOLAB_URI'] || ENV['MONGODB_URI']
   u = URI.parse(ENV['MONGOLAB_URI'] || ENV['MONGODB_URI'])
@@ -22,5 +22,5 @@ if ENV['MONGOLAB_URI'] || ENV['MONGODB_URI']
   sessions['options']['password'] = u.password || ''
   Mongoid.load_configuration(config)
 else
-  Mongoid.load!(mongoid_setting_file, ENV['RACK_ENV'] || :development)
+  Mongoid.load!(mongoid_setting_file, ENV['RACK_ENV'] || :production)
 end

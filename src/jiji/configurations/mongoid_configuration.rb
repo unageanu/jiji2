@@ -7,8 +7,8 @@ require 'jiji/utils/requires'
 
 mongoid_setting_file = "#{Jiji::Utils::Requires.root}/config/mongoid.yml"
 
-Mongoid.logger.level = Logger::DEBUG
-Mongo::Logger.logger.level = Logger::DEBUG
+Mongoid.logger.level = Logger::WARN
+Mongo::Logger.logger.level = Logger::WARN
 
 if ENV['MONGOLAB_URI'] || ENV['MONGODB_URI']
   u = URI.parse(ENV['MONGOLAB_URI'] || ENV['MONGODB_URI'])

@@ -4,7 +4,7 @@ require 'sinatra/base'
 require 'jiji/web/middlewares/base'
 
 module Jiji::Web
-  FONT_AND_STYLE_SRC = '\'self\' fonts.googleapis.com maxcdn.bootstrapcdn.com'
+  FONT_AND_STYLE_SRC = '\'self\' https://fonts.googleapis.com'
 
   class SecurityFilter < Base
 

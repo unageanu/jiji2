@@ -4,7 +4,7 @@ require 'sinatra/base'
 require 'jiji/web/middlewares/base'
 
 module Jiji::Web
-  FONT_AND_STYLE_SRC = '\'self\' https://fonts.googleapis.com'
+  FONT_AND_STYLE_SRC = '\'self\' fonts.googleapis.com'
 
   class SecurityFilter < Base
 
@@ -14,7 +14,7 @@ module Jiji::Web
         'X-Content-Type-Options'            => 'nosniff',
         'Content-Security-Policy'           =>
               'default-src \'self\' \'unsafe-eval\'; ' \
-            + 'script-src  \'self\' \'unsafe-inline\' http://*.newrelic.com http://bam.nr-data.net ; ' \
+            + 'script-src  \'self\' \'unsafe-inline\' *.newrelic.com bam.nr-data.net ; ' \
             + 'style-src ' + FONT_AND_STYLE_SRC + ' \'unsafe-inline\'; ' \
             + 'font-src  ' + FONT_AND_STYLE_SRC + ' fonts.gstatic.com; ' \
             + 'img-src \'self\' data:',

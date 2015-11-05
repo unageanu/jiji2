@@ -43,6 +43,9 @@ Style/GuardClause:
 Style/BracesAroundHashParameters:
   Enabled: false
 
+Style/ClassVars:
+  Enabled: false
+
 # 引数は8個までOK
 Metrics/ParameterLists:
   Max: 8

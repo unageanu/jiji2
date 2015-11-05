@@ -3,6 +3,7 @@
 require 'jiji/configurations/mongoid_configuration'
 require 'encase'
 require 'thread'
+require 'jiji/utils/composite_logger'
 
 module Jiji::Model::Logging
   class LoggerFactory
@@ -22,7 +23,8 @@ module Jiji::Model::Logging
       id  = backtest ? backtest.id : nil
       @mutex.synchronize do
         log = create_log_if_required(id)
-        @loggers[id] = create_logger(log) unless @loggers[id]
+        io  = CompositeIO.new(STDOUT, log)
+        @loggers[id] = create_logger(io) unless @loggers[id]
         @loggers[id]
       end
     end
@@ -49,6 +51,21 @@ module Jiji::Model::Logging
       @mutex.unlock if locked
     end
 
+    def self.composite_file_logger_if_logdir_setted(logger)
+      return logger unless ENV['LOG_DIR']
+      Jiji::Utils::CompositeLogger.new(logger, file_logger)
+    end
+    @@mutext = Mutex.new
+    @@file_logger = nil
+    def self.file_logger
+      @@mutext.synchronize do
+        return @@file_logger unless @@file_logger.nil?
+        @@file_logger =
+          Logger.new(ENV['LOG_DIR'] + '/jiji.log', 10, 10 * 1024 * 1024)
+        @@file_logger
+      end
+    end
+
     private
 
     def create_log_if_required(id)
@@ -57,7 +74,8 @@ module Jiji::Model::Logging
     end
 
     def create_logger(io)
-      logger = Logger.new(CompositeIO.new(STDOUT, io))
+      logger = Logger.new(io)
+      logger = LoggerFactory.composite_file_logger_if_logdir_setted(logger)
       logger.level = Logger::DEBUG
       logger
     end

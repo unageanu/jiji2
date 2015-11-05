@@ -20,4 +20,6 @@ end
 Figaro.adapter = Application
 Figaro.load
 
+ENV['SECRET'] = File.read(ENV['SECRET_FILE_PATH']) if ENV['SECRET_FILE_PATH']
+
 Figaro.require_keys('SECRET')

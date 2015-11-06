@@ -61,7 +61,7 @@ module Jiji::Model::Logging
       @@mutext.synchronize do
         return @@file_logger unless @@file_logger.nil?
         @@file_logger =
-          Logger.new(ENV['LOG_DIR'] + '/jiji.log', 10, 10 * 1024 * 1024)
+          Logger.new(ENV['LOG_DIR'] + "/jiji.log", 10, ENV['LOG_SIZE'].to_i)
         @@file_logger
       end
     end

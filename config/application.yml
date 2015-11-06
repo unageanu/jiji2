@@ -2,6 +2,9 @@
 # レートを取得する間隔(秒)
 TICK_INTERVAL: "15"
 
+# ログの最大サイズ。サイズがこの値を超えるとローテーションされます。
+LOG_SIZE: "<%= 10*1024*1024 %>"
+
 # テスト時に使う設定
 test:
   SECRET: <%= 'abcdefghijklmnopqrstuvwxyz' * 3 %>

@@ -16,6 +16,7 @@ module Jiji::Web
     include Jiji::Errors
 
     use Rack::Deflater
+    use Sinatra::CommonLogger
     use SecurityFilter
     use AllowCrossDomainRequestFilter
 

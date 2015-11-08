@@ -9,6 +9,8 @@ import UIEventHandler               from "./widgets/ui-evnet-handler"
 const RouteHandler = Router.RouteHandler;
 const Link         = Router.Link;
 const Types        = MUI.MenuItem.Types;
+const IconButton   = MUI.IconButton;
+const FontIcon   = MUI.FontIcon;
 
 export default class Frame extends React.Component {
   constructor(props) {
@@ -23,7 +25,28 @@ export default class Frame extends React.Component {
   render() {
     return (
       <div className="root">
-        <div className="topbar"></div>
+        <div className="topbar">
+          <span className="buttons">
+            <span className="button">
+              <span className="button">
+                <IconButton
+                  key="help"
+                  tooltip={"サポート・フォーラム"}
+                  iconStyle={{color:"#FFF"}}
+                  onClick={() => window.open("https://github.com/unageanu/jiji2/issues", "forum")}>
+                  <FontIcon className="md-forum" />
+                </IconButton>
+              </span>
+              <IconButton
+                key="help"
+                tooltip={"使い方"}
+                iconStyle={{color:"#FFF"}}
+                onClick={() => window.open("http://jiji.unageanu.net/usage", "usage")}>
+                <FontIcon className="md-live-help" />
+              </IconButton>
+            </span>
+          </span>
+        </div>
         <div className="container">
           <LeftNavi />
           <div className="content">

@@ -13,7 +13,7 @@ export default {
    + "'Noto Sans Japanese', sans-serif",
   getPalette() {
     return {
-      primary1Color:  "#356868",
+      primary1Color:  "#2A5252",
       primary2Color:  "#2B5353", // dark
       primary3Color:  "#417E7E", // light
       accent1Color:   "#00BFA5",

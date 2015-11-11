@@ -75,7 +75,6 @@
  * Page content
  */
 .page-content {
-    padding: $spacing-unit 0;
 }
 
 .page-heading {
@@ -116,7 +115,7 @@
     line-height: 1;
 
     @include media-query($on-laptop) {
-        font-size: 36px; 
+        font-size: 36px;
     }
 }
 

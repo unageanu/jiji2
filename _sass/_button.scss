@@ -1,0 +1,21 @@
+
+
+.button {
+  display:inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  border-radius: 8px;
+  background-color: darken($accent-color, 5%);
+  color: $text-color-w;
+  padding: $grid*2 $grid*4;
+  border-top: 1px solid lighten($accent-color, 20%);
+  border-left: 1px solid lighten($accent-color, 20%);
+  border-right: 1px solid darken($accent-color, 20%);
+  border-bottom: 1px solid darken($accent-color, 20%);
+}
+
+.button:hover {
+  color: $text-color-w;
+  text-decoration: none;
+  background-color: $accent-color;
+}

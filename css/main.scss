@@ -17,6 +17,10 @@ $spacing-unit:     16px;
 $text-color:            #666666;
 $text-color-light:      #999999;
 
+$text-color-w:          #FFF;
+$text-color-w-light:    #ccc;
+
+
 $background-color:      #FFFFFF;
 $background-color-dark: #F1F1F1;
 
@@ -25,6 +29,7 @@ $border-color-dark:     #c0c0c0;
 $brand-color:           #2a7ae2;
 
 $accent-color:          #00BFA5;
+$accent-color-red:      #f03950;
 $primary-color:         #2A5252;
 
 
@@ -59,7 +64,9 @@ $on-laptop:        800px;
 // Import partials from `sass_dir` (defaults to `_sass`)
 @import
         "base",
+        "button",
         "layout",
         "header",
+        "top",
         "syntax-highlighting"
 ;

@@ -1,23 +1,138 @@
 ---
-layout: default
+layout: fullscreen
 ---
 
-<div class="home">
+<article class="top">
+  <section class="first-hook page-content">
+    <div class="wrapper">
+      <h1>
+        無料で使える<br/>
+        FXシステムトレードフレームワーク 「Jiji」
+      </h1>
+      <p class="description">
+        自分だけの取引アルゴリズムで、<br/>
+        誰でも、いますぐ、かんたんにFX自動取引を開始できます
+      </p>
+      <div class="buttons">
+        <a class="button" href="/install/">いますぐ、インストール</a>
+      </div>
+      <p class="notice">
+        ※「必ず利益が出せる取引アルゴリズム」を提供するソフトウェアでは<b>ありません。</b><br/>
+        取引アルゴリズムを作成・検証し、運用を行うためのフレームワークです。<br/>
+        ※スマホアプリは有料のサービスです。
+      </p>
+    </div>
+  </section>
 
-  <h1 class="page-heading">Posts</h1>
+  <section class="feature page-content">
+    <div class="wrapper">
+      <h2>
+        3ステップで、システムトレードを開始。
+      </h2>
+      <div class="boxes">
+        <div class="box">
+          <h3>1. 取引アルゴリズムを作成</h3>
+          <ul>
+            <li>自分だけの取引アルゴリズムを、<b>オブジェクト指向プログラミング言語「Ruby」</b>で作成。</li>
+            <li>添付ライブラリを使って、<b>移動平均やRSIを使ったアルゴリズム</b>をかんたんに作成できます。</li>
+            <li><b>メールやPush通知の送信</b>にも対応。</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>2. バックテストで検証</h3>
+          <ul>
+            <li><b>過去10年のデータ</b>を使って、取引アルゴリズムの検証が可能。</li>
+            <li>勝率やProfitFactorなどアルゴリズムの成績は、<b>UIで詳細に分析</b>することができます。</li>
+          </ul>
+        </div>
+        <div class="box">
+          <h3>3. 24時間、自動取引</h3>
+          <ul>
+            <li>OANDA Japan の口座で、作成した取引アルゴリズムを実行。
+              (発注や決済には <b>OANDA FX REST API</b> を利用しています)</li>
+            <li>取引の状況は、<b>スマホアプリまたはWebUI</b> でいつでもどこでも確認可能。</li>
+            <li>OANDA Japan の<b>無料デモ口座にも対応</b>。まずは気軽にお試しできます。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </sction>
 
-  <ul class="post-list">
-    {% for post in site.posts %}
-      <li>
-        <span class="post-meta">{{ post.date | date: "%b %-d, %Y" }}</span>
+  <section class="feature page-content">
+    <div class="wrapper">
+      <h2>
+        裁量トレードにも使える、"Bot型"取引アルゴリズム
+      </h2>
+      <p class="description">
+        取引アルゴリズムから、メールやPush通知を送信することができます。<br/>
+        また、アルゴリズムに命令を送ってアクションを実行させることも可能。<br/>
+        これらを組み合わせて、裁量トレードを徹底アシストするBot型の取引システムを構築することもできます。
+      </p>
+      <div class="boxes">
+        <div class="box">
+          <ul>
+            <li>取引アルゴリズムが、レートの動きを監視。</li>
+            <li>レートがボリンジャーバンド -2αを下回ったところで、Push通知を送信。</li>
+          </ul>
+        </div>
+        <div class="box">
+          <ul>
+            <li>Push通知を受け取り、次のアクションを人間が判断。</li>
+            <li>アルゴリズムが命令を受け取り、アクションを実行します。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </sction>
 
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h2>
-      </li>
-    {% endfor %}
-  </ul>
+  <section class="feature page-content">
+    <div class="wrapper">
+      <h2>
+        クラウド対応。なので、運用も低コスト。
+      </h2>
+      <p class="description">
+        クラウドプラットフォームのHerokuに対応。1クリックでインストールして利用を開始することができます。<br/>
+        Docker Imageを配布しているので、ローカルマシンへのインストールも簡単。AWSなどDockerに対応した他のクラウドサービスも利用できます。
+      </p>
+      <div class="boxes">
+        <div class="box">
+          <ul>
+            <li>Herokuなら月額$7で、24時間連続稼働するシステムが構築可能。</li>
+            <li>システムの管理はWebUIまたは、スマホアプリから行えます。</li>
+          </ul>
+        </div>
 
-  <p class="rss-subscribe">subscribe <a href="{{ "/feed.xml" | prepend: site.baseurl }}">via RSS</a></p>
+        <div class="box">
+          <ul>
+            <li>もちろん、自宅のPCにインストールして使うことも可能。</li>
+            <li>AWSなどDockerに対応した他のクラウドサービスも利用できます。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </sction>
 
-</div>
+  <section class="feature page-content">
+    <div class="wrapper">
+      <h2>
+        オープンソース
+      </h2>
+      <p class="description">
+        ソースコードは <a>GitHub</a>で公開しています。<br/>
+        非商用での利用に限り、自由に改変/再配布が可能です。(MITライセンス)
+      </p>
+    </div>
+  </sction>
+
+  <section class="feature page-content">
+    <div class="wrapper">
+      <p class="description">
+        システムトレード、始めてみませんか?
+      </p>
+      <div class="buttons">
+        <a class="button" href="/install/">インストールして試してみる</a>
+      </div>
+    </div>
+  </sction>
+
+</article>

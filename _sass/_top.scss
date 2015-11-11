@@ -1,0 +1,33 @@
+
+.top {
+  section {
+    clear: both;
+  }
+
+  .first-hook {
+    color: $text-color-w;
+    background-color: $primary-color;
+    padding-top: $grid*15;
+
+    h1 {
+      font-size: 28px;
+    }
+    p.description {
+      margin: $grid*4 0 $grid*6;
+    }
+
+    p.notice {
+      margin: $grid*6 0;
+      border: 1px dotted $border-color;
+      padding: $grid*2;
+      font-size: $small-font-size;
+      color: $text-color-w-light;
+      float:left;
+
+      b {
+        color: $text-color-w;
+      }
+    }
+  }
+  
+}

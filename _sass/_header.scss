@@ -1,0 +1,114 @@
+/**
+ * Site header
+ */
+.site-header {
+  // Positioning context for the mobile navigation icon
+  position: relative;
+  background-color: $primary-color;
+  padding: $grid/2 0px;
+
+  .site-title {
+  }
+
+  .logo {
+    width: 176px;
+    height: 72px;
+  }
+
+  .menu-icon {
+    display: none;
+  }
+
+  .site-nav {
+    float: right;
+    line-height: 48px;
+    padding-top: $grid+$grid/2;
+
+    .page-link {
+      color: #FFF;
+      line-height: $base-line-height;
+    }
+    .spacer {
+      color: #FFF;
+      margin: 0px $grid;
+
+      &::after {
+        content: "|"
+      }
+    }
+  }
+
+  @include media-query($on-palm) {
+
+    .logo {
+      width: 123px;
+      height: 50px;
+    }
+    .site-nav {
+      line-height: 18px;
+      font-size: $small-font-size;
+
+      .spacer {
+        margin: 0px $grid/2;
+      }
+    }
+  }
+
+}
+//
+//   .menu-icon {
+//     display: block;
+//     float: right;
+//     margin: $grid*2 0px 0px 0px;
+//     width: 40px;
+//     height: 28px;
+//     border: 1px solid $accent-color;
+//     line-height: 0;
+//     padding-top: 12px;
+//     text-align: center;
+//     border-radius: 2px;
+//
+//     > svg {
+//         width: 18px;
+//         height: 16px;
+//
+//         path {
+//             fill: $accent-color;
+//         }
+//     }
+//   }
+//
+//   .site-nav {
+//     display: block;
+//     position: absolute;
+//     top: 48px;
+//     right: $spacing-unit / 2;
+//     background-color: $accent-color;
+//     border: 1px solid $primary-color;
+//     border-radius: 2px;
+//
+//     .spacer {
+//       display: none;
+//     }
+//
+//     // .trigger {
+//     //     clear: both;
+//     //     display: none;
+//     // }
+//     //
+//     // &:hover .trigger {
+//     //     display: block;
+//     //     padding-bottom: 5px;
+//     // }
+//
+//     .page-link {
+//         display: block;
+//         padding: 5px 10px;
+//
+//         &:not(:last-child) {
+//             margin-right: 0;
+//         }
+//         margin-left: 20px;
+//     }
+//   }
+// }

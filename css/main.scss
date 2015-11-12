@@ -10,7 +10,7 @@ $base-font-family: 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メ
 $base-font-size:   16px;
 $base-font-weight: 400;
 $small-font-size:  14px;
-$base-line-height: 1.5;
+$base-line-height: 160%;
 
 $spacing-unit:     16px;
 
@@ -38,7 +38,7 @@ $grey-color-light: lighten($grey-color, 40%);
 $grey-color-dark:  darken($grey-color, 25%);
 
 // Width of the content area
-$content-width:    1280px;
+$content-width:    1080px;
 $grid: 8px;
 
 $on-palm:          600px;

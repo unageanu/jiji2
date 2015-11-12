@@ -11,6 +11,7 @@
 
     h1 {
       font-size: 28px;
+      line-height: 160%;
     }
     p.description {
       margin: $grid*4 0 $grid*6;
@@ -29,5 +30,73 @@
       }
     }
   }
-  
+
+  .feature {
+    padding: $grid*8 0px;
+
+    h2 {
+      font-size: 28px;
+      display:block;
+    }
+    p.description {
+      margin: $grid*4 0;
+
+      b {
+        color: $accent-color;
+      }
+    }
+    .boxes {
+      display: flex;
+      flex-direction: row;
+      align-items: stretch;
+      margin-top: $grid*4;
+
+      .box {
+        flex-grow: 1;
+      }
+    }
+    .boxes3 {
+      .box {
+        width: 30%;
+        margin-right: 5%;
+      }
+      .box:nth-last-child(1) {
+        margin-right: 0;
+      }
+    }
+    .boxes2 {
+      .box {
+        width: 47%;
+        margin-right: 6%;
+      }
+      .box:nth-last-child(1) {
+        margin-right: 0;
+      }
+    }
+    ul {
+      font-size: $small-font-size;
+      color: $text-color;
+
+      li {
+        margin-top: $grid;
+        line-height: 150%;
+      }
+
+      b {
+        color: $accent-color;
+      }
+    }
+  }
+  .feature:nth-child(odd) {
+    background-color: $background-color-dark;
+  }
+
+  .closing {
+    text-align: center;
+
+    p.description {
+      font-size: 20px;
+    }
+  }
+
 }

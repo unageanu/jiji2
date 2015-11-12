@@ -1,0 +1,58 @@
+
+
+/**
+ * Site footer
+ */
+.site-footer {
+    background-color: #666;
+    color: #ddd;
+    padding: $spacing-unit*4 0;
+}
+
+.footer-heading {
+    font-size: 18px;
+    margin-bottom: $spacing-unit / 2;
+}
+
+.contact-list {
+    list-style: none;
+    margin-left: 0;
+    font-size: $small-font-size;
+    line-height: 150%;
+
+    a {
+      color: #ddd;
+    }
+}
+
+.footer-col-wrapper {
+  display: flex;
+}
+
+.footer-col {
+  flex-grow: 1;
+}
+
+.footer-col-1, .footer-col-2 {
+  width: 23%;
+  margin-right: 2%;
+}
+
+
+.footer-col-3 {
+  width: 50%;
+}
+
+@include media-query($on-laptop) {
+    .footer-col-wrapper {
+      display: block;
+      .footer-col-1, .footer-col-2 {
+        width: auto;
+        margin-right: 0px;
+      }
+    }
+}
+
+.right {
+  margin-top: $grid *5;
+}

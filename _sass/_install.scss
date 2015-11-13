@@ -3,3 +3,27 @@
   margin: $grid*4;
   font-size: 18px;
 }
+
+article.post {
+  .install_to_server {
+
+      .install_type {
+        font-size: 18px;
+        font-weight:bold;
+        margin: $grid*8 0px $grid*2;
+      }
+
+      .next {
+        margin-left: $grid*5;
+        margin-top: $grid*3;
+      }
+  }
+
+  .install_server_to_heroku {
+    .deploy_to_heroku {
+      border: 0px;
+      padding: 0px;
+      width: 300px;
+    }
+  }
+}

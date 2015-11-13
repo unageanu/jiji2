@@ -16,9 +16,9 @@
           {% for item in site.install %}
              {% if item.ignore != true %}
               {% if item.url == page.url %}
-                <li class="selected">
+                <li class="selected {{ item.nav_class_name }}">
               {% else %}
-                <li>
+                <li class="{{ item.nav_class_name }}">
               {% endif %}
                 <a class="page-link" href="{{ item.url | prepend: site.baseurl }}">
                   {{ item.title }}
@@ -29,7 +29,7 @@
           </ul>
         </nav>
 
-        <div class="contents">
+        <div class="contents {{page.class_name}}">
           <h1>{{page.title}}</h1>
           {{ content }}
         </div>

@@ -30,5 +30,5 @@ title:  "1. 証券口座の準備"
 </div>
 
 <div class="next">
-  <a href="010000_install_server.html">次へ</a>
+  <a href="020000_install_server.html">次へ</a>
 </div>

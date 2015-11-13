@@ -33,6 +33,9 @@ article.post {
           color: $accent-color;
         }
       }
+      li.lv2 {
+        padding-left: $grid*5;
+      }
     }
   }
   .contents {
@@ -66,6 +69,11 @@ article.post {
     line-height: 0px;
   }
 
+  p.step {
+    margin-top: $grid*7;
+    font-size: 18px;
+  }
+
   .notice {
     margin: $grid*4 0px;
     border: 1px dotted $text-color-light;
@@ -76,6 +84,25 @@ article.post {
     b {
       color: $text-color;
     }
+  }
+
+  .warn {
+    margin: $grid*4 0px;
+    border: 1px dotted $accent-color-red;
+    padding: $grid*2;
+    font-size: $small-font-size;
+    color: $text-color;
+
+    b {
+      color: $accent-color-red;
+    }
+  }
+
+  .accent {
+    font-size: $small-font-size;
+    color: $accent-color-red;
+    margin-left: $grid;
+    font-weight: normal;
   }
 
   .next {

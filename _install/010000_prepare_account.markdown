@@ -9,7 +9,7 @@ title:  "1. 証券口座の準備"
   → <a href="http://www.oanda.jp" target="_blank">OANDA Japan</a>
 </div>
 
-口座開設後、以下の手順でPersonal Access Tokenを発行してください。
+口座開設後、以下の手順でパーソナルアクセストークンを発行してください。
 
 1. OANDA Japanの口座にログインしてください。
 
@@ -19,10 +19,10 @@ title:  "1. 証券口座の準備"
 3. [REST APIの管理] をクリック
 ![手順2](/images/install/prepare_securities_02.png)
 
-4. API契約をご確認の上、Personal Access Tokenを発行してください。
+4. API契約をご確認の上、パーソナルアクセストークンを発行してください。
 ![手順3](/images/install/prepare_securities_03.png)
 
-5. 発行されたPersonal Access Tokenをコピーしておきます。(あとでJijiに設定します。)
+5. 発行されたパーソナルアクセストークンをコピーしておきます。(あとでJijiに設定します。)
 
 <div class="notice">
 ※個人口座の場合、OANDA FX REST APIを利用するためには、口座残高が25万円以上必要です。

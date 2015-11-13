@@ -4,9 +4,9 @@
  * Site footer
  */
 .site-footer {
-    background-color: #666;
+    background-color: #a5a5aa;
     color: #ddd;
-    padding: $spacing-unit*4 0;
+    padding: $grid*5 0 $grid*3 0px;
 }
 
 .footer-heading {
@@ -21,7 +21,7 @@
     line-height: 150%;
 
     a {
-      color: #ddd;
+      color: #EEE;
     }
 }
 

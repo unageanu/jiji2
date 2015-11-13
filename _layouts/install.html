@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+  {% include head.html %}
+
+  <body>
+
+    {% include header.html %}
+
+    <div class="page-content">
+      <article class="wrapper post install">
+
+        <nav>
+          <h2><a href="/install">インストールガイド</a></h2>
+          <ul>
+          {% for item in site.install %}
+             {% if item.ignore != true %}
+              {% if item.url == page.url %}
+                <li class="selected">
+              {% else %}
+                <li>
+              {% endif %}
+                <a class="page-link" href="{{ item.url | prepend: site.baseurl }}">
+                  {{ item.title }}
+                </a>
+              </li>
+             {% endif %}
+          {% endfor %}
+          </ul>
+        </nav>
+
+        <div class="contents">
+          <h1>{{page.title}}</h1>
+          {{ content }}
+        </div>
+
+      </article>
+    </div>
+
+    {% include footer.html %}
+
+  </body>
+
+</html>

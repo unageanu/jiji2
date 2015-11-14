@@ -25,3 +25,5 @@ host: 0.0.0.0
 collections:
  install:
     output: true
+ usage:
+    output: true

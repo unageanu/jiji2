@@ -1,0 +1,12 @@
+article.post {
+  .basic_flow {
+    .section {
+      margin-top: $grid*5;
+      a {
+        color: $accent-color;
+        font-size: 18px;
+      }
+    }
+
+  }
+}

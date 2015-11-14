@@ -26,4 +26,55 @@ article.post {
       width: 300px;
     }
   }
+
+  .install_app {
+
+    b {
+      color: $accent-color;
+    }
+
+    .push {
+      background-color: $background-color-dark;
+      padding: $grid*3;
+      margin: $grid*5 0px;
+
+      h2 {
+        color: $accent-color;
+        font-size: 20px;
+        margin: 0px 0px $grid*3;
+      }
+
+      .boxes {
+        display: flex;
+      }
+      .box {
+        width: 48%;
+
+        h3 {
+          font-size: 18px;
+          font-weight: bold;
+        }
+        div {
+          font-size: $small-font-size;
+        }
+      }
+      .box:nth-child(1) {
+        margin-right: 4%;
+      }
+    }
+
+    .android_badge {
+      margin-bottom: $grid*8;
+      img {
+        border: 0px;
+        padding: 0px;
+        width: 250px;
+      }
+    }
+
+    .info {
+      font-size: $small-font-size;
+      color: $text-color-light;
+    }
+  }
 }

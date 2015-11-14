@@ -4,7 +4,7 @@ title:  "3. Jijiの初期設定"
 class_name: "initial_setting"
 ---
 
-Jijiの初期設定を行います。
+インストールができたら、Jijiの初期設定を行います。
 
 <p class="step">1. 利用規約を確認のうえ、[利用規約に同意する] にチェックを入れて、[初期設定を開始] ボタンをクリックしてください。</p>
 ![手順1](/images/install/initial_setting_01.png)

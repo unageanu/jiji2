@@ -5,7 +5,7 @@ class_name: "install_server_to_docker"
 nav_class_name: "lv2"
 ---
 
-Linux or Mac の [Docker](https://www.docker.com/) にJijiをインストールします。
+[Docker](https://www.docker.com/) 上にJijiをインストールします。
 
 
 <p class="step">1. 必要なソフトウェアをインストールします</p>

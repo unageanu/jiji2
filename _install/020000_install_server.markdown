@@ -20,35 +20,13 @@ class_name: "install_to_server"
 </div>
 
 <div class="install_type">
-  Docker(Linux or Mac)にインストール
+  Dockerにインストール
 </div>
 
-- LinuxやMacにインストールされたDocker上にインストールします。
+- LinuxなどにインストールされたDocker上にインストールします。
 - Docker 1.9 以降, Docker Compose 1.5 以降 が必要です。
 - 外出先やスマホアプリからアクセスするためには、ネットワーク設定が別途必要です。
 
 <div class="next">
   <a href="020200_install_server_to_docker.html">Dockerにインストールする</a>
-</div>
-
-<div class="install_type">
-  Windows にインストール
-</div>
-
-- Docker Machineを利用して、ローカルのVirtualBoxにインストールします。
-- 外出先やスマホアプリからアクセスするためには、ネットワーク設定が別途必要です。
-
-<div class="next">
-  <a href="020300_install_server_to_windows.html">Windowsにインストールする</a>
-</div>
-
-<div class="install_type">
-  AWS,(Google Compute Engine, ..etc..)上にインストール
-</div>
-
-- Docker Machineがサポートしているプラットフォームにインストールします。
-- ※AWS以外の環境では確認を行っていません。ご了承ください。
-
-<div class="next">
-  <a href="020400_install_server_to_aws.html">AWS ..etc にインストールする</a>
 </div>

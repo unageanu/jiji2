@@ -19,7 +19,7 @@ export default class BacktestDetailsTab extends AbstractComponent {
       <Tab label="テスト情報" value=""></Tab>
       <Tab label="レポート"   value="report"></Tab>
       <Tab label="チャート"   value="chart"></Tab>
-      <Tab label="取引一覧"   value="trades"></Tab>
+      <Tab label="建玉一覧"   value="trades"></Tab>
       <Tab label="ログ"      value="logs"></Tab>
     </Tabs>;
   }

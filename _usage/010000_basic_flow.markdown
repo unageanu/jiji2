@@ -21,7 +21,7 @@ Jijiでの自動取引の流れは次の通りです。<br/>
   - 1つのバックテストで、複数のエージェントを同時にテストすることが可能です。
 
 <div class="section">
-  <a href="/usage/010300_analyze_backtest_result.html">3. テスト結果の分析</a>
+  <a href="/usage/010300_analyze_backtest_result.html">3. テスト結果の確認</a>
 </div>
 
   - テストの実行完了後、[バックテスト - テスト一覧]から取引の結果を確認。

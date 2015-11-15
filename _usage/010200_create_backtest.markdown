@@ -53,5 +53,5 @@ nav_class_name: "lv2"
 
 
 <div class="next">
-  <a href="010300_analyze_backtest_result.html">次のページへ: 3. テスト結果の分析</a>
+  <a href="010300_analyze_backtest_result.html">次のページへ: 3. テスト結果の確認</a>
 </div>

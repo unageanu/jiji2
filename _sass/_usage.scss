@@ -1,5 +1,11 @@
 article.post {
 
+  h3 {
+    color: $accent-color;
+    font-size: 20px;
+    margin-top: $grid*8;
+  }
+
   .item {
     margin-top: $grid*2;
     font-weight: bold;

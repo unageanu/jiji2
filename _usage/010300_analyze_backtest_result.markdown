@@ -83,5 +83,5 @@ nav_class_name: "lv2"
 
 
 <div class="next">
-  <a href="010400_start_real_trade.html">次のページへ: 4. リアル口座で実行</a>
+  <a href="010400_start_real_trade.html">次のページへ: 4.リアル口座で実行</a>
 </div>

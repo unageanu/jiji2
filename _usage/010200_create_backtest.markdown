@@ -9,7 +9,7 @@ nav_class_name: "lv2"
 バックテストは[バックテスト - テストの作成]から開始できます。
 
 
-バックテストで設定可能な項目は次のとおりです。
+<h3>バックテスト - テストの作成</h3>
 
 ![バックテスト作成画面](/images/usage/usage_02.png)
 
@@ -53,5 +53,5 @@ nav_class_name: "lv2"
 
 
 <div class="next">
-  <a href="010300_analyze_backtest_result.html">次のページへ: 3. テスト結果の確認</a>
+  <a href="010300_analyze_backtest_result.html">次のページへ: 3.テスト結果の確認</a>
 </div>

@@ -1,4 +1,10 @@
 article.post {
+
+  .item {
+    margin-top: $grid*2;
+    font-weight: bold;
+  }
+
   .basic_flow {
     .section {
       margin-top: $grid*5;

@@ -33,7 +33,7 @@ Jijiでの自動取引の流れは次の通りです。
   - [リアルトレード - エージェント設定]でエージェントを登録し、リアル口座(OANADAの個人口座 or デモ口座)で実行を開始します。
 
 <div class="section">
-  <a href="/usage/010500_analyze_trading.html">5. 取り引き状況の確認</a>
+  <a href="/usage/010500_analyze_trading.html">5. 取引状況の確認</a>
 </div>
 
   - [リアルトレード - 取引状況] で勝率やProfit Factorなど取引の状況を把握できます。

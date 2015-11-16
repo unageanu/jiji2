@@ -20,7 +20,7 @@ nav_class_name: "lv2"
 
 <p class="step">2. プロパティの設定 ( <code>properties=(properties)</code> )</p>
   - エージェントの登録画面で設定したプロパティを、エージェントに設定します。
-  - エージェント登録時に設定したプロパティが「プロパティIDをキー、プロパティ値を値とするハッシュ」で渡されます。
+  - プロパティは、「プロパティIDをキー、プロパティ値を値とするハッシュ」で渡されます。
   - デフォルトの実装は以下の通りで、各キーの値をエージェントのインスタンス変数に設定するようになっています。 オーバーライドして任意の処理を行うことも可能です。
 
 {% highlight ruby %}
@@ -33,11 +33,11 @@ nav_class_name: "lv2"
 {% endhighlight %}
 
 <div class="notice">
-  <b>※プロパティの値は文字列型で渡されます</b>。数値等への変換はエージェントで行ってください。
+  <b>※プロパティの値は文字列型で渡されます</b>。数値等への変換は、エージェントで行ってください。
 </div>
 
 <p class="step">3. 依存コンポーネントの設定( <code>broker=(broker), logger=(logger) ..etc..</code> )</p>
-  - エージェントに、依存コンポーネントを設定します。
+  - エージェントに依存コンポーネントを設定します。
     - <b>broker</b> .. 取引や決済など、証券会社へのアクセスを提供するコンポーネントです。
     - <b>graph_factory</b> .. エージェントでグラフを描画する際に使用します。
     - <b>notifier</b> .. メール、Push通知を送信するときに利用します。
@@ -53,16 +53,17 @@ nav_class_name: "lv2"
 
 <p class="step">6. レート情報の処理 ( <code>next_tick(tick)</code> )</p>
   - 初期化が終わると、システムにより15秒ごとに `next_tick(tick)` が実行されます。
-  - オーバーライドして、取引やPush通知を行うロジックを記載してください。
+  - オーバーライドして、取引やPush通知を行うロジックを実装してください。
   - 引数でレート情報が渡されます。以下のようなコードで情報にアクセス可能です。
 
 {% highlight ruby %}
   value = tick[:EURJPY]
-  value.bid #EURJPY の bidレート
-  value.ask #EURJPY の askレート
+  value.bid    # EURJPY の bidレート
+  value.ask    # EURJPY の askレート
+
   value = tick[:USDJPY]
-  value.bid #USDJPY の bidレート
-  value.ask #USDJPY の askレート
+  value.bid    # USDJPY の bidレート
+  value.ask    # USDJPY の askレート
 {% endhighlight %}
 
 
@@ -73,7 +74,7 @@ nav_class_name: "lv2"
 
 <div class="warn">
 ※状態は、 <code>Mongoid#Hash</code> として永続化されます。<b>Hashに格納できない型を返却すると永続化に失敗します</b>のでご注意ください。
-文字列や数値型であれば問題ありません。
+文字列や数値型であれば、問題ありません。
 </div>
 
 <br/>

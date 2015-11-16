@@ -19,6 +19,10 @@ article.post {
         font-size: 18px;
       }
     }
-
+  }
+  .initialization {
+    .step {
+      margin: $grid*3 0px $grid 0px;
+    }
   }
 }

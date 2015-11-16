@@ -27,7 +27,7 @@ nav_class_name: "lv2"
 <p class="step">3. デプロイ設定ページで、[App Name] を入力します。</p>
 ![手順1](/images/install/install_server_to_heroku_01.png)
 
-<div class="notice">
+<div class="notice no_indent">
 ※App NameはサーバーURLの一部になります。わかりやすい名前を設定しておくことをお勧めします。<br/>
 ※App Nameは省略可能です。省略すると、Herokuが自動で値を設定します。
 </div>

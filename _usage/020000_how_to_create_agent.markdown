@@ -4,7 +4,7 @@ title:  "エージェント作成ガイド"
 class_name: "how_to_create_agent"
 ---
 
-「エージェント」とは、レート情報を受け取って取引を行うRubyのクラスです。 <br/>
+「エージェント」とは、<b>レート情報を受け取って取引やPush通知などの処理を行うRubyのクラス</b>です。 <br/>
 プログラミングにより、以下の処理を行なうことが可能です。
 
 - 移動平均など各種シグナルの計算
@@ -14,7 +14,7 @@ class_name: "how_to_create_agent"
 - ユーザーからのコマンドの実行
 - ログの出力(デバッグ用)
 
-Jiji では「Jiji::Model::Agents::Agent」モジュールをインクルードしたクラスがエージェントとして認識されます。
+Jiji では　`Jiji::Model::Agents::Agent` モジュールをインクルードしたクラスがエージェントとして認識されます。
 
 <div class="next">
   <a href="020100_initialization.html">次のページへ: エージェントの初期化と実行の流れ</a>

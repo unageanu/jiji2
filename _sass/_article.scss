@@ -60,6 +60,13 @@ article.post {
     margin-left: $grid*8;
   }
 
+  pre {
+    margin-left: $grid*5;
+  }
+  .no_indent {
+    margin-left: 0 !important;
+  }
+
   img {
     margin: $grid 0px;
     display: block;
@@ -75,7 +82,7 @@ article.post {
   }
 
   .notice {
-    margin: $grid*4 0px;
+    margin: $grid*4 0px $grid*4 $grid*5;
     border: 1px dotted $text-color-light;
     padding: $grid*2;
     font-size: $small-font-size;
@@ -87,7 +94,7 @@ article.post {
   }
 
   .warn {
-    margin: $grid*4 0px;
+    margin: $grid*4 0px $grid*4 $grid*5;
     border: 1px dotted $accent-color-red;
     padding: $grid*2;
     font-size: $small-font-size;

@@ -24,7 +24,7 @@ title:  "1. 証券口座の準備"
 
 5. 発行されたパーソナルアクセストークンをコピーしておきます。(あとでJijiに設定します。)
 
-<div class="notice">
+<div class="notice no_indent">
 ※個人口座の場合、OANDA FX REST APIを利用するためには、口座残高が25万円以上必要です。
   詳しくは<a href="http://www.oanda.jp/api/" target="_blank">こちら</a>をご覧ください。(無料デモ口座の場合、残高の制限はありません。)
 </div>

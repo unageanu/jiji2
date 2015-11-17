@@ -159,5 +159,9 @@ article.post {
     .pre, .code {
       font-size: $small-font-size;
     }
+    ul {
+      margin: $grid*2 0px $grid*2 $grid*2;
+      list-style: none;
+    }
   }
 }

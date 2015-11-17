@@ -17,7 +17,7 @@ nav_class_name: "lv2"
 # EURJPYを10000単位、成行で売り
 broker.sell(:EURJPY, 10000)
 # 各種オプションを指定して、EURJPYを10000単位、成行で買い
-broker.buy(:EURJPY,  10000, {
+broker.buy(:EURJPY,  10000, :market, {
   lower_bound:   135.61,  #成立下限価格
   upper_bound:   135.59,  #成立上限価格
 
@@ -53,7 +53,7 @@ broker.buy(:EURUSD, 10000, :marketIfTouched, {
 })
 {% endhighlight %}
 
-`sell`, `buy` の引数は次の通りです。
+`sell(pair_name, units, type, options)`, `buy(pair_name, units, type, options)` の引数は次の通りです。
 
 <table>
   <tr>
@@ -63,12 +63,12 @@ broker.buy(:EURUSD, 10000, :marketIfTouched, {
   </tr>
   <tr>
     <td class="center">1</td>
-    <td>通貨ペア</td>
+    <td>pair_name</td>
     <td>取引する通貨ペアを、<code>:EURJPY</code> のようなシンボルで指定します。<b>(必須)</b></td>
   </tr>
   <tr>
     <td class="center">2</td>
-    <td>注文単位</td>
+    <td>units</td>
     <td>
       注文単位を指定します。<b>(必須)</b><br/>
       OANDA JApan では、1単位からの取引が可能です。
@@ -76,7 +76,7 @@ broker.buy(:EURUSD, 10000, :marketIfTouched, {
   </tr>
   <tr>
     <td class="center">3</td>
-    <td>取引種別</td>
+    <td>type</td>
     <td>
       取引の種別を指定します。<br/>
       成行 (<code>:market</code>)、指値 (<code>:limit</code>)、逆指値 (<code>stop</code>)、
@@ -86,7 +86,7 @@ broker.buy(:EURUSD, 10000, :marketIfTouched, {
   </tr>
   <tr>
     <td class="center">4</td>
-    <td>オプション</td>
+    <td>options</td>
     <td>
       指値注文の指値価格や、有効期限などを指定します。<br/>
       指定可能なパラメータについては、<a href="http://developer.oanda.com/docs/jp/v1/orders/#create-a-new-order">こちら</a>を参照ください。

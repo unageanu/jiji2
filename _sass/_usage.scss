@@ -20,9 +20,22 @@ article.usage {
       }
     }
   }
+
   .initialization {
     .step {
       margin: $grid*3 0px $grid 0px;
+    }
+  }
+
+  .messaging {
+    .ad {
+      margin: $grid*4 0px 0px 0px;
+      padding: $grid*3;
+      background-color: $background-color-dark;
+
+      h3 {
+        margin: 0px 0px $grid*2 0px;
+      }
     }
   }
 }

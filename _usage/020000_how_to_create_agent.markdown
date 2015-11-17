@@ -11,7 +11,7 @@ class_name: "how_to_create_agent"
 - シグナルに基づく取引の実行(売り・買い・決済)
 - グラフの描画
 - Push通知、メールでのメッセージ送信
-- ユーザーからのコマンドの実行
+- ユーザーから指定されたアクションの実行
 - ログの出力(デバッグ用)
 
 Jiji では　`Jiji::Model::Agents::Agent` モジュールをインクルードしたクラスがエージェントとして認識されます。
@@ -19,3 +19,4 @@ Jiji では　`Jiji::Model::Agents::Agent` モジュールをインクルード�
 <div class="next">
   <a href="020100_initialization.html">次のページへ: エージェントの初期化と実行の流れ</a>
 </div>
+胥吏

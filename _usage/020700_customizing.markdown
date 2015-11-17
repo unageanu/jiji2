@@ -48,5 +48,5 @@ end
 
 
 <div class="next">
-  <a href="020800_samples.html">次のページへ: サンプル・エージェント</a>
+  <a href="020800_samples.html">次のページへ: エージェントのサンプル</a>
 </div>

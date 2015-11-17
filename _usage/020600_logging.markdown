@@ -5,7 +5,7 @@ class_name: "logging"
 nav_class_name: "lv2"
 ---
 
-`logger` を使って、デバッグログを出力することができます。
+`logger` を使って、デバッグ用のログを出力することができます。
 
 {% highlight ruby %}
 # ログを出力。

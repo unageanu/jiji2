@@ -1,0 +1,33 @@
+---
+layout: usage
+title:  "アクションを実行できるようにする"
+class_name: "action"
+nav_class_name: "lv2"
+---
+
+通知一覧のアクションボタンを押すと、`Agent#execute_action(action)` が呼び出されます。<br/>
+オーバーライドすることで、Push通知からボタン一つで、任意のアクションを実行できるようにできます。
+
+- 引数で、アクションの識別子 (Push通知送信時に `action` で指定した値)が渡されます。メソッド内で識別子に応じた処理を実装してください。
+- 戻り値で応答メッセージを返却できます。応答メッセージは、アクション実行後にUIで表示されます。
+
+以下は、通知を送るアクションを実装する例です。
+
+{% highlight ruby %}
+def execute_action(action)
+  if (action == 'ping')
+    notifier.push_notification('ポン',
+      [{ 'label' => 'ピン', 'action' => 'ping' }])
+    return 'ping アクションを実行しました。'
+  end
+end
+{% endhighlight %}
+
+<div class="notice">
+※<code>next_tick(tick)</code>と<code>execute_action(action)</code>は同じスレッドで実行されます。
+同時実行制御は不要です。
+</div>
+
+<div class="next">
+  <a href="020600_logging.html">次のページへ: デバッグログを出力する</a>
+</div>

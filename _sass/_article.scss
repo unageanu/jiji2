@@ -1,4 +1,6 @@
 
+$nav-width: 350px;
+
 article.post {
 
   margin-top: $grid*6;
@@ -6,8 +8,7 @@ article.post {
   display: flex;
 
   nav {
-    min-width: 300px;
-    flex-grow: 0;
+    width: $nav-width;
 
     h2 {
       margin-bottom: $grid*2;
@@ -39,7 +40,7 @@ article.post {
     }
   }
   .contents {
-    flex-grow: 1;
+    width: $content-width - $nav-width - $grid*3;
     margin-left: $grid*3;
   }
 

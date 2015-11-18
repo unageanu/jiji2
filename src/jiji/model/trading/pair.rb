@@ -6,16 +6,27 @@ require 'jiji/utils/value_object'
 require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
+  # 通貨ペア
   class Pair
 
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
-    attr_reader :name, :internal_id, :pip, :max_trade_units
-    attr_reader :precision, :margin_rate
+    # 通貨ペア名 例) :EURJPY
+    attr_reader :name
+    # 内部ID
+    attr_reader :internal_id
+    # 1 pipの値。
+    attr_reader :pip
+    # 最大取引単位
+    attr_reader :max_trade_units
+    # 通貨ペアの小数点精度
+    attr_reader :precision
+    # 必要証拠金率
+    attr_reader :margin_rate
 
     def initialize(name, internal_id, pip,
-      max_trade_units, precision, margin_rate)
+      max_trade_units, precision, margin_rate) #:nodoc:
       @name            = name
       @internal_id     = internal_id
       @pip             = pip
@@ -26,7 +37,7 @@ module Jiji::Model::Trading
 
   end
 
-  class Pairs
+  class Pairs  #:nodoc:
 
     include Encase
     include Jiji::Errors

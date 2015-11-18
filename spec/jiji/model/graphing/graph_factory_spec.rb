@@ -12,11 +12,11 @@ describe Jiji::Model::Graphing::GraphFactory do
       Jiji::Model::Graphing::GraphFactory.new(backtests[0])
 
     graph1 = factory_for_rmt.create(
-      'test1', :chart, :average,  '#333', '#666', '#999')
+      'test1', :chart, :average,  ['#333', '#666', '#999'])
     graph2 = factory_for_rmt.create(
-      'test1', :chart, :first,    '#444', '#666', '#999')
+      'test1', :chart, :first,    ['#444', '#666', '#999'])
     graph3 = factory_for_backtest1.create(
-      'test1', :chart, :last,     '#333', '#666', '#999')
+      'test1', :chart, :last,     ['#333', '#666', '#999'])
 
     expect(graph1).to be graph2
     expect(graph1).not_to be graph3
@@ -31,11 +31,11 @@ describe Jiji::Model::Graphing::GraphFactory do
       Jiji::Model::Graphing::GraphFactory.new(backtests[0])
 
     graph10 = factory_for_rmt.create(
-      'test1', :chart, :average, '#133', '#666', '#999')
+      'test1', :chart, :average, ['#133', '#666', '#999'])
     graph20 = factory_for_rmt.create(
-      'test1', :chart, :first,   '#144', '#666', '#999')
+      'test1', :chart, :first,   ['#144', '#666', '#999'])
     graph30 = factory_for_backtest1.create(
-      'test1', :chart, :last,    '#133', '#666', '#999')
+      'test1', :chart, :last,    ['#133', '#666', '#999'])
 
     expect(graph1.id).to eq graph10.id
     expect(graph1.id).to eq graph20.id

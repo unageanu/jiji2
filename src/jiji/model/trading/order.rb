@@ -6,49 +6,50 @@ require 'jiji/utils/value_object'
 require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
-  #== 注文
+  # 注文
   class Order
 
     include Jiji::Errors
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
-    #=== 通貨ペア
+    # 通貨ペア
     # 例) :EURUSD
     attr_reader :pair_name
-    #=== 売りor買い ( :sell or :buy )
+    # 売りor買い ( :sell or :buy )
     attr_reader :sell_or_buy
-    #=== 注文の内部識別用ID
+    # 注文の内部識別用ID
     attr_reader :internal_id
-    #=== 注文種別
+    # 注文種別
     attr_reader :type
 
-    #=== 最終更新時刻
+    # 最終更新時刻
     attr_accessor :last_modified
-    #=== 注文数
+    # 注文数
     attr_accessor :units
-    #=== 執行価格(type)
+    # 執行価格(type)
     attr_accessor :price
-    #=== 有効期限
+    # 有効期限
     attr_accessor :expiry
-    #=== 許容するスリッページの下限価格
+    # 許容するスリッページの下限価格
     attr_accessor :lower_bound
-    #=== 許容するスリッページの上限価格
+    # 許容するスリッページの上限価格
     attr_accessor :upper_bound
 
-    #=== 約定後のポジションを損切りする価格
-    # 約定後、ポジションがこの価格になると(買いの場合は下回る、売りの場合は上回ると)
-    # ポジションが決済されます
+    # 約定後のポジションを損切りする価格
+    # * 約定後、ポジションがこの価格になると(買いの場合は下回る、売りの場合は上回ると)
+    #   ポジションが決済されます
     attr_accessor :stop_loss
-    #=== 約定後のポジションを利益確定する価格
-    # 約定後、ポジションがこの価格になると(買いの場合は上回る、売りの場合は下回ると)
-    # ポジションが決済されます
+    # 約定後のポジションを利益確定する価格
+    # * 約定後、ポジションがこの価格になると(買いの場合は上回る、売りの場合は下回ると)
+    #   ポジションが決済されます
     attr_accessor :take_profit
 
-    #=== トレーリングストップのディスタンス（pipsで小数第一位まで）
+    # トレーリングストップのディスタンス（pipsで小数第一位まで）
     attr_accessor :trailing_stop
 
-    def initialize(pair_name, internal_id, sell_or_buy, type, last_modified)
+    def initialize(pair_name, internal_id,
+      sell_or_buy, type, last_modified) #:nodoc:
       @pair_name     = pair_name
       @internal_id   = internal_id
       @sell_or_buy   = sell_or_buy
@@ -56,27 +57,29 @@ module Jiji::Model::Trading
       @last_modified = last_modified
     end
 
-    def attach_broker(broker)
+    def attach_broker(broker) #:nodoc:
       @broker = broker
     end
 
+    # 注文の変更を反映します。
     def modify
       illegal_state unless @broker
       @broker.modify_order(self)
     end
 
+    # 注文をキャンセルします。
     def cancel
       illegal_state unless @broker
       @broker.cancel_order(self)
     end
 
-    def extract_options_for_modify
+    def extract_options_for_modify #:nodoc:
       options = extract_options
       insert_reservation_order_options(options) if type != :market
       options
     end
 
-    def extract_options
+    def extract_options #:nodoc:
       {
         units:         units,
         stop_loss:     stop_loss,
@@ -85,7 +88,7 @@ module Jiji::Model::Trading
       }
     end
 
-    def carried_out?(tick)
+    def carried_out?(tick) #:nodoc:
       current = Utils::PricingUtils
                 .calculate_entry_price(tick, pair_name, sell_or_buy)
       case @type
@@ -96,7 +99,7 @@ module Jiji::Model::Trading
       end
     end
 
-    def values
+    def values #:nodoc:
       [
         @pair_name, @internal_id, @sell_or_buy, @type,
         @unit, @price, @lower_bound, @upper_bound,
@@ -138,22 +141,23 @@ module Jiji::Model::Trading
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
-    #=== 新規作成された注文
-    # 注文が約定しなかった場合に返される
+    # 新規作成された注文
+    # * 注文が約定しなかった場合に返されます
     attr_reader :order_opened
 
-    #=== 新規建玉となった注文
-    # 注文が約定し新しい建玉が生成された場合に返される
+    # 新規建玉となった注文
+    # * 注文が約定し、新しい建玉が生成された場合に返されます
     attr_reader :trade_opened
 
-    #=== 注文が約定した結果、既存の建玉の一部が決済された場合の建玉の情報
-    # 決済された建玉の情報が ReducedPosition オブジェクトの形で格納されます。
+    # 注文が約定した結果、既存の建玉の一部が決済された場合の建玉の情報
+    # * 決済された建玉の情報を示す ReducedPosition オブジェクトです。
     attr_reader :trade_reduced
-    #=== 注文が約定した結果、既存の建玉が決済された場合の建玉の情報
-    # 決済された建玉の情報が ClosedPosition オブジェクトの形で格納されます。
+    # 注文が約定した結果、既存の建玉が決済された場合の建玉の情報
+    # * 決済された建玉の情報が ClosedPosition オブジェクトの配列で格納されます。
     attr_reader :trades_closed
 
-    def initialize(order_opened, trade_opened, trade_reduced, trades_closed)
+    def initialize(order_opened,
+      trade_opened, trade_reduced, trades_closed) #:nodoc:
       @order_opened  = order_opened
       @trade_opened  = trade_opened
       @trade_reduced = trade_reduced
@@ -167,16 +171,16 @@ module Jiji::Model::Trading
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
-    #=== 決済された建玉の内部ID
+    # 決済された建玉の内部ID
     attr_reader :internal_id
-    #=== 取引数/部分決済の場合は、部分決済後の取引数
+    # 取引数/部分決済の場合は、部分決済後の取引数
     attr_reader :units
-    #=== 決済価格
+    # 決済価格
     attr_reader :price
-    #=== 決済時刻
+    # 決済時刻
     attr_reader :timestamp
 
-    def initialize(internal_id, units, price, timestamp)
+    def initialize(internal_id, units, price, timestamp) #:nodoc:
       @internal_id  = internal_id
       @units        = units
       @price        = price
@@ -185,12 +189,12 @@ module Jiji::Model::Trading
 
   end
 
-  #== 部分的に決済された建玉の情報
+  # 部分的に決済された建玉の情報
   class ReducedPosition < AbstractPositionResult
 
   end
 
-  #== 全決済された建玉の情報
+  # 全決済された建玉の情報
   class ClosedPosition < AbstractPositionResult
 
   end

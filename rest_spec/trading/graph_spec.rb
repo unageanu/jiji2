@@ -112,11 +112,11 @@ describe 'グラフデータ取得' do
       Jiji::Model::Graphing::GraphFactory.new(@test)
 
     graph1 = factory_for_rmt.create(
-      'test1', :chart,     :average, '#333', '#666', '#999')
+      'test1', :chart,     :average, ['#333', '#666', '#999'])
     graph2 = factory_for_rmt.create(
-      'test2', :zero_base, :average, '#333', '#666', '#999')
+      'test2', :zero_base, :average, ['#333', '#666', '#999'])
 
-    graph3 = factory_for_backtest.create('backtest1', :chart, :average, '#444')
+    graph3 = factory_for_backtest.create('backtest1', :chart, :average, ['#444'])
 
     graph1 << [10, 11, 12]
     graph2 << [11,  11, 11]

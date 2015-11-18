@@ -174,11 +174,11 @@ describe Jiji::Model::Graphing::Graph do
       Jiji::Model::Graphing::GraphFactory.new(backtests[1])
 
     graph1 = factory_for_rmt.create(
-      'test1', :chart,     :average, '#333', '#666', '#999')
+      'test1', :chart,     :average, ['#333', '#666', '#999'])
     graph2 = factory_for_rmt.create(
-      'test2', :zero_base, :first,   '#333', '#666', '#999')
+      'test2', :zero_base, :first,   ['#333', '#666', '#999'])
 
-    graph3 = factory_for_backtest1.create('backtest1', :chart, :last, '#444')
+    graph3 = factory_for_backtest1.create('backtest1', :chart, :last, ['#444'])
     graph4 = factory_for_backtest2.create('backtest2', :zero_base, :average)
 
     graph1 << [10, 11, 12]

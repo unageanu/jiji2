@@ -5,6 +5,7 @@ require 'jiji/utils/value_object'
 require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
+  # 口座情報
   class Account
 
     include Jiji::Utils::ValueObject
@@ -22,10 +23,10 @@ module Jiji::Model::Trading
     attr_accessor :margin_used
     # 証拠金率
     attr_accessor :margin_rate
-
+    # 最終更新時刻
     attr_accessor :updated_at
 
-    def initialize(account_id, balance, margin_rate, &init)
+    def initialize(account_id, balance, margin_rate, &init) #:nodoc:
       @account_id  = account_id
       @balance     = balance
       @margin_rate = margin_rate
@@ -36,17 +37,17 @@ module Jiji::Model::Trading
       yield self if block_given?
     end
 
-    def +(other)
+    def +(other) #:nodoc:
       self.balance = (BigDecimal.new(balance, 10) + other).to_f
       self
     end
 
-    def -(other)
+    def -(other) #:nodoc:
       self.balance = (BigDecimal.new(balance, 10) - other).to_f
       self
     end
 
-    def update(positions, timestamp)
+    def update(positions, timestamp) #:nodoc:
       a = Aggregator.new(margin_rate)
       positions.each { |p| a.process(p) }
       self.margin_used    = a.margin_used
@@ -54,7 +55,7 @@ module Jiji::Model::Trading
       self.updated_at     = timestamp
     end
 
-    class Aggregator
+    class Aggregator #:nodoc:
 
       def initialize(margin_rate)
         @total_price    = BigDecimal.new(0, 10)

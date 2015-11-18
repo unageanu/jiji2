@@ -8,7 +8,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
   context ':average' do
     let(:graph) do
       factory = Jiji::Model::Graphing::GraphFactory.new(backtests[0])
-      factory.create('test1', :chart, :average, '#333', '#666', '#999')
+      factory.create('test1', :chart, :average, ['#333', '#666', '#999'])
     end
 
     it 'グラフデータを永続化できる' do
@@ -481,7 +481,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
   context ':first' do
     let(:graph) do
       factory = Jiji::Model::Graphing::GraphFactory.new(backtests[0])
-      factory.create('test1', :chart, :first, '#333', '#666', '#999')
+      factory.create('test1', :chart, :first, ['#333', '#666', '#999'])
     end
 
     it 'グラフデータを永続化できる' do
@@ -954,7 +954,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
   context ':last' do
     let(:graph) do
       factory = Jiji::Model::Graphing::GraphFactory.new(backtests[0])
-      factory.create('test1', :chart, :last, '#333', '#666', '#999')
+      factory.create('test1', :chart, :last, ['#333', '#666', '#999'])
     end
 
     it 'グラフデータを永続化できる' do

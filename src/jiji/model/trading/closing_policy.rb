@@ -6,6 +6,7 @@ require 'jiji/web/transport/transportable'
 require 'jiji/errors/errors'
 
 module Jiji::Model::Trading
+  # 決済条件
   class ClosingPolicy
 
     include Mongoid::Document
@@ -21,7 +22,7 @@ module Jiji::Model::Trading
     field :trailing_stop,   type: Float, default: 0
     field :trailing_amount, type: Float, default: 0
 
-    def to_h
+    def to_h #:nodoc:
       {
         take_profit:     take_profit,
         stop_loss:       stop_loss,
@@ -30,6 +31,16 @@ module Jiji::Model::Trading
       }
     end
 
+    # Hashの値から、新しい ClosingPolicy を作成します。
+    #
+    #  Jiji::Model::Trading::ClosingPolicy.create({
+    #    stop_loss:     130,
+    #    take_profit:   140.5,
+    #    trailing_stop: 10
+    #  })
+    #
+    # options:: 値
+    # 戻り値:: 新しい ClosingPolicy
     def self.create(options)
       ClosingPolicy.new do |c|
         c.take_profit     = options[:take_profit]     || 0
@@ -40,7 +51,7 @@ module Jiji::Model::Trading
     end
 
     # for internal use.
-    def extract_options_for_modify
+    def extract_options_for_modify #:nodoc:
       {
         stop_loss:     stop_loss,
         take_profit:   take_profit,
@@ -49,14 +60,14 @@ module Jiji::Model::Trading
     end
 
     # for internal use.
-    def should_close?(position)
+    def should_close?(position) #:nodoc:
       should_take_profit?(position) \
       || should_stop_loss?(position) \
       || should_trailing_stop?(position)
     end
 
     # for internal use.
-    def update_price(position, pair)
+    def update_price(position, pair) #:nodoc:
       return if trailing_stop == 0
       price = BigDecimal.new(position.current_price, 10)
       amount = (trailing_stop * pair.pip)

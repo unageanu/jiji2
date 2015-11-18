@@ -3,6 +3,7 @@ require 'rake'
 require 'rspec/core'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
+require 'rdoc/task'
 
 task :default   => [:spec,:rest_spec,:lint]
 task :rest_spec => [:rest_spec_json, :rest_spec_messagepack]
@@ -32,6 +33,28 @@ end
 RuboCop::RakeTask.new(:lint_spec) do |task|
   init_rubocop_task(task, ['spec','rest_spec'])
 end
+
+RDoc::Task.new do |rd|
+  rd.rdoc_dir = 'build/rdocs'
+  rd.rdoc_files.include(
+    "src/jiji/model/agents/agent.rb",
+    "src/jiji/model/agents/builtin_files/signals.rb",
+    "src/jiji/model/agents/builtin_files/cross.rb",
+    "src/jiji/model/graphing/graph_factory.rb",
+    "src/jiji/model/graphing/graph.rb",
+    "src/jiji/model/notification/notificator.rb",
+    "src/jiji/model/trading/account.rb",
+    "src/jiji/model/trading/closing_policy.rb",
+    "src/jiji/model/trading/order.rb",
+    "src/jiji/model/trading/pair.rb",
+    "src/jiji/model/trading/position.rb",
+    "src/jiji/model/trading/positions.rb",
+    "src/jiji/model/trading/tick.rb",
+    "src/jiji/model/trading/brokers/broker_proxy.rb",
+    "src/jiji/model/trading/brokers/abstract_broker.rb")
+  rd.options << '--charset=UTF-8 '
+end
+
 
 def init_rubocop_task(task,src_dirs)
   task.patterns = src_dirs.map do |dir|

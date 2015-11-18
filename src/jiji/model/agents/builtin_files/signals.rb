@@ -1,15 +1,15 @@
 module Signals
-  #===一定期間のレートデータを元に値を算出するシグナルの基底クラス
+  # 一定期間のレートデータを元に値を算出するシグナルの基底クラス
   class RangeSignal
 
     include Signals
-    #====コンストラクタ
+    # コンストラクタ
     # range:: 集計期間
     def initialize(range = 25)
       @data  = [] # レートを記録するバッファ
       @range = range
     end
-    #====次のデータを受け取って指標を返します。
+    # 次のデータを受け取って指標を返します。
     # data:: 次のデータ
     # 戻り値:: 指標。十分なデータが蓄積されていない場合nil
     def next_data(data)
@@ -30,7 +30,7 @@ module Signals
 
   end
 
-  #===移動平均
+  # 移動平均
   class MovingAverage < RangeSignal
 
     def calculate(data) #:nodoc:
@@ -39,7 +39,7 @@ module Signals
 
   end
 
-  #===加重移動平均
+  # 加重移動平均
   class WeightedMovingAverage < RangeSignal
 
     def calculate(data) #:nodoc:
@@ -48,10 +48,10 @@ module Signals
 
   end
 
-  #===指数移動平均
+  # 指数移動平均
   class ExponentialMovingAverage < RangeSignal
 
-    #====コンストラクタ
+    # コンストラクタ
     # range:: 集計期間
     # smoothing_coefficient:: 平滑化係数
     def initialize(range = 25, smoothing_coefficient = 0.1)
@@ -65,10 +65,10 @@ module Signals
 
   end
 
-  #===ボリンジャーバンド
+  # ボリンジャーバンド
   class BollingerBands < RangeSignal
 
-    #====コンストラクタ
+    # コンストラクタ
     # range:: 集計期間
     # pivot:: ピボット
     def initialize(range = 25, pivot = [0, 1, 2], &block)
@@ -83,7 +83,7 @@ module Signals
 
   end
 
-  #===傾き
+  # 傾き
   class Momentum < RangeSignal
 
     def calculate(data) #:nodoc:
@@ -92,7 +92,7 @@ module Signals
 
   end
 
-  #===傾き(最小二乗法を利用)
+  # 傾き(最小二乗法を利用)
   class Vector < RangeSignal
 
     def calculate(data)
@@ -101,10 +101,10 @@ module Signals
 
   end
 
-  #===MACD
+  # MACD
   class MACD < RangeSignal
 
-    #====コンストラクタ
+    # コンストラクタ
     # short_range:: 短期EMAの集計期間
     # long_range:: 長期EMAの集計期間
     # signal_range:: シグナルの集計期間
@@ -133,10 +133,10 @@ module Signals
 
   end
 
-  #===RSI
+  # RSI
   class RSI < RangeSignal
 
-    #====コンストラクタ
+    # コンストラクタ
     # range:: 集計期間
     def initialize(range = 14)
       super(range)
@@ -148,10 +148,10 @@ module Signals
 
   end
 
-  #===DMI
+  # DMI
   class DMI < RangeSignal
 
-    #====コンストラクタ
+    # コンストラクタ
     # range:: 集計期間
     def initialize(range = 14)
       super(range)
@@ -170,10 +170,10 @@ module Signals
 
   end
 
-  #===ROC
+  # ROC
   class ROC < RangeSignal
 
-    #====コンストラクタ
+    # コンストラクタ
     # range:: 集計期間
     def initialize(range = 14)
       super(range)
@@ -187,7 +187,7 @@ module Signals
 
   module_function
 
-  #===移動平均値を計算します。
+  # 移動平均値を計算します。
   # data:: 値の配列。
   # 戻り値:: 移動平均値
   def ma(data)
@@ -195,7 +195,8 @@ module Signals
     total / data.length
   end
 
-  #===加重移動平均値を計算します。
+  # 加重移動平均値を計算します。
+  #
   # data:: 値の配列。
   # 戻り値:: 加重移動平均値
   def wma(data)
@@ -206,7 +207,8 @@ module Signals
     total / (data.length * (data.length + 1) / 2)
   end
 
-  #===指数移動平均値を計算します。
+  # 指数移動平均値を計算します。
+  #
   # data:: 値の配列。
   # smoothing_coefficient:: 平滑化係数
   # 戻り値:: 加重移動平均値
@@ -216,21 +218,19 @@ module Signals
     end
   end
 
+  # ボリンジャーバンドを計算します。
   #
-  #===ボリンジャーバンドを計算します。
-  #
-  # +2σ＝移動平均＋標準偏差×2
-  # +σ＝移動平均＋標準偏差
-  # -σ＝移動平均-標準偏差
-  # -2σ＝移動平均-標準偏差×2
-  # 標準偏差＝√((各値-値の期間中平均値)の2乗を期間分全部加えたもの)/ 期間
-  # (√は式全体にかかる)
+  #  +2σ＝移動平均＋標準偏差×2
+  #  +σ＝移動平均＋標準偏差
+  #  -σ＝移動平均-標準偏差
+  #  -2σ＝移動平均-標準偏差×2
+  #  標準偏差＝√((各値-値の期間中平均値)の2乗を期間分全部加えたもの)/ 期間
+  #  (√は式全体にかかる)
   #
   # data:: 値の配列
-  # pivot:: 標準偏差の倍数。初期値[0,1,2]
+  # pivot:: 標準偏差の倍数。初期値 [0,1,2]
   # block:: 移動平均を算出するロジック。指定がなければ移動平均を使う。
   # 戻り値:: ボリンジャーバンドの各値の配列。例)  [+2σ, +1σ, TP, -1σ, -2σ]
-  #
   def bollinger_bands(data, pivot = [0, 1, 2], &block)
     ma = block_given? ? yield(data) : ma(data)
     sd = standard_division(data) { |s| s - ma }
@@ -240,14 +240,16 @@ module Signals
     end
   end
 
-  #===一定期間の値の傾きを計算します。
+  # 一定期間の値の傾きを計算します。
+  #
   # data::  値の配列
   # 戻り値:: 傾き。0より大きければ上向き。小さければ下向き。
   def momentum(data)
     (data.last - data.first) / data.length
   end
 
-  #===最小二乗法で、一定期間の値の傾きを計算します。
+  # 最小二乗法で、一定期間の値の傾きを計算します。
+  #
   # data::  値の配列
   # 戻り値:: 傾き。0より大きければ上向き。小さければ下向き。
   def vector(data)
@@ -264,8 +266,10 @@ module Signals
     calculate_vector(data, total)
   end
 
-  #===MACDを計算します。
-  # MACD = 短期(short_range日)の指数移動平均 - 長期(long_range日)の指数移動平均
+  # MACDを計算します。
+  #
+  #  MACD = 短期(short_range日)の指数移動平均 - 長期(long_range日)の指数移動平均
+  #
   # data::  値の配列
   # smoothing_coefficient:: 平滑化係数
   # 戻り値:: macd値
@@ -274,9 +278,11 @@ module Signals
       - ema(data[long_range * -1..-1], smoothing_coefficient)
   end
 
-  #===RSIを計算します。
-  # RSI = n日間の値上がり幅合計 / (n日間の値上がり幅合計 + n日間の値下がり幅合計) * 100
-  # nとして、14や9を使うのが、一般的。30以下では売られすぎ70以上では買われすぎの水準。
+  # RSIを計算します。
+  #
+  #  RSI =
+  #   n日間の値上がり幅合計 / (n日間の値上がり幅合計 + n日間の値下がり幅合計) * 100
+  #  nとして、14や9を使うのが、一般的。30以下では売られすぎ70以上では買われすぎの水準
   #
   # data::  値の配列
   # 戻り値:: RSI値
@@ -289,23 +295,23 @@ module Signals
     calculate_rsi(tmp)
   end
 
-  #===DMIを計算します。
+  # DMIを計算します。
   #
-  # 高値更新  ...  前日高値より当日高値が高かった時その差
-  # 安値更新  ...  前日安値より当日安値が安かった時その差
-  # DM        ...  高値更新が安値更新より大きかった時高値更新の値。逆の場合は０
-  # DM        ...  安値更新が高値更新より大きかった時安値更新の値。逆の場合は０
-  # TR        ...  次の３つの中で一番大きいもの
+  #  高値更新  ...  前日高値より当日高値が高かった時その差
+  #  安値更新  ...  前日安値より当日安値が安かった時その差
+  #  DM        ...  高値更新が安値更新より大きかった時高値更新の値。逆の場合は０
+  #  DM        ...  安値更新が高値更新より大きかった時安値更新の値。逆の場合は０
+  #  TR        ...  次の３つの中で一番大きいもの
   #                  当日高値-当日安値
   #                  当日高値-前日終値
   #                  前日終値-当日安値
-  # AV(+DM)   ...  +DMのn日間移動平均値
-  # AV(-DM)   ...  -DMのn日間移動平均値
-  # AV(TR)    ...  TRのn日間移動平均値
-  # +DI       ...  AV(+DM)/AV(TR)
-  # -DI       ...  AV(-DM)/AV(TR)
-  # DX        ...  (+DIと-DIの差額) / (+DIと-DIの合計)
-  # ADX       ...  DXのn日平均値
+  #  AV(+DM)   ...  +DMのn日間移動平均値
+  #  AV(-DM)   ...  -DMのn日間移動平均値
+  #  AV(TR)    ...  TRのn日間移動平均値
+  #  +DI       ...  AV(+DM)/AV(TR)
+  #  -DI       ...  AV(-DM)/AV(TR)
+  #  DX        ...  (+DIと-DIの差額) / (+DIと-DIの合計)
+  #  ADX       ...  DXのn日平均値
   #
   # data::  値の配列(4本値を指定すること!)
   # 戻り値:: {:pdi=pdi, :mdi=mdi, :dx=dx }
@@ -317,8 +323,9 @@ module Signals
     { pdi: pdi, mdi: mdi, dx: calculate_dx(pdi, mdi) }
   end
 
-  #===ROCを計算します。
-  # Rate of Change。変化率。正なら上げトレンド、負なら下げトレンド。
+  # ROCを計算します。
+  #
+  #  ROC = Rate of Change。変化率。正なら上げトレンド、負なら下げトレンド。
   #
   # data::  値の配列
   # 戻り値:: 値
@@ -354,8 +361,8 @@ module Signals
       if prev
         dm = calculate_dmi(i, prev)
         r[0] << dm[0] # TR
-        r[1] << dm[1] # +DM
-        r[2] << dm[2] # -DM
+        r[1] << dm[1] #+DM
+        r[2] << dm[2] #-DM
       end
       prev = i
     end

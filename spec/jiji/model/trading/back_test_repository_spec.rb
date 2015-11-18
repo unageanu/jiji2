@@ -358,7 +358,7 @@ describe Jiji::Model::Trading::BackTestRepository do
         graph_factory =
           Jiji::Model::Graphing::GraphFactory.new(backtests[1])
         graph = graph_factory.create(
-          'test1', :chart, :first, '#333', '#666', '#999')
+          'test1', :chart, :first, ['#333', '#666', '#999'])
 
         graph << [10, 11, 12]
         time = Time.new(2015, 4, 1)

@@ -37,10 +37,10 @@ module Jiji::Model::Graphing
       { backtest_id: 1, end_time: 1 },
       name: 'graph_backtest_id_end_time_index')
 
-    attr_accessor :values
+    attr_accessor :values #:nodoc:
 
     def self.get_or_create(label, type,
-      colors, aggregation_type = :agerage, backtest = nil)
+      colors, aggregation_type = :agerage, backtest = nil) #:nodoc:
       Jiji::Utils::PersistenceUtils.get_or_create(
         proc { Graph.find_by({ backtest: backtest, label: label }) },
         proc do
@@ -50,7 +50,7 @@ module Jiji::Model::Graphing
         end)
     end
 
-    def initialize(backtest, type, aggregation_type, label, colors)
+    def initialize(backtest, type, aggregation_type, label, colors) #:nodoc:
       super()
       self.backtest         = backtest
       self.type             = type
@@ -59,11 +59,15 @@ module Jiji::Model::Graphing
       self.colors           = colors
     end
 
+    # グラフにデータを追加します。
+    #  graph << [10, 20]
+    #
+    # values:: 値の配列
     def <<(values)
       @current_values = values
     end
 
-    def save_data(time)
+    def save_data(time) #:nodoc:
       return unless @current_values
 
       setup_data_savers unless @savers
@@ -76,7 +80,7 @@ module Jiji::Model::Graphing
       update_time(time)
     end
 
-    def fetch_data(start_time, end_time, interval = :one_minute)
+    def fetch_data(start_time, end_time, interval = :one_minute) #:nodoc:
       graph_data.where(
         :interval      => interval,
         :timestamp.gte => start_time,
@@ -84,7 +88,7 @@ module Jiji::Model::Graphing
       )
     end
 
-    def to_h
+    def to_h #:nodoc:
       {
         id:               _id,
         label:            label,

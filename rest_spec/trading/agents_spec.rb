@@ -169,8 +169,7 @@ describe 'エージェント' do
       'name' => 'MovingAverageAgent@moving_average_agent.rb',
       'description' => "移動平均を使うエージェントです。\n" \
        + " -ゴールデンクロスで買い&売り建て玉をコミット。\n" \
-       + " -デッドクロスで売り&買い建て玉をコミット。\n" \
-       + " - -1000でトレーリングストップ\n",
+       + " -デッドクロスで売り&買い建て玉をコミット。\n",
       'properties' => [
         { 'id' => 'short', 'name' => '短期移動平均線', 'default' => 25 },
         { 'id' => 'long',  'name' => '長期移動平均線', 'default' => 75 }

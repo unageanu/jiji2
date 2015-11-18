@@ -2,6 +2,12 @@
 require 'forwardable'
 
 module Jiji::Model::Trading
+  # 建玉一覧
+  #
+  #  positions = broker.positions # Positions オブジェクトが返されます
+  #  positions.length
+  #  positions..find { |o| o.sell_or_buy == :sell } #売建玉の一覧を取得
+  #
   class Positions
 
     include Enumerable
@@ -10,7 +16,7 @@ module Jiji::Model::Trading
     def_delegators :@map, :[], :include?
     def_delegators :@positions, :each, :length, :size
 
-    def initialize(positions, position_builder, account)
+    def initialize(positions, position_builder, account) # :nodoc:
       @position_builder =  position_builder
       @account = account
 
@@ -19,7 +25,7 @@ module Jiji::Model::Trading
     end
 
     # for internal use.
-    def update(new_positions)
+    def update(new_positions) # :nodoc:
       @positions = new_positions.map do |p|
         sync_or_save_position(@map.delete(p.internal_id), p)
       end
@@ -29,7 +35,7 @@ module Jiji::Model::Trading
     end
 
     # for internal use.
-    def update_price(tick, pairs)
+    def update_price(tick, pairs) # :nodoc:
       @positions.each do |p|
         pair = pairs.find { |pa| pa.name == p.pair_name }
         p.update_price(tick)
@@ -40,7 +46,7 @@ module Jiji::Model::Trading
     end
 
     # for internal use.
-    def apply_order_result(result, tick, agent = nil)
+    def apply_order_result(result, tick, agent = nil) # :nodoc:
       add(result.trade_opened, tick, agent) if result.trade_opened
       split(result.trade_reduced, agent) if result.trade_reduced
       result.trades_closed.each do |closed|
@@ -50,13 +56,13 @@ module Jiji::Model::Trading
     end
 
     # for internal use.
-    def apply_close_result(result)
+    def apply_close_result(result) # :nodoc:
       close(result.internal_id, result.price, result.timestamp)
       @account.update(self, result.timestamp)
     end
 
     # for internal use.
-    def replace(new_positions, account)
+    def replace(new_positions, account) # :nodoc:
       @account = account
       @positions.each do |p|
         p.update_state_to_lost
@@ -124,7 +130,7 @@ module Jiji::Model::Trading
       Jiji::Utils::Collections.to_map(positions) { |p| p.internal_id }
     end
 
-    class PositionSynchronizer
+    class PositionSynchronizer # :nodoc:
 
       def self.are_equals?(position, new_position)
         SYNCHRONIZE_PROPERTIES.all? do |key|

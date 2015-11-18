@@ -1,11 +1,12 @@
 
-require 'jiji/model/agents/context'
 require 'jiji/model/agents/agent'
 
-# 移動平均を使うエージェント
+# ===移動平均を使うエージェントのサンプル
+# 添付ライブラリ Signals::MovingAverage を利用して移動平均を算出し、
+# デッドクロスで売、ゴールデンクロスで買注文を行います。
+# また、算出した移動平均値をグラフに出力します。
 class MovingAverageAgent
 
-  extend Jiji::Model::Agents::Context
   include Jiji::Model::Agents::Agent
 
   def self.description
@@ -13,11 +14,10 @@ class MovingAverageAgent
 移動平均を使うエージェントです。
  -ゴールデンクロスで買い&売り建て玉をコミット。
  -デッドクロスで売り&買い建て玉をコミット。
- - -1000でトレーリングストップ
       STR
   end
 
-  # UIから設定可能なプロパティの一覧を返す。
+  # UIから設定可能なプロパティの一覧
   def self.property_infos
     [
       Property.new('short', '短期移動平均線', 25),
@@ -36,7 +36,7 @@ class MovingAverageAgent
 
     # 移動平均グラフ
     @graph = graph_factory.create('移動平均線',
-      :rate, :average, '#779999', '#557777')
+      :rate, :average, ['#779999', '#557777'])
   end
 
   # 次のレートを受け取る

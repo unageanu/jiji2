@@ -13,11 +13,11 @@ nav_class_name: "lv2"
     <th>説明</th>
   </tr>
   <tr>
-    <td>Signals (signals.rb)</td>
+    <td><a href="/rdocs/Signals.html">Signals</a> (signals.rb)</td>
     <td>移動平均やMACDなど、各種トレードシグナルを算出するライブラリです。</td>
   </tr>
   <tr>
-    <td>Cross (cross.rb)</td>
+    <td><a href="/rdocs/Cross.html">Cross</a> (cross.rb)</td>
     <td>
       指標の交差状態(クロスアップ/クロスダウン)を判定するためのユーティリティです。
     </td>
@@ -25,3 +25,7 @@ nav_class_name: "lv2"
 </table>
 
 ソースコードは、[エージェント] 画面で確認できます。
+
+<div class="next">
+  <a href="021100_api_reference.html">次のページへ: APIリファレンス</a>
+</div>

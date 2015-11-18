@@ -78,7 +78,7 @@ nav_class_name: "lv2"
 </div>
 
 <br/>
-各メソッドの詳細は[APIリファレンス](/TODO)を参照ください。
+各メソッドの詳細は[APIリファレンス](/rdocs)を参照ください。
 
 <div class="next">
   <a href="020200_trading.html">次のページへ: 取引を行う</a>

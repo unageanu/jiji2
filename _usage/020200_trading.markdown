@@ -95,7 +95,7 @@ broker.buy(:EURUSD, 10000, :marketIfTouched, {
 </table>
 
 
-注文を行うと、 OrderResult が返却されます。
+注文を行うと、 [OrderResult](/rdocs/Jiji/Model/Trading/OrderResult.html) が返却されます。
 
 <h3>注文一覧を取得する</h3>
 `Broker#orders` で、注文一覧を取得できます。

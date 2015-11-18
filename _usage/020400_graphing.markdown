@@ -84,5 +84,5 @@ nav_class_name: "lv2"
 </table>
 
 <div class="next">
-  <a href="020400_messaging.html">次のページへ: Push通知・メールを送信する</a>
+  <a href="020500_messaging.html">次のページへ: Push通知・メールを送信する</a>
 </div>

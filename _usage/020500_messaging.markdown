@@ -59,5 +59,5 @@ notifier.compose_text_mail('foo@example.com', 'テスト', 'テスト本文', 'j
 
 
 <div class="next">
-  <a href="020500_action.html">次のページへ: アクションを実行できるようにする</a>
+  <a href="020600_action.html">次のページへ: アクションを実行できるようにする</a>
 </div>

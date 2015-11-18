@@ -225,5 +225,5 @@ position.modify
 
 
 <div class="next">
-  <a href="020300_grphing.html">次のページへ: グラフを描く</a>
+  <a href="020300_account.html">次のページへ: 口座情報を取得する</a>
 </div>

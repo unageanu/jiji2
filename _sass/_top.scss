@@ -9,6 +9,10 @@
     background-color: $primary-color;
     padding-top: $grid*15;
 
+    background-image: url(/images/top/top-image.png);
+    background-repeat: no-repeat;
+    background-position: calc( (100% - 1080px)/2 + 1080px );
+
     h1 {
       font-size: 28px;
     }
@@ -22,7 +26,7 @@
       padding: $grid*2;
       font-size: $small-font-size;
       color: $text-color-w-light;
-      float:left;
+      width: 450px;
 
       b {
         color: $text-color-w;
@@ -36,6 +40,7 @@
     h2 {
       font-size: 28px;
       display:block;
+      margin-bottom: $grid*4;
     }
     p.description {
       margin: $grid*4 0;
@@ -51,7 +56,6 @@
       display: flex;
       flex-direction: row;
       align-items: stretch;
-      margin-top: $grid*4;
 
       .box {
         flex-grow: 1;
@@ -91,6 +95,10 @@
 
         img {
           width: 300px;
+          height: 300px;
+        }
+        img.large {
+          width: 400px;
           height: 300px;
         }
         .image-box {

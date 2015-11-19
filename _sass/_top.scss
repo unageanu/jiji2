@@ -144,8 +144,20 @@
   }
 
   @include media-query($on-palm) {
+
+    .first-hook {
+      background-color: $primary-color;
+      padding-top: $grid*8;
+
+      background-image: none;
+
+      p.notice {
+        width: auto;
+      }
+    }
+
     .feature {
-      padding: $grid*6 0px;
+      padding: $grid*5 0px;
 
       h2 {
         font-size: 22px;
@@ -172,6 +184,11 @@
         .box {
           width: auto;
           margin-right: 0;
+
+          img.large {
+            width: 300px;
+            height: 225px;
+          }
         }
       }
       ul {

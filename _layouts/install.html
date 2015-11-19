@@ -1,44 +1,32 @@
-<!DOCTYPE html>
-<html>
+---
+layout: fullscreen
+---
+<div class="page-content">
+  <article class="wrapper post install">
 
-  {% include head.html %}
+    <nav>
+      <h2><a href="/install">インストールガイド</a></h2>
+      <ul>
+      {% for item in site.install %}
+         {% if item.ignore != true %}
+          {% if item.url == page.url %}
+            <li class="selected {{ item.nav_class_name }}">
+          {% else %}
+            <li class="{{ item.nav_class_name }}">
+          {% endif %}
+            <a class="page-link" href="{{ item.url | prepend: site.baseurl }}">
+              {{ item.title }}
+            </a>
+          </li>
+         {% endif %}
+      {% endfor %}
+      </ul>
+    </nav>
 
-  <body>
-
-    {% include header.html %}
-
-    <div class="page-content">
-      <article class="wrapper post install">
-
-        <nav>
-          <h2><a href="/install">インストールガイド</a></h2>
-          <ul>
-          {% for item in site.install %}
-             {% if item.ignore != true %}
-              {% if item.url == page.url %}
-                <li class="selected {{ item.nav_class_name }}">
-              {% else %}
-                <li class="{{ item.nav_class_name }}">
-              {% endif %}
-                <a class="page-link" href="{{ item.url | prepend: site.baseurl }}">
-                  {{ item.title }}
-                </a>
-              </li>
-             {% endif %}
-          {% endfor %}
-          </ul>
-        </nav>
-
-        <div class="contents {{page.class_name}}">
-          <h1>{{page.title}}</h1>
-          {{ content }}
-        </div>
-
-      </article>
+    <div class="contents {{page.class_name}}">
+      <h1>{{page.title}}</h1>
+      {{ content }}
     </div>
 
-    {% include footer.html %}
-
-  </body>
-
-</html>
+  </article>
+</div>

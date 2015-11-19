@@ -5,7 +5,7 @@
  */
 .site-footer {
     background-color: #a5a5aa;
-    color: #ddd;
+    color: #EEE;
     padding: $grid*5 0 $grid*3 0px;
 }
 
@@ -18,7 +18,7 @@
     list-style: none;
     margin-left: 0;
     font-size: $small-font-size;
-    line-height: 150%;
+    line-height: 190%;
 
     a {
       color: #EEE;
@@ -46,7 +46,7 @@
 @include media-query($on-laptop) {
     .footer-col-wrapper {
       display: block;
-      .footer-col-1, .footer-col-2 {
+      .footer-col-1, .footer-col-2, .footer-col-3{
         width: auto;
         margin-right: 0px;
       }
@@ -54,5 +54,14 @@
 }
 
 .right {
-  margin-top: $grid *5;
+  margin-top: $grid *3;
+  color: #ddd;
+
+  .share-buttons {
+    float: right;
+    span.fb-share-button span {
+      vertical-align: baseline !important;
+    }
+  }
+
 }

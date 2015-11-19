@@ -28,7 +28,7 @@ class_name: "install_app"
 まずはお試し。いまなら、購入後<b>10日間無料</b>でご利用いただけます。
 
 
-<div class="warn">
+<div class="warn no_indent">
 ※10日間の無料トライアル期間経過後は自動的に月額料金をご請求させていただきます。
 ご利用をキャンセルする場合は、<a href="https://support.google.com/googleplay/answer/2476088?hl=ja" taget="_blank">こちらの手順</a>に従って定期利用の解除を行ってください。
 </div>

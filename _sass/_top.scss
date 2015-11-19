@@ -56,11 +56,29 @@
       .box {
         flex-grow: 1;
       }
+      img, .image-box {
+        display: block;
+        background-color: #FFF;
+        border: 1px solid $border-color-dark;
+        padding: 1px;
+        line-height: 0px;
+        margin: $grid*2 auto;
+      }
+      .image-box {
+        img {
+          border: 0px;
+        }
+      }
     }
     .boxes3 {
       .box {
         width: 30%;
         margin-right: 5%;
+
+        img {
+          width: 300px;
+          height: 300px;
+        }
       }
       .box:nth-last-child(1) {
         margin-right: 0;
@@ -70,13 +88,26 @@
       .box {
         width: 47%;
         margin-right: 6%;
+
+        img {
+          width: 300px;
+          height: 300px;
+        }
+        .image-box {
+          width: 300px;
+          height: 300px;
+
+          img {
+            width: 300px - 32px;
+            height: 300px - 32px;
+          }
+        }
       }
       .box:nth-last-child(1) {
         margin-right: 0;
       }
     }
     ul {
-      font-size: $small-font-size;
       color: $text-color;
 
       li {
@@ -134,6 +165,9 @@
           width: auto;
           margin-right: 0;
         }
+      }
+      ul {
+        font-size: $small-font-size;
       }
     }
   }

@@ -7,16 +7,16 @@
 article.post {
   .install_to_server {
 
-      .install_type {
-        font-size: 18px;
-        font-weight:bold;
-        margin: $grid*8 0px $grid*2;
-      }
+    .install_type {
+      font-size: 18px;
+      font-weight:bold;
+      margin: $grid*8 0px $grid*2;
+    }
 
-      .next {
-        margin-left: $grid*5;
-        margin-top: $grid*3;
-      }
+    .next {
+      margin-left: $grid*5;
+      margin-top: $grid*3;
+    }
   }
 
   .install_server_to_heroku {
@@ -84,6 +84,33 @@ article.post {
     .info {
       font-size: $small-font-size;
       color: $text-color-light;
+    }
+  }
+
+  @include media-query($on-palm) {
+    .install_to_server {
+      .next {
+        margin-left: $grid;
+      }
+    }
+    .initial_setting {
+      img {
+        margin-left: 0;
+      }
+    }
+    .install_app {
+      .push {
+        .boxes {
+          display: block;
+        }
+        .box {
+          width: auto;
+        }
+        .box:nth-child(1) {
+          margin-right: 0px;
+          margin-bottom: $grid*3;
+        }
+      }
     }
   }
 }

@@ -165,4 +165,48 @@ article.post {
       list-style: none;
     }
   }
+
+  @include media-query($on-palm) {
+    display: block;
+    margin-top: $grid*3;
+    margin-bottom: $grid*3;
+
+    nav {
+      width: auto;
+      background-color: $background-color-dark;
+      padding: $grid;
+
+      ul {
+        margin-left: 0px;
+        list-style: none;
+
+        li {
+          padding: $grid/2 $grid*2;
+        }
+      }
+    }
+    .contents {
+      width: auto;
+      margin: $grid*4 $grid;
+    }
+
+    ol, ul {
+      margin-left: $grid*4;
+    }
+
+    pre {
+      margin-left: $grid*1;
+    }
+
+    .notice {
+      margin: $grid*3 0px $grid*3 $grid;
+    }
+
+    .warn {
+      margin: $grid*3 0px $grid*3 $grid;
+    }
+    table {
+      margin-left: 0px;
+    }
+  }
 }

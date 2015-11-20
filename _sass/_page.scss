@@ -11,4 +11,25 @@ article.page {
     margin-top: $grid*6;
   }
 
+  table.legal {
+    margin-top: $grid*3;
+    border-collapse: collapse;
+    border: 1px solid $border-color;
+    font-size: $small-font-size;
+
+    th, td {
+      border: 1px solid $border-color;
+      padding: 8px;
+    }
+
+    th {
+      background-color: $accent-color;
+      color: #FFF;
+    }
+
+    td:nth-child(odd) {
+      background-color: $background-color-dark;
+    }
+  }
+
 }

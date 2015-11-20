@@ -1,4 +1,5 @@
 ---
+title: "サポート" 
 layout: page
 permalink: /support/
 no_index: true

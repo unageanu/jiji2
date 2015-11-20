@@ -1,4 +1,5 @@
 ---
+title: "利用規約"
 layout: page
 permalink: /terms/
 class_name: terms

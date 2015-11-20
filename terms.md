@@ -2,6 +2,7 @@
 layout: page
 permalink: /terms/
 class_name: terms
+no_index: true
 ---
 
 # Jiji利用規約

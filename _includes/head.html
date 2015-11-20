@@ -10,4 +10,8 @@
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
   <link rel="icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
+
+  {% if page.no_index == true %}
+    <meta name="robots" content="noindex,nofollow">
+  {% endif %}
 </head>

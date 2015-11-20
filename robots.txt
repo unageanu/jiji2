@@ -1,0 +1,4 @@
+User-Agent:*
+Disallow: /terms/
+Disallow: /legal/
+Disallow: /support/

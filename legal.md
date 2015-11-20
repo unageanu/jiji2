@@ -1,6 +1,7 @@
 ---
 layout: page
 permalink: /legal/
+no_index: true
 ---
 
 # 特定商取引法に基づく表記

@@ -1,6 +1,7 @@
 ---
 layout: page
 permalink: /support/
+no_index: true
 ---
 
 # 更新情報

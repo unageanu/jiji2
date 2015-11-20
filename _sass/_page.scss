@@ -31,5 +31,21 @@ article.page {
       background-color: $background-color-dark;
     }
   }
+}
 
+article.page.terms {
+  font-size: $small-font-size;
+
+  h2 {
+    font-size: 24px;
+    margin-top: $grid*4;
+  }
+  ul, ol {
+    margin-top: $grid;
+    margin-bottom: $grid;
+  }
+
+  .history {
+    margin: $grid*4 0px;
+  }
 }

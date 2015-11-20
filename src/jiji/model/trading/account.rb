@@ -5,25 +5,25 @@ require 'jiji/utils/value_object'
 require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
-  # 口座情報
+  #口座情報
   class Account
 
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
-    # アカウントID
+    #アカウントID
     attr_accessor :account_id
 
-    # 口座資産
+    #口座資産
     attr_accessor :balance
 
-    # 合計損益
+    #合計損益
     attr_accessor :profit_or_loss
-    # 必要証拠金
+    #必要証拠金
     attr_accessor :margin_used
-    # 証拠金率
+    #必要証拠金率
     attr_accessor :margin_rate
-    # 最終更新時刻
+    #最終更新時刻
     attr_accessor :updated_at
 
     def initialize(account_id, balance, margin_rate, &init) #:nodoc:

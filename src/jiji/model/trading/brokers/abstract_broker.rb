@@ -84,6 +84,7 @@ module Jiji::Model::Trading::Brokers
 
     # 建玉を決済します。
     # position:: 建玉
+    # 戻り値:: ClosedPosition
     def close_position(position)
       result = securities.close_trade(position.internal_id)
       @positions.apply_close_result(result)

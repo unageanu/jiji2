@@ -1,4 +1,8 @@
+---
+layout: null
+---
 User-Agent:*
 Disallow: /terms/
 Disallow: /legal/
 Disallow: /support/
+Sitemap: {{site.url}}/sitemap.xml

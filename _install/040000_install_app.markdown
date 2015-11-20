@@ -30,13 +30,13 @@ class_name: "install_app"
 
 <div class="warn no_indent">
 ※10日間の無料トライアル期間経過後は自動的に月額料金をご請求させていただきます。
-ご利用をキャンセルする場合は、<a href="https://support.google.com/googleplay/answer/2476088?hl=ja" taget="_blank">こちらの手順</a>に従って定期利用の解除を行ってください。
+ご利用をキャンセルする場合は、<a href="https://support.google.com/googleplay/answer/2476088?hl=ja" target="_blank">こちらの手順</a>に従って定期利用の解除を行ってください。
 </div>
 
 インストールはこちらから。
 
 <div class="android_badge">
-  <a href="https://play.google.com/store/apps/details?id=net.unageanu.jiji&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" /></a>
+  <a id="install_app" target="_blank"  href="https://play.google.com/store/apps/details?id=net.unageanu.jiji&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"><img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" /></a>
 
   <div class="info">※iOS版は準備中です。</div>
 </div>
@@ -54,3 +54,11 @@ class_name: "install_app"
 ![手順3](/images/install/install_app_03.png)
 
 以上で初期設定は完了です。お疲れさまでした。
+
+<script >
+$( document ).ready(function() {
+  $('#install_app').on('click', function() {
+    ga('send', 'event', 'install', 'install_app');
+  });
+});
+</script>

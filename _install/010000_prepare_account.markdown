@@ -6,7 +6,7 @@ title:  "1. 証券口座の準備"
 <p> OANDA Japan の口座 (無料デモ口座でもOKです) をご用意ください。</p>
 
 <div class="link_to_oanda">
-  → <a href="http://www.oanda.jp" target="_blank">OANDA Japan</a>
+  → <a id="link_to_oanda" href="http://www.oanda.jp" target="_blank">OANDA Japan</a>
 </div>
 
 口座開設後、以下の手順でパーソナルアクセストークンを発行してください。
@@ -32,3 +32,12 @@ title:  "1. 証券口座の準備"
 <div class="next">
   <a href="020000_install_server.html">次へ</a>
 </div>
+
+
+<script >
+$( document ).ready(function() {
+  $('#link_to_oanda').on('click', function() {
+    ga('send', 'event', 'install', 'create_oanda_account');
+  });
+});
+</script>

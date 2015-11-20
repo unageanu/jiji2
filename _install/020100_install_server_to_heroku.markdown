@@ -18,7 +18,7 @@ nav_class_name: "lv2"
 </div>
 
 <p class="step">2. Herokuにログインした状態で、以下のボタンをクリックしてください。</p>
-<a href="https://heroku.com/deploy?template=https://github.com/unageanu/jiji2/tree/master" target="_blank">
+<a id="install_server_to_heroku" href="https://heroku.com/deploy?template=https://github.com/unageanu/jiji2/tree/master" target="_blank">
   <img class="deploy_to_heroku" src="https://www.herokucdn.com/deploy/button.svg" />
 </a>
 
@@ -59,3 +59,12 @@ nav_class_name: "lv2"
 <div class="next">
   <a href="030000_initial_setting.html">Jijiの初期設定に進む</a>
 </div>
+
+
+<script >
+$( document ).ready(function() {
+  $('#install_server_to_heroku').on('click', function() {
+    ga('send', 'event', 'install', 'install_server_to_heroku');
+  });
+});
+</script>

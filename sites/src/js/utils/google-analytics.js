@@ -1,6 +1,8 @@
 import ContainerJS from "container-js"
 import UUID        from "./uuid.js"
 
+const window = (typeof window === 'object') ? window : {};
+
 export default class GoogleAnalytics {
 
   constructor() {
@@ -32,6 +34,6 @@ export default class GoogleAnalytics {
   }
 
   get ga() {
-    return window.ga;
+    return window && window.ga;
   }
 }

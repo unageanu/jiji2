@@ -1,5 +1,6 @@
 import Deferred        from "../utils/deferred";
 import xhr             from "xhr"
+import url             from "url"
 import Msgpack         from "msgpack"
 import HTTPHeaderField from "./http-header-field";
 import Error           from "../model/error";
@@ -90,6 +91,7 @@ export default class XhrRequest {
 
   sendRequest(setting) {
     const d = new Deferred();
+    this.start = new Date().getTime();
     xhr(setting, (err, resp, body) => {
       if (err) {
         d.reject(err);

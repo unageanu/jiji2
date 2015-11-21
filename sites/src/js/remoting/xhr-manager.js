@@ -1,6 +1,7 @@
 import ContainerJS from "container-js";
 import XhrRequest  from "./xhr-request";
 import Observable  from "../utils/observable";
+import Urls        from "../utils/urls";
 import Error       from "../model/error";
 
 const defaultOptions = {
@@ -57,7 +58,8 @@ export default class XhrManager extends Observable {
 
   constructor() {
     super();
-    this.sessionManager = ContainerJS.Inject;
+    this.sessionManager  = ContainerJS.Inject;
+    this.googleAnalytics = ContainerJS.Inject;
 
     this.supportRelogin = false;
     // 再ログインサポートを有効にするかどうか
@@ -104,10 +106,33 @@ export default class XhrManager extends Observable {
   }
 
   handleResponse(request, response) {
+    this.recordTime( request, response );
     request.deferred.resolve(response);
   }
   handleError(request, error) {
+    this.recordError( request, error );
     this.state.handleError(request, error, this);
+  }
+
+
+  recordTime( request, response ) {
+    try {
+      const path = request.method + " "
+        + Urls.extractNormarizedPathName(request.url);
+      const time = new Date().getTime() - request.start;
+      this.googleAnalytics.sendTiming("REST", path, time, path);
+    } catch (er) {}
+  }
+
+  recordError( request, error ) {
+    try {
+      const statusCode = (error.response && error.response.statusCode);
+      const msg = "" + statusCode + " " + request.method +  " "
+              + Urls.extractNormarizedPathName(request.url);
+      this.googleAnalytics.sendError(
+        msg,
+        statusCode ? statusCode >= 500 : true );
+    } catch (er) {}
   }
 
   startLoading() {

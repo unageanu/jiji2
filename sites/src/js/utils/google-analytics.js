@@ -1,7 +1,7 @@
 import ContainerJS from "container-js"
 import UUID        from "./uuid.js"
 
-const window = (typeof window === 'object') ? window : {};
+const w = (typeof window === 'object') ? window : {};
 
 export default class GoogleAnalytics {
 
@@ -11,13 +11,30 @@ export default class GoogleAnalytics {
 
   initialize() {
     const userId = this.createOrGetUserId();
-    this.run((ga) => ga('set', '&uid', userId ));
+    this.run((ga) => {
+      ga('create', 'UA-1267704-16', { 'userId': userId });
+      ga('send', 'pageview');
+    });
   }
 
   sendEvent( action, label="", value={} ) {
     this.run((ga) => ga('send', 'event', this.category, action, label, value));
   }
-
+  sendError( message, isFatal  ) {
+    this.run((ga) => {
+      ga('send', 'exception', {
+        'exDescription': message,
+        'exFatal': isFatal,
+        'appName': this.category,
+        'appVersion': this.version
+      });
+    });
+  }
+  sendTiming( category, timingVar, time, label ) {
+    this.run((ga) => {
+      ga('timing', category, timingVar, time, label);
+    });
+  }
   createOrGetUserId() {
     const userId = this.localStorage.get("userId");
     if (userId && userId.id) return userId.id;
@@ -34,6 +51,6 @@ export default class GoogleAnalytics {
   }
 
   get ga() {
-    return window && window.ga;
+    return w && w.ga;
   }
 }

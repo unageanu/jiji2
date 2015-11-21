@@ -1,4 +1,5 @@
 import "babel-core/polyfill";
+import "ga";
 
 import React        from "react";
 import Router       from "react-router";
@@ -34,12 +35,13 @@ export default class Initializer {
         React.render(<Handler application={application} />, element);
       });
     } catch (e) {
-      this.handleError(e);
+      this.handleError(e, application);
     }
   }
-  handleError(error) {
-    console.log(error);
+  handleError(error, application) {
+    console.log(error.message);
     console.log(error.stack);
+    application.googleAnalytics.sendError(error.message, true);
   }
   routes() {
     return routes;

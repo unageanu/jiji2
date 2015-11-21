@@ -8,7 +8,8 @@ var base = {
     alias: {
       msgpack:           __dirname + '/../lib/msgpack.codec.js',
       "react-draggable": __dirname + '/../lib/draggable.js',
-      easeljs:           __dirname + '/../lib/easeljs-0.8.0.combined.js'
+      easeljs:           __dirname + '/../lib/easeljs-0.8.0.combined.js',
+      ga:                __dirname + '/../lib/ga.js'
     }
   },
   plugins:  [

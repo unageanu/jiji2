@@ -1,5 +1,4 @@
 import "babel-core/polyfill";
-import "ga";
 
 import React        from "react";
 import Router       from "react-router";

@@ -7,6 +7,7 @@ export default class PairSettingService extends AbstractService {
     return this.xhrManager.xhr( url, "GET");
   }
   setPairs(pairs) {
+    this.googleAnalytics.sendEvent( "set pairs" );
     const url = this.serviceUrl();
     return this.xhrManager.xhr( url, "PUT", pairs);
   }

@@ -21,6 +21,7 @@ export default class SecuritiesSettingService extends AbstractService {
     return this.xhrManager.xhr( url, "GET");
   }
   setActiveSecurities(securitiesId, configurations) {
+    this.googleAnalytics.sendEvent( "set securities", securitiesId );
     const url = this.serviceUrl("active-securities");
     return this.xhrManager.xhr( url, "PUT", {
       "securities_id" : securitiesId,

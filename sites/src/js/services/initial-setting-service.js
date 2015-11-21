@@ -9,6 +9,7 @@ export default class InitialSettingService extends AbstractService {
   }
 
   initialize(mailAddress, password) {
+    this.googleAnalytics.sendEvent( "initialize" );
     const url = this.serviceUrl("mailaddress-and-password");
     return this.xhrManager.xhr( url, "PUT", {
       "mail_address": mailAddress,

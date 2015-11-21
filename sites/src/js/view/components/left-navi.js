@@ -78,10 +78,14 @@ export default class LeftNavi extends React.Component {
 
   onLeftNavChange(e, key, payload) {
     this.router().transitionTo(payload.route);
+    this.googleAnalytics().sendEvent("view " + payload.route);
   }
 
   navigator() {
     return this.context.application.navigator;
+  }
+  googleAnalytics() {
+    return this.context.application.googleAnalytics;
   }
   router() {
     return this.context.router;

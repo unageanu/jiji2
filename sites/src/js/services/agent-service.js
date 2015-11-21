@@ -7,6 +7,7 @@ export default class AgentService extends AbstractService {
     return this.xhrManager.xhr( this.serviceUrl("sources"), "GET");
   }
   addSource( name, memo, type="agent", body="" ) {
+    this.googleAnalytics.sendEvent( "add agent source" );
     return this.xhrManager.xhr( this.serviceUrl("sources"), "POST", {
       name: name,
       memo: memo,
@@ -19,6 +20,7 @@ export default class AgentService extends AbstractService {
     return this.xhrManager.xhr( this.serviceUrl("sources/" + id), "GET");
   }
   updateSource( id, name, memo, body="" ) {
+    this.googleAnalytics.sendEvent( "update agent source" );
     return this.xhrManager.xhr( this.serviceUrl("sources/" + id), "PUT", {
       name: name,
       memo: memo,
@@ -26,6 +28,7 @@ export default class AgentService extends AbstractService {
     });
   }
   deleteSource( id ) {
+    this.googleAnalytics.sendEvent( "delete agent source" );
     return this.xhrManager.xhr( this.serviceUrl("sources/" + id), "DELETE");
   }
 

@@ -16,10 +16,12 @@ export default class BacktestService extends AbstractService {
   }
 
   register( testConfig ) {
+    this.googleAnalytics.sendEvent( "register backtest" );
     return this.xhrManager.xhr( this.serviceUrl(), "POST", testConfig);
   }
 
   remove( id ) {
+    this.googleAnalytics.sendEvent( "remove backtest" );
     return this.xhrManager.xhr( this.serviceUrl(id), "DELETE");
   }
 

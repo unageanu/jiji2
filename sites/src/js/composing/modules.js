@@ -122,6 +122,10 @@ function stores(binder) {
 }
 function utils(binder) {
   binder.bind("timeSource").to("utils.TimeSource");
+  binder.bind("googleAnalytics").to("utils.GoogleAnalytics")
+    .withProperties({
+      category: "web-ui"
+    }).onInitialize("initialize");
   binder.bind("pushNotifier").toInstance( new Observable() );
 }
 

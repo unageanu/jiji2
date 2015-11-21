@@ -10,6 +10,7 @@ export default class RmtService extends AbstractService {
     return this.xhrManager.xhr(this.serviceUrl( "agents" ), "GET");
   }
   putAgentSetting(settings) {
+    this.googleAnalytics.sendEvent( "put rmt agent setting" );
     return this.xhrManager.xhr(
       this.serviceUrl("agents"), "PUT", settings);
   }

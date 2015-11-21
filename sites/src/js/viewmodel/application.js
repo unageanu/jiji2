@@ -35,6 +35,8 @@ export default class Application {
     this.settingsPageModel          = ContainerJS.Inject;
     this.loginPageModel             = ContainerJS.Inject;
     this.initialSettingsPageModel   = ContainerJS.Inject;
+
+    this.googleAnalytics = ContainerJS.Inject;
   }
 
   initialize() {

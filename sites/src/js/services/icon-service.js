@@ -7,6 +7,8 @@ export default class IconService extends AbstractService {
   }
 
   post( file ) {
+    this.googleAnalytics.sendEvent( "post icon" );
+
     const formData = new FormData();
     formData.append("file", file);
     return this.xhrManager.xhr(this.serviceUrl(""), "POST", formData, {

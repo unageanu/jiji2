@@ -22,6 +22,7 @@ export default class NotificationService extends AbstractService {
   }
 
   markAsRead( notificationId ) {
+    this.googleAnalytics.sendEvent( "read notification" );
     const url = this.serviceUrl( notificationId + "/read" );
     return this.xhrManager.xhr(url, "PUT", {
       read: true

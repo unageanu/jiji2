@@ -15,7 +15,7 @@ module Jiji::Web
         'X-Frame-Options'                   => 'SAMEORIGIN',
         'X-Content-Type-Options'            => 'nosniff',
         'Content-Security-Policy'           =>
-              'default-src \'self\' \'unsafe-eval\'; ' \
+              'default-src \'self\'; ' \
             + 'script-src ' + script_src + '; ' \
             + 'style-src ' + FONT_AND_STYLE_SRC + ' \'unsafe-inline\'; ' \
             + 'font-src  ' + FONT_AND_STYLE_SRC + ' fonts.gstatic.com; ' \
@@ -27,7 +27,7 @@ module Jiji::Web
     end
 
     def script_src
-      ' \'self\' \'unsafe-inline\' ' \
+      ' \'self\' \'unsafe-inline\' \'unsafe-eval\' ' \
         + NEWRELIC_SRC + ' ' + GOOGLE_ANALYTICS_SRC \
         + '; '
     end

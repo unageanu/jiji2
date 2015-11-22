@@ -31,7 +31,7 @@ export default class WelcomeView extends AbstractComponent {
         </div>
         <div className="license inputs">
           <div className="license-link">
-            <a href="" target="_blank">Jiji利用規約</a>
+            <a onClick={ () => window.open('http://jiji2.unageanu.net/terms/', '_blank') } >Jiji利用規約</a>
           </div>
           <div className="accept-license">
             <Checkbox

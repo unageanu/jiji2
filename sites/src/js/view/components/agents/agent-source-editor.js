@@ -66,7 +66,7 @@ export default class AgentSourceEditor extends AbstractComponent {
     return (
       <div className="agent-source-editor">
         <ul className="info">
-          <li>エージェントの詳しい作り方は<a href="http://" target="blank">こちら</a>をご覧ください。</li>
+          <li>エージェントの詳しい作り方は<a onClick={ () => window.open('http://jiji2.unageanu.net/usage/020000_how_to_create_agent.html', '_blank')} >こちら</a>をご覧ください。</li>
         </ul>
         <div className="header">
           <TextField

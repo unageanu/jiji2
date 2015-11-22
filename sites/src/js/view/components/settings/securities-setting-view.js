@@ -43,7 +43,7 @@ export default class SecuritiesSettingView extends AbstractComponent {
         <ul className="description">
           <li>使用する証券会社を設定します。</li>
           <li>
-            アクセストークンの取得方法は<a href="/">こちら</a>をご覧ください。
+            アクセストークンの取得方法は<a  onClick={ () => window.open('http://jiji2.unageanu.net/install/010000_prepare_account.html', '_blank') }>こちら</a>をご覧ください。
           </li>
         </ul>
         <div className="setting-body">

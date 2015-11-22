@@ -41,7 +41,7 @@ export default class Frame extends React.Component {
                 key="help"
                 tooltip={"使い方"}
                 iconStyle={{color:"#FFF"}}
-                onClick={() => window.open("http://jiji.unageanu.net/usage", "usage")}>
+                onClick={() => window.open("http://jiji2.unageanu.net/usage", "usage")}>
                 <FontIcon className="md-live-help" />
               </IconButton>
             </span>

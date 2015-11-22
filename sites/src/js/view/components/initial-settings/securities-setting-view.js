@@ -22,12 +22,12 @@ export default class SecuritiesSettingView extends Base {
         </div>
         <ul className="description">
           <li>
-            <a href="http://www.oanda.jp/">OANDA Japan</a>の取引口座、
+            <a onClick={ () => window.open('http://www.oanda.jp/', '_blank') } >OANDA Japan</a>の取引口座、
             およびデモ取引口座が利用できます。
           </li>
           <li>
             ご利用には「パーソナルアクセストークン」の入力が必要です。
-            アクセストークンの発行手順は、<a href="http://jiji2.unageanu.net/install/010000_prepare_account.html" target="_blank">こちら</a>をご覧ください。
+            アクセストークンの発行手順は、<a onClick={ () => window.open('http://jiji2.unageanu.net/install/010000_prepare_account.html', '_blank') } >こちら</a>をご覧ください。
           </li>
         </ul>
         <div className="inputs">

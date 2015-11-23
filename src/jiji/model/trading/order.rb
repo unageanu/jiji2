@@ -109,6 +109,13 @@ module Jiji::Model::Trading
       ]
     end
 
+    def collect_properties(keys = instance_variables.map { |n| n[1..-1] })
+      keys.each_with_object({}) do |name, obj|
+        next if name == "broker"
+        obj[name.to_sym] = instance_variable_get('@' + name.to_s)
+      end
+    end
+
     private
 
     def buying?

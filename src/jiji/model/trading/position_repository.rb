@@ -37,9 +37,9 @@ module Jiji::Model::Trading
         .order_by({ entered_at: :asc, id: :asc }).map { |x| x }
     end
 
-    def retrieve_living_positions_of_rmt
+    def retrieve_living_positions(backtest_id = nil)
       query = Jiji::Utils::Pagenation::Query.new(
-        { backtest_id: nil, status: :live }, entered_at: :asc)
+        { backtest_id: backtest_id, status: :live }, entered_at: :asc)
       query.execute(Position.includes(:agent, :backtest)).map { |x| x }
     end
 

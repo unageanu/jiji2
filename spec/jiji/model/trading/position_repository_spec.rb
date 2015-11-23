@@ -168,13 +168,23 @@ describe Jiji::Model::Trading::PositionRepository do
   end
 
   it 'アクティブなRMTの建玉を取得できる' do
-    positions = position_repository.retrieve_living_positions_of_rmt
+    positions = position_repository.retrieve_living_positions
 
     expect(positions.size).to eq(50)
     expect(positions[0].backtest_id).to eq(nil)
     expect(positions[0].entered_at).to eq(Time.at(50))
     expect(positions[0].exited_at).to eq(nil)
     expect(positions[49].backtest_id).to eq(nil)
+    expect(positions[49].entered_at).to eq(Time.at(99))
+    expect(positions[49].exited_at).to eq(nil)
+
+    positions = position_repository.retrieve_living_positions(test1._id)
+
+    expect(positions.size).to eq(50)
+    expect(positions[0].backtest_id).to eq(test1._id)
+    expect(positions[0].entered_at).to eq(Time.at(50))
+    expect(positions[0].exited_at).to eq(nil)
+    expect(positions[49].backtest_id).to eq(test1._id)
     expect(positions[49].entered_at).to eq(Time.at(99))
     expect(positions[49].exited_at).to eq(nil)
   end

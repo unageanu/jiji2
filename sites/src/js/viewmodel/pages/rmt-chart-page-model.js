@@ -10,8 +10,8 @@ export default class RMTChartPageModel extends Observable {
 
   postCreate() {
     this.chart = this.viewModelFactory.createChart({
-      displayPositionsAndGraphs:true
+      displaySubGraph:true
     });
   }
-  
+
 }

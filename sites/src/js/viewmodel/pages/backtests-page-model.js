@@ -23,7 +23,7 @@ export default class BacktestsPageModel extends Observable {
     this.agentSettingBuilder = new AgentSettingBuilder(
       this.agentClasses, this.icons);
     this.chart         = this.viewModelFactory.createChart({
-      displayPositionsAndGraphs:true
+      displaySubGraph: true
     });
     this.positionTable =
       this.viewModelFactory.createPositionsTableModel(50, {

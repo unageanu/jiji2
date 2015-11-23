@@ -15,7 +15,7 @@ export default class HomePageModel extends Observable {
   postCreate() {
     const factory      =  this.viewModelFactory;
     this.miniChart     = factory.createChart({
-      displayPositionsAndGraphs: true
+      displaySubGraph: false
     });
     this.notifications = factory
       .createNotificationsTableModel(this.notificationCount);

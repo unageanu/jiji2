@@ -68,6 +68,28 @@ describe Jiji::Model::Trading::Order do
     end
   end
 
+  it '#to_h, from_h' do
+    order = Jiji::Model::Trading::Order.new(:EURJPY, 1, :sell, :market, nil)
+    order.last_modified = Time.new(1000)
+    order.units = 10000
+    order.price = 123
+    order.expiry = Time.new(2000)
+    order.lower_bound = nil
+    order.upper_bound = 124.4
+    order.stop_loss = 125.5
+    order.take_profit = 122.2
+    order.trailing_stop = 10
+
+    order2 = Jiji::Model::Trading::Order.new(:USDJPY, 2, :buy, :limit, nil)
+    order2.from_h(order.to_h)
+    expect(order).not_to be order2
+    expect(order).to eq order2
+
+    order.lower_bound = 124.4
+    expect(order).not_to be order2
+    expect(order).not_to eq order2
+  end
+
   def create_tick(price)
     Jiji::Model::Trading::Tick.new({
       EURJPY: Jiji::Model::Trading::Tick::Value.new(price, price + 0.03)

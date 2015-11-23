@@ -55,6 +55,8 @@ module Jiji::Model::Trading
       @sell_or_buy   = sell_or_buy
       @type          = type
       @last_modified = last_modified
+      @units = @price = @expiry = @lower_bound = @upper_bound = nil
+      @stop_loss = @take_profit = @trailing_stop = nil
     end
 
     def attach_broker(broker) #:nodoc:
@@ -102,7 +104,7 @@ module Jiji::Model::Trading
     def values #:nodoc:
       [
         @pair_name, @internal_id, @sell_or_buy, @type,
-        @unit, @price, @lower_bound, @upper_bound,
+        @last_modified, @units, @price, @expiry, @lower_bound, @upper_bound,
         @stop_loss, @take_profit, @trailing_stop
       ]
     end

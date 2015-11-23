@@ -9,7 +9,7 @@ module Jiji::Model::Trading::Brokers
 
     extend Forwardable
 
-    def_delegators :@broker, :pairs, :tick, :positions, :orders,
+    def_delegators :@broker, :pairs, :tick, :positions, :orders, :account,
       :modify_order, :cancel_order, :modify_position, :close_position
 
     attr_reader :agent #:nodoc:

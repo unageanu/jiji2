@@ -5,7 +5,6 @@ require 'jiji/utils/requires'
 require 'jiji/model/trading/restart_examples'
 
 describe 'RMTの停止と再開のテスト' do
-
   let(:long_sleep_time)  { 7 }
   let(:short_sleep_time) { 5 }
 
@@ -53,8 +52,7 @@ describe 'RMTの停止と再開のテスト' do
     provider.set(factory.create(:MOCK, {
       orders:    old.orders,
       positions: old.positions,
-      balance:   old.balance,
+      balance:   old.balance
     }))
   end
-
 end

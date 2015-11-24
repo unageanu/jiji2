@@ -23,7 +23,6 @@ shared_examples '停止と再開ができる' do
   end
 
   it 'トレードを停止/再開できる' do
-
     start_trade
 
     account = retrieve_account
@@ -122,7 +121,6 @@ shared_examples '停止と再開ができる' do
     expect(state[:a]).to be > prev_state[:a]
     expect(state[:b]).to be > 75
     expect(state[:b]).to be < prev_state[:b]
-
   end
 
   def check_some_orders(prev, current)
@@ -168,5 +166,4 @@ shared_examples '停止と再開ができる' do
   def exec_action(agent_id, action)
     @action_dispatcher.dispatch(@target_id, agent_id, action).value
   end
-
 end

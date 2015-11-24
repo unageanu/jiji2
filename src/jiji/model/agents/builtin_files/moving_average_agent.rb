@@ -75,4 +75,18 @@ class MovingAverageAgent
     end
   end
 
+  # エージェントの状態を返却
+  def state
+    {
+      mvs: @mvs.map { |mv| mv.state }
+    }
+  end
+
+  # 永続化された状態から元の状態を復元する
+  def restore_state(state)
+    return unless state[:mvs]
+    @mvs[0].restore_state(state[:mvs][0])
+    @mvs[1].restore_state(state[:mvs][1])
+  end
+
 end

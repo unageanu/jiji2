@@ -28,6 +28,18 @@ module Signals
     # 集計期間
     attr_reader :range
 
+    def state
+      {
+        data:  @data,
+        range: @range
+      }
+    end
+
+    def restore_state(state)
+      @data = state[:data]
+      @range = state[:range]
+    end
+
   end
 
   # 移動平均
@@ -131,6 +143,17 @@ module Signals
       macd(data, @short_range, range, @smoothing_coefficient)
     end
 
+    def state
+      state = super
+      state[:signal_state] = @signal.state
+      state
+    end
+
+    def restore_state(state)
+      super
+      @signal.restore_state(state[:signal_state])
+    end
+
   end
 
   # RSI
@@ -166,6 +189,17 @@ module Signals
       return nil if @dxs.length != range
       dmi[:adx] = ma(@dxs)
       dmi
+    end
+
+    def state
+      state = super
+      state[:dxs] = @dxs
+      state
+    end
+
+    def restore_state(state)
+      super
+      @dxs = state[:dxs]
     end
 
   end
@@ -381,17 +415,17 @@ module Signals
   end
 
   def calculate_pdm(rate, rate_prev)
-    rate.max > rate_prev.max ? rate.max - rate_prev.max : 0
+    rate[:high] > rate_prev[:high] ? rate[:high] - rate_prev[:high] : 0
   end
 
   def calculate_mdm(rate, rate_prev)
-    rate.min < rate_prev.min ? rate_prev.min - rate.min : 0
+    rate[:low] < rate_prev[:low] ? rate_prev[:low] - rate[:low] : 0
   end
 
   def calculate_tr(rate, rate_prev)
-    a = rate.max - rate.min
-    b = rate.max - rate_prev.end
-    c = rate_prev.end - rate.min
+    a = rate[:high] - rate[:low]
+    b = rate[:high] - rate_prev[:close]
+    c = rate_prev[:close] - rate[:low]
     [a, b, c].max
   end
 

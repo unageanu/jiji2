@@ -18,8 +18,6 @@ module Jiji::Test
   def self.some_position_ignore_current_price?(a, b)
     values_a = extract_position_values_ignore_current_price(a)
     values_b = extract_position_values_ignore_current_price(b)
-    p values_a
-    p values_b
     values_a == values_b
   end
 
@@ -35,8 +33,6 @@ module Jiji::Test
   def self.some_order?(a, b)
     values_a = extract_order_values_without_id(a)
     values_b = extract_order_values_without_id(b)
-    p values_a
-    p values_b
     values_a == values_b
   end
 

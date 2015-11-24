@@ -16,6 +16,8 @@ module Jiji::Model::Trading
     def_delegators :@map, :[], :include?
     def_delegators :@positions, :each, :length, :size
 
+    attr_accessor :account #:nodoc:
+
     def initialize(positions, position_builder, account) # :nodoc:
       @position_builder =  position_builder
       @account = account

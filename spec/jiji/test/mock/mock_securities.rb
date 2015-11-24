@@ -10,19 +10,20 @@ module Jiji::Test::Mock
 
     attr_reader :config
     attr_writer :pairs
-    attr_accessor :seed, :positions
+    attr_accessor :seed, :positions, :orders, :balance
 
     def initialize(config)
       @position_builder = Internal::PositionBuilder.new
 
-      init_ordering_state
-      init_trading_state
+      init_ordering_state(config[:orders] || [])
+      init_trading_state(config[:positions] || [])
 
       @config = config
       @serial = 0
       @i = -1
 
       @data_builder = Jiji::Test::DataBuilder.new
+      @balance = config[:balance] || 100_000
       retrieve_account
     end
 
@@ -77,7 +78,15 @@ module Jiji::Test::Mock
 
     def retrieve_account
       fail 'test' if @config['fail_on_test_connection']
-      Account.new(0, 100_000, 0.04)
+      account = Account.new(0, @balance, 0.04)
+      account.update(@positions, @current_tick ? @current_tick.timestamp : nil)
+      account
+    end
+
+    def close_trade(internal_id)
+      position = find_position_by_internal_id(internal_id)
+      @balance += position.profit_or_loss
+      super(internal_id)
     end
 
     private

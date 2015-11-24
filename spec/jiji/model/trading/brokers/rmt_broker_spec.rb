@@ -28,6 +28,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
     before(:example) do
       @provider.set Jiji::Model::Securities::NilSecurities.new
+      broker.setup
     end
 
     it '売買はできない' do
@@ -67,6 +68,8 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         broker  = @container.lookup(:rmt_broker)
 
         setting.set_active_securities(:MOCK, {})
+
+        broker.setup
         broker
       end
 
@@ -88,6 +91,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
         setting = @container.lookup(:setting_repository).securities_setting
         setting.setup
         broker = @container.lookup(:rmt_broker)
+        broker.setup
         broker
       end
 
@@ -101,6 +105,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       broker  = @container.lookup(:rmt_broker)
 
       setting.set_active_securities(:MOCK, {})
+      broker.setup
       broker
     end
 
@@ -131,7 +136,8 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       expect(mock).to receive(:retrieve_trades)
         .and_return([
           data_builder.new_position(1),
-          data_builder.new_position(2)
+          data_builder.new_position(2),
+          data_builder.new_position(3)
         ])
       expect(mock).to receive(:retrieve_current_tick)
         .and_return(data_builder.new_tick(2))
@@ -145,13 +151,13 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
       @provider.set mock
 
-      expect(broker.positions.length).to be 2
-      expect(broker.account.profit_or_loss).to eq(-10_090.0)
-      expect(broker.account.margin_used).to eq 122_002.4
+      expect(broker.positions.length).to be 3
+      expect(broker.account.profit_or_loss).to eq(19_820.0)
+      expect(broker.account.margin_used).to eq 245_602.4
       expect(broker.account.balance).to be 50_000
 
       positions = position_repository.retrieve_positions(nil)
-      expect(positions.length).to be 2
+      expect(positions.length).to be 3
       expect(positions[0].internal_id).to eq '1'
       expect(positions[0].status).to eq :live
       expect(positions[0].entry_price).to eq 101.0
@@ -162,10 +168,15 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       expect(positions[1].entry_price).to eq 102.003
       expect(positions[1].current_price).to eq 102.0
       expect(positions[1].exit_price).to be nil
+      expect(positions[2].internal_id).to eq '3'
+      expect(positions[2].status).to eq :live
+      expect(positions[2].entry_price).to eq 103.0
+      expect(positions[2].current_price).to eq 102.003
+      expect(positions[2].exit_price).to be nil
 
       broker.positions['1'].close
       positions = position_repository.retrieve_positions(nil)
-      expect(positions.length).to be 2
+      expect(positions.length).to be 3
       expect(positions[0].internal_id).to eq '1'
       expect(positions[0].status).to eq :closed
       expect(positions[0].entry_price).to eq 101.0
@@ -178,6 +189,11 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       expect(positions[1].entry_price).to eq 102.003
       expect(positions[1].current_price).to eq 102.0
       expect(positions[1].exit_price).to be nil
+      expect(positions[2].internal_id).to eq '3'
+      expect(positions[2].status).to eq :live
+      expect(positions[2].entry_price).to eq 103.0
+      expect(positions[2].current_price).to eq 102.003
+      expect(positions[2].exit_price).to be nil
 
       mock2 = double('mock_broker2')
       expect(mock2).to receive(:retrieve_account)
@@ -185,7 +201,8 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       expect(mock2).to receive(:retrieve_trades)
         .and_return([
           data_builder.new_position(1),
-          data_builder.new_position(3)
+          data_builder.new_position(2),
+          data_builder.new_position(4)
         ])
       expect(mock2).to receive(:retrieve_current_tick)
         .and_return(data_builder.new_tick(3))
@@ -194,13 +211,13 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
       @provider.set mock2
 
-      expect(broker.positions.length).to be 2
-      expect(broker.account.profit_or_loss).to eq(-20_120.0)
-      expect(broker.account.margin_used).to eq 164_000.0
+      expect(broker.positions.length).to be 3
+      expect(broker.account.profit_or_loss).to eq(-40_210)
+      expect(broker.account.margin_used).to eq 288_407.2
       expect(broker.account.balance).to be 60_000
 
       positions = position_repository.retrieve_positions(nil)
-      expect(positions.length).to be 4
+      expect(positions.length).to be 6
       expect(positions[0].internal_id).to eq '1'
       expect(positions[0].status).to eq :closed
       expect(positions[0].entry_price).to eq 101.0
@@ -218,11 +235,21 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       expect(positions[2].entry_price).to eq 102.003
       expect(positions[2].current_price).to eq 102.0
       expect(positions[2].exit_price).to be nil
-      expect(positions[3].internal_id).to eq '3'
+      expect(positions[3].internal_id).to eq '2'
       expect(positions[3].status).to eq :live
-      expect(positions[3].entry_price).to eq 103
-      expect(positions[3].current_price).to eq 103.003
+      expect(positions[3].entry_price).to eq 102.003
+      expect(positions[3].current_price).to eq 103.0
       expect(positions[3].exit_price).to be nil
+      expect(positions[4].internal_id).to eq '3'
+      expect(positions[4].status).to eq :lost
+      expect(positions[4].entry_price).to eq 103.0
+      expect(positions[4].current_price).to eq 102.003
+      expect(positions[4].exit_price).to be nil
+      expect(positions[5].internal_id).to eq '4'
+      expect(positions[5].status).to eq :live
+      expect(positions[5].entry_price).to eq 104.003
+      expect(positions[5].current_price).to eq 103.0
+      expect(positions[5].exit_price).to be nil
     end
   end
 
@@ -239,6 +266,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       expect(positions.length).to be 0
 
       broker  = @container.lookup(:rmt_broker)
+      broker.setup
 
       positions = broker.positions
       expect(positions.length).to be 2
@@ -281,6 +309,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       expect(positions.length).to be 0
 
       broker  = @container.lookup(:rmt_broker)
+      broker.setup
 
       positions = broker.positions
       expect(positions.length).to be 4
@@ -314,6 +343,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       @provider.set securities
 
       broker  = @container.lookup(:rmt_broker)
+      broker.setup
 
       positions = broker.positions
       expect(positions.length).to be 4

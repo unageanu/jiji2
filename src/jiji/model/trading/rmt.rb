@@ -21,6 +21,7 @@ module Jiji::Model::Trading
 
     def setup
       @setting_repository.securities_setting.setup
+      rmt_broker.setup
 
       setup_rmt_process
       setup_next_tick_job_generator

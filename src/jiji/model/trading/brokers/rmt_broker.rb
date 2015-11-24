@@ -22,7 +22,7 @@ module Jiji::Model::Trading::Brokers
       @backtest_id = nil
     end
 
-    def on_inject
+    def setup
       securities_provider.add_observer self
 
       init_account
@@ -44,6 +44,7 @@ module Jiji::Model::Trading::Brokers
     # for internal use.
     def refresh_account
       init_account
+      positions.account = @account
     end
 
     def update(ev)

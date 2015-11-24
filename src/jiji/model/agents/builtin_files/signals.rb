@@ -348,6 +348,7 @@ module Signals
   #  ADX       ...  DXのn日平均値
   #
   # data::  値の配列(4本値を指定すること!)
+  #         例: {open: 123.2, close: 124, high: 124.2, low: 123}
   # 戻り値:: {:pdi=pdi, :mdi=mdi, :dx=dx }
   def dmi(data)
     tmp = calculate_dmi_from_data(data)

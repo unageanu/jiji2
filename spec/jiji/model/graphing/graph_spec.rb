@@ -39,7 +39,7 @@ describe Jiji::Model::Graphing::Graph do
     expect(graphs[0].end_time).to eq Time.new(2015, 4, 1, 0, 2, 0)
 
     graphs = graph_repository.find(backtests[1].id)
-    expect(graphs.length).to eq 2
+    expect(graphs.length).to eq 1
     expect(graphs[0].label).to eq 'backtest2'
     expect(graphs[0].type).to eq :zero_base
     expect(graphs[0].aggregation_type).to eq :average
@@ -108,7 +108,7 @@ describe Jiji::Model::Graphing::Graph do
     expect(graphs.length).to eq 0
 
     graphs = graph_repository.find(backtests[1].id)
-    expect(graphs.length).to eq 2
+    expect(graphs.length).to eq 1
 
     expect(graph1.fetch_data(start_time, end_time).length).to eq 0
     expect(graph2.fetch_data(start_time, end_time).length).not_to eq 0
@@ -181,10 +181,10 @@ describe Jiji::Model::Graphing::Graph do
     graph3 = factory_for_backtest1.create('backtest1', :chart, :last, ['#444'])
     graph4 = factory_for_backtest2.create('backtest2', :zero_base, :average)
 
-    graph1 << [10, 11, 12]
-    graph2 << [11,  11, 11]
-    graph3 << [-1,  10, 0]
-    graph4 << [0.1,  0.2, 0.3]
+    graph1 << [10,   11,  12]
+    graph2 << [11,   11,  11]
+    graph3 << [-1,   10,   0]
+    graph4 << [0.1, 0.2, 0.3]
 
     time = Time.new(2015, 4, 1)
     graph1.save_data(time)

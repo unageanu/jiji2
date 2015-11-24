@@ -15,17 +15,18 @@ module Jiji::Model::Trading::Brokers
     attr_reader :position_builder, :securities
 
     def initialize(backtest, start_time, end_time,
-      pairs, balance, tick_repository)
+      pairs, balance, orders, tick_repository, position_repository)
       super()
 
+      positions = position_repository.retrieve_living_positions(backtest.id)
       config = create_securities_configuration(
-        backtest.id, start_time, end_time, pairs)
+        backtest.id, start_time, end_time, pairs, orders, positions)
       @securities = VirtualSecurities.new(tick_repository, config)
       @backtest_id = backtest.id
       @position_builder = PositionBuilder.new(backtest)
 
       init_account(balance)
-      init_positions
+      init_positions(positions)
     end
 
     def destroy
@@ -42,12 +43,14 @@ module Jiji::Model::Trading::Brokers
     end
 
     def create_securities_configuration(
-      backtest_id, start_time, end_time, pairs)
+      backtest_id, start_time, end_time, pairs, orders, positions)
       {
         start_time:  start_time,
         end_time:    end_time,
         backtest_id: backtest_id,
-        pairs:       pairs
+        pairs:       pairs,
+        orders:      orders,
+        positions:   positions
       }
     end
 

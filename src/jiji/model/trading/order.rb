@@ -104,14 +104,15 @@ module Jiji::Model::Trading
     def values #:nodoc:
       [
         @pair_name, @internal_id, @sell_or_buy, @type,
-        @last_modified, @units, @price, @expiry, @lower_bound, @upper_bound,
+        @last_modified, @units, @price, @expiry,
+        @lower_bound, @upper_bound,
         @stop_loss, @take_profit, @trailing_stop
       ]
     end
 
     def collect_properties(keys = instance_variables.map { |n| n[1..-1] })
       keys.each_with_object({}) do |name, obj|
-        next if name == "broker"
+        next if name == 'broker'
         obj[name.to_sym] = instance_variable_get('@' + name.to_s)
       end
     end

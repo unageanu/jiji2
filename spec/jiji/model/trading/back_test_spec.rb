@@ -59,6 +59,8 @@ describe Jiji::Model::Trading::BackTest do
     @repository   = @container.lookup(:backtest_repository)
     @repository.load
 
+    sleep 0.2
+
     test = @repository.all[0]
     hash = test.to_h
     expect(hash[:name]).to eq 'テスト'
@@ -67,8 +69,8 @@ describe Jiji::Model::Trading::BackTest do
     expect(hash[:end_time]).to eq Time.at(2000)
     expect(hash[:pair_names]).to eq [:EURJPY, :EURUSD]
     expect(hash[:balance]).to eq 0
-    expect(hash[:status]).to eq :cancelled
-    expect(hash[:progress]).to be nil
-    expect(hash[:current_time]).to be nil
+    expect(hash[:status]).to eq :running
+    expect(hash[:progress]).to be >= 0
+    expect(hash[:current_time]).not_to be nil
   end
 end

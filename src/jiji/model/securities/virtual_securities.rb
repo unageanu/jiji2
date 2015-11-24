@@ -22,8 +22,8 @@ module Jiji::Model::Securities
 
       init_rate_retriever_state(
         config[:start_time], config[:end_time], config[:pairs])
-      init_ordering_state
-      init_trading_state
+      init_ordering_state(config[:orders] || [])
+      init_trading_state(config[:positions] || [])
     end
 
     def destroy

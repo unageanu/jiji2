@@ -1,7 +1,6 @@
 
 class SendNotificationAgent
 
-  extend Jiji::Model::Agents::Context
   include Jiji::Model::Agents::Agent
 
   def post_create
@@ -34,7 +33,6 @@ end
 
 class ErrorAgent
 
-  extend Jiji::Model::Agents::Context
   include Jiji::Model::Agents::Agent
 
   def self.description
@@ -56,7 +54,6 @@ end
 
 class ErrorOnCreateAgent
 
-  extend Jiji::Model::Agents::Context
   include Jiji::Model::Agents::Agent
 
   def self.description
@@ -81,7 +78,6 @@ end
 
 class ErrorOnPostCreateAgent
 
-  extend Jiji::Model::Agents::Context
   include Jiji::Model::Agents::Agent
 
   def self.description

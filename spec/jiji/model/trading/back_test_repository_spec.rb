@@ -50,6 +50,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(test.memo).to eq 'メモ'
     expect(test.start_time).to eq Time.at(100)
     expect(test.end_time).to eq Time.at(200)
+    expect(test.cancelled_state).to eq nil
     expect(test.pair_names).to eq [:EURJPY, :EURUSD]
     expect(test.balance).to eq 0
 
@@ -103,6 +104,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(test2.memo).to eq nil
     expect(test2.start_time).to eq Time.at(100)
     expect(test2.end_time).to eq Time.at(300)
+    expect(test2.cancelled_state).to eq nil
     expect(test2.pair_names).to eq [:EURJPY, :EURUSD]
     expect(test2.balance).to eq 10_000
 
@@ -149,10 +151,14 @@ describe Jiji::Model::Trading::BackTestRepository do
     it '追加したテストは永続化され、再起動時に読み込まれる' do
       expect(@repository.all.length).to be 3
       test = @repository.all[0]
+
+      sleep 0.5
+
       expect(test.name).to eq 'テスト0'
       expect(test.created_at).to eq Time.at(0)
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
+      expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
       expect(agent_settings.length).to be 1
@@ -164,13 +170,18 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(agent.agent_name).to eq 'テスト1'
       expect(agent.broker.agent.id).to eq agent_settings[0].id
       expect(test.status).to eq :running
-      expect(test.retrieve_process_status).to eq :running
+      status = test.retrieve_status_from_context
+      expect(status[:status]).to eq :running
+      expect(status[:progress]).to be > 0
+      expect(status[:current_time]).to be > Time.at(100)
+      prev_status = status
 
       test = @repository.all[1]
       expect(test.name).to eq 'テスト1'
       expect(test.created_at).to eq Time.at(1)
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
+      expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
       expect(agent_settings.length).to be 1
@@ -182,13 +193,17 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(agent.agent_name).to eq 'テスト1'
       expect(agent.broker.agent.id).to eq agent_settings[0].id
       expect(test.status).to eq :running
-      expect(test.retrieve_process_status).to eq :running
+      status = test.retrieve_status_from_context
+      expect(status[:status]).to eq :wait_for_start
+      expect(status[:progress]).to eq nil
+      expect(status[:current_time]).to eq nil
 
       test = @repository.all[2]
       expect(test.name).to eq 'テスト2'
       expect(test.created_at).to eq Time.at(2)
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
+      expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
       expect(agent_settings.length).to be 1
@@ -200,7 +215,95 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(agent.agent_name).to eq 'テスト1'
       expect(agent.broker.agent.id).to eq agent_settings[0].id
       expect(test.status).to eq :running
-      expect(test.retrieve_process_status).to eq :wait_for_start
+      status = test.retrieve_status_from_context
+      expect(status[:status]).to eq :wait_for_start
+      expect(status[:progress]).to eq nil
+      expect(status[:current_time]).to eq nil
+
+      @repository.stop
+
+      @container    = Jiji::Test::TestContainerFactory.instance.new_container
+      @repository   = @container.lookup(:backtest_repository)
+      @repository.load
+
+      expect(@repository.all.length).to be 3
+
+      sleep 0.1
+
+      test = @repository.all[0]
+      expect(test.name).to eq 'テスト0'
+      expect(test.created_at).to eq Time.at(0)
+      expect(test.start_time).to eq Time.at(100)
+      expect(test.end_time).to eq Time.at(2000)
+      expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
+      expect(test.cancelled_state[:balance]).not_to be nil
+      expect(test.cancelled_state[:orders]).to eq []
+      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
+      expect(agent.agent_name).to eq 'テスト1'
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
+      expect(test.status).to eq :running
+      status = test.retrieve_status_from_context
+      expect(status[:status]).to eq :running
+      expect(status[:progress]).to be > prev_status[:progress]
+      expect(status[:current_time]).to be > prev_status[:current_time]
+      prev_status = status
+
+      test = @repository.all[1]
+      expect(test.name).to eq 'テスト1'
+      expect(test.created_at).to eq Time.at(1)
+      expect(test.start_time).to eq Time.at(100)
+      expect(test.end_time).to eq Time.at(2000)
+      expect(test.cancelled_state).to eq nil
+      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
+      expect(agent.agent_name).to eq 'テスト1'
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
+      expect(test.status).to eq :running
+      status = test.retrieve_status_from_context
+      expect(status[:status]).to eq :wait_for_start
+      expect(status[:progress]).to eq nil
+      expect(status[:current_time]).to eq nil
+
+      test = @repository.all[2]
+      expect(test.name).to eq 'テスト2'
+      expect(test.created_at).to eq Time.at(2)
+      expect(test.start_time).to eq Time.at(100)
+      expect(test.end_time).to eq Time.at(2000)
+      expect(test.cancelled_state).to eq nil
+      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
+      expect(agent.agent_name).to eq 'テスト1'
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
+      expect(test.status).to eq :running
+      status = test.retrieve_status_from_context
+      expect(status[:status]).to eq :wait_for_start
+      expect(status[:progress]).to eq nil
+      expect(status[:current_time]).to eq nil
+
+      sleep 0.1 until @repository.all[0].process.finished?
+      status = @repository.all[0].retrieve_status_from_context
+      expect(status[:status]).to eq :finished
+      expect(status[:progress]).to be > prev_status[:progress]
+      expect(status[:current_time]).to be > prev_status[:current_time]
 
       @repository.stop
 
@@ -215,105 +318,9 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.created_at).to eq Time.at(0)
       expect(test.start_time).to eq Time.at(100)
       expect(test.end_time).to eq Time.at(2000)
-      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
-      expect(agent_settings[0].id).not_to be nil
-      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
-      expect(agent_settings[0].name).to eq 'テスト1'
-      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[agent_settings[0].id]
-      expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent.id).to eq agent_settings[0].id
-      expect(test.status).to eq :cancelled
-      expect(test.retrieve_process_status).to eq :wait_for_start
-
-      test = @repository.all[1]
-      expect(test.name).to eq 'テスト1'
-      expect(test.created_at).to eq Time.at(1)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
-      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
-      expect(agent_settings[0].id).not_to be nil
-      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
-      expect(agent_settings[0].name).to eq 'テスト1'
-      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[agent_settings[0].id]
-      expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent.id).to eq agent_settings[0].id
-      expect(test.status).to eq :cancelled
-      expect(test.retrieve_process_status).to eq :wait_for_start
-
-      test = @repository.all[2]
-      expect(test.name).to eq 'テスト2'
-      expect(test.created_at).to eq Time.at(2)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
-      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
-      expect(agent_settings[0].id).not_to be nil
-      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
-      expect(agent_settings[0].name).to eq 'テスト1'
-      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[agent_settings[0].id]
-      expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent.id).to eq agent_settings[0].id
-      expect(test.status).to eq :running
-      expect(test.retrieve_process_status).to eq :running
-
-      sleep 0.1 until test.process.finished?
-      expect(test.retrieve_process_status).to eq :finished
-
-      @repository.stop
-
-      @container    = Jiji::Test::TestContainerFactory.instance.new_container
-      @repository   = @container.lookup(:backtest_repository)
-      @repository.load
-
-      expect(@repository.all.length).to be 3
-
-      test = @repository.all[0]
-      expect(test.name).to eq 'テスト0'
-      expect(test.created_at).to eq Time.at(0)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
-      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
-      expect(agent_settings[0].id).not_to be nil
-      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
-      expect(agent_settings[0].name).to eq 'テスト1'
-      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[agent_settings[0].id]
-      expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent.id).to eq agent_settings[0].id
-      expect(test.status).to eq :cancelled
-
-      test = @repository.all[1]
-      expect(test.name).to eq 'テスト1'
-      expect(test.created_at).to eq Time.at(1)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
-      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-      agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
-      expect(agent_settings[0].id).not_to be nil
-      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
-      expect(agent_settings[0].name).to eq 'テスト1'
-      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
-      agent = test.agents[agent_settings[0].id]
-      expect(agent.agent_name).to eq 'テスト1'
-      expect(agent.broker.agent.id).to eq agent_settings[0].id
-      expect(test.status).to eq :cancelled
-
-      test = @repository.all[2]
-      expect(test.name).to eq 'テスト2'
-      expect(test.created_at).to eq Time.at(2)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
+      expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
+      expect(test.cancelled_state[:balance]).not_to be nil
+      expect(test.cancelled_state[:orders]).to eq []
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
       expect(agent_settings.length).to be 1
@@ -325,6 +332,143 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(agent.agent_name).to eq 'テスト1'
       expect(agent.broker.agent.id).to eq agent_settings[0].id
       expect(test.status).to eq :finished
+      status = test.retrieve_status_from_context
+      expect(status[:status]).to eq :wait_for_start
+      expect(status[:progress]).to eq nil
+      expect(status[:current_time]).to eq nil
+
+      test = @repository.all[1]
+      expect(test.name).to eq 'テスト1'
+      expect(test.created_at).to eq Time.at(1)
+      expect(test.start_time).to eq Time.at(100)
+      expect(test.end_time).to eq Time.at(2000)
+      expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
+      expect(test.cancelled_state[:balance]).not_to be nil
+      expect(test.cancelled_state[:orders]).to eq []
+      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
+      expect(agent.agent_name).to eq 'テスト1'
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
+      expect(test.status).to eq :running
+      status = test.retrieve_status_from_context
+      expect(status[:status]).to eq :running
+      expect(status[:progress]).to be > 0
+      expect(status[:current_time]).to be > Time.at(100)
+      prev_status = status
+
+      test = @repository.all[2]
+      expect(test.name).to eq 'テスト2'
+      expect(test.created_at).to eq Time.at(2)
+      expect(test.start_time).to eq Time.at(100)
+      expect(test.end_time).to eq Time.at(2000)
+      expect(test.cancelled_state).to eq nil
+      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
+      expect(agent.agent_name).to eq 'テスト1'
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
+      expect(test.status).to eq :running
+      status = test.retrieve_status_from_context
+      expect(status[:status]).to eq :wait_for_start
+      expect(status[:progress]).to eq nil
+      expect(status[:current_time]).to eq nil
+
+      sleep 0.1 until @repository.all[1].process.finished?
+      status = @repository.all[1].retrieve_status_from_context
+      expect(status[:status]).to eq :finished
+      expect(status[:progress]).to be > prev_status[:progress]
+      expect(status[:current_time]).to be > prev_status[:current_time]
+
+      @repository.stop
+
+      @container    = Jiji::Test::TestContainerFactory.instance.new_container
+      @repository   = @container.lookup(:backtest_repository)
+      @repository.load
+
+      expect(@repository.all.length).to be 3
+
+      test = @repository.all[0]
+      expect(test.name).to eq 'テスト0'
+      expect(test.created_at).to eq Time.at(0)
+      expect(test.start_time).to eq Time.at(100)
+      expect(test.end_time).to eq Time.at(2000)
+      expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
+      expect(test.cancelled_state[:balance]).not_to be nil
+      expect(test.cancelled_state[:orders]).to eq []
+      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
+      expect(agent.agent_name).to eq 'テスト1'
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
+      expect(test.status).to eq :finished
+      status = test.retrieve_status_from_context
+      expect(status[:status]).to eq :wait_for_start
+      expect(status[:progress]).to eq nil
+      expect(status[:current_time]).to eq nil
+
+      test = @repository.all[1]
+      expect(test.name).to eq 'テスト1'
+      expect(test.created_at).to eq Time.at(1)
+      expect(test.start_time).to eq Time.at(100)
+      expect(test.end_time).to eq Time.at(2000)
+      expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
+      expect(test.cancelled_state[:balance]).not_to be nil
+      expect(test.cancelled_state[:orders]).to eq []
+      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
+      expect(agent.agent_name).to eq 'テスト1'
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
+      expect(test.status).to eq :finished
+      status = test.retrieve_status_from_context
+      expect(status[:status]).to eq :wait_for_start
+      expect(status[:progress]).to eq nil
+      expect(status[:current_time]).to eq nil
+
+      test = @repository.all[2]
+      expect(test.name).to eq 'テスト2'
+      expect(test.created_at).to eq Time.at(2)
+      expect(test.start_time).to eq Time.at(100)
+      expect(test.end_time).to eq Time.at(2000)
+      expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
+      expect(test.cancelled_state[:balance]).not_to be nil
+      expect(test.cancelled_state[:orders]).to eq []
+      expect(test.pair_names).to eq [:EURJPY, :EURUSD]
+      agent_settings = load_agent_settings(test.id)
+      expect(agent_settings.length).to be 1
+      expect(agent_settings[0].id).not_to be nil
+      expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
+      expect(agent_settings[0].name).to eq 'テスト1'
+      expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
+      agent = test.agents[agent_settings[0].id]
+      expect(agent.agent_name).to eq 'テスト1'
+      expect(agent.broker.agent.id).to eq agent_settings[0].id
+      expect(test.status).to eq :running
+      status = test.retrieve_status_from_context
+      expect(status[:status]).to eq :running
+      expect(status[:progress]).to be > 0
+      expect(status[:current_time]).to be > Time.at(100)
     end
 
     it 'テストで利用しているエージェントが削除されていた場合も、正しく起動できる' do
@@ -358,7 +502,7 @@ describe Jiji::Model::Trading::BackTestRepository do
         graph_factory =
           Jiji::Model::Graphing::GraphFactory.new(backtests[1])
         graph = graph_factory.create(
-          'test1', :chart, :first, ['#333', '#666', '#999'])
+          'test1', :rate, :first, ['#333', '#666', '#999'])
 
         graph << [10, 11, 12]
         time = Time.new(2015, 4, 1)
@@ -531,6 +675,8 @@ describe Jiji::Model::Trading::BackTestRepository do
           ]
         })
       end.to raise_exception(ActiveModel::StrictValidationFailed)
+
+      expect(@repository.all.length).to eq 3
     end
 
     it 'メモが不正な場合エラーになる' do
@@ -550,6 +696,8 @@ describe Jiji::Model::Trading::BackTestRepository do
           ]
         })
       end.to raise_exception(ActiveModel::StrictValidationFailed)
+
+      expect(@repository.all.length).to eq 3
     end
 
     it '期間が不正な場合エラーになる' do
@@ -586,6 +734,25 @@ describe Jiji::Model::Trading::BackTestRepository do
           ]
         })
       end.to raise_exception(ArgumentError)
+
+      expect do
+        @repository.register({
+          'name'          => '名前',
+          'start_time'    => Time.at(100),
+          'end_time'      => Time.at(100),
+          'memo'          => 'メモ',
+          'pair_names'    => [:EURJPY, :EURUSD],
+          'balance'       => 100_000,
+          'agent_setting' => [
+            {
+              agent_class: 'TestAgent1@aaa',
+              properties:  { 'a' => 100, 'b' => 'bb' }
+            }
+          ]
+        })
+      end.to raise_exception(ArgumentError)
+
+      expect(@repository.all.length).to eq 3
     end
 
     it '通貨ペアが不正な場合エラーになる' do
@@ -621,6 +788,8 @@ describe Jiji::Model::Trading::BackTestRepository do
           ]
         })
       end.to raise_exception(ActiveModel::StrictValidationFailed)
+
+      expect(@repository.all.length).to eq 3
     end
 
     it 'エージェントが1つも登録されていない場合エラー' do
@@ -646,6 +815,8 @@ describe Jiji::Model::Trading::BackTestRepository do
           'balance'    => 100_000
         })
       end.to raise_exception(ArgumentError)
+
+      expect(@repository.all.length).to eq 3
     end
 
     it '証拠金が不正な場合エラー' do
@@ -682,6 +853,8 @@ describe Jiji::Model::Trading::BackTestRepository do
           ]
         })
       end.to raise_exception(ActiveModel::StrictValidationFailed)
+
+      expect(@repository.all.length).to eq 3
     end
 
     it 'stopで全テストを停止できる' do

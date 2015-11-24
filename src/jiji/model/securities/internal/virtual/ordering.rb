@@ -8,8 +8,8 @@ module Jiji::Model::Securities::Internal::Virtual
     include Jiji::Model::Trading
     include Jiji::Model::Trading::Utils
 
-    def init_ordering_state
-      @orders   = []
+    def init_ordering_state(orders = [])
+      @orders   = orders
       @order_id = 1
     end
 

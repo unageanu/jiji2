@@ -17,6 +17,7 @@ module Jiji::Model::Trading
 
     needs :backtest_thread_pool
     needs :tick_repository
+    needs :position_repository
     needs :pairs
 
     store_in collection: 'backtests'
@@ -35,11 +36,13 @@ module Jiji::Model::Trading
     field :created_at,    type: Time
     field :memo,          type: String
 
-    field :start_time,    type: Time
-    field :end_time,      type: Time
-    field :pair_names,    type: Array
-    field :balance,       type: Integer, default: 0
-    field :status,        type: Symbol,  default: :wait_for_start
+    field :start_time,     type: Time
+    field :end_time,       type: Time
+    field :pair_names,     type: Array
+    field :balance,        type: Integer, default: 0
+    field :status,         type: Symbol,  default: :wait_for_start
+
+    field :cancelled_state, type: Hash
 
     validates :name,
       length:   { maximum: 200, strict: true },
@@ -85,6 +88,16 @@ module Jiji::Model::Trading
       hash
     end
 
+    def retrieve_status_from_context
+      @process.post_exec do |context, _queue|
+        {
+          status:       context.status,
+          progress:     context[:progress],
+          current_time: context[:current_time]
+        }
+      end.value
+    end
+
     private
 
     def insert_broker_setting_to_hash(hash)
@@ -104,16 +117,6 @@ module Jiji::Model::Trading
       end
     end
 
-    def retrieve_status_from_context
-      @process.post_exec do |context, _queue|
-        {
-          status:       context.status,
-          progress:     context[:progress],
-          current_time: context[:current_time]
-        }
-      end.value
-    end
-
   end
 
   class BackTest < BackTestProperties
@@ -128,7 +131,7 @@ module Jiji::Model::Trading
     end
 
     def start
-      return unless status == :wait_for_start
+      return unless status == :wait_for_start || status == :cancelled
 
       @process.start(create_default_jobs)
 
@@ -138,10 +141,7 @@ module Jiji::Model::Trading
 
     def stop
       @process.stop if @process && @process.running?
-      if (status == :running)
-        self.status = retrieve_process_status
-        save
-      end
+      save_state if (status == :running)
     end
 
     def retrieve_process_status
@@ -173,8 +173,33 @@ module Jiji::Model::Trading
 
     private
 
+    def save_state
+      @agents.save_state
+
+      status = retrieve_status_from_context
+      self.status = status[:status]
+      self.cancelled_state = collect_cancelled_state(status)
+      save
+    end
+
+    def collect_cancelled_state(status)
+      return nil if status[:current_time].nil?
+      {
+        cancelled_time: status[:current_time],
+        orders:         @broker.orders.map { |o| o.to_h },
+        balance:        @broker.account.balance
+      }
+    end
+
     def create_default_jobs
       [Jobs::NotifyNextTickJobForBackTest.new(start_time, end_time)]
+      # ここで渡すstart_timeは全体の進捗率を算出する際の起点となる。
+      # cancel して再開したときも、cancelled_time ではなく start_time を渡す
+    end
+
+    def calcurate_start_time
+      cancelled_time = cancelled_state && cancelled_state[:cancelled_time]
+      status == :cancelled && cancelled_time ? cancelled_time + 15 : start_time
     end
 
     def create_components
@@ -189,8 +214,8 @@ module Jiji::Model::Trading
 
     def create_broker
       pairs = (pair_names || []).map { |p| @pairs.get_by_name(p) }
-      Brokers::BackTestBroker.new(self, start_time, end_time,
-        pairs, balance, @tick_repository)
+      Brokers::BackTestBroker.new(self, calcurate_start_time, end_time, pairs,
+        restore_balance, restore_order, @tick_repository, @position_repository)
     end
 
     def create_trading_context(broker, agents, graph_factory)
@@ -200,6 +225,19 @@ module Jiji::Model::Trading
 
     def create_process(trading_context)
       Process.new(trading_context, backtest_thread_pool, true)
+    end
+
+    def restore_order
+      return [] unless cancelled_state && cancelled_state[:orders]
+      cancelled_state[:orders].map do |o|
+        order = Order.new(nil, nil, nil, nil, nil)
+        order.from_h(o)
+        order
+      end
+    end
+
+    def restore_balance
+      (cancelled_state && cancelled_state[:balance]) || balance
     end
 
   end

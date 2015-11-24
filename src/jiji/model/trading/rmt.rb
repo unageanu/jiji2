@@ -53,6 +53,7 @@ module Jiji::Model::Trading
 
     def stop_rmt_process
       @process.stop if @process
+      @agents.save_state
     end
 
     def setup_next_tick_job_generator

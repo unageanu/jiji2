@@ -71,7 +71,7 @@ describe Jiji::Model::Trading::Order do
   it '#to_h, from_h' do
     order = Jiji::Model::Trading::Order.new(:EURJPY, 1, :sell, :market, nil)
     order.last_modified = Time.new(1000)
-    order.units = 10000
+    order.units = 10_000
     order.price = 123
     order.expiry = Time.new(2000)
     order.lower_bound = nil

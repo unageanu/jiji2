@@ -26,7 +26,7 @@ module Jiji::Model::Trading::Brokers
       securities_provider.add_observer self
 
       init_account
-      init_positions(position_repository.retrieve_living_positions_of_rmt)
+      init_positions(position_repository.retrieve_living_positions)
 
       # rubocop:disable Lint/HandleExceptions
       begin

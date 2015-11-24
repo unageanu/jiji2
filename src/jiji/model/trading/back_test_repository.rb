@@ -9,6 +9,8 @@ module Jiji::Model::Trading
     include Encase
     include Jiji::Errors
 
+    needs :backtest_thread_pool
+
     attr_accessor :container
 
     def initialize
@@ -62,8 +64,7 @@ module Jiji::Model::Trading
 
     def stop
       rest = all.reject do |t|
-        status = t.retrieve_process_status
-        if status == :wait_for_start
+        if t.retrieve_process_status == :wait_for_start
           t.stop
           true
         else
@@ -71,6 +72,7 @@ module Jiji::Model::Trading
         end
       end
       rest.each { |t| t.stop }
+      backtest_thread_pool.shutdown
     end
 
     def load

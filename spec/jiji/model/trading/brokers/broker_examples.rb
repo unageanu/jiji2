@@ -274,7 +274,7 @@ shared_examples 'brokerの基本操作ができる' do
     }, agent_setting.id).order_opened
 
     expected_order1 = Jiji::Model::Trading::Order.new(
-      :EURJPY, r1.internal_id, :sell, :limit, Time.new(2015, 5, 1))
+      :EURJPY, r1.internal_id, :sell, :limit, Time.utc(2015, 5, 1))
     expected_order1.units = 10_000
     expected_order1.price = 135.6
     expected_order1.expiry = Time.utc(2015, 5, 2)
@@ -285,7 +285,7 @@ shared_examples 'brokerの基本操作ができる' do
     expected_order1.trailing_stop = 0
 
     expected_order2 = Jiji::Model::Trading::Order.new(
-      :USDJPY, r2.internal_id, :buy, :stop, Time.new(2015, 5, 1))
+      :USDJPY, r2.internal_id, :buy, :stop, Time.utc(2015, 5, 1))
     expected_order2.units = 10_000
     expected_order2.price = 112.404
     expected_order2.expiry = Time.utc(2015, 5, 2)
@@ -296,7 +296,7 @@ shared_examples 'brokerの基本操作ができる' do
     expected_order2.trailing_stop = 0
 
     expected_order3 = Jiji::Model::Trading::Order.new(
-      :EURUSD, r3.internal_id, :buy, :marketIfTouched, Time.new(2015, 5, 1))
+      :EURUSD, r3.internal_id, :buy, :marketIfTouched, Time.utc(2015, 5, 1))
     expected_order3.units = 10_000
     expected_order3.price = 1.4325
     expected_order3.expiry = Time.utc(2015, 5, 2)
@@ -307,7 +307,7 @@ shared_examples 'brokerの基本操作ができる' do
     expected_order3.trailing_stop = 5
 
     expected_order4 = Jiji::Model::Trading::Order.new(
-      :EURJPY, r4.internal_id, :sell, :limit, Time.new(2015, 5, 1))
+      :EURJPY, r4.internal_id, :sell, :limit, Time.utc(2015, 5, 1))
     expected_order4.units = 1000
     expected_order4.price = 136.6
     expected_order4.expiry = Time.utc(2015, 5, 1, 0, 0, 45)
@@ -671,7 +671,7 @@ shared_examples 'brokerの基本操作ができる' do
     }).order_opened
 
     expected_order = Jiji::Model::Trading::Order.new(
-      :EURJPY, result.internal_id, :sell, :limit, Time.new(2015, 5, 1))
+      :EURJPY, result.internal_id, :sell, :limit, Time.utc(2015, 5, 1))
     expected_order.units = 10_000
     expected_order.price = 135.6
     expected_order.expiry = Time.utc(2015, 5, 2)

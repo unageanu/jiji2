@@ -19,6 +19,7 @@ describe Jiji::Model::Graphing::Graph do
     expect(rmt_graphs[0].type).to eq :chart
     expect(rmt_graphs[0].aggregation_type).to eq :average
     expect(rmt_graphs[0].colors).to eq ['#333', '#666', '#999']
+    expect(rmt_graphs[0].axises).to eq [30, 40]
     expect(rmt_graphs[0].start_time).to eq Time.new(2015, 4, 1)
     expect(rmt_graphs[0].end_time).to eq Time.new(2015, 4, 1, 0, 1, 0)
 
@@ -26,6 +27,7 @@ describe Jiji::Model::Graphing::Graph do
     expect(rmt_graphs[1].type).to eq :zero_base
     expect(rmt_graphs[1].aggregation_type).to eq :first
     expect(rmt_graphs[1].colors).to eq ['#333', '#666', '#999']
+    expect(rmt_graphs[1].axises).to eq []
     expect(rmt_graphs[1].start_time).to eq Time.new(2015, 4, 1)
     expect(rmt_graphs[1].end_time).to eq Time.new(2015, 4, 1, 0, 2, 0)
 
@@ -35,6 +37,7 @@ describe Jiji::Model::Graphing::Graph do
     expect(graphs[0].type).to eq :chart
     expect(graphs[0].aggregation_type).to eq :last
     expect(graphs[0].colors).to eq ['#444']
+    expect(graphs[0].axises).to eq []
     expect(graphs[0].start_time).to eq Time.new(2015, 4, 1)
     expect(graphs[0].end_time).to eq Time.new(2015, 4, 1, 0, 2, 0)
 
@@ -44,6 +47,7 @@ describe Jiji::Model::Graphing::Graph do
     expect(graphs[0].type).to eq :zero_base
     expect(graphs[0].aggregation_type).to eq :average
     expect(graphs[0].colors).to eq []
+    expect(graphs[0].axises).to eq []
     expect(graphs[0].start_time).to eq Time.new(2015, 4, 1)
     expect(graphs[0].end_time).to eq Time.new(2015, 4, 1, 0, 1, 0)
   end
@@ -146,11 +150,12 @@ describe Jiji::Model::Graphing::Graph do
     expect(hash[:id]).to eq graph._id
     expect(hash[:label]).to eq graph.label
     expect(hash[:colors]).to eq graph.colors
+    expect(hash[:axises]).to eq graph.axises
   end
 
   it '永続化データから作成されたGraphにもデータを追加できる' do
     graph = Jiji::Model::Graphing::Graph.get_or_create(
-      'test1', :chart, ['#444', '#666', '#999'])
+      'test1', :chart, ['#444', '#666', '#999'], [])
 
     graph << [10, 11, 12]
     time = Time.new(2015, 4, 1, 0, 3, 0)
@@ -174,7 +179,7 @@ describe Jiji::Model::Graphing::Graph do
       Jiji::Model::Graphing::GraphFactory.new(backtests[1])
 
     graph1 = factory_for_rmt.create(
-      'test1', :chart,     :average, ['#333', '#666', '#999'])
+      'test1', :chart,     :average, ['#333', '#666', '#999'], [30, 40])
     graph2 = factory_for_rmt.create(
       'test2', :zero_base, :first,   ['#333', '#666', '#999'])
 

@@ -24,7 +24,7 @@ module Jiji::Model::Graphing
       return @graphs[label] if @graphs.include?(label)
 
       graph = Graph.get_or_create(label,
-        type, colors, aggregation_type, @backtest)
+        type, colors, axises, aggregation_type, @backtest)
       @graphs[label] = graph
       graph
     end

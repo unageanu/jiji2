@@ -24,6 +24,7 @@ module Jiji::Model::Graphing
     field :type,             type: Symbol
     field :aggregation_type, type: Symbol
     field :colors,           type: Array
+    field :axises,           type: Array
     field :start_time,       type: Time
     field :end_time,         type: Time
 
@@ -40,23 +41,26 @@ module Jiji::Model::Graphing
     attr_accessor :values #:nodoc:
 
     def self.get_or_create(label, type,
-      colors, aggregation_type = :agerage, backtest = nil) #:nodoc:
+      colors, axises, aggregation_type = :agerage, backtest = nil) #:nodoc:
       Jiji::Utils::PersistenceUtils.get_or_create(
         proc { Graph.find_by({ backtest: backtest, label: label }) },
         proc do
-          graph = Graph.new(backtest, type, aggregation_type, label, colors)
+          graph = Graph.new(backtest, type,
+            aggregation_type, label, colors, axises)
           graph.save
           graph
         end)
     end
 
-    def initialize(backtest, type, aggregation_type, label, colors) #:nodoc:
+    def initialize(backtest, type,
+      aggregation_type, label, colors, axises) #:nodoc:
       super()
       self.backtest         = backtest
       self.type             = type
       self.aggregation_type = aggregation_type
       self.label            = label
       self.colors           = colors
+      self.axises           = axises
     end
 
     # グラフにデータを追加します。
@@ -95,6 +99,7 @@ module Jiji::Model::Graphing
         type:             type,
         aggregation_type: aggregation_type,
         colors:           colors,
+        axises:           axises,
         start_time:       start_time,
         end_time:         end_time
       }

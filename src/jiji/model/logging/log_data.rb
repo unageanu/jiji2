@@ -51,5 +51,10 @@ module Jiji::Model::Logging
       }
     end
 
+    def self.drop
+      client = mongo_client
+      client['log_data'].drop
+    end
+
   end
 end

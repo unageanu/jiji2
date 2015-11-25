@@ -9,7 +9,7 @@ describe 'アクションの実行' do
   end
 
   after(:example) do
-    Jiji::Model::Notification::Notification.delete_all
+    Jiji::Model::Notification::Notification.drop
     unregister_agent
   end
 

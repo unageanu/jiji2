@@ -9,7 +9,7 @@ describe 'ログ取得' do
 
   after(:context) do
     @agent_registry.remove_source('aaa')
-    Jiji::Model::Logging::LogData.delete_all
+    Jiji::Model::Logging::LogData.drop
   end
 
   before(:example) do

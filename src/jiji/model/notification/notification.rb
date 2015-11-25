@@ -8,6 +8,8 @@ require 'jiji/web/transport/transportable'
 module Jiji::Model::Notification
   class Notification
 
+    DEFAULT_READ_AT = Time.at(0)
+
     include Mongoid::Document
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
@@ -24,7 +26,7 @@ module Jiji::Model::Notification
     field :actions,       type: Array
     field :message,       type: String
     field :timestamp,     type: Time
-    field :read_at,       type: Time
+    field :read_at,       type: Time, default: DEFAULT_READ_AT
 
     index(
       { backtest_id: 1, timestamp: -1 },
@@ -45,14 +47,14 @@ module Jiji::Model::Notification
     end
 
     def read?
-      !read_at.nil?
+      read_at != DEFAULT_READ_AT
     end
 
     def to_h
       hash = {
         id:        id,
         timestamp: timestamp,
-        read_at:   read_at
+        read_at:   read? ? read_at : nil
       }
       insert_content_to_hash(hash)
       insert_agent_information_to_hash(hash)
@@ -71,6 +73,11 @@ module Jiji::Model::Notification
 
     def title
       "#{agent.name} | #{backtest ? backtest.name : 'リアルトレード'}"
+    end
+
+    def self.drop
+      client = mongo_client
+      client['notifications'].drop
     end
 
     private

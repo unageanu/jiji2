@@ -7,6 +7,7 @@ module Jiji::Web
   class NotificationService < Jiji::Web::AuthenticationRequiredService
 
     include Jiji::Errors
+    include Jiji::Model::Notification
 
     options '/' do
       allow('GET,OPTIONS')
@@ -34,7 +35,7 @@ module Jiji::Web
         result[:not_read] = result[:count]
       else
         result[:not_read] = repository.count_notifications(
-          filter_condition.merge({ read_at: nil }))
+          filter_condition.merge({ read_at: Notification::DEFAULT_READ_AT }))
       end
       ok(result)
     end
@@ -46,7 +47,7 @@ module Jiji::Web
     put '/read' do
       body = load_body
       illegal_argument('body["read"] must be true.') unless body['read']
-      condition = { read_at: nil }
+      condition = { read_at: Notification::DEFAULT_READ_AT }
       load_backtest_id_condition(condition, body)
       now = time_source.now
       repository.retrieve_notifications(condition).each do |notification|
@@ -94,7 +95,9 @@ module Jiji::Web
     def load_status_condition(condition, param)
       status = param['status']
       return unless status
-      condition[:read_at] = nil if status == 'not_read'
+      if status == 'not_read'
+        condition[:read_at] = Notification::DEFAULT_READ_AT
+      end
     end
 
     def repository

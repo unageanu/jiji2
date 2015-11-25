@@ -193,8 +193,8 @@ BODY
       Jiji::Model::Settings::AbstractSetting.delete_all
       Jiji::Model::Graphing::GraphData.delete_all
       Jiji::Model::Graphing::Graph.delete_all
-      Jiji::Model::Logging::LogData.delete_all
-      Jiji::Model::Notification::Notification.delete_all
+      Jiji::Model::Logging::LogData.drop
+      Jiji::Model::Notification::Notification.drop
       Jiji::Model::Icons::Icon.delete_all
       Jiji::Messaging::Device.delete_all
       Jiji::Db::SchemeStatus.delete_all

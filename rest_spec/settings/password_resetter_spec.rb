@@ -20,7 +20,7 @@ describe 'パスワードの再設定' do
     expect(r.status).to eq 200
     expect(r.body.length).to eq 1
 
-    token = r.body[0]['body'].scan(/トークン\: ([a-zA-Z0-9]+)/)[0][0]
+    token = r.body[0]['body'].scrub.scan(/トークン\: ([a-zA-Z0-9]+)/)[0][0]
 
     do_request_using(nil) do
       r = @client.put('settings/password-resetter', {

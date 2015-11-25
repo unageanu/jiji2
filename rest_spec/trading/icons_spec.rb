@@ -34,7 +34,7 @@ describe 'アイコン' do
   it 'GET /icons でアイコン一覧を取得できる' do
     r = @client.get('icons')
     expect(r.status).to eq 200
-    expect(r.body.length).to eq 1
+    expect(r.body.length).to eq 5
     expect(r.body[0]['id']).not_to be nil
     expect(r.body[0]['created_at']).not_to be nil
   end
@@ -48,6 +48,6 @@ describe 'アイコン' do
 
     r = @client.get('icons')
     expect(r.status).to eq 200
-    expect(r.body.length).to eq 0
+    expect(r.body.length).to eq 4
   end
 end

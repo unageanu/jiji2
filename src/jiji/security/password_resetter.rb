@@ -10,7 +10,7 @@ module Jiji::Security
     include Encase
     include Jiji::Errors
 
-    MAIL_TITLE = 'パスワードの再設定'
+    MAIL_TITLE = '[Jiji] パスワードの再設定'
 
     needs :setting_repository
     needs :session_store
@@ -39,7 +39,15 @@ module Jiji::Security
       mail_composer.compose(mail_address, MAIL_TITLE) do |_mail|
         text_part do
           content_type 'text/plain; charset=UTF-8'
-          body "トークン: #{token}"
+          body <<BODY
+  以下のトークンと、新しいパスワードを入力して、パスワードを再設定してください。
+
+  トークン: #{token}
+
+  ----
+  無料で使えるFXシステムトレードフレームワーク「Jiji」
+  http://jiji2.unageanu.net
+BODY
         end
       end
     end

@@ -30,7 +30,13 @@ module Jiji::Messaging
         Jiji::Messaging::MailComposer::FROM, server_setting) do
         text_part do
           content_type 'text/plain; charset=UTF-8'
-          body 'メール送信のテスト用メールです。'
+          body <<BODY
+  メール送信のテスト用メールです。
+  
+  ----
+  無料で使えるFXシステムトレードフレームワーク「Jiji」
+  http://jiji2.unageanu.net
+BODY
         end
       end
     end

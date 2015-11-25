@@ -32,7 +32,7 @@ describe Jiji::Security::PasswordResetter do
     expect(Mail::TestMailer.deliveries.length).to eq 1
 
     mail = Mail::TestMailer.deliveries[0]
-    expect(mail.subject).to eq 'パスワードの再設定'
+    expect(mail.subject).to eq '[Jiji] パスワードの再設定'
     expect(mail.to).to eq ['foo@var.com']
     expect(mail.from).to eq ['jiji@unageanu.net']
     expect(mail.text_part.body.to_s).to match(/トークン\: ([a-zA-Z0-9]+)/)

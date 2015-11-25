@@ -65,7 +65,7 @@ module Jiji::Model::Trading
 
       def process(position)
         return if position.status != :live
-        @profit_or_loss += position.profit_or_loss
+        @profit_or_loss += position.profit_or_loss || 0
         @total_price    +=
           BigDecimal.new(position.entry_price, 10) * position.units
       end

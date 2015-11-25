@@ -20,6 +20,7 @@ module Jiji::Composing::Configurators
         object :migrator, Migrator.new
 
         object :v0to1_register_system_agents, RegisterSystemAgents.new
+        object :v0to1_register_builtin_icons, RegisterBuiltinIcons.new
         object :v0to1_create_capped_collections, CreateCappedCollections.new({
           notifications: { size: 20 * 1024 * 1024 },
           log_data:      { size: 50 * 1024 * 1024 }

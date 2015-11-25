@@ -10,6 +10,7 @@ module Jiji::Db
 
     needs :logger_factory
     needs :v0to1_register_system_agents
+    needs :v0to1_register_builtin_icons
     needs :v0to1_create_capped_collections
 
     def initialize
@@ -18,6 +19,7 @@ module Jiji::Db
 
     def on_inject
       register_script @v0to1_register_system_agents
+      register_script @v0to1_register_builtin_icons
       register_script @v0to1_create_capped_collections
     end
 

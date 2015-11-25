@@ -36,18 +36,11 @@ module Jiji::Security
     private
 
     def send_mail(mail_address, token)
+      mail_body = create_mail_body(token)
       mail_composer.compose(mail_address, MAIL_TITLE) do |_mail|
         text_part do
           content_type 'text/plain; charset=UTF-8'
-          body <<BODY
-  以下のトークンと、新しいパスワードを入力して、パスワードを再設定してください。
-
-  トークン: #{token}
-
-  ----
-  無料で使えるFXシステムトレードフレームワーク「Jiji」
-  http://jiji2.unageanu.net
-BODY
+          body mail_body
         end
       end
     end
@@ -78,6 +71,20 @@ BODY
 
     def security_setting
       setting_repository.security_setting
+    end
+
+    private
+
+    def create_mail_body(token)
+      <<BODY
+  以下のトークンと、新しいパスワードを入力して、パスワードを再設定してください。
+
+  トークン: #{token}
+
+  ----
+  無料で使えるFXシステムトレードフレームワーク「Jiji」
+  http://jiji2.unageanu.net
+BODY
     end
 
   end

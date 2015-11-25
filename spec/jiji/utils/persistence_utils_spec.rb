@@ -13,7 +13,7 @@ describe Jiji::Utils::PersistenceUtils do
             r << Jiji::Utils::PersistenceUtils.get_or_create(
               proc { graph.find_by({ backtest: nil, label: 'test' }) },
               proc do
-                graph.new(nil, :notmal, :last, 'test', [])
+                graph.new(nil, :notmal, :last, 'test', [], [])
               end)
           end
         end

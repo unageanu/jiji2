@@ -49,7 +49,7 @@ export default class TradingSummaryViewModel extends Observable {
   }
 
   set backtestId(backtestId) {
-    this.setProperty("backtestId", backtestId);
+    this.setProperty("backtestId", backtestId, () => false );
   }
   get backtestId() {
     return this.getProperty("backtestId");

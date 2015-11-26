@@ -263,7 +263,7 @@ describe("BacktestBuiler", () => {
       expect( target.pairSelectorModel.pairNamesError ).toBe(null);
     });
 
-    it("開始/終了期間が未設定の場合場合", () => {
+    it("開始/終了期間が未設定の場合", () => {
       target.rangeSelectorModel.startTime = null;
       target.rangeSelectorModel.endTime   = null;
 
@@ -274,6 +274,32 @@ describe("BacktestBuiler", () => {
       expect( target.agentSettingBuilder.agentSettingError ).toBe(null);
       expect( target.rangeSelectorModel.startTimeError ).toBe("開始日時を入力してください");
       expect( target.rangeSelectorModel.endTimeError ).toBe("終了日時を入力してください");
+      expect( target.pairSelectorModel.pairNamesError ).toBe(null);
+    });
+
+    it("開始/終了期間が不正な場合", () => {
+      target.rangeSelectorModel.startTime = new Date(2015, 10, 10, 2, 30, 0);
+      target.rangeSelectorModel.endTime   = new Date(2015, 10, 10, 2, 30, 0);
+
+      expect( target.validate() ).toBe(false);
+      expect( target.nameError ).toBe(null);
+      expect( target.memoError ).toBe(null);
+      expect( target.balanceError ).toBe(null);
+      expect( target.agentSettingBuilder.agentSettingError ).toBe(null);
+      expect( target.rangeSelectorModel.startTimeError ).toBe("開始日時が不正です");
+      expect( target.rangeSelectorModel.endTimeError ).toBe(null);
+      expect( target.pairSelectorModel.pairNamesError ).toBe(null);
+
+      target.rangeSelectorModel.startTime = new Date(2015, 10, 10, 2, 30, 0);
+      target.rangeSelectorModel.endTime   = new Date(2015, 10, 10, 2, 29, 0);
+
+      expect( target.validate() ).toBe(false);
+      expect( target.nameError ).toBe(null);
+      expect( target.memoError ).toBe(null);
+      expect( target.balanceError ).toBe(null);
+      expect( target.agentSettingBuilder.agentSettingError ).toBe(null);
+      expect( target.rangeSelectorModel.startTimeError ).toBe("開始日時が不正です");
+      expect( target.rangeSelectorModel.endTimeError ).toBe(null);
       expect( target.pairSelectorModel.pairNamesError ).toBe(null);
     });
   })

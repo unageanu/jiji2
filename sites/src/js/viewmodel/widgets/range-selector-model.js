@@ -23,7 +23,8 @@ export default class RangeSelectorModel extends Observable {
   validate( ) {
     return Validators.all(
       this.validateStartTime(this.startTime),
-      this.validateEndTime(this.endTime)
+      this.validateEndTime(this.endTime),
+      this.validateStartTimeIsBeforeEndTime(this.startTime, this.endTime)
     );
   }
 
@@ -34,6 +35,16 @@ export default class RangeSelectorModel extends Observable {
   validateEndTime(endTime) {
     return ValidationUtils.validate(this.endTimeValidator, endTime,
       {field: "終了日時"}, (error) => this.endTimeError = error );
+  }
+  validateStartTimeIsBeforeEndTime(startTime, endTime) {
+    if ( !startTime || !endTime ) return false;
+    if ( this.startTimeError ) return false;
+    if ( startTime.getTime() >= endTime.getTime() ) {
+      this.startTimeError = "開始日時が不正です"
+      return false;
+    } else {
+      return true;
+    }
   }
 
   get startTime() {

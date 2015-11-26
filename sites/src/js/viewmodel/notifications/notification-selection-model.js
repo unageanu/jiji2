@@ -35,7 +35,8 @@ export default class NotificationSelectionModel extends SelectionModel {
   }
 
   executeAction( notification, action ) {
-    this.actionService.post(notification.backtestId,
+    this.actionService.post(
+      notification.backtest ? notification.backtest.id : null,
       notification.agent.id, action).then((result) => {
       this.eventQueue.push(
         this.createResponseMessage(result, notification, action));

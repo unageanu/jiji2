@@ -146,7 +146,6 @@ describe Jiji::Model::Logging::Log do
     expect(backtest_log.count).to be 1
     log_data = backtest_log.get(0)
     expect(log_data.size).to be > 0
-
   end
 
   def etract_log_content(body)

@@ -73,8 +73,8 @@ module Jiji::Model::Agents::Internal
         setting.agent_class, setting.properties_with_indifferent_access)
       agent.agent_name  = setting.name || setting.agent_class
       inject_components_to(agent, setting)
-      restore_state(agent, setting)
       agent.post_create
+      restore_state(agent, setting)
       agent
     end
 

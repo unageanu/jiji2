@@ -20,8 +20,7 @@ module Jiji::Model::Agents
       dependent:  :destroy
     }
     has_many :notifications, {
-      class_name: 'Jiji::Model::Notification::Notification',
-      dependent:  :destroy
+      class_name: 'Jiji::Model::Notification::Notification'
     }
 
     field :agent_class,    type: String

@@ -24,13 +24,13 @@ module Jiji::Model::Trading
     has_many :graphs,
       class_name: 'Jiji::Model::Graphing::Graph', dependent: :destroy
     has_many :logdata,
-      class_name: 'Jiji::Model::Logging::LogData', dependent: :destroy
+      class_name: 'Jiji::Model::Logging::LogData'
     has_many :agent_settings,
       class_name: 'Jiji::Model::Agents::AgentSetting', dependent: :destroy
     has_many :positions,
       class_name: 'Jiji::Model::Trading::Position', dependent: :destroy
     has_many :notifications,
-      class_name: 'Jiji::Model::Notification::Notification', dependent: :destroy
+      class_name: 'Jiji::Model::Notification::Notification'
 
     field :name,          type: String
     field :created_at,    type: Time

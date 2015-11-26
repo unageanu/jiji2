@@ -128,22 +128,6 @@ describe Jiji::Model::Logging::Log do
     end
   end
 
-  it 'delete_before で指定日時より前のログを削除できる' do
-    11.times do |i|
-      time_source.set(Time.at(i * 100))
-      logger.info('x' * 1024 * 20)
-    end
-    logger.close
-
-    expect(log.count).to be 3
-
-    log.delete_before(Time.at(4 * 100 - 1))
-    expect(log.count).to be 2
-
-    log.delete_before(Time.at(9 * 100))
-    expect(log.count).to be 0
-  end
-
   it '別のLogが管理するデータとは影響し合わない' do
     time_source.set(Time.at(100))
 
@@ -163,12 +147,6 @@ describe Jiji::Model::Logging::Log do
     log_data = backtest_log.get(0)
     expect(log_data.size).to be > 0
 
-    log.delete_before(Time.at(200))
-    expect(log.count).to be 0
-    expect(backtest_log.count).to be 1
-
-    backtest_log.delete_before(Time.at(200))
-    expect(backtest_log.count).to be 0
   end
 
   def etract_log_content(body)

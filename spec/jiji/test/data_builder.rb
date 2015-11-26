@@ -8,6 +8,15 @@ module Jiji::Test
 
     include Jiji::Model::Trading
 
+    def initialize
+      Jiji::Model::Logging::LogData.drop
+      Jiji::Model::Notification::Notification.drop
+      Jiji::Db::CreateCappedCollections.new({
+        notifications: { size: 20 * 1024 * 1024 },
+        log_data:      { size: 50 * 1024 * 1024 }
+      }).call(nil, nil)
+    end
+
     def new_rate(seed, pair_name = :EURJPY)
       Rate.create_from_tick(
         pair_name, new_tick(seed), new_tick(seed + 1),

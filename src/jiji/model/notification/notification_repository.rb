@@ -25,13 +25,6 @@ module Jiji::Model::Notification
       Notification.where(filter_conditions).count
     end
 
-    def delete_notifications_of_rmt(before)
-      Notification.where(
-        :backtest_id  => nil,
-        :timestamp.lt => before
-      ).delete
-    end
-
     private
 
     def insert_default_sort_order(sort_order)

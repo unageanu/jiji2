@@ -87,32 +87,6 @@ describe Jiji::Model::Notification::NotificationRepository do
     expect(count).to eq(69)
   end
 
-  it '指定日時以前のRMTの通知を削除できる'  do
-    notifications = notification_repository.retrieve_notifications
-    expect(notifications.size).to eq(20)
-
-    notification_repository.delete_notifications_of_rmt(Time.at(40))
-
-    notifications = notification_repository.retrieve_notifications(
-      { backtest_id: nil }, { timestamp: :asc, id: :asc })
-
-    expect(notifications.size).to eq(20)
-    expect(notifications[0].backtest_id).to eq(nil)
-    expect(notifications[0].timestamp).to eq(Time.at(40))
-    expect(notifications[19].backtest_id).to eq(nil)
-    expect(notifications[19].timestamp).to eq(Time.at(59))
-
-    notification_repository.delete_notifications_of_rmt(Time.at(60))
-
-    notifications = notification_repository.retrieve_notifications(
-      { backtest_id: nil }, { timestamp: :asc, id: :asc })
-    expect(notifications.size).to eq(20)
-    expect(notifications[0].backtest_id).to eq(nil)
-    expect(notifications[0].timestamp).to eq(Time.at(60))
-    expect(notifications[19].backtest_id).to eq(nil)
-    expect(notifications[19].timestamp).to eq(Time.at(79))
-  end
-
   describe '#get_by_id' do
     it 'idを指定して通知を取得できる' do
       notifications = notification_repository.retrieve_notifications({

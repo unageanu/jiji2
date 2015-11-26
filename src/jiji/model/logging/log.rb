@@ -26,10 +26,6 @@ module Jiji::Model::Logging
       @current ? count + 1 : count
     end
 
-    def delete_before(time)
-      LogData.where(filter.merge({ :timestamp.lte => time })).delete
-    end
-
     def write(message)
       @current = create_log_data unless @current
       @current << message

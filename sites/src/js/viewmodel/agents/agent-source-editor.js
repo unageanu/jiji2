@@ -25,6 +25,12 @@ export default class AgentSourceEditor extends Observable {
   }
 
   load() {
+    this.isSaving   = false;
+    this.savedLabel = null;
+    this.setProperty("editTarget", null);
+    this.setProperty("targetBody", null);
+    this.setProperty("fileNameError", null);
+
     this.agentSources.load();
   }
 
@@ -39,6 +45,7 @@ export default class AgentSourceEditor extends Observable {
     const editTarget = this.agentSources.get(id);
     this.setProperty("editTarget", editTarget);
     this.setProperty("targetBody", null);
+    this.setProperty("fileNameError", null);
     if (editTarget) {
       this.agentSources.getBody(id).then(
         (body) => this.setProperty("targetBody", body) );
@@ -55,6 +62,7 @@ export default class AgentSourceEditor extends Observable {
     this.agentSources.update(target.id, name, body).then((source) => {
       this.setProperty("editTarget", source);
       this.setProperty("targetBody", body);
+      this.setProperty("fileNameError", null);
       this.isSaving   = false;
       this.savedLabel = "※保存しました。 ( " +
         DateFormatter.format(this.timeSource.now) + " )";
@@ -68,6 +76,7 @@ export default class AgentSourceEditor extends Observable {
     this.agentSources.remove(target.id).then(() => {
       this.setProperty("editTarget", null);
       this.setProperty("targetBody", null);
+      this.setProperty("fileNameError", null);
     });
   }
 

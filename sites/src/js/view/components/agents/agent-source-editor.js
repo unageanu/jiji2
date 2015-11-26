@@ -4,15 +4,14 @@ import MUI       　　　　     from "material-ui"
 import AbstractComponent     from "../widgets/abstract-component"
 import AceEditor             from "../widgets/ace-editor"
 import AgentSourceEditorMenu from "./agent-source-editor-menu"
-
-const TextField    = MUI.TextField;
+import AgentFileNameField    from "./agent-filename-field"
 
 const outerWidth  = 360+288+16*3+16*2;
 const outerHeight = 100+77+72+16*2+16*2;
 
 
 const keys = new Set([
-  "targetBody",  "editTarget", "sources", "fileNameError"
+  "targetBody",  "editTarget", "sources"
 ]);
 
 export default class AgentSourceEditor extends AbstractComponent {
@@ -21,7 +20,6 @@ export default class AgentSourceEditor extends AbstractComponent {
     super(props);
     this.state = {
       editTarget:  null,
-      fileName:    null,
       targetBody : null
     };
   }
@@ -48,12 +46,7 @@ export default class AgentSourceEditor extends AbstractComponent {
   }
 
   onPropertyChanged(n, e) {
-    if (e.key === "editTarget") {
-      this.setState({
-        editTarget: e.newValue,
-        fileName:   e.newValue ? e.newValue.name : ""
-      });
-    } else if (e.key === "sources") {
+    if (e.key === "sources") {
       if (this.refs.aceEditor) this.refs.aceEditor.updateEditorSize();
     } else {
       super.onPropertyChanged(n, e);
@@ -66,17 +59,14 @@ export default class AgentSourceEditor extends AbstractComponent {
     return (
       <div className="agent-source-editor">
         <ul className="info">
-          <li>エージェントの詳しい作り方は<a onClick={ () => window.open('http://jiji2.unageanu.net/usage/020000_how_to_create_agent.html', '_blank')} >こちら</a>をご覧ください。</li>
+          <li>
+            エージェントの詳しい作り方は
+            <a onClick={ () => window.open('http://jiji2.unageanu.net/usage/020000_how_to_create_agent.html', '_blank')} >こちら</a>
+            をご覧ください。
+          </li>
         </ul>
         <div className="header">
-          <TextField
-            ref="name"
-            hintText="agent.rb"
-            floatingLabelText="ファイル名"
-            errorText={this.state.fileNameError}
-            disabled={!this.state.editTarget}
-            onChange={this.onFileNameChanged.bind(this)}
-            value={this.state.fileName} />
+          <AgentFileNameField ref="filename" model={this.editor()} />
             &nbsp;
           <AgentSourceEditorMenu
             model={this.editor()}
@@ -85,7 +75,7 @@ export default class AgentSourceEditor extends AbstractComponent {
         </div>
         <div className="editor" ref="editorPanel">
           {this.createEditor()}
-        </div>
+        </div> 
       </div>
     );
   }
@@ -93,13 +83,13 @@ export default class AgentSourceEditor extends AbstractComponent {
   createEditor() {
     return <div style={{ display: this.state.editTarget ? "block" : "none" }}>
       <AceEditor
-      ref="editor"
-      targetBody={this.state.targetBody}
-      onSave={this.save.bind(this)}
-      outerWidth={outerWidth}
-      outerHeight={
-        outerHeight + (this.state.editTarget && this.state.editTarget.error ? 40 : 0 )
-      } />
+        ref="editor"
+        targetBody={this.state.targetBody}
+        onSave={this.save.bind(this)}
+        outerWidth={outerWidth}
+        outerHeight={
+          outerHeight + (this.state.editTarget && this.state.editTarget.error ? 40 : 0 )
+        } />
     </div>;
   }
 
@@ -113,12 +103,8 @@ export default class AgentSourceEditor extends AbstractComponent {
 
   save() {
     const body = this.refs.editor.value;
-    const name = this.state.fileName;
+    const name = this.refs.filename.value;
     this.editor().save(name, body);
-  }
-
-  onFileNameChanged(event) {
-    this.setState({fileName: event.target.value});
   }
 
   editor() {

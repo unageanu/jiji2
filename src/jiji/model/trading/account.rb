@@ -67,7 +67,8 @@ module Jiji::Model::Trading
         return if position.status != :live
         @profit_or_loss += position.profit_or_loss || 0
         @total_price    +=
-          BigDecimal.new(position.entry_price, 10) * position.units
+          BigDecimal.new(position.current_price || position.entry_price, 10) \
+          * position.units
       end
 
       def margin_used

@@ -153,7 +153,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
       expect(broker.positions.length).to be 3
       expect(broker.account.profit_or_loss).to eq(19_820.0)
-      expect(broker.account.margin_used).to eq 245_602.4
+      expect(broker.account.margin_used.to_f).to eq 244_804.8
       expect(broker.account.balance).to be 50_000
 
       positions = position_repository.retrieve_positions(nil)
@@ -213,7 +213,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
       expect(broker.positions.length).to be 3
       expect(broker.account.profit_or_loss).to eq(-40_210)
-      expect(broker.account.margin_used).to eq 288_407.2
+      expect(broker.account.margin_used).to eq 288_401.2
       expect(broker.account.balance).to be 60_000
 
       positions = position_repository.retrieve_positions(nil)

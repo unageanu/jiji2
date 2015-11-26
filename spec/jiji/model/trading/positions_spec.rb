@@ -52,7 +52,7 @@ describe Jiji::Model::Trading::Positions do
 
       expect(account.balance).to eq(1_000_000)
       expect(account.profit_or_loss).to eq(-300)
-      expect(account.margin_used).to eq 412_007.2
+      expect(account.margin_used).to eq 412_004.8
       expect(account.updated_at).to eq nil
 
       expect(positions.length).to be 4
@@ -131,7 +131,7 @@ describe Jiji::Model::Trading::Positions do
 
       expect(account.balance).to eq(1_000_000)
       expect(account.profit_or_loss).to eq(-150)
-      expect(account.margin_used).to eq 204_801.2
+      expect(account.margin_used).to eq 204_804.8
 
       expect(positions.length).to be 3
       position = positions['1']
@@ -185,7 +185,7 @@ describe Jiji::Model::Trading::Positions do
       positions.update_price(data_builder.new_tick(4, Time.at(100)), pairs)
       expect(account.balance).to eq(1_000_000)
       expect(account.profit_or_loss).to eq(-20_180)
-      expect(account.margin_used).to eq 245_602.4
+      expect(account.margin_used).to eq 249_604.8
       expect(account.updated_at).to eq Time.at(100)
 
       new_positions = [
@@ -195,7 +195,7 @@ describe Jiji::Model::Trading::Positions do
       positions.update(new_positions)
       expect(account.balance).to eq(1_039_940)
       expect(account.profit_or_loss).to eq(-60_120.0)
-      expect(account.margin_used).to eq 164_000.0
+      expect(account.margin_used).to eq 166_404.8
       expect(account.updated_at).to eq Time.at(100)
 
       expect(positions.length).to be 2
@@ -274,7 +274,7 @@ describe Jiji::Model::Trading::Positions do
 
       expect(account.balance).to eq(1_000_000)
       expect(account.profit_or_loss).to eq(-20_180)
-      expect(account.margin_used).to eq 245_602.4
+      expect(account.margin_used).to eq 249_604.8
       expect(account.updated_at).to eq Time.at(100)
 
       expect(positions.length).to be 3
@@ -383,7 +383,7 @@ describe Jiji::Model::Trading::Positions do
 
       expect(account.balance).to eq(1_000_000)
       expect(account.profit_or_loss).to eq(-600_180)
-      expect(account.margin_used).to eq 685_602.4
+      expect(account.margin_used).to eq 661_604.8
       expect(account.updated_at).to eq Time.at(100)
 
       expect(positions.length).to be 4
@@ -508,7 +508,7 @@ describe Jiji::Model::Trading::Positions do
 
       expect(account.balance).to eq(1_076_967)
       expect(account.profit_or_loss).to eq(-147)
-      expect(account.margin_used).to eq 200_721.08
+      expect(account.margin_used).to eq 200_724.8
       expect(account.updated_at).to eq Time.at(100)
 
       expect(positions.length).to be 3
@@ -618,7 +618,7 @@ describe Jiji::Model::Trading::Positions do
         order_result, tick, agent_setting)
       expect(account.balance).to eq(176_967.0)
       expect(account.profit_or_loss).to eq(-27)
-      expect(account.margin_used).to eq 36_721.08
+      expect(account.margin_used).to eq 36_720.0
       expect(account.updated_at).to eq Time.at(100)
 
       expect(positions.length).to be 1
@@ -700,7 +700,7 @@ describe Jiji::Model::Trading::Positions do
         order_result, tick, agent_setting)
       expect(account.balance).to eq(1_000_000)
       expect(account.profit_or_loss).to eq(-180)
-      expect(account.margin_used).to eq 245_602.4
+      expect(account.margin_used).to eq 245_604.8
       expect(account.updated_at).to eq Time.at(100)
 
       expect(positions.length).to be 3
@@ -791,7 +791,7 @@ describe Jiji::Model::Trading::Positions do
       positions.apply_close_result(data_builder.new_closed_position(10, '1'))
       expect(account.balance).to eq(910_000)
       expect(account.profit_or_loss).to eq(-150)
-      expect(account.margin_used).to eq 205_202.4
+      expect(account.margin_used).to eq 205_203.6
       expect(account.updated_at).to eq Time.at(10)
 
       expect(positions.length).to be 2

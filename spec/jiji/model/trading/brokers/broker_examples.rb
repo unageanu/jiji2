@@ -53,7 +53,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 100_000
     expect(broker.account.profit_or_loss).to eq(-300)
-    expect(broker.account.margin_used).to eq 54_132
+    expect(broker.account.margin_used).to eq 54_120.0
 
     expect(broker.positions.length).to be 1
     expect(broker.positions[result.trade_opened.internal_id]) \
@@ -69,7 +69,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 100_000
     expect(broker.account.profit_or_loss).to eq 2300
-    expect(broker.account.margin_used).to eq 54_132
+    expect(broker.account.margin_used).to eq 54_224.0
 
     expected_position1.current_price = 135.56
     expected_position1.updated_at    = Time.utc(2015, 5, 1, 0, 0, 15)
@@ -99,7 +99,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 100_000
     expect(broker.account.profit_or_loss).to eq 2298
-    expect(broker.account.margin_used).to eq 54_132 + 553.36
+    expect(broker.account.margin_used).to eq 54_777.44
 
     expect(broker.positions.length).to be 2
     expect(broker.positions[expected_position1.internal_id]) \
@@ -119,7 +119,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 102_300
     expect(broker.account.profit_or_loss).to eq(-2)
-    expect(broker.account.margin_used).to eq 553.36
+    expect(broker.account.margin_used.to_f).to eq 553.44
 
     expected_position1.status     = :closed
     expected_position1.exit_price = 135.56
@@ -142,7 +142,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 102_300
     expect(broker.account.profit_or_loss).to eq(-402)
-    expect(broker.account.margin_used).to eq 553.36
+    expect(broker.account.margin_used.to_f).to eq 569.44
 
     expected_position2.current_price = 1.4236
     expected_position2.updated_at  = Time.utc(2015, 5, 1, 0, 0, 30)
@@ -162,7 +162,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 102_300
     expect(broker.account.profit_or_loss).to eq(-432)
-    expect(broker.account.margin_used).to eq 553.36
+    expect(broker.account.margin_used.to_f).to eq 570.64
 
     expected_position2.current_price = 1.4266
     expected_position2.updated_at  = Time.utc(2015, 5, 1, 0, 0, 45)
@@ -182,7 +182,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 102_300
     expect(broker.account.profit_or_loss).to eq(-412)
-    expect(broker.account.margin_used).to eq 553.36
+    expect(broker.account.margin_used.to_f).to eq 569.84
 
     expected_position2.current_price = 1.4246
     expected_position2.updated_at  = Time.utc(2015, 5, 1, 0, 1, 0)
@@ -412,7 +412,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 100_000
     expect(broker.account.profit_or_loss).to eq(-340)
-    expect(broker.account.margin_used.to_f).to eq(99_201.6)
+    expect(broker.account.margin_used.to_f).to eq(99_212.0)
 
     2.times do |_i|
       broker.refresh_positions
@@ -420,7 +420,7 @@ shared_examples 'brokerの基本操作ができる' do
 
       expect(broker.account.balance).to eq 100_000
       expect(broker.account.profit_or_loss).to eq(-340)
-      expect(broker.account.margin_used.to_f).to eq(99_201.6)
+      expect(broker.account.margin_used.to_f).not_to be nil
 
       tick = broker.tick
 
@@ -454,7 +454,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 100_000
     expect(broker.account.profit_or_loss).to eq(-340)
-    expect(broker.account.margin_used.to_f).to eq(99_201.6)
+    expect(broker.account.margin_used.to_f).to eq(99_292.0)
 
     tick = broker.tick
 
@@ -509,7 +509,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 98_700
     expect(broker.account.profit_or_loss).to eq(1869)
-    expect(broker.account.margin_used.to_f).to eq(45_534.6)
+    expect(broker.account.margin_used.to_f).to eq(45_609.36)
 
     positions = broker.positions
     position = find_by_internal_id(positions, r2.internal_id)
@@ -517,7 +517,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 99_660
     expect(broker.account.profit_or_loss).to eq(909)
-    expect(broker.account.margin_used.to_f).to eq(573)
+    expect(broker.account.margin_used.to_f).to eq(609.36)
 
     expected_position2.exit_price    = tick[:USDJPY].bid
     expected_position2.exited_at     = tick.timestamp
@@ -543,7 +543,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 99_660
     expect(broker.account.profit_or_loss).to eq(919)
-    expect(broker.account.margin_used.to_f).to eq(573)
+    expect(broker.account.margin_used.to_f).to eq(609.76)
 
     tick = broker.tick
 
@@ -571,7 +571,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 99_660
     expect(broker.account.profit_or_loss).to eq(919)
-    expect(broker.account.margin_used.to_f).to eq(573)
+    expect(broker.account.margin_used.to_f).to eq(609.76)
   end
 
   it '建玉を変更できる' do
@@ -608,7 +608,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 100_000
     expect(broker.account.profit_or_loss).to eq(-300)
-    expect(broker.account.margin_used).to eq 54_132
+    expect(broker.account.margin_used).to eq 54_120.0
 
     expect(broker.positions.length).to be 1
     expect(broker.positions[result.trade_opened.internal_id]) \
@@ -644,7 +644,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.account.balance).to eq 100_000
     expect(broker.account.profit_or_loss).to eq(-300)
-    expect(broker.account.margin_used).to eq 54_132
+    expect(broker.account.margin_used).to eq 54_120.0
 
     expected_position.closing_policy = position.closing_policy
     expect(broker.positions[result.trade_opened.internal_id]) \

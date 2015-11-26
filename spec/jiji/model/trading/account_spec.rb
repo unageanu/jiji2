@@ -46,7 +46,7 @@ describe Jiji::Model::Trading::Account do
 
       account.update(positions, Time.at(100))
 
-      expect(account.margin_used).to eq 245_602.4
+      expect(account.margin_used).to eq 245_604.8
       expect(account.profit_or_loss).to eq(-180.0)
       expect(account.updated_at).to eq Time.at(100)
 
@@ -54,7 +54,7 @@ describe Jiji::Model::Trading::Account do
       positions.update_price(tick, pairs)
       account.update(positions, Time.at(200))
 
-      expect(account.margin_used).to eq 245_602.4
+      expect(account.margin_used).to eq 252_004.8
       expect(account.profit_or_loss).to eq(-40_180.0)
       expect(account.updated_at).to eq Time.at(200)
 
@@ -69,7 +69,7 @@ describe Jiji::Model::Trading::Account do
 
       account.update(positions, Time.at(300))
 
-      expect(account.margin_used.to_f).to eq(81_602.4)
+      expect(account.margin_used.to_f).to eq(84_800.0)
       expect(account.profit_or_loss).to eq 79_940.0
       expect(account.updated_at).to eq Time.at(300)
     end

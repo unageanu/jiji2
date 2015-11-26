@@ -105,10 +105,10 @@ end
 BODY
     end
 
-    def new_trading_context(broker = Mock::MockBroker.new,
+    def new_trading_context(broker = Mock::MockBroker.new, agents = nil,
       time_source = Jiji::Utils::TimeSource.new, logger = Logger.new(STDOUT))
       graph_factory = Jiji::Model::Graphing::GraphFactory.new
-      agents = Jiji::Model::Agents::Agents.new(nil, nil, {
+      agents ||= Jiji::Model::Agents::Agents.new(nil, nil, {
         logger:        logger,
         time_source:   time_source,
         bloker:        broker,

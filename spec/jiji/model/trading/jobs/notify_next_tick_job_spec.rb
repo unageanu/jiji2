@@ -85,8 +85,24 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
     end
   end
 
-  def create_trading_context(
-    refresh_count = 5, expect_to_refresh_accounts = true)
+  it 'エージェントが空の場合、エラーになる' do
+    job = Jiji::Model::Trading::Jobs::NotifyNextTickJobForBackTest.new(
+      Time.new(2014, 1, 1, 0, 0, 0), Time.new(2014, 1, 1, 0, 1, 0))
+    context = create_trading_context(0, false, [])
+
+    context.prepare_running
+    queue   = Queue.new
+
+    expect(queue.empty?).to be true
+
+    queue   = Queue.new
+    expect do
+      job.exec(context, queue)
+    end.to raise_error "no agent."
+  end
+
+  def create_trading_context( refresh_count = 5,
+    expect_to_refresh_accounts = true, agent_instances=["dummy"])
     broker  = double('mock broker')
     allow(broker).to receive(:tick) \
       .at_least(:once) \
@@ -102,7 +118,12 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
       expect(broker).to receive(:refresh_account).once
     end
 
-    data_builder.new_trading_context(broker)
+    agents  = double('mock agents')
+    allow(agents).to receive(:values) \
+      .at_least(:once) \
+      .and_return(agent_instances)
+    allow(agents).to receive(:next_tick)
+    data_builder.new_trading_context(broker, agents)
   end
 
   def create_tick_response

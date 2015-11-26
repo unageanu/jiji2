@@ -67,6 +67,11 @@ module Jiji::Model::Trading::Jobs
       @sec        = @end_time.to_i - @start_time.to_i
     end
 
+    def before_do_next(trading_context, queue)
+      raise "no agent." if trading_context.agents.values.empty?
+      super
+    end
+
     def after_do_next(context, queue)
       tick = context.broker.tick
 

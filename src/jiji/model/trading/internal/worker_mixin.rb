@@ -18,7 +18,7 @@ module Jiji::Model::Trading::Internal
 
     def create_agent_instances(
       agent_setting, ignore_agent_creation_error = false)
-      @agents.update_setting(agent_setting, ignore_agent_creation_error)
+      @agents.update_setting(agent_setting, !ignore_agent_creation_error)
     end
 
     private

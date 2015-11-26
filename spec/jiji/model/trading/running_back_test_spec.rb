@@ -160,34 +160,40 @@ describe Jiji::Model::Trading::BackTest do
     sleep 0.2 until test.process.finished?
     expect(test.retrieve_process_status).to be :error
 
-    expect do
-      backtest_repository.register({
-        'name'          => 'テスト',
-        'start_time'    => Time.new(2015, 6, 20, 0,  0, 0),
-        'end_time'      => Time.new(2015, 6, 20, 1,  0, 0),
-        'memo'          => 'メモ',
-        'pair_names'    => [:USDJPY, :EURUSD],
-        'agent_setting' => [
-          {
-            agent_class: 'ErrorOnCreateAgent@error_agent.rb'
-          }
-        ]
-      })
-    end.to raise_exception
 
-    expect do
-      backtest_repository.register({
-        'name'          => 'テスト',
-        'start_time'    => Time.new(2015, 6, 20, 0,  0, 0),
-        'end_time'      => Time.new(2015, 6, 20, 1,  0, 0),
-        'memo'          => 'メモ',
-        'pair_names'    => [:USDJPY, :EURUSD],
-        'agent_setting' => [
-          {
-            agent_class: 'ErrorOnPostCreateAgent@error_agent.rb'
-          }
-        ]
-      })
-    end.to raise_exception
+    backtest_repository.register({
+      'name'          => 'テスト',
+      'start_time'    => Time.new(2015, 6, 20, 0,  0, 0),
+      'end_time'      => Time.new(2015, 6, 20, 1,  0, 0),
+      'memo'          => 'メモ',
+      'pair_names'    => [:USDJPY, :EURUSD],
+      'agent_setting' => [
+        {
+          agent_class: 'ErrorOnCreateAgent@error_agent.rb'
+        }
+      ]
+    })
+    test.to_h
+
+    sleep 0.2 until test.process.finished?
+    expect(test.retrieve_process_status).to be :error
+
+
+    backtest_repository.register({
+      'name'          => 'テスト',
+      'start_time'    => Time.new(2015, 6, 20, 0,  0, 0),
+      'end_time'      => Time.new(2015, 6, 20, 1,  0, 0),
+      'memo'          => 'メモ',
+      'pair_names'    => [:USDJPY, :EURUSD],
+      'agent_setting' => [
+        {
+          agent_class: 'ErrorOnPostCreateAgent@error_agent.rb'
+        }
+      ]
+    })
+    test.to_h
+
+    sleep 0.2 until test.process.finished?
+    expect(test.retrieve_process_status).to be :error
   end
 end

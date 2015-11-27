@@ -74,6 +74,16 @@ export default class Graphs extends Observable {
     this.preferences          = preferences;
     this.graphService         = graphService;
     this.coordinateCalculator = coordinateCalculator;
+
+    this.registerObservers();
+  }
+
+  registerObservers() {
+    this.preferences.addObserver("propertyChanged", (n, e) => {
+      if (e.key === "preferredPairs") {
+        this.update();
+      }
+    }, this);
   }
 
   attach(slider) {
@@ -90,6 +100,7 @@ export default class Graphs extends Observable {
   }
 
   unregisterObservers() {
+    this.preferences.removeAllObservers(this);
     this.slider.removeAllObservers(this);
     this.context.removeAllObservers(this);
   }

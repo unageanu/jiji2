@@ -103,7 +103,7 @@ broker.buy(:EURUSD, 10000, :marketIfTouched, {
 {% highlight ruby %}
 orders = broker.orders # Orderの配列が返されます。
 orders.length
-orders..find { |o| o.sell_or_buy == :sell } #売り注文の一覧を取得
+orders.find { |o| o.sell_or_buy == :sell } #売り注文の一覧を取得
 {% endhighlight %}
 
 

@@ -43,13 +43,13 @@ nav_class_name: "lv2"
     - <b>notifier</b> .. メール、Push通知を送信するときに利用します。
     - <b>logger</b> .. デバッグ用のログを出力するときに使用します。
 
-<p class="step">4. 状態の復元 ( <code>restore_state(state)</code> ) ※状態が保存されている場合のみ</p>
-  - システムの再起動等で状態が保存されていた場合、`restore_state(state)` で状態の復元が行われます。
-  - デフォルトの実装は空なので、必要に応じでオーバーライドして実装してください。
-
-<p class="step">5. 初期化処理の実行 ( <code>post_create()</code> )</p>
+<p class="step">4. 初期化処理の実行 ( <code>post_create()</code> )</p>
   - プロパティ、依存コンポーネントの設定が終わったタイミンクで、`post_create` が呼び出されます。
   - 初期化はコンストラクタで行うことも可能ですが、`post_create`であれば、loggerなどの依存コンポーネントを利用できます。
+
+<p class="step">5. 状態の復元 ( <code>restore_state(state)</code> ) ※状態が保存されている場合のみ</p>
+  - システムの再起動等で状態が保存されていた場合、`restore_state(state)` で状態の復元が行われます。
+  - デフォルトの実装は空なので、必要に応じでオーバーライドして実装してください。
 
 <p class="step">6. レート情報の処理 ( <code>next_tick(tick)</code> )</p>
   - 初期化が終わると、システムにより15秒ごとに `next_tick(tick)` が実行されます。

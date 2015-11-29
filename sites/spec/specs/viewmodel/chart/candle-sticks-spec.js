@@ -152,7 +152,7 @@ describe("CandleSticks", () => {
 
     slider.preferences.preferredPair = "EURUSD";
 
-    expect(xhrManager.requests.length).toEqual(1);
+    expect(xhrManager.requests.length).toEqual(3);
     xhrManager.requests[0].resolve(operator.createRates([
       {high:179.0, low:178.8, open:178.8, close:178.8, timestamp:Dates.date("2015-05-08T10:00:00Z")},
       {high:179.0, low:178.2, open:178.5, close:179.0, timestamp:Dates.date("2015-05-09T19:00:00Z")},

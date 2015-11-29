@@ -67,6 +67,7 @@
       color: @font-color-light;
     }
   }
+
   .smtp-server-setting-view {
     .buttons {
       .button {
@@ -83,6 +84,73 @@
       }
       .button:nth-child(1) {
         margin-left: 0;
+      }
+    }
+  }
+
+  .setting-finished-view {
+    .push {
+      margin: @grid*2 0px;
+      padding: @grid*2;
+      background-color: @background-color-dark;
+
+      h2 {
+        font-size: 18px;
+        color: @accent-color-normal;
+        margin: 0px;
+      }
+
+      .boxes {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+      }
+      .box {
+        width: 48%;
+        flex-grow: 1;
+
+        h3 {
+          font-size: 18px;
+          font-weight: bold;
+          text-decoration: none;
+          border: 0px;
+          margin: @grid*2 0px;
+        }
+        div {
+          font-size: @font-size-small;
+          color: @font-color-normal;
+          margin-top: @grid;
+        }
+        img {
+          background-color: #FFF;
+          border: 1px solid @border-color-dark;
+        }
+      }
+      .box:nth-child(1) {
+        margin-right: 2%;
+      }
+
+      .text {
+        margin-top: @grid*4;
+        font-size: @font-size-normal;
+        color: @font-color-normal;
+
+        b {
+          color: @accent-color-normal;
+          font-weight: bold;
+        }
+      }
+
+      .android_badge {
+        margin-top: @grid*4;
+        img {
+          border: 0px;
+          padding: 0px;
+          width: 250px;
+        }
+        .info {
+          color: @font-color-light;
+        }
       }
     }
   }

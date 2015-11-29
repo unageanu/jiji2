@@ -19,7 +19,7 @@ module Jiji::Web
             + 'script-src ' + script_src + '; ' \
             + 'style-src ' + FONT_AND_STYLE_SRC + ' \'unsafe-inline\'; ' \
             + 'font-src  ' + FONT_AND_STYLE_SRC + ' fonts.gstatic.com; ' \
-            + 'img-src \'self\' data: ' +   GOOGLE_ANALYTICS_SRC,
+            + 'img-src \'self\' data: play.google.com ' + GOOGLE_ANALYTICS_SRC,
         'X-Download-Options'                => 'noopen',
         'X-Permitted-Cross-Domain-Policies' => 'master-only',
         'X-XSS-Protection'                  => '1; mode=block'

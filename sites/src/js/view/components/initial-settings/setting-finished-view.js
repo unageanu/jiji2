@@ -21,7 +21,7 @@ export default class SettingFinishedView extends AbstractComponent {
         </div>
         <ul className="description">
           <li>システムの詳しい使い方は<a onClick={ () => window.open('http://jiji2.unageanu.net/usage/', '_blank') } >こちら</a>をご覧ください。</li>
-          <li>
+          <li className="push_description">
             スマホアプリも、ぜひご利用ください!
           </li>
         </ul>

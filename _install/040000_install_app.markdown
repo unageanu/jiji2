@@ -10,15 +10,17 @@ class_name: "install_app"
   <div class="boxes">
     <div class="box box2">
       <h3>Push通知で、取引のタイミングを逃さない!</h3>
+      <img src="/images/install/app_future_01.png" />
       <div>
         スマホアプリを使うと、取引アルゴリズムからのPush通知を受信できます。取引のポイントでPush通知を送ることで、売買のタイミングをリアルタイムに受け取ることができます。
        </div>
     </div>
     <div class="box box2">
       <h3>取引状況の確認・システムの管理を、いつでもどこでも。</h3>
+      <img src="/images/install/app_future_02.png" />
       <div>
         シンプルなUIで、取引状況をさっと把握。<br/>
-        システムの管理もできるので、相場が急に動いてもいつでもすぐに対応できます。
+        システムの管理もできるので、相場が急に動いても、どこでもすぐに対応できます。
       </div>
     </div>
   </div>

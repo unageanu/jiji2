@@ -44,7 +44,7 @@ nav_class_name: "lv2"
     - <b>logger</b> .. デバッグ用のログを出力するときに使用します。
 
 <p class="step">4. 初期化処理の実行 ( <code>post_create()</code> )</p>
-  - プロパティ、依存コンポーネントの設定が終わったタイミンクで、`post_create` が呼び出されます。
+  - プロパティ、依存コンポーネントの設定が終わったタイミングで、`post_create` が呼び出されます。
   - 初期化はコンストラクタで行うことも可能ですが、`post_create`であれば、loggerなどの依存コンポーネントを利用できます。
 
 <p class="step">5. 状態の復元 ( <code>restore_state(state)</code> ) ※状態が保存されている場合のみ</p>

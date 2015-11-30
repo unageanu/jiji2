@@ -47,7 +47,7 @@ export default class SettingFinishedView extends AbstractComponent {
           </div>
           <div className="text">
             スマホアプリは、<b>月額450円(税抜)の有料ソフトウェア</b>です。<br/>
-            まずはお試し。いまなら、購入後<b>10日間無料</b>でご利用いただけます。
+            まずはお試し。いまなら、購入後<b>30日間無料</b>でご利用いただけます。
           </div>
           <div className="android_badge">
             <a id="install_app" target="_blank"  href="https://play.google.com/store/apps/details?id=net.unageanu.jiji&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1">

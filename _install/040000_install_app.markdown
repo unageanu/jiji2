@@ -3,7 +3,7 @@ layout: install
 title:  "4. スマホアプリのインストール"
 class_name: "install_app"
 ---
-スマホアプリも、ぜひご利用ください。(※オプション)
+スマホアプリも、ぜひご利用ください。
 
 <div class="push">
   <h2>スマホアプリでできること</h2>

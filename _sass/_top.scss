@@ -7,7 +7,7 @@
   .first-hook {
     color: $text-color-w;
     background-color: $primary-color;
-    padding-top: $grid*15;
+    padding-top: $grid*13;
 
     background-image: url(/images/top/top-image.png);
     background-repeat: no-repeat;
@@ -16,6 +16,15 @@
     h1 {
       font-size: 28px;
     }
+
+    .beta {
+      padding: 1px $grid*3;
+      color: $accent-color;
+      border: 3px double $accent-color;
+      display: inline-block;
+      font-size: 14px;
+    }
+
     p.description {
       margin: $grid*4 0 $grid*6;
     }

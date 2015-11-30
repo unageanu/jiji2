@@ -36,7 +36,7 @@ module Jiji::Model::Securities::Internal::Oanda
     def close_trade(internal_id)
       response = @client.account(@account.account_id)
                  .trade(internal_id).close
-      ClosedPosition.new(response.id.to_s, -1, response.price, response.time)
+      ClosedPosition.new(internal_id, -1, response.price, response.time)
     end
 
     private

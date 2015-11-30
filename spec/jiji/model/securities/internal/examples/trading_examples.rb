@@ -181,7 +181,7 @@ RSpec.shared_examples '建玉関連の操作' do
       expect(saved_positions.length).to be 0
     end
 
-    it '建玉をキャンセルできる' do
+    it '建玉を決済できる' do
       saved_positions = position_repository.retrieve_positions(backtest_id)
       expect(saved_positions.length).to be 0
 
@@ -202,14 +202,14 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       result = client.close_trade(trades[1].internal_id)
-      expect(result.internal_id).not_to be nil
+      expect(result.internal_id).to eq trades[1].internal_id
       expect(result.units).to eq(-1)
       expect(result.price).to be > 0
       expect(result.timestamp).not_to be nil
 
       sleep wait
       result = client.close_trade(trades[0].internal_id)
-      expect(result.internal_id).not_to be nil
+      expect(result.internal_id).to eq trades[0].internal_id
       expect(result.units).to eq(-1)
       expect(result.price).to be > 0
       expect(result.timestamp).not_to be nil

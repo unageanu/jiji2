@@ -41,6 +41,10 @@
 
 .footer-col-3 {
   width: 50%;
+
+  .text {
+    margin-bottom: $grid;
+  }
 }
 
 @include media-query($on-laptop) {
@@ -49,6 +53,12 @@
       .footer-col-1, .footer-col-2, .footer-col-3{
         width: auto;
         margin-right: 0px;
+      }
+
+      .footer-col-3 {
+        .text {
+          margin-top: $grid*3;
+        }
       }
     }
 }

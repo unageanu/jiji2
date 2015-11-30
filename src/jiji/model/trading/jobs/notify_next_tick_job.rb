@@ -68,7 +68,7 @@ module Jiji::Model::Trading::Jobs
     end
 
     def before_do_next(trading_context, queue)
-      raise "no agent." if trading_context.agents.values.empty?
+      fail 'no agent.' if trading_context.agents.values.empty?
       super
     end
 

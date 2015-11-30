@@ -98,11 +98,11 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
     queue   = Queue.new
     expect do
       job.exec(context, queue)
-    end.to raise_error "no agent."
+    end.to raise_error 'no agent.'
   end
 
-  def create_trading_context( refresh_count = 5,
-    expect_to_refresh_accounts = true, agent_instances=["dummy"])
+  def create_trading_context(refresh_count = 5,
+    expect_to_refresh_accounts = true, agent_instances = ['dummy'])
     broker  = double('mock broker')
     allow(broker).to receive(:tick) \
       .at_least(:once) \

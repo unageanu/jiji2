@@ -160,7 +160,6 @@ describe Jiji::Model::Trading::BackTest do
     sleep 0.2 until test.process.finished?
     expect(test.retrieve_process_status).to be :error
 
-
     backtest_repository.register({
       'name'          => 'テスト',
       'start_time'    => Time.new(2015, 6, 20, 0,  0, 0),
@@ -177,7 +176,6 @@ describe Jiji::Model::Trading::BackTest do
 
     sleep 0.2 until test.process.finished?
     expect(test.retrieve_process_status).to be :error
-
 
     backtest_repository.register({
       'name'          => 'テスト',

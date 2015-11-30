@@ -12,7 +12,7 @@
 .card.mini-chart .header .icon{margin:0 8px 8px 0;font-size:24px;color:#999;vertical-align:inherit}
 .card.mini-chart .header .pair-selector{margin:0 1pc 0 0}
 .card.mini-chart .header .setting-menu{margin-top:8px}
-.card.mini-chart .chart{position:relative;background-color:#f1f1f1;border-left:1px solid #FFF;border-right:1px solid #FFF;padding:1pc;margin-bottom:1pc;overflow:hidden}
+.card.mini-chart .chart{position:relative;background-color:#f1f1f1;border-left:1px solid #FFF;border-right:1px solid #FFF;padding:1pc;margin-bottom:8px;overflow:hidden}
 .rate-view{border-left:4px solid #CCC;padding-left:8px;margin-bottom:8px;color:#999;font-size:1pc}
 .chart-view .chart,.left-navi{border-left:1px solid #FFF;border-right:1px solid #FFF}
 .rate-view .time{margin-bottom:4px}
@@ -31,24 +31,24 @@
 .left-navi .mui-subheader{color:#999;font-size:14px;padding-left:1pc;padding-right:1pc;line-height:46px;height:auto}
 .error{font-size:9pt;color:#f03950;border-bottom:2px solid #f03950;padding:4px;margin:8px 0}
 .agent-setting-editor-menu,.agent-source-list-menu{border-bottom:1px solid #d3d3d3}
-.account-view{padding:1pc}
-.account-view .panel.balance{float:left}
-.account-view .panel.performance{width:33%;float:right;padding-left:1pc;border-left:1px solid #d3d3d3}
-.account-view .panel.performance .item{margin-top:8px}
-.account-view .panel.performance .item.first{margin-top:0}
-.account-view .panel.performance .item.first .value{font-size:24px}
-.account-view .panel.performance .item.first .label,.account-view .panel.performance .item.first .value{line-height:24px;vertical-align:bottom}
-.account-view .panel.balance .changes-from-previous-day *,.account-view .title *{vertical-align:middle}
-.account-view .panel.performance .label{color:#999;font-size:1pc;line-height:1pc}
-.account-view .panel.performance .icon{line-height:1pc}
-.account-view .panel.performance .value{color:#666;font-size:18px;float:right;line-height:1pc}
-.account-view .title{color:#999;font-size:24px;margin-bottom:1pc}
-.account-view .title .icon{margin-right:8px}
-.account-view .panel.balance .balance,.account-view .panel.balance .changes-from-previous-day{text-align:right}
-.account-view .panel.balance .balance{padding-top:8px;color:#666;font-size:2pc;line-height:2pc}
-.account-view .panel.balance .changes-from-previous-day{margin-top:1pc;color:#999;font-size:1pc;line-height:1pc}
-.account-view .panel.balance .changes-from-previous-day .label,.account-view .panel.balance .changes-from-previous-day .price{padding-right:8px}
-.account-view .panel.balance .changes-from-previous-day .icon{margin-left:8px}
+.card.account-view{padding:1pc}
+.card.account-view .panel.balance{float:left}
+.card.account-view .panel.performance{width:33%;float:right;padding-left:1pc;border-left:1px solid #d3d3d3}
+.card.account-view .panel.performance .item{margin-top:8px}
+.card.account-view .panel.performance .item.first{margin-top:0}
+.card.account-view .panel.performance .item.first .value{font-size:24px}
+.card.account-view .panel.performance .item.first .label,.card.account-view .panel.performance .item.first .value{line-height:24px;vertical-align:bottom}
+.card.account-view .panel.balance .changes-from-previous-day *,.card.account-view .title *{vertical-align:middle}
+.card.account-view .panel.performance .label{color:#999;font-size:1pc;line-height:1pc}
+.card.account-view .panel.performance .icon{line-height:1pc}
+.card.account-view .panel.performance .value{color:#666;font-size:18px;float:right;line-height:1pc}
+.card.account-view .title{color:#999;font-size:24px;margin-bottom:1pc}
+.card.account-view .title .icon{margin-right:8px}
+.card.account-view .panel.balance .balance,.card.account-view .panel.balance .changes-from-previous-day{text-align:right}
+.card.account-view .panel.balance .balance{padding-top:8px;color:#666;font-size:2pc;line-height:2pc}
+.card.account-view .panel.balance .changes-from-previous-day{margin-top:1pc;color:#999;font-size:1pc;line-height:1pc}
+.card.account-view .panel.balance .changes-from-previous-day .label,.card.account-view .panel.balance .changes-from-previous-day .price{padding-right:8px}
+.card.account-view .panel.balance .changes-from-previous-day .icon{margin-left:8px}
 .agent-setting-editor .parent{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:flex-start;-ms-flex-align:start;align-items:flex-start}
 .agent-setting-editor .parent .agent-list{width:25pc}
 .agent-setting-editor .parent .agent-property-editor{-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1}
@@ -206,8 +206,8 @@
 .rmt-agent-setting-page .main-card .top-button .saved-label{color:#00bfa5;margin-left:1pc;font-size:14px}
 .agents-page .main-card>div{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch}
 .agents-page .main-card .agent-list-panel{width:360px;border-right:1px solid #d3d3d3}
-.agents-page .main-card .agent-list-panel .agent-source-list>div,.trading-summary-view .charts{border-left:1px solid #FFF;border-right:1px solid #FFF}
 .agents-page .main-card .agent-list-panel .agent-source-list{margin-top:8px}
+.agents-page .main-card .agent-list-panel .agent-source-list>div{border-right:1px solid #FFF;border-left:1px solid #FFF}
 .agents-page .main-card .agent-editor-panel{-webkit-flex:1;-ms-flex:1;flex:1;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch;min-height:700px}
 .settings-page .main-card{padding:2pc}
 .settings-page .item{margin-bottom:5pc}
@@ -229,6 +229,19 @@
 .initial-settings-page .smtp-server-setting-view .buttons .button.next,.initial-settings-page .smtp-server-setting-view .buttons .button.test-mail{width:220px}
 .initial-settings-page .smtp-server-setting-view .buttons .button.skip{width:150px}
 .initial-settings-page .smtp-server-setting-view .buttons .button:nth-child(1){margin-left:0}
+.initial-settings-page .setting-finished-view .push{margin:1pc 0;padding:1pc;background-color:#f1f1f1}
+.initial-settings-page .setting-finished-view .push h2{font-size:18px;color:#00bfa5;margin:0}
+.initial-settings-page .setting-finished-view .push .boxes{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch}
+.initial-settings-page .setting-finished-view .push .box{width:48%;-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1}
+.initial-settings-page .setting-finished-view .push .box h3{font-size:18px;font-weight:700;text-decoration:none;border:0;margin:1pc 0}
+.initial-settings-page .setting-finished-view .push .box div{font-size:14px;color:#666;margin-top:8px}
+.initial-settings-page .setting-finished-view .push .box img{background-color:#FFF;border:1px solid silver}
+.initial-settings-page .setting-finished-view .push .box:nth-child(1){margin-right:2%}
+.initial-settings-page .setting-finished-view .push .text{margin-top:2pc;font-size:1pc;color:#666}
+.initial-settings-page .setting-finished-view .push .text b{color:#00bfa5;font-weight:700}
+.initial-settings-page .setting-finished-view .push .android_badge{margin-top:2pc}
+.initial-settings-page .setting-finished-view .push .android_badge img{border:0;padding:0;width:250px}
+.initial-settings-page .setting-finished-view .push .android_badge .info{color:#999}
 .setting h3{color:#666;font-size:1pc;padding-bottom:4px;border-bottom:1px solid silver;margin:0;font-weight:400}
 .setting .setting-body{margin-left:1pc}
 .setting .setting-body .mail-address,.setting .setting-body .passwords{width:600px}
@@ -248,10 +261,9 @@
 .trading-summary-view{padding-bottom:24px}
 .trading-summary-view .content .summaries{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch;margin:2pc 24px 24px}
 .trading-summary-view .content .summaries .summary-item{-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;width:25%}
-.trading-summary-view .charts{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch;padding:24px;margin-bottom:24px;background-color:rgba(128,128,128,.11)}
-.root,.trading-summary-view .data{display:-webkit-flex;display:-ms-flexbox}
+.trading-summary-view .charts{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch;padding:24px;margin-bottom:24px;background-color:rgba(128,128,128,.11);border-left:1px solid #FFF;border-right:1px solid #FFF}
 .trading-summary-view .charts .circle-graph{-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;width:33%}
-.trading-summary-view .data{display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;margin:24px 24px 0}
+.trading-summary-view .data{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;margin:24px 24px 0}
 .trading-summary-view .data .item{-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;width:50%}
 .trading-summary-view .selector-bar{padding:8px 8px 0 0;text-align:right}
 .trading-summary-view .selector-bar .label{color:#999;height:3pc;display:inline-block}
@@ -281,7 +293,7 @@
 .card,.main-card{overflow:visible!important}
 .trading-summary-view .data .item .details .item .value{color:#666;font-size:18px;text-align:right;padding-left:2pc;padding-right:8px}
 .card .header .icon,.card .header .title{font-size:24px;color:#999;vertical-align:middle}
-.card{margin-bottom:1pc}
+.card{margin-bottom:1pc;padding-bottom:8px}
 .card .header{padding:8px 8px 8px 1pc}
 .card .header .title{display:inline-block;margin:8px 0}
 .card .header .icon{margin:8px 8px 8px 0}
@@ -305,6 +317,7 @@
 .price-view .icon{margin-left:.2em}
 .darken{overflow:hidden;position:relative}
 .darken::before{content:"";width:100%;height:100%;position:absolute;pointer-events:none;opacity:0;background:#bbb}
+.icon,.topbar{background-repeat:no-repeat}
 .darken.on::before{-webkit-animation:darken .5s ease-out;animation:darken .5s ease-out}
 @-webkit-keyframes darken{from{opacity:.9}
 to{opacity:0}
@@ -312,7 +325,7 @@ to{opacity:0}
 @keyframes darken{from{opacity:.9}
 to{opacity:0}
 }
-.icon{display:inline-block;overflow:hidden;background-repeat:no-repeat}
+.icon{display:inline-block;overflow:hidden}
 .icon.trend{width:17px;height:1pc;background-image:url(../images/trends.png);background-position:30px 30px}
 .icon.trend.up{background-position:0 -33px}
 .icon.trend.down{background-position:-17px -33px}
@@ -325,10 +338,11 @@ to{opacity:0}
 body{margin:0;background-color:rgba(128,128,128,.22)}
 .up{color:#00bfa5}
 .down{color:#f03950}
-a{color:#313d7a}
+a{text-decoration:underline;cursor:pointer;color:#313d7a}
 a:visited{color:#761d7a}
-.root{min-height:100vh;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column}
-.topbar{width:100%;height:75pt;background-color:#2A5252;box-shadow:0 1px 6px rgba(0,0,0,.12),0 1px 4px rgba(0,0,0,.24)}
+.root{min-height:100vh;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column}
+.topbar{width:100%;height:5pc;background-position:-1pc 0;background-image:url(../images/logo.png);background-color:#2a5252;box-shadow:0 1px 6px rgba(0,0,0,.12),0 1px 4px rgba(0,0,0,.24)}
+.topbar .buttons{float:right;display:inline-block;margin:1pc}
 .container{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch}
 .content{-webkit-flex:1;-ms-flex:1;flex:1}
 .left-navi{width:3in}

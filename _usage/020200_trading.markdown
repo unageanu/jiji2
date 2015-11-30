@@ -103,7 +103,7 @@ broker.buy(:EURUSD, 10000, :marketIfTouched, {
 {% highlight ruby %}
 orders = broker.orders # Orderの配列が返されます。
 orders.length
-orders.find { |o| o.sell_or_buy == :sell } #売り注文の一覧を取得
+orders.select { |o| o.sell_or_buy == :sell } #売り注文の一覧を取得
 {% endhighlight %}
 
 
@@ -150,7 +150,7 @@ order.cancel
 {% highlight ruby %}
 positions = broker.positions # Positions オブジェクトが返されます
 positions.length
-positions..find { |o| o.sell_or_buy == :sell } #売建玉の一覧を取得
+positions.select { |p| p.sell_or_buy == :sell } #売建玉の一覧を取得
 {% endhighlight %}
 
 建玉オブジェクトからは、購入レートや現在の損益が取得できます。
@@ -194,7 +194,7 @@ position.closing_policy.trailing_amount # トレーリングストップ数量
 建玉を決済するには、`Broker#close_position(position)` または、 `Position#close` を実行します。
 
 {% highlight ruby %}
-position = broker.positions.find { |p| p.sell_or_buy == :sell }[0]
+position = broker.positions.select { |p| p.sell_or_buy == :sell }[0]
 
 # 建玉を決済
 broker.close_position(position)
@@ -208,7 +208,7 @@ position.close
 `Broker#modify_position(position)` または、 `Position#modify` で、建玉の決済条件を変更することができます。
 
 {% highlight ruby %}
-position = broker.positions.find { |p| p.sell_or_buy == :sell }[0]
+position = broker.positions.select { |p| p.sell_or_buy == :sell }[0]
 
 # 決済条件を変更
 position.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({

@@ -12,9 +12,10 @@ nav_class_name: "lv2"
 
 {% highlight ruby %}
 
-require 'jiji/model/agents/agent'
-
-# 移動平均を使うエージェント
+# ===移動平均を使うエージェントのサンプル
+# 添付ライブラリ Signals::MovingAverage を利用して移動平均を算出し、
+# デッドクロスで売、ゴールデンクロスで買注文を行います。
+# また、算出した移動平均値をグラフに出力します。
 class MovingAverageAgent
 
   include Jiji::Model::Agents::Agent
@@ -24,11 +25,10 @@ class MovingAverageAgent
 移動平均を使うエージェントです。
  -ゴールデンクロスで買い&売り建て玉をコミット。
  -デッドクロスで売り&買い建て玉をコミット。
- - -1000でトレーリングストップ
       STR
   end
 
-  # UIから設定可能なプロパティの一覧を返す。
+  # UIから設定可能なプロパティの一覧
   def self.property_infos
     [
       Property.new('short', '短期移動平均線', 25),
@@ -47,7 +47,7 @@ class MovingAverageAgent
 
     # 移動平均グラフ
     @graph = graph_factory.create('移動平均線',
-      :rate, :average, '#779999', '#557777')
+      :rate, :average, ['#779999', '#557777'])
   end
 
   # 次のレートを受け取る
@@ -84,6 +84,20 @@ class MovingAverageAgent
     @broker.positions.each do|p|
       p.close if p.sell_or_buy == sell_or_buy
     end
+  end
+
+  # エージェントの状態を返却
+  def state
+    {
+      mvs: @mvs.map { |mv| mv.state }
+    }
+  end
+
+  # 永続化された状態から元の状態を復元する
+  def restore_state(state)
+    return unless state[:mvs]
+    @mvs[0].restore_state(state[:mvs][0])
+    @mvs[1].restore_state(state[:mvs][1])
   end
 
 end

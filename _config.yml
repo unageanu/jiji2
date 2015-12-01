@@ -12,7 +12,7 @@ description: > # this means to ignore newlines until "baseurl:"
   自分だけの取引アルゴリズムで、誰でも、いますぐ、かんたんにFX自動取引を開始。
   「Jiji」は、無料で使えるFXシステムトレードフレームワークです。
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://jiji2.unageanu.com" # the base hostname & protocol for your site
+url: "http://jiji2.unageanu.net" # the base hostname & protocol for your site
 
 
 # Build settings

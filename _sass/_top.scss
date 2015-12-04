@@ -9,9 +9,9 @@
     background-color: $primary-color;
     padding-top: $grid*13;
 
-    background-image: url(/images/top/top-image.png);
+    background-image: url(/images/top/top-image.jpg);
     background-repeat: no-repeat;
-    background-position: calc( (100% - 1080px)/2 + 1080px );
+    background-position: calc( (100% - 1080px)/2 + 580px ) -290px;
 
     h1 {
       font-size: 28px;

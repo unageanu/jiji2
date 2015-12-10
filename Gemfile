@@ -19,7 +19,8 @@ gem 'puma',      '2.11.1'
 
 gem 'mongoid',   '5.0.0'
 
-gem 'oanda_api',         '0.9.0'
+gem 'oanda_api',           '0.9.0'
+gem 'persistent_http',     '2.0.1'
 
 gem 'mail',    '2.6.3'
 gem 'aws-sdk', '2.0.37'

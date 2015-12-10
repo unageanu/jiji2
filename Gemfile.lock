@@ -65,11 +65,11 @@ GEM
     origin (2.1.1)
     parser (2.2.3.0)
       ast (>= 1.1, < 3.0)
-    persistent_http (1.0.6)
+    persistent_http (2.0.1)
       gene_pool (>= 1.3)
-    persistent_httparty (0.1.2)
+    persistent_httparty (0.1.1)
       httparty (~> 0.9)
-      persistent_http (< 2)
+      persistent_http
     powerpack (0.1.1)
     puma (2.11.1)
       rack (>= 1.1, < 2.0)
@@ -133,6 +133,7 @@ DEPENDENCIES
   msgpack (= 0.5.9)
   newrelic_rpm (= 3.9.9.275)
   oanda_api (= 0.9.0)
+  persistent_http (= 2.0.1)
   puma (= 2.11.1)
   rack (= 1.5.2)
   rake

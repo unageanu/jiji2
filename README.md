@@ -11,11 +11,8 @@
 
 # ライセンス
 
-<b>非商用での利用に限り</b>、自由に改変/再配布が可能です。(MITライセンス)
-
-
 ---
-Copyright (c) 2015 unageanu <masaya.yamauchi>
+Copyright (c) unageanu <masaya.yamauchi>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

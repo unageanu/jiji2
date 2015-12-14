@@ -83,6 +83,12 @@ shared_examples '停止と再開ができる' do
     prev_state = state
 
     restart
+
+    state = retrieve_state
+    expect(state[:a]).to be >= prev_state[:a]
+    expect(state[:b]).to be >= 75
+    expect(state[:b]).to be < prev_state[:b]
+
     sleep long_sleep_time
 
     account = retrieve_account
@@ -93,7 +99,6 @@ shared_examples '停止と再開ができる' do
     state = retrieve_state
     expect(state[:a]).to be > prev_state[:a]
     expect(state[:b]).to be > 75
-    expect(state[:b]).to be < prev_state[:b]
     prev_state = state
 
     sleep short_sleep_time
@@ -110,6 +115,12 @@ shared_examples '停止と再開ができる' do
     prev_state = state
 
     restart
+
+    state = retrieve_state
+    expect(state[:a]).to be >= prev_state[:a]
+    expect(state[:b]).to be >= 75
+    expect(state[:b]).to be < prev_state[:b]
+
     sleep long_sleep_time
 
     account = retrieve_account
@@ -120,7 +131,6 @@ shared_examples '停止と再開ができる' do
     state = retrieve_state
     expect(state[:a]).to be > prev_state[:a]
     expect(state[:b]).to be > 75
-    expect(state[:b]).to be < prev_state[:b]
   end
 
   def check_some_orders(prev, current)

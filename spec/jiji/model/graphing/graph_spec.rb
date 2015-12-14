@@ -31,7 +31,7 @@ describe Jiji::Model::Graphing::Graph do
     expect(rmt_graphs[1].start_time).to eq Time.new(2015, 4, 1)
     expect(rmt_graphs[1].end_time).to eq Time.new(2015, 4, 1, 0, 2, 0)
 
-    graphs = graph_repository.find(backtests[0].id).sort_by {|g| g.label}
+    graphs = graph_repository.find(backtests[0].id).sort_by { |g| g.label }
     expect(graphs.length).to be >= 1
     expect(graphs[0].label).to eq 'backtest1'
     expect(graphs[0].type).to eq :chart
@@ -41,7 +41,7 @@ describe Jiji::Model::Graphing::Graph do
     expect(graphs[0].start_time).to eq Time.new(2015, 4, 1)
     expect(graphs[0].end_time).to eq Time.new(2015, 4, 1, 0, 2, 0)
 
-    graphs = graph_repository.find(backtests[1].id).sort_by {|g| g.label}
+    graphs = graph_repository.find(backtests[1].id).sort_by { |g| g.label }
     expect(graphs.length).to be >= 1
     expect(graphs[0].label).to eq 'backtest2'
     expect(graphs[0].type).to eq :zero_base

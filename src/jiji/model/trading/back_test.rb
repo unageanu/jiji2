@@ -224,7 +224,7 @@ module Jiji::Model::Trading
     end
 
     def create_process(trading_context)
-      Process.new(trading_context, backtest_thread_pool, true)
+      Process.new(trading_context, backtest_thread_pool, true, -10)
     end
 
     def restore_order

@@ -99,7 +99,6 @@ module Jiji::Model::Trading::Jobs
       return unless context.alive?
       if context.broker.next?
         queue << self
-        sleep 0.01
       else
         context.request_finish
       end

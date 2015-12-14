@@ -23,7 +23,7 @@ describe 'バックテストの停止と再開のテスト' do
     @target = @backtest_repository.register({
       'name'          => 'テスト',
       'start_time'    => Time.new(2015, 6, 20, 0,  0, 0),
-      'end_time'      => Time.new(2015, 6, 20, 1,  0, 0),
+      'end_time'      => Time.new(2015, 6, 20, 6,  0, 0),
       'memo'          => 'メモ',
       'balance'       => 100_000,
       'pair_names'    => [:USDJPY, :EURJPY],

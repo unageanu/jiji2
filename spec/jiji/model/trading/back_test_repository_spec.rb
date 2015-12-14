@@ -133,7 +133,7 @@ describe Jiji::Model::Trading::BackTestRepository do
         @repository.register({
           'name'          => "テスト#{i}",
           'start_time'    => Time.at(100),
-          'end_time'      => Time.at(2000),
+          'end_time'      => Time.at(5000),
           'memo'          => 'メモ',
           'pair_names'    => [:EURJPY, :EURUSD],
           'balance'       => 100_000,
@@ -157,7 +157,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト0'
       expect(test.created_at).to eq Time.at(0)
       expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
+      expect(test.end_time).to eq Time.at(5000)
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
@@ -180,7 +180,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト1'
       expect(test.created_at).to eq Time.at(1)
       expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
+      expect(test.end_time).to eq Time.at(5000)
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
@@ -202,7 +202,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト2'
       expect(test.created_at).to eq Time.at(2)
       expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
+      expect(test.end_time).to eq Time.at(5000)
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
@@ -234,7 +234,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト0'
       expect(test.created_at).to eq Time.at(0)
       expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
+      expect(test.end_time).to eq Time.at(5000)
       expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
       expect(test.cancelled_state[:balance]).not_to be nil
       expect(test.cancelled_state[:orders]).to eq []
@@ -259,7 +259,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト1'
       expect(test.created_at).to eq Time.at(1)
       expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
+      expect(test.end_time).to eq Time.at(5000)
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
@@ -281,7 +281,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト2'
       expect(test.created_at).to eq Time.at(2)
       expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
+      expect(test.end_time).to eq Time.at(5000)
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
@@ -317,7 +317,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト0'
       expect(test.created_at).to eq Time.at(0)
       expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
+      expect(test.end_time).to eq Time.at(5000)
       expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
       expect(test.cancelled_state[:balance]).not_to be nil
       expect(test.cancelled_state[:orders]).to eq []
@@ -341,7 +341,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト1'
       expect(test.created_at).to eq Time.at(1)
       expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
+      expect(test.end_time).to eq Time.at(5000)
       expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
       expect(test.cancelled_state[:balance]).not_to be nil
       expect(test.cancelled_state[:orders]).to eq []
@@ -366,7 +366,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト2'
       expect(test.created_at).to eq Time.at(2)
       expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
+      expect(test.end_time).to eq Time.at(5000)
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
@@ -402,7 +402,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト0'
       expect(test.created_at).to eq Time.at(0)
       expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
+      expect(test.end_time).to eq Time.at(5000)
       expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
       expect(test.cancelled_state[:balance]).not_to be nil
       expect(test.cancelled_state[:orders]).to eq []
@@ -426,7 +426,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト1'
       expect(test.created_at).to eq Time.at(1)
       expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
+      expect(test.end_time).to eq Time.at(5000)
       expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
       expect(test.cancelled_state[:balance]).not_to be nil
       expect(test.cancelled_state[:orders]).to eq []
@@ -450,7 +450,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.name).to eq 'テスト2'
       expect(test.created_at).to eq Time.at(2)
       expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(2000)
+      expect(test.end_time).to eq Time.at(5000)
       expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
       expect(test.cancelled_state[:balance]).not_to be nil
       expect(test.cancelled_state[:orders]).to eq []

@@ -7,16 +7,19 @@ module Jiji::Model::Trading
 
     attr_reader :job_queue
 
-    def initialize(trading_context, pool, fail_on_error = false)
+    def initialize(trading_context, pool, fail_on_error = false, priority = 0)
       @trading_context = trading_context
       @pool            = pool
       @fail_on_error   = fail_on_error
+      @priority        = priority
       @job_queue       = Queue.new
     end
 
     def start(initial_job = [])
       initial_job.each { |j| @job_queue << j }
-      @task = @pool.process(@trading_context, @job_queue) do |context, queue|
+      @task = @pool.process(@trading_context,
+        @job_queue, @priority) do |context, queue, priority|
+        Thread.current.priority = priority
         run(context, queue)
       end
     end

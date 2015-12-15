@@ -41,8 +41,8 @@ module Jiji::Model::Trading::Internal
       }
     end
 
-    def create_graph_factory(backtest = nil)
-      Jiji::Model::Graphing::GraphFactory.new(backtest)
+    def create_graph_factory(backtest = nil, saving_interval = 60)
+      Jiji::Model::Graphing::GraphFactory.new(backtest, saving_interval)
     end
   end
 end

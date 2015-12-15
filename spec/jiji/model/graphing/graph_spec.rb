@@ -156,6 +156,7 @@ describe Jiji::Model::Graphing::Graph do
   it '永続化データから作成されたGraphにもデータを追加できる' do
     graph = Jiji::Model::Graphing::Graph.get_or_create(
       'test1', :chart, ['#444', '#666', '#999'], [])
+    graph.setup_data_savers(60)
 
     graph << [10, 11, 12]
     time = Time.new(2015, 4, 1, 0, 3, 0)

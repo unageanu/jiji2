@@ -74,8 +74,6 @@ module Jiji::Model::Graphing
     def save_data(time) #:nodoc:
       return unless @current_values
 
-      setup_data_savers unless @savers
-
       @savers.each do |saver|
         saver.save_data_if_required(@current_values, time)
       end
@@ -105,13 +103,13 @@ module Jiji::Model::Graphing
       }
     end
 
-    private
-
-    def setup_data_savers
+    def setup_data_savers(saving_interval)
       @savers = Jiji::Model::Trading::Intervals.instance.all.map do |i|
-        Internal::GraphDataSaver.new(self, i)
+        Internal::GraphDataSaver.new(self, i, saving_interval)
       end
     end
+    
+    private
 
     def update_time(now)
       self.start_time = now unless start_time

@@ -204,7 +204,7 @@ module Jiji::Model::Trading
 
     def create_components
       @logger          = logger_factory.create(self)
-      @graph_factory   = create_graph_factory(self)
+      @graph_factory   = create_graph_factory(self, -1)
       @broker          = create_broker
       @agents          = create_agents(self, true)
       trading_context  = create_trading_context(

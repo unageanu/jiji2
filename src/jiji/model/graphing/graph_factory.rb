@@ -3,8 +3,9 @@
 module Jiji::Model::Graphing
   class GraphFactory
 
-    def initialize(backtest = nil) #:nodoc:
+    def initialize(backtest = nil, saving_interval=60) #:nodoc:
       @backtest = backtest
+      @saving_interval = saving_interval
       @graphs = {}
     end
 
@@ -25,6 +26,7 @@ module Jiji::Model::Graphing
 
       graph = Graph.get_or_create(label,
         type, colors, axises, aggregation_type, @backtest)
+      graph.setup_data_savers(@saving_interval)
       @graphs[label] = graph
       graph
     end

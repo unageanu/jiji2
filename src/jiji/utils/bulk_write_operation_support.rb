@@ -46,6 +46,7 @@ module Jiji::Utils
 
     def collect_changed_values
       changes.each_with_object({}) do |change, r|
+        next if change[0] == '_id'
         r[change[0].to_sym] = change[1][1]
       end
     end
@@ -84,7 +85,7 @@ module Jiji::Utils
         client = model_class.mongo_client[model_class.collection_name]
         operations = create_operations(@targets[model_class].values)
         client.bulk_write(operations) unless operations.empty?
-
+        
         @targets.delete model_class
       end
 

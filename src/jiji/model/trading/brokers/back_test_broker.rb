@@ -46,12 +46,12 @@ module Jiji::Model::Trading::Brokers
     def create_securities_configuration(
       backtest, start_time, end_time, pairs, orders, positions)
       {
-        start_time:  start_time,
-        end_time:    end_time,
-        backtest:    backtest,
-        pairs:       pairs,
-        orders:      orders,
-        positions:   positions
+        start_time: start_time,
+        end_time:   end_time,
+        backtest:   backtest,
+        pairs:      pairs,
+        orders:     orders,
+        positions:  positions
       }
     end
 

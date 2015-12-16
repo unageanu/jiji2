@@ -51,6 +51,7 @@ module Jiji::Utils
     end
 
     class Transaction
+
       def initialize
         @targets = {}
       end
@@ -67,7 +68,7 @@ module Jiji::Utils
       end
 
       def size
-        @targets.values.reduce(0) {|r, v| r + v.length }
+        @targets.values.reduce(0) {|a, e| a + e.length }
       end
 
       private

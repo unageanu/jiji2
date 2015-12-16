@@ -6,6 +6,8 @@ require 'thread'
 module Jiji::Model::Trading::Jobs
   class NotifyNextTickJob
 
+    include Jiji::Utils
+
     def initialize
       @counter = 0
     end
@@ -67,6 +69,13 @@ module Jiji::Model::Trading::Jobs
       @sec        = @end_time.to_i - @start_time.to_i
     end
 
+    def exec(trading_context, queue)
+      start_transaction
+      super
+    ensure
+      refresh_transaction
+    end
+
     def before_do_next(trading_context, queue)
       fail 'no agent.' if trading_context.agents.values.empty?
       super
@@ -84,6 +93,21 @@ module Jiji::Model::Trading::Jobs
 
     private
 
+    def start_transaction
+      return if BulkWriteOperationSupport.in_transaction?
+      BulkWriteOperationSupport.begin_transaction
+    end
+
+    def refresh_transaction
+      return unless BulkWriteOperationSupport.in_transaction?
+      return if BulkWriteOperationSupport.transaction.size < 500
+      BulkWriteOperationSupport.end_transaction
+    end
+
+    def end_transaction
+      BulkWriteOperationSupport.end_transaction
+    end
+
     def update_progress(context, timestamp)
       context[:current_time] = timestamp
       context[:progress] = calculate_progress(timestamp)
@@ -96,10 +120,11 @@ module Jiji::Model::Trading::Jobs
     end
 
     def push_next_job_if_required(context, queue)
-      return unless context.alive?
+      return end_transaction unless context.alive?
       if context.broker.next?
         queue << self
       else
+        end_transaction
         context.request_finish
       end
     end

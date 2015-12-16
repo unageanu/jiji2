@@ -6,6 +6,10 @@ require 'jiji/test/test_configuration'
 describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
   include_context 'use data_builder'
 
+  after(:example) do
+    Jiji::Utils::BulkWriteOperationSupport.end_transaction
+  end
+
   describe Jiji::Model::Trading::Jobs::NotifyNextTickJobForRMT do
     it 'exec で次のtickの処理が行われる' do
       job = Jiji::Model::Trading::Jobs::NotifyNextTickJobForRMT.new

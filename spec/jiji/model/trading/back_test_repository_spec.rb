@@ -132,8 +132,8 @@ describe Jiji::Model::Trading::BackTestRepository do
 
         @repository.register({
           'name'          => "テスト#{i}",
-          'start_time'    => Time.at(100),
-          'end_time'      => Time.at(5000),
+          'start_time'    => Time.new(2015, 12, 8),
+          'end_time'      => Time.new(2015, 12, 10),
           'memo'          => 'メモ',
           'pair_names'    => [:EURJPY, :EURUSD],
           'balance'       => 100_000,
@@ -152,12 +152,12 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(@repository.all.length).to be 3
       test = @repository.all[0]
 
-      sleep 0.5
+      sleep 0.2
 
       expect(test.name).to eq 'テスト0'
       expect(test.created_at).to eq Time.at(0)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(5000)
+      expect(test.start_time).to eq Time.new(2015, 12, 8)
+      expect(test.end_time).to eq Time.new(2015, 12, 10)
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
@@ -173,14 +173,14 @@ describe Jiji::Model::Trading::BackTestRepository do
       status = test.retrieve_status_from_context
       expect(status[:status]).to eq :running
       expect(status[:progress]).to be > 0
-      expect(status[:current_time]).to be > Time.at(100)
+      expect(status[:current_time]).to be > Time.new(2015, 12, 8)
       prev_status = status
 
       test = @repository.all[1]
       expect(test.name).to eq 'テスト1'
       expect(test.created_at).to eq Time.at(1)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(5000)
+      expect(test.start_time).to eq Time.new(2015, 12, 8)
+      expect(test.end_time).to eq Time.new(2015, 12, 10)
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
@@ -201,8 +201,8 @@ describe Jiji::Model::Trading::BackTestRepository do
       test = @repository.all[2]
       expect(test.name).to eq 'テスト2'
       expect(test.created_at).to eq Time.at(2)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(5000)
+      expect(test.start_time).to eq Time.new(2015, 12, 8)
+      expect(test.end_time).to eq Time.new(2015, 12, 10)
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
@@ -233,9 +233,10 @@ describe Jiji::Model::Trading::BackTestRepository do
       test = @repository.all[0]
       expect(test.name).to eq 'テスト0'
       expect(test.created_at).to eq Time.at(0)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(5000)
-      expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
+      expect(test.start_time).to eq Time.new(2015, 12, 8)
+      expect(test.end_time).to eq Time.new(2015, 12, 10)
+      expect(test.cancelled_state[:cancelled_time]) \
+        .to be > Time.new(2015, 12, 8)
       expect(test.cancelled_state[:balance]).not_to be nil
       expect(test.cancelled_state[:orders]).to eq []
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -258,8 +259,8 @@ describe Jiji::Model::Trading::BackTestRepository do
       test = @repository.all[1]
       expect(test.name).to eq 'テスト1'
       expect(test.created_at).to eq Time.at(1)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(5000)
+      expect(test.start_time).to eq Time.new(2015, 12, 8)
+      expect(test.end_time).to eq Time.new(2015, 12, 10)
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
@@ -280,8 +281,8 @@ describe Jiji::Model::Trading::BackTestRepository do
       test = @repository.all[2]
       expect(test.name).to eq 'テスト2'
       expect(test.created_at).to eq Time.at(2)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(5000)
+      expect(test.start_time).to eq Time.new(2015, 12, 8)
+      expect(test.end_time).to eq Time.new(2015, 12, 10)
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
@@ -316,9 +317,10 @@ describe Jiji::Model::Trading::BackTestRepository do
       test = @repository.all[0]
       expect(test.name).to eq 'テスト0'
       expect(test.created_at).to eq Time.at(0)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(5000)
-      expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
+      expect(test.start_time).to eq Time.new(2015, 12, 8)
+      expect(test.end_time).to eq Time.new(2015, 12, 10)
+      expect(test.cancelled_state[:cancelled_time]) \
+        .to be > Time.new(2015, 12, 8)
       expect(test.cancelled_state[:balance]).not_to be nil
       expect(test.cancelled_state[:orders]).to eq []
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -340,9 +342,10 @@ describe Jiji::Model::Trading::BackTestRepository do
       test = @repository.all[1]
       expect(test.name).to eq 'テスト1'
       expect(test.created_at).to eq Time.at(1)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(5000)
-      expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
+      expect(test.start_time).to eq Time.new(2015, 12, 8)
+      expect(test.end_time).to eq Time.new(2015, 12, 10)
+      expect(test.cancelled_state[:cancelled_time]) \
+        .to be > Time.new(2015, 12, 8)
       expect(test.cancelled_state[:balance]).not_to be nil
       expect(test.cancelled_state[:orders]).to eq []
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -359,14 +362,14 @@ describe Jiji::Model::Trading::BackTestRepository do
       status = test.retrieve_status_from_context
       expect(status[:status]).to eq :running
       expect(status[:progress]).to be > 0
-      expect(status[:current_time]).to be > Time.at(100)
+      expect(status[:current_time]).to be > Time.new(2015, 12, 8)
       prev_status = status
 
       test = @repository.all[2]
       expect(test.name).to eq 'テスト2'
       expect(test.created_at).to eq Time.at(2)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(5000)
+      expect(test.start_time).to eq Time.new(2015, 12, 8)
+      expect(test.end_time).to eq Time.new(2015, 12, 10)
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
@@ -401,9 +404,10 @@ describe Jiji::Model::Trading::BackTestRepository do
       test = @repository.all[0]
       expect(test.name).to eq 'テスト0'
       expect(test.created_at).to eq Time.at(0)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(5000)
-      expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
+      expect(test.start_time).to eq Time.new(2015, 12, 8)
+      expect(test.end_time).to eq Time.new(2015, 12, 10)
+      expect(test.cancelled_state[:cancelled_time]) \
+        .to be > Time.new(2015, 12, 8)
       expect(test.cancelled_state[:balance]).not_to be nil
       expect(test.cancelled_state[:orders]).to eq []
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -425,9 +429,10 @@ describe Jiji::Model::Trading::BackTestRepository do
       test = @repository.all[1]
       expect(test.name).to eq 'テスト1'
       expect(test.created_at).to eq Time.at(1)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(5000)
-      expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
+      expect(test.start_time).to eq Time.new(2015, 12, 8)
+      expect(test.end_time).to eq Time.new(2015, 12, 10)
+      expect(test.cancelled_state[:cancelled_time]) \
+        .to be > Time.new(2015, 12, 8)
       expect(test.cancelled_state[:balance]).not_to be nil
       expect(test.cancelled_state[:orders]).to eq []
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -449,9 +454,10 @@ describe Jiji::Model::Trading::BackTestRepository do
       test = @repository.all[2]
       expect(test.name).to eq 'テスト2'
       expect(test.created_at).to eq Time.at(2)
-      expect(test.start_time).to eq Time.at(100)
-      expect(test.end_time).to eq Time.at(5000)
-      expect(test.cancelled_state[:cancelled_time]).to be > Time.at(100)
+      expect(test.start_time).to eq Time.new(2015, 12, 8)
+      expect(test.end_time).to eq Time.new(2015, 12, 10)
+      expect(test.cancelled_state[:cancelled_time]) \
+        .to be > Time.new(2015, 12, 8)
       expect(test.cancelled_state[:balance]).not_to be nil
       expect(test.cancelled_state[:orders]).to eq []
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
@@ -468,7 +474,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       status = test.retrieve_status_from_context
       expect(status[:status]).to eq :running
       expect(status[:progress]).to be > 0
-      expect(status[:current_time]).to be > Time.at(100)
+      expect(status[:current_time]).to be > Time.new(2015, 12, 8)
     end
 
     it 'テストで利用しているエージェントが削除されていた場合も、正しく起動できる' do

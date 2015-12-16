@@ -3,11 +3,13 @@
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
 require 'jiji/web/transport/transportable'
+require 'jiji/utils/bulk_write_operation_support'
 
 module Jiji::Model::Graphing
   class GraphData
 
     include Mongoid::Document
+    include Jiji::Utils::BulkWriteOperationSupport
     include Jiji::Web::Transport::Transportable
 
     store_in collection: 'graph_data'

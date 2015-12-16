@@ -3,7 +3,7 @@
 module Jiji::Model::Graphing
   class GraphFactory
 
-    def initialize(backtest = nil, saving_interval=60) #:nodoc:
+    def initialize(backtest = nil, saving_interval = 60) #:nodoc:
       @backtest = backtest
       @saving_interval = saving_interval
       @graphs = {}

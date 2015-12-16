@@ -2,11 +2,13 @@
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/model/trading/back_test'
+require 'jiji/utils/bulk_write_operation_support'
 
 module Jiji::Model::Graphing
   class Graph
 
     include Mongoid::Document
+    include Jiji::Utils::BulkWriteOperationSupport
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
@@ -108,7 +110,7 @@ module Jiji::Model::Graphing
         Internal::GraphDataSaver.new(self, i, saving_interval)
       end
     end
-    
+
     private
 
     def update_time(now)

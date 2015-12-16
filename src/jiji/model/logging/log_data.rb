@@ -9,6 +9,7 @@ module Jiji::Model::Logging
   class LogData
 
     include Mongoid::Document
+    include Jiji::Utils::BulkWriteOperationSupport
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
     include Jiji::Errors

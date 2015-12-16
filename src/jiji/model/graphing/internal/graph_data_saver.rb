@@ -3,7 +3,7 @@
 module Jiji::Model::Graphing::Internal
   class GraphDataSaver
 
-    def initialize(graph, interval, saving_interval=60)
+    def initialize(graph, interval, saving_interval = 60)
       @graph                = graph
       @interval             = interval
       @aggregation_strategy = nil

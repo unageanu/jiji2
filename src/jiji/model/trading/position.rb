@@ -5,6 +5,7 @@ require 'jiji/utils/value_object'
 require 'jiji/web/transport/transportable'
 require 'jiji/errors/errors'
 require 'jiji/model/trading/internal/position_internal_functions'
+require 'jiji/utils/bulk_write_operation_support'
 
 module Jiji::Model::Trading
   # 建玉
@@ -43,6 +44,7 @@ module Jiji::Model::Trading
   class Position
 
     include Mongoid::Document
+    include Jiji::Utils::BulkWriteOperationSupport
     include Jiji::Errors
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable

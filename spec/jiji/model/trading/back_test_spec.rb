@@ -23,8 +23,8 @@ describe Jiji::Model::Trading::BackTest do
   it 'to_hでハッシュに変換できる' do
     test = @repository.register({
       'name'          => 'テスト',
-      'start_time'    => Time.at(100),
-      'end_time'      => Time.at(12_000),
+      'start_time'    => Time.new(2014, 12, 8),
+      'end_time'      => Time.new(2014, 12, 9),
       'memo'          => 'メモ',
       'pair_names'    => [:EURJPY, :EURUSD],
       'agent_setting' => [
@@ -46,8 +46,8 @@ describe Jiji::Model::Trading::BackTest do
     hash = test.to_h
     expect(hash[:name]).to eq 'テスト'
     expect(hash[:memo]).to eq 'メモ'
-    expect(hash[:start_time]).to eq Time.at(100)
-    expect(hash[:end_time]).to eq Time.at(12_000)
+    expect(hash[:start_time]).to eq Time.new(2014, 12, 8)
+    expect(hash[:end_time]).to eq Time.new(2014, 12, 9)
     expect(hash[:pair_names]).to eq [:EURJPY, :EURUSD]
     expect(hash[:balance]).to eq 0
     expect(hash[:status]).to eq :running
@@ -65,11 +65,24 @@ describe Jiji::Model::Trading::BackTest do
     hash = test.to_h
     expect(hash[:name]).to eq 'テスト'
     expect(hash[:memo]).to eq 'メモ'
-    expect(hash[:start_time]).to eq Time.at(100)
-    expect(hash[:end_time]).to eq Time.at(12_000)
+    expect(hash[:start_time]).to eq Time.new(2014, 12, 8)
+    expect(hash[:end_time]).to eq Time.new(2014, 12, 9)
     expect(hash[:pair_names]).to eq [:EURJPY, :EURUSD]
     expect(hash[:balance]).to eq 0
     expect(hash[:status]).to eq :running
+    expect(hash[:progress]).to be >= 0
+    expect(hash[:current_time]).not_to be nil
+
+    sleep 0.2 until test.process.finished?
+
+    hash = test.to_h
+    expect(hash[:name]).to eq 'テスト'
+    expect(hash[:memo]).to eq 'メモ'
+    expect(hash[:start_time]).to eq Time.new(2014, 12, 8)
+    expect(hash[:end_time]).to eq Time.new(2014, 12, 9)
+    expect(hash[:pair_names]).to eq [:EURJPY, :EURUSD]
+    expect(hash[:balance]).to eq 0
+    expect(hash[:status]).to eq :finished
     expect(hash[:progress]).to be >= 0
     expect(hash[:current_time]).not_to be nil
   end

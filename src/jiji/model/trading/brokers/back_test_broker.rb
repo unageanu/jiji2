@@ -20,9 +20,10 @@ module Jiji::Model::Trading::Brokers
 
       positions = position_repository.retrieve_living_positions(backtest.id)
       config = create_securities_configuration(
-        backtest.id, start_time, end_time, pairs, orders, positions)
+        backtest, start_time, end_time, pairs, orders, positions)
       @securities = VirtualSecurities.new(tick_repository, config)
       @backtest_id = backtest.id
+
       @position_builder = PositionBuilder.new(backtest)
 
       init_account(balance)
@@ -43,11 +44,11 @@ module Jiji::Model::Trading::Brokers
     end
 
     def create_securities_configuration(
-      backtest_id, start_time, end_time, pairs, orders, positions)
+      backtest, start_time, end_time, pairs, orders, positions)
       {
         start_time:  start_time,
         end_time:    end_time,
-        backtest_id: backtest_id,
+        backtest:    backtest,
         pairs:       pairs,
         orders:      orders,
         positions:   positions

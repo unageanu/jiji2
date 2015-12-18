@@ -16,8 +16,6 @@ url: "http://jiji2.unageanu.net" # the base hostname & protocol for your site
 
 
 # Build settings
-auto: true
-server: true
 markdown: kramdown
 
 port: 8000

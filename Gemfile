@@ -1,4 +1,5 @@
 source 'https://rubygems.org'
 
-gem 'github-pages'
+ruby '2.2.3'
 
+gem 'github-pages', '40'

@@ -4,7 +4,7 @@ require 'sinatra/base'
 require 'jiji/web/services/abstract_service'
 
 module Jiji::Web
-  class PairSettingService < Jiji::Web::AbstractService
+  class PairSettingService < Jiji::Web::AuthenticationRequiredService
 
     options '/' do
       allow('GET,PUT,OPTIONS')

@@ -12,5 +12,4 @@ describe 'Version' do
     expect(r.status).to eq 200
     expect(r.body['version']).not_to be nil
   end
-
 end

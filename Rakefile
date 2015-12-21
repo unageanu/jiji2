@@ -1,4 +1,5 @@
 require 'rake'
+require 'rubygems/version'
 
 require 'rspec/core'
 require 'rspec/core/rake_task'
@@ -55,6 +56,55 @@ RDoc::Task.new do |rd|
   rd.options << '--charset=UTF-8 '
 end
 
+desc 'Release new version.'
+task :release, ["version"] do |task, args|
+  version = args.version
+
+  merge_branch
+  update_version(version)
+  bulid_release_js
+  commit_changes(version)
+  push_to_remote_repository
+  update_dev_branch
+end
+
+def merge_branch
+  sh 'git checkout master'
+  sh 'git pull origin develop'
+end
+def update_version(version)
+  src = IO.read('./src/jiji/version.rb')
+  check_version(src, version)
+  src = src.gsub(/VERSION\ \=\ \'[^\']*\'/, "VERSION = '#{version}'")
+  IO.write('./src/jiji/version.rb', src)
+end
+def bulid_release_js
+  cd 'sites' do
+    sh 'gulp'
+  end
+end
+def commit_changes(version)
+  sh "git commit -a -m 'release #{version}'"
+end
+def push_to_remote_repository
+  sh 'git push origin master'
+  sh 'git push backup master'
+end
+def update_dev_branch
+  sh 'git checkout develop'
+  sh 'git pull -rebase master'
+end
+def extract_version(src)
+  strs = src.scan(/VERSION\ \=\ \'([^\']*)\'/)
+  Gem::Version.create(strs[0][0])
+end
+def check_version(src, new_version)
+  current = extract_version(src)
+  new_version = Gem::Version.create(new_version)
+  if current >= new_version
+    raise "illegal version. new=#{new_version} current=#{current}"
+  end
+end
 
 def init_rubocop_task(task,src_dirs)
   task.patterns = src_dirs.map do |dir|

@@ -115,6 +115,7 @@ function services(binder) {
   binder.bind("initialSettingService").to("services.InitialSettingService");
   binder.bind("deviceService").to("services.DeviceService");
   binder.bind("iconService").to("services.IconService");
+  binder.bind("versionService").to("services.VersionService");
 }
 
 function stores(binder) {
@@ -125,7 +126,7 @@ function utils(binder) {
   binder.bind("googleAnalytics").to("utils.GoogleAnalytics")
     .withProperties({
       category: "web-ui",
-      version:  "1.0"
+      version:  "unknown"
     }).onInitialize("initialize");
   binder.bind("pushNotifier").toInstance( new Observable() );
 }

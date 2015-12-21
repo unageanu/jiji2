@@ -16,10 +16,17 @@ describe("Application", () => {
   describe("initialize", () => {
     it("初期化済みの場合", () => {
       const d = application.initialize();
+      expect(application.googleAnalytics.version).toEqual("unknown");
+
       xhrManager.requests[0].resolve({
         initialized: true
       });
+      xhrManager.requests[1].resolve({
+        version: "1.0.0"
+      });
+
       expect(ContainerJS.utils.Deferred.unpack(d)).toEqual(null);
+      expect(application.googleAnalytics.version).toEqual("1.0.0");
     });
     it("未初期化の場合", () => {
       const d = application.initialize();
@@ -34,6 +41,20 @@ describe("Application", () => {
         code: 500
       });
       expect(ContainerJS.utils.Deferred.unpack(d)).toEqual(null);
+    });
+    it("バージョン情報の取得でエラーになった場合", () => {
+      const d = application.initialize();
+      expect(application.googleAnalytics.version).toEqual("unknown");
+
+      xhrManager.requests[0].reject({
+        code: 500
+      });
+      xhrManager.requests[1].reject({
+        code: 404
+      });
+
+      expect(ContainerJS.utils.Deferred.unpack(d)).toEqual(null);
+      expect(application.googleAnalytics.version).toEqual("unknown");
     });
   });
 

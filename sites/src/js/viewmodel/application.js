@@ -14,8 +14,9 @@ export default class Application {
     this.authenticator     = ContainerJS.Inject;
     this.agentSourceEditor = ContainerJS.Inject;
 
-    this.rates        = ContainerJS.Inject;
-    this.preferences  = ContainerJS.Inject;
+    this.rates           = ContainerJS.Inject;
+    this.preferences     = ContainerJS.Inject;
+    this.versionService  = ContainerJS.Inject;
 
     this.backtests       = ContainerJS.Inject;
     this.backtestBuilder = ContainerJS.Inject;
@@ -46,7 +47,18 @@ export default class Application {
           () => this.initialSettingsPageModel.isInitialized ? null : "/initial-settings",
           () => null
         );
+      this.retrieveVersion();
     }
     return this.initializationDeferred;
   }
+
+  retrieveVersion() {
+    this.versionService.getVersion().then((result) => {
+      this.googleAnalytics.version = result.version;
+    }, (error) => {
+      this.googleAnalytics.version = "unknown";
+      error.preventDefault = true;
+    });
+  }
+
 }

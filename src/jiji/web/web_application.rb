@@ -69,6 +69,7 @@ module Jiji::Web
       builder.map('/api/actions')       { run ActionService }
       builder.map('/api/notifications') { run NotificationService }
       builder.map('/api/devices')       { run DeviceService }
+      builder.map('/api/version')       { run VersionService }
     end
 
     def register_icon_services(builder)

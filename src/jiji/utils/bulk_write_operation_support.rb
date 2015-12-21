@@ -1,6 +1,5 @@
 module Jiji::Utils
   module BulkWriteOperationSupport
-
     KEY = BulkWriteOperationSupport.name
 
     def save
@@ -30,14 +29,14 @@ module Jiji::Utils
     end
 
     def create_insert_operation
-      { :insert_one => as_document }
+      { insert_one: as_document }
     end
 
     def create_update_operation
       {
-        :update_one => {
-          :filter => { :_id => id },
-          :update => {'$set' => collect_changed_values }
+        update_one: {
+          filter: { _id: id },
+          update: { '$set' => collect_changed_values }
         }
       }
     end
@@ -58,7 +57,7 @@ module Jiji::Utils
       end
 
       def <<(model)
-        targets_of( model.class )[model.object_id] = model
+        targets_of(model.class)[model.object_id] = model
       end
 
       def execute
@@ -69,12 +68,12 @@ module Jiji::Utils
       end
 
       def size
-        @targets.values.reduce(0) {|a, e| a + e.length }
+        @targets.values.reduce(0) { |a, e| a + e.length }
       end
 
       private
 
-      def targets_of( model_class )
+      def targets_of(model_class)
         @targets[model_class] ||= {}
       end
 
@@ -85,7 +84,7 @@ module Jiji::Utils
         client = model_class.mongo_client[model_class.collection_name]
         operations = create_operations(@targets[model_class].values)
         client.bulk_write(operations) unless operations.empty?
-        
+
         @targets.delete model_class
       end
 
@@ -109,6 +108,5 @@ module Jiji::Utils
       end
 
     end
-
   end
 end

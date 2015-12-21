@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8 ">
+
+<title>module Jiji::Model::Agents::Agent - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../";
+</script>
+
+<script src="../../../js/jquery.js"></script>
+<script src="../../../js/darkfish.js"></script>
+
+<link href="../../../css/fonts.css" rel="stylesheet">
+<link href="../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-c-description">::description</a>
+    
+    <li ><a href="#method-c-property_infos">::property_infos</a>
+    
+    <li ><a href="#method-i-execute_action">#execute_action</a>
+    
+    <li ><a href="#method-i-next_tick">#next_tick</a>
+    
+    <li ><a href="#method-i-post_create">#post_create</a>
+    
+    <li ><a href="#method-i-properties-3D">#properties=</a>
+    
+    <li ><a href="#method-i-restore_state">#restore_state</a>
+    
+    <li ><a href="#method-i-state">#state</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-Jiji::Model::Agents::Agent">
+  <h1 id="module-Jiji::Model::Agents::Agent" class="module">
+    module Jiji::Model::Agents::Agent
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+    <section class="attribute-method-details" class="method-section">
+      <header>
+        <h3>Attributes</h3>
+      </header>
+
+      
+      <div id="attribute-i-agent_name" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">agent_name</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>エージェント名</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-broker" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">broker</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>取引の実行など、証券会社へのアクセスを提供するコンポーネント</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-graph_factory" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">graph_factory</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>グラフの描画で使用するコンポーネント</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-icon_id" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">icon_id</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>アイコンID</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-logger" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">logger</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>ロガー</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-notifier" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">notifier</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>Push通知、メール送信機能を提供するコンポーネント</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-properties" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">properties</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>プロパティ</p>
+        
+        </div>
+      </div>
+      
+    </section>
+    
+
+    
+     <section id="public-class-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Class Methods</h3>
+       </header>
+
+    
+      <div id="method-c-description" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">description</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>エージェントの説明を返します。</p>
+<ul><li>
+<p>必要に応じて実装してください。</p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="description-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/agent.rb, line 19</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">description</span>
+  <span class="ruby-string">&#39;&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-property_infos" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">property_infos</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>設定可能なプロパティの一覧を返します。</p>
+<ul><li>
+<p>必要に応じて実装してください。</p>
+</li></ul>
+<dl class="rdoc-list note-list"><dt>戻り値
+<dd>
+<p><a href="Agent/Property.html">Jiji::Model::Agents::Agent::Property</a> の配列</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="property_infos-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/agent.rb, line 12</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">property_infos</span>
+  []
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-execute_action" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">execute_action</span><span
+            class="method-args">(action)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>アクションを実行します。</p>
+<dl class="rdoc-list note-list"><dt>action
+<dd>
+<p>アクションの識別子</p>
+</dd><dt>戻り値
+<dd>
+<p>応答メッセージ。画面からアクションを実行した時のレスポンスとして 表示されます。</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="execute_action-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/agent.rb, line 71</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">execute_action</span>(<span class="ruby-identifier">action</span>)
+  <span class="ruby-string">&#39;OK&#39;</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-next_tick" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">next_tick</span><span
+            class="method-args">(tick)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>レート情報が通知されるメソッドです。</p>
+<ul><li>
+<p>エージェントが動作している間順次呼び出されます。</p>
+</li><li>
+<p>このメソッドをオーバーライドして、シグナルの計算や取り引きを行うロジック を実装します</p>
+</li></ul>
+<dl class="rdoc-list note-list"><dt>tick
+<dd>
+<p><a href="../Trading/Tick.html">Jiji::Model::Trading::Tick</a></p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="next_tick-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/agent.rb, line 63</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">next_tick</span>(<span class="ruby-identifier">tick</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-post_create" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">post_create</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>エージェントの登録後に1度だけ呼び出される関数です。</p>
+<ul><li>
+<p>コンストラクタと違い、このメソッド内ではbrokerやgraph_factory,logger 等が使用可能です。</p>
+</li></ul>
+          
+          
+
+          
+          <div class="method-source-code" id="post_create-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/agent.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">post_create</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-properties-3D" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">properties=</span><span
+            class="method-args">(properties)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>プロパティを設定します。</p>
+<dl class="rdoc-list note-list"><dt>properties
+<dd>
+<p>プロパティIDをキー、プロパティ値を値とするハッシュ</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="properties-3D-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/agent.rb, line 29</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">properties=</span>(<span class="ruby-identifier">properties</span>)
+  <span class="ruby-ivar">@properties</span> = <span class="ruby-identifier">properties</span>
+  <span class="ruby-identifier">properties</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-node">&quot;@#{k}&quot;</span>, <span class="ruby-identifier">v</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-restore_state" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">restore_state</span><span
+            class="method-args">(state)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>保存された状態データから、状態を復元します。</p>
+<ul><li>
+<p>必要に応じてオーバーライドしてください。</p>
+</li></ul>
+<dl class="rdoc-list note-list"><dt>state
+<dd>
+<p>状態データ</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="restore_state-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/agent.rb, line 92</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">restore_state</span>(<span class="ruby-identifier">state</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-state" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">state</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>エージェントの状態を返します。</p>
+<ul><li>
+<p>システム停止時に呼び出されます。返された値は、次回システムを起動したときに、 <a
+href="Agent.html#method-i-restore_state">#restore_state</a> の引数で渡されます。</p>
+</li><li>
+<p>状態はMongoid#Hash として永続化されます。#Hashに格納できない型を返却すると 永続化に失敗しますのでご注意ください。
+文字列や数値型であれば、問題ありません。</p>
+</li></ul>
+<dl class="rdoc-list note-list"><dt>戻り値
+<dd>
+<p>状態。Mongoid#Hash として永続化されます。</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="state-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/agent.rb, line 83</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">state</span>
+  {}
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

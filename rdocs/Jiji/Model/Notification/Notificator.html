@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8 ">
+
+<title>class Jiji::Model::Notification::Notificator - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "../../../";
+</script>
+
+<script src="../../../js/jquery.js"></script>
+<script src="../../../js/darkfish.js"></script>
+
+<link href="../../../css/fonts.css" rel="stylesheet">
+<link href="../../../css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="class">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="../../../index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="../../../table_of_contents.html#pages">Pages</a>
+    <a href="../../../table_of_contents.html#classes">Classes</a>
+    <a href="../../../table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    <div id="parent-class-section" class="nav-section">
+  <h3>Parent</h3>
+
+  
+  <p class="link">Object
+  
+</div>
+
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-compose_text_mail">#compose_text_mail</a>
+    
+    <li ><a href="#method-i-push_notification">#push_notification</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="class-Jiji::Model::Notification::Notificator">
+  <h1 id="class-Jiji::Model::Notification::Notificator" class="class">
+    class Jiji::Model::Notification::Notificator
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-compose_text_mail" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">compose_text_mail</span><span
+            class="method-args">(to, title, body, from = Jiji::Messaging::MailComposer::FROM)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>メールを送信します。</p>
+
+<pre class="ruby"><span class="ruby-identifier">notifier</span>.<span class="ruby-identifier">compose_text_mail</span>(<span class="ruby-string">&#39;foo@example.com&#39;</span>,
+ <span class="ruby-string">&#39;テスト&#39;</span>, <span class="ruby-string">&#39;テスト本文&#39;</span>, <span class="ruby-string">&#39;jiji@unageanu.net&#39;</span>)
+</pre>
+<dl class="rdoc-list note-list"><dt>to
+<dd>
+<p>送信先メールアドレス</p>
+</dd><dt>title
+<dd>
+<p>メールタイトル</p>
+</dd><dt>body
+<dd>
+<p>メール本文</p>
+</dd><dt>from
+<dd>
+<p>fromアドレス。省略した場合、jiji@unageanu.net が使用されます。</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="compose_text_mail-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/notification/notificator.rb, line 31</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">compose_text_mail</span>(<span class="ruby-identifier">to</span>, <span class="ruby-identifier">title</span>, <span class="ruby-identifier">body</span>,
+  <span class="ruby-identifier">from</span> = <span class="ruby-constant">Jiji</span><span class="ruby-operator">::</span><span class="ruby-constant">Messaging</span><span class="ruby-operator">::</span><span class="ruby-constant">MailComposer</span><span class="ruby-operator">::</span><span class="ruby-constant">FROM</span>)
+  <span class="ruby-ivar">@mail_composer</span>.<span class="ruby-identifier">compose</span>(<span class="ruby-identifier">to</span>, <span class="ruby-identifier">title</span>, <span class="ruby-identifier">from</span>) <span class="ruby-keyword">do</span>
+    <span class="ruby-identifier">text_part</span> <span class="ruby-keyword">do</span>
+      <span class="ruby-identifier">content_type</span> <span class="ruby-string">&#39;text/plain; charset=UTF-8&#39;</span>
+      <span class="ruby-identifier">body</span> <span class="ruby-identifier">body</span>
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-push_notification" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">push_notification</span><span
+            class="method-args">(message = '', actions = [])</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>Push通知を送信します。</p>
+
+<pre class="ruby"><span class="ruby-identifier">notifier</span>.<span class="ruby-identifier">push_notification</span>(<span class="ruby-string">&#39;メッセージ&#39;</span>)
+<span class="ruby-identifier">notifier</span>.<span class="ruby-identifier">push_notification</span>(<span class="ruby-string">&#39;メッセージ&#39;</span>,  [
+  <span class="ruby-comment"># アクションは複数指定できます。</span>
+  <span class="ruby-comment"># &#39;label&#39; が、アクションを実行するボタンのラベル、</span>
+  <span class="ruby-comment"># &#39;action&#39;が、ボタンが押されてアクションが実行されたとき、</span>
+  <span class="ruby-comment"># Agent#execute_action に渡される識別子になります。</span>
+  { <span class="ruby-string">&#39;label&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;アクション1&#39;</span>, <span class="ruby-string">&#39;action&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;action_1&#39;</span> },
+  { <span class="ruby-string">&#39;label&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;アクション2&#39;</span>, <span class="ruby-string">&#39;action&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;action_2&#39;</span> }
+])
+</pre>
+<dl class="rdoc-list note-list"><dt>message
+<dd>
+<p>メッセージ</p>
+</dd><dt>action
+<dd>
+<p>アクション。 {:label =&gt; &#39;ラベル&#39;, action: =&gt; &#39;識別子&#39;} の配列で指定します。</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="push_notification-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/notification/notificator.rb, line 61</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">push_notification</span>(<span class="ruby-identifier">message</span> = <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">actions</span> = [])
+  <span class="ruby-identifier">n</span> = <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">create</span>(<span class="ruby-ivar">@agent</span>,
+    <span class="ruby-ivar">@time_source</span>.<span class="ruby-identifier">now</span>, <span class="ruby-ivar">@backtest</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">actions</span>)
+  <span class="ruby-identifier">n</span>.<span class="ruby-identifier">save</span>
+  <span class="ruby-ivar">@push_notifier</span>.<span class="ruby-identifier">notify</span>({
+    <span class="ruby-identifier">title</span><span class="ruby-operator">:</span>          <span class="ruby-identifier">message</span>,
+    <span class="ruby-identifier">message</span><span class="ruby-operator">:</span>        <span class="ruby-identifier">n</span>.<span class="ruby-identifier">title</span>,
+    <span class="ruby-identifier">image</span><span class="ruby-operator">:</span>          <span class="ruby-identifier">n</span>.<span class="ruby-identifier">agent</span>.<span class="ruby-identifier">icon_id</span>,
+    <span class="ruby-identifier">notificationId</span><span class="ruby-operator">:</span> <span class="ruby-identifier">n</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span>,
+    <span class="ruby-identifier">backtestId</span><span class="ruby-operator">:</span>     <span class="ruby-ivar">@backtest</span> <span class="ruby-operator">?</span> <span class="ruby-ivar">@backtest</span>.<span class="ruby-identifier">id</span>.<span class="ruby-identifier">to_s</span> <span class="ruby-operator">:</span> <span class="ruby-keyword">nil</span>
+  }, <span class="ruby-ivar">@logger</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

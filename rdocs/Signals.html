@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset="UTF-8 ">
+
+<title>module Signals - RDoc Documentation</title>
+
+<script type="text/javascript">
+  var rdoc_rel_prefix = "./";
+</script>
+
+<script src="./js/jquery.js"></script>
+<script src="./js/darkfish.js"></script>
+
+<link href="./css/fonts.css" rel="stylesheet">
+<link href="./css/rdoc.css" rel="stylesheet">
+
+
+
+<body id="top" role="document" class="module">
+<nav role="navigation">
+  <div id="project-navigation">
+    <div id="home-section" role="region" title="Quick navigation" class="nav-section">
+  <h2>
+    <a href="./index.html" rel="home">Home</a>
+  </h2>
+
+  <div id="table-of-contents-navigation">
+    <a href="./table_of_contents.html#pages">Pages</a>
+    <a href="./table_of_contents.html#classes">Classes</a>
+    <a href="./table_of_contents.html#methods">Methods</a>
+  </div>
+</div>
+
+    <div id="search-section" role="search" class="project-section initially-hidden">
+  <form action="#" method="get" accept-charset="utf-8">
+    <div id="search-field-wrapper">
+      <input id="search-field" role="combobox" aria-label="Search"
+             aria-autocomplete="list" aria-controls="search-results"
+             type="text" name="search" placeholder="Search" spellcheck="false"
+             title="Type to search, Up and Down to navigate, Enter to load">
+    </div>
+
+    <ul id="search-results" aria-label="Search Results"
+        aria-busy="false" aria-expanded="false"
+        aria-atomic="false" class="initially-hidden"></ul>
+  </form>
+</div>
+
+  </div>
+
+  
+
+  <div id="class-metadata">
+    
+    
+    
+    
+    <!-- Method Quickref -->
+<div id="method-list-section" class="nav-section">
+  <h3>Methods</h3>
+
+  <ul class="link-list" role="directory">
+    
+    <li ><a href="#method-i-bollinger_bands">#bollinger_bands</a>
+    
+    <li ><a href="#method-i-dmi">#dmi</a>
+    
+    <li ><a href="#method-i-ema">#ema</a>
+    
+    <li ><a href="#method-i-ma">#ma</a>
+    
+    <li ><a href="#method-i-macd">#macd</a>
+    
+    <li ><a href="#method-i-momentum">#momentum</a>
+    
+    <li ><a href="#method-i-roc">#roc</a>
+    
+    <li ><a href="#method-i-rsi">#rsi</a>
+    
+    <li ><a href="#method-i-vector">#vector</a>
+    
+    <li ><a href="#method-i-wma">#wma</a>
+    
+  </ul>
+</div>
+
+  </div>
+</nav>
+
+<main role="main" aria-labelledby="module-Signals">
+  <h1 id="module-Signals" class="module">
+    module Signals
+  </h1>
+
+  <section class="description">
+    
+  </section>
+
+  
+  
+  
+  <section id="5Buntitled-5D" class="documentation-section">
+    
+
+    
+
+    
+
+    
+
+    
+     <section id="public-instance-5Buntitled-5D-method-details" class="method-section">
+       <header>
+         <h3>Public Instance Methods</h3>
+       </header>
+
+    
+      <div id="method-i-bollinger_bands" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">bollinger_bands</span><span
+            class="method-args">(data, pivot = [0, 1, 2]) { |data| ... }</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>ボリンジャーバンドを計算します。</p>
+
+<pre>+2σ＝移動平均＋標準偏差×2
++σ＝移動平均＋標準偏差
+-σ＝移動平均-標準偏差
+-2σ＝移動平均-標準偏差×2
+標準偏差＝√((各値-値の期間中平均値)の2乗を期間分全部加えたもの)/ 期間
+(√は式全体にかかる)</pre>
+<dl class="rdoc-list note-list"><dt>data
+<dd>
+<p>値の配列</p>
+</dd><dt>pivot
+<dd>
+<p>標準偏差の倍数。初期値 [0,1,2]</p>
+</dd><dt>block
+<dd>
+<p>移動平均を算出するロジック。指定がなければ移動平均を使う。</p>
+</dd><dt>戻り値
+<dd>
+<p>ボリンジャーバンドの各値の配列。例)  [+2σ, +1σ, TP, -1σ, -2σ]</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="bollinger_bands-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 268</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">bollinger_bands</span>(<span class="ruby-identifier">data</span>, <span class="ruby-identifier">pivot</span> = [<span class="ruby-value">0</span>, <span class="ruby-value">1</span>, <span class="ruby-value">2</span>], <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
+  <span class="ruby-identifier">ma</span> = <span class="ruby-identifier">block_given?</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">yield</span>(<span class="ruby-identifier">data</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">ma</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-identifier">sd</span> = <span class="ruby-identifier">standard_division</span>(<span class="ruby-identifier">data</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">ma</span> }
+  <span class="ruby-identifier">pivot</span>.<span class="ruby-identifier">each_with_object</span>([]) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">r</span>, <span class="ruby-identifier">res</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">res</span>.<span class="ruby-identifier">unshift</span>(<span class="ruby-identifier">ma</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sd</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">r</span>)
+    <span class="ruby-identifier">res</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">ma</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sd</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">r</span> <span class="ruby-operator">*</span> <span class="ruby-value">-1</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">r</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-dmi" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">dmi</span><span
+            class="method-args">(data)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>DMIを計算します。</p>
+
+<pre class="ruby"><span class="ruby-identifier">高値更新</span>  <span class="ruby-operator">...</span>  <span class="ruby-identifier">前日高値より当日高値が高かった時その差</span>
+<span class="ruby-identifier">安値更新</span>  <span class="ruby-operator">...</span>  <span class="ruby-identifier">前日安値より当日安値が安かった時その差</span>
+<span class="ruby-constant">DM</span>        <span class="ruby-operator">...</span>  <span class="ruby-identifier">高値更新が安値更新より大きかった時高値更新の値。逆の場合は０</span>
+<span class="ruby-constant">DM</span>        <span class="ruby-operator">...</span>  <span class="ruby-identifier">安値更新が高値更新より大きかった時安値更新の値。逆の場合は０</span>
+<span class="ruby-constant">TR</span>        <span class="ruby-operator">...</span>  <span class="ruby-identifier">次の３つの中で一番大きいもの</span>
+                <span class="ruby-identifier">当日高値</span><span class="ruby-operator">-</span><span class="ruby-identifier">当日安値</span>
+                <span class="ruby-identifier">当日高値</span><span class="ruby-operator">-</span><span class="ruby-identifier">前日終値</span>
+                <span class="ruby-identifier">前日終値</span><span class="ruby-operator">-</span><span class="ruby-identifier">当日安値</span>
+<span class="ruby-constant">AV</span>(<span class="ruby-operator">+</span><span class="ruby-constant">DM</span>)   <span class="ruby-operator">...</span>  <span class="ruby-operator">+</span><span class="ruby-constant">DMのn日間移動平均値</span>
+<span class="ruby-constant">AV</span>(<span class="ruby-operator">-</span><span class="ruby-constant">DM</span>)   <span class="ruby-operator">...</span>  <span class="ruby-operator">-</span><span class="ruby-constant">DMのn日間移動平均値</span>
+<span class="ruby-constant">AV</span>(<span class="ruby-constant">TR</span>)    <span class="ruby-operator">...</span>  <span class="ruby-constant">TRのn日間移動平均値</span>
+<span class="ruby-operator">+</span><span class="ruby-constant">DI</span>       <span class="ruby-operator">...</span>  <span class="ruby-constant">AV</span>(<span class="ruby-operator">+</span><span class="ruby-constant">DM</span>)<span class="ruby-operator">/</span><span class="ruby-constant">AV</span>(<span class="ruby-constant">TR</span>)
+<span class="ruby-operator">-</span><span class="ruby-constant">DI</span>       <span class="ruby-operator">...</span>  <span class="ruby-constant">AV</span>(<span class="ruby-operator">-</span><span class="ruby-constant">DM</span>)<span class="ruby-operator">/</span><span class="ruby-constant">AV</span>(<span class="ruby-constant">TR</span>)
+<span class="ruby-constant">DX</span>        <span class="ruby-operator">...</span>  (<span class="ruby-operator">+</span><span class="ruby-constant">DIと</span><span class="ruby-operator">-</span><span class="ruby-constant">DIの差額</span>) <span class="ruby-operator">/</span> (<span class="ruby-operator">+</span><span class="ruby-constant">DIと</span><span class="ruby-operator">-</span><span class="ruby-constant">DIの合計</span>)
+<span class="ruby-constant">ADX</span>       <span class="ruby-operator">...</span>  <span class="ruby-constant">DXのn日平均値</span>
+</pre>
+<dl class="rdoc-list note-list"><dt>data
+<dd>
+<p>値の配列(4本値を指定すること!) 例: {open: 123.2, close: 124, high: 124.2, low: 123}</p>
+</dd><dt>戻り値
+<dd>
+<p>{:pdi=pdi, :mdi=mdi, :dx=dx }</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="dmi-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 353</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">dmi</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-identifier">tmp</span> = <span class="ruby-identifier">calculate_dmi_from_data</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-identifier">atr</span> = <span class="ruby-identifier">ma</span>(<span class="ruby-identifier">tmp</span>[<span class="ruby-value">0</span>])
+  <span class="ruby-identifier">pdi</span> = <span class="ruby-identifier">ma</span>(<span class="ruby-identifier">tmp</span>[<span class="ruby-value">1</span>]) <span class="ruby-operator">/</span> <span class="ruby-identifier">atr</span> <span class="ruby-operator">*</span> <span class="ruby-value">100</span>
+  <span class="ruby-identifier">mdi</span> = <span class="ruby-identifier">ma</span>(<span class="ruby-identifier">tmp</span>[<span class="ruby-value">2</span>]) <span class="ruby-operator">/</span> <span class="ruby-identifier">atr</span> <span class="ruby-operator">*</span> <span class="ruby-value">100</span>
+  { <span class="ruby-identifier">pdi</span><span class="ruby-operator">:</span> <span class="ruby-identifier">pdi</span>, <span class="ruby-identifier">mdi</span><span class="ruby-operator">:</span> <span class="ruby-identifier">mdi</span>, <span class="ruby-identifier">dx</span><span class="ruby-operator">:</span> <span class="ruby-identifier">calculate_dx</span>(<span class="ruby-identifier">pdi</span>, <span class="ruby-identifier">mdi</span>) }
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-ema" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ema</span><span
+            class="method-args">(data, smoothing_coefficient = 0.1)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>指数移動平均値を計算します。</p>
+<dl class="rdoc-list note-list"><dt>data
+<dd>
+<p>値の配列。</p>
+</dd><dt>smoothing_coefficient
+<dd>
+<p>平滑化係数</p>
+</dd><dt>戻り値
+<dd>
+<p>加重移動平均値</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="ema-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 249</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ema</span>(<span class="ruby-identifier">data</span>, <span class="ruby-identifier">smoothing_coefficient</span> = <span class="ruby-value">0.1</span>)
+  <span class="ruby-identifier">data</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">reduce</span>(<span class="ruby-identifier">data</span>[<span class="ruby-value">0</span>]) <span class="ruby-keyword">do</span><span class="ruby-operator">|</span><span class="ruby-identifier">t</span>, <span class="ruby-identifier">s</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">smoothing_coefficient</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">s</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">t</span>)
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-ma" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">ma</span><span
+            class="method-args">(data)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>移動平均値を計算します。</p>
+<dl class="rdoc-list note-list"><dt>data
+<dd>
+<p>値の配列。</p>
+</dd><dt>戻り値
+<dd>
+<p>移動平均値</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="ma-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 227</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">ma</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-identifier">total</span> = <span class="ruby-identifier">data</span>.<span class="ruby-identifier">reduce</span>(<span class="ruby-value">:+</span>)
+  <span class="ruby-identifier">total</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">length</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-macd" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">macd</span><span
+            class="method-args">(data, short_range, long_range, smoothing_coefficient)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>MACDを計算します。</p>
+
+<pre>MACD = 短期(short_range日)の指数移動平均 - 長期(long_range日)の指数移動平均</pre>
+<dl class="rdoc-list note-list"><dt>data
+<dd>
+<p>値の配列</p>
+</dd><dt>smoothing_coefficient
+<dd>
+<p>平滑化係数</p>
+</dd><dt>戻り値
+<dd>
+<p>macd値</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="macd-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 310</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">macd</span>(<span class="ruby-identifier">data</span>, <span class="ruby-identifier">short_range</span>, <span class="ruby-identifier">long_range</span>, <span class="ruby-identifier">smoothing_coefficient</span>)
+  <span class="ruby-identifier">ema</span>(<span class="ruby-identifier">data</span>[<span class="ruby-identifier">short_range</span> <span class="ruby-operator">*</span> <span class="ruby-value">-1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>], <span class="ruby-identifier">smoothing_coefficient</span>)        <span class="ruby-operator">-</span> <span class="ruby-identifier">ema</span>(<span class="ruby-identifier">data</span>[<span class="ruby-identifier">long_range</span> <span class="ruby-operator">*</span> <span class="ruby-value">-1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>], <span class="ruby-identifier">smoothing_coefficient</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-momentum" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">momentum</span><span
+            class="method-args">(data)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>一定期間の値の傾きを計算します。</p>
+<dl class="rdoc-list note-list"><dt>data
+<dd>
+<p>値の配列</p>
+</dd><dt>戻り値
+<dd>
+<p>傾き。0より大きければ上向き。小さければ下向き。</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="momentum-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 281</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">momentum</span>(<span class="ruby-identifier">data</span>)
+  (<span class="ruby-identifier">data</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">first</span>) <span class="ruby-operator">/</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">length</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-roc" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">roc</span><span
+            class="method-args">(data)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>ROCを計算します。</p>
+
+<pre class="ruby"><span class="ruby-constant">ROC</span> = <span class="ruby-constant">Rate</span> <span class="ruby-identifier">of</span> <span class="ruby-constant">Change。変化率。正なら上げトレンド、負なら下げトレンド。</span>
+</pre>
+<dl class="rdoc-list note-list"><dt>data
+<dd>
+<p>値の配列</p>
+</dd><dt>戻り値
+<dd>
+<p>値</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="roc-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 367</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">roc</span>(<span class="ruby-identifier">data</span>)
+  (<span class="ruby-identifier">data</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">last</span>) <span class="ruby-operator">/</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">*</span> <span class="ruby-value">100</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-rsi" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">rsi</span><span
+            class="method-args">(data)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>RSIを計算します。</p>
+
+<pre class="ruby"><span class="ruby-constant">RSI</span> =
+ <span class="ruby-identifier">n日間の値上がり幅合計</span> <span class="ruby-operator">/</span> (<span class="ruby-identifier">n日間の値上がり幅合計</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">n日間の値下がり幅合計</span>) <span class="ruby-operator">*</span> <span class="ruby-value">100</span>
+<span class="ruby-identifier">nとして、14や9を使うのが、一般的。30以下では売られすぎ70以上では買われすぎの水準</span>
+</pre>
+<dl class="rdoc-list note-list"><dt>data
+<dd>
+<p>値の配列</p>
+</dd><dt>戻り値
+<dd>
+<p>RSI値</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="rsi-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 323</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">rsi</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-identifier">prev</span> = <span class="ruby-keyword">nil</span>
+  <span class="ruby-identifier">tmp</span> = <span class="ruby-identifier">data</span>.<span class="ruby-identifier">each_with_object</span>([<span class="ruby-value">0.0</span>, <span class="ruby-value">0.0</span>]) <span class="ruby-keyword">do</span><span class="ruby-operator">|</span><span class="ruby-identifier">i</span>, <span class="ruby-identifier">r</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">r</span>[<span class="ruby-identifier">i</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">prev</span> <span class="ruby-operator">?</span> <span class="ruby-value">0</span> <span class="ruby-operator">:</span> <span class="ruby-value">1</span>] <span class="ruby-operator">+=</span> (<span class="ruby-identifier">i</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">prev</span>).<span class="ruby-identifier">abs</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">prev</span>
+    <span class="ruby-identifier">prev</span> = <span class="ruby-identifier">i</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">calculate_rsi</span>(<span class="ruby-identifier">tmp</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-vector" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">vector</span><span
+            class="method-args">(data)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>最小二乗法で、一定期間の値の傾きを計算します。</p>
+<dl class="rdoc-list note-list"><dt>data
+<dd>
+<p>値の配列</p>
+</dd><dt>戻り値
+<dd>
+<p>傾き。0より大きければ上向き。小さければ下向き。</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="vector-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 289</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">vector</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-comment"># 最小二乗法を使う。</span>
+  <span class="ruby-identifier">total</span> = { <span class="ruby-identifier">x</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span>, <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span>, <span class="ruby-identifier">xx</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span>, <span class="ruby-identifier">xy</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span>, <span class="ruby-identifier">yy</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span> }
+  <span class="ruby-identifier">data</span>.<span class="ruby-identifier">each_index</span> <span class="ruby-keyword">do</span><span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">v</span> = <span class="ruby-identifier">data</span>[<span class="ruby-identifier">i</span>]
+    <span class="ruby-identifier">total</span>[<span class="ruby-value">:x</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">i</span>
+    <span class="ruby-identifier">total</span>[<span class="ruby-value">:y</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">v</span>
+    <span class="ruby-identifier">total</span>[<span class="ruby-value">:xx</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">i</span>
+    <span class="ruby-identifier">total</span>[<span class="ruby-value">:xy</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">i</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">v</span>
+    <span class="ruby-identifier">total</span>[<span class="ruby-value">:yy</span>] <span class="ruby-operator">+=</span> <span class="ruby-identifier">v</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">v</span>
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">calculate_vector</span>(<span class="ruby-identifier">data</span>, <span class="ruby-identifier">total</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-wma" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">wma</span><span
+            class="method-args">(data)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>加重移動平均値を計算します。</p>
+<dl class="rdoc-list note-list"><dt>data
+<dd>
+<p>値の配列。</p>
+</dd><dt>戻り値
+<dd>
+<p>加重移動平均値</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="wma-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 236</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">wma</span>(<span class="ruby-identifier">data</span>)
+  <span class="ruby-identifier">weight</span> = <span class="ruby-value">0</span>
+  <span class="ruby-identifier">total</span> = <span class="ruby-identifier">data</span>.<span class="ruby-identifier">reduce</span>(<span class="ruby-value">0.0</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span>, <span class="ruby-identifier">s</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">t</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">s</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">weight</span> <span class="ruby-operator">+=</span> <span class="ruby-value">1</span>)
+  <span class="ruby-keyword">end</span>
+  <span class="ruby-identifier">total</span> <span class="ruby-operator">/</span> (<span class="ruby-identifier">data</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">data</span>.<span class="ruby-identifier">length</span> <span class="ruby-operator">+</span> <span class="ruby-value">1</span>) <span class="ruby-operator">/</span> <span class="ruby-value">2</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+    </section>
+  
+  </section>
+</main>
+
+
+<footer id="validator-badges" role="contentinfo">
+  <p><a href="http://validator.w3.org/check/referer">Validate</a>
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
+</footer>
+

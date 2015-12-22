@@ -92,7 +92,7 @@ def push_to_remote_repository
 end
 def update_dev_branch
   sh 'git checkout develop'
-  sh 'git pull -rebase master'
+  sh 'git pull --rebase master'
 end
 def extract_version(src)
   strs = src.scan(/VERSION\ \=\ \'([^\']*)\'/)

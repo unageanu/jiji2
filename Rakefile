@@ -11,7 +11,7 @@ task :rest_spec => [:rest_spec_json, :rest_spec_messagepack]
 
 desc "Run all specs in spec directory"
 RSpec::Core::RakeTask.new(:spec) {|t|
-  t.rspec_opts = '-I src -I spec -fdoc'
+  t.rspec_opts = '-I src -I spec -I sample_agents/src -I sample_agents/spec -fdoc'
 }
 
 desc "Run all specs in rest_spec directory using json transport"
@@ -29,10 +29,10 @@ desc 'Run RuboCop on the src/spec directory'
 task :lint => [:lint_src, :lint_spec]
 
 RuboCop::RakeTask.new(:lint_src) do |task|
-  init_rubocop_task(task, ['src'])
+  init_rubocop_task(task, ['src','sample_agents/src'])
 end
 RuboCop::RakeTask.new(:lint_spec) do |task|
-  init_rubocop_task(task, ['spec','rest_spec'])
+  init_rubocop_task(task, ['spec','rest_spec','sample_agents/spec'])
 end
 
 RDoc::Task.new do |rd|

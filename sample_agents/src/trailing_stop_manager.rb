@@ -1,4 +1,48 @@
 
+# === トレーリングストップで建玉を決済するエージェント
+class TrailingStopAgent
+
+  include Jiji::Model::Agents::Agent
+
+  def self.description
+    <<-STR
+トレーリングストップで建玉を決済するエージェント。
+ - 損益が警告を送る閾値を下回ったら、1度だけ警告をPush通知で送信。
+ - さらに決済する閾値も下回ったら、建玉を決済します。
+      STR
+  end
+
+  # UIから設定可能なプロパティの一覧
+  def self.property_infos
+    [
+      Property.new('warning_limit', '警告を送る閾値', 20),
+      Property.new('closing_limit', '決済する閾値',   40)
+    ]
+  end
+
+  def post_create
+    @manager = TrailingStopManager.new(
+      @warning_limit.to_i, @closing_limit.to_i, notifier)
+  end
+
+  def next_tick(tick)
+    @manager.check(broker.positions, broker.pairs)
+  end
+
+  def state
+    {
+      trailing_stop_manager: @manager.state
+    }
+  end
+
+  def restore_state(state)
+    if state[:trailing_stop_manager]
+      @manager.restore_state(state[:trailing_stop_manager])
+    end
+  end
+
+end
+
 # 建玉を監視し、最新のレートに基づいてトレールストップを行う
 class TrailingStopManager
 
@@ -131,6 +175,8 @@ class PositionState
     if @max_profit.nil? || position.profit_or_loss > @max_profit
       @max_profit      = position.profit_or_loss
       @max_profit_time = position.updated_at
+      @sent_warning    = false
+      # 高値を更新したあと、 warning_limit を超えたら再度警告を送るようにする
     end
   end
 

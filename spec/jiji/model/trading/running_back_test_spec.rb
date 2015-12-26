@@ -20,12 +20,12 @@ describe Jiji::Model::Trading::BackTest do
     %w(signals moving_average_agent cross).each do |file|
       source = agent_registory.add_source("#{file}.rb", '', :agent,
         IO.read("#{root}/src/jiji/model/agents/builtin_files/#{file}.rb"))
-      p source.error
+      fail source.error unless source.error.nil?
     end
     %w(error_agent).each do |file|
       f = File.expand_path("../../agents/builtin_files/#{file}.rb", __FILE__)
       source = agent_registory.add_source("#{file}.rb", '', :agent, IO.read(f))
-      p source.error
+      fail source.error unless source.error.nil?
     end
   end
 

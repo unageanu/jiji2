@@ -312,9 +312,7 @@ describe TrailingStopManager do
   def create_message(description, max_profit,
     max_profit_time, current_profit, last_update_time)
     "#{description}" \
-      + " がトレールストップの閾値を下回りました。決済しますか?\n" \
-      + "  最大利益: #{max_profit} #{max_profit_time} \n" \
-      + "  現在値: #{current_profit} #{last_update_time}"
+      + ' がトレールストップの閾値を下回りました。決済しますか?'
   end
 
   def new_tick_value(bid, spread)

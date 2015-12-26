@@ -29,6 +29,10 @@ class TrailingStopAgent
     @manager.check(broker.positions, broker.pairs)
   end
 
+  def execute_action(action)
+    @manager.process_action(action, broker.positions) || '???'
+  end
+
   def state
     {
       trailing_stop_manager: @manager.state
@@ -139,9 +143,7 @@ class TrailingStopManager
 
   def send_notification(position, state)
     message = "#{create_position_description(position)}" \
-      + " がトレールストップの閾値を下回りました。決済しますか?\n" \
-      + "  最大利益: #{state.max_profit} #{state.max_profit_time} \n" \
-      + "  現在値: #{state.profit_or_loss} #{state.last_update_time}"
+      + ' がトレールストップの閾値を下回りました。決済しますか?'
     @notifier.push_notification(message,  [{
         'label'  => '決済する',
         'action' => 'trailing_stop__close_' + position.id.to_s

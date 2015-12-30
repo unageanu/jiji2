@@ -65,6 +65,7 @@ task :release, ["version"] do |task, args|
   bulid_release_js
   commit_changes(version)
   push_to_remote_repository
+  add_tags(version)
   update_dev_branch
 end
 
@@ -89,6 +90,10 @@ end
 def push_to_remote_repository
   sh 'git push origin master'
   sh 'git push backup master'
+end
+def add_tags(version)
+  sh "git tag 'v#{version}'"
+  sh 'git push --tag'
 end
 def update_dev_branch
   sh 'git checkout develop'

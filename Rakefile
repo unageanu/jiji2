@@ -97,7 +97,7 @@ def add_tags(version)
 end
 def update_dev_branch
   sh 'git checkout develop'
-  sh 'git pull --rebase master'
+  sh 'git pull --rebase origin master'
 end
 def extract_version(src)
   strs = src.scan(/VERSION\ \=\ \'([^\']*)\'/)

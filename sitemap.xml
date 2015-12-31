@@ -5,14 +5,14 @@ layout: null
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>{{ site.url }}</loc>
-    <lastmod>{{ site.time | date_to_rfc822 }}</lastmod>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   {% for item in site.install  %}
   <url>
     <loc>{{ item.url | prepend: site.url }}</loc>
-    <lastmod>{{ site.time | date_to_rfc822 }}</lastmod>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.1</priority>
   </url>
@@ -20,7 +20,7 @@ layout: null
   {% for item in site.usage  %}
   <url>
     <loc>{{ item.url | prepend: site.url }}</loc>
-    <lastmod>{{ site.time | date_to_rfc822 }}</lastmod>
+    <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.1</priority>
   </url>

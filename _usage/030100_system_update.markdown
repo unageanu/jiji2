@@ -14,7 +14,7 @@ Jijiを最新版にアップデートする手順を解説します。
 
 <p>1. まず初めにHerokuにログインします。Herokuのユーザー名、パスワードを入力してログインしてください。</p>
 {% highlight sh %}
-  $ heroku login
+$ heroku login
 {% endhighlight %}
 
 <p>2.　次に、HerokuのGit Repositoryをローカルに複製します。</p>

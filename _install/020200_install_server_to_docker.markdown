@@ -16,12 +16,12 @@ nav_class_name: "lv2"
   - Docker Compose .. 1.5以降
 
 {% highlight sh %}
-  $ git --version
-  git version 1.8.3.1
-  $ sudo docker --version
-  Docker version 1.9.0, build 76d6bc9
-  $ sudo docker-compose --version
-  docker-compose version: 1.5.0
+$ git --version
+git version 1.8.3.1
+$ sudo docker --version
+Docker version 1.9.0, build 76d6bc9
+$ sudo docker-compose --version
+docker-compose version: 1.5.0
 {% endhighlight %}
 
 <div class="notice">
@@ -30,8 +30,8 @@ nav_class_name: "lv2"
 
 <p class="step">2. Dockerfile をチェックアウトします。</p>
 {% highlight sh %}
-  $ git clone https://github.com/unageanu/docker-jiji2
-  $ cd docker-jiji2
+$ git clone https://github.com/unageanu/docker-jiji2
+$ cd docker-jiji2
 {% endhighlight %}
 
 <p class="step">3. ポート番号の変更が必要な場合、docker-compose.yml を編集します。</p>
@@ -57,7 +57,7 @@ mongodb:
 <p class="step">3. Docker イメージをビルドします</p>
 
 {% highlight sh %}
-  $ sudo docker-compose build
+$ sudo docker-compose build
 {% endhighlight %}
 
 <div class="notice">
@@ -67,15 +67,15 @@ mongodb:
 <p class="step">4. Dockerコンテナを作成し、起動します。</p>
 
 {% highlight sh %}
-  $ sudo docker-compose up -d
-  Creating jiji_mongodb
-  Creating jiji_jiji
+$ sudo docker-compose up -d
+Creating jiji_mongodb
+Creating jiji_jiji
 {% endhighlight %}
 
 以下のコマンドで、起動しているコンテナを確認できます。
 
 {% highlight sh %}
-  $ sudo docker ps -a
+$ sudo docker ps -a
 {% endhighlight %}
 
 起動していれば、以下のURLでJijiにアクセスできます。
@@ -94,13 +94,13 @@ http://<インストール先ホスト>:<docker-compose.ymlで設定したJiji�
 Jijiを停止するには以下のコマンドを実行します。
 
 {% highlight sh %}
-  $ sudo docker-compose stop
+$ sudo docker-compose stop
 {% endhighlight %}
 
 停止したコンテナを再起動するには、start コマンドを実行します。
 
 {% highlight sh %}
-  $ sudo docker-compose start
+$ sudo docker-compose start
 {% endhighlight %}
 
 <p class="step">補足2: サービスのログを確認する</p>
@@ -108,6 +108,6 @@ Jijiを停止するには以下のコマンドを実行します。
 logsコマンドでコンテナのログを確認できます。
 
 {% highlight sh %}
-  $ sudo docker logs jiji_jiji
-  $ sudo docker logs jiji_mongodb
+$ sudo docker logs jiji_jiji
+$ sudo docker logs jiji_mongodb
 {% endhighlight %}

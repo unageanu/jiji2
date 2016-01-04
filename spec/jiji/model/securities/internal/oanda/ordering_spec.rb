@@ -6,6 +6,7 @@ require 'jiji/model/securities/oanda_securities'
 require 'jiji/model/securities/internal/examples/ordering_examples'
 require 'jiji/model/securities/internal' \
         + '/examples/ordering_response_pattern_examples'
+require "date"
 
 describe Jiji::Model::Securities::Internal::Oanda::Ordering do
   include_context 'use container'
@@ -19,6 +20,9 @@ describe Jiji::Model::Securities::Internal::Oanda::Ordering do
     container.lookup(:position_repository)
   end
 
-  it_behaves_like '注文関連の操作'
-  it_behaves_like '注文関連の操作(建玉がある場合のバリエーションパターン)'
+  today = Date.today
+  if today.wday >= 1 &&  today.wday < 6
+    it_behaves_like '注文関連の操作'
+    it_behaves_like '注文関連の操作(建玉がある場合のバリエーションパターン)'
+  end
 end

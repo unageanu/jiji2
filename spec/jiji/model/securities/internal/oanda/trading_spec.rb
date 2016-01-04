@@ -3,6 +3,7 @@
 require 'jiji/test/test_configuration'
 
 require 'jiji/model/securities/internal/examples/trading_examples'
+require "date"
 
 describe Jiji::Model::Securities::Internal::Oanda::Trading do
   include_context 'use container'
@@ -16,5 +17,8 @@ describe Jiji::Model::Securities::Internal::Oanda::Trading do
     container.lookup(:position_repository)
   end
 
-  it_behaves_like '建玉関連の操作'
+  today = Date.today
+  if today.wday >= 1 &&  today.wday < 6
+    it_behaves_like '建玉関連の操作'
+  end
 end

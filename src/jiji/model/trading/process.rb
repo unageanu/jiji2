@@ -17,6 +17,7 @@ module Jiji::Model::Trading
 
     def start(initial_job = [])
       initial_job.each { |j| @job_queue << j }
+      @trading_context.prepare_start
       @task = @pool.process(@trading_context,
         @job_queue, @priority) do |context, queue, priority|
         Thread.current.priority = priority
@@ -39,9 +40,26 @@ module Jiji::Model::Trading
       context.fail(e) if @fail_on_error
     end
 
-    def stop
-      post_exec { |c| c.request_cancel }.value
-      sleep 0.1 until finished?
+    def cancel
+      return if finished?
+      if running?
+        post_exec { |c| c.request_cancel }.value
+        sleep 0.1 until finished?
+      else
+        @trading_context.request_cancel
+        @trading_context.post_running
+      end
+    end
+
+    def pause
+      return if finished?
+      if running?
+        post_exec { |c| c.request_pause }.value
+        sleep 0.1 until finished?
+      else
+        @trading_context.request_pause
+        @trading_context.post_running
+      end
     end
 
     def post_exec(&block)

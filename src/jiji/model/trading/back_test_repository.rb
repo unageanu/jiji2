@@ -57,7 +57,7 @@ module Jiji::Model::Trading
 
     def delete(id)
       backtest = get(id)
-      backtest.stop
+      backtest.cancel
       backtest.destroy
       @backtests.delete(id)
     end
@@ -65,13 +65,13 @@ module Jiji::Model::Trading
     def stop
       rest = all.reject do |t|
         if t.retrieve_process_status == :wait_for_start
-          t.stop
+          t.pause
           true
         else
           false
         end
       end
-      rest.each { |t| t.stop }
+      rest.each { |t| t.pause }
       backtest_thread_pool.shutdown
     end
 
@@ -80,7 +80,7 @@ module Jiji::Model::Trading
                    .order_by(:created_at.asc)
                    .all.each_with_object(@backtests) do |t, r|
         setup_backtest(t)
-        t.start
+        t.start if t.start_on_startup?
         r[t.id] = t
         r
       end

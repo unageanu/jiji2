@@ -19,19 +19,38 @@ describe Jiji::Model::Trading::Process do
         expects_process_running(@process)
       end
 
-      it 'stop で処理を停止できる' do
+      it 'cancel で処理を停止できる' do
         @process.start
         sleep 0.1
 
-        @process.stop
+        @process.cancel
 
         expects_process_cancelled(@process)
       end
 
-      it 'start した直後でも停止できる' do
+      it 'cancel した直後でも停止できる' do
         @process.start
-        @process.stop
+        @process.cancel
+        sleep 0.1
+
         expects_process_cancelled(@process)
+      end
+
+      it 'pause で処理を停止できる' do
+        @process.start
+        sleep 0.1
+
+        @process.pause
+
+        expects_process_paused(@process)
+      end
+
+      it 'pause した直後でも停止できる' do
+        @process.start
+        @process.pause
+        sleep 0.1
+
+        expects_process_paused(@process)
       end
 
       it 'メッセージを送信できる' do
@@ -136,7 +155,7 @@ describe Jiji::Model::Trading::Process do
       expects_process_waitting_for_start(@process3)
 
       # process1を停止 → 2が開始される
-      @process1.stop
+      @process1.cancel
       sleep 0.1
 
       expects_process_cancelled(@process1)
@@ -156,7 +175,7 @@ describe Jiji::Model::Trading::Process do
       expects_process_running(@process3)
     end
 
-    it 'stop で処理を停止できる' do
+    it 'cancel で処理を停止できる' do
       processes = [@process1, @process2, @process3]
 
       processes.each(&:start)
@@ -165,12 +184,53 @@ describe Jiji::Model::Trading::Process do
       expects_process_waitting_for_start(@process2)
       expects_process_waitting_for_start(@process3)
 
-      # process1を停止 → 2が開始される
-      processes.each(&:stop)
+      processes.each(&:cancel)
 
       processes.each do |p|
         expects_process_cancelled(p)
       end
+    end
+
+    it 'pause で処理を一時停止できる / start で再開できる' do
+      processes = [@process1, @process2, @process3]
+
+      processes.each(&:start)
+      sleep 0.1
+      expects_process_running(@process1)
+      expects_process_waitting_for_start(@process2)
+      expects_process_waitting_for_start(@process3)
+
+      # process1を一時停止 → 2が開始される
+      @process1.pause
+      sleep 0.1
+
+      expects_process_paused(@process1)
+      expects_process_running(@process2)
+      expects_process_waitting_for_start(@process3)
+
+      # process1を再開 → 2が実行中なので、まだ再開されない
+      @process1.start
+      sleep 0.1
+
+      expects_process_waitting_for_start(@process1)
+      expects_process_running(@process2)
+      expects_process_waitting_for_start(@process3)
+
+      # process2をキャンセル
+      @process2.cancel
+      sleep 0.1
+
+      expects_process_waitting_for_start(@process1)
+      expects_process_cancelled(@process2)
+      expects_process_running(@process3)
+
+      # process3をキャンセル
+      @process3.pause
+      sleep 0.1
+
+      expects_process_running(@process1)
+      expects_process_cancelled(@process2)
+      expects_process_paused(@process3)
     end
   end
 
@@ -195,6 +255,14 @@ describe Jiji::Model::Trading::Process do
     expect(process.finished?).to be true
     expect(process.alive_context?).to be false
     expect(get_context_status(process)).to be :cancelled
+    expects_process_can_process_job(process)
+  end
+
+  def expects_process_paused(process)
+    expect(process.running?).to be false
+    expect(process.finished?).to be true
+    expect(process.alive_context?).to be false
+    expect(get_context_status(process)).to be :paused
     expects_process_can_process_job(process)
   end
 

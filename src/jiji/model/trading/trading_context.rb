@@ -24,44 +24,75 @@ module Jiji::Model::Trading
       @status        = :wait_for_start
       @error         = nil
       @variables     = {}
+
+      @mutex = Mutex.new
+    end
+
+    def prepare_start
+      @mutex.synchronize do
+        @status = :wait_for_start
+      end
     end
 
     def prepare_running
-      @status = :running if @status == :wait_for_start
+      @mutex.synchronize do
+        @status = :running if @status == :wait_for_start
+      end
     end
 
     def post_running
-      @status = \
-      case @status
-      when :wait_for_cancel then :cancelled
-      when :error           then :error
-      else                       :finished
+      @mutex.synchronize do
+        @status = \
+        case @status
+        when :wait_for_cancel then :cancelled
+        when :wait_for_pause  then :paused
+        when :wait_for_finish then :finished
+        else @status
+        end
       end
     end
 
     def fail(error)
-      @status = :error
-      @error  = error
+      @mutex.synchronize do
+        @status = :error
+        @error  = error
+      end
     end
 
     def request_cancel
-      @status = :wait_for_cancel
+      @mutex.synchronize do
+        @status = :wait_for_cancel
+      end
+    end
+
+    def request_pause
+      @mutex.synchronize do
+        @status = :wait_for_pause
+      end
     end
 
     def request_finish
-      @status = :wait_for_finished
+      @mutex.synchronize do
+        @status = :wait_for_finish
+      end
     end
 
     def alive?
-      @status == :running
+      @mutex.synchronize do
+        @status == :running
+      end
     end
 
     def [](key)
-      @variables[key]
+      @mutex.synchronize do
+        @variables[key]
+      end
     end
 
     def []=(key, value)
-      @variables[key] = value
+      @mutex.synchronize do
+        @variables[key] = value
+      end
     end
 
   end

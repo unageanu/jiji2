@@ -53,7 +53,7 @@ module Jiji::Model::Trading
     end
 
     def stop_rmt_process
-      @process.stop if @process
+      @process.pause if @process
       @agents.save_state
     end
 

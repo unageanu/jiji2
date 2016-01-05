@@ -131,16 +131,19 @@ module Jiji::Model::Trading
     end
 
     def start
-      return unless status == :wait_for_start || status == :cancelled
-
       @process.start(create_default_jobs)
 
       self.status = :running
       save
     end
 
-    def stop
-      @process.stop if @process && @process.running?
+    def pause
+      @process.pause if @process
+      save_state if (status == :running)
+    end
+
+    def cancel
+      @process.cancel if @process
       save_state if (status == :running)
     end
 
@@ -148,27 +151,12 @@ module Jiji::Model::Trading
       @process.post_exec { |context, _queue| context.status }.value
     end
 
-    def self.create_from_hash(hash)
-      BackTest.new do |b|
-        b.name          = hash['name']
-        b.memo          = hash['memo']
-
-        load_broker_setting_from_hash(b, hash)
-      end
-    end
-
-    def self.load_broker_setting_from_hash(backtest, hash)
-      backtest.pair_names = (hash['pair_names'] || []).map { |n| n.to_sym }
-      backtest.start_time = hash['start_time']
-      backtest.end_time   = hash['end_time']
-      backtest.balance    = hash['balance'] || 0
-    end
-
     def display_info
-      {
-        id:   _id,
-        name: name
-      }
+      { id: _id, name: name }
+    end
+
+    def start_on_startup?
+      status == :wait_for_start || status == :paused
     end
 
     private
@@ -199,7 +187,7 @@ module Jiji::Model::Trading
 
     def calcurate_start_time
       cancelled_time = cancelled_state && cancelled_state[:cancelled_time]
-      status == :cancelled && cancelled_time ? cancelled_time + 15 : start_time
+      cancelled_or_paused? && cancelled_time ? cancelled_time + 15 : start_time
     end
 
     def create_components
@@ -210,6 +198,10 @@ module Jiji::Model::Trading
       trading_context  = create_trading_context(
         @broker, @agents, @graph_factory)
       @process         = create_process(trading_context)
+    end
+
+    def cancelled_or_paused?
+      status == :cancelled || status == :paused
     end
 
     def create_broker
@@ -240,5 +232,21 @@ module Jiji::Model::Trading
       (cancelled_state && cancelled_state[:balance]) || balance
     end
 
+  end
+
+  def BackTest.create_from_hash(hash)
+    BackTest.new do |b|
+      b.name          = hash['name']
+      b.memo          = hash['memo']
+
+      load_broker_setting_from_hash(b, hash)
+    end
+  end
+
+  def BackTest.load_broker_setting_from_hash(backtest, hash)
+    backtest.pair_names = (hash['pair_names'] || []).map { |n| n.to_sym }
+    backtest.start_time = hash['start_time']
+    backtest.end_time   = hash['end_time']
+    backtest.balance    = hash['balance'] || 0
   end
 end

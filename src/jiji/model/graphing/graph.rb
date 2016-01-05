@@ -18,8 +18,7 @@ module Jiji::Model::Graphing
       class_name: 'Jiji::Model::Trading::BackTestProperties'
     }
     has_many :graph_data, {
-      class_name: 'Jiji::Model::Graphing::GraphData',
-      dependent:  :destroy
+      class_name: 'Jiji::Model::Graphing::GraphData'
     }
 
     field :label,            type: String
@@ -109,6 +108,11 @@ module Jiji::Model::Graphing
       @savers = Jiji::Model::Trading::Intervals.instance.all.map do |i|
         Internal::GraphDataSaver.new(self, i, saving_interval)
       end
+    end
+
+    def destroy(*args)
+      GraphData.where(graph_id:self.id).delete
+      super
     end
 
     private

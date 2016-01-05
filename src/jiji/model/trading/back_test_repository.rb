@@ -55,6 +55,13 @@ module Jiji::Model::Trading
       @backtests[id] || not_found(id)
     end
 
+    def restart(id)
+      config = extract_backtest_config(id)
+      new_test = register(config)
+      delete(id)
+      new_test
+    end
+
     def delete(id)
       backtest = get(id)
       backtest.cancel
@@ -92,6 +99,18 @@ module Jiji::Model::Trading
       setting = config[:agent_setting] || {}
       illegal_argument if setting.empty?
       setting
+    end
+
+    def extract_backtest_config(id)
+      backtest = get(id)
+      backtest.to_h.merge({
+        agent_setting: backtest.agent_settings.map do |s|
+          hash = s.to_h
+          hash.delete :id
+          hash[:agent_name] = hash[:name]
+          hash
+        end
+      })
     end
 
     def setup_backtest(backtest)

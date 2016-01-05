@@ -28,7 +28,7 @@ module Jiji::Model::Trading
     has_many :agent_settings,
       class_name: 'Jiji::Model::Agents::AgentSetting', dependent: :destroy
     has_many :positions,
-      class_name: 'Jiji::Model::Trading::Position', dependent: :destroy
+      class_name: 'Jiji::Model::Trading::Position'
     has_many :notifications,
       class_name: 'Jiji::Model::Notification::Notification'
 
@@ -157,6 +157,11 @@ module Jiji::Model::Trading
 
     def start_on_startup?
       status == :wait_for_start || status == :paused
+    end
+
+    def destroy(*args)
+      Position.where(backtest_id:self.id).delete
+      super
     end
 
     private

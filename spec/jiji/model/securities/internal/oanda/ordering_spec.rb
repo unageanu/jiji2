@@ -6,7 +6,7 @@ require 'jiji/model/securities/oanda_securities'
 require 'jiji/model/securities/internal/examples/ordering_examples'
 require 'jiji/model/securities/internal' \
         + '/examples/ordering_response_pattern_examples'
-require "date"
+require 'date'
 
 describe Jiji::Model::Securities::Internal::Oanda::Ordering do
   include_context 'use container'

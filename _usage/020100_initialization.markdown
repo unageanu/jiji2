@@ -24,12 +24,12 @@ nav_class_name: "lv2"
   - デフォルトの実装は以下の通りで、各キーの値をエージェントのインスタンス変数に設定するようになっています。 オーバーライドして任意の処理を行うことも可能です。
 
 {% highlight ruby %}
-  def properties=( properties )
-    @properties = properties
-    properties.each_pair {|k,v|
-      instance_variable_set("@#{k}", v)
-    }
-  end
+def properties=( properties )
+  @properties = properties
+  properties.each_pair {|k,v|
+    instance_variable_set("@#{k}", v)
+  }
+end
 {% endhighlight %}
 
 <div class="notice">
@@ -57,13 +57,13 @@ nav_class_name: "lv2"
   - 引数でレート情報が渡されます。以下のようなコードで情報にアクセス可能です。
 
 {% highlight ruby %}
-  value = tick[:EURJPY]
-  value.bid    # EURJPY の bidレート
-  value.ask    # EURJPY の askレート
+value = tick[:EURJPY]
+value.bid    # EURJPY の bidレート
+value.ask    # EURJPY の askレート
 
-  value = tick[:USDJPY]
-  value.bid    # USDJPY の bidレート
-  value.ask    # USDJPY の askレート
+value = tick[:USDJPY]
+value.bid    # USDJPY の bidレート
+value.ask    # USDJPY の askレート
 {% endhighlight %}
 
 

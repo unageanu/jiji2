@@ -39,10 +39,10 @@ broker.buy(:USDJPY, 10000, :stop, {
   expiry:      Time.utc(2015, 5, 2),
 
   # lower_bound等のオプションは、注文方法によらず指定可能です。
-  lower_bound:   135.61,
-  upper_bound:   135.59,
-  stop_loss:     135.23,
-  take_profit:   135.73,
+  lower_bound:   112.401,
+  upper_bound:   112.407,
+  stop_loss:     111.404,
+  take_profit:   113.404,
   trailing_stop: 10
 })
 
@@ -106,6 +106,7 @@ orders.length
 orders.select { |o| o.sell_or_buy == :sell } #売り注文の一覧を取得
 {% endhighlight %}
 
+Orderの属性は[こちら](/rdocs/Jiji/Model/Trading/Order.html)を参照ください。
 
 <h3>注文を変更する</h3>
 指値や決済条件は、 `Broker#modify_order(order)` または、 `Order#modify` で変更することが可能です。

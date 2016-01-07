@@ -125,7 +125,7 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def process_order(tick, order)
-      return true if order.expiry <= tick.timestamp
+      return true if !order.expiry.nil? && order.expiry <= tick.timestamp
       if order.carried_out?(tick)
         register_position(order)
         true

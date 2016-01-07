@@ -160,7 +160,7 @@ module Jiji::Model::Trading
     end
 
     def destroy(*args)
-      Position.where(backtest_id:self.id).delete
+      Position.where(backtest_id: id).delete
       super
     end
 

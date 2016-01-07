@@ -111,7 +111,7 @@ module Jiji::Model::Graphing
     end
 
     def destroy(*args)
-      GraphData.where(graph_id:self.id).delete
+      GraphData.where(graph_id: id).delete
       super
     end
 

@@ -131,9 +131,9 @@ module Jiji::Model::Trading
       current_price >= (price || 0)
     end
 
-    def market_if_touched?(curent_price)
-      @initial_price = curent_price unless @initial_price
-      @initial_price < price ? upper?(curent_price) : lower?(curent_price)
+    def market_if_touched?(current_price)
+      @initial_price = current_price unless @initial_price
+      @initial_price < price ? upper?(current_price) : lower?(current_price)
     end
 
     def insert_reservation_order_options(options)

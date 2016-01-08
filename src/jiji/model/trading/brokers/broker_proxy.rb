@@ -10,12 +10,13 @@ module Jiji::Model::Trading::Brokers
     extend Forwardable
 
     def_delegators :@broker, :pairs, :tick, :positions, :orders, :account,
-      :modify_order, :cancel_order, :modify_position, :close_position
+      :modify_order, :cancel_order, :modify_position, :close_position,
+      :refresh, :refresh_positions, :refresh_account
 
     attr_reader :agent #:nodoc:
 
     def initialize(broker, agent) #:nodoc:
-      @broker     = broker
+      @broker  = broker
       @agent   = agent
     end
 

@@ -10,7 +10,7 @@ module Jiji::Test::Mock
 
     attr_reader :config
     attr_writer :pairs
-    attr_accessor :seed, :positions, :orders, :balance
+    attr_accessor :seed, :positions, :orders, :balance, :i, :seeds
 
     def initialize(config)
       @position_builder = Internal::PositionBuilder.new
@@ -21,6 +21,7 @@ module Jiji::Test::Mock
       @config = config
       @serial = 0
       @i = -1
+      @seeds = [0, 0.26, 0.3, 0.303, 0.301, 0.4, 0.401, 0.35, 0.36, 0.2, 0.1]
 
       @data_builder = Jiji::Test::DataBuilder.new
       @balance = config[:balance] || 100_000
@@ -45,7 +46,7 @@ module Jiji::Test::Mock
 
     def retrieve_current_tick
       @current_tick = create_tick(
-        SEEDS[(@i += 1) % SEEDS.length],
+        @seeds[(@i += 1) % @seeds.length],
         Time.utc(2015, 5, 1) + @i * 15)
       update_orders(@current_tick)
       update_positions(@current_tick)
@@ -55,10 +56,9 @@ module Jiji::Test::Mock
     def retrieve_tick_history(pair_name, start_time, end_time)
       i = -1
       create_timestamps(15, start_time, end_time).map do |time|
-        create_tick(SEEDS[(i += 1) % SEEDS.length], time)
+        create_tick(@seeds[(i += 1) % @seeds.length], time)
       end
     end
-    SEEDS = [0, 0.26, 0.3, 0.303, 0.301, 0.4, 0.401, 0.35, 0.36, 0.2, 0.1]
 
     def retrieve_rate_history(pair_name, interval, start_time, end_time)
       if pair_name != :EURJPY && pair_name != :EURUSD && pair_name != :USDJPY

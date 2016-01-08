@@ -45,7 +45,7 @@ describe TrapRepeatIfDone do
 
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       order = orders[0]
       expect(orders.length).to eq 6
       expect(order.internal_id).not_to be nil
@@ -136,27 +136,27 @@ describe TrapRepeatIfDone do
       # 同じ価格で再度呼び出しても新しい注文は登録されない
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
       orders.length.times do |i|
-        expect(orders[i]).to some_order( prev[i] )
+        expect(orders[i]).to some_order(prev[i])
       end
 
       # baseが変化しない場合も、新しい注文は登録されない
       broker.refresh
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
       orders.length.times do |i|
-        expect(orders[i]).to some_order( prev[i] )
+        expect(orders[i]).to some_order(prev[i])
       end
 
       # baseが変化すると、新しい注文が登録される
       broker.refresh
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
 
       order = orders[0]
@@ -250,17 +250,17 @@ describe TrapRepeatIfDone do
       broker.refresh
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
       orders.length.times do |i|
-        expect(orders[i]).to some_order( prev[i] )
+        expect(orders[i]).to some_order(prev[i])
       end
 
       # 建玉を決済すると、注文が再登録される
-      broker.positions.each {|p| p.close }
+      broker.positions.each { |p| p.close }
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 7
 
       order = orders[0]
@@ -373,10 +373,10 @@ describe TrapRepeatIfDone do
 
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 7
       orders.length.times do |i|
-        expect(orders[i]).to some_order( prev[i] )
+        expect(orders[i]).to some_order(prev[i])
       end
     end
   end
@@ -391,7 +391,7 @@ describe TrapRepeatIfDone do
 
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       order = orders[0]
       expect(orders.length).to eq 6
       expect(order.internal_id).not_to be nil
@@ -482,27 +482,27 @@ describe TrapRepeatIfDone do
       # 同じ価格で再度呼び出しても新しい注文は登録されない
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
       orders.length.times do |i|
-        expect(orders[i]).to some_order( prev[i] )
+        expect(orders[i]).to some_order(prev[i])
       end
 
       # baseが変化しない場合も、新しい注文は登録されない
       broker.refresh
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
       orders.length.times do |i|
-        expect(orders[i]).to some_order( prev[i] )
+        expect(orders[i]).to some_order(prev[i])
       end
 
       # baseが変化すると、新しい注文が登録される
       broker.refresh
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
 
       order = orders[0]
@@ -596,17 +596,17 @@ describe TrapRepeatIfDone do
       broker.refresh
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
       orders.length.times do |i|
-        expect(orders[i]).to some_order( prev[i] )
+        expect(orders[i]).to some_order(prev[i])
       end
 
       # 建玉を決済すると、注文が再登録される
-      broker.positions.each {|p| p.close }
+      broker.positions.each { |p| p.close }
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 7
 
       order = orders[0]
@@ -719,12 +719,11 @@ describe TrapRepeatIfDone do
 
       logic.register_orders(broker)
 
-      orders = broker.orders.sort_by {|o| o.internal_id }
+      orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 7
       orders.length.times do |i|
-        expect(orders[i]).to some_order( prev[i] )
+        expect(orders[i]).to some_order(prev[i])
       end
-
     end
   end
 

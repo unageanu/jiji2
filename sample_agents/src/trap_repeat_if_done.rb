@@ -22,7 +22,7 @@ class TrapRepeatIfDoneAgent
 
   def post_create
     @trap_repeat_if_done = TrapRepeatIfDone.new(
-      broker.pairs.find {|p| p.name == :USDJPY }, :buy,
+      broker.pairs.find { |p| p.name == :USDJPY }, :buy,
       @trap_interval_pips.to_i,
       @trade_units.to_i, @profit_pips.to_i, @slippage.to_i, logger)
   end
@@ -41,7 +41,6 @@ class TrapRepeatIfDoneAgent
 
 end
 
-
 # トラップリピートイフダンのような注文を発行するクラス
 class TrapRepeatIfDone
 
@@ -53,21 +52,16 @@ class TrapRepeatIfDone
   # trade_units:: 1注文あたりの取引数量
   # profit_pips:: 利益を確定するpips
   # slippage:: 許容スリッページ。nilの場合、指定しない
-  def initialize(target_pair, sell_or_buy=:buy, trap_interval_pips=50,
-    trade_units=1, profit_pips=100, slippage=3, logger=nil)
+  def initialize(target_pair, sell_or_buy = :buy, trap_interval_pips = 50,
+    trade_units = 1, profit_pips = 100, slippage = 3, logger = nil)
 
     @target_pair        = target_pair
     @trap_interval_pips = trap_interval_pips
     @slippage           = slippage
-
-    @mode = if sell_or_buy == :sell
-      Sell.new(target_pair, trade_units, profit_pips, slippage, logger)
-    else
-      Buy.new(target_pair, trade_units, profit_pips, slippage, logger)
-    end
+    @mode               = create_mode(target_pair, sell_or_buy,
+      trade_units, profit_pips, slippage, logger)
 
     @logger = logger
-
     @registerd_orders   = {}
   end
 
@@ -77,7 +71,6 @@ class TrapRepeatIfDone
   def register_orders(broker)
     broker.instance_variable_get(:@broker).refresh_positions
     # 常に最新の建玉を取得して利用するようにする
-    # TODO 公開APIにする
 
     each_traps(broker.tick) do |trap_open_price|
       next if order_or_position_exists?(trap_open_price, broker)
@@ -100,7 +93,7 @@ class TrapRepeatIfDone
     base = resolve_base_price(current_price)
     6.times do |n| # baseを基準に、上下3つのトラップを仕掛ける
       trap_open_price = BigDecimal.new(base, 10) \
-        + BigDecimal.new(@trap_interval_pips, 10) * (n-3) * @target_pair.pip
+        + BigDecimal.new(@trap_interval_pips, 10) * (n - 3) * @target_pair.pip
       yield trap_open_price
     end
   end
@@ -115,7 +108,7 @@ class TrapRepeatIfDone
   def resolve_base_price(current_price)
     current_price = BigDecimal.new(current_price, 10)
     pip_precision = 1 / @target_pair.pip
-    (current_price * pip_precision / @trap_interval_pips ).ceil \
+    (current_price * pip_precision / @trap_interval_pips).ceil \
       * @trap_interval_pips / pip_precision
   end
 
@@ -133,15 +126,16 @@ class TrapRepeatIfDone
     order_exists?(trap_open_price, broker) \
     || position_exists?(trap_open_price, broker)
   end
+
   def order_exists?(trap_open_price, broker)
     key = key_for(trap_open_price)
     return false unless @registerd_orders.include? key
     id = @registerd_orders[key]
-    order = broker.orders.find {|o| o.internal_id == id }
-    return !order.nil?
+    order = broker.orders.find { |o| o.internal_id == id }
+    !order.nil?
   end
-  def position_exists?(trap_open_price, broker)
 
+  def position_exists?(trap_open_price, broker)
     # trapのリミット付近でレートが上下して注文が大量に発注されないよう、
     # trapのリミット付近を開始値とする建玉が存在する間は、trapの注文を発行しない
     slipage_price = (@slippage.nil? ? 10 : @slippage) * @target_pair.pip
@@ -151,11 +145,20 @@ class TrapRepeatIfDone
       p.entry_price < trap_open_price + slipage_price \
       && p.entry_price > trap_open_price - slipage_price
     end
-    return !position.nil?
+    !position.nil?
   end
 
   def key_for(trap_open_price)
     (trap_open_price * (1 / @target_pair.pip)).to_i.to_s
+  end
+
+  def create_mode(target_pair, sell_or_buy,
+    trade_units, profit_pips, slippage, logger)
+    if sell_or_buy == :sell
+      Sell.new(target_pair, trade_units, profit_pips, slippage, logger)
+    else
+      Buy.new(target_pair, trade_units, profit_pips, slippage, logger)
+    end
   end
 
   # 取引モード(売 or 買)
@@ -186,62 +189,72 @@ class TrapRepeatIfDone
       pips  = BigDecimal.new(pips,  10) * @target_pair.pip
       (price + pips).to_f
     end
+
     def pring_order_log(mode, options, timestamp)
       return unless @logger
       message = [
         mode, timestamp, options[:price], options[:take_profit],
         options[:lower_bound], options[:upper_bound]
-      ].map {|item| item.to_s }.join(" ")
+      ].map { |item| item.to_s }.join(' ')
       @logger.info message
     end
+
   end
 
   class Sell < Mode
+
     def resolve_current_price(tick_value)
       tick_value.bid
     end
+
     def register_order(trap_open_price, broker)
       timestamp = broker.tick.timestamp
       options = create_option(trap_open_price, timestamp)
-      pring_order_log("sell", options, timestamp)
+      pring_order_log('sell', options, timestamp)
       broker.sell(@target_pair.name, @trade_units, :marketIfTouched, options)
     end
+
     def create_option(trap_open_price, timestamp)
       options = {
         price:       trap_open_price.to_f,
-        take_profit: calculate_price(trap_open_price, @profit_pips*-1),
-        expiry:      timestamp + 60*60*24*7
+        take_profit: calculate_price(trap_open_price, @profit_pips * -1),
+        expiry:      timestamp + 60 * 60 * 24 * 7
       }
       unless @slippage.nil?
-        options[:lower_bound] = calculate_price(trap_open_price, @slippage*-1)
+        options[:lower_bound] = calculate_price(trap_open_price, @slippage * -1)
         options[:upper_bound] = calculate_price(trap_open_price, @slippage)
       end
       options
     end
+
   end
 
   class Buy < Mode
+
     def resolve_current_price(tick_value)
       tick_value.ask
     end
+
     def register_order(trap_open_price, broker)
       timestamp = broker.tick.timestamp
       options = create_option(trap_open_price, timestamp)
-      pring_order_log("buy", options, timestamp)
+      pring_order_log('buy', options, timestamp)
       broker.buy(@target_pair.name, @trade_units, :marketIfTouched, options)
     end
+
     def create_option(trap_open_price, timestamp)
       options = {
         price:       trap_open_price.to_f,
         take_profit: calculate_price(trap_open_price, @profit_pips),
-        expiry:      timestamp + 60*60*24*7
+        expiry:      timestamp + 60 * 60 * 24 * 7
       }
       unless @slippage.nil?
-        options[:lower_bound] = calculate_price(trap_open_price, @slippage*-1)
+        options[:lower_bound] = calculate_price(trap_open_price, @slippage * -1)
         options[:upper_bound] = calculate_price(trap_open_price, @slippage)
       end
       options
     end
+
   end
 
 end

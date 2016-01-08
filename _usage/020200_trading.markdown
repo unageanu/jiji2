@@ -18,8 +18,8 @@ nav_class_name: "lv2"
 broker.sell(:EURJPY, 10000)
 # 各種オプションを指定して、EURJPYを10000単位、成行で買い
 broker.buy(:EURJPY,  10000, :market, {
-  lower_bound:   135.61,  #成立下限価格
-  upper_bound:   135.59,  #成立上限価格
+  lower_bound:   135.59,  #成立下限価格
+  upper_bound:   135.61,  #成立上限価格
 
   # 建玉の約定条件
   stop_loss:     135.23,  #ストップロス価格

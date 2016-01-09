@@ -2,6 +2,7 @@ import React                  from "react"
 import MUI                    from "material-ui"
 import AbstractComponent      from "../widgets/abstract-component"
 import IconSelector           from "../icons/icon-selector"
+import StringFormatter        from "../../../viewmodel/utils/string-formatter"
 
 const TextField    = MUI.TextField;
 
@@ -94,7 +95,11 @@ export default class AgentPropertyEditor extends AbstractComponent {
   createAgentPropertyEditor(selectedAgent, agentClass) {
     if (!selectedAgent || !agentClass) return null;
     return agentClass.properties.map((p) => {
-      const value = selectedAgent.properties[p.id] || p.default;
+      const value = selectedAgent.properties[p.id]
+        || selectedAgent.properties[StringFormatter.snakeCaseToCamelCase(p.id)]
+           // 転送時にキャメルケースに変更される場合があるため、キャメルケースに変換
+           // したキーでも取得を試みる
+        || p.default;
       if (this.props.readOnly) {
         return <div key={p.id} className="property item">
           <span className="item-label">{p.name}:</span>

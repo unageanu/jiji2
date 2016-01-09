@@ -82,6 +82,22 @@ describe 'バックテスト' do
     end
   end
 
+  it 'POST /backtests/:backtest_id/action で再実行などのアクションを実行できる' do
+    r = @client.get('backtests')
+    id = r.body.find { |b| b['name'] == 'テスト' }['id']
+
+    r = @client.post("backtests/#{id}/action", {
+      'action': 'restart'
+    })
+    expect(r.status).to eq 200
+    id = r.body['result']['id']
+
+    r = @client.post("backtests/#{id}/action", {
+      'action': 'cancel'
+    })
+    expect(r.status).to eq 200
+  end
+
   it 'DELETE /backtests/:id でバックテストを削除できる' do
     r = @client.get('backtests')
     id = r.body.find { |b| b['name'] == 'テスト' }['id']

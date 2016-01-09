@@ -33,6 +33,17 @@ module Jiji::Web
       no_content
     end
 
+    options '/:backtest_id/action' do
+      allow('POST,OPTIONS')
+    end
+    post '/:backtest_id/action' do
+      id = BSON::ObjectId.from_string(params[:backtest_id])
+      backtest = repository.get(id)
+      ok({
+        result: execute_action(backtest, load_body['action'])
+      })
+    end
+
     options '/:backtest_id/account' do
       allow('GET,OPTIONS')
     end
@@ -50,6 +61,16 @@ module Jiji::Web
     get '/:backtest_id/agent-settings' do
       id = BSON::ObjectId.from_string(params[:backtest_id])
       ok(repository.get(id).agent_settings.to_a)
+    end
+
+    def execute_action(backtest, action)
+      case action
+      when 'cancel'  then backtest.cancel
+      when 'pause'   then backtest.pause
+      when 'start'   then backtest.start
+      when 'restart' then repository.restart(backtest.id)
+      else illegal_argument
+      end
     end
 
     def repository

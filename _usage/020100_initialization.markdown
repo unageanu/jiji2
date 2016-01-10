@@ -74,7 +74,10 @@ value.ask    # USDJPY の askレート
 
 <div class="warn">
 ※状態は、 <code>Mongoid#Hash</code> として永続化されます。<b>Hashに格納できない型を返却すると永続化に失敗します</b>のでご注意ください。
-文字列や数値型であれば、問題ありません。
+<ul>
+  <li>文字列や数値型であれば、問題ありません。</li>
+  <li><code>BigDecimal</code>は、文字列型に変換されてしまいます。ご注意。</li>
+</ul>
 </div>
 
 <br/>

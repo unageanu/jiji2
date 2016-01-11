@@ -63,21 +63,29 @@ export default class Backtests extends Observable {
 
   register( testConfig ) {
     return this.backtestService.register( testConfig ).then( (test) => {
-      test = this.convertToBacktest(test);
-      this.tests.push(test);
-      this.tests.sort(comparator);
-      this.byId[test.id] = test;
-      this.fire("added", {item: test});
-      return test;
+      return this.addBacktest(test);
     });
   }
 
   remove(id) {
     return this.backtestService.remove( id ).then( () => {
+      return this.removeBacktest(id);
+    });
+  }
+
+  restart(id) {
+    return this.backtestService.restart( id ).then( (result) => {
+      this.removeBacktest(id);
+      return this.addBacktest(result.result);
+    });
+  }
+
+  cancel(id) {
+    return this.backtestService.cancel( id ).then( () => {
       let item = this.byId[id];
-      this.byId[id] = null;
-      this.tests = this.tests.filter((s)=> s.id !== id);
-      this.fire("removed", {item: item});
+      item.status = "cancelled"
+      this.tests.sort(comparator);
+      this.fire("updateStates", {items:this.tests});
       return item;
     });
   }
@@ -108,6 +116,23 @@ export default class Backtests extends Observable {
 
   getRunningTests() {
     return this.tests.filter((test) => !test.isFinished());
+  }
+
+  addBacktest(response) {
+    const test = this.convertToBacktest(response);
+    this.tests.push(test);
+    this.tests.sort(comparator);
+    this.byId[test.id] = test;
+    this.fire("added", {item: test});
+    return test;
+  }
+
+  removeBacktest(id) {
+    let item = this.byId[id];
+    this.byId[id] = null;
+    this.tests = this.tests.filter((s)=> s.id !== id);
+    this.fire("removed", {item: item});
+    return item;
   }
 
   startUpdater() {

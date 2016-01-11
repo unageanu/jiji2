@@ -20,6 +20,20 @@ export default class BacktestService extends AbstractService {
     return this.xhrManager.xhr( this.serviceUrl(), "POST", testConfig);
   }
 
+  cancel( id ) {
+    this.googleAnalytics.sendEvent( "cancel backtest" );
+    return this.xhrManager.xhr( this.serviceUrl(id, "/action"), "POST", {
+      action: "cancel"
+    });
+  }
+
+  restart( id ) {
+    this.googleAnalytics.sendEvent( "restart backtest" );
+    return this.xhrManager.xhr( this.serviceUrl(id, "/action"), "POST", {
+      action: "restart"
+    });
+  }
+
   remove( id ) {
     this.googleAnalytics.sendEvent( "remove backtest" );
     return this.xhrManager.xhr( this.serviceUrl(id), "DELETE");

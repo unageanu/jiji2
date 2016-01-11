@@ -139,7 +139,7 @@ describe("Backtests", () => {
     ]);
   });
 
-  it("removeでソースを削除できる", () => {
+  it("removeでテストを削除できる", () => {
     target.remove("3");
     xhrManager.requests[0].resolve({});
 
@@ -149,6 +149,63 @@ describe("Backtests", () => {
       {id: "2", name:"cc", status: "running",           createdAt: date(2)},
       {id: "7", name:"gg", status: "cancelled",         createdAt: date(7)},
       {id: "6", name:"ff", status: "error",             createdAt: date(6)},
+      {id: "1", name:"aa", status: "finished",          createdAt: date(1)}
+    ]);
+  });
+
+  it("cancelでソースを停止できる", () => {
+    target.cancel("2");
+    xhrManager.requests[0].resolve({});
+
+    expect(target.tests).toSomeBacktests([
+      {id: "5", name:"ee", status: "wait_for_finished", createdAt: date(5)},
+      {id: "4", name:"dd", status: "wait_for_cancel",   createdAt: date(4)},
+      {id: "3", name:"bb", status: "wait_for_start",    createdAt: date(3)},
+      {id: "7", name:"gg", status: "cancelled",         createdAt: date(7)},
+      {id: "6", name:"ff", status: "error",             createdAt: date(6)},
+      {id: "2", name:"cc", status: "cancelled",         createdAt: date(2)},
+      {id: "1", name:"aa", status: "finished",          createdAt: date(1)}
+    ]);
+  });
+
+  it("restartでテストを再実行できる", () => {
+    target.restart("3");
+    xhrManager.requests[0].resolve({
+      result: {
+        id:   "8",
+        name: "bb",
+        status: "wait_for_start",
+        createdAt: date(10)
+      }
+    });
+
+    expect(target.tests).toSomeBacktests([
+      {id: "5", name:"ee", status: "wait_for_finished", createdAt: date(5)},
+      {id: "4", name:"dd", status: "wait_for_cancel",   createdAt: date(4)},
+      {id: "2", name:"cc", status: "running",           createdAt: date(2)},
+      {id: "8", name:"bb", status: "wait_for_start",    createdAt: date(10)},
+      {id: "7", name:"gg", status: "cancelled",         createdAt: date(7)},
+      {id: "6", name:"ff", status: "error",             createdAt: date(6)},
+      {id: "1", name:"aa", status: "finished",          createdAt: date(1)}
+    ]);
+
+    target.restart("6");
+    xhrManager.requests[1].resolve({
+      result: {
+        id:   "9",
+        name: "ff",
+        status: "wait_for_start",
+        createdAt: date(11)
+      }
+    });
+
+    expect(target.tests).toSomeBacktests([
+      {id: "5", name:"ee", status: "wait_for_finished", createdAt: date(5)},
+      {id: "4", name:"dd", status: "wait_for_cancel",   createdAt: date(4)},
+      {id: "2", name:"cc", status: "running",           createdAt: date(2)},
+      {id: "9", name:"ff", status: "wait_for_start",    createdAt: date(11)},
+      {id: "8", name:"bb", status: "wait_for_start",    createdAt: date(10)},
+      {id: "7", name:"gg", status: "cancelled",         createdAt: date(7)},
       {id: "1", name:"aa", status: "finished",          createdAt: date(1)}
     ]);
   });

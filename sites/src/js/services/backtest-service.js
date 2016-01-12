@@ -22,14 +22,14 @@ export default class BacktestService extends AbstractService {
 
   cancel( id ) {
     this.googleAnalytics.sendEvent( "cancel backtest" );
-    return this.xhrManager.xhr( this.serviceUrl(id, "/action"), "POST", {
+    return this.xhrManager.xhr( this.serviceUrl(id + "/action"), "POST", {
       action: "cancel"
     });
   }
 
   restart( id ) {
     this.googleAnalytics.sendEvent( "restart backtest" );
-    return this.xhrManager.xhr( this.serviceUrl(id, "/action"), "POST", {
+    return this.xhrManager.xhr( this.serviceUrl(id + "/action"), "POST", {
       action: "restart"
     });
   }

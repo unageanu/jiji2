@@ -21,6 +21,7 @@ export default class Backtest extends Observable {
   isFinished() {
     return this.status === "finished"
         || this.status === "cancelled"
+        || this.status === "paused"
         || this.status === "error";
   }
 }

@@ -74,7 +74,7 @@ module Jiji::Model::Trading
       { created_at: 1, id: 1 },
       unique: true, name: 'backtests_created_at_id_index')
 
-    attr_reader :process, :agents
+    attr_reader :process, :agents, :trading_context
 
     def to_h
       hash = {
@@ -143,12 +143,13 @@ module Jiji::Model::Trading
     end
 
     def cancel
+      illegal_state if @trading_context.finished?
       @process.cancel if @process
       save_state if (status == :running)
     end
 
     def retrieve_process_status
-      @process.post_exec { |context, _queue| context.status }.value
+      @trading_context.status
     end
 
     def display_info
@@ -200,9 +201,9 @@ module Jiji::Model::Trading
       @graph_factory   = create_graph_factory(self, -1)
       @broker          = create_broker
       @agents          = create_agents(self, true)
-      trading_context  = create_trading_context(
+      @trading_context = create_trading_context(
         @broker, @agents, @graph_factory)
-      @process         = create_process(trading_context)
+      @process         = create_process(@trading_context)
     end
 
     def cancelled_or_paused?
@@ -254,4 +255,5 @@ module Jiji::Model::Trading
     backtest.end_time   = hash['end_time']
     backtest.balance    = hash['balance'] || 0
   end
+
 end

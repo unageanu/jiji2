@@ -400,6 +400,11 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(status[:progress]).to be > prev_status[:progress]
       expect(status[:current_time]).to be > prev_status[:current_time]
 
+      # 実行完了したテストはキャンセルできない
+      expect do
+        @repository.all[1].cancel
+      end.to raise_exception(Jiji::Errors::IllegalStateException)
+
       @repository.stop
 
       @container    = Jiji::Test::TestContainerFactory.instance.new_container
@@ -641,35 +646,11 @@ describe Jiji::Model::Trading::BackTestRepository do
         expect(backtests.length).to be 3
 
         src = @repository.all[0]
-        test = @repository.restart(src.id)
 
-        expect(test.id).not_to eq src.id
-        expect(test.name).to eq 'テスト0'
-        expect(test.created_at).to eq Time.at(2)
-        expect(test.start_time).to eq Time.new(2015, 12, 8)
-        expect(test.end_time).to eq Time.new(2015, 12, 9, 12)
-        expect(test.cancelled_state).to be nil
-        expect(test.pair_names).to eq [:EURJPY, :EURUSD]
-        agent_settings = load_agent_settings(test.id)
-        expect(agent_settings.length).to be 1
-        expect(agent_settings[0].id).not_to be nil
-        expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
-        expect(agent_settings[0].name).to eq 'テスト1'
-        expect(agent_settings[0].properties).to eq({ 'a' => 1, 'b' => 'b' })
-        agent = test.agents[agent_settings[0].id]
-        expect(agent.agent_name).to eq 'テスト1'
-        expect(agent.broker.agent.id).to eq agent_settings[0].id
-        expect(test.status).to eq :running
-        status = test.retrieve_status_from_context
-        expect(status[:status]).to eq :wait_for_start
-        expect(status[:progress]).to eq nil
-        expect(status[:current_time]).to eq nil
-
-        backtests = @repository.all.sort_by { |p| p.name }
-        expect(backtests.length).to be 3
-        expect(backtests[0].name).to eq 'テスト0'
-        expect(backtests[1].name).to eq 'テスト1'
-        expect(backtests[2].name).to eq 'テスト2'
+        # 実行中のテストは停止できない
+        expect do
+          @repository.restart(src.id)
+        end.to raise_exception(Jiji::Errors::IllegalStateException)
 
         backtests[2].cancel
         expect(backtests[2].status).to eq :cancelled
@@ -678,24 +659,24 @@ describe Jiji::Model::Trading::BackTestRepository do
         expect(status[:progress]).to eq nil
         expect(status[:current_time]).to eq nil
 
-        sleep 0.1 until backtests[1].process.finished?
-        status = backtests[1].retrieve_status_from_context
+        sleep 0.1 until backtests[0].process.finished?
+        status = backtests[0].retrieve_status_from_context
         expect(status[:status]).to eq :finished
         expect(status[:progress]).to be > 0
         expect(status[:current_time]).to be > Time.new(2015, 12, 8)
 
         sleep 0.4
-        expect(backtests[0].status).to eq :running
-        status = backtests[0].retrieve_status_from_context
+        expect(backtests[1].status).to eq :running
+        status = backtests[1].retrieve_status_from_context
         expect(status[:status]).to eq :running
         expect(status[:progress]).to be >= 0
         expect(status[:current_time]).to be >= Time.new(2015, 12, 8)
 
         # 実行完了したテストを再実行できる
-        test = @repository.restart(backtests[1].id)
+        test = @repository.restart(backtests[0].id)
 
-        expect(test.id).not_to eq backtests[1].id
-        expect(test.name).to eq 'テスト1'
+        expect(test.id).not_to eq backtests[0].id
+        expect(test.name).to eq 'テスト0'
         expect(test.created_at).to eq Time.at(2)
         expect(test.start_time).to eq Time.new(2015, 12, 8)
         expect(test.end_time).to eq Time.new(2015, 12, 9, 12)

@@ -83,6 +83,15 @@ module Jiji::Model::Trading
       end
     end
 
+    def finished?
+      @mutex.synchronize do
+        @status == :cancelled \
+        || @status == :finished \
+        || @status == :paused \
+        || @status == :error
+      end
+    end
+
     def [](key)
       @mutex.synchronize do
         @variables[key]

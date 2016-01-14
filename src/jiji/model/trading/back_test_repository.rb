@@ -57,7 +57,9 @@ module Jiji::Model::Trading
 
     def restart(id)
       backtest = get(id)
-      illegal_state unless backtest.trading_context.finished?
+      unless backtest.status != :running || backtest.trading_context.finished?
+        illegal_state
+      end
       config = extract_backtest_config(id)
       new_test = register(config)
       delete(id)

@@ -255,5 +255,4 @@ module Jiji::Model::Trading
     backtest.end_time   = hash['end_time']
     backtest.balance    = hash['balance'] || 0
   end
-
 end

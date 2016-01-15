@@ -18,8 +18,8 @@ if ENV['MONGOLAB_URI'] || ENV['MONGODB_URI']
   sessions['hosts']    = [u.host + ':' + (u.port ? u.port.to_s : '')]
   sessions['database'] = u.path.gsub(/\//, '')
   sessions['options']  = sessions['options'] || {}
-  sessions['options']['user'] = u.user || ''
-  sessions['options']['password'] = u.password || ''
+  sessions['options']['user'] = u.user || nil
+  sessions['options']['password'] = u.password || nil
   Mongoid.load_configuration(config)
 else
   Mongoid.load!(mongoid_setting_file, ENV['RACK_ENV'] || :production)

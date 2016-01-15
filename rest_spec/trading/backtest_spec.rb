@@ -92,10 +92,11 @@ describe 'バックテスト' do
     expect(r.status).to eq 200
     id = r.body['result']['id']
 
+    # このテストは実行後即エラー終了するのでキャンセルは失敗する
     r = @client.post("backtests/#{id}/action", {
       'action': 'cancel'
     })
-    expect(r.status).to eq 200
+    expect(r.status).to eq 400
   end
 
   it 'DELETE /backtests/:id でバックテストを削除できる' do

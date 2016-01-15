@@ -38,7 +38,7 @@ $ git rm -rf .
 
 <p>5. Jijiリポジトリの変更をローカルに適用します。</p>
 {% highlight sh %}
-$ git pull jiji master
+$ git pull -X theirs jiji master
 {% endhighlight %}
 
 <p>6. 変更をHerokuのリポジトリにPushします。</p>

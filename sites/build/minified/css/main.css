@@ -58,7 +58,8 @@
 .agent-property-editor .agent-details .item .agent-name,.agent-property-editor .agent-details .item .item-value{padding-left:1pc;-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;width:5pc;color:#666;font-size:1pc;overflow:hidden;text-overflow:ellipsis}
 .agent-property-editor .agent-details .item:nth-child(1){margin-top:0}
 .agent-property-editor .agent-details .icon-and-name>.icon{padding-top:24px}
-.agent-property-editor .agent-details .description pre{overflow:scroll;white-space:pre-line;font-size:14px;color:#666;margin:0;padding:8px}
+.agent-property-editor .agent-details .description.item{padding-left:0}
+.agent-property-editor .agent-details .description.item pre{overflow:scroll;white-space:pre-line;font-size:14px;color:#666;margin:0;padding:8px}
 .agent-class-list{max-height:500px;overflow-y:scroll}
 .agent-source-list-menu{padding:8px}
 .agent-source-editor{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;width:100%;margin:24px;overflow:hidden}
@@ -85,7 +86,8 @@
 .backtest-list .error span{vertical-align:middle}
 .backtest-properties-view{padding:24px}
 .backtest-properties-view .buttons{text-align:right;margin-bottom:1pc}
-.backtest-properties-view .buttons .loading{display:inline-block;height:20px;width:34px}
+.backtest-properties-view .buttons .loading,.backtest-properties-view .buttons div{margin-right:1pc}
+.backtest-properties-view .buttons div:last-child{margin-right:0}
 .backtest-properties-view .items{width:100%}
 .backtest-properties-view .items .item{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:flex-start;-ms-flex-align:start;align-items:flex-start}
 .backtest-properties-view .items .item .label,.backtest-properties-view .items .item .value{padding:8px 0}

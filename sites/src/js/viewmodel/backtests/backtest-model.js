@@ -7,6 +7,7 @@ export default class BacktestModel {
     for (let i in backtest) {
       this[i] = backtest[i];
     }
+    this.backtest = backtest;
   }
 
   get formatedPeriod() {
@@ -26,6 +27,7 @@ export default class BacktestModel {
         return "実行中";
       case "wait_for_start" :
         return "待機中";
+      case "paused" :
       case "cancelled" :
         return "キャンセル";
       case "error" :
@@ -39,6 +41,16 @@ export default class BacktestModel {
 
   get formatedCreatedAt() {
     return DateFormatter.format(this.createdAt, "yyyy-MM-dd hh:mm");
+  }
+
+  get enableDelete() {
+    return this.backtest.isFinished();
+  }
+  get enableRestart() {
+    return this.backtest.isFinished();
+  }
+  get enableCancel() {
+    return !this.backtest.isFinished();
   }
 
 }

@@ -38,10 +38,21 @@ export default class BacktestsPageModel extends Observable {
       this.viewModelFactory.createTradingSummaryViewModel();
     this.logViewer = this.viewModelFactory.createLogViewerModel();
 
+    this.registerObservers();
+  }
+
+  registerObservers() {
     this.addObserver("propertyChanged", (n, e) => {
       if (e.key === "activeTab") this.onTabChanged();
       if (e.key === "selectedBacktest") this.onBacktestChanged();
     });
+    this.backtests.addObserver("updateStates", (n, e) => {
+      if ( !this.selectedBacktestId || !this.selectedBacktest) return;
+      const src = this.backtests.get(this.selectedBacktestId);
+      if (this.selectedBacktest.status == src.status) return;
+      this.selectedBacktest.status = src.status;
+      this.setProperty("selectedBacktest", this.selectedBacktest, () => false);
+    }, this);
   }
 
   initialize( ) {
@@ -56,6 +67,22 @@ export default class BacktestsPageModel extends Observable {
   remove(backtestId) {
     return this.backtestList.remove(backtestId).then(
       () => this.selectedBacktestId = null);
+  }
+  restart(backtestId) {
+    return this.backtestList.restart(backtestId).then(
+      ()  => this.selectedBacktestId = null,
+      (e) => {
+        e.message = "再実行に失敗しました。バックテストの状態を確認してください";
+        throw e;
+      });
+  }
+  cancel(backtestId) {
+    return this.backtestList.cancel(backtestId).then(
+      (result) => result,
+      (e) => {
+        e.message = "キャンセルに失敗しました。バックテストの状態を確認してください";
+        throw e;
+      });
   }
 
   onBacktestLoaded() {

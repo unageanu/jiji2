@@ -14,6 +14,7 @@ export default class ConfirmDialog extends React.Component {
   render() {
     return (
       <Dialog
+        key="dialog"
         ref="dialog"
         className="confilm-dialog"
         actions={this.createActions()}
@@ -30,17 +31,18 @@ export default class ConfirmDialog extends React.Component {
     return this.props.actions.map((a) => {
       a.onTouchTap = (ev) => {
         this.refs.dialog.dismiss();
-        this.d.resolve(a.id);
-        this.d = null;
+        if ( this.state.d ) this.state.d.resolve(a.id);
+        this.setState({d:null})
       }
       return a;
     })
   }
 
   confilm() {
-    this.d = new Deferred();
+    const d = new Deferred();
     this.refs.dialog.show();
-    return this.d;
+    this.setState({d:d})
+    return d;
   }
 }
 ConfirmDialog.propTypes = {

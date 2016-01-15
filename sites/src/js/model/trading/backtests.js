@@ -64,20 +64,20 @@ export default class Backtests extends Observable {
   register( testConfig ) {
     return this.backtestService.register( testConfig ).then( (test) => {
       return this.addBacktest(test);
-    });
+    }, (error) => { throw error; } );
   }
 
   remove(id) {
     return this.backtestService.remove( id ).then( () => {
       return this.removeBacktest(id);
-    });
+    }, (error) => { throw error; } );
   }
 
   restart(id) {
     return this.backtestService.restart( id ).then( (result) => {
       this.removeBacktest(id);
       return this.addBacktest(result.result);
-    });
+    }, (error) => { throw error; } );
   }
 
   cancel(id) {
@@ -87,7 +87,7 @@ export default class Backtests extends Observable {
       this.tests.sort(comparator);
       this.fire("updateStates", {items:this.tests});
       return item;
-    });
+    }, (error) => { throw error; } );
   }
 
   updateState() {

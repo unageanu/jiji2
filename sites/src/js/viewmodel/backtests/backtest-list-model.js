@@ -26,6 +26,14 @@ export default class BacktestListModel extends Observable {
     return this.backtests.remove( id );
   }
 
+  restart(id) {
+    return this.backtests.restart( id );
+  }
+
+  cancel(id) {
+    return this.backtests.cancel( id );
+  }
+
   get items() {
     return this.getProperty("items");
   }

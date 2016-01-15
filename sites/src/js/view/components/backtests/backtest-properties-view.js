@@ -20,7 +20,7 @@ export default class BacktestPropertiesView extends AbstractComponent {
   constructor(props) {
     super(props);
     this.state = {
-      deleting: false
+      executingAction: false
     };
   }
 
@@ -31,22 +31,17 @@ export default class BacktestPropertiesView extends AbstractComponent {
   }
 
   render() {
-    const loading = this.state.deleting
-      ? <span className="loading-for-button-action">
-          <LoadingImage size={20} top={0} />
-        </span>
-      : null;
     return <div className="backtest-properties-view">
-      <div className="buttons">
-        <RaisedButton
-          label="バックテストを削除..."
-          labelStyle={{padding:"0px 16px 0px 8px"}}
-          disabled={this.state.deleting}
-          onClick={this.delete.bind(this)}>
-          <ButtonIcon className="md-delete" />
-        </RaisedButton>
-        {loading}
-      </div>
+      <ConfirmDialog
+        key="confirmRemoveDialog" ref="confirmRemoveDialog"
+        text="バックテストを削除します。よろしいですか? " />
+      <ConfirmDialog
+        key="confirmCancelDialog" ref="confirmCancelDialog"
+        text="バックテストの実行をキャンセルします。よろしいですか? " />
+      <ConfirmDialog
+        key="confirmRestartDialog" ref="confirmRestartDialog"
+        text="同じ設定でバックテストを再実行します。よろしいですか? " />
+      {this.createButtons()}
       <div className="items">
         {this.createItems()}
         <div className="item agent-settings">
@@ -58,10 +53,46 @@ export default class BacktestPropertiesView extends AbstractComponent {
           </div>
         </div>
       </div>
-      <ConfirmDialog
-        ref="confirmDialog"
-        text="バックテストを削除します。よろしいですか? " />
     </div>;
+  }
+
+  createButtons() {
+    const buttons = [];
+    const backtest = this.state.selectedBacktest;
+
+    if (backtest.enableRestart) {
+      buttons.push(this.createButton("restart",
+        "再実行...", "md-replay", this.restart.bind(this)));
+    }
+    if (backtest.enableCancel) {
+      buttons.push(this.createButton("cancel",
+        "キャンセル...", "md-pause", this.cancel.bind(this)));
+    }
+    if (backtest.enableDelete) {
+      buttons.push(this.createButton("delete",
+        "削除...", "md-delete", this.delete.bind(this)));
+    }
+    const loading = this.state.executingAction
+      ? <span className="loading">
+          <LoadingImage size={20} top={0} left={-16} />
+        </span>
+      : null;
+    return <div className="buttons">
+      {loading}
+      {buttons}
+    </div>;
+  }
+
+  createButton(key, label, icon, action) {
+    return <RaisedButton
+      className="button"
+      key={key}
+      label={label}
+      labelStyle={{padding:"0px 16px 0px 8px"}}
+      disabled={this.state.executingAction}
+      onClick={action}>
+      <ButtonIcon className={icon} />
+    </RaisedButton>;
   }
 
   createItems() {
@@ -98,11 +129,31 @@ export default class BacktestPropertiesView extends AbstractComponent {
   delete(ev) {
     const backtest = this.state.selectedBacktest;
     if (!backtest) return;
-    this.refs.confirmDialog.confilm().then((id)=> {
+    this.refs.confirmRemoveDialog.confilm().then((id)=> {
       if (id != "yes") return;
-      this.setState({deleting:true});
-      this.props.model.remove(backtest.id).fail(
-        () => this.setState({deleting:false}) );
+      this.setState({executingAction:true});
+      this.props.model.remove(backtest.id).always(
+        () => this.setState({executingAction:false}) );
+    });
+  }
+  restart(ev) {
+    const backtest = this.state.selectedBacktest;
+    if (!backtest) return;
+    this.refs.confirmRestartDialog.confilm().then((id)=> {
+      if (id != "yes") return;
+      this.setState({executingAction:true});
+      this.props.model.restart(backtest.id).always(
+        () => this.setState({executingAction:false}) );
+    });
+  }
+  cancel(ev) {
+    const backtest = this.state.selectedBacktest;
+    if (!backtest) return;
+    this.refs.confirmCancelDialog.confilm().then((id)=> {
+      if (id != "yes") return;
+      this.setState({executingAction:true});
+      this.props.model.cancel(backtest.id).always(
+        () => this.setState({executingAction:false}) );
     });
   }
 }

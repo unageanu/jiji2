@@ -83,13 +83,23 @@ $ sudo docker ps -a
 http://<インストール先ホスト>:<docker-compose.ymlで設定したJijiのポート/デフォルトは8080>
 {% endhighlight %}
 
+<br/>
+
+<div class="warn no_indent">
+※Jijiが動作しない場合、起動ログを確認してください。起動ログは、以下のコマンドで確認できます。
+<br/><br/>
+{% highlight sh %}
+$ sudo docker start -a jiji_jiji
+{% endhighlight %}
+
+</div>
 
 <div class="next">
   <a href="030000_initial_setting.html">Jijiの初期設定に進む</a>
 </div>
 
 
-<p class="step">補足1: コンテナを停止・再起動する</p>
+## 補足1: コンテナを停止・再起動する
 
 Jijiを停止するには以下のコマンドを実行します。
 
@@ -103,7 +113,9 @@ $ sudo docker-compose stop
 $ sudo docker-compose start
 {% endhighlight %}
 
-<p class="step">補足2: サービスのログを確認する</p>
+<br/><br/>
+
+## 補足2: サービスのログを確認する
 
 logsコマンドでコンテナのログを確認できます。
 

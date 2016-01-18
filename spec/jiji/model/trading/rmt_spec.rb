@@ -140,12 +140,15 @@ describe Jiji::Model::Trading::RMT do
     it 'one_dayのデータから昨日の最新のデータが取得され、返却される' do
       @rmt.setup
 
-      graph = @rmt.trading_context.graph_factory.create_balance_graph
-      start_time = Time.local(2015, 5, 1, 18, 0, 0)
-      15.times do |i|
-        graph << [1000 * i]
-        graph.save_data(start_time + (i * 60 * 60 * 6))
-      end
+      graph = nil
+      @rmt.process.post_exec {
+        graph = @rmt.trading_context.graph_factory.create_balance_graph
+        start_time = Time.local(2015, 5, 1, 18, 0, 0)
+        15.times do |i|
+          graph << [1000 * i]
+          graph.save_data(start_time + (i * 60 * 60 * 6))
+        end
+      }
 
       start_time = Time.local(2015, 5, 1, 0, 0, 0)
       end_time   = Time.local(2015, 5, 6, 0, 0, 0)

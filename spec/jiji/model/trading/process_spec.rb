@@ -185,6 +185,7 @@ describe Jiji::Model::Trading::Process do
       expects_process_waitting_for_start(@process3)
 
       processes.each(&:cancel)
+      sleep 0.1
 
       processes.each do |p|
         expects_process_cancelled(p)

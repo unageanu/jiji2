@@ -3,7 +3,7 @@
 require 'sample_agent_test_configuration'
 require 'utils/agent_runner'
 
-describe TrailingStopManager do
+describe TrailingStopAgent do
   include_context 'use data_builder'
 
   let(:runner)    { Utils::AgentRunner.new }

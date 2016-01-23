@@ -16,11 +16,13 @@ module Utils
       fail source.error unless source.error.nil?
     end
 
-    def start_backtest(agent_setting)
+    def start_backtest(agent_setting,
+      start_time = Time.new(2015, 12,  8, 0, 0, 0),
+      end_time = Time.new(2015, 12,  9, 0, 0, 0))
       @backtest_repository.register({
         'name'          => 'テスト',
-        'start_time'    => Time.new(2015, 12,  8, 0,  0, 0),
-        'end_time'      => Time.new(2015, 12,  9, 0,  0, 0),
+        'start_time'    => start_time,
+        'end_time'      => end_time,
         'memo'          => 'メモ',
         'pair_names'    => [:USDJPY, :EURUSD],
         'agent_setting' => agent_setting

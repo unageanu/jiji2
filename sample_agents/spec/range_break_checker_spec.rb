@@ -14,10 +14,9 @@ describe RangeBreakChecker do
     ]
   end
 
-  it 'periodの期間、レートがrange_pipsで推移した後、'+
+  it 'periodの期間、レートがrange_pipsで推移した後、'\
      '上に抜けるとレンジブレイクする' do
-
-    checker = RangeBreakChecker.new(pairs[0], 60*8, 100)
+    checker = RangeBreakChecker.new(pairs[0], 60 * 8, 100)
 
     # データが不足している状態では ブレイクしない
     result = checker.check_range_break(Jiji::Model::Trading::Tick.new({
@@ -76,7 +75,6 @@ describe RangeBreakChecker do
     }, Time.new(2016, 1, 10, 10)))
     expect(result[:state]).to be :no
 
-
     result = checker.check_range_break(Jiji::Model::Trading::Tick.new({
       USDJPY: new_tick_value(121.06, 0.03)
     }, Time.new(2016, 1, 10, 11)))
@@ -108,13 +106,11 @@ describe RangeBreakChecker do
       USDJPY: new_tick_value(120.22, 0.03)
     }, Time.new(2016, 1, 10, 21)))
     expect(result[:state]).to be :no
-
   end
 
-  it 'periodの期間、レートがrange_pipsで推移した後、'+
+  it 'periodの期間、レートがrange_pipsで推移した後、'\
      '下に抜けるとレンジブレイクする' do
-
-    checker = RangeBreakChecker.new(pairs[0], 60*8, 100)
+    checker = RangeBreakChecker.new(pairs[0], 60 * 8, 100)
 
     # データが不足している状態では ブレイクしない
     result = checker.check_range_break(Jiji::Model::Trading::Tick.new({
@@ -173,7 +169,6 @@ describe RangeBreakChecker do
     }, Time.new(2016, 1, 10, 10)))
     expect(result[:state]).to be :no
 
-
     result = checker.check_range_break(Jiji::Model::Trading::Tick.new({
       USDJPY: new_tick_value(120.059, 0.03)
     }, Time.new(2016, 1, 10, 11)))
@@ -192,12 +187,12 @@ describe RangeBreakChecker do
     expect(result[:state]).to be :no
 
     result = checker.check_range_break(Jiji::Model::Trading::Tick.new({
-      USDJPY: new_tick_value(121.02, 0.03)
+      USDJPY: new_tick_value(120.60, 0.03)
     }, Time.new(2016, 1, 10, 20)))
     expect(result[:state]).to be :no
 
     result = checker.check_range_break(Jiji::Model::Trading::Tick.new({
-      USDJPY: new_tick_value(121.06, 0.03)
+      USDJPY: new_tick_value(121.00, 0.03)
     }, Time.new(2016, 1, 10, 21)))
     expect(result[:state]).to be :break_high
 
@@ -207,10 +202,9 @@ describe RangeBreakChecker do
     expect(result[:state]).to be :no
   end
 
-  it 'レートがrange_pips外になっても、' +
+  it 'レートがrange_pips外になっても、' \
      '外れたところからrange_periodの期間が過ぎればブレイクする' do
-
-    checker = RangeBreakChecker.new(pairs[0], 60*8, 100)
+    checker = RangeBreakChecker.new(pairs[0], 60 * 8, 100)
 
     result = checker.check_range_break(Jiji::Model::Trading::Tick.new({
       USDJPY: new_tick_value(120.25, 0.03)
@@ -237,7 +231,6 @@ describe RangeBreakChecker do
       USDJPY: new_tick_value(121.25, 0.03)
     }, Time.new(2016, 1, 10, 2, 1)))
     expect(result[:state]).to be :no
-
 
     result = checker.check_range_break(Jiji::Model::Trading::Tick.new({
       USDJPY: new_tick_value(120.58, 0.03)
@@ -351,12 +344,10 @@ describe RangeBreakChecker do
       USDJPY: new_tick_value(121.35, 0.03)
     }, Time.new(2016, 1, 10, 19)))
     expect(result[:state]).to be :no
-
   end
 
   it '状態を永続化して復元できる' do
-
-    checker = RangeBreakChecker.new(pairs[0], 60*8, 100)
+    checker = RangeBreakChecker.new(pairs[0], 60 * 8, 100)
 
     # データが不足している状態では ブレイクしない
     result = checker.check_range_break(Jiji::Model::Trading::Tick.new({
@@ -401,9 +392,7 @@ describe RangeBreakChecker do
     }, Time.new(2016, 1, 10, 7)))
     expect(result[:state]).to be :no
 
-
     checker = recreate(checker)
-
 
     result = checker.check_range_break(Jiji::Model::Trading::Tick.new({
       USDJPY: new_tick_value(120.76, 0.03)
@@ -421,18 +410,14 @@ describe RangeBreakChecker do
     }, Time.new(2016, 1, 10, 10)))
     expect(result[:state]).to be :no
 
-
     checker = recreate(checker)
-
 
     result = checker.check_range_break(Jiji::Model::Trading::Tick.new({
       USDJPY: new_tick_value(121.06, 0.03)
     }, Time.new(2016, 1, 10, 11)))
     expect(result[:state]).to be :break_high
 
-
     checker = recreate(checker)
-
 
     # 一度ブレイクすると、高値を更新しても再ブレイクはしない
     # 再度データがたまるまでブレイクはしない。
@@ -446,9 +431,7 @@ describe RangeBreakChecker do
     }, Time.new(2016, 1, 10, 17)))
     expect(result[:state]).to be :no
 
-
     checker = recreate(checker)
-
 
     result = checker.check_range_break(Jiji::Model::Trading::Tick.new({
       USDJPY: new_tick_value(121.22, 0.03)
@@ -464,12 +447,11 @@ describe RangeBreakChecker do
       USDJPY: new_tick_value(120.22, 0.03)
     }, Time.new(2016, 1, 10, 21)))
     expect(result[:state]).to be :no
-
   end
 
   def recreate(checker)
     state = checker.state
-    checker = RangeBreakChecker.new(pairs[0], 60*8, 100)
+    checker = RangeBreakChecker.new(pairs[0], 60 * 8, 100)
     checker.restore_state(state)
     checker
   end
@@ -478,5 +460,4 @@ describe RangeBreakChecker do
     Jiji::Model::Trading::Tick::Value.new(
       bid, BigDecimal.new(bid, 10) + spread)
   end
-
 end

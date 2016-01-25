@@ -19,6 +19,7 @@ module Jiji::Model::Securities
       @tick_repository =  tick_repository
       @position_builder =
         Trading::Internal::PositionBuilder.new(config[:backtest])
+      @order_validator = Internal::Virtual::OrderValidator.new
 
       init_rate_retriever_state(
         config[:start_time], config[:end_time], config[:pairs])

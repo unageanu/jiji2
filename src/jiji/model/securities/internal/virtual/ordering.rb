@@ -14,6 +14,7 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def order(pair_name, sell_or_buy, units, type = :market, options = {})
+      @order_validator.validate(pair_name, sell_or_buy, units, type, options)
       order = create_order(pair_name, sell_or_buy, units, type, options)
       if order.carried_out?(@current_tick)
         return register_position(order)
@@ -178,5 +179,6 @@ module Jiji::Model::Securities::Internal::Virtual
       ReducedPosition.new(position.internal_id,
         position.units, price, @current_tick.timestamp)
     end
+
   end
 end

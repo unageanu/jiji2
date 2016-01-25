@@ -34,6 +34,7 @@ module Jiji::Model::Securities::Internal::Virtual
 
     def modify_order(internal_id, options = {})
       order = find_order_by_internal_id(internal_id)
+      validate_modify_order_request(order, options)
       MODIFIABLE_PROPERTIES.each do |key|
         order.method("#{key}=").call(options[key]) if options.include?(key)
       end
@@ -133,6 +134,12 @@ module Jiji::Model::Securities::Internal::Virtual
       else
         false
       end
+    end
+
+    def validate_modify_order_request(order, options)
+      options = order.to_h.merge(options)
+      @order_validator.validate(order.pair_name, order.sell_or_buy,
+        options[:units] || order.units, order.type, options)
     end
 
     def error(message)

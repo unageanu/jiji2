@@ -396,6 +396,8 @@ shared_examples 'brokerの基本操作ができる' do
       })
     end
 
+    broker.refresh_positions
+
     positions = broker.positions
     expect(positions.length).to be 2
     position = find_by_internal_id(positions, r1.internal_id)
@@ -491,6 +493,7 @@ shared_examples 'brokerの基本操作ができる' do
       })
     end
 
+    broker.refresh_positions
     positions = broker.positions
     expect(positions.length).to be 2
     position = find_by_internal_id(positions, r2.internal_id)

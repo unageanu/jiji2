@@ -106,7 +106,7 @@ module Jiji::Model::Trading::Brokers
 
     # for internal use.
     def refresh_positions #:nodoc:
-      @positions_is_dirty = true
+      load_positions
     end
 
     # for internal use.

@@ -69,7 +69,7 @@ class TrapRepeatIfDone
   #
   # broker:: broker
   def register_orders(broker)
-    broker.instance_variable_get(:@broker).refresh_positions
+    broker.refresh_positions
     # 常に最新の建玉を取得して利用するようにする
 
     each_traps(broker.tick) do |trap_open_price|

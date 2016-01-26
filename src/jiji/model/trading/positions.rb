@@ -6,7 +6,7 @@ module Jiji::Model::Trading
   #
   #  positions = broker.positions # Positions オブジェクトが返されます
   #  positions.length
-  #  positions..find { |o| o.sell_or_buy == :sell } #売建玉の一覧を取得
+  #  positions.find { |o| o.sell_or_buy == :sell } #売建玉の一覧を取得
   #
   class Positions
 

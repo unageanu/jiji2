@@ -35,7 +35,7 @@ module Jiji::Model::Trading::Jobs
       @counter += 1
       return if @counter < 4
 
-      trading_context.broker.refresh_positions
+      trading_context.broker.load_positions
       trading_context.broker.refresh_account
       @counter = 0
     end

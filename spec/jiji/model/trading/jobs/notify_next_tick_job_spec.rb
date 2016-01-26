@@ -118,7 +118,7 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
 
     expect(broker).to receive(:refresh).exactly(refresh_count).times
     if expect_to_refresh_accounts
-      expect(broker).to receive(:refresh_positions).once
+      expect(broker).to receive(:load_positions).once
       expect(broker).to receive(:refresh_account).once
     end
 

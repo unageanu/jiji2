@@ -106,15 +106,19 @@ module Jiji::Model::Trading::Brokers
 
     # for internal use.
     def refresh_positions #:nodoc:
-      load_positions
+      @positions_is_dirty = true
     end
 
     # for internal use.
     def refresh_account #:nodoc:
     end
 
-    private
-
+    # 建玉情報を更新します。
+    #
+    # 証券会社へのアクセスを削減するため、建玉情報は1分間キャッシュされます。
+    # 最新の情報を参照したい場合、このAPIを呼び出しください。
+    #
+    # 戻り値:: Positions
     def load_positions
       positions = securities.retrieve_trades
       @positions.update(positions)
@@ -123,6 +127,8 @@ module Jiji::Model::Trading::Brokers
       @positions.each { |p| p.attach_broker(self) }
       @positions
     end
+
+    private
 
     def load_orders
       @orders = securities.retrieve_orders

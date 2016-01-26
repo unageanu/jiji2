@@ -186,6 +186,5 @@ module Jiji::Model::Securities::Internal::Virtual
       ReducedPosition.new(position.internal_id,
         position.units, price, @current_tick.timestamp)
     end
-
   end
 end

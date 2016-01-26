@@ -311,17 +311,17 @@ RSpec.shared_examples '注文関連の操作' do
       it 'stop_lossが不正な場合、エラーになる' do
         expect do
           client.order(:EURJPY, :buy, 1, :limit, {
-            price:         (ask - 1).to_f,
-            expiry:        now + (60 * 60 * 24),
-            stop_loss:     (ask + 2).to_f
+            price:     (ask - 1).to_f,
+            expiry:    now + (60 * 60 * 24),
+            stop_loss: (ask + 2).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
 
         expect do
           client.order(:EURJPY, :sell, 2, :limit, {
-            price:         (bid + 1).to_f,
-            expiry:        now + (60 * 60 * 24),
-            stop_loss:     (bid - 2).to_f
+            price:     (bid + 1).to_f,
+            expiry:    now + (60 * 60 * 24),
+            stop_loss: (bid - 2).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
       end
@@ -329,17 +329,17 @@ RSpec.shared_examples '注文関連の操作' do
       it 'take_profitが不正な場合、エラーになる' do
         expect do
           client.order(:EURJPY, :buy, 1, :limit, {
-            price:         (ask - 1).to_f,
-            expiry:        now + (60 * 60 * 24),
-            take_profit:   (ask - 2).to_f
+            price:       (ask - 1).to_f,
+            expiry:      now + (60 * 60 * 24),
+            take_profit: (ask - 2).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
 
         expect do
           client.order(:EURJPY, :sell, 2, :limit, {
-            price:         (bid + 1).to_f,
-            expiry:        now + (60 * 60 * 24),
-            take_profit:   (bid + 2).to_f
+            price:       (bid + 1).to_f,
+            expiry:      now + (60 * 60 * 24),
+            take_profit: (bid + 2).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
       end
@@ -569,17 +569,17 @@ RSpec.shared_examples '注文関連の操作' do
       it 'stop_lossが不正な場合、エラーになる' do
         expect do
           client.order(:USDJPY, :buy, 1, :stop, {
-            price:         (ask + 1).to_f,
-            expiry:        now + (60 * 60 * 24),
-            stop_loss:     (ask + 2).to_f
+            price:     (ask + 1).to_f,
+            expiry:    now + (60 * 60 * 24),
+            stop_loss: (ask + 2).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
 
         expect do
           client.order(:USDJPY, :sell, 1, :stop, {
-            price:         (bid + 1).to_f,
-            expiry:        now + (60 * 60 * 24),
-            stop_loss:     (bid - 2).to_f
+            price:     (bid + 1).to_f,
+            expiry:    now + (60 * 60 * 24),
+            stop_loss: (bid - 2).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
       end
@@ -587,17 +587,17 @@ RSpec.shared_examples '注文関連の操作' do
       it 'take_profitが不正な場合、エラーになる' do
         expect do
           client.order(:USDJPY, :buy, 1, :stop, {
-            price:         (ask + 1).to_f,
-            expiry:        now + (60 * 60 * 24),
-            take_profit:   (ask - 2).to_f
+            price:       (ask + 1).to_f,
+            expiry:      now + (60 * 60 * 24),
+            take_profit: (ask - 2).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
 
         expect do
           client.order(:USDJPY, :sell, 1, :stop, {
-            price:         (bid + 1).to_f,
-            expiry:        now + (60 * 60 * 24),
-            take_profit:   (bid + 2).to_f
+            price:       (bid + 1).to_f,
+            expiry:      now + (60 * 60 * 24),
+            take_profit: (bid + 2).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
       end
@@ -722,7 +722,6 @@ RSpec.shared_examples '注文関連の操作' do
       end
 
       it '売/買種別が不明な場合、エラーになる' do
-
         expect do
           client.order(:EURJPY, :unknown, 1, :marketIfTouched, {
             price:  (ask - 1).to_f,
@@ -826,17 +825,17 @@ RSpec.shared_examples '注文関連の操作' do
       it 'stop_lossが不正な場合、エラーになる' do
         expect do
           client.order(:EURJPY, :buy, 1, :marketIfTouched, {
-            price:         (ask - 1).to_f,
-            expiry:        now + (60 * 60 * 24),
-            stop_loss:     (ask + 2).to_f,
+            price:     (ask - 1).to_f,
+            expiry:    now + (60 * 60 * 24),
+            stop_loss: (ask + 2).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
 
         expect do
           client.order(:EURJPY, :sell, 1, :marketIfTouched, {
-            price:         (bid + 1).to_f,
-            expiry:        now + (60 * 60 * 24),
-            stop_loss:     (bid - 2).to_f,
+            price:     (bid + 1).to_f,
+            expiry:    now + (60 * 60 * 24),
+            stop_loss: (bid - 2).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
       end
@@ -844,21 +843,20 @@ RSpec.shared_examples '注文関連の操作' do
       it 'take_profitが不正な場合、エラーになる' do
         expect do
           client.order(:EURJPY, :buy, 1, :marketIfTouched, {
-            price:         (ask - 1).to_f,
-            expiry:        now + (60 * 60 * 24),
-            take_profit:   (ask - 2).to_f,
+            price:       (ask - 1).to_f,
+            expiry:      now + (60 * 60 * 24),
+            take_profit: (ask - 2).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
 
         expect do
           client.order(:EURJPY, :sell, 1, :marketIfTouched, {
-            price:         (bid + 1).to_f,
-            expiry:        now + (60 * 60 * 24),
-            take_profit:   (bid + 2).to_f,
+            price:       (bid + 1).to_f,
+            expiry:      now + (60 * 60 * 24),
+            take_profit: (bid + 2).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
       end
-
     end
 
     it '注文方法が不明な場合、エラーになる' do
@@ -1353,8 +1351,7 @@ RSpec.shared_examples '注文関連の操作' do
       end
     end
 
-    describe "Market If Touched 注文の変更" do
-
+    describe 'Market If Touched 注文の変更' do
       let(:ask) { BigDecimal.new(tick[:EURJPY].ask, 4) }
       let(:bid) { BigDecimal.new(tick[:EURJPY].bid, 4) }
 
@@ -1591,7 +1588,6 @@ RSpec.shared_examples '注文関連の操作' do
       end
     end
 
-    
     it '注文をキャンセルできる' do
       saved_positions = position_repository.retrieve_positions(backtest_id)
       expect(saved_positions.length).to be 0

@@ -139,6 +139,7 @@ describe Jiji::Model::Trading::RMT do
     end
     it 'one_dayのデータから昨日の最新のデータが取得され、返却される' do
       @rmt.setup
+      @rmt.stop_next_tick_job_generator
 
       graph = nil
       @rmt.process.post_exec do

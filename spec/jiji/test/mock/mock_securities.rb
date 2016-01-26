@@ -7,6 +7,7 @@ module Jiji::Test::Mock
 
     include Jiji::Errors
     include Jiji::Model::Trading
+    include Jiji::Model::Securities::Internal::Virtual
 
     attr_reader :config
     attr_writer :pairs
@@ -24,6 +25,7 @@ module Jiji::Test::Mock
       @seeds = [0, 0.26, 0.3, 0.303, 0.301, 0.4, 0.401, 0.35, 0.36, 0.2, 0.1]
 
       @data_builder = Jiji::Test::DataBuilder.new
+      @order_validator = OrderValidator.new
       @balance = config[:balance] || 100_000
       retrieve_account
     end

@@ -103,23 +103,21 @@ describe Jiji::Model::Notification::Notification do
   end
 
   it 'titleが70文字を超える場合、先頭70文字が使われる' do
-
     notification = Jiji::Model::Notification::Notification.create(
       agent_setting,  Time.at(100), backtests[0], 'message')
 
-    expect(notification.title).to eq("test1 | テスト1")
+    expect(notification.title).to eq('test1 | テスト1')
 
-    backtests[0].name = "い"*50
-    agent_setting.name = "あ"*50
-    expect(notification.title).to eq("#{"あ"*50} | #{"い"*17}")
+    backtests[0].name = 'い' * 50
+    agent_setting.name = 'あ' * 50
+    expect(notification.title).to eq("#{'あ' * 50} | #{'い' * 17}")
 
     notification = Jiji::Model::Notification::Notification.create(
       agent_setting,  Time.at(100), nil, 'message')
 
-    expect(notification.title).to eq("#{"あ"*50} | リアルトレード")
+    expect(notification.title).to eq("#{'あ' * 50} | リアルトレード")
 
-    agent_setting.name = "あ"*100
-    expect(notification.title).to eq("#{"あ"*70}")
-
+    agent_setting.name = 'あ' * 100
+    expect(notification.title).to eq("#{'あ' * 70}")
   end
 end

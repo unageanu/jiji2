@@ -72,7 +72,9 @@ module Jiji::Model::Notification
     end
 
     def title
-      "#{agent.name} | #{backtest ? backtest.name : 'リアルトレード'}"
+      title = "#{agent.name} | #{backtest ? backtest.name : 'リアルトレード'}"
+      title = title[0, 70] if title.length > 70
+      title
     end
 
     def self.drop

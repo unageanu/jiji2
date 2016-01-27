@@ -85,6 +85,8 @@
     
     <li ><a href="#method-i-close_position">#close_position</a>
     
+    <li ><a href="#method-i-load_positions">#load_positions</a>
+    
     <li ><a href="#method-i-modify_order">#modify_order</a>
     
     <li ><a href="#method-i-modify_position">#modify_position</a>
@@ -224,6 +226,50 @@
   <span class="ruby-ivar">@positions_is_dirty</span> = <span class="ruby-keyword">true</span>
   <span class="ruby-constant">ClosedPosition</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">result</span>.<span class="ruby-identifier">internal_id</span>,
     <span class="ruby-identifier">position</span>.<span class="ruby-identifier">units</span>, <span class="ruby-identifier">result</span>.<span class="ruby-identifier">price</span>, <span class="ruby-identifier">result</span>.<span class="ruby-identifier">timestamp</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-load_positions" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">load_positions</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>建玉情報を更新します。</p>
+
+<p>証券会社へのアクセスを削減するため、建玉情報は1分間キャッシュされます。 最新の情報を参照したい場合、このAPIを呼び出しください。</p>
+<dl class="rdoc-list note-list"><dt>戻り値
+<dd>
+<p><a href="../Positions.html">Positions</a></p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="load_positions-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 121</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">load_positions</span>
+  <span class="ruby-identifier">positions</span> = <span class="ruby-identifier">securities</span>.<span class="ruby-identifier">retrieve_trades</span>
+  <span class="ruby-ivar">@positions</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">positions</span>)
+  <span class="ruby-ivar">@positions</span>.<span class="ruby-identifier">update_price</span>(<span class="ruby-identifier">tick</span>, <span class="ruby-identifier">pairs</span>)
+  <span class="ruby-ivar">@positions_is_dirty</span> = <span class="ruby-keyword">false</span>
+  <span class="ruby-ivar">@positions</span>.<span class="ruby-identifier">each</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">p</span><span class="ruby-operator">|</span> <span class="ruby-identifier">p</span>.<span class="ruby-identifier">attach_broker</span>(<span class="ruby-keyword">self</span>) }
+  <span class="ruby-ivar">@positions</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           

@@ -95,6 +95,8 @@
     
     <li ><a href="#method-i-3C-3C">#&lt;&lt;</a>
     
+    <li class="calls-super" ><a href="#method-i-destroy">#destroy</a>
+    
     <li ><a href="#method-i-setup_data_savers">#setup_data_savers</a>
     
   </ul>
@@ -157,9 +159,48 @@
 
           
           <div class="method-source-code" id="3C-3C-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/graphing/graph.rb, line 71</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/graphing/graph.rb, line 70</span>
 <span class="ruby-keyword">def</span> <span class="ruby-operator">&lt;&lt;</span>(<span class="ruby-identifier">values</span>)
   <span class="ruby-ivar">@current_values</span> = <span class="ruby-identifier">values</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-destroy" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">destroy</span><span
+            class="method-args">(*args)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+            <div class="method-calls-super">
+              Calls superclass method
+              
+            </div>
+          
+
+          
+          <div class="method-source-code" id="destroy-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/graphing/graph.rb, line 112</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
+  <span class="ruby-constant">GraphData</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">graph_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">id</span>).<span class="ruby-identifier">delete</span>
+  <span class="ruby-keyword">super</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -190,7 +231,7 @@
 
           
           <div class="method-source-code" id="setup_data_savers-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/graphing/graph.rb, line 107</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/graphing/graph.rb, line 106</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">setup_data_savers</span>(<span class="ruby-identifier">saving_interval</span>)
   <span class="ruby-ivar">@savers</span> = <span class="ruby-constant">Jiji</span><span class="ruby-operator">::</span><span class="ruby-constant">Model</span><span class="ruby-operator">::</span><span class="ruby-constant">Trading</span><span class="ruby-operator">::</span><span class="ruby-constant">Intervals</span>.<span class="ruby-identifier">instance</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
     <span class="ruby-constant">Internal</span><span class="ruby-operator">::</span><span class="ruby-constant">GraphDataSaver</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">i</span>, <span class="ruby-identifier">saving_interval</span>)

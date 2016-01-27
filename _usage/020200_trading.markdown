@@ -190,6 +190,12 @@ position.closing_policy.trailing_stop   # トレーリングストップディ�
 position.closing_policy.trailing_amount # トレーリングストップ数量
 {% endhighlight %}
 
+<div class="notice">
+※証券会社へのアクセス回数を減らすため、建玉情報は1分間キャッシュされます。<br/>
+最新の建玉を参照したい場合は、 <code>broker#positions</code> の代わりに
+<code>broker#load_positions</code> を利用してください。
+</div>
+
 
 <h3>建玉を決済する</h3>
 建玉を決済するには、`Broker#close_position(position)` または、 `Position#close` を実行します。

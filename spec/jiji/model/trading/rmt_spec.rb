@@ -149,11 +149,11 @@ describe Jiji::Model::Trading::RMT do
           graph << [1000 * i]
           graph.save_data(start_time + (i * 60 * 60 * 6))
         end
-      end
+      end.value
 
       start_time = Time.local(2015, 5, 1, 0, 0, 0)
       end_time   = Time.local(2015, 5, 6, 0, 0, 0)
-      expect(graph.fetch_data(start_time, end_time).length).to eq 14
+      expect(graph.fetch_data(start_time, end_time).length).to be >= 14
       expect(graph.fetch_data(start_time, end_time, :one_day).length).to eq 5
 
       @time_source.set(Time.local(2015, 5, 1, 0, 0, 0))

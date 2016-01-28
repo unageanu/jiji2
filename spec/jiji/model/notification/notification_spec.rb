@@ -67,7 +67,8 @@ describe Jiji::Model::Notification::Notification do
       { 'label' => 'い', 'action' => 'bbb' }
     ]
     notification = Jiji::Model::Notification::Notification.create(
-      agent_setting.id,  Time.at(100), backtests[0], 'message', actions)
+      agent_setting.id,  Time.at(100), backtests[0], 'message', actions,
+      "ノート", {chart: {pair: :EURJPY}})
 
     expect(notification.to_h).to eq({
       id:        notification.id,
@@ -83,7 +84,9 @@ describe Jiji::Model::Notification::Notification do
       timestamp: Time.at(100),
       message:   'message',
       actions:   actions,
-      read_at:   nil
+      read_at:   nil,
+      note:      "ノート",
+      options:   {chart: {pair: :EURJPY}}
     })
 
     notification = Jiji::Model::Notification::Notification.create(
@@ -98,7 +101,9 @@ describe Jiji::Model::Notification::Notification do
       timestamp: Time.at(100),
       message:   'message',
       actions:   actions,
-      read_at:   nil
+      read_at:   nil,
+      note:      nil,
+      options:   nil
     })
   end
 

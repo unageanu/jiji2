@@ -68,7 +68,7 @@ describe Jiji::Model::Notification::Notificator do
   end
 
   it 'push通知を送信できる' do
-    expect(push_notifier).to receive(:notify).once
+    expect(push_notifier).to receive(:notify).twice
     time_source.set(Time.at(100))
 
     notificator.push_notification('メッセージ',  [
@@ -91,5 +91,28 @@ describe Jiji::Model::Notification::Notificator do
       { 'label' => 'あ', 'action' => 'aaa' },
       { 'label' => 'い', 'action' => 'bbb' }
     ]
+    expect(notification.note).to eq nil
+    expect(notification.options).to eq nil
+
+    notificator.push_notification('メッセージ2',  [
+      { 'label' => 'あ', 'action' => 'aaa' },
+    ], "ノート", { :chart => { pair: :EURJPY }})
+
+    notifications = notification_repository.retrieve_notifications({
+      backtest_id: backtests[0].id
+    })
+    expect(notifications.length).to be 2
+    notification = notifications[1]
+    expect(notification.backtest_id).to eq backtests[0].id
+    expect(notification.agent.id).to eq agent_setting.id
+    expect(notification.agent.name).to eq agent_setting.name
+    expect(notification.agent.icon_id).to eq agent_setting.icon_id
+    expect(notification.timestamp).to eq Time.at(100)
+    expect(notification.message).to eq 'メッセージ2'
+    expect(notification.actions).to eq [
+      { 'label' => 'あ', 'action' => 'aaa' }
+    ]
+    expect(notification.note).to eq "ノート"
+    expect(notification.options).to eq({ "chart" => { "pair" => :EURJPY }})
   end
 end

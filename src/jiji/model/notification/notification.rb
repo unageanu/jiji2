@@ -26,18 +26,20 @@ module Jiji::Model::Notification
     field :actions,       type: Array
     field :message,       type: String
     field :timestamp,     type: Time
-    field :read_at,       type: Time, default: DEFAULT_READ_AT
+    field :read_at,       type: Time,   default: DEFAULT_READ_AT
+    field :note,          type: String
+    field :options,       type: Hash
 
     index(
       { backtest_id: 1, timestamp: -1 },
       name: 'notification_backtest_id_timestamp_index')
 
     def self.create(agent, timestamp,
-      backtest = nil, message = '', actions = [])
+      backtest = nil, message = '', actions = [], note=nil, options=nil)
       Notification.new do |n|
         n.timestamp   = timestamp
         n.initialize_agent_information(agent, backtest)
-        n.initialize_content(message, actions)
+        n.initialize_content(message, actions, note, options)
       end
     end
 
@@ -66,9 +68,12 @@ module Jiji::Model::Notification
       self.backtest = backtest
     end
 
-    def initialize_content(message = '', actions = [])
+    def initialize_content(message = '',
+      actions = [], note = nil, options = nil)
       self.message     = message
       self.actions     = actions
+      self.note        = note
+      self.options     = options
     end
 
     def title
@@ -87,6 +92,8 @@ module Jiji::Model::Notification
     def insert_content_to_hash(hash)
       hash[:message] = message
       hash[:actions] = actions
+      hash[:note]    = note
+      hash[:options] = options
     end
 
     def insert_agent_information_to_hash(hash)

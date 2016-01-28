@@ -47,6 +47,8 @@ module Jiji::Model::Notification
     # Push通知を送信します。
     #
     #  notifier.push_notification('メッセージ')
+    #
+    #  # アクションを指定
     #  notifier.push_notification('メッセージ',  [
     #    # アクションは複数指定できます。
     #    # 'label' が、アクションを実行するボタンのラベル、
@@ -56,12 +58,26 @@ module Jiji::Model::Notification
     #    { 'label' => 'アクション2', 'action' => 'action_2' }
     #  ])
     #
+    #  # アクションに加えて、追加情報とオプションを指定
+    #  notifier.push_notification('メッセージ',  [
+    #    { 'label' => 'アクション1', 'action' => 'action_1' },
+    #    { 'label' => 'アクション2', 'action' => 'action_2' }
+    #  ], "追加情報です", {chart: { pair: :EURJPY }})
+    #
     # message:: メッセージ
     # action:: アクション。
-    #          {:label => 'ラベル', action: => '識別子'} の配列で指定します。
-    def push_notification(message = '', actions = [])
-      n = Notification.create(@agent,
-        @time_source.now, @backtest, message, actions)
+    #          <code>{:label => 'ラベル', action: => '識別子'}</code>
+    #          の配列で指定します。
+    #          省略可。省略した場合、アクションの指定なしとなります。
+    # note:: 通知の追加情報。指定した内容を通知の詳細画面で確認できます。
+    # options:: 通知のオプション。以下を指定できます。
+    #           chart:: 通知画面にチャートを表示したい場合に使用します。
+    #                   <code>{chart: {pair: :EURJPY}}</code> のような形で、
+    #                   表示する通貨ペアを指定できます。
+    def push_notification(
+      message = '', actions = [], note = nil, options = nil)
+      n = Notification.create(@agent, @time_source.now,
+        @backtest, message, actions, note, options)
       n.save
       @push_notifier.notify({
         title:          message,

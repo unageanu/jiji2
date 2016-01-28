@@ -31,8 +31,11 @@ export default class SelectionModel extends Observable {
 
   set selectedId( id ) {
     this.setProperty("selectedId", id);
-    if (id == null) return;
-    this.findFromItems(id) || this.loadItem(id);
+    if (id == null) {
+      this.selected = null;
+    } else {
+      this.findFromItems(id) || this.loadItem(id);
+    }
   }
   get selectedId( ) {
     return this.getProperty("selectedId");

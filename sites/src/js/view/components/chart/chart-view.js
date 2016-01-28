@@ -46,11 +46,16 @@ export default class ChartView extends AbstractComponent {
           <RateView chartModel={this.props.model} />
           <Chart {...this.props} />
         </div>
-        <div className="slider-panel">
-          <Slider chartModel={this.props.model}></Slider>
-        </div>
+        {this.createSlider()}
       </div>
     );
+  }
+
+  createSlider() {
+    if (!this.props.enableSlider) return null;
+    return <div className="slider-panel">
+      <Slider chartModel={this.props.model}></Slider>
+    </div>;
   }
 
   model() {
@@ -60,9 +65,11 @@ export default class ChartView extends AbstractComponent {
 ChartView.propTypes = {
   devicePixelRatio: React.PropTypes.number.isRequired,
   size: React.PropTypes.object.isRequired,
-  model: React.PropTypes.object.isRequired
+  model: React.PropTypes.object.isRequired,
+  enableSlider: React.PropTypes.bool
 };
 ChartView.defaultProps = {
   devicePixelRatio: window.devicePixelRatio || 1,
-  size: {w:1280-300-16*4, h:600, profitAreaHeight:80}
+  size: {w:1280-300-16*4, h:600, profitAreaHeight:80},
+  enableSlider: true
 };

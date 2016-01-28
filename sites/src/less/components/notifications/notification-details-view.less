@@ -4,39 +4,60 @@
 @notifications-page-avatar-panel-width:  @grid * 5;
 
 .notification-details {
-  padding: @grid*4;
 
-  .two-column-layout-parent( @notifications-page-avatar-panel-width );
+  .top-panel {
+    padding: @grid*4 @grid*4 0px @grid*4;
 
-  .avatar-panel {
-    .two-column-layout-left( @notifications-page-avatar-panel-width );
+    .two-column-layout-parent( @notifications-page-avatar-panel-width );
+
+    .avatar-panel {
+      .two-column-layout-left( @notifications-page-avatar-panel-width );
+    }
+
+    .content-panel {
+      .two-column-layout-right( @notifications-page-avatar-panel-width );
+
+      padding-left: @grid*2;
+
+      .message {
+        font-size: @font-size-normal;
+        color: @font-color-normal;
+      }
+      .agent-name {
+        margin-top: @grid;
+      }
+      .timestamp, .agent-name {
+        font-size: @font-size-small;
+        color: @font-color-light;
+      }
+    }
+  }
+  .note {
+    font-size: @font-size-normal;
+    color: @font-color-normal;
+    margin: @grid*2 @grid*4;
   }
 
-  .content-panel {
-    .two-column-layout-right( @notifications-page-avatar-panel-width );
-
-    padding-left: @grid*2;
-
-    .message {
-      font-size: @font-size-normal;
-      color: @font-color-normal;
-    }
-    .agent-name {
-      margin-top: @grid;
-    }
-    .timestamp, .agent-name {
-      font-size: @font-size-small;
-      color: @font-color-light;
-    }
-    .action-buttons {
-      margin-top: @grid*4;
-      text-align: right;
-
-      .action-button {
-        margin-left: @grid;
-        margin-bottom: @grid;
-        display:inline-block;
+  .chart {
+    .chart-view {
+      .menu {
+        padding-left: @grid*4;
+        padding-bottom: @grid;
       }
+      .chart {
+        padding: @grid*2 @grid*4;
+      }
+    }
+  }
+
+  .action-buttons {
+    margin: @grid*4;
+    text-align: right;
+
+    .action-button {
+      margin-left: @grid;
+      margin-bottom: @grid;
+      display:inline-block;
     }
   }
 }

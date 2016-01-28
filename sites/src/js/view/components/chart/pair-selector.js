@@ -4,7 +4,7 @@ import Theme              from "../../theme"
 import AbstractComponent  from "../widgets/abstract-component"
 
 const keys = new Set([
-  "pairs"
+  "availablePairs", "selectedPair"
 ]);
 
 const DropDownMenu = MUI.DropDownMenu;
@@ -21,18 +21,19 @@ export default class PairSelector extends AbstractComponent {
   }
 
   componentWillMount() {
-    this.registerPropertyChangeListener( this.pairs(), keys);
+    this.registerPropertyChangeListener( this.pairSelector(), keys);
     this.updateState();
   }
 
   onPropertyChanged(k, e) {
-    if (e.key !== "pairs") return;
     this.updateState();
   }
 
   updateState() {
-    const items = this.convertPairsToMenuItems(this.pairs().pairs);
-    const selectedIndex = this.getSelectedIndex(this.preferences().preferredPair, items);
+    const items = this.convertPairsToMenuItems(
+      this.pairSelector().availablePairs);
+    const selectedIndex = this.getSelectedIndex(
+      this.pairSelector().selectedPair, items);
     this.setState({
       items : items,
       selectedIndex:selectedIndex
@@ -73,7 +74,7 @@ export default class PairSelector extends AbstractComponent {
   }
 
   onChange(e, selectedIndex, menuItem) {
-    this.preferences().preferredPair = this.state.items[selectedIndex].payload;
+    this.pairSelector().selectedPair = this.state.items[selectedIndex].payload;
     this.setState({selectedIndex: selectedIndex});
   }
 
@@ -82,11 +83,8 @@ export default class PairSelector extends AbstractComponent {
     return index === -1 ? 0 : index;
   }
 
-  preferences() {
-    return this.props.model.preferences;
-  }
-  pairs() {
-    return this.props.model.pairs;
+  pairSelector() {
+    return this.props.model.pairSelector;
   }
 }
 PairSelector.propTypes = {

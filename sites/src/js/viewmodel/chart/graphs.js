@@ -67,11 +67,12 @@ class GraphDataConverter {
 export default class Graphs extends Observable {
 
   constructor( context,
-    coordinateCalculator, preferences, graphService) {
+    coordinateCalculator, preferences, pairSelector, graphService) {
     super();
     this.context = context;
 
     this.preferences          = preferences;
+    this.pairSelector         = pairSelector;
     this.graphService         = graphService;
     this.coordinateCalculator = coordinateCalculator;
 
@@ -79,8 +80,8 @@ export default class Graphs extends Observable {
   }
 
   registerObservers() {
-    this.preferences.addObserver("propertyChanged", (n, e) => {
-      if (e.key === "preferredPairs") {
+    this.pairSelector.addObserver("propertyChanged", (n, e) => {
+      if (e.key === "selectedPair") {
         this.update();
       }
     }, this);
@@ -100,7 +101,7 @@ export default class Graphs extends Observable {
   }
 
   unregisterObservers() {
-    this.preferences.removeAllObservers(this);
+    this.pairSelector.removeAllObservers(this);
     this.slider.removeAllObservers(this);
     this.context.removeAllObservers(this);
   }

@@ -1,12 +1,14 @@
-import Observable           from "../../utils/observable"
-import Deferred             from "../../utils/deferred"
-import CandleSticks         from "./candle-sticks"
-import Slider               from "./slider"
-import CoordinateCalculator from "./coordinate-calculator"
-import Positions            from "./positions"
-import Graphs               from "./graphs"
-import Context              from "./context"
-import Pointer              from "./pointer"
+import Observable              from "../../utils/observable"
+import Deferred                from "../../utils/deferred"
+import CandleSticks            from "./candle-sticks"
+import Slider                  from "./slider"
+import CoordinateCalculator    from "./coordinate-calculator"
+import Positions               from "./positions"
+import Graphs                  from "./graphs"
+import Context                 from "./context"
+import Pointer                 from "./pointer"
+import PreferencesPairSelector from "./preferences-pair-selector"
+import BasicPairSelector       from "./basic-pair-selector"
 
 export default class Chart extends Observable {
 
@@ -26,22 +28,27 @@ export default class Chart extends Observable {
 
   buildViewModels( ) {
     this.coordinateCalculator = new CoordinateCalculator();
-    this.slider               = new Slider(
+    this.pairSelector = this.context.usePreferencesPairSelector
+      ? new PreferencesPairSelector(this.pairs, this.preferences)
+      : new BasicPairSelector(this.pairs, null);
+
+    this.slider = new Slider(
       this.context, this.coordinateCalculator, this.preferences);
-    this.candleSticks         = new CandleSticks(
-      this.coordinateCalculator, this.rates, this.preferences);
+    this.candleSticks = new CandleSticks( this.coordinateCalculator,
+      this.rates, this.preferences, this.pairSelector);
     this.positions = new Positions( this.context,
       this.coordinateCalculator, this.positionService);
-    this.graphs = new Graphs( this.context,
-      this.coordinateCalculator, this.preferences, this.graphService);
+    this.graphs = new Graphs( this.context, this.coordinateCalculator,
+      this.preferences, this.pairSelector, this.graphService);
     this.pointer = new Pointer(
         this.coordinateCalculator, this.candleSticks, this.graphs);
+
     this.coordinateCalculator.attach(this.slider, this.preferences);
     this.candleSticks.attach(this.slider);
     this.positions.attach(this.slider);
     this.graphs.attach(this.slider);
     this.pointer.attach(this.slider);
-  }
+  } 
 
   initialize( ) {
     this.pointer.initialize();
@@ -61,6 +68,7 @@ export default class Chart extends Observable {
     this.candleSticks.unregisterObservers();
     this.positions.unregisterObservers();
     this.graphs.unregisterObservers();
+    this.pairSelector.unregisterObservers();
   }
 
   set stageSize(size) {

@@ -41,6 +41,7 @@ export default class NotificationsPage extends AbstractPage {
           <div className="details-panel">
             <NotificationDetailsView
               model={this.model().selection}
+              chartModel={this.model().chart}
             />
           </div>
         </Card>

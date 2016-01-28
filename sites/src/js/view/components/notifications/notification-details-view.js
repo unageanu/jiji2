@@ -2,6 +2,7 @@ import React                from "react"
 import MUI                  from "material-ui"
 import AbstractComponent    from "../widgets/abstract-component"
 import LoadingImage         from "../widgets/loading-image"
+import ChartView            from "../chart/chart-view"
 
 const Avatar       = MUI.Avatar;
 const RaisedButton   = MUI.RaisedButton;
@@ -45,22 +46,30 @@ export default class NotificationDetailsView extends AbstractComponent {
   }
   createDetailsView(notification) {
     return <div className="notification-details">
-      <div className="avatar-panel">
-        {this.createAvatar(notification)}
+      <div className="top-panel">
+        <div className="avatar-panel">
+          {this.createAvatar(notification)}
+        </div>
+        <div className="content-panel">
+          <div className="message">
+            {notification.message}
+          </div>
+          <div className="agent-name">
+            {notification.agentAndBacktestName}
+          </div>
+          <div className="timestamp">
+            {notification.formatedTimestamp}
+          </div>
+        </div>
       </div>
-      <div className="content-panel">
-        <div className="message">
-          {notification.message}
-        </div>
-        <div className="agent-name">
-          {notification.agentAndBacktestName}
-        </div>
-        <div className="timestamp">
-          {notification.formatedTimestamp}
-        </div>
-        <div className="action-buttons">
-          {this.createActionButtons(notification)}
-        </div>
+      {this.createChart(notification)}
+      <div className="note">
+        <pre>
+        {notification.note}
+        </pre>
+      </div>
+      <div className="action-buttons">
+        {this.createActionButtons(notification)}
       </div>
     </div>;
   }
@@ -71,7 +80,15 @@ export default class NotificationDetailsView extends AbstractComponent {
     return (notification.actions || []).map(
       (action, index)=> this.createActionButton(notification, action, index));
   }
-
+  createChart(notification) {
+    if (!notification.isDisplayChart) return null;
+    return <div className="chart">
+      <ChartView
+        model={this.props.chartModel}
+        size={this.calculateChartSize()}
+        enableSlider={false} />
+    </div>
+  }
   createActionButton(item, action, index) {
     const execute = () => this.props.model.executeAction(item, action.action);
     return <div key={index} className="action-button">
@@ -81,7 +98,19 @@ export default class NotificationDetailsView extends AbstractComponent {
       />
     </div>;
   }
+  calculateChartSize() {
+    const windowSize = this.context.windowResizeManager.windowSize;
+    return {
+      w: windowSize.w - 288 - 440 - 16*7,
+      h: 200,
+      profitAreaHeight: 80
+    };
+  }
 }
 NotificationDetailsView.propTypes = {
-  model: React.PropTypes.object.isRequired
+  model: React.PropTypes.object.isRequired,
+  chartModel: React.PropTypes.object.isRequired
+};
+NotificationDetailsView.contextTypes = {
+  windowResizeManager: React.PropTypes.object.isRequired
 };

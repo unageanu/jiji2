@@ -13,6 +13,8 @@ export default class Context extends Observable {
     this.rates = rates;
 
     this.displaySubGraph = config.displaySubGraph;
+    this.usePreferencesPairSelector =
+      config.usePreferencesPairSelector !== false;
 
     this.registerObservers();
   }

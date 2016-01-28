@@ -7,24 +7,25 @@ import Intervals            from "../../model/trading/intervals"
 
 export default class CandleSticks extends Observable {
 
-  constructor(coordinateCalculator, rates, preferences) {
+  constructor(coordinateCalculator, rates, preferences, pairSelector) {
     super();
     this.rates                = rates;
     this.preferences          = preferences;
+    this.pairSelector         = pairSelector;
     this.coordinateCalculator = coordinateCalculator;
 
     this.registerObservers();
   }
 
   registerObservers() {
-    this.preferences.addObserver("propertyChanged", (n, e) => {
-      if (e.key === "preferredPairs") {
-        this.preferredPair = this.preferences.preferredPair;
+    this.pairSelector.addObserver("propertyChanged", (n, e) => {
+      if (e.key === "selectedPair") {
+        this.selectedPair = this.pairSelector.selectedPair;
         this.update();
       }
     }, this);
 
-    this.preferredPair = this.preferences.preferredPair;
+    this.selectedPair = this.pairSelector.selectedPair;
     this.update();
   }
 
@@ -47,10 +48,10 @@ export default class CandleSticks extends Observable {
   }
 
   update() {
-    if (!this.currentRange || !this.preferredPair) return;
+    if (!this.currentRange || !this.selectedPair) return;
     this.coordinateCalculator.prepareUpdate();
     this.rates.fetchRates(
-      this.preferredPair,
+      this.selectedPair,
       this.preferences.chartInterval,
       this.currentRange.start,
       this.currentRange.end

@@ -62,12 +62,12 @@ export default class NotificationDetailsView extends AbstractComponent {
           </div>
         </div>
       </div>
-      {this.createChart(notification)}
       <div className="note">
         <pre>
         {notification.note}
         </pre>
       </div>
+      {this.createChart(notification)}
       <div className="action-buttons">
         {this.createActionButtons(notification)}
       </div>

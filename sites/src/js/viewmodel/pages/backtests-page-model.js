@@ -23,7 +23,8 @@ export default class BacktestsPageModel extends Observable {
     this.agentSettingBuilder = new AgentSettingBuilder(
       this.agentClasses, this.icons);
     this.chart         = this.viewModelFactory.createChart({
-      displaySubGraph: true
+      displaySubGraph: true,
+      usePreferencesPairSelector: false
     });
     this.positionTable =
       this.viewModelFactory.createPositionsTableModel(50, {
@@ -106,7 +107,9 @@ export default class BacktestsPageModel extends Observable {
     } else if (this.activeTab === "report") {
       this.tradingSummary.backtestId = this.selectedBacktest.id;
     } else if (this.activeTab === "chart") {
-      this.chart.backtest =this.selectedBacktest;
+      this.chart.backtest = this.selectedBacktest;
+      this.chart.pairSelector.selectedPair =
+        this.selectedBacktest ? this.selectedBacktest.pairNames[0] : null;
     } else if (this.activeTab === "logs") {
       this.logViewer.initialize(this.selectedBacktest.id);
       this.logViewer.load();

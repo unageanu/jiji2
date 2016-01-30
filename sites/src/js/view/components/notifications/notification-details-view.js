@@ -101,7 +101,7 @@ export default class NotificationDetailsView extends AbstractComponent {
   calculateChartSize() {
     const windowSize = this.context.windowResizeManager.windowSize;
     return {
-      w: windowSize.w - 288 - 440 - 16*7,
+      w: windowSize.w - this.props.outerWidth,
       h: 200,
       profitAreaHeight: 80
     };
@@ -109,7 +109,11 @@ export default class NotificationDetailsView extends AbstractComponent {
 }
 NotificationDetailsView.propTypes = {
   model: React.PropTypes.object.isRequired,
-  chartModel: React.PropTypes.object.isRequired
+  chartModel: React.PropTypes.object.isRequired,
+  outerWidth: React.PropTypes.number
+};
+NotificationDetailsView.defaultProps = {
+  outerWidth: 288 - 440 - 16*7
 };
 NotificationDetailsView.contextTypes = {
   windowResizeManager: React.PropTypes.object.isRequired

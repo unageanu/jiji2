@@ -26,11 +26,12 @@ nav_class_name: "lv2"
 
 <h3>Push通知を送る</h3>
 
-Push通知を送るには、`notifier#push_notification(message, actions)` を実行します。
+Push通知を送るには、`notifier#push_notification(message, actions, note, options)` を実行します。
 
 {% highlight ruby %}
 # Push通知を送信
 # 第一引数でメッセージ、第二引数でアクションを指定します。
+# ※第三、四引数のnote, optionsは省略可能です。
 notifier.push_notification('メッセージ')
 notifier.push_notification('メッセージ',  [
   # アクションは複数指定できます。
@@ -39,8 +40,14 @@ notifier.push_notification('メッセージ',  [
   { 'label' => 'アクション1', 'action' => 'action_1' },
   { 'label' => 'アクション2', 'action' => 'action_2' }
 ])
-{% endhighlight %}
 
+# 第三引数で追加のテキスト情報、第四引数でチャートのon/offを指定することもできます。
+# <code>{chart: {pair: :EURJPY}}</code> の形で、デフォルトの通貨ペアを指定できます。
+notifier.push_notification('メッセージ',  [
+  { 'label' => 'アクション1', 'action' => 'action_1' },
+  { 'label' => 'アクション2', 'action' => 'action_2' }
+], "追加情報です", {chart: { pair: :EURJPY }})
+{% endhighlight %}
 
 <h3>メールを送信する</h3>
 

@@ -168,7 +168,7 @@
         
         <div class="method-heading">
           <span class="method-name">push_notification</span><span
-            class="method-args">(message = '', actions = [])</span>
+            class="method-args">( message = '', actions = [], note = nil, options = nil)</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -180,6 +180,8 @@
           <p>Push通知を送信します。</p>
 
 <pre class="ruby"><span class="ruby-identifier">notifier</span>.<span class="ruby-identifier">push_notification</span>(<span class="ruby-string">&#39;メッセージ&#39;</span>)
+
+<span class="ruby-comment"># アクションを指定</span>
 <span class="ruby-identifier">notifier</span>.<span class="ruby-identifier">push_notification</span>(<span class="ruby-string">&#39;メッセージ&#39;</span>,  [
   <span class="ruby-comment"># アクションは複数指定できます。</span>
   <span class="ruby-comment"># &#39;label&#39; が、アクションを実行するボタンのラベル、</span>
@@ -188,23 +190,42 @@
   { <span class="ruby-string">&#39;label&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;アクション1&#39;</span>, <span class="ruby-string">&#39;action&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;action_1&#39;</span> },
   { <span class="ruby-string">&#39;label&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;アクション2&#39;</span>, <span class="ruby-string">&#39;action&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;action_2&#39;</span> }
 ])
+
+<span class="ruby-comment"># アクションに加えて、追加情報とオプションを指定</span>
+<span class="ruby-identifier">notifier</span>.<span class="ruby-identifier">push_notification</span>(<span class="ruby-string">&#39;メッセージ&#39;</span>,  [
+  { <span class="ruby-string">&#39;label&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;アクション1&#39;</span>, <span class="ruby-string">&#39;action&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;action_1&#39;</span> },
+  { <span class="ruby-string">&#39;label&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;アクション2&#39;</span>, <span class="ruby-string">&#39;action&#39;</span> =<span class="ruby-operator">&gt;</span> <span class="ruby-string">&#39;action_2&#39;</span> }
+], <span class="ruby-string">&quot;追加情報です&quot;</span>, {<span class="ruby-identifier">chart</span><span class="ruby-operator">:</span> { <span class="ruby-identifier">pair</span><span class="ruby-operator">:</span> :<span class="ruby-constant">EURJPY</span> }})
 </pre>
 <dl class="rdoc-list note-list"><dt>message
 <dd>
 <p>メッセージ</p>
 </dd><dt>action
 <dd>
-<p>アクション。 {:label =&gt; &#39;ラベル&#39;, action: =&gt; &#39;識別子&#39;} の配列で指定します。</p>
+<p>アクション。 <code>{:label =&gt; &#39;ラベル&#39;, action: =&gt;
+&#39;識別子&#39;}</code> の配列で指定します。 省略可。省略した場合、アクションの指定なしとなります。</p>
+</dd><dt>note
+<dd>
+<p>通知の追加情報。指定した内容を通知の詳細画面で確認できます。</p>
+</dd><dt>options
+<dd>
+<p>通知のオプション。以下を指定できます。</p>
+<dl class="rdoc-list note-list"><dt>chart
+<dd>
+<p>通知画面にチャートを表示したい場合に使用します。 <code>{chart: {pair: :EURJPY}}</code> のような形で、
+表示する通貨ペアを指定できます。</p>
+</dd></dl>
 </dd></dl>
           
           
 
           
           <div class="method-source-code" id="push_notification-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/notification/notificator.rb, line 61</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">push_notification</span>(<span class="ruby-identifier">message</span> = <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">actions</span> = [])
-  <span class="ruby-identifier">n</span> = <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">create</span>(<span class="ruby-ivar">@agent</span>,
-    <span class="ruby-ivar">@time_source</span>.<span class="ruby-identifier">now</span>, <span class="ruby-ivar">@backtest</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">actions</span>)
+            <pre><span class="ruby-comment"># File src/jiji/model/notification/notificator.rb, line 76</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">push_notification</span>(
+  <span class="ruby-identifier">message</span> = <span class="ruby-string">&#39;&#39;</span>, <span class="ruby-identifier">actions</span> = [], <span class="ruby-identifier">note</span> = <span class="ruby-keyword">nil</span>, <span class="ruby-identifier">options</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">n</span> = <span class="ruby-constant">Notification</span>.<span class="ruby-identifier">create</span>(<span class="ruby-ivar">@agent</span>, <span class="ruby-ivar">@time_source</span>.<span class="ruby-identifier">now</span>,
+    <span class="ruby-ivar">@backtest</span>, <span class="ruby-identifier">message</span>, <span class="ruby-identifier">actions</span>, <span class="ruby-identifier">note</span>, <span class="ruby-identifier">options</span>)
   <span class="ruby-identifier">n</span>.<span class="ruby-identifier">save</span>
   <span class="ruby-ivar">@push_notifier</span>.<span class="ruby-identifier">notify</span>({
     <span class="ruby-identifier">title</span><span class="ruby-operator">:</span>          <span class="ruby-identifier">message</span>,

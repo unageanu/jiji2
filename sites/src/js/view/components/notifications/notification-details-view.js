@@ -113,7 +113,7 @@ NotificationDetailsView.propTypes = {
   outerWidth: React.PropTypes.number
 };
 NotificationDetailsView.defaultProps = {
-  outerWidth: 288 - 440 - 16*7
+  outerWidth: 288 + 440 + 16*7
 };
 NotificationDetailsView.contextTypes = {
   windowResizeManager: React.PropTypes.object.isRequired

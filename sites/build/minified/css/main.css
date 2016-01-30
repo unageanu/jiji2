@@ -120,14 +120,18 @@
 .icon-selector .drop-area .error{margin-bottom:1pc}
 .notifications-card{width:calc(50% - 8px);margin-right:1pc;display:inline-block;vertical-align:top}
 .notification-list .list-item .not-read{font-weight:700}
-.notification-details{padding:2pc;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch}
-.notification-details .avatar-panel{width:40px}
-.notification-details .content-panel{-webkit-flex:1;-ms-flex:1;flex:1;padding-left:1pc}
-.notification-details .content-panel .message{font-size:1pc;color:#666}
-.notification-details .content-panel .agent-name{margin-top:8px}
-.notification-details .content-panel .agent-name,.notification-details .content-panel .timestamp{font-size:14px;color:#999}
-.notification-details .content-panel .action-buttons{margin-top:2pc;text-align:right}
-.notification-details .content-panel .action-buttons .action-button{margin-left:8px;margin-bottom:8px;display:inline-block}
+.notification-details .top-panel{padding:2pc 2pc 0;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch}
+.notification-details .top-panel .avatar-panel{width:40px}
+.notification-details .top-panel .content-panel{-webkit-flex:1;-ms-flex:1;flex:1;padding-left:1pc}
+.notification-details .top-panel .content-panel .message{font-size:1pc;color:#666}
+.notification-details .top-panel .content-panel .agent-name{margin-top:8px}
+.notification-details .top-panel .content-panel .agent-name,.notification-details .top-panel .content-panel .timestamp{font-size:14px;color:#999}
+.notification-details .note{margin:1pc 2pc}
+.notification-details .note pre{font-size:1pc;color:#666;word-wrap:break-word}
+.notification-details .chart .chart-view .menu{padding-left:2pc;padding-bottom:8px}
+.notification-details .chart .chart-view .chart{padding:1pc 2pc}
+.notification-details .action-buttons{margin:2pc;text-align:right}
+.notification-details .action-buttons .action-button{margin-left:8px;margin-bottom:8px;display:inline-block}
 .notification-list-menu-bar{border-bottom:1px solid #d3d3d3;padding:8px}
 .notification-list-menu-bar .buttons{display:inline-block;float:right}
 .positions-card{width:calc(50% - 8px);display:inline-block;vertical-align:top}

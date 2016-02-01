@@ -1,5 +1,11 @@
 article.usage {
 
+  h2 {
+    color: $accent-color;
+    font-size: 24px;
+    margin-top: $grid*8;
+  }
+
   h3 {
     color: $accent-color;
     font-size: 20px;
@@ -38,4 +44,16 @@ article.usage {
       }
     }
   }
+
+  .samples {
+    h3 {
+      margin-top: $grid*5;
+      font-size: 18px;
+
+      a {
+        color: $accent-color;
+      }
+    }
+  }
+
 }

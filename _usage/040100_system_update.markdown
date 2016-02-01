@@ -7,7 +7,7 @@ nav_class_name: "lv2"
 
 Jijiを最新版にアップデートする手順を解説します。
 
-<h3>Herokuにインストールしている場合</h3>
+<h2>Herokuにインストールしている場合</h2>
 
 ※更新には、[Heroku Toolbelt](https://toolbelt.heroku.com/)が必要です。事前にインストールしておいてください。<br/>
 ※<b>1～4の手順は、初回のアップデートでのみ必要です。2回目以降は、5～6の手順だけ行えば更新できます。</b>
@@ -49,7 +49,7 @@ $ git push heroku master
 Herokuへのデプロイが成功すれば、更新は完了です。
 
 
-<h3>dockerにインストールしている場合</h3>
+<h2>dockerにインストールしている場合</h2>
 
 <p>以下のコマンドを実行し、jiji_jiji コンテナに入ります。</p>
 

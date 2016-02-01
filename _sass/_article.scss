@@ -11,11 +11,13 @@ article.post {
     width: $nav-width;
 
     h2 {
+      margin-top: 0px;
       margin-bottom: $grid*2;
+
       a {
         text-decoration: none;
         color: $accent-color;
-        font-size: 18px;
+        font-size: 20px;
       }
     }
 
@@ -24,7 +26,9 @@ article.post {
       list-style: none;
 
       li {
-        padding: $grid $grid*2;
+        margin-top: $grid*2;
+        padding: $grid $grid*2 $grid $grid*2;
+        font-size: 18px;
       }
 
       li.selected {
@@ -35,7 +39,9 @@ article.post {
         }
       }
       li.lv2 {
-        padding-left: $grid*5;
+        margin-top: 0px;
+        padding: $grid/2 $grid*2 $grid/2 $grid*5;
+        font-size: $base-font-size;
       }
     }
   }

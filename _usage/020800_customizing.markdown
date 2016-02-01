@@ -48,5 +48,5 @@ end
 
 
 <div class="next">
-  <a href="020900_samples.html">次のページへ: エージェントのサンプル</a>
+  <a href="021000_library.html">次のページへ: 添付ライブラリ</a>
 </div>

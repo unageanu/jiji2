@@ -6,14 +6,14 @@ layout: null
   <url>
     <loc>{{ site.url }}</loc>
     <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>hourly</changefreq>
     <priority>1.0</priority>
   </url>
   {% for item in site.install  %}
   <url>
     <loc>{{ item.url | prepend: site.url }}</loc>
     <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>hourly</changefreq>
     <priority>0.1</priority>
   </url>
   {% endfor %}
@@ -21,7 +21,7 @@ layout: null
   <url>
     <loc>{{ item.url | prepend: site.url }}</loc>
     <lastmod>{{ site.time | date_to_xmlschema }}</lastmod>
-    <changefreq>weekly</changefreq>
+    <changefreq>hourly</changefreq>
     <priority>0.1</priority>
   </url>
   {% endfor %}

@@ -1,7 +1,25 @@
 
-.link_to_oanda {
-  margin: $grid*4;
-  font-size: 18px;
+div.link_to_oanda {
+  margin: $grid*4 0px;
+  img {
+    margin: 0px;
+    border: 0px;
+    padding: 0px;
+  }
+  .large {
+    display: block;
+  }
+  .small {
+    display: none;
+  }
+  @include media-query($on-palm) {
+    .large {
+      display: none;
+    }
+    .small {
+      display: block;
+    }
+  }
 }
 
 article.post {

@@ -36,9 +36,12 @@ export default class SMTPServerSettingModel extends Observable {
       this.smtpServerSettingService.getStatus(),
       this.smtpServerSettingService.getSMTPServerSetting()
     ]);
-    d.done((result) => {
+    d.then((result) => {
       this.enablePostmark = result[0].enablePostmark;
       this.setting        = result[1];
+    }, (error) => {
+      this.enablePostmark = false;
+      error.preventDefault = true;
     });
     return d;
   }

@@ -38,6 +38,15 @@ describe("MailAddressSettingModel", () => {
       expect(model.message).toEqual(null);
       expect(model.isSaving).toEqual(false);
     });
+    it("アドレス取得でエラーになった場合", () => {
+      model.initialize();
+      xhrManager.requests[0].reject({});
+
+      expect(model.mailAddress).toEqual(null);
+      expect(model.error).toEqual(null);
+      expect(model.message).toEqual(null);
+      expect(model.isSaving).toEqual(false);
+    });
   });
 
   it("テストメールを送信できる", () => {

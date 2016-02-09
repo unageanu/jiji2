@@ -23,8 +23,10 @@ export default class MailAddressSettingModel extends Observable {
     this.isSaving = false;
     this.mailAddress = null;
     const d = this.userSettingService.getMailAddress();
-    d.done((result) => {
+    d.then((result) => {
       this.mailAddress = result.mailAddress;
+    }, (error) => {
+      error.preventDefault = true;
     });
     return d;
   }
@@ -43,7 +45,7 @@ export default class MailAddressSettingModel extends Observable {
         (result) => {
           this.isSaving = false;
           this.mailAddress = mailAddress;
-          this.message = "メールアドレスを変更しました。 (" 
+          this.message = "メールアドレスを変更しました。 ("
             + DateFormatter.format(this.timeSource.now) + ")" ;
         },
         (error) => {

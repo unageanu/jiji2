@@ -72,6 +72,24 @@ describe("SMTPServerSettingModel", () => {
       expect(model.testMailMessage).toEqual(null);
       expect(model.isSaving).toEqual(false);
     });
+    it("設定取得時にエラーになった場合", () => {
+      model.initialize();
+      xhrManager.requests[0].resolve({
+        enablePostmark : true
+      });
+      xhrManager.requests[1].reject({});
+
+      expect(model.enablePostmark).toEqual(false);
+      expect(model.setting).toEqual({});
+      expect(model.error).toEqual(null);
+      expect(model.hostError).toEqual(null);
+      expect(model.portError).toEqual(null);
+      expect(model.userNameError).toEqual(null);
+      expect(model.passwordError).toEqual(null);
+      expect(model.message).toEqual(null);
+      expect(model.testMailMessage).toEqual(null);
+      expect(model.isSaving).toEqual(false);
+    });
   });
 
   describe("composeTestMail", () => {

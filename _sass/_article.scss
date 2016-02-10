@@ -70,6 +70,9 @@ article.post {
   pre {
     margin-left: $grid*5;
   }
+  .indent {
+    margin-left: $grid*5;
+  }
   .no_indent {
     margin-left: 0 !important;
   }

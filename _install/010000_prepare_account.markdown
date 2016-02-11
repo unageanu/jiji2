@@ -6,6 +6,9 @@ title:  "1. 証券口座の準備"
 <p> OANDA Japan の口座 (無料デモ口座でもOKです) をご用意ください。</p>
 
 <div class="link_to_oanda">
+<a class="link_to_oanda" href="https://click.j-a-net.jp/1578403/517576/" target="_blank">
+→ OANADA Japan のサイトへ
+</a>
 <a class="link_to_oanda large" href="https://click.j-a-net.jp/1578403/517576/" target="_blank">
   <img src="https://image.j-a-net.jp/1578403/517576/" width="728" height="90"  border="0" />
 </a>

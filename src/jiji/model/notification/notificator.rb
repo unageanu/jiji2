@@ -76,16 +76,22 @@ module Jiji::Model::Notification
     #                   表示する通貨ペアを指定できます。
     def push_notification(
       message = '', actions = [], note = nil, options = nil)
-      n = Notification.create(@agent, @time_source.now,
+      notification = Notification.create(@agent, @time_source.now,
         @backtest, message, actions, note, options)
-      n.save
-      @push_notifier.notify({
+      notification.save
+      @push_notifier.notify(create_message(message, notification), @logger)
+    end
+
+    private
+
+    def create_message(message, notification)
+      {
         title:          message,
-        message:        n.title,
-        image:          n.agent.icon_id,
-        notificationId: n.id.to_s,
+        message:        notification.title,
+        image:          notification.agent.icon_id,
+        notificationId: notification.id.to_s,
         backtestId:     @backtest ? @backtest.id.to_s : nil
-      }, @logger)
+      }
     end
 
   end

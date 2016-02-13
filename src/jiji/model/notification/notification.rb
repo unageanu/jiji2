@@ -35,7 +35,7 @@ module Jiji::Model::Notification
       name: 'notification_backtest_id_timestamp_index')
 
     def self.create(agent, timestamp,
-      backtest = nil, message = '', actions = [], note=nil, options=nil)
+      backtest = nil, message = '', actions = [], note = nil, options = nil)
       Notification.new do |n|
         n.timestamp   = timestamp
         n.initialize_agent_information(agent, backtest)

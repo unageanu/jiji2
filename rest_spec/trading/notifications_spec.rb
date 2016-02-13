@@ -46,8 +46,8 @@ describe '通知取得' do
     expect(notification['agent']['icon_id']).not_to be nil
     expect(notification['message']).to eq 'message'
     expect(notification['actions']).to eq []
-    expect(notification['note']).to eq "ノート"
-    expect(notification['options']).to eq({"chart" => { "pair" => "EURJPY" }})
+    expect(notification['note']).to eq 'ノート'
+    expect(notification['options']).to eq({ 'chart' => { 'pair' => 'EURJPY' } })
     expect(Time.iso8601(notification['timestamp'])).to eq Time.at(100)
     expect(notification['read_at']).to be nil
 
@@ -177,8 +177,8 @@ describe '通知取得' do
     expect(r.body['agent']['icon_id']).not_to be nil
     expect(r.body['message']).to eq 'message'
     expect(r.body['actions']).to eq []
-    expect(r.body['note']).to eq "ノート"
-    expect(r.body['options']).to eq({"chart" => { "pair" => "EURJPY" }})
+    expect(r.body['note']).to eq 'ノート'
+    expect(r.body['options']).to eq({ 'chart' => { 'pair' => 'EURJPY' } })
     expect(Time.iso8601(r.body['timestamp'])).to eq Time.at(100)
     expect(r.body['read_at']).to eq nil
   end
@@ -275,7 +275,7 @@ describe '通知取得' do
   def register_notification(agent_setting, backtest_id = nil)
     Jiji::Model::Notification::Notification.create(agent_setting.id,
       Time.at(100), backtest_id, 'message', [],
-      "ノート", {chart: {pair: :EURJPY}}).save
+      'ノート', { chart: { pair: :EURJPY } }).save
     Jiji::Model::Notification::Notification.create(agent_setting.id,
       Time.at(200), backtest_id, 'message2', []).read(Time.at(500))
     Jiji::Model::Notification::Notification.create(agent_setting.id,

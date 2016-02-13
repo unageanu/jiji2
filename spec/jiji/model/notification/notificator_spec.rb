@@ -95,8 +95,8 @@ describe Jiji::Model::Notification::Notificator do
     expect(notification.options).to eq nil
 
     notificator.push_notification('メッセージ2',  [
-      { 'label' => 'あ', 'action' => 'aaa' },
-    ], "ノート", { :chart => { pair: :EURJPY }})
+      { 'label' => 'あ', 'action' => 'aaa' }
+    ], 'ノート', { chart: { pair: :EURJPY } })
 
     notifications = notification_repository.retrieve_notifications({
       backtest_id: backtests[0].id
@@ -112,7 +112,7 @@ describe Jiji::Model::Notification::Notificator do
     expect(notification.actions).to eq [
       { 'label' => 'あ', 'action' => 'aaa' }
     ]
-    expect(notification.note).to eq "ノート"
-    expect(notification.options).to eq({ "chart" => { "pair" => :EURJPY }})
+    expect(notification.note).to eq 'ノート'
+    expect(notification.options).to eq({ 'chart' => { 'pair' => :EURJPY } })
   end
 end

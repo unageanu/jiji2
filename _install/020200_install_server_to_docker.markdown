@@ -34,9 +34,45 @@ $ git clone https://github.com/unageanu/docker-jiji2
 $ cd docker-jiji2
 {% endhighlight %}
 
-<p class="step">3. ポート番号の変更が必要な場合、docker-compose.yml を編集します。</p>
-  - デフォルトでは、Jijiがポート8080、mongodbがポート27017 を使用します。
-  - 例えば、Jijiのポートを80にする場合、docker-compose.ymlの内容を以下の通り変更します。
+<p class="step">3. SSL証明書を用意します。</p>
+
+- ドメインを所有している場合は、[Let's Encrypt](https://letsencrypt.org/)を利用して、無料でSSL証明書を取得できます。
+   - 取得方法は[こちら](https://letsencrypt.jp/usage/)をご覧ください。<br/><br/>
+- ローカルで作成した自己署名証明書を使用することもできます。
+   - 自己署名証明書を使用した場合、通信の暗号化はできますがサーバー認証はできません。
+     ブラウザおよびアプリで警告が表示されますので、ご了承ください。
+   - 自己責任でのご利用をお願いします。<br/><br/>
+- SSLを利用しない場合は、 <code>docker-compose-without-ssl.yml</code> をご使用ください。
+   - SSLプロキシとして使用している `Nginx` なしの構成でセットアップします。
+   - `docker-compose-without-ssl.yml` を `docker-compose.yml` にリネームして使用するか、
+     `-f` オプションで `docker-compose-without-ssl.yml` を明示してください。
+   - 通信の暗号化は行われませんので、自己責任でのご利用をお願いします。
+
+自己署名証明書を生成する例:
+{% highlight sh %}
+# 秘密鍵を生成
+$ openssl genrsa 2048 > server.key
+# CSRを作成
+$ openssl req -new -key server.key > server.csr
+# サーバー証明書を作成
+$ openssl x509 -sha256 -days 365 -req -signkey server.key < server.csr > server.crt
+{% endhighlight %}
+
+<p class="step">3. docker-compose.yml を編集します。</p>
+
+以下の項目を設定します。
+
+- <b>SSL証明書のパス</b>
+   - 3 で用意したSSL証明書の公開鍵と秘密鍵のパスを設定します。
+   - `./path/to/ssl.key` のように `./` で始めることで、 `docker-compose.yml` からの相対パスで指定できます。
+- <b>MongoDBデータの保存先</b>
+   - デフォルトでは、MongoDBコンテナ内に作成されます。
+   - ホストマシンの任意の場所に保存したい場合は、 `volumes` のコメントを解除して、保存先のパスを設定します。
+- <b>ポート番号</b>
+   - デフォルトでは、Jijiがポート8443、mongodbがポート27018 を使用します。(SSLを使用しない場合、Jijiは8080を使用します)
+   - 必要に応じてカスタマイズしてください。
+
+以下は設定例です。
 
 {% highlight yaml %}
 jiji:
@@ -44,14 +80,37 @@ jiji:
   build: ./build/jiji
   links:
     - mongodb
-  ports:
-    - "80:8080"
 
 mongodb:
   container_name: jiji_mongodb
   image: mongo:3.0.7
   ports:
-    - "27017:27017"
+    # MongoDBのポート番号
+    # 必要に応じて変更してください。
+    - "27018:27017"
+  volumes:
+    # MongoDBのデータを保存するディレクトリ
+    # デフォルトでは、コンテナ内に作成します。(この場合、コンテナを再作成すると、データが初期化されます)
+    # コメントアウトしてパスを設定することで、ホストマシンの任意のディレクトリに変更することができます。
+    # './' で始めることで、docker-compose.ymlからの相対パスで指定可能です。
+    - ./path/to/data/dir:/data/db
+
+nginx:
+  container_name: jiji_nginx
+  build: ./build/nginx
+  links:
+    - jiji
+  ports:
+    # Jijiのポート番号
+    # 必要に応じて変更してください。
+    - "8443:443"
+  volumes:
+    # SSL証明書のパス
+    # './path/to/server.crt' にサーバー証明書、
+    # './path/to/server.key' に秘密鍵を指定します。
+    # './' で始めることで、docker-compose.ymlからの相対パスで指定可能です。
+    - ./path/to/server.crt:/etc/nginx/cert/ssl.crt:ro
+    - ./path/to/server.key:/etc/nginx/cert/ssl.key:ro
 {% endhighlight %}
 
 <p class="step">3. Docker イメージをビルドします</p>
@@ -70,6 +129,7 @@ $ sudo docker-compose build
 $ sudo docker-compose up -d
 Creating jiji_mongodb
 Creating jiji_jiji
+Creating jiji_nginx
 {% endhighlight %}
 
 以下のコマンドで、起動しているコンテナを確認できます。
@@ -79,6 +139,12 @@ $ sudo docker ps -a
 {% endhighlight %}
 
 起動していれば、以下のURLでJijiにアクセスできます。
+{% highlight sh %}
+https://<インストール先ホスト>:<docker-compose.ymlで設定したJijiのポート/デフォルトは8443>
+{% endhighlight %}
+
+SSLを利用しない場合は以下のURLになります。
+
 {% highlight sh %}
 http://<インストール先ホスト>:<docker-compose.ymlで設定したJijiのポート/デフォルトは8080>
 {% endhighlight %}
@@ -122,4 +188,5 @@ logsコマンドでコンテナのログを確認できます。
 {% highlight sh %}
 $ sudo docker logs jiji_jiji
 $ sudo docker logs jiji_mongodb
+$ sudo docker logs jiji_nginx
 {% endhighlight %}

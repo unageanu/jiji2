@@ -12,7 +12,7 @@ nav_class_name: "lv2"
 以下のソフトウェアが必要です。
 
   - Git
-  - Docker .. 1.7.1以降
+  - Docker .. 1.9以降
   - Docker Compose .. 1.5以降
 
 {% highlight sh %}

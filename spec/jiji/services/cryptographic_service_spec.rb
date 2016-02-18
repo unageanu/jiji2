@@ -6,19 +6,23 @@ require 'jiji/composing/container_factory'
 describe Jiji::Services::CryptographicService do
   before do
     @default_secret = ENV['SECRET']
+    @default_user_secret = ENV['USER_SECRET']
   end
 
   after do
     ENV['SECRET'] = @default_secret
+    ENV['USER_SECRET'] = @default_user_secret
   end
 
-  it '暗号/復号ができる' do
+  it 'SECRET で 暗号化/復号化ができる' do
     service = Jiji::Services::CryptographicService.new
 
     value = service.encrypt('aaa')
     expect(service.decrypt(value)).to eq 'aaa'
 
     ENV['SECRET'] = 'a' * 100
+    ENV['USER_SECRET'] = nil
+
     expect do
       service.decrypt(value)
     end.to raise_exception(ActiveSupport::MessageVerifier::InvalidSignature)
@@ -27,11 +31,29 @@ describe Jiji::Services::CryptographicService do
     expect(service.decrypt(value)).to eq 'aaa'
   end
 
-  it 'SECRET が未設定の場合、エラーになる' do
+  it 'USER_SECRET で 暗号化/復号化ができる' do
+    service = Jiji::Services::CryptographicService.new
+
+    value = service.encrypt('aaa')
+    expect(service.decrypt(value)).to eq 'aaa'
+
+    ENV['SECRET'] = nil
+    ENV['USER_SECRET'] = 'a'
+
+    expect do
+      service.decrypt(value)
+    end.to raise_exception(ActiveSupport::MessageVerifier::InvalidSignature)
+
+    value = service.encrypt('aaa')
+    expect(service.decrypt(value)).to eq 'aaa'
+  end
+
+  it 'SECRET or USER_SECRET が未設定の場合、エラーになる' do
     service = Jiji::Services::CryptographicService.new
     value = service.encrypt('aaa')
 
     ENV['SECRET'] = nil
+    ENV['USER_SECRET'] = nil
 
     expect do
       service.encrypt('aaa')

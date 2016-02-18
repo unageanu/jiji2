@@ -21,7 +21,13 @@ module Jiji::Services
 
     def default_secret
       ENV['SECRET'] \
-      || illegal_state('environment variable $SECRET is not set.')
+      || (ENV['USER_SECRET'] && sha256(ENV['USER_SECRET'])) \
+      || illegal_state('environment variable $SECRET ' \
+          + 'or $ USER_SECRET is not set.')
+    end
+
+    def sha256(src)
+      OpenSSL::Digest::SHA256.new(src).digest
     end
 
   end

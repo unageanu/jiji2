@@ -25,6 +25,35 @@ div.link_to_oanda {
 article.post {
   .install_to_server {
 
+    table.comparison {
+      td {
+        width: 30%;
+        vertical-align: top;
+        font-size: $small-font-size;
+        padding: $grid;
+        line-height: 140%;
+        .rank {
+          font-size: 24px;
+          padding: $grid;
+          text-align:center;
+        }
+        .rank.good {
+          font-size: 26px;
+          color: #FF9933;
+        }
+        .rank.very_good {
+          font-size: 34px;
+          color: #FF6633;
+        }
+      }
+      td:nth-child(1) {
+        width: 10%;
+        font-weight: bold;
+        text-align:center;
+        vertical-align: middle;
+      }
+    }
+
     .install_type {
       font-size: 18px;
       font-weight:bold;
@@ -63,9 +92,8 @@ article.post {
       margin: $grid*5 0px;
 
       h2 {
-        color: $accent-color;
         font-size: 20px;
-        margin: 0px 0px $grid*3;
+        margin: 0px 0px $grid*3 0px;
       }
 
       .boxes {
@@ -80,6 +108,7 @@ article.post {
         h3 {
           font-size: 18px;
           font-weight: bold;
+          margin: 0px;
         }
         div {
           font-size: $small-font-size;

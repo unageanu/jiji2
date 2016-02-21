@@ -49,7 +49,7 @@ $ git push heroku master
 Herokuへのデプロイが成功すれば、更新は完了です。
 
 
-<h2>dockerにインストールしている場合</h2>
+<h2>AWS,Dockerにインストールしている場合</h2>
 
 <p>以下のコマンドを実行し、jiji_jiji コンテナに入ります。</p>
 

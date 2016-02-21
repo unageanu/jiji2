@@ -57,6 +57,18 @@ article.post {
     margin-bottom: $grid*4;
   }
 
+  h2 {
+    color: $accent-color;
+    font-size: 24px;
+    margin-top: $grid*8;
+  }
+
+  h3 {
+    color: $accent-color;
+    font-size: 20px;
+    margin-top: $grid*8;
+  }
+
   .contents {}
 
   p {

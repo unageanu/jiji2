@@ -9,7 +9,9 @@ nav_class_name: "lv2"
 
 - EC2インスタンス上のAmazon Linuxに、Dockerをインストールして、その上でJijiを実行します。
   - Dockerをインストールできれば他のAMIイメージを利用することもできます。
-- 月額料金をなるべく安く済ませるため、もっともシンプルな構成にしています。CloudWatchでの死活監視など必要であれば、別途設定を行ってください。
+- 月額料金をなるべく安く済ませるため、もっともシンプルな構成にしています。
+  - 月額: $6.5 + データ転送料 ～
+  - CloudWatchでの死活監視など必要であれば、別途設定を行ってください。
 - [Amazon Web Service](https://aws.amazon.com/jp/)のアカウントを用意していることを前提としているので、事前にご用意ください。
 
 <p class="step">1. EC2のコンソールを開きます。</p>
@@ -73,7 +75,7 @@ nav_class_name: "lv2"
    ![画面](/images/install/aws_09.png)
 
 6. ディスクサイズを設定して、「次の手順:インスタンスのタグ付け」をクリックします。
-  - OS領域に TODO GB、Jijiには保存するバックテストの数にもよりますが4GB程度あれば十分なので、12GBにします。
+  - OS領域に8GB、Jijiには保存するバックテストの数にもよりますが4GB程度あれば十分なので、12GB確保すれば問題ありません。
   - 必要に応じてカスタマイズしてください。ただし、サイズを増やすとその分利用料金も高くなります。
   - ディスクサイズは後で変更することもできます。
 
@@ -104,7 +106,7 @@ nav_class_name: "lv2"
 1. インスタンスが起動したら、詳細画面からパブリックIPアドレスを取得します。
    ![画面](/images/install/aws_15.png)
 
-2. 任意のSSHクライアントを起動し、以下のを指定してインスタンスにログインします。
+2. 任意のSSHクライアントを起動し、以下を指定してインスタンスにログインします。
 
    - IPアドレス: ↑で取得したパブリックIPアドレス
    - ポート番号: 22
@@ -137,7 +139,7 @@ $ sudo chmod +x /usr/local/bin/docker-compose
 $ /usr/local/bin/docker-compose -v
 docker-compose version 1.6.0, build d99cad6
 
-# git をインストールます。
+# git をインストール
 $ sudo yum install -y git
 $ git --version
 git version 2.4.3

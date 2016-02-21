@@ -30,6 +30,9 @@ $ openssl genrsa 2048 > server.key
 $ openssl req -new -key server.key > server.csr
 # サーバー証明書を作成
 $ openssl x509 -sha256 -days 365 -req -signkey server.key < server.csr > server.crt
+# アクセス権を制限
+$ sudo chown root.root server.key
+$ sudo chmod 600 server.key
 {% endhighlight %}
 
 <p class="step">{{include.section_no | plus:'2' }}. docker-compose.yml を編集します。</p>
@@ -162,8 +165,6 @@ $ sudo /usr/local/bin/docker-compose stop
 {% highlight sh %}
 $ sudo /usr/local/bin/docker-compose start
 {% endhighlight %}
-
-<br/><br/>
 
 ## 補足2: サービスのログを確認する
 

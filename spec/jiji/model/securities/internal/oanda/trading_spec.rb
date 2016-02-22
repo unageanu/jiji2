@@ -18,5 +18,7 @@ describe Jiji::Model::Securities::Internal::Oanda::Trading do
   end
 
   today = Date.today
-  it_behaves_like '建玉関連の操作' if today.wday >= 1 &&  today.wday < 6
+  if today.wday >= 1 &&  today.wday < 6 && ENV['OANDA_API_ACCESS_TOKEN']
+    it_behaves_like '建玉関連の操作'
+  end
 end

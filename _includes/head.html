@@ -12,6 +12,7 @@
   <meta name="description" content="{% if page.content %}{{ page.content | strip_html | strip_newlines | replace:' ','' | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
   <meta name="keywords" content="FX,為替,外国為替,外国為替証拠金取引,システムトレード,シストレ,自動取引,自動売買,Bot,ボット,Ruby,OANDA,OANDA API,クラウド,Heroku" />
   <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
+  <link rel="stylesheet" href="{{ "/css/animate.min.css" | prepend: site.baseurl }}">
   <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
   <link rel="icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
@@ -21,7 +22,6 @@
   {% endif %}
 
   <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-  <script src="//cdn.optimizely.com/js/5072542227.js"></script>
 
   {% include dot_metrix_tag.html %}
 </head>

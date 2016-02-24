@@ -31,6 +31,7 @@ describe Jiji::Model::Trading::Process do
       it 'cancel した直後でも停止できる' do
         @process.start
         @process.cancel
+        Thread.pass
         sleep 0.1 until @process.finished?
 
         expects_process_cancelled(@process)
@@ -48,6 +49,7 @@ describe Jiji::Model::Trading::Process do
       it 'pause した直後でも停止できる' do
         @process.start
         @process.pause
+        Thread.pass
         sleep 0.1 until @process.finished?
 
         expects_process_paused(@process)

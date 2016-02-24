@@ -21,4 +21,4 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
       expect(t.time).not_to be nil
     end
   end
-end
+end if ENV['OANDA_API_ACCESS_TOKEN']

@@ -145,4 +145,4 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
       expect(rate.low.ask).to be > 0
     end
   end
-end
+end if ENV['OANDA_API_ACCESS_TOKEN']

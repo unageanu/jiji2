@@ -81,4 +81,4 @@ describe Jiji::Model::Securities::Internal::Virtual::RateRetriever do
       end
     end
   end
-end
+end if ENV['OANDA_API_ACCESS_TOKEN']

@@ -209,4 +209,4 @@ describe Jiji::Model::Securities::Internal::Virtual::Trading do
     saved_positions = position_repository.retrieve_positions(backtest_id)
     expect(saved_positions.length).to be 0
   end
-end
+end if ENV['OANDA_API_ACCESS_TOKEN']

@@ -58,3 +58,12 @@ $headings-line-height:    1.5;
 
 $headings-color:          $accent-color;
 $headings-font-weight:    normal;
+
+$grid-gutter-width:       $grid*4;
+
+
+//== Container sizes
+$screen-sm:                  600px;
+$container-sm:               1160px;
+$container-md:               $container-sm;
+$container-lg:               $container-sm;

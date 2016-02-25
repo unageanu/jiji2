@@ -92,7 +92,7 @@ article.post {
   img {
     margin: $grid 0px;
     display: block;
-    background-color: #FFF;
+    background-color: $background-color-w;
     border: 1px solid $border-color-dark;
     padding: 1px;
     line-height: 0px;
@@ -169,7 +169,7 @@ article.post {
 
     th {
       background-color: $accent-color;
-      color: #FFF;
+      color: $text-color-w;
     }
 
     tr:nth-child(odd) {

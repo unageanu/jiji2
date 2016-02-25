@@ -3,16 +3,19 @@
  */
 .site-header {
   // Positioning context for the mobile navigation icon
-  position: relative;
-  background-color: $primary-color;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background-color: rgba(darken($primary-color, 5%), 0.95);
   padding: $grid/2 0px;
+  box-shadow: 0 5px 5px rgba(0,0,0,.1);
 
   .site-title {
   }
 
   .logo {
-    width: 176px;
-    height: 72px;
+    width: 190px;
+    height: 90px;
   }
 
   .menu-icon {
@@ -21,15 +24,14 @@
 
   .site-nav {
     float: right;
-    line-height: 48px;
-    padding-top: $grid+$grid/2;
+    line-height: 90px;
 
     .page-link {
-      color: #FFF;
+      color: $text-color-w;
       line-height: $base-line-height;
     }
     .spacer {
-      color: #FFF;
+      color: $text-color-w;;
       margin: 0px $grid;
 
       &::after {

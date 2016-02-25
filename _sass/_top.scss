@@ -4,20 +4,57 @@
     clear: both;
   }
 
+  .site-header {
+    position: absolute;
+    background-color: rgba(0,0,0,0);
+    box-shadow: none;
+  }
+  .site-header.fixed {
+    position: fixed;
+    background-color: rgba(darken($primary-color, 5%), 0.95);
+    box-shadow: 0 5px 5px rgba(0,0,0,.1);
+
+    // .logo {
+    //   width: 95px;
+    //   height: 45px;
+    // }
+    // .site-nav {
+    //   line-height: 45px;
+    // }
+  }
+
+  p.notice {
+    margin: $grid*6 0 0 0;
+    border: 1px dotted $border-color-dark;
+    padding: $grid*2;
+    font-size: $small-font-size;
+
+    b {
+      color: $text-color-w;
+    }
+  }
+
   .first-hook {
     color: $text-color-w;
     background-color: $primary-color;
-    padding-top: $grid*13;
+    padding-top: $grid*24;
 
-    background-image: url(/images/top/top-image.jpg);
+    background-image: url(/images/top/top-image2.jpg);
+    background-size: cover;
     background-repeat: no-repeat;
-    background-position: calc( (100% - 1080px)/2 + 580px ) -290px;
+
+    div.image-box {
+      background-image: url(/images/top/pc-and-app-image.png);
+      background-repeat: no-repeat;
+      background-position: calc( (100% - 1160px)/2 + 780px ) 80px;
+    }
 
     h1 {
       font-size: 28px;
     }
 
     .beta {
+      margin-top: $grid;
       padding: 1px $grid*3;
       color: $accent-color;
       border: 3px double $accent-color;
@@ -26,30 +63,27 @@
     }
 
     p.description {
-      margin: $grid*4 0 $grid*6;
+      margin: $grid*6 0 $grid*6;
+      color: #DDDDD5;
+      .app_name {
+        color: $text-color-w;
+        font-size: 18px;
+      }
     }
 
     p.notice {
-      margin: $grid*6 0;
-      border: 1px dotted $border-color;
-      padding: $grid*2;
-      font-size: $small-font-size;
+      margin: $grid*36 0 $grid*6;
       color: $text-color-w-light;
-      width: 450px;
-
-      b {
-        color: $text-color-w;
-      }
     }
   }
 
   .feature {
-    padding: $grid*8 0px;
+    padding: $grid*12 0px;
 
     h2 {
-      font-size: 28px;
+      font-size: 30px;
       display:block;
-      margin-bottom: $grid*4;
+      margin-bottom: $grid*8;
     }
     p.description {
       margin: $grid*4 0;
@@ -71,7 +105,7 @@
       }
       img, .image-box {
         display: block;
-        background-color: #FFF;
+        background-color: $background-color-w;
         border: 1px solid $border-color-dark;
         padding: 1px;
         line-height: 0px;

@@ -1,0 +1,60 @@
+
+// Our variables
+$base-font-family: 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, sans-serif;
+$base-font-size:   16px;
+$base-font-weight: 400;
+$small-font-size:  14px;
+$base-line-height: 160%;
+
+$spacing-unit:     16px;
+
+$text-color:            #666666;
+$text-color-light:      #888888;
+
+$text-color-w:          #FFFFFF;
+$text-color-w-light:    #ccccc3;
+
+
+$background-color:      #FFFFFF;
+$background-color-dark: #F1F1F1;
+$background-color-w:    #FFFFE5;
+
+$border-color:          #D3D3D3; //#E0E0E0;
+$border-color-dark:     #c0c0c0;
+$brand-color:           #2a7ae2;
+
+$accent-color:          #00BFA5;
+$accent-color-red:      #f03950;
+$primary-color:         #2A525B;
+
+
+$grey-color:       #828282;
+$grey-color-light: lighten($grey-color, 40%);
+$grey-color-dark:  darken($grey-color, 25%);
+
+// Width of the content area
+$content-width:    1160px;
+$grid: 8px;
+
+$on-palm:          600px;
+$on-laptop:        800px;
+
+
+
+$font-family-sans-serif:  'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, sans-serif;
+$font-size-base:          16px;
+$font-size-large:         18px;
+$font-size-small:         14px;
+
+$font-size-h1:            32px;
+$font-size-h2:            28px;
+$font-size-h3:            24px;
+$font-size-h4:            20px;
+$font-size-h5:            18px;
+$font-size-h6:            16px;
+
+$line-height-base:        1.6;
+$headings-line-height:    1.5;
+
+$headings-color:          $accent-color;
+$headings-font-weight:    normal;

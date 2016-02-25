@@ -1,26 +1,28 @@
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-<meta property="og:image" content="{{ site.url }}/images/logo_512x512.png" />
-<meta property="og:url"          content="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}" />
-<meta property="og:type"         content="product" />
-<meta property="og:title"        content="{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}" />
-<meta property="og:description"  content="{% if page.content %}{{ page.content | strip_html | strip_newlines | replace:' ','' | truncate: 160 }}{% else %}{{ site.description }}{% endif %}" />
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+  <meta property="og:image" content="{{ site.url }}/images/logo_512x512.png" />
+  <meta property="og:url"          content="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}" />
+  <meta property="og:type"         content="product" />
+  <meta property="og:title"        content="{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}" />
+  <meta property="og:description"  content="{% if page.content %}{{ page.content | strip_html | strip_newlines | replace:' ','' | truncate: 160 }}{% else %}{{ site.description }}{% endif %}" />
 
-<title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
-<meta name="description" content="{% if page.content %}{{ page.content | strip_html | strip_newlines | replace:' ','' | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
-<meta name="keywords" content="FX,為替,外国為替,外国為替証拠金取引,システムトレード,シストレ,自動取引,自動売買,Bot,ボット,Ruby,OANDA,OANDA API,クラウド,Heroku" />
-<link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
-<link rel="shortcut icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
-<link rel="icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
+  <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{% if page.content %}{{ page.content | strip_html | strip_newlines | replace:' ','' | truncate: 160 }}{% else %}{{ site.description }}{% endif %}">
+  <meta name="keywords" content="FX,為替,外国為替,外国為替証拠金取引,システムトレード,シストレ,自動取引,自動売買,Bot,ボット,Ruby,OANDA,OANDA API,クラウド,Heroku" />
+  <link rel="canonical" href="{{ page.url | replace:'index.html','' | prepend: site.baseurl | prepend: site.url }}">
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
+  <link rel="icon" href="/images/favicon.ico" type="image/vnd.microsoft.icon">
 
-<link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
-<link rel="stylesheet" href="{{ "/css/animate.min.css" | prepend: site.baseurl }}">
+  <link rel="stylesheet" href="{{ "/css/main.css" | prepend: site.baseurl }}">
+  <link rel="stylesheet" href="{{ "/css/animate.min.css" | prepend: site.baseurl }}">
 
-{% if page.no_index == true %}
-  <meta name="robots" content="noindex,nofollow">
-{% endif %}
+  {% if page.no_index == true %}
+    <meta name="robots" content="noindex,nofollow">
+  {% endif %}
 
-<script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
 
-{% include dot_metrix_tag.html %}
+  {% include dot_metrix_tag.html %}
+</head>

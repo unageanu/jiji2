@@ -2,10 +2,7 @@
  * Site header
  */
 .site-header {
-  // Positioning context for the mobile navigation icon
-  position: fixed;
-  top: 0;
-  width: 100%;
+  position: relative;
   background-color: rgba(darken($primary-color, 5%), 0.95);
   padding: $grid/2 0px;
   box-shadow: 0 5px 5px rgba(0,0,0,.1);
@@ -43,11 +40,11 @@
   @include media-query($on-palm) {
 
     .logo {
-      width: 123px;
-      height: 50px;
+      width: 95px;
+      height: 45px;
     }
     .site-nav {
-      line-height: 18px;
+      line-height: 45px;
       font-size: $small-font-size;
 
       .spacer {
@@ -57,60 +54,3 @@
   }
 
 }
-//
-//   .menu-icon {
-//     display: block;
-//     float: right;
-//     margin: $grid*2 0px 0px 0px;
-//     width: 40px;
-//     height: 28px;
-//     border: 1px solid $accent-color;
-//     line-height: 0;
-//     padding-top: 12px;
-//     text-align: center;
-//     border-radius: 2px;
-//
-//     > svg {
-//         width: 18px;
-//         height: 16px;
-//
-//         path {
-//             fill: $accent-color;
-//         }
-//     }
-//   }
-//
-//   .site-nav {
-//     display: block;
-//     position: absolute;
-//     top: 48px;
-//     right: $spacing-unit / 2;
-//     background-color: $accent-color;
-//     border: 1px solid $primary-color;
-//     border-radius: 2px;
-//
-//     .spacer {
-//       display: none;
-//     }
-//
-//     // .trigger {
-//     //     clear: both;
-//     //     display: none;
-//     // }
-//     //
-//     // &:hover .trigger {
-//     //     display: block;
-//     //     padding-bottom: 5px;
-//     // }
-//
-//     .page-link {
-//         display: block;
-//         padding: 5px 10px;
-//
-//         &:not(:last-child) {
-//             margin-right: 0;
-//         }
-//         margin-left: 20px;
-//     }
-//   }
-// }

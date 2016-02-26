@@ -6,6 +6,8 @@
 
   .site-header {
     position: absolute;
+    top: 0;
+    width: 100%;
     background-color: rgba(0,0,0,0);
     box-shadow: none;
   }
@@ -26,7 +28,7 @@
     background-color: $primary-color;
     padding-top: $grid*24;
 
-    background-image: url(/images/top/top-image2.jpg);
+    background-image: url(/images/top/top-image.jpg);
     background-size: cover;
     background-repeat: no-repeat;
 
@@ -75,6 +77,11 @@
 
     .step {
       margin: $grid*4 0 0 0;
+      .number {
+        font-size: 28px;
+        color: $primary-color;
+        padding-right: $grid;
+      }
       ul {
         margin-left: $grid*6;
       }
@@ -145,11 +152,6 @@
       left: -400px;
       z-index: -100;
     }
-    .number {
-      font-size: 28px;
-      color: $primary-color;
-      padding-right: $grid;
-    }
   }
 
   .feature.mobile {
@@ -160,6 +162,9 @@
 
     .box {
       padding-top: 96px;
+    }
+    .boxes .box:nth-last-child(1) {
+      text-align:center;
     }
 
     p.description {
@@ -191,17 +196,16 @@
         margin-top: $grid;
       }
     }
-    img.mobile {
-      border: 0px;
-      padding: 0px;
-      max-width: none;
-      position:relative;
-      left:100px;
-    }
   }
 
   .feature.cloud {
+  }
 
+  .feature.oss {
+    padding-bottom: 0px;
+    .boxes .box:nth-last-child(1) {
+      text-align:center;
+    }
   }
 
   .closing {
@@ -214,13 +218,23 @@
 
   @include media-query($on-palm) {
 
+    p.notice {
+      margin: $grid*4 0 0 0;
+    }
+
     .first-hook {
-      background-color: $primary-color;
-      padding-top: $grid*8;
+      padding-top: $grid*12;
 
-      background-image: none;
+      div.image-layer {
+        background-position: $grid 360px;
+        background-size: 468px 264px;
+      }
 
+      h1 {
+        font-size: 22px;
+      }
       p.notice {
+        margin: $grid*42 0 $grid*4;
         width: auto;
       }
     }
@@ -229,18 +243,35 @@
       padding: $grid*5 0px;
 
       h2 {
-        font-size: 22px;
+        font-size: 24px;
         display:block;
+        margin-bottom: $grid*4;
       }
       p.description {
         font-size: $small-font-size;
         margin: $grid*4 0;
       }
+      .step {
+        margin-top: $grid*2;
+        .number {
+          font-size: 20px;
+        }
+        ul {
+          margin-left: $grid*3;
+          li {
+            margin-top: $grid/2;
+          }
+        }
+      }
+
       .boxes {
         display: block;
         .box {
           width: auto;
           margin-bottom:  $grid*4;
+        }
+        .box:nth-last-child(1) {
+          margin-bottom:  0;
         }
       }
       .boxes3 {
@@ -254,14 +285,38 @@
           width: auto;
           margin-right: 0;
 
-          img.large {
-            width: 300px;
-            height: 225px;
+          img{
+            max-width: 100%;
           }
         }
       }
       ul {
         font-size: $small-font-size;
+      }
+    }
+
+    .system-trade {
+      img.system-trade {
+        left: 0px;
+        z-index: -100;
+      }
+    }
+
+    .feature.mobile {
+      padding: 0px;
+      .box {
+        padding-top: $grid * 4;
+        margin-bottom:  0;
+      }
+      img.mobile {
+        left:0px;
+        width: 208px;
+        height: 308px;
+      }
+    }
+    .closing {
+      p.description {
+        font-size: $base-font-size;
       }
     }
   }

@@ -170,8 +170,6 @@ pre {
 
     @include media-query($on-laptop) {
         width: auto;
-        padding-right: $spacing-unit / 2;
-        padding-left: $spacing-unit / 2;
     }
 }
 
@@ -212,10 +210,25 @@ pre {
 .hide-on-mobile {
   display: block;
 }
+.show-on-mobile {
+  display: none;
+}
 
 @include media-query($on-palm) {
   .hide-on-mobile {
     display:none;
+  }
+  .show-on-mobile {
+    display: block;
+  }
+}
+
+@include media-query($on-palm) {
+  body {
+    line-height: 140%;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 130%;
   }
 }
 

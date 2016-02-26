@@ -10,12 +10,12 @@ page_name: top
     <div class="image-layer">
       <div class="wrapper animated fadeIn">
         <h1>
-          自分だけの取引アルゴリズムで、<br/>
+          自分だけの取引アルゴリズムで、<br class="hide-on-mobile"/>
           今すぐシステムトレードを開始。
         </h1>
         <p class="description">
-          無料で使える<br/>
-          FXシステムトレードフレームワーク<br/>
+          無料で使える<br  class="hide-on-mobile"/>
+          FXシステムトレードフレームワーク<br  class="hide-on-mobile"/>
           <span class="app_name">「 Jiji 」</sapn><br/>
           <span class="beta">Beta</span>
         </p>
@@ -121,29 +121,31 @@ page_name: top
 
   <section class="feature page-content cloud">
     <div class="wrapper">
-      <h2>
-        クラウド対応で低コスト。<br/>
-      </h2>
       <div class="boxes boxes2">
         <div class="box">
-          <h3>クラウドプラットフォームのHeroku,AWSに対応</h3>
-          <div class="image-box">
-            <img src="/images/top/heroku-logotype-vertical-purple.svg" />
-          </div>
-          <ul>
-            <li><b>1クリックでHerokuにインストール</b>して、利用を開始することができます。</li>
-            <li>Herokuなら、<b>月額$7</b>で24時間稼働するシステムが構築可能。</li>
-            <li>AWSの場合、<b>月額$6.5 + データ転送料 ～</b>。<b>無料利用枠</b>内でも使えます。</li>
-            <li>システムの管理は、<b>WebUIまたはスマホアプリ</b>から行えます。</li>
-          </ul>
+          <img src="/images/top/cloud.png" />
         </div>
-
         <div class="box">
-          <h3>もちろん、自宅PCでも使えます</h3>
-          <img src="/images/top/large_v-trans.png" />
-          <ul>
-            <li><b>Dockerイメージ</b>を配布しているので、インストールも簡単です。</li>
-          </ul>
+          <h2>
+            クラウド対応。なので、低コスト。
+          </h2>
+          <div class="step">
+            <h3><span class="number">1.</span> クラウドプラットフォームの Heroku と AWS に対応</h3>
+            <ul>
+              <li><b>1クリックでHerokuにインストール</b>して、利用を開始することができます。</li>
+              <li>
+                Herokuなら<b>月額 $7</b>、AWSなら<b>月額 $6.5 + データ転送料 ～</b>で、24時間稼働するシステムを構築可能。
+                <b>無料利用枠</b>も使えます。
+              </li>
+              <li>システムの管理は、<b>WebUIまたはスマホアプリ</b>から行えます。</li>
+            </ul>
+          </div>
+          <div class="step">
+            <h3><span class="number">2.</span> もちろん、自宅PCでも使えます</h3>
+            <ul>
+              <li><b>Dockerイメージ</b>を配布しているので、インストールも簡単です。</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -151,13 +153,22 @@ page_name: top
 
   <section class="feature page-content oss">
     <div class="wrapper">
-      <h2>
-        オープンソース
-      </h2>
-      <p class="description">
-        ソースコードは <b><a href="https://github.com/unageanu/jiji2" target="_blank">GitHub</a></b>で公開しています。<br/>
-        MITライセンスに基づき、自由に改変/再配布が可能です。
-      </p>
+      <div class="boxes boxes2">
+        <div class="box">
+          <h2>
+            オープンソース
+          </h2>
+          <p class="description">
+            ソースコードは <b><a href="https://github.com/unageanu/jiji2" target="_blank">GitHub</a></b>で公開しています。<br/>
+            MITライセンスに基づき、自由に改変/再配布が可能です。
+          </p>
+        </div>
+        <div class="box">
+          <a href="https://github.com/unageanu/jiji2" target="_blank">
+            <img src="/images/top/github.png" />
+          </a>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -166,8 +177,8 @@ page_name: top
       <p class="description">
         システムトレード、始めてみませんか?
       </p>
-      <div id="bottom_install_button" class="buttons hide">
-        <a class="button" href="/install/">インストールして試してみる(無料)</a>
+      <div id="bottom_install_button" class="buttons">
+        <a class="button" href="/install/">インストールして試してみる<br class="show-on-mobile"/> (無料)</a>
       </div>
     </div>
   </section>

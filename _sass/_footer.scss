@@ -4,7 +4,7 @@
  * Site footer
  */
 .site-footer {
-    background-color: #a5a5aa;
+    background-color: #85858a;
     color: #EEE;
     padding: $grid*5 0 $grid*3 0px;
 }
@@ -48,19 +48,22 @@
 }
 
 @include media-query($on-laptop) {
-    .footer-col-wrapper {
-      display: block;
-      .footer-col-1, .footer-col-2, .footer-col-3{
-        width: auto;
-        margin-right: 0px;
-      }
+  .footer-col-wrapper {
+    display: block;
+    .footer-col-1, .footer-col-2, .footer-col-3{
+      width: auto;
+      margin-right: 0px;
+    }
 
-      .footer-col-3 {
-        .text {
-          margin-top: $grid*3;
-        }
+    .footer-col-3 {
+      .text {
+        margin-top: $grid*3;
       }
     }
+  }
+  .right {
+    margin-bottom: $grid;
+  }
 }
 
 .right {

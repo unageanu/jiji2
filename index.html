@@ -1,28 +1,26 @@
 ---
 layout: fullscreen
-class_name: top
+page_name: top
 ---
 
 <script src="//cdn.optimizely.com/js/5072542227.js"></script>
 
 <article class="top">
   <section id="first-hook" class="first-hook page-content">
-    <div class="image-box animated fadeIn">
-      <div class="wrapper">
-        <div>
-          <h1>
-            自分だけの取引アルゴリズムで、<br/>
-            今すぐシステムトレードを開始。
-          </h1>
-          <p class="description">
-            無料で使える<br/>
-            FXシステムトレードフレームワーク<br/>
-            <span class="app_name">「 Jiji 」</sapn><br/>
-            <span class="beta">Beta</span>
-          </p>
-          <div class="buttons">
-            <a class="button" href="/install/">無料でインストール</a>
-          </div>
+    <div class="image-layer">
+      <div class="wrapper animated fadeIn">
+        <h1>
+          自分だけの取引アルゴリズムで、<br/>
+          今すぐシステムトレードを開始。
+        </h1>
+        <p class="description">
+          無料で使える<br/>
+          FXシステムトレードフレームワーク<br/>
+          <span class="app_name">「 Jiji 」</sapn><br/>
+          <span class="beta">Beta</span>
+        </p>
+        <div class="buttons">
+          <a class="button" href="/install/">無料でインストール</a>
         </div>
         <p class="notice">
           ※「必ず利益が出せる取引アルゴリズム」を提供するソフトウェアでは<b>ありません。</b>
@@ -33,78 +31,98 @@ class_name: top
     </div>
   </section>
 
-  <section class="feature page-content">
+  <section class="feature page-content system-trade">
     <div class="wrapper">
-      <h2>
-        3ステップで、システムトレードを開始。
-      </h2>
-      <div class="boxes boxes3">
-        <div class="box">
-          <h3>1. 取引アルゴリズムを作る</h3>
-          <img src="/images/top/top01_01.png" />
-          <ul>
-            <li>自分だけの取引アルゴリズムを、 <b><a href="https://www.ruby-lang.org/ja/">Ruby</a></b>で。</li>
-            <li>添付ライブラリで、<b>移動平均やRSIを使ったアルゴリズム</b>をかんたんに作成できます。</li>
-          </ul>
-        </div>
-        <div class="box">
-          <h3>2. バックテストで検証</h3>
-          <img src="/images/top/top01_02.png" />
-          <ul>
-            <li><b>過去10年のデータ</b>を使って、取引アルゴリズムを検証。</li>
-            <li>勝率やProfitFactorなどアルゴリズムの成績は、<b>UIで詳細に分析</b>できます。</li>
-          </ul>
-        </div>
-        <div class="box">
-          <h3>3. 24時間、自動取引</h3>
-          <img src="/images/top/top01_03.png" />
-          <ul>
-            <li>OANDA Japan の口座で、作成した取引アルゴリズムを実行。※1</li>
-            <li>取引の状況は、<b>スマホアプリまたはWebUI</b> でいつでもどこでも確認できます。</li>
-          </ul>
-        </div>
-      </div>
-      <p class="notice">
-      ※1 発注や決済には<b><a href="http://www.oanda.jp/api/">OANDA FX REST API</a></b>を利用しています。
-      </p>
-    </div>
-  </section>
-
-  <section class="feature page-content">
-    <div class="wrapper">
-      <h2>
-        "Bot型"取引アルゴリズムが
-      </h2>
-      <p class="description">
-        Push通知と、取引アルゴリズムへのコマンド送信を組み合わせて、<br class="hide-on-mobile" />
-        <b>裁量トレードをアシストするBot型の取引システム</b>を構築することもできます。
-      </p>
-      <p class="subtitle">
-        ≪使い方イメージ≫
-      </p>
       <div class="boxes boxes2">
         <div class="box">
-          <img class="large" src="/images/top/top02_01.png" />
-          <ul>
-            <li>取引アルゴリズムで、レートの動きを監視。</li>
-            <li>取引のチャンスとなりそうなレートの変化を検知したタイミングで、Push通知を送信。</li>
-          </ul>
+          <img src="/images/top/system-trade.png" class="system-trade" />
         </div>
         <div class="box">
-          <img class="large" src="/images/top/top02_02.png" />
-          <ul>
-            <li>Push通知を受け取り、次のアクションを人間が判断。</li>
-            <li>取引アルゴリズムにコマンドを送り、トレードや決済などの任意アクションを実行させることができます。</li>
-          </ul>
+          <h2>
+            3ステップで、自動取引をスタート。
+          </h2>
+          <div class="step">
+            <h3><span class="number">1.</span> 取引アルゴリズムを作る</h3>
+            <ul>
+              <li>自分だけの取引アルゴリズムを、 <b><a href="https://www.ruby-lang.org/ja/">Ruby</a></b>で。</li>
+              <li>添付ライブラリで、<b>移動平均やRSIを使ったアルゴリズム</b>をかんたんに作成できます。</li>
+            </ul>
+          </div>
+          <div class="step">
+            <h3><span class="number">2.</span> バックテストで検証</h3>
+            <ul>
+              <li><b>過去10年のデータ</b>を使って、取引アルゴリズムを検証。</li>
+              <li>勝率やProfitFactorなどアルゴリズムの成績は、<b>UIで詳細に分析</b>できます。</li>
+            </ul>
+          </div>
+          <div class="step">
+            <h3><span class="number">3.</span> 24時間、自動取引</h3>
+            <ul>
+              <li>OANDA Japan の口座で、作成した取引アルゴリズムを実行。※1</li>
+              <li><b>無料デモ講座</b>で気軽にお試しできます。</li>
+              <li>取引の状況は、<b>スマホアプリまたはWebUI</b> でいつでもどこでも確認可能。</li>
+            </ul>
+          </div>
+          <p class="notice">
+          ※1 発注や決済には<b><a href="http://www.oanda.jp/api/">OANDA FX REST API</a></b>を利用しています。
+          </p>
         </div>
       </div>
     </div>
   </section>
 
-  <section class="feature page-content">
+  <section class="feature page-content mobile">
+    <div class="image-layer">
+      <div class="wrapper">
+        <div class="boxes boxes2">
+          <div class="box">
+            <h2>
+              忙しいあなたのトレードを徹底サポートする、"Bot型" 取引アルゴリズム。
+            </h2>
+            <p class="description">
+              専用スマホアプリで、Push通知の受信と、アルゴリズムへのコマンド送信が可能。
+              これらを組み合わせて、<b>裁量トレードをアシストする"Bot型"の取引システム</b>を構築することができます。
+            </p>
+            <div class="android_badge">
+              <a id="install_app" target="_blank"
+                href="https://play.google.com/store/apps/details?id=net.unageanu.jiji&utm_source=global_co&utm_medium=prtnr&utm_content=Mar2515&utm_campaign=PartBadge&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1">
+                <img alt="Get it on Google Play" src="https://play.google.com/intl/en_us/badges/images/generic/en-play-badge.png" />
+              </a>
+              <div class="info">
+                ※スマホアプリは、<b>月額450円(税抜)の有料ソフトウェア</b>です。<br/>
+                まずはお試し。いまなら、購入後<b>30日間無料</b>でご利用いただけます。</br>
+                ※iOS版は準備中です。
+              </div>
+            </div>
+            <!--
+            <div class="usage">
+              <p class="subtitle">
+                ≪使い方イメージ≫
+              </p>
+              <ol>
+                <li>
+                  取引アルゴリズムで、レートの動きを監視。<br/>
+                  取引のチャンスとなりそうなレートの変化を検知したら、Push通知を送信。
+                </li>
+                <li>Push通知を受け取り、次のアクションを人間が判断。<br/>
+                  取引アルゴリズムにコマンドを送って、トレードや決済などのアクションを実行できます。
+                </li>
+              </ol>
+            </div>
+            -->
+          </div>
+          <div class="box">
+            <img src="/images/top/mobile.png" class="mobile" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature page-content cloud">
     <div class="wrapper">
       <h2>
-        クラウド対応、なので低コスト。
+        クラウド対応で低コスト。<br/>
       </h2>
       <div class="boxes boxes2">
         <div class="box">
@@ -131,7 +149,7 @@ class_name: top
     </div>
   </section>
 
-  <section class="feature page-content">
+  <section class="feature page-content oss">
     <div class="wrapper">
       <h2>
         オープンソース
@@ -156,5 +174,12 @@ class_name: top
 
 </article>
 
+<script >
+$( document ).ready(function() {
+  $('#install_app').on('click', function() {
+    ga('send', 'event', 'install', 'install_app');
+  });
+});
+</script>
 <script src="/js/jquery.inview.min.js"></script>
 <script src="/js/landing-page.js"></script>

@@ -9,19 +9,6 @@
     background-color: rgba(0,0,0,0);
     box-shadow: none;
   }
-  .site-header.fixed {
-    position: fixed;
-    background-color: rgba(darken($primary-color, 5%), 0.95);
-    box-shadow: 0 5px 5px rgba(0,0,0,.1);
-
-    // .logo {
-    //   width: 95px;
-    //   height: 45px;
-    // }
-    // .site-nav {
-    //   line-height: 45px;
-    // }
-  }
 
   p.notice {
     margin: $grid*6 0 0 0;
@@ -43,8 +30,8 @@
     background-size: cover;
     background-repeat: no-repeat;
 
-    div.image-box {
-      background-image: url(/images/top/pc-and-app-image.png);
+    div.image-layer {
+      background-image: url(/images/top/pc-and-app.png);
       background-repeat: no-repeat;
       background-position: calc( (100% - 1160px)/2 + 780px ) 80px;
     }
@@ -72,7 +59,7 @@
     }
 
     p.notice {
-      margin: $grid*36 0 $grid*6;
+      margin: $grid*38 0 $grid*12;
       color: $text-color-w-light;
     }
   }
@@ -85,6 +72,14 @@
       display:block;
       margin-bottom: $grid*8;
     }
+
+    .step {
+      margin: $grid*4 0 0 0;
+      ul {
+        margin-left: $grid*6;
+      }
+    }
+
     p.description {
       margin: $grid*4 0;
 
@@ -103,29 +98,11 @@
       .box {
         flex-grow: 1;
       }
-      img, .image-box {
-        display: block;
-        background-color: $background-color-w;
-        border: 1px solid $border-color-dark;
-        padding: 1px;
-        line-height: 0px;
-        margin: $grid*2 auto;
-      }
-      .image-box {
-        img {
-          border: 0px;
-        }
-      }
     }
     .boxes3 {
       .box {
         width: 30%;
         margin-right: 5%;
-
-        img {
-          width: 300px;
-          height: 300px;
-        }
       }
       .box:nth-last-child(1) {
         margin-right: 0;
@@ -135,24 +112,6 @@
       .box {
         width: 47%;
         margin-right: 6%;
-
-        img {
-          width: 300px;
-          height: 300px;
-        }
-        img.large {
-          width: 400px;
-          height: 300px;
-        }
-        .image-box {
-          width: 300px;
-          height: 300px;
-
-          img {
-            width: 300px - 32px;
-            height: 300px - 32px;
-          }
-        }
       }
       .box:nth-last-child(1) {
         margin-right: 0;
@@ -176,6 +135,73 @@
   }
   .feature:nth-child(odd) {
     background-color: $background-color-dark;
+  }
+  .system-trade {
+    img.system-trade {
+      border: 0px;
+      padding: 0px;
+      max-width: none;
+      position:relative;
+      left: -400px;
+      z-index: -100;
+    }
+    .number {
+      font-size: 28px;
+      color: $primary-color;
+      padding-right: $grid;
+    }
+  }
+
+  .feature.mobile {
+    color: #FFF;
+    background-color: #00c4c5;
+    background: linear-gradient(to left top,#00AFA6 0,#00BB88 100%);
+    padding: 0px;
+
+    .box {
+      padding-top: 96px;
+    }
+
+    p.description {
+      b {
+        color: #FFF;
+      }
+    }
+
+    .android_badge {
+      padding: $grid*3;
+      margin-top: $grid*6;
+      background-color: rgba(30,30,30, 0.25);
+      border-radius: 10px;
+
+      img {
+        width: 200px;
+      }
+      .info {
+        margin-top: $grid*2;
+        font-size: 14px;
+      }
+    }
+
+    .usage {
+      padding: $grid*3;
+      background-color: rgba(30,30,30, 0.25);
+      border-radius: 10px;
+      li {
+        margin-top: $grid;
+      }
+    }
+    img.mobile {
+      border: 0px;
+      padding: 0px;
+      max-width: none;
+      position:relative;
+      left:100px;
+    }
+  }
+
+  .feature.cloud {
+
   }
 
   .closing {

@@ -22,7 +22,7 @@ GEM
     aws-sdk-resources (2.0.37)
       aws-sdk-core (= 2.0.37)
     bcrypt (3.1.9)
-    bson (4.0.2)
+    bson (4.0.3)
     builder (3.2.2)
     codeclimate-test-reporter (0.4.8)
       simplecov (>= 0.7.1, < 1.0.0)

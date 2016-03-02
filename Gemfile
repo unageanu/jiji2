@@ -21,6 +21,7 @@ gem 'mongoid'
 
 gem 'oanda_api'
 gem 'persistent_http', '2.0.1'
+gem 'quandl'
 
 gem 'mail'
 gem 'aws-sdk'

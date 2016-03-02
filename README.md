@@ -2,14 +2,15 @@
 [![Code Climate](https://codeclimate.com/github/unageanu/jiji2/badges/gpa.svg)](https://codeclimate.com/github/unageanu/jiji2)
 [![Test Coverage](https://codeclimate.com/github/unageanu/jiji2/badges/coverage.svg)](https://codeclimate.com/github/unageanu/jiji2)
 
-# 無料で使えるFXシステムトレードフレームワーク「Jiji」 (Beta)<br/>
+# Jiji (Beta)<br/>
 
-自分だけの取引アルゴリズムで、<br/>
-誰でも、いますぐ、かんたんに、FX自動取引を開始できます
+<b>Start the Forex system trading, using your own trading strategies.</b>
+<br/>
+Jiji is a forex algorithmic trading framework using [OANDA REST API](http://developer.oanda.com/).
 
-インストール方法、使い方など、詳しくはこちら。 → http://jiji2.unageanu.net/
+[lean more...](http://jiji2.unageanu.net/) (sorry, this page is japanese only.)
 
-# ライセンス
+# License
 
 ---
 Copyright (c) unageanu <masaya.yamauchi>

@@ -5,7 +5,7 @@
 # Jiji (Beta)<br/>
 
 <b>Start the Forex system trading, using your own trading strategies.</b>
-<br/>
+<br/><br/>
 Jiji is a forex algorithmic trading framework using [OANDA REST API](http://developer.oanda.com/).
 
 [lean more...](http://jiji2.unageanu.net/) (sorry, this page is japanese only.)

@@ -119,10 +119,10 @@ DEPENDENCIES
   activesupport
   aws-sdk
   bcrypt
-  codeclimate-test-reporter (~> 0.4.7)
+  codeclimate-test-reporter
   encase
   figaro
-  httpclient (~> 2.6.0.1)
+  httpclient
   lru_redux
   mail
   mini_magick
@@ -134,9 +134,9 @@ DEPENDENCIES
   puma
   rack
   rake
-  rspec (~> 3.1.0)
-  rubocop (~> 0.29.1)
-  simplecov (~> 0.9.0)
+  rspec
+  rubocop
+  simplecov
   sinatra
   thread
   validates_email_format_of

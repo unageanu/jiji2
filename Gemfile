@@ -30,13 +30,13 @@ gem 'newrelic_rpm'
 gem 'rake'
 
 group :test do
-  gem 'rspec',                     '~> 3.1.0'
-  gem 'simplecov',                 '~> 0.9.0'
-  gem 'codeclimate-test-reporter', '~> 0.4.7'
+  gem 'rspec'
+  gem 'simplecov'
+  gem 'codeclimate-test-reporter'
 
-  gem 'httpclient',                '~> 2.6.0.1'
+  gem 'httpclient'
 end
 
 group :development do
-  gem 'rubocop',   '~> 0.29.1'
+  gem 'rubocop'
 end

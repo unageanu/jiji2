@@ -2,30 +2,30 @@ source 'https://rubygems.org'
 
 ruby '2.2.3'
 
-gem 'encase',    '0.1.2'
+gem 'encase'
 
-gem 'lru_redux',                 '0.8.1'
-gem 'bcrypt',                    '3.1.9'
-gem 'thread',                    '0.1.4'
-gem 'activesupport',             '4.2.1'
-gem 'figaro',                    '1.1.0'
-gem 'validates_email_format_of', '1.6.2'
-gem 'mini_magick',               '4.2.10'
+gem 'lru_redux'
+gem 'bcrypt'
+gem 'thread'
+gem 'activesupport'
+gem 'figaro'
+gem 'validates_email_format_of'
+gem 'mini_magick'
 
-gem 'msgpack',   '0.5.9'
-gem 'rack',      '1.5.2'
-gem 'sinatra',   '1.4.5'
-gem 'puma',      '2.11.1'
+gem 'msgpack', '0.5.12'
+gem 'rack'
+gem 'sinatra'
+gem 'puma'
 
-gem 'mongoid',   '5.0.0'
+gem 'mongoid'
 
-gem 'oanda_api',           '0.9.4'
-gem 'persistent_http',     '2.0.1'
+gem 'oanda_api'
+gem 'persistent_http', '2.0.1'
 
-gem 'mail',    '2.6.3'
-gem 'aws-sdk', '2.0.37'
+gem 'mail'
+gem 'aws-sdk'
 
-gem 'newrelic_rpm', '3.9.9.275'
+gem 'newrelic_rpm'
 
 gem 'rake'
 

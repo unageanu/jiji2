@@ -35,26 +35,26 @@ describe Jiji::Messaging::PushNotifier do
       "{\"default\":\"テスト | リアルトレード\",\"GCM\":\"{\\\"data\\\":" \
       + "{\\\"title\\\":\\\"テスト | リアルトレード\\\"," \
       + "\\\"message\\\":\\\"テスト\\\"," \
-      + "\\\"image\\\":\\\"http://localhost:3000/api/icon-images/aaaa\\\"}}\"}",
+      + '\\"image\\":\\"http://localhost:3000/api/icon-images/aaaa\\"}}"}',
       'テスト | リアルトレード')
     expect(push_notifier.sns_service).to receive(:publish).with(
       'target_arn',
       "{\"default\":\"テスト | リアルトレード\",\"GCM\":\"{\\\"data\\\":" \
       + "{\\\"title\\\":\\\"テスト | リアルトレード\\\"," \
       + "\\\"message\\\":\\\"テスト\\\"," \
-      + "\\\"image\\\":\\\"http://localhost:3001/api/icon-images/aaaa\\\"}}\"}",
+      + '\\"image\\":\\"http://localhost:3001/api/icon-images/aaaa\\"}}"}',
       'テスト | リアルトレード')
     expect(push_notifier.sns_service).to receive(:publish).with(
       'target_arn',
-      "{\"default\":null,\"GCM\":\"{\\\"data\\\":"\
+      '{"default":null,"GCM":"{\\"data\\":'\
       + "{\\\"message\\\":\\\"テスト\\\",\\\"image\\\":"\
-      + "\\\"http://localhost:3000/api/icon-images/default\\\"}}\"}",
+      + '\\"http://localhost:3000/api/icon-images/default\\"}}"}',
       '')
     expect(push_notifier.sns_service).to receive(:publish).with(
       'target_arn',
-      "{\"default\":null,\"GCM\":\"{\\\"data\\\":"\
+      '{"default":null,"GCM":"{\\"data\\":'\
       + "{\\\"message\\\":\\\"テスト\\\",\\\"image\\\":"\
-      + "\\\"http://localhost:3001/api/icon-images/default\\\"}}\"}",
+      + '\\"http://localhost:3001/api/icon-images/default\\"}}"}',
       '')
 
     devices = Jiji::Messaging::Device.all.map { |d| d }

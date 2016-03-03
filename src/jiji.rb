@@ -20,7 +20,7 @@ module Jiji
     module Notification end
     module Settings     end
     module Securities
-      module Internal   end
+      module Internal end
     end
     module Trading
       module Brokers          end
@@ -32,18 +32,18 @@ module Jiji
     end
   end
 
-  module Security       end
+  module Security end
   module Services
     module AWS          end
   end
-  module Utils          end
+  module Utils end
   module Web
     module Transport    end
   end
 end
 
 module JIJI
-  module Plugin       end
+  module Plugin end
 end
 
 require 'jiji/web/web_application'

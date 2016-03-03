@@ -35,7 +35,7 @@ module Jiji::Model::Trading::Internal
       return if status != :live
       self.current_price = PricingUtils.calculate_current_price(
         tick, pair_name, sell_or_buy)
-      self.updated_at     = tick.timestamp
+      self.updated_at = tick.timestamp
       update_profit_or_loss
     end
 

@@ -67,7 +67,7 @@ module Jiji::Test::Mock
         not_found
       end
       interval_ms = Jiji::Model::Trading::Intervals.instance \
-                    .resolve_collecting_interval(interval)
+                                                   .resolve_collecting_interval(interval)
       create_timestamps(interval_ms / 1000, start_time, end_time).map do |time|
         Rate.new(pair_name, time, 112, 112.10, 113, 111)
       end
@@ -79,7 +79,7 @@ module Jiji::Test::Mock
     end
 
     def retrieve_account
-      fail 'test' if @config['fail_on_test_connection']
+      raise 'test' if @config['fail_on_test_connection']
       account = Account.new(0, @balance, 0.04)
       account.update(@positions, @current_tick ? @current_tick.timestamp : nil)
       account

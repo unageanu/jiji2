@@ -15,10 +15,10 @@ describe Signals do
     proc { Signals::MACD.new },
     proc { Signals::RSI.new },
     proc { Signals::ROC.new }
-  ]
+  ].freeze
   RATE_SIGNAL_CLASSES = [
     proc { Signals::DMI.new }
-  ]
+  ].freeze
 
   it '各種シグナルを算出できる' do
     SIGNAL_CLASSES.each do |g|
@@ -57,7 +57,7 @@ describe Signals do
   def collect_result(generator, converter = nil, &block)
     signal = generator.call
     each_rates do |rate, i|
-      signal = block.call(signal, generator) if block_given? && i % 100 == 0
+      signal = yield(signal, generator) if block_given? && i % 100 == 0
       signal.next_data(converter ? converter.call(rate) : rate)
     end
   end

@@ -21,7 +21,7 @@ module Jiji::Utils::ValueObject
   end
 
   def from_h(hash)
-    hash.each do|k, v|
+    hash.each do |k, v|
       key = '@' + k.to_s
       instance_variable_set(key, v) if instance_variable_defined?(key)
     end
@@ -46,13 +46,13 @@ module Jiji::Utils::ValueObject
 
   def _eql?(other, &block)
     return false if other.nil?
-    return true if self.equal? other
+    return true if equal? other
     return false unless other.is_a?(Jiji::Utils::ValueObject)
     a = values
     b = other.values
     return false if a.length != b.length
     a.length.times do |i|
-      return false unless block.call(a[i], b[i])
+      return false unless yield(a[i], b[i])
     end
     true
   end

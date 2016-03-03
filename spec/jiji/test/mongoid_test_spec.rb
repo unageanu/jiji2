@@ -7,7 +7,7 @@ class Parent
 
   store_in collection: 'xxx'
 
-  field :parent_id,        type: Symbol
+  field :parent_id, type: Symbol
 
 end
 

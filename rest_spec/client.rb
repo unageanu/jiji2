@@ -51,7 +51,7 @@ module Jiji
       Response.new(r, @transport)
     end
 
-    def do_request(method, path, body = nil,  query = nil, header = {})
+    def do_request(method, path, body = nil, query = nil, header = {})
       r = @client.request(method, "#{@api_url}/#{path}", {
         body:   serialize_body(body),
         header: complement_header(header),

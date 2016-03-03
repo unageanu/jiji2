@@ -69,7 +69,7 @@ describe Jiji::Model::Trading::Process do
         expect(q).to eq [:running]
 
         future = @process.post_exec do |_context|
-          fail 'test'
+          raise 'test'
         end
 
         expect { future.value }.to raise_error
@@ -89,7 +89,7 @@ describe Jiji::Model::Trading::Process do
         sleep 0.1
 
         future = @process.post_exec do |_context|
-          fail 'test'
+          raise 'test'
         end
         expect { future.value }.to raise_error
         sleep 0.1
@@ -115,7 +115,7 @@ describe Jiji::Model::Trading::Process do
         sleep 0.1
 
         future = @process.post_exec do |_context|
-          fail 'test'
+          raise 'test'
         end
         expect { future.value }.to raise_error
         sleep 0.1
@@ -168,7 +168,7 @@ describe Jiji::Model::Trading::Process do
 
       # process2をエラーで停止
       @process2.post_exec do |_context|
-        fail 'test'
+        raise 'test'
       end
       sleep 0.1
 

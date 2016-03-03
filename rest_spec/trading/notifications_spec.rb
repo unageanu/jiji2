@@ -17,7 +17,7 @@ describe '通知取得' do
   end
 
   it 'GET /notificationsで通知一覧を取得できる' do
-    r = @client.get('notifications',  {
+    r = @client.get('notifications', {
       'order'       => 'timestamp',
       'direction'   => 'desc',
       'offset'      => 1,
@@ -51,7 +51,7 @@ describe '通知取得' do
     expect(Time.iso8601(notification['timestamp'])).to eq Time.at(100)
     expect(notification['read_at']).to be nil
 
-    r = @client.get('notifications',  {
+    r = @client.get('notifications', {
       'order'       => 'timestamp',
       'direction'   => 'asc',
       'offset'      => 1,
@@ -87,7 +87,7 @@ describe '通知取得' do
     expect(Time.iso8601(notification['timestamp'])).to eq Time.at(300)
     expect(notification['read_at']).to eq nil
 
-    r = @client.get('notifications',  {
+    r = @client.get('notifications', {
       'order'       => 'timestamp',
       'direction'   => 'desc',
       'offset'      => 0,
@@ -107,7 +107,7 @@ describe '通知取得' do
     expect(Time.iso8601(notification['timestamp'])).to eq Time.at(300)
     expect(notification['read_at']).to eq nil
 
-    r = @client.get('notifications',  {
+    r = @client.get('notifications', {
       'order'       => 'timestamp',
       'direction'   => 'desc',
       'offset'      => 0,
@@ -158,7 +158,7 @@ describe '通知取得' do
   end
 
   it 'GET /notifications/:notificatio_id で通知を取得できる' do
-    r = @client.get('notifications',  {
+    r = @client.get('notifications', {
       'order'       => 'timestamp',
       'direction'   => 'asc',
       'offset'      => 0,
@@ -184,7 +184,7 @@ describe '通知取得' do
   end
 
   it 'PUT /notifications/:notificatio_id/read で通知を既読にできる' do
-    r = @client.get('notifications',  {
+    r = @client.get('notifications', {
       'order'       => 'timestamp',
       'direction'   => 'asc',
       'offset'      => 0,
@@ -206,7 +206,7 @@ describe '通知取得' do
     })
     expect(r.status).to eq 200
 
-    r = @client.get('notifications',  {
+    r = @client.get('notifications', {
       'order'       => 'timestamp',
       'direction'   => 'asc',
       'offset'      => 0,
@@ -257,7 +257,7 @@ describe '通知取得' do
     data_builder = Jiji::Test::DataBuilder.new
 
     backtest_repository = container.lookup(:backtest_repository)
-    @agent_registry      = container.lookup(:agent_registry)
+    @agent_registry = container.lookup(:agent_registry)
 
     @agent_registry.add_source('aaa', '',
       :agent, data_builder.new_agent_body(1))

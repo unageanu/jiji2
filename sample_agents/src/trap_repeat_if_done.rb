@@ -16,7 +16,7 @@ class TrapRepeatIfDoneAgent
       Property.new('trap_interval_pips', 'トラップを仕掛ける間隔(pips)', 50),
       Property.new('trade_units',        '1注文あたりの取引数量',         1),
       Property.new('profit_pips',        '利益を確定するpips',         100),
-      Property.new('slippage',           '許容スリッページ(pips)',       3)
+      Property.new('slippage',           '許容スリッページ(pips)', 3)
     ]
   end
 
@@ -62,7 +62,7 @@ class TrapRepeatIfDone
       trade_units, profit_pips, slippage, logger)
 
     @logger = logger
-    @registerd_orders   = {}
+    @registerd_orders = {}
   end
 
   # 注文を登録する

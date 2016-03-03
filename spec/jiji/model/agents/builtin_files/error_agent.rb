@@ -17,7 +17,7 @@ class SendNotificationAgent
   end
 
   def execute_action(action)
-    if (action == 'mail')
+    if action == 'mail'
       notifier.compose_text_mail('foo@example.com', 'テスト2', '本文')
     else
       notifier.push_notification(action, [
@@ -47,7 +47,7 @@ class ErrorAgent
   end
 
   def next_tick(tick)
-    fail 'test.'
+    raise 'test.'
   end
 
 end
@@ -65,7 +65,7 @@ class ErrorOnCreateAgent
   end
 
   def initialize
-    fail 'test.'
+    raise 'test.'
   end
 
   def post_create
@@ -89,7 +89,7 @@ class ErrorOnPostCreateAgent
   end
 
   def post_create
-    fail 'test.'
+    raise 'test.'
   end
 
   def next_tick(tick)

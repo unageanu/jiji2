@@ -9,7 +9,7 @@ describe Jiji::Model::Settings::PairSetting do
   let(:pairs) { container.lookup(:pairs) }
 
   before(:example) do
-    @setting    = repository.pair_setting
+    @setting = repository.pair_setting
   end
 
   it '設定がない場合、初期値を返す' do
@@ -51,6 +51,6 @@ describe Jiji::Model::Settings::PairSetting do
   end
 
   def recreate_setting
-    @setting    = repository.pair_setting
+    @setting = repository.pair_setting
   end
 end

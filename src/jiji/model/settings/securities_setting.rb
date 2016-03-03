@@ -64,7 +64,7 @@ module Jiji::Model::Settings
       securities_factory.create(securities_id, configurations)
     rescue Jiji::Errors::NotFoundException
       raise
-    rescue Exception => e  # rubocop:disable Lint/RescueException
+    rescue Exception => e # rubocop:disable Lint/RescueException
       @logger.error(e) if @logger
       illegal_argument('failed to connect securities.')
     end

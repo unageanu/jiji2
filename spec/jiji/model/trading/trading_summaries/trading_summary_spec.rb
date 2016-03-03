@@ -131,16 +131,16 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
       a2 = agent_sttings[1]
       summary.process_positions([
         create_position(:EURJPY, :sell, 100,  99, 1000, a1, 100, 200), # 1000
-        create_position(:EURJPY, :buy,  100,  99,  800, a1, 100, 300), # -800
+        create_position(:EURJPY, :buy,  100,  99, 800, a1, 100, 300), # -800
         create_position(:USDJPY, :sell, 100,  99, 1400, a1, 100, 110), # 1400
         create_position(:USDJPY, :buy,  100,  99, 1200, a1, 100, 190), #-1200
-        create_position(:EURJPY, :sell, 100, 100,  500, a1, 100, nil), #    0
+        create_position(:EURJPY, :sell, 100, 100, 500, a1, 100, nil), #    0
 
         create_position(:EURJPY, :sell, 100,  99, 1000, a2, 100, 200), # 1000
-        create_position(:EURJPY, :buy,  100,  99,  800, a2, 100, 300), # -800
+        create_position(:EURJPY, :buy,  100,  99, 800, a2, 100, 300), # -800
         create_position(:USDJPY, :sell, 100,  99, 1400, a2, 100, 110), # 1400
         create_position(:USDJPY, :buy,  100,  99, 1200, a2, 100, 190), #-1200
-        create_position(:EURJPY, :sell, 100, 100,  500, a2, 100, nil), #    0
+        create_position(:EURJPY, :sell, 100, 100, 500, a2, 100, nil), #    0
       ])
       expect(summary.to_h).to eq({
         states:          {

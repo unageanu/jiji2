@@ -38,15 +38,15 @@ describe 'レート取得' do
     expect(r.body.length).to be > 0
 
     r = @client.get('/rates/EURJPY/one_minute', {
-      'start' => (start_time).iso8601,
-      'end'   => (end_time   + 60).iso8601
+      'start' => start_time.iso8601,
+      'end'   => (end_time + 60).iso8601
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be > 0
 
-    range =  {
-      'start' => (start_time).iso8601,
-      'end'   => (end_time   + 60).iso8601
+    range = {
+      'start' => start_time.iso8601,
+      'end'   => (end_time + 60).iso8601
     }
 
     r = @client.get('/rates/UNKNOWN_PAIR/one_minute', range)

@@ -67,7 +67,7 @@ describe Jiji::Model::Notification::Notification do
       { 'label' => 'い', 'action' => 'bbb' }
     ]
     notification = Jiji::Model::Notification::Notification.create(
-      agent_setting.id,  Time.at(100), backtests[0], 'message', actions,
+      agent_setting.id, Time.at(100), backtests[0], 'message', actions,
       'ノート', { chart: { pair: :EURJPY } })
 
     expect(notification.to_h).to eq({
@@ -90,7 +90,7 @@ describe Jiji::Model::Notification::Notification do
     })
 
     notification = Jiji::Model::Notification::Notification.create(
-      nil,  Time.at(100), nil, 'message', actions)
+      nil, Time.at(100), nil, 'message', actions)
 
     expect(notification.to_h).to eq({
       id:        notification.id,
@@ -123,6 +123,6 @@ describe Jiji::Model::Notification::Notification do
     expect(notification.title).to eq("#{'あ' * 50} | リアルトレード")
 
     agent_setting.name = 'あ' * 100
-    expect(notification.title).to eq("#{'あ' * 70}")
+    expect(notification.title).to eq(('あ' * 70).to_s)
   end
 end

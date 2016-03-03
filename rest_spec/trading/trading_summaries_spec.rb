@@ -17,14 +17,14 @@ describe '取引サマリ取得' do
   end
 
   it 'GET /trading-summaries/rmt でリアルトレードのサマリを取得できる' do
-    r = @client.get('trading-summaries/rmt',  {
+    r = @client.get('trading-summaries/rmt', {
       'start' => Time.new(2015, 5, 1).iso8601,
       'end'   => Time.new(2015, 5, 9).iso8601
     })
     expect(r.status).to eq 200
     expect(r.body['states']['count']).to be 2
 
-    r = @client.get('trading-summaries/rmt',  {
+    r = @client.get('trading-summaries/rmt', {
       'start' => Time.new(2015, 5, 3).iso8601
     })
     expect(r.status).to eq 200
@@ -36,14 +36,14 @@ describe '取引サマリ取得' do
   end
 
   it 'GET /trading-summaries/:backtest_id でバックテストのサマリを取得できる' do
-    r = @client.get("trading-summaries/#{@test._id}",  {
+    r = @client.get("trading-summaries/#{@test._id}", {
       'start' => Time.new(2015, 5, 1).iso8601,
       'end'   => Time.new(2015, 5, 9).iso8601
     })
     expect(r.status).to eq 200
     expect(r.body['states']['count']).to be 2
 
-    r = @client.get("trading-summaries/#{@test._id}",  {
+    r = @client.get("trading-summaries/#{@test._id}", {
       'start' => Time.new(2015, 5, 3).iso8601
     })
     expect(r.status).to eq 200
@@ -59,7 +59,7 @@ describe '取引サマリ取得' do
     data_builder = Jiji::Test::DataBuilder.new
 
     backtest_repository = container.lookup(:backtest_repository)
-    @agent_registry      = container.lookup(:agent_registry)
+    @agent_registry = container.lookup(:agent_registry)
 
     @agent_registry.add_source('aaa', '',
       :agent, data_builder.new_agent_body(1))

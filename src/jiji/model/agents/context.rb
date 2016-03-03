@@ -11,6 +11,7 @@ module Jiji::Model::Agents
     def self._delegates
       Delegate.instance.delegates
     end
+
     def self._delegates=(delegates)
       Delegate.instance.delegates = delegates
     end

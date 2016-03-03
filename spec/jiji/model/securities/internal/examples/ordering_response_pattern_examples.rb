@@ -32,7 +32,7 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
     context '建玉がある場合' do
       before(:example) do
         client.retrieve_current_tick
-        client.order(:EURJPY, :buy,  5)
+        client.order(:EURJPY, :buy, 5)
       end
 
       it '逆方向の注文が約定すると、既存のポジジョンが削減される' do

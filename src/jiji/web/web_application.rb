@@ -102,8 +102,8 @@ module Jiji::Web
     end
 
     def register_testing_services(builder)
-      return unless (ENV['RACK_ENV'] == 'test')
-      builder.map('/api/testing/mail') { run Test::MailService  }
+      return unless ENV['RACK_ENV'] == 'test'
+      builder.map('/api/testing/mail') { run Test::MailService }
     end
 
     def register_static_files(builder)

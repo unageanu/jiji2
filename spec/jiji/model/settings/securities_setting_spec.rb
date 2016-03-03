@@ -11,7 +11,7 @@ describe Jiji::Model::Settings::SecuritiesSetting do
 
   before(:example) do
     rmt.setup
-    @setting      = repository.securities_setting
+    @setting = repository.securities_setting
   end
 
   after(:example) do
@@ -28,7 +28,7 @@ describe Jiji::Model::Settings::SecuritiesSetting do
       expect(provider.get.class).to be Jiji::Test::Mock::MockSecurities
       # テスト環境では、初期値はMockになる
 
-      @setting.set_active_securities(:MOCK,  'a' => 'aa', 'b' => 'bb')
+      @setting.set_active_securities(:MOCK, 'a' => 'aa', 'b' => 'bb')
 
       expect(provider.get.class).to be Jiji::Test::Mock::MockSecurities
       expect(provider.get.config).to eq('a' => 'aa', 'b' => 'bb')
@@ -43,7 +43,7 @@ describe Jiji::Model::Settings::SecuritiesSetting do
       expect(plugin.config).to eq('a' => 'aa', 'c' => 'cc')
     end
     it '接続確認としてアカウント情報の取得が行われる。取得できない場合、設定は変更されない' do
-      @setting.set_active_securities(:MOCK,  'a' => 'aa', 'b' => 'bb')
+      @setting.set_active_securities(:MOCK, 'a' => 'aa', 'b' => 'bb')
 
       expect do
         @setting.set_active_securities(:MOCK2,
@@ -53,7 +53,7 @@ describe Jiji::Model::Settings::SecuritiesSetting do
       expect(provider.get.class).to be Jiji::Test::Mock::MockSecurities
       expect(provider.get.config).to eq('a' => 'aa', 'b' => 'bb')
 
-      @setting    = repository.securities_setting
+      @setting = repository.securities_setting
       @setting.setup
       expect(provider.get.class).to be Jiji::Test::Mock::MockSecurities
       expect(provider.get.config).to eq('a' => 'aa', 'b' => 'bb')
@@ -72,7 +72,7 @@ describe Jiji::Model::Settings::SecuritiesSetting do
     @setting.set_active_securities(:MOCK,  'a' => 'aa', 'b' => 'bb')
     @setting.set_active_securities(:MOCK2, 'a' => 'aa', 'c' => 'cc')
 
-    @setting    = repository.securities_setting
+    @setting = repository.securities_setting
     @setting.setup
     expect(provider.get.class).to eq Jiji::Test::Mock::MockSecurities2
     expect(provider.get.config).to eq('a' => 'aa', 'c' => 'cc')

@@ -21,7 +21,7 @@ module Jiji::Model::Graphing
     # colors:: グラフの色を配列で指定します 例) ["#003344", "#003355"]
     # axises:: 軸ラベルを指定します。 例) [30, 70]
     def create(label, type = :line, aggregation_type = :first,
-        colors = [], axises = [])
+      colors = [], axises = [])
       return @graphs[label] if @graphs.include?(label)
 
       graph = Graph.get_or_create(label,

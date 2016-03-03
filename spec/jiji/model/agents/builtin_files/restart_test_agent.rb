@@ -9,7 +9,7 @@ class RestartTestAgent
     puts "#{tick[:USDJPY].bid} #{tick.timestamp}"
     puts "#{account.balance} #{account.profit_or_loss}"
     puts "#{broker.positions.map { |p| p.units }} "
-    puts "#{broker.orders.map { |p| p.units }}"
+    puts (broker.orders.map { |p| p.units }).to_s
     puts "#{@a} #{@b}"
 
     @current_tick = tick
@@ -27,11 +27,11 @@ class RestartTestAgent
   end
 
   def execute_action(action)
-    if (action == 'order')
+    if action == 'order'
       do_order
-    elsif (action == 'close')
+    elsif action == 'close'
       broker.positions.each { |p| p.close }
-    elsif (action == 'cancel_orders')
+    elsif action == 'cancel_orders'
       broker.orders.each { |o| o.cancel }
     end
     'OK'
@@ -53,13 +53,13 @@ class RestartTestAgent
       # 建玉の約定条件
       stop_loss:     base_price2 - 5,  # ストップロス価格
       take_profit:   base_price2 + 5,  # テイクプロフィット価格
-      trailing_stop: 1000       # トレーリングストップのディスタンスをpipsで指定します。
+      trailing_stop: 1000 # トレーリングストップのディスタンスをpipsで指定します。
     })
 
     # 指値135.6で売り注文
     broker.sell(:USDJPY, 10_002, :limit, {
       price:  base_price + 0.5,
-      expiry: @current_tick.timestamp + 60 * 60 * 24  # 注文の有効期限
+      expiry: @current_tick.timestamp + 60 * 60 * 24 # 注文の有効期限
     })
 
     # 逆指値112.404で買い注文

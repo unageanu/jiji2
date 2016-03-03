@@ -28,7 +28,7 @@ describe Jiji::Model::Agents::Agents do
   describe '#next_tick' do
     it '保持しているエージェントにtickを通知できる' do
       agents = Jiji::Model::Agents::Agents.new(nil,
-        agent_registry,  components, true)
+        agent_registry, components, true)
 
       3.times.each_with_object({}) do |i, _r|
         agent = double("mock agent#{i}")
@@ -42,7 +42,7 @@ describe Jiji::Model::Agents::Agents do
     it 'fail_on_error=falseの場合、' \
      + 'エージェント内でエラーが発生しても通知は継続される' do
       agents = Jiji::Model::Agents::Agents.new(nil,
-        agent_registry,  components, false)
+        agent_registry, components, false)
 
       3.times.each_with_object({}) do |i, _r|
         agent = double("mock agent#{i}")
@@ -60,7 +60,7 @@ describe Jiji::Model::Agents::Agents do
     it 'fail_on_error=trueの場合、' \
      + 'エージェント内で発生したエラーが伝播される' do
       agents = Jiji::Model::Agents::Agents.new(nil,
-        agent_registry,  components, true)
+        agent_registry, components, true)
       3.times.each_with_object({}) do |i, _r|
         agent = double("mock agent#{i}")
         if i == 2
@@ -79,7 +79,7 @@ describe Jiji::Model::Agents::Agents do
   describe '#save_state' do
     it '保持しているエージェントの状態を収集し、永続化できる' do
       agents = Jiji::Model::Agents::Agents.new(nil,
-        agent_registry,  components, true)
+        agent_registry, components, true)
       agents.save_state
     end
   end

@@ -9,7 +9,7 @@ describe Jiji::Model::Settings::SecuritySetting do
   let(:repository) { container.lookup(:setting_repository) }
 
   before(:example) do
-    @setting    = repository.security_setting
+    @setting = repository.security_setting
   end
 
   it '設定がない場合、初期値を返す' do

@@ -203,7 +203,7 @@ describe Jiji::Model::Trading::PositionRepository do
     expect(positions.size).to eq(20)
   end
 
-  it '決済済みになったRMTの建玉を削除できる'  do
+  it '決済済みになったRMTの建玉を削除できる' do
     positions = position_repository.retrieve_positions
     expect(positions.size).to eq(20)
 

@@ -10,7 +10,7 @@ module Jiji::Utils
     def value
       v = @queue.pop
       if v.is_a? Exception
-        fail v
+        raise v
       else
         return v
       end

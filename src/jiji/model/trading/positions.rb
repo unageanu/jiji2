@@ -19,7 +19,7 @@ module Jiji::Model::Trading
     attr_accessor :account #:nodoc:
 
     def initialize(positions, position_builder, account) # :nodoc:
-      @position_builder =  position_builder
+      @position_builder = position_builder
       @account = account
 
       @positions = positions
@@ -70,7 +70,7 @@ module Jiji::Model::Trading
         p.update_state_to_lost
         p.save
       end
-      new_positions.each { |p|  p.save }
+      new_positions.each { |p| p.save }
       @positions = new_positions
       @map = to_map(new_positions)
     end
@@ -151,7 +151,7 @@ module Jiji::Model::Trading
       SYNCHRONIZE_PROPERTIES = [
         :pair_name, :units, :sell_or_buy,
         :entry_price, :entered_at, :closing_policy
-      ]
+      ].freeze
 
     end
 

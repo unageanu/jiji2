@@ -37,7 +37,7 @@ module Jiji::Model::Trading
 
   end
 
-  class Pairs  #:nodoc:
+  class Pairs #:nodoc:
 
     include Encase
     include Jiji::Errors
@@ -84,7 +84,7 @@ module Jiji::Model::Trading
 
     def load
       securities = securities_provider.get
-      @by_name = securities.retrieve_pairs.each_with_object({}) do|pair, r|
+      @by_name = securities.retrieve_pairs.each_with_object({}) do |pair, r|
         r[pair.name] = pair
       end
     end

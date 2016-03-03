@@ -106,7 +106,7 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def raise_request_error(message)
-      fail OandaAPI::RequestError, message
+      raise OandaAPI::RequestError, message
     end
 
   end

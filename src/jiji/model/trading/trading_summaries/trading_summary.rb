@@ -20,7 +20,7 @@ module Jiji::Model::Trading::TradingSummaries
     def to_h
       initial_value = @name ? { name: @name } : {}
       @categories.each_with_object(initial_value) do |category, r|
-        r[category.name]  = category.to_h
+        r[category.name] = category.to_h
       end
     end
 
@@ -68,7 +68,7 @@ module Jiji::Model::Trading::TradingSummaries
     end
 
     def calculate_avg(sum, count)
-      count  > 0 ? (sum / count)  : 0
+      count > 0 ? (sum / count) : 0
     end
 
   end
@@ -255,7 +255,7 @@ module Jiji::Model::Trading::TradingSummaries
       @total_period = BigDecimal.new(0, 10)
       @max_period   = nil
       @min_period   = nil
-      @count   = 0
+      @count = 0
     end
 
     def process(position)
@@ -289,10 +289,10 @@ module Jiji::Model::Trading::TradingSummaries
 
     def initialize
       super(:units)
-      @total_units  = BigDecimal.new(0, 10)
+      @total_units = BigDecimal.new(0, 10)
       @max_units   = nil
       @min_units   = nil
-      @count   = 0
+      @count = 0
     end
 
     def process(position)

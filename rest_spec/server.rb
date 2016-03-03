@@ -46,7 +46,7 @@ module Jiji
 
     def register_shutdown_fook(pid)
       at_exit do
-        fail "failed to kill server. pid=#{pid}" unless system("kill #{pid}")
+        raise "failed to kill server. pid=#{pid}" unless system("kill #{pid}")
         puts "stop server pid=#{pid}"
       end
     end

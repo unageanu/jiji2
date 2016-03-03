@@ -9,7 +9,7 @@ describe Jiji::Model::Settings::MailComposerSetting do
   let(:repository) { container.lookup(:setting_repository) }
 
   before(:example) do
-    @setting    = repository.mail_composer_setting
+    @setting = repository.mail_composer_setting
   end
 
   it '設定がない場合、初期値を返す' do
@@ -95,6 +95,6 @@ describe Jiji::Model::Settings::MailComposerSetting do
   end
 
   def recreate_setting
-    @setting    = repository.mail_composer_setting
+    @setting = repository.mail_composer_setting
   end
 end

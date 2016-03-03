@@ -26,7 +26,7 @@ module Jiji::Model::Notification
     field :actions,       type: Array
     field :message,       type: String
     field :timestamp,     type: Time
-    field :read_at,       type: Time,   default: DEFAULT_READ_AT
+    field :read_at,       type: Time, default: DEFAULT_READ_AT
     field :note,          type: String
     field :options,       type: Hash
 
@@ -37,7 +37,7 @@ module Jiji::Model::Notification
     def self.create(agent, timestamp,
       backtest = nil, message = '', actions = [], note = nil, options = nil)
       Notification.new do |n|
-        n.timestamp   = timestamp
+        n.timestamp = timestamp
         n.initialize_agent_information(agent, backtest)
         n.initialize_content(message, actions, note, options)
       end

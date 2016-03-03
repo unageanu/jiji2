@@ -4,7 +4,7 @@ module Jiji::Model::Securities::Internal::Oanda
     include Jiji::Model::Trading
 
     def self.convert_instrument_to_pair_name(instrument)
-      instrument.gsub(/\_/, '').to_sym
+      instrument.delete('_').to_sym
     end
 
     def self.convert_pair_name_to_instrument(pair_name)

@@ -71,7 +71,7 @@ describe Jiji::Model::Notification::Notificator do
     expect(push_notifier).to receive(:notify).twice
     time_source.set(Time.at(100))
 
-    notificator.push_notification('メッセージ',  [
+    notificator.push_notification('メッセージ', [
       { 'label' => 'あ', 'action' => 'aaa' },
       { 'label' => 'い', 'action' => 'bbb' }
     ])
@@ -94,7 +94,7 @@ describe Jiji::Model::Notification::Notificator do
     expect(notification.note).to eq nil
     expect(notification.options).to eq nil
 
-    notificator.push_notification('メッセージ2',  [
+    notificator.push_notification('メッセージ2', [
       { 'label' => 'あ', 'action' => 'aaa' }
     ], 'ノート', { chart: { pair: :EURJPY } })
 

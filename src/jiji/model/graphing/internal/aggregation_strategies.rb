@@ -7,7 +7,7 @@ module Jiji::Model::Graphing::Internal
       when :average then Average.new
       when :first   then First.new
       when :last    then Last.new
-      else fail ArgumentError,
+      else raise ArgumentError,
         "unknown aggregation_type. type=#{aggregation_type}"
       end
     end

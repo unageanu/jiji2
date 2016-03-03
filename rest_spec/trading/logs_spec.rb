@@ -17,7 +17,7 @@ describe 'ログ取得' do
   end
 
   it 'GET /logs/rmt でリアルトレードのログを取得できる' do
-    r = @client.get('logs/rmt',  {
+    r = @client.get('logs/rmt', {
       'index' => 0
     })
     expect(r.status).to eq 200
@@ -51,7 +51,7 @@ describe 'ログ取得' do
     data_builder = Jiji::Test::DataBuilder.new
 
     backtest_repository = container.lookup(:backtest_repository)
-    @agent_registry      = container.lookup(:agent_registry)
+    @agent_registry = container.lookup(:agent_registry)
 
     @agent_registry.add_source('aaa', '',
       :agent, data_builder.new_agent_body(1))

@@ -14,7 +14,7 @@ module Jiji::Model::Agents::Internal
       checked = Set.new
       @agents.values.each do |source|
         find_agent(source.name, source.context, checked) do |name|
-          block.call(name)
+          yield(name)
         end
       end
     end
@@ -59,7 +59,7 @@ module Jiji::Model::Agents::Internal
       m.constants.each do |name|
         cl = m.const_get name
         if cl.is_a?(Class) && cl < Jiji::Model::Agents::Agent
-          block.call("#{extract_name(cl.name)}@#{source_name}")
+          yield("#{extract_name(cl.name)}@#{source_name}")
         end
         find_agent(source_name, cl, checked, &block) if cl.is_a?(Module)
       end

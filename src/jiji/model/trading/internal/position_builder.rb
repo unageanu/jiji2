@@ -16,7 +16,7 @@ module Jiji::Model::Trading::Internal
     end
 
     def build_from_tick(internal_id,
-        pair_name, units, sell_or_buy, tick, options = {})
+      pair_name, units, sell_or_buy, tick, options = {})
       position = Position.new do |p|
         initialize_trading_information(p, @backtest,
           internal_id, pair_name, units, sell_or_buy)
@@ -66,7 +66,7 @@ module Jiji::Model::Trading::Internal
     end
 
     def create_splited_position(position,
-        units, price, time, agent)
+      units, price, time, agent)
       new_position = Position.new do |p|
         initialize_trading_information_from_position(p, position, units)
         initialize_price_and_time(p, position.entry_price, position.entered_at)
@@ -93,7 +93,7 @@ module Jiji::Model::Trading::Internal
     end
 
     def initialize_agent_information(position, agent)
-      position.agent   = agent
+      position.agent = agent
     end
 
     def initialize_trading_information_from_position(position, from, units)
@@ -109,7 +109,7 @@ module Jiji::Model::Trading::Internal
     end
 
     def initialize_trading_information(position,
-        backtest, internal_id, pair_name, units, sell_or_buy)
+      backtest, internal_id, pair_name, units, sell_or_buy)
       position.pair_name           = pair_name
       position.units               = units
       position.sell_or_buy         = sell_or_buy

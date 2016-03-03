@@ -47,16 +47,19 @@ class Cross
   def cross_up?
     @cross == :up
   end
+
   # クロスダウン状態かどうか判定します。
   # 戻り値:: 「先行指標 > 遅行指標」 から 「先行指標 < 遅行指標」 になったらtrue
   def cross_down?
     @cross == :down
   end
+
   # 上昇トレンド中かどうか判定します。
   # 戻り値:: 「先行指標 > 遅行指標」 ならtrue
   def up?
     @trend > 0
   end
+
   # 下降トレンド中かどうか判定します。
   # 戻り値:: 「先行指標 < 遅行指標」 ならtrue
   def down?
@@ -72,11 +75,11 @@ class Cross
 
   def calculate_state(fast, lazy)
     @trend = fast <=> lazy
-    if @cross_prev && @trend != @cross_prev && @trend != 0
-      @cross = @trend > @cross_prev ? :up : :down
-    else
-      @cross = :none
-    end
+    @cross = if @cross_prev && @trend != @cross_prev && @trend != 0
+               @trend > @cross_prev ? :up : :down
+             else
+               :none
+             end
     @cross_prev = @trend
   end
 

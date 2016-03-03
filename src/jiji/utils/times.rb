@@ -59,7 +59,7 @@ module Jiji::Utils
       12 * 60 + 45 => 'Pacific/Chatham',
       13 * 60      => 'Pacific/Fakaofo',
       14 * 60      => 'Pacific/Kiritimati'
-    }
+    }.freeze
 
   end
 end

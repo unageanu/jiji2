@@ -34,7 +34,7 @@ module Jiji::Model::Trading
       }.merge(base_condition), {
         exited_at: nil
       }.merge(base_condition))
-        .order_by({ entered_at: :asc, id: :asc }).map { |x| x }
+              .order_by({ entered_at: :asc, id: :asc }).map { |x| x }
     end
 
     def retrieve_living_positions(backtest_id = nil)

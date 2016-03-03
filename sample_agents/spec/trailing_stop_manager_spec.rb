@@ -7,11 +7,11 @@ describe TrailingStopManager do
 
   let(:builder)    { container.lookup(:position_builder) }
   let(:repository) { container.lookup(:position_repository) }
-  let(:original)  do
+  let(:original) do
     tick = Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(131, 0.03),
       EURUSD: new_tick_value(1.0935, 0.00005)
-    },  Time.new(2015, 12, 10))
+    }, Time.new(2015, 12, 10))
     [
       builder.build_from_tick(1, :EURJPY, 10_000, :buy,  tick),
       builder.build_from_tick(2, :EURJPY, 10_000, :sell, tick),
@@ -70,7 +70,7 @@ describe TrailingStopManager do
       position: original[1]
     }, {
       message:  create_message('EURUSD/1.09355/買',
-        9.0,  Time.new(2015, 12, 12).to_s,
+        9.0, Time.new(2015, 12, 12).to_s,
         -11.0, Time.new(2015, 12, 14).to_s),
       position: original[2]
     }, {
@@ -176,7 +176,7 @@ describe TrailingStopManager do
       position: original[1]
     }, {
       message:  create_message('EURUSD/1.09355/買',
-        9.0,  Time.new(2015, 12, 12).to_s,
+        9.0, Time.new(2015, 12, 12).to_s,
         -11.0, Time.new(2015, 12, 14).to_s),
       position: original[2]
     }, {
@@ -288,7 +288,7 @@ describe TrailingStopManager do
   end
 
   def create_broker(position, expect_to_close = false)
-    broker  = double('mock broker')
+    broker = double('mock broker')
     if expect_to_close
       expect(broker).to receive(:close_position)
         .exactly(1).times
@@ -311,7 +311,7 @@ describe TrailingStopManager do
 
   def create_message(description, max_profit,
     max_profit_time, current_profit, last_update_time)
-    "#{description}" \
+    description.to_s \
       + ' がトレールストップの閾値を下回りました。決済しますか?'
   end
 

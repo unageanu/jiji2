@@ -107,9 +107,9 @@ describe Jiji::Model::Agents::Internal::AgentsUpdater do
       agents = {}
       expect do
         agents_builder.update(agents, [
-          { agent_class: 'TestAgent2@bbb',    agent_name: '0' },
+          { agent_class: 'TestAgent2@bbb', agent_name: '0' },
           { agent_class: 'UnknownAgent1@unknown', properties: {} },
-          { agent_class: 'TestAgent2@bbb',    agent_name: '1' }
+          { agent_class: 'TestAgent2@bbb', agent_name: '1' }
         ], true)
       end.to raise_exception(Jiji::Errors::NotFoundException)
 

@@ -12,7 +12,7 @@ describe Jiji::Security::PasswordResetter do
   let(:time_source) { container.lookup(:time_source) }
   let(:setting_repository) { container.lookup(:setting_repository) }
   let(:setting) do
-    setting       = setting_repository.security_setting
+    setting = setting_repository.security_setting
     setting.mail_address    = 'foo@var.com'
     setting.password        = 'foo'
     setting.expiration_days = 10

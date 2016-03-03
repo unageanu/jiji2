@@ -8,8 +8,8 @@ module Jiji::Model::Trading::Internal
     def initialize(wait_time = (ENV['TICK_INTERVAL'] || 15).to_i)
       @wait_time = wait_time
       @running   = true
-      @mutex    = Mutex.new
-      @job       = NotifyNextTickJobForRMT.new
+      @mutex = Mutex.new
+      @job = NotifyNextTickJobForRMT.new
     end
 
     def start(queue)

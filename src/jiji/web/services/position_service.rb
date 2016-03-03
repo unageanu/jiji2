@@ -40,7 +40,7 @@ module Jiji::Web
       ok({
         count:      repository.count_positions(id, filter),
         not_exited: repository.count_positions(
-          id, ({ status: :live }).merge(filter))
+          id, { status: :live }.merge(filter))
       })
     end
 

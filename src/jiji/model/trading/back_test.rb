@@ -139,13 +139,13 @@ module Jiji::Model::Trading
 
     def pause
       @process.pause if @process
-      save_state if (status == :running)
+      save_state if status == :running
     end
 
     def cancel
       illegal_state if @trading_context.finished?
       @process.cancel if @process
-      save_state if (status == :running)
+      save_state if status == :running
     end
 
     def retrieve_process_status

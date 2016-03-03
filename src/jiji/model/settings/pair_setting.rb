@@ -13,7 +13,7 @@ module Jiji::Model::Settings
 
     needs :pairs
 
-    field :pair_names,   type: Array,   default: []
+    field :pair_names, type: Array, default: []
 
     def initialize
       super

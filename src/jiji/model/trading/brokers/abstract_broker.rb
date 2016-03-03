@@ -42,7 +42,7 @@ module Jiji::Model::Trading::Brokers
     #
     # 戻り値:: Order の配列
     def orders
-      return @orders  if !@orders_is_dirty && @orders
+      return @orders if !@orders_is_dirty && @orders
       load_orders
     end
 
@@ -68,7 +68,7 @@ module Jiji::Model::Trading::Brokers
     # order:: 注文
     def cancel_order(order)
       result = securities.cancel_order(order.internal_id)
-      @orders_is_dirty    = true
+      @orders_is_dirty = true
       result
     end
 

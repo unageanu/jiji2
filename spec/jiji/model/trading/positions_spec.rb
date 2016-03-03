@@ -7,7 +7,7 @@ describe Jiji::Model::Trading::Positions do
   include_context 'use agent_setting'
   let(:builder)      { container.lookup(:position_builder) }
   let(:repository)   { container.lookup(:position_repository) }
-  let(:original)  do
+  let(:original) do
     [
       data_builder.new_position(1),
       data_builder.new_position(2),

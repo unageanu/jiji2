@@ -47,7 +47,7 @@ module Jiji::Model::Agents
 
     def process_error(error)
       if @fail_on_error
-        fail error
+        raise error
       else
         @logger.error(error) if @logger
       end

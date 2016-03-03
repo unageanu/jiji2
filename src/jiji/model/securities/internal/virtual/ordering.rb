@@ -53,7 +53,7 @@ module Jiji::Model::Securities::Internal::Virtual
       :units, :price, :expiry, :lower_bound,
       :upper_bound, :stop_loss, :take_profit,
       :trailing_stop
-    ]
+    ].freeze
 
     def register_position(order)
       position = @position_builder.build_from_order(order, @current_tick)
@@ -66,7 +66,7 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def create_order_result(order, position, result)
-      if (order.type == :market)
+      if order.type == :market
         if position.units > 0
           return OrderResult.new(nil, order, nil, result[:closed])
         else
@@ -89,9 +89,9 @@ module Jiji::Model::Securities::Internal::Virtual
 
     def remove_closed_positions(closed)
       @positions = @positions.reject do |p|
-        !(closed.find do |item|
+        !closed.find do |item|
           p.internal_id == item.internal_id
-        end.nil?)
+        end.nil?
       end
     end
 
@@ -143,7 +143,7 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def error(message)
-      fail OandaAPI::RequestError, message
+      raise OandaAPI::RequestError, message
     end
 
     def create_order(pair_name, sell_or_buy, units, type, options)
@@ -161,7 +161,7 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def init_optional_properties(order, options)
-      order.expiry        = options[:expiry] || nil
+      order.expiry = options[:expiry] || nil
       [:lower_bound, :upper_bound,
        :stop_loss, :take_profit, :trailing_stop].each do |key|
         order.method("#{key}=").call(options[key] || 0)
@@ -169,7 +169,7 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def resolve_price(type, pair_name, sell_or_buy, options, tick)
-      return options[:price]  || nil if type != :market
+      return options[:price] || nil if type != :market
       PricingUtils.calculate_entry_price(tick, pair_name, sell_or_buy)
     end
 

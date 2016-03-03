@@ -265,7 +265,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       positions = position_repository.retrieve_positions(nil)
       expect(positions.length).to be 0
 
-      broker  = @container.lookup(:rmt_broker)
+      broker = @container.lookup(:rmt_broker)
       broker.setup
 
       positions = broker.positions
@@ -308,7 +308,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       positions = position_repository.retrieve_positions(nil)
       expect(positions.length).to be 0
 
-      broker  = @container.lookup(:rmt_broker)
+      broker = @container.lookup(:rmt_broker)
       broker.setup
 
       positions = broker.positions
@@ -342,7 +342,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       ]
       @provider.set securities
 
-      broker  = @container.lookup(:rmt_broker)
+      broker = @container.lookup(:rmt_broker)
       broker.setup
 
       positions = broker.positions

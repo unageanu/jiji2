@@ -43,7 +43,7 @@ class MovingAverageAgent
   def next_tick(tick)
     # 移動平均を計算
     res = @mvs.map { |mv| mv.next_data(tick[:USDJPY].bid) }
-    return if  !res[0] || !res[1]
+    return if !res[0] || !res[1]
 
     # グラフに出力
     @graph << res
@@ -54,13 +54,13 @@ class MovingAverageAgent
   end
 
   def do_trade
-    if  @cross.cross_up?
+    if @cross.cross_up?
       # ゴールデンクロス
       # 売り建玉があれば全て決済
       close_exist_positions(:sell)
       # 新規に買い
       broker.buy(:USDJPY, 1)
-    elsif  @cross.cross_down?
+    elsif @cross.cross_down?
       # デッドクロス
       # 買い建玉があれば全て決済
       close_exist_positions(:buy)
@@ -70,7 +70,7 @@ class MovingAverageAgent
   end
 
   def close_exist_positions(sell_or_buy)
-    @broker.positions.each do|p|
+    @broker.positions.each do |p|
       p.close if p.sell_or_buy == sell_or_buy
     end
   end

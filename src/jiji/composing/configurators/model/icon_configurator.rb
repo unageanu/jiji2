@@ -7,7 +7,7 @@ module Jiji::Composing::Configurators
 
     def configure(container)
       container.configure do
-        object :icon_repository,  Icons::IconRepository.new
+        object :icon_repository, Icons::IconRepository.new
       end
     end
 

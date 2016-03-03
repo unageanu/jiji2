@@ -7,7 +7,7 @@ module Jiji::Composing::Configurators
 
     def configure(container)
       container.configure do
-        object :graph_repository,  GraphRepository.new
+        object :graph_repository, GraphRepository.new
       end
     end
 

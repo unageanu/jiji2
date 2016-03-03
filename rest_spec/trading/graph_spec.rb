@@ -19,7 +19,7 @@ describe 'グラフデータ取得' do
     start_time = Time.new(2015, 4, 1)
     end_time   = Time.new(2015, 4, 9)
 
-    r = @client.get('graph/rmt',  {
+    r = @client.get('graph/rmt', {
       'start' => start_time.iso8601,
       'end'   => end_time.iso8601
     })
@@ -37,7 +37,7 @@ describe 'グラフデータ取得' do
     start_time = Time.new(2015, 4, 1)
     end_time   = Time.new(2015, 4, 9)
 
-    r = @client.get("graph/#{@test._id}",  {
+    r = @client.get("graph/#{@test._id}", {
       'start' => start_time.iso8601,
       'end'   => end_time.iso8601
     })
@@ -56,7 +56,7 @@ describe 'グラフデータ取得' do
     end_time   = Time.new(2015, 4, 9)
 
     %w(one_minute one_hour one_day).each do |interval|
-      r = @client.get("graph/data/rmt/#{interval}",  {
+      r = @client.get("graph/data/rmt/#{interval}", {
         'start' => start_time.iso8601,
         'end'   => end_time.iso8601
       })
@@ -78,7 +78,7 @@ describe 'グラフデータ取得' do
     end_time   = Time.new(2015, 4, 9)
 
     %w(one_minute one_hour one_day).each do |interval|
-      r = @client.get("graph/data/#{@test._id}/#{interval}",  {
+      r = @client.get("graph/data/#{@test._id}/#{interval}", {
         'start' => start_time.iso8601,
         'end'   => end_time.iso8601
       })
@@ -100,7 +100,7 @@ describe 'グラフデータ取得' do
     data_builder = Jiji::Test::DataBuilder.new
 
     backtest_repository = container.lookup(:backtest_repository)
-    @agent_registry      = container.lookup(:agent_registry)
+    @agent_registry = container.lookup(:agent_registry)
 
     @agent_registry.add_source('aaa', '',
       :agent, data_builder.new_agent_body(1))
@@ -136,7 +136,7 @@ describe 'グラフデータ取得' do
     graph2.save_data(time)
     graph3.save_data(time)
 
-    graph1 << [11,  11, 11]
+    graph1 << [11, 11, 11]
     graph2 << [31, nil, 32]
     graph3 << [-10,  0, 20]
 

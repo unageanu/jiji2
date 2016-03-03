@@ -4,9 +4,9 @@ require 'sinatra/base'
 require 'jiji/web/middlewares/base'
 
 module Jiji::Web
-  FONT_AND_STYLE_SRC = '\'self\' fonts.googleapis.com'
-  NEWRELIC_SRC = ' *.newrelic.com bam.nr-data.net '
-  GOOGLE_ANALYTICS_SRC = '*.google-analytics.com stats.g.doubleclick.net'
+  FONT_AND_STYLE_SRC = '\'self\' fonts.googleapis.com'.freeze
+  NEWRELIC_SRC = ' *.newrelic.com bam.nr-data.net '.freeze
+  GOOGLE_ANALYTICS_SRC = '*.google-analytics.com stats.g.doubleclick.net'.freeze
 
   class SecurityFilter < Base
 

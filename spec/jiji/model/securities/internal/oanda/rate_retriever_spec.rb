@@ -84,11 +84,11 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
         end_time   = Time.utc(2015, 5, 4, 6)
         expect_to_enable_retrieve_rates(start_time, end_time, :one_hour, 61)
 
-        start_time = Time.local(2015, 5,  1)
+        start_time = Time.local(2015, 5, 1)
         end_time   = Time.local(2015, 5, 15)
         expect_to_enable_retrieve_rates(start_time, end_time, :six_hours, 56)
 
-        start_time = Time.utc(2015, 5,  1)
+        start_time = Time.utc(2015, 5, 1)
         end_time   = Time.utc(2015, 5, 15)
         expect_to_enable_retrieve_rates(start_time, end_time, :six_hours, 56)
 
@@ -96,11 +96,11 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
         end_time   = Time.utc(2015, 5, 14, 10).localtime('+14:00')
         expect_to_enable_retrieve_rates(start_time, end_time, :six_hours, 56)
 
-        start_time = Time.local(2015, 5,  1)
+        start_time = Time.local(2015, 5, 1)
         end_time   = Time.local(2015, 5, 30)
         expect_to_enable_retrieve_rates(start_time, end_time, :one_day, 29)
 
-        start_time = Time.utc(2015, 5,  1)
+        start_time = Time.utc(2015, 5, 1)
         end_time   = Time.utc(2015, 5, 30)
         expect_to_enable_retrieve_rates(start_time, end_time, :one_day, 29)
       end

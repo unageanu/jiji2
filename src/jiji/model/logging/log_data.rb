@@ -29,7 +29,7 @@ module Jiji::Model::Logging
 
     def self.create(timestamp, body = nil, backtest_id = nil)
       LogData.new do |data|
-        data.backtest_id  = backtest_id
+        data.backtest_id = backtest_id
         data.timestamp = timestamp
         data << body if body
       end

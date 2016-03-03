@@ -24,14 +24,14 @@ module Jiji::Model::Securities::Internal::Oanda
       interval = Jiji::Model::Trading::Interval.new(:fifteen_seconds, 15 * 1000)
       converter = TickConverter.new(pair_name)
       RateFetcher.new(@client, converter)
-        .fetch_and_fill(start_time, end_time, interval, pair_name)
+                 .fetch_and_fill(start_time, end_time, interval, pair_name)
     end
 
     def retrieve_rate_history(pair_name, interval_id, start_time, end_time)
-      interval    = Intervals.instance.get(interval_id)
+      interval = Intervals.instance.get(interval_id)
       converter = RateConverter.new(pair_name, interval)
       RateFetcher.new(@client, converter)
-        .fetch_and_fill(start_time, end_time, interval, pair_name)
+                 .fetch_and_fill(start_time, end_time, interval, pair_name)
     end
 
     private
@@ -99,7 +99,7 @@ module Jiji::Model::Securities::Internal::Oanda
     def fill(rates)
       array = []
       current_time = @start_time
-      while  current_time < @end_time
+      while current_time < @end_time
         array << retrieve_rate_at(rates, current_time, array)
         current_time += @interval.ms / 1000
       end

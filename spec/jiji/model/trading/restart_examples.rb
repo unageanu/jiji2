@@ -170,7 +170,7 @@ shared_examples '停止と再開ができる' do
   end
 
   def exec(test, &block)
-    @target.process.post_exec { |context, _queue| block.call(context) }.value
+    @target.process.post_exec { |context, _queue| yield(context) }.value
   end
 
   def exec_action(agent_id, action)

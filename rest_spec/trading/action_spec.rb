@@ -20,7 +20,7 @@ describe 'アクションの実行' do
     }])
     expect(r.status).to eq 200
 
-    r = @client.get('notifications',  {
+    r = @client.get('notifications', {
       'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
@@ -34,7 +34,7 @@ describe 'アクションの実行' do
     expect(r.status).to eq 200
     expect(r.body['message']).to eq 'OK aaa'
 
-    r = @client.get('notifications',  {
+    r = @client.get('notifications', {
       'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200

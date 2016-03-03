@@ -20,7 +20,7 @@ module Jiji::Model::Logging
     end
 
     def create(backtest = nil)
-      id  = backtest ? backtest.id : nil
+      id = backtest ? backtest.id : nil
       @mutex.synchronize do
         log = create_log_if_required(id)
         io  = CompositeIO.new(STDOUT, log)

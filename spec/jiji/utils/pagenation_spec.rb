@@ -38,7 +38,7 @@ describe Jiji::Utils::Pagenation::Query do
 
   it '絞り込み条件あり、ソート条件あり、10～20件取得' do
     q = Jiji::Utils::Pagenation::Query.new(
-      { graph_id: @graph1.id, interval: :one_minute  },
+      { graph_id: @graph1.id, interval: :one_minute },
       { timestamp: :asc }, 10, 10)
     data = q.execute(Jiji::Model::Graphing::GraphData).map { |x| x }
 

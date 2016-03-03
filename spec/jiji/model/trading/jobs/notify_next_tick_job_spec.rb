@@ -30,35 +30,35 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
         Time.new(2014, 1, 1, 0, 0, 0), Time.new(2014, 1, 1, 0, 1, 0))
       context = create_trading_context
       context.prepare_running
-      queue   = Queue.new
+      queue = Queue.new
 
       expect(queue.empty?).to be true
 
-      queue   = Queue.new
+      queue = Queue.new
       job.exec(context, queue)
       expect(context[:current_time]).to eq Time.new(2014, 1, 1, 0, 0, 0)
       expect(context[:progress]).to eq 0
       expect(queue.empty?).to be false
 
-      queue   = Queue.new
+      queue = Queue.new
       job.exec(context, queue)
       expect(context[:current_time]).to eq Time.new(2014, 1, 1, 0, 0, 15)
       expect(context[:progress]).to eq 0.25
       expect(queue.empty?).to be false
 
-      queue   = Queue.new
+      queue = Queue.new
       job.exec(context, queue)
       expect(context[:current_time]).to eq Time.new(2014, 1, 1, 0, 0, 30)
       expect(context[:progress]).to eq 0.50
       expect(queue.empty?).to be false
 
-      queue   = Queue.new
+      queue = Queue.new
       job.exec(context, queue)
       expect(context[:current_time]).to eq Time.new(2014, 1, 1, 0, 0, 45)
       expect(context[:progress]).to eq 0.75
       expect(queue.empty?).to be false
 
-      queue   = Queue.new
+      queue = Queue.new
       job.exec(context, queue)
       expect(context[:current_time]).to eq Time.new(2014, 1, 1, 0, 1, 0)
       expect(context[:progress]).to eq 1.0
@@ -70,7 +70,7 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
         Time.new(2014, 1, 1, 0, 0, 0), Time.new(2014, 1, 1, 0, 1, 0))
       context = create_trading_context(2, false)
       context.prepare_running
-      queue   = Queue.new
+      queue = Queue.new
 
       expect(queue.empty?).to be true
 
@@ -81,7 +81,7 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
 
       context.request_cancel
 
-      queue   = Queue.new
+      queue = Queue.new
       job.exec(context, queue)
       expect(context[:current_time]).to eq Time.new(2014, 1, 1, 0, 0, 15)
       expect(context[:progress]).to eq 0.25
@@ -95,11 +95,11 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
     context = create_trading_context(0, false, [])
 
     context.prepare_running
-    queue   = Queue.new
+    queue = Queue.new
 
     expect(queue.empty?).to be true
 
-    queue   = Queue.new
+    queue = Queue.new
     expect do
       job.exec(context, queue)
     end.to raise_error 'no agent.'
@@ -107,7 +107,7 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
 
   def create_trading_context(refresh_count = 5,
     expect_to_refresh_accounts = true, agent_instances = ['dummy'])
-    broker  = double('mock broker')
+    broker = double('mock broker')
     allow(broker).to receive(:tick) \
       .at_least(:once) \
       .and_return(*create_tick_response)
@@ -122,7 +122,7 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
       expect(broker).to receive(:refresh_account).once
     end
 
-    agents  = double('mock agents')
+    agents = double('mock agents')
     allow(agents).to receive(:values) \
       .at_least(:once) \
       .and_return(agent_instances)

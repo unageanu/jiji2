@@ -6,10 +6,10 @@ require 'encase'
 module Jiji::Messaging
   class MailComposer
 
-    FROM   = 'jiji@unageanu.net'
-    DOMAIN = 'unageanu.net'
+    FROM   = 'jiji@unageanu.net'.freeze
+    DOMAIN = 'unageanu.net'.freeze
 
-    TEST_MAIL_BODY = <<BODY
+    TEST_MAIL_BODY = <<BODY.freeze
 メール送信のテスト用メールです。
 
 ----
@@ -23,7 +23,7 @@ BODY
     needs :user_setting_smtp_server
     needs :postmark_smtp_server
 
-    def compose(to, title, from = FROM, server_setting = nil,  &block)
+    def compose(to, title, from = FROM, server_setting = nil, &block)
       mail = Mail.new(&block)
       setup_delivery_method(mail, server_setting)
 

@@ -103,7 +103,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
   describe '#update_price' do
     it 'trailing_stopが設定されていれば、trailing_amountが更新される' do
       pair = Jiji::Model::Trading::Pair.new(
-        :EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04)
+        :EURJPY, 'EUR_JPY', 0.01, 10_000_000, 0.001, 0.04)
 
       policy = Jiji::Model::Trading::ClosingPolicy.create({
         trailing_stop:   50,

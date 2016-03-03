@@ -111,17 +111,17 @@ module Jiji::Model::Agents
     end
 
     def change_state_to_normal
-      @error  = nil
+      @error = nil
       self.status = :normal
     end
 
     def change_state_to_empty
-      @error  = nil
+      @error = nil
       self.status = :empty
     end
 
     def change_state_to_error(error)
-      @error  = error.to_s
+      @error = error.to_s
       self.status = :error
     end
 

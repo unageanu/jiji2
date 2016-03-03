@@ -10,7 +10,7 @@ module Jiji::Security
     include Encase
     include Jiji::Errors
 
-    MAIL_TITLE = '[Jiji] パスワードの再設定'
+    MAIL_TITLE = '[Jiji] パスワードの再設定'.freeze
 
     needs :setting_repository
     needs :session_store

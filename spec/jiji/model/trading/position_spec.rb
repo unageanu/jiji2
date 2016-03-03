@@ -19,7 +19,7 @@ describe Jiji::Model::Trading::Position do
         trailing_stop:   5,
         trailing_amount: 10
     })
-    position.agent   = agent_setting
+    position.agent = agent_setting
     position.save
 
     expect(position.backtest).to eq(backtest)
@@ -76,7 +76,7 @@ describe Jiji::Model::Trading::Position do
         trailing_stop:   5,
         trailing_amount: 10
     })
-    position.agent   = agent_setting
+    position.agent = agent_setting
     position.save
 
     expect(position.backtest_id).to eq(nil)
@@ -270,7 +270,7 @@ describe Jiji::Model::Trading::Position do
         trailing_stop:   5,
         trailing_amount: 10
     })
-    original.agent   = agent_setting
+    original.agent = agent_setting
     original.save
 
     position = Jiji::Model::Trading::Position.find(original.id)
@@ -320,7 +320,7 @@ describe Jiji::Model::Trading::Position do
           trailing_stop:   5,
           trailing_amount: 10
       })
-      position.agent   = agent_setting
+      position.agent = agent_setting
 
       hash = position.to_h
 

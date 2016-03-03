@@ -11,7 +11,7 @@ module Jiji::Web
     end
 
     get '/:backtest_id' do
-      index     = request['offset']    ? request['offset'].to_i : 0
+      index     = request['offset'] ? request['offset'].to_i : 0
       id        = get_backtest_id_from_path_param
       ok(retrive_log_data(id, index))
     end

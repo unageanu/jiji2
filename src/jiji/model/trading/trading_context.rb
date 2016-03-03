@@ -43,12 +43,12 @@ module Jiji::Model::Trading
     def post_running
       @mutex.synchronize do
         @status = \
-        case @status
-        when :wait_for_cancel then :cancelled
-        when :wait_for_pause  then :paused
-        when :wait_for_finish then :finished
-        else @status
-        end
+          case @status
+          when :wait_for_cancel then :cancelled
+          when :wait_for_pause  then :paused
+          when :wait_for_finish then :finished
+          else @status
+          end
       end
     end
 

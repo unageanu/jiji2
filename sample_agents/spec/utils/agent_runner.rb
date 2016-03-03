@@ -13,12 +13,12 @@ module Utils
       root = Jiji::Utils::Requires.root
       source = @agent_registory.add_source(
         filename, '', :agent, IO.read("#{root}/#{path}"))
-      fail source.error unless source.error.nil?
+      raise source.error unless source.error.nil?
     end
 
     def start_backtest(agent_setting,
-      start_time = Time.new(2015, 12,  8, 0, 0, 0),
-      end_time = Time.new(2015, 12,  9, 0, 0, 0))
+      start_time = Time.new(2015, 12, 8, 0, 0, 0),
+      end_time = Time.new(2015, 12, 9, 0, 0, 0))
       @backtest_repository.register({
         'name'          => 'テスト',
         'start_time'    => start_time,

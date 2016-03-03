@@ -95,7 +95,7 @@ RSpec.shared_examples '注文関連の操作' do
         saved_positions = position_repository.retrieve_positions(backtest_id)
         expect(saved_positions.length).to be 0
 
-        @orders <<  client.order(:EURJPY, :buy, 1, :limit, {
+        @orders << client.order(:EURJPY, :buy, 1, :limit, {
           price:  (ask - 1).to_f,
           expiry: now + (60 * 60 * 24)
         }).order_opened
@@ -110,7 +110,7 @@ RSpec.shared_examples '注文関連の操作' do
 
         sleep wait
 
-        @orders <<  client.order(:EURJPY, :sell, 2, :limit, {
+        @orders << client.order(:EURJPY, :sell, 2, :limit, {
           price:         (bid + 1).to_f,
           expiry:        now + (60 * 60 * 24),
           lower_bound:   (bid + 1.05).to_f,
@@ -271,7 +271,7 @@ RSpec.shared_examples '注文関連の操作' do
       it '有効期限が未指定の場合、エラーになる' do
         expect do
           client.order(:EURJPY, :buy, 1, :limit, {
-            price:  (ask - 1).to_f
+            price: (ask - 1).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
 
@@ -353,7 +353,7 @@ RSpec.shared_examples '注文関連の操作' do
         saved_positions = position_repository.retrieve_positions(backtest_id)
         expect(saved_positions.length).to be 0
 
-        @orders <<  client.order(:USDJPY, :sell, 10, :stop, {
+        @orders << client.order(:USDJPY, :sell, 10, :stop, {
           price:  (bid - 1).to_f,
           expiry: now + (60 * 60 * 24)
         }).order_opened
@@ -368,7 +368,7 @@ RSpec.shared_examples '注文関連の操作' do
 
         sleep wait
 
-        @orders <<  client.order(:USDJPY, :buy, 11, :stop, {
+        @orders << client.order(:USDJPY, :buy, 11, :stop, {
           price:         (ask + 1).to_f,
           expiry:        now + (60 * 60 * 24),
           lower_bound:   (ask + 1.05).to_f,
@@ -529,7 +529,7 @@ RSpec.shared_examples '注文関連の操作' do
       it '有効期限が未指定の場合、エラーになる' do
         expect do
           client.order(:USDJPY, :sell, 1, :stop, {
-            price:  (bid - 1).to_f
+            price: (bid - 1).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
 
@@ -611,7 +611,7 @@ RSpec.shared_examples '注文関連の操作' do
         saved_positions = position_repository.retrieve_positions(backtest_id)
         expect(saved_positions.length).to be 0
 
-        @orders <<  client.order(:EURJPY, :buy, 1, :marketIfTouched, {
+        @orders << client.order(:EURJPY, :buy, 1, :marketIfTouched, {
           price:  (ask - 1).to_f,
           expiry: now + (60 * 60 * 24)
         }).order_opened
@@ -625,7 +625,7 @@ RSpec.shared_examples '注文関連の操作' do
         expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
 
         sleep wait
-        @orders <<  client.order(:EURJPY, :sell, 2, :marketIfTouched, {
+        @orders << client.order(:EURJPY, :sell, 2, :marketIfTouched, {
           price:         (bid + 1).to_f,
           expiry:        now + (60 * 60 * 24),
           lower_bound:   (bid + 0.95).to_f,
@@ -785,7 +785,7 @@ RSpec.shared_examples '注文関連の操作' do
       it '有効期限が未指定の場合、エラーになる' do
         expect do
           client.order(:EURJPY, :buy, 1, :marketIfTouched, {
-            price:  (ask - 1).to_f
+            price: (ask - 1).to_f
           })
         end.to raise_exception(OandaAPI::RequestError)
 
@@ -880,11 +880,11 @@ RSpec.shared_examples '注文関連の操作' do
       let(:bid) { BigDecimal.new(tick[:EURJPY].bid, 4) }
 
       before(:example) do
-        @orders <<  client.order(:EURJPY, :buy, 1, :limit, {
+        @orders << client.order(:EURJPY, :buy, 1, :limit, {
           price:  (ask - 1).to_f,
           expiry: now + (60 * 60 * 24)
         }).order_opened
-        @orders <<  client.order(:EURJPY, :sell, 1, :limit, {
+        @orders << client.order(:EURJPY, :sell, 1, :limit, {
           price:  (bid + 1).to_f,
           expiry: now + (60 * 60 * 24)
         }).order_opened
@@ -1118,11 +1118,11 @@ RSpec.shared_examples '注文関連の操作' do
       let(:bid) { BigDecimal.new(tick[:USDJPY].bid, 4) }
 
       before(:example) do
-        @orders <<  client.order(:USDJPY, :sell, 10, :stop, {
+        @orders << client.order(:USDJPY, :sell, 10, :stop, {
           price:  (bid - 1).to_f,
           expiry: now + (60 * 60 * 24)
         }).order_opened
-        @orders <<  client.order(:USDJPY, :buy, 1, :stop, {
+        @orders << client.order(:USDJPY, :buy, 1, :stop, {
           price:  (ask + 1).to_f,
           expiry: now + (60 * 60 * 24)
         }).order_opened

@@ -91,13 +91,13 @@ module Jiji::Model::Trading
     end
 
     def update_high(value)
-      return unless @high.bid  < value.bid
-      @high  = value
+      return unless @high.bid < value.bid
+      @high = value
     end
 
     def update_low(value)
-      return unless  @low.bid > value.bid
-      @low  = value
+      return unless @low.bid > value.bid
+      @low = value
     end
 
   end

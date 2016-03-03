@@ -1,7 +1,7 @@
 require 'simplecov'
 require 'codeclimate-test-reporter'
 
-if (ENV['ENABLE_COVERADGE_REPORT'] != 'false')
+if ENV['ENABLE_COVERADGE_REPORT'] != 'false'
   dir = File.join(BUILD_DIR, 'coverage')
   SimpleCov.coverage_dir(dir)
   SimpleCov.start do

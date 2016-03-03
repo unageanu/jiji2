@@ -6,7 +6,7 @@ require 'jiji/model/securities/oanda_securities'
 RSpec.shared_examples '建玉関連の操作' do
   describe Jiji::Model::Securities::Internal::Oanda::Trading do
     let(:tick) { client.retrieve_current_tick }
-    let(:now)  {  Time.now.round }
+    let(:now)  { Time.now.round }
     let(:data_builder) { Jiji::Test::DataBuilder.new }
 
     before(:example) do

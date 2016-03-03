@@ -189,7 +189,7 @@ describe Jiji::Model::Graphing::Graph do
 
     graph1 << [10,   11,  12]
     graph2 << [11,   11,  11]
-    graph3 << [-1,   10,   0]
+    graph3 << [-1,   10, 0]
     graph4 << [0.1, 0.2, 0.3]
 
     time = Time.new(2015, 4, 1)

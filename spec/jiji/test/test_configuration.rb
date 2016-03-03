@@ -21,4 +21,4 @@ require 'jiji/test/matchers'
 require 'jiji/test/mock/mock_broker'
 require 'jiji/test/shared_contexts'
 
-Errors    = Jiji::Errors
+Errors = Jiji::Errors

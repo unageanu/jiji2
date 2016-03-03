@@ -21,7 +21,7 @@ describe Jiji::Model::Securities::Internal::Oanda::Ordering do
   end
 
   today = Date.today
-  if today.wday >= 1 &&  today.wday < 6
+  if today.wday >= 1 && today.wday < 6
     it_behaves_like '注文関連の操作'
     it_behaves_like '注文関連の操作(建玉がある場合のバリエーションパターン)'
   end

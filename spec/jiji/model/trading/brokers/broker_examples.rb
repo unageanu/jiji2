@@ -145,7 +145,7 @@ shared_examples 'brokerの基本操作ができる' do
     expect(broker.account.margin_used.to_f).to eq 569.44
 
     expected_position2.current_price = 1.4236
-    expected_position2.updated_at  = Time.utc(2015, 5, 1, 0, 0, 30)
+    expected_position2.updated_at = Time.utc(2015, 5, 1, 0, 0, 30)
     expected_position2.update_profit_or_loss
 
     expect(broker.positions.length).to be 1
@@ -165,7 +165,7 @@ shared_examples 'brokerの基本操作ができる' do
     expect(broker.account.margin_used.to_f).to eq 570.64
 
     expected_position2.current_price = 1.4266
-    expected_position2.updated_at  = Time.utc(2015, 5, 1, 0, 0, 45)
+    expected_position2.updated_at = Time.utc(2015, 5, 1, 0, 0, 45)
     expected_position2.update_profit_or_loss
 
     expect(broker.positions.length).to be 1
@@ -185,7 +185,7 @@ shared_examples 'brokerの基本操作ができる' do
     expect(broker.account.margin_used.to_f).to eq 569.84
 
     expected_position2.current_price = 1.4246
-    expected_position2.updated_at  = Time.utc(2015, 5, 1, 0, 1, 0)
+    expected_position2.updated_at = Time.utc(2015, 5, 1, 0, 1, 0)
     expected_position2.update_profit_or_loss
 
     expect(broker.positions.length).to be 1

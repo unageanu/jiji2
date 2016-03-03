@@ -9,6 +9,7 @@ module Signals
       @data  = [] # レートを記録するバッファ
       @range = range
     end
+
     # 次のデータを受け取って指標を返します。
     # data:: 次のデータ
     # 戻り値:: 指標。十分なデータが蓄積されていない場合nil
@@ -23,6 +24,7 @@ module Signals
       # 算出
       calculate(@data)
     end
+
     #
     def calculate(data); end #:nodoc:
     # 集計期間
@@ -122,8 +124,8 @@ module Signals
     # signal_range:: シグナルの集計期間
     # smoothing_coefficient:: 平滑化係数
     def initialize(short_range = 12, long_range = 26,
-        signal_range = 9, smoothing_coefficient = 0.1)
-      fail 'illegal arguments.' if short_range > long_range
+      signal_range = 9, smoothing_coefficient = 0.1)
+      raise 'illegal arguments.' if short_range > long_range
       super(long_range)
       @short_range = short_range
       @smoothing_coefficient = smoothing_coefficient
@@ -247,7 +249,7 @@ module Signals
   # smoothing_coefficient:: 平滑化係数
   # 戻り値:: 加重移動平均値
   def ema(data, smoothing_coefficient = 0.1)
-    data[1..-1].reduce(data[0]) do|t, s|
+    data[1..-1].reduce(data[0]) do |t, s|
       t + smoothing_coefficient * (s - t)
     end
   end
@@ -289,7 +291,7 @@ module Signals
   def vector(data)
     # 最小二乗法を使う。
     total = { x: 0.0, y: 0.0, xx: 0.0, xy: 0.0, yy: 0.0 }
-    data.each_index do|i|
+    data.each_index do |i|
       v = data[i]
       total[:x] += i
       total[:y] += v
@@ -322,7 +324,7 @@ module Signals
   # 戻り値:: RSI値
   def rsi(data)
     prev = nil
-    tmp = data.each_with_object([0.0, 0.0]) do|i, r|
+    tmp = data.each_with_object([0.0, 0.0]) do |i, r|
       r[i > prev ? 0 : 1] += (i - prev).abs if prev
       prev = i
     end
@@ -372,7 +374,7 @@ module Signals
 
   def standard_division(data, &block)
     total = data.reduce(0.0) do |t, s|
-      t + block.call(s)**2
+      t + yield(s)**2
     end
     Math.sqrt(total / data.length)
   end
@@ -392,7 +394,7 @@ module Signals
 
   def calculate_dmi_from_data(data)
     prev = nil
-    data.each_with_object([[], [], []]) do|i, r|
+    data.each_with_object([[], [], []]) do |i, r|
       if prev
         dm = calculate_dmi(i, prev)
         r[0] << dm[0] # TR
@@ -431,7 +433,7 @@ module Signals
   end
 
   def calculate_dx(pdi, mdi)
-    (pdi - mdi).abs / (pdi + mdi)  * 100
+    (pdi - mdi).abs / (pdi + mdi) * 100
   end
 end
  

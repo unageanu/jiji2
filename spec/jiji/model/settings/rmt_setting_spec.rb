@@ -8,7 +8,7 @@ describe Jiji::Model::Settings::RMTSetting do
   let(:repository) { container.lookup(:setting_repository) }
 
   before(:example) do
-    @setting    = repository.rmt_setting
+    @setting = repository.rmt_setting
   end
 
   it '設定がない場合、初期値を返す' do
@@ -50,6 +50,6 @@ describe Jiji::Model::Settings::RMTSetting do
   end
 
   def recreate_setting
-    @setting    = repository.rmt_setting
+    @setting = repository.rmt_setting
   end
 end

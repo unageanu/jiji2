@@ -47,7 +47,7 @@ describe Jiji::Model::Agents::AgentRegistry do
         @registory.get_agent_class('TestAgent1@aaa')
       end.to raise_exception(Jiji::Errors::NotFoundException)
 
-      new_container    = Jiji::Test::TestContainerFactory.instance.new_container
+      new_container = Jiji::Test::TestContainerFactory.instance.new_container
       @repository   = new_container.lookup(:agent_source_repository)
       @registory    = new_container.lookup(:agent_registry)
 
@@ -126,7 +126,7 @@ describe Jiji::Model::Agents::AgentRegistry do
       expect(@registory.get_agent_class('TestAgent1@aaa')).not_to be nil
 
       @registory.update_source('aaa', '',
-        new_body(2)  + '; class Foo')
+        new_body(2) + '; class Foo')
 
       expect do
         @registory.get_agent_class('TestAgent1@aaa')
@@ -143,7 +143,7 @@ describe Jiji::Model::Agents::AgentRegistry do
 
     @registory.add_source('aaa', '', :agent, new_body(1))
     @registory.add_source('bbb', '', :agent,
-      new_body(2) + ';'  + new_body(3))
+      new_body(2) + ';' + new_body(3))
     @registory.add_source('ccc', '', :agent, 'class Foo; end')
     @registory.add_source('ddd', '', :agent,
       'module Var;  class TestAgent; ' \
@@ -327,7 +327,7 @@ describe Jiji::Model::Agents::AgentRegistry do
 
       expect(@registory.agent_sources.length).to be 6
       @registory.agent_sources.each do |s|
-        if (s.name == 'aaa')
+        if s.name == 'aaa'
           expect(s.status).to be :normal
         else
           expect(s.status).to be :error
@@ -340,7 +340,7 @@ describe Jiji::Model::Agents::AgentRegistry do
     end
 
     def reload
-      new_container    = Jiji::Test::TestContainerFactory.instance.new_container
+      new_container = Jiji::Test::TestContainerFactory.instance.new_container
       @repository   = new_container.lookup(:agent_source_repository)
       @registory    = new_container.lookup(:agent_registry)
     end
@@ -356,7 +356,7 @@ describe Jiji::Model::Agents::AgentRegistry do
       end
     end
 BODY
-    )
+                         )
     @registory.add_source('bbb', '', :agent, <<BODY
     module TestModule2
       class TestAgent2
@@ -375,7 +375,7 @@ BODY
       end
     end
 BODY
-    )
+                         )
     names = @registory.map { |x| x }
     expect(names.length).to be 2
     expect(names.include?('TestModule2::TestAgent2@bbb')).to be true
@@ -386,7 +386,7 @@ BODY
     agent = @registory.create_agent('TestAgent1@bbb')
     agent.post_create
 
-    new_container    = Jiji::Test::TestContainerFactory.instance.new_container
+    new_container = Jiji::Test::TestContainerFactory.instance.new_container
     @repository   = new_container.lookup(:agent_source_repository)
     @registory    = new_container.lookup(:agent_registry)
 

@@ -33,7 +33,7 @@ describe Jiji::Security::SessionStore do
     sessions = []
     110.times do
       s = Jiji::Security::Session.new(Time.utc(2000, 1, 11))
-      session_store   << s
+      session_store << s
       sessions << s
     end
 

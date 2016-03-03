@@ -3,9 +3,9 @@ module Jiji::Test
   class VirtualSecuritiesBuilder
 
     def self.build(
-        start_time = Time.utc(2015, 4, 1),
-        end_time = Time.utc(2015, 4, 1, 6),
-        backtest_id = nil)
+      start_time = Time.utc(2015, 4, 1),
+      end_time = Time.utc(2015, 4, 1, 6),
+      backtest_id = nil)
       oanda_securities = Jiji::Model::Securities::OandaDemoSecurities.new(
         access_token: ENV['OANDA_API_ACCESS_TOKEN'])
       securities_provider = Jiji::Model::Securities::SecuritiesProvider.new

@@ -9,15 +9,15 @@ describe Jiji::Db::Migrator do
   let(:migrator) { container.lookup(:migrator) }
 
   it 'データ移行ができる' do
-    migrator1  = double('migrator1')
+    migrator1 = double('migrator1')
     allow(migrator1).to receive(:id).at_least(:once).and_return('01')
     expect(migrator1).to receive(:call).once
 
-    migrator2  = double('migrator2')
+    migrator2 = double('migrator2')
     allow(migrator2).to receive(:id).at_least(:once).and_return('02')
     expect(migrator2).to receive(:call).once
 
-    migrator3  = double('migrator3')
+    migrator3 = double('migrator3')
     allow(migrator3).to receive(:id).at_least(:once).and_return('03')
     expect(migrator3).to receive(:call).once
 
@@ -46,15 +46,15 @@ describe Jiji::Db::Migrator do
   end
 
   it '途中でエラーになっても処理は継続される' do
-    migrator1  = double('migrator1')
+    migrator1 = double('migrator1')
     allow(migrator1).to receive(:id).at_least(:once).and_return('01')
     expect(migrator1).to receive(:call).once
 
-    migrator2  = double('migrator2')
+    migrator2 = double('migrator2')
     allow(migrator2).to receive(:id).at_least(:once).and_return('02')
     expect(migrator2).to receive(:call).and_raise('test').twice
 
-    migrator3  = double('migrator3')
+    migrator3 = double('migrator3')
     allow(migrator3).to receive(:id).at_least(:once).and_return('03')
     expect(migrator3).to receive(:call).once
 

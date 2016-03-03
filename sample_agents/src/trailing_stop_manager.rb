@@ -58,7 +58,7 @@ class TrailingStopManager
   def initialize(warning_limit, closing_limit, notifier)
     @warning_limit = warning_limit
     @closing_limit = closing_limit
-    @notifier  = notifier
+    @notifier = notifier
 
     @states = {}
   end
@@ -142,9 +142,9 @@ class TrailingStopManager
   end
 
   def send_notification(position, state)
-    message = "#{create_position_description(position)}" \
+    message = create_position_description(position).to_s \
       + ' がトレールストップの閾値を下回りました。決済しますか?'
-    @notifier.push_notification(message,  [{
+    @notifier.push_notification(message, [{
         'label'  => '決済する',
         'action' => 'trailing_stop__close_' + position.id.to_s
     }])

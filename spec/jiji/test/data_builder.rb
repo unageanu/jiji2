@@ -35,12 +35,12 @@ module Jiji::Test
 
     def new_tick_value(seed)
       Tick::Value.new(
-        (BigDecimal.new(100,    10) + seed).to_f,
+        (BigDecimal.new(100, 10) + seed).to_f,
         (BigDecimal.new(100.003, 10) + seed).to_f)
     end
 
     def new_position(seed, backtest = nil, agent = nil,
-        pair_name = :EURJPY, timestamp = Time.at(seed))
+      pair_name = :EURJPY, timestamp = Time.at(seed))
       position_builder = Internal::PositionBuilder.new(backtest)
       position = position_builder.build_from_tick(seed, pair_name,
         seed * 10_000, seed.even? ? :buy : :sell, new_tick(seed, timestamp))
@@ -50,7 +50,7 @@ module Jiji::Test
 
     def new_agent_body(seed, parent = nil)
       <<BODY
-class TestAgent#{seed} #{ parent ? ' < ' + parent : '' }
+class TestAgent#{seed} #{parent ? ' < ' + parent : ''}
 
   include Jiji::Model::Agents::Agent
 
@@ -84,7 +84,7 @@ BODY
 
     def new_notification_agent_body(seed, parent = nil)
       <<BODY
-class TestAgent#{seed} #{ parent ? ' < ' + parent : '' }
+class TestAgent#{seed} #{parent ? ' < ' + parent : ''}
 
   include Jiji::Model::Agents::Agent
 
@@ -185,7 +185,7 @@ BODY
     end
 
     def register_agent_setting(name = 'test1',
-       icon = BSON::ObjectId.from_time(Time.new))
+      icon = BSON::ObjectId.from_time(Time.new))
       setting = Jiji::Model::Agents::AgentSetting.new
       setting.name        = name
       setting.agent_class = 'testClass1'

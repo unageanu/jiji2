@@ -16,7 +16,7 @@ module Jiji::Model::Securities
     include Internal::Virtual::Trading
 
     def initialize(tick_repository, config)
-      @tick_repository =  tick_repository
+      @tick_repository = tick_repository
       @position_builder =
         Trading::Internal::PositionBuilder.new(config[:backtest])
       @order_validator = Internal::Virtual::OrderValidator.new

@@ -7,7 +7,7 @@ module Jiji::Composing::Configurators
 
     def configure(container)
       container.configure do
-        object :mail_composer,         MailComposer.new
+        object :mail_composer, MailComposer.new
         object :user_setting_smtp_server,
           MailComposer::UserSettingSMTPServer.new
         object :postmark_smtp_server,

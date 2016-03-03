@@ -15,7 +15,7 @@ module Jiji::Security
     needs :time_source
 
     def authenticate(password)
-      fail AuthFailedException unless validate_password(password)
+      raise AuthFailedException unless validate_password(password)
       session_store.new_session(expiration_date, :user).token
     end
 

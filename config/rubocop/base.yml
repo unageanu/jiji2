@@ -14,6 +14,10 @@ Style/AlignParameters:
 Style/IndentHash:
   Enabled: false
 
+# 1行目にあわせる
+Style/IndentArray:
+  EnforcedStyle: consistent
+
 # テーブル形式にそろえる
 Style/AlignHash:
   EnforcedColonStyle: table

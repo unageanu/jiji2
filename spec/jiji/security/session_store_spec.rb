@@ -18,13 +18,13 @@ describe Jiji::Security::SessionStore do
     session_store << s1
     session_store << s3
 
-    expect(session_store.valid_token? s1.token).to be true
-    expect(session_store.valid_token? s2.token).to be false
-    expect(session_store.valid_token? s3.token).to be false
+    expect(session_store.valid_token?(s1.token)).to be true
+    expect(session_store.valid_token?(s2.token)).to be false
+    expect(session_store.valid_token?(s3.token)).to be false
 
     # 削除すると使えなくなる
     session_store.invalidate s1.token
-    expect(session_store.valid_token? s1.token).to be false
+    expect(session_store.valid_token?(s1.token)).to be false
   end
 
   it 'tokenは最大100個まで保持される' do

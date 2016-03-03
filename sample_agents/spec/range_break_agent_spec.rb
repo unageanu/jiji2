@@ -26,11 +26,11 @@ describe RangeBreakAgent do
       agent_class: 'RangeBreakAgent@range_break_agent.rb',
       agent_name:  'テスト1',
       properties:  {
-        'target_pair':        'USDJPY',
-        'range_period':       '480',
-        'range_pips':         '100',
-        'trailing_stop_pips': '30',
-        'trade_units':        '1'
+        'target_pair' => 'USDJPY',
+        'range_period' => '480',
+        'range_pips' => '100',
+        'trailing_stop_pips' => '30',
+        'trade_units' =>        '1'
       }
     }])
 

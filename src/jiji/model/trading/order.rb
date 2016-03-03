@@ -92,7 +92,7 @@ module Jiji::Model::Trading
 
     def carried_out?(tick) #:nodoc:
       current = Utils::PricingUtils
-                .calculate_entry_price(tick, pair_name, sell_or_buy)
+        .calculate_entry_price(tick, pair_name, sell_or_buy)
       case @type
       when :market     then true
       when :stop       then buying? ? upper?(current) : lower?(current)

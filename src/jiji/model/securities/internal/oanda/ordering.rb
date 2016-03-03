@@ -27,27 +27,27 @@ module Jiji::Model::Securities::Internal::Oanda
       end
       param[:max_id] = max_id if max_id
       @client.account(@account.account_id)
-             .orders(param).get.map do |item|
+        .orders(param).get.map do |item|
         convert_response_to_order(item, item)
       end
     end
 
     def retrieve_order_by_id(internal_id)
       response = @client.account(@account.account_id)
-                        .order(internal_id).get
+        .order(internal_id).get
       convert_response_to_order(response, response)
     end
 
     def modify_order(internal_id, options = {})
       convert_expiry_date(options)
       response = @client.account(@account.account_id)
-                        .order({ id: internal_id }.merge(options)).update
+        .order({ id: internal_id }.merge(options)).update
       convert_response_to_order(response, response)
     end
 
     def cancel_order(internal_id)
       response = @client.account(@account.account_id)
-                        .order(internal_id).close
+        .order(internal_id).close
       convert_response_to_order(response, response)
     end
 

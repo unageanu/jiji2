@@ -103,7 +103,7 @@ module Jiji::Model::Trading::Internal
 
     def initialize_trading_information_from_trade(position, trade)
       pair_name = Jiji::Model::Securities::Internal::Oanda::Converter\
-                  .convert_instrument_to_pair_name(trade.instrument)
+        .convert_instrument_to_pair_name(trade.instrument)
       initialize_trading_information(position, @backtest,
         trade.id, pair_name, trade.units, trade.side.to_sym)
     end

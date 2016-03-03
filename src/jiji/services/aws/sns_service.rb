@@ -64,7 +64,8 @@ module Jiji::Services::AWS
                  + 'GtxLzVPbmZiNEJpV2RtZTl5NFc0MXk1a2Ura1pHeXgyWWh4YS9XMTR0' \
                  + 'alE9PS0ta0IxWmhpRXdpazZoRm1ISW5ZblVBdz09--0ac7362604ddb' \
                  + 'e30c782b9e1ddec55edb9a48617'
-    GCM_ARN    = 'arn:aws:sns:ap-northeast-1:452935723537:app/GCM/jiji2-gcm'.freeze
+    GCM_ARN    = 'arn:aws:sns:ap-northeast-1:452935723537:app/GCM/jiji2-gcm' \
+      .freeze
 
   end
 end

@@ -25,11 +25,11 @@ describe Jiji::Security::Authenticator do
     token = authenticator.authenticate('foo')
 
     expect(token).not_to be nil
-    expect(session_store.valid_token? token, :user).to be true
+    expect(session_store.valid_token?(token, :user)).to be true
 
     # 有効期限を過ぎると使えなくなる
     time_source.set Time.utc(2000, 1, 21)
-    expect(session_store.valid_token? token, :user).to be false
+    expect(session_store.valid_token?(token, :user)).to be false
   end
 
   it '不正なパスワードはエラー' do

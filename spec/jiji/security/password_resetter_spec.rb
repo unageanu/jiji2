@@ -39,13 +39,13 @@ describe Jiji::Security::PasswordResetter do
 
     body = mail.text_part.body.to_s
     reset_token = body.scan(/トークン\: ([a-zA-Z0-9]+)/)[0][0]
-    expect(session_store.valid_token? reset_token, :user).to be false
+    expect(session_store.valid_token?(reset_token, :user)).to be false
     expect(
-      session_store.valid_token? reset_token, :resetting_password
+      session_store.valid_token?(reset_token, :resetting_password)
     ).to be true
 
     user_token = authenticator.authenticate('foo')
-    expect(session_store.valid_token? user_token, :user).to be true
+    expect(session_store.valid_token?(user_token, :user)).to be true
 
     new_user_token = password_resetter.reset_password(reset_token, 'var')
 
@@ -54,12 +54,12 @@ describe Jiji::Security::PasswordResetter do
       authenticator.authenticate('foo')
     end.to raise_error(Jiji::Errors::AuthFailedException)
 
-    expect(session_store.valid_token? reset_token, :user).to be false
+    expect(session_store.valid_token?(reset_token, :user)).to be false
     expect(
-      session_store.valid_token? reset_token, :resetting_password
+      session_store.valid_token?(reset_token, :resetting_password)
     ).to be false
-    expect(session_store.valid_token? user_token, :user).to be false
-    expect(session_store.valid_token? new_user_token, :user).to be true
+    expect(session_store.valid_token?(user_token, :user)).to be false
+    expect(session_store.valid_token?(new_user_token, :user)).to be true
   end
 
   it 'メールアドレス未設定の場合、メールは送信できない' do

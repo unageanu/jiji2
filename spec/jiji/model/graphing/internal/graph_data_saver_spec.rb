@@ -1887,6 +1887,6 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
 
   def fetch_data(interval)
     graph.fetch_data(Time.new(2015, 1, 1), Time.new(2016, 1, 1), interval)
-         .sort_by { |i| i.timestamp }
+      .sort_by { |i| i.timestamp }
   end
 end

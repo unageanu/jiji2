@@ -46,7 +46,7 @@ describe 'バックテスト' do
 
   it 'GET /backtests?ids=[] で任意のバックテストの一覧を取得できる' do
     r = @client.get('backtests')
-    r = @client.get('backtests', { 'ids': "#{r.body[0]['id']}" })
+    r = @client.get('backtests', { 'ids' => (r.body[0]['id']).to_s })
     expect(r.status).to eq 200
 
     expect(r.body.length).to be 1
@@ -87,14 +87,14 @@ describe 'バックテスト' do
     id = r.body.find { |b| b['name'] == 'テスト' }['id']
 
     r = @client.post("backtests/#{id}/action", {
-      'action': 'restart'
+      'action' => 'restart'
     })
     expect(r.status).to eq 200
     id = r.body['result']['id']
 
     # このテストは実行後即エラー終了するのでキャンセルは失敗する
     r = @client.post("backtests/#{id}/action", {
-      'action': 'cancel'
+      'action' => 'cancel'
     })
     expect(r.status).to eq 400
   end

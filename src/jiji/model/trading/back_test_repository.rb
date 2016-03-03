@@ -88,8 +88,8 @@ module Jiji::Model::Trading
 
     def load
       @backtests = BackTest
-                   .order_by(:created_at.asc)
-                   .all.each_with_object(@backtests) do |t, r|
+        .order_by(:created_at.asc)
+        .all.each_with_object(@backtests) do |t, r|
         setup_backtest(t)
         t.start if t.start_on_startup?
         r[t.id] = t

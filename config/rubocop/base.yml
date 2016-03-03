@@ -58,3 +58,12 @@ Metrics/ParameterLists:
 # 別名にマッピングしたい場合がある
 Style/TrivialAccessors:
   ExactNameMatch:	true
+
+Style/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
+
+Style/IfInsideElse:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Max: 200

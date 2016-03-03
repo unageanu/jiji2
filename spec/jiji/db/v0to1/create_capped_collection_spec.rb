@@ -42,8 +42,8 @@ describe Jiji::Db::CreateCappedCollections do
     end
     expect(Jiji::Model::Notification::Notification.count).to be 3
     timestamps = Jiji::Model::Notification::Notification
-                 .order_by(timestamp: :desc)
-                 .map { |n| n.timestamp.to_i }
+      .order_by(timestamp: :desc)
+      .map { |n| n.timestamp.to_i }
     expect(timestamps).to eq([4 * 1000, 3 * 1000, 2 * 1000])
   end
 
@@ -58,7 +58,7 @@ describe Jiji::Db::CreateCappedCollections do
     end
 
     expect(log.count).to be 3
-    timestamps = log.count.times.map { |i| log.get(i).timestamp.to_i }
+    timestamps = Array.new(log.count) { |i| log.get(i).timestamp.to_i }
     expect(timestamps).to eq([21_000, 32_000, 43_000])
   end
 

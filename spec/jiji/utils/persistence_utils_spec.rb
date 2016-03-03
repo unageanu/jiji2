@@ -7,7 +7,7 @@ describe Jiji::Utils::PersistenceUtils do
     it 'エンティティがあれば取得/なければ作成ができる' do
       graph = Jiji::Model::Graphing::Graph
       results = []
-      threads = 20.times.map do |_i|
+      threads = Array.new(20) do |_i|
         Thread.new(results) do |r|
           10.times do |_n|
             r << Jiji::Utils::PersistenceUtils.get_or_create(

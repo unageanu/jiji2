@@ -25,7 +25,7 @@ module Jiji::Web
     private
 
     def load_body
-      if request.env['CONTENT_TYPE'] =~ /^application\/x-msgpack/
+      if request.env['CONTENT_TYPE'] =~ %r{^application/x-msgpack}
         MessagePack.unpack(request.body)
       else
         JSON.load(request.body)

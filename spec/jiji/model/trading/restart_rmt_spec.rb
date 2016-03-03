@@ -25,7 +25,7 @@ describe 'RMTの停止と再開のテスト' do
     @rmt.update_agent_setting([{
       agent_class: 'RestartTestAgent@restart_test_agent.rb',
       agent_name:  'テスト1',
-      properties:  { 'a': 25, 'b': 75 }
+      properties:  { 'a' => 25, 'b' => 75 }
     }, {
       agent_class: 'RestartTestAgent@restart_test_agent.rb',
       agent_name:  'テスト2',

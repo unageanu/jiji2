@@ -253,7 +253,7 @@ describe Jiji::Model::Agents::Internal::AgentsUpdater do
       agents_builder.save_state(agents)
 
       settings = Jiji::Model::Agents::AgentSetting
-                 .all.map { |s| s }.sort_by { |s| s.name }
+        .all.map { |s| s }.sort_by { |s| s.name }
       expect(settings.length).to be 3
 
       expect(settings[0].state).to eq({
@@ -285,7 +285,7 @@ describe Jiji::Model::Agents::Internal::AgentsUpdater do
       agents_builder.save_state(agents)
 
       settings = Jiji::Model::Agents::AgentSetting
-                 .all.map { |s| s }.sort_by { |s| s.name }
+        .all.map { |s| s }.sort_by { |s| s.name }
       expect(settings.length).to be 3
 
       expect(settings[0].state).to eq({

@@ -20,12 +20,12 @@ describe Jiji::Model::Trading::BackTest do
     %w(signals moving_average_agent cross).each do |file|
       source = agent_registory.add_source("#{file}.rb", '', :agent,
         IO.read("#{root}/src/jiji/model/agents/builtin_files/#{file}.rb"))
-      fail source.error unless source.error.nil?
+      raise source.error unless source.error.nil?
     end
     %w(error_agent).each do |file|
       f = File.expand_path("../../agents/builtin_files/#{file}.rb", __FILE__)
       source = agent_registory.add_source("#{file}.rb", '', :agent, IO.read(f))
-      fail source.error unless source.error.nil?
+      raise source.error unless source.error.nil?
     end
   end
 
@@ -45,11 +45,11 @@ describe Jiji::Model::Trading::BackTest do
         {
           agent_class: 'MovingAverageAgent@moving_average_agent.rb',
           agent_name:  'テスト1',
-          properties:  { 'short': 25, 'long': 75 }
+          properties:  { 'short' => 25, 'long' => 75 }
         }, {
           agent_class: 'MovingAverageAgent@moving_average_agent.rb',
           agent_name:  'テスト2',
-          properties:  { 'short': 40, 'long': 80 }
+          properties:  { 'short' => 40, 'long' => 80 }
         }
       ]
     })
@@ -74,7 +74,7 @@ describe Jiji::Model::Trading::BackTest do
 
     positions = position_repository.retrieve_positions(
       test._id, { entered_at: :asc }, 0, 10)
-                .reject { |p| p.agent.name != 'テスト1' }
+      .reject { |p| p.agent.name != 'テスト1' }
     expect(positions.length).to be > 0
     positions.each do |position|
       expect(position.agent.name).to eq 'テスト1'
@@ -83,7 +83,7 @@ describe Jiji::Model::Trading::BackTest do
 
     positions = position_repository.retrieve_positions(
       test._id, { entered_at: :asc }, 0, 10)
-                .reject { |p| p.agent.name != 'テスト2' }
+      .reject { |p| p.agent.name != 'テスト2' }
     expect(positions.length).to be > 0
     positions.each do |position|
       expect(position.agent.name).to eq 'テスト2'
@@ -151,7 +151,7 @@ describe Jiji::Model::Trading::BackTest do
       'agent_setting' => [
         {
           agent_class: 'ErrorAgent@error_agent.rb',
-          properties:  { 'short': 25, 'long': 75 }
+          properties:  { 'short' => 25, 'long' => 75 }
         }
       ]
     })

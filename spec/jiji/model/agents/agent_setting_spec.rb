@@ -30,7 +30,7 @@ describe Jiji::Model::Agents::AgentSetting do
 
     it 'idに対応するAgentSettingがなければ新規に作成される' do
       loaded = Jiji::Model::Agents::AgentSetting
-               .get_or_create(BSON::ObjectId.from_time(Time.new))
+        .get_or_create(BSON::ObjectId.from_time(Time.new))
       expect(loaded.id).not_to be nil
       expect(loaded.backtest_id).to eq nil
       expect(loaded.name).to be nil
@@ -56,7 +56,7 @@ describe Jiji::Model::Agents::AgentSetting do
     it 'ハッシュから作成できる' do
       icon_id = BSON::ObjectId.from_time(Time.new)
       loaded = Jiji::Model::Agents::AgentSetting
-               .get_or_create_from_hash({
+        .get_or_create_from_hash({
           agent_class: 'testClass2',
           agent_name:  'test2',
           icon_id:     icon_id.to_s,
@@ -83,7 +83,7 @@ describe Jiji::Model::Agents::AgentSetting do
       setting = register_setting
       icon_id = BSON::ObjectId.from_time(Time.new)
       loaded = Jiji::Model::Agents::AgentSetting
-               .get_or_create_from_hash({
+        .get_or_create_from_hash({
           id:          setting.id.to_s,
           agent_class: 'testClass2',
           agent_name:  'test2',

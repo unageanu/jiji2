@@ -25,11 +25,11 @@ describe TrailingStopAgent do
     runner.start_backtest([{
       agent_class: 'TrailingStopAgent@trailing_stop_manager.rb',
       agent_name:  'テスト1',
-      properties:  { 'warning_limit': '8', 'closing_limit': '10' }
+      properties:  { 'warning_limit' => '8', 'closing_limit' => '10' }
     }, {
       agent_class: 'MovingAverageAgent@moving_average_agent.rb',
       agent_name:  'テスト2',
-      properties:  { 'short': '200', 'long': '700' }
+      properties:  { 'short' => '200', 'long' => '700' }
     }])
 
     sleep 0.5

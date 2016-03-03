@@ -9,7 +9,7 @@ class RestartTestAgent
     puts "#{tick[:USDJPY].bid} #{tick.timestamp}"
     puts "#{account.balance} #{account.profit_or_loss}"
     puts "#{broker.positions.map { |p| p.units }} "
-    puts (broker.orders.map { |p| p.units }).to_s
+    puts broker.orders.map { |p| p.units }.to_s
     puts "#{@a} #{@b}"
 
     @current_tick = tick

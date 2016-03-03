@@ -18,10 +18,11 @@ module Jiji::Test
     def configure(container)
       super
       container.configure do
-        object :sns_service, double('sns_service', {
+        mock = RSpec::Mocks::Double.new('sns_service', {
           register_platform_endpoint: 'target_arn',
           publish:                    'message_id'
         })
+        object :sns_service, mock
       end
     end
 

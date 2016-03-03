@@ -26,10 +26,10 @@ describe TrapRepeatIfDoneAgent do
       agent_class: 'TrapRepeatIfDoneAgent@trap_repeat_if_done.rb',
       agent_name:  'テスト1',
       properties:  {
-        'trap_interval_pips': '50',
-        'trade_units':        '10',
-        'profit_pips':        '103',
-        'slippage':           '3'
+        'trap_interval_pips' => '50',
+        'trade_units' => '10',
+        'profit_pips' => '103',
+        'slippage' => '3'
       }
     }])
 

@@ -73,8 +73,6 @@ module Jiji::Security
       setting_repository.security_setting
     end
 
-    private
-
     def create_mail_body(token)
       <<BODY
   以下のトークンと、新しいパスワードを入力して、パスワードを再設定してください。

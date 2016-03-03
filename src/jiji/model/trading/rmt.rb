@@ -77,7 +77,7 @@ module Jiji::Model::Trading
     def fetch_balance_graph_data(yesterday, today)
       graph = @trading_context.graph_factory.create_balance_graph
       graph.fetch_data(yesterday, today, :one_day)
-           .sort_by { |d| d.timestamp.to_i * -1 }
+        .sort_by { |d| d.timestamp.to_i * -1 }
     end
 
     def create_trading_context(graph_factory)

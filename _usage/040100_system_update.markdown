@@ -51,25 +51,11 @@ Herokuへのデプロイが成功すれば、更新は完了です。
 
 <h2>AWS,Dockerにインストールしている場合</h2>
 
-<p>以下のコマンドを実行し、jiji_jiji コンテナに入ります。</p>
+<p>以下のコマンドを実行し、コンテナを更新します。</p>
 
 {% highlight sh %}
-$ sudo docker exec -it jiji_jiji bash
-{% endhighlight %}
-
-<p>jiji_jijiコンテナ内で以下を実行し、システムのコードを最新のものに更新します。</p>
-
-{% highlight sh %}
-$ cd /app/jiji2
-$ git pull origin master
-$ bundle install
-$ exit
-{% endhighlight %}
-
-<p>コードの更新が完了したら、起動中のコンテナを新しいDocker イメージとして保存。</p>
-
-{% highlight sh %}
-$ sudo docker commit jiji_jiji dockerjiji2_jiji:latest
+$ sudo docker pull unageanu/jiji:latest
+$ sudo docker pull unageanu/jiji-nginx:latest
 {% endhighlight %}
 
 <p>システムを再起動します。</p>

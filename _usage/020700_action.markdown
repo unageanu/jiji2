@@ -29,5 +29,5 @@ end
 </div>
 
 <div class="next">
-  <a href="020700_logging.html">次のページへ: デバッグログを出力する</a>
+  <a href="020800_logging.html">次のページへ: デバッグログを出力する</a>
 </div>

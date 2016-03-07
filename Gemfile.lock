@@ -17,7 +17,7 @@ GEM
       jmespath (~> 1.0)
     aws-sdk-resources (2.2.24)
       aws-sdk-core (= 2.2.24)
-    bcrypt (3.1.10)
+    bcrypt (3.1.11)
     bson (4.0.3)
     builder (3.2.2)
     codeclimate-test-reporter (0.5.0)
@@ -71,7 +71,7 @@ GEM
       httparty (~> 0.9)
       persistent_http
     powerpack (0.1.1)
-    puma (3.0.2)
+    puma (3.1.0)
     quandl (1.0.3)
       activesupport (>= 4.2.3)
       json (~> 1.8.3)

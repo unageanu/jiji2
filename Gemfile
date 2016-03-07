@@ -32,6 +32,7 @@ gem 'rake'
 
 group :test do
   gem 'rspec'
+  gem 'rspec-parameterized'
   gem 'simplecov'
   gem 'codeclimate-test-reporter'
 

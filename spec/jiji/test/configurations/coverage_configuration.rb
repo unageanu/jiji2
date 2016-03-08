@@ -9,9 +9,9 @@ if ENV['ENABLE_COVERADGE_REPORT'] != 'false'
     add_filter '/src/jiji/web/'
     add_filter '/spec/'
     add_filter '/rest_spec/'
-    formatter SimpleCov::Formatter::MultiFormatter[
+    formatter SimpleCov::Formatter::MultiFormatter.new([
       SimpleCov::Formatter::HTMLFormatter,
       CodeClimate::TestReporter::Formatter
-    ]
+    ])
   end
 end

@@ -40,7 +40,7 @@ describe Jiji::Db::CreateCappedCollections do
       Jiji::Model::Notification::Notification.create(
         agent_setting, Time.at(i * 1000), nil, 'a' * 5120).save
     end
-    expect(Jiji::Model::Notification::Notification.count).to be 3
+    expect(Jiji::Model::Notification::Notification.count).to eq 3
     timestamps = Jiji::Model::Notification::Notification
       .order_by(timestamp: :desc)
       .map { |n| n.timestamp.to_i }
@@ -57,7 +57,7 @@ describe Jiji::Db::CreateCappedCollections do
       logger.info('x' * 10_000)
     end
 
-    expect(log.count).to be 3
+    expect(log.count).to eq 3
     timestamps = Array.new(log.count) { |i| log.get(i).timestamp.to_i }
     expect(timestamps).to eq([21_000, 32_000, 43_000])
   end

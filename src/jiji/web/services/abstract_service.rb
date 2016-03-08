@@ -9,11 +9,13 @@ require 'jiji/web/middlewares/authentication_filter'
 require 'jiji/web/middlewares/security_filter'
 require 'jiji/web/transport/json'
 require 'jiji/web/transport/messagepack'
+require 'jiji/web/services/request_parameter_reader'
 
 module Jiji::Web
   class AbstractService < Base
 
     include Jiji::Errors
+    include RequestParameterReader
 
     use Rack::Deflater
     use Sinatra::CommonLogger
@@ -23,41 +25,6 @@ module Jiji::Web
     set :sessions, false
 
     private
-
-    def load_body
-      if request.env['CONTENT_TYPE'] =~ %r{^application/x-msgpack}
-        MessagePack.unpack(request.body)
-      else
-        JSON.load(request.body)
-      end
-    end
-
-    def get_time_from_query_param(key)
-      illegal_argument("illegal argument. key=#{key}") if request[key].nil?
-      Time.parse(request[key])
-    end
-
-    def get_sort_order_from_query_param(
-      order_key = 'order', direction_key = 'direction')
-      return nil unless request[order_key]
-      {
-        request[order_key].to_sym => request[direction_key].to_sym || :asc
-      }
-    end
-
-    def get_backtest_id_from_path_param(key = 'backtest_id')
-      id_str = params[key]
-      convert_to_backtest_id(id_str)
-    end
-
-    def convert_to_backtest_id(id_str)
-      return nil if id_str.nil? || id_str.empty?
-      id_str == 'rmt' ? nil : BSON::ObjectId.from_string(id_str)
-    end
-
-    def create_id(id)
-      BSON::ObjectId.from_string(id)
-    end
 
     def serialize(body)
       if request.accept? 'application/x-msgpack'

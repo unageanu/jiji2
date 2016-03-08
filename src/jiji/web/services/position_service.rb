@@ -11,7 +11,7 @@ module Jiji::Web
     end
 
     delete '/exited-rmt-positions' do
-      expires = get_time_from_query_param('expires')
+      expires = read_time_from(request,'expires')
       repository.delete_exited_positions_of_rmt(expires)
       no_content
     end
@@ -22,7 +22,7 @@ module Jiji::Web
 
     get '/' do
       period_condition = read_period_filter_condition
-      id = convert_to_backtest_id(request['backtest_id'])
+      id = read_backtest_id_from(request, 'backtest_id', true)
       if period_condition
         ok(retirieve_positions_widthin(id, period_condition))
       else
@@ -35,7 +35,7 @@ module Jiji::Web
     end
 
     get '/count' do
-      id = convert_to_backtest_id(request['backtest_id'])
+      id = read_backtest_id_from(request, 'backtest_id', true)
       filter = read_filter_condition
       ok({
         count:      repository.count_positions(id, filter),
@@ -64,7 +64,7 @@ module Jiji::Web
     end
 
     def retirieve_positions(backtest_id)
-      sort_order = get_sort_order_from_query_param('order', 'direction')
+      sort_order = read_sort_order_from(request, 'order', 'direction', true)
       offset     = request['offset'] ? request['offset'].to_i : nil
       limit      = request['limit']  ? request['limit'].to_i : nil
       repository.retrieve_positions(
@@ -78,8 +78,8 @@ module Jiji::Web
 
     def read_period_filter_condition
       return {
-        start_time: get_time_from_query_param('start'),
-        end_time:   get_time_from_query_param('end')
+        start_time: read_time_from(request,'start'),
+        end_time:   read_time_from(request,'end')
       }
     rescue ArgumentError
       return nil

@@ -11,7 +11,7 @@ module Jiji::Web
     end
     get '/:backtest_id' do
       range = retrieve_range
-      id = get_backtest_id_from_path_param
+      id = read_backtest_id_from(params, 'backtest_id', true)
       ok(repository.find(id, range[:start], range[:end]).map { |g| g })
     end
 
@@ -21,7 +21,7 @@ module Jiji::Web
     get '/data/:backtest_id/:interval' do
       range     = retrieve_range
       interval  = params['interval'].to_sym
-      id        = get_backtest_id_from_path_param
+      id        = read_backtest_id_from(params, 'backtest_id', true)
       graphs    = repository.find(id, range[:start], range[:end])
       response  = graphs.map do |graph|
         data = graph.fetch_data(range[:start], range[:end], interval).map do |d|
@@ -41,8 +41,8 @@ module Jiji::Web
 
     def retrieve_range
       {
-        start: get_time_from_query_param('start'),
-        end:   get_time_from_query_param('end')
+        start: read_time_from(request,'start'),
+        end:   read_time_from(request,'end')
       }
     end
 

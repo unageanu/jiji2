@@ -28,10 +28,10 @@ module Jiji::Web
       allow('GET,PUT,DELETE,OPTIONS')
     end
     get '/sources/:id' do
-      ok(registry.find_agent_source_by_id(create_id(params[:id])))
+      ok(registry.find_agent_source_by_id(read_id_from(params)))
     end
     put '/sources/:id' do
-      target = registry.find_agent_source_by_id(create_id(params[:id]))
+      target = registry.find_agent_source_by_id(read_id_from(params))
       body = load_body
       if body.include?('name') && body['name'] != target.name
         registry.rename_source(target.name, body['name'])
@@ -41,7 +41,7 @@ module Jiji::Web
       ok(result)
     end
     delete '/sources/:id' do
-      target = registry.find_agent_source_by_id(create_id(params[:id]))
+      target = registry.find_agent_source_by_id(read_id_from(params))
       registry.remove_source(target.name)
       no_content
     end

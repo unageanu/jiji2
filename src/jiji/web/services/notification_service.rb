@@ -14,7 +14,7 @@ module Jiji::Web
     end
 
     get '/' do
-      sort_order = get_sort_order_from_query_param('order', 'direction')
+      sort_order = read_sort_order_from(request, 'order', 'direction', true)
       filter_condition = read_filter_condition_from(request)
       offset     = request['offset'] ? request['offset'].to_i : nil
       limit      = request['limit']  ? request['limit'].to_i : nil
@@ -87,9 +87,9 @@ module Jiji::Web
     end
 
     def load_backtest_id_condition(condition, param)
-      id_str = param['backtest_id']
-      return unless id_str
-      condition[:backtest_id] = convert_to_backtest_id(id_str)
+      return if param['backtest_id'].nil?
+      condition[:backtest_id] =
+        read_backtest_id_from(param, 'backtest_id', true)
     end
 
     def load_status_condition(condition, param)

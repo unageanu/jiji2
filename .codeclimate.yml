@@ -1,0 +1,22 @@
+engines:
+  rubocop:
+    enabled: true
+    config:
+      config: config/rubocop/src.yml
+  bundler-audit:
+    enabled: true
+  reek:
+    enabled: true
+  eslint:
+    enabled: true
+    config:
+      config: sites/config/eslint.json
+  nodesecurity:
+    enabled: true
+
+ratings:
+  paths:
+   - src/**/*.rb
+   - sample_agents/**/*.rb
+   - sites/src/js/**/*.js
+   - Gemfile.lock

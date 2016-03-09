@@ -40,7 +40,7 @@ We'd love for you to contribute to our source code and to make Jiji even better 
     $ gulp  
     ```
 
-5. Create a new pull request and submit it to me.
+5. Create a new pull request for `develop` branch and submit it to me.
 
 
 # License

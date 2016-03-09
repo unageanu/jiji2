@@ -10,6 +10,31 @@ Jiji is a forex algorithmic trading framework using [OANDA REST API](http://deve
 
 [lean more...](http://jiji2.unageanu.net/) (sorry, this page is japanese only.)
 
+# Contributing to Jiji
+
+We'd love for you to contribute to our source code and to make Jiji even better than it is today!
+
+1. Fork this repository on github.
+   ```
+   $ git clone -b develop https://github.com/unageanu/jiji2.git
+   ```
+2. Setup MongoDB.
+   ```
+   $ docker pull mongo
+   $ docker run --name mongo -d mongo
+   ```
+3. Make your changes.
+4. Add tests where applicable and run the existing tests with rspec and jasmine to make sure they all pass.
+   ```
+   $ export OANDA_API_ACCESS_TOKEN=<YOUR OANDA API ACCESS TOKEN FOR DEMO>
+   $ bundle install
+   $ bundle exec rake
+   $ cd sites
+   $ npm install
+   $ gulp  
+   ```
+5. Create a new pull request and submit it to me.
+
 # License
 
 ---

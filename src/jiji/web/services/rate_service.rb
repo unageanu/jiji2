@@ -42,8 +42,8 @@ module Jiji::Web
 
     def retrieve_range
       {
-        start: read_time_from(request,'start'),
-        end:   read_time_from(request,'end')
+        start: read_time_from(request, 'start'),
+        end:   read_time_from(request, 'end')
       }
     end
 

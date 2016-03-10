@@ -11,7 +11,7 @@ module Jiji::Web
     end
 
     delete '/exited-rmt-positions' do
-      expires = read_time_from(request,'expires')
+      expires = read_time_from(request, 'expires')
       repository.delete_exited_positions_of_rmt(expires)
       no_content
     end
@@ -65,8 +65,8 @@ module Jiji::Web
 
     def retirieve_positions(backtest_id)
       sort_order = read_sort_order_from(request, 'order', 'direction', true)
-      offset     = request['offset'] ? request['offset'].to_i : nil
-      limit      = request['limit']  ? request['limit'].to_i : nil
+      offset     = read_integer_from(request, 'offset', true)
+      limit      = read_integer_from(request, 'limit',  true)
       repository.retrieve_positions(
         backtest_id, sort_order, offset, limit, read_filter_condition)
     end
@@ -78,8 +78,8 @@ module Jiji::Web
 
     def read_period_filter_condition
       return {
-        start_time: read_time_from(request,'start'),
-        end_time:   read_time_from(request,'end')
+        start_time: read_time_from(request, 'start'),
+        end_time:   read_time_from(request, 'end')
       }
     rescue ArgumentError
       return nil

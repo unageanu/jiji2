@@ -1,38 +1,42 @@
 
 module Jiji::Web
   module RequestParameterReader
-
     include Jiji::Errors
 
     def load_body
-      if request.env['CONTENT_TYPE'] =~ /^application\/x-msgpack/
+      if request.env['CONTENT_TYPE'] =~ %r{^application/x-msgpack}
         MessagePack.unpack(request.body)
       else
         JSON.load(request.body)
       end
     end
 
-    def read_id_from(source, key="id", nullable=false)
+    def read_integer_from(source, key = 'id', nullable = false)
+      return nullable ? nil : not_nil(key) if source[key].nil?
+      source[key].to_i
+    end
+
+    def read_id_from(source, key = 'id', nullable = false)
       return nullable ? nil : not_nil(key) if source[key].nil?
       BSON::ObjectId.from_string(source[key])
     end
 
-    def read_backtest_id_from(source, key = 'backtest_id', nullable=false)
+    def read_backtest_id_from(source, key = 'backtest_id', nullable = false)
       id = source[key]
       return nullable ? nil : not_nil(key) if id.nil? || id.empty?
       id == 'rmt' ? nil : BSON::ObjectId.from_string(id)
     end
 
-    def read_time_from(source, key, nullable=false)
+    def read_time_from(source, key, nullable = false)
       return nullable ? nil : not_nil(key) if source[key].nil?
       Time.parse(source[key])
     end
 
     def read_sort_order_from(source,
-      order_key = 'order', direction_key = 'direction', nullable=false)
+      order_key = 'order', direction_key = 'direction', nullable = false)
       return nullable ? nil : not_nil(order_key) if source[order_key].nil?
       {
-        source[order_key].to_sym => (source[direction_key] || :asc ).to_sym
+        source[order_key].to_sym => (source[direction_key] || :asc).to_sym
       }
     end
 
@@ -41,6 +45,5 @@ module Jiji::Web
     def not_nil(key)
       illegal_argument("illegal argument. key=#{key}")
     end
-
   end
 end

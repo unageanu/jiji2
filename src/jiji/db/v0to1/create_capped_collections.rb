@@ -18,7 +18,7 @@ module Jiji::Db
     def call(status, logger)
       client = SchemeStatus.mongo_client
       @config.each do |k, v|
-        client[k, { capped: true, size: v[:size] }].create
+        client[k, { capped: true }.merge(v)].create
       end
     end
 

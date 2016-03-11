@@ -114,7 +114,8 @@ end
 def init_rubocop_task(task,src_dirs)
   task.patterns = src_dirs.map do |dir|
     "#{dir}/**/*.rb"
-  end + ['config/**/*.rb']
+  end
+  task.patterns += ['config/**/*.rb', 'config.ru'] if src_dirs.first == 'src'
   task.formatters = ['html']
   task.options = [
     '--auto-correct',

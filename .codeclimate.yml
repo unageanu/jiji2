@@ -1,18 +1,13 @@
 engines:
   rubocop:
     enabled: true
-    config:
-      config: config/rubocop/src.yml
+    config: config/rubocop/src.yml
   bundler-audit:
-    enabled: true
-  reek:
     enabled: true
   eslint:
     enabled: true
     config:
-      config: sites/config/eslint.json
-  nodesecurity:
-    enabled: true
+      config: sites/config/.eslintrc
 
 ratings:
   paths:
@@ -20,3 +15,13 @@ ratings:
    - sample_agents/**/*.rb
    - sites/src/js/**/*.js
    - Gemfile.lock
+
+exclude_paths:
+  - spec/**/*
+  - rest_spec/**/*
+  - sites/spec/**/*
+  - sites/node_modules
+  - sites/build
+  - sites/config
+  - sites/lib
+  - Rakefile

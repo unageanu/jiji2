@@ -7,7 +7,7 @@ engines:
   eslint:
     enabled: true
     config:
-      config: sites/config/.eslintrc
+      config: sites/config/eslint.json
 
 ratings:
   paths:

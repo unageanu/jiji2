@@ -39,6 +39,7 @@ module Jiji
   module Utils end
   module Web
     module Transport    end
+    module Helpers      end
   end
 end
 

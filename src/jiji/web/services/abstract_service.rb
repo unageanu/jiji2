@@ -9,13 +9,13 @@ require 'jiji/web/middlewares/authentication_filter'
 require 'jiji/web/middlewares/security_filter'
 require 'jiji/web/transport/json'
 require 'jiji/web/transport/messagepack'
-require 'jiji/web/services/request_parameter_reader'
+require 'jiji/web/services/helpers/request_parameter_reader'
 
 module Jiji::Web
   class AbstractService < Base
 
     include Jiji::Errors
-    include RequestParameterReader
+    include Helpers::RequestParameterReader
 
     use Rack::Deflater
     use Sinatra::CommonLogger

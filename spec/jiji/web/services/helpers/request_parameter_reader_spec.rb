@@ -2,11 +2,11 @@
 
 require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
-require 'jiji/web/services/request_parameter_reader'
+require 'jiji/web/services/helpers/request_parameter_reader'
 
-describe Jiji::Web::RequestParameterReader do
+describe Jiji::Web::Helpers::RequestParameterReader do
   let(:reader) do
-    Class.new.include(Jiji::Web::RequestParameterReader).new
+    Class.new.include(Jiji::Web::Helpers::RequestParameterReader).new
   end
   let(:object_id) { BSON::ObjectId.from_string('56dd6836e138234d25f0c318') }
   let(:source) do

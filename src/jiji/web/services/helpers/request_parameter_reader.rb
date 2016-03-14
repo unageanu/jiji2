@@ -1,5 +1,5 @@
 
-module Jiji::Web
+module Jiji::Web::Helpers
   module RequestParameterReader
     include Jiji::Errors
 

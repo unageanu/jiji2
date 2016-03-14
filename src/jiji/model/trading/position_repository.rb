@@ -8,6 +8,8 @@ module Jiji::Model::Trading
     include Encase
     include Jiji::Errors
 
+    DEFAULT_PAGE_SIZE = 500
+
     def get_by_id(position_id)
       Position.includes(:agent, :backtest).find(position_id) \
       || not_found(Position, id: position_id)
@@ -35,6 +37,18 @@ module Jiji::Model::Trading
         exited_at: nil
       }.merge(base_condition))
         .order_by({ entered_at: :asc, id: :asc }).map { |x| x }
+    end
+
+    def retrieve_all_positions(backtest_id = nil,
+      sort_order = { entered_at: :asc, id: :asc },
+      filter_conditions = {}, page_size = DEFAULT_PAGE_SIZE)
+      offset = 0
+      loop do
+        yield positions = retrieve_positions(backtest_id,
+          sort_order, offset, page_size, filter_conditions)
+        break unless positions.length == page_size
+        offset += page_size
+      end
     end
 
     def retrieve_living_positions(backtest_id = nil)

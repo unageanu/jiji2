@@ -247,4 +247,120 @@ describe Jiji::Model::Trading::PositionRepository do
       end.to raise_error(Jiji::Errors::NotFoundException)
     end
   end
+
+  describe '#retrieve_all_positions' do
+    it 'retuns all positions of rmt.' do
+      [500, 50, 10, 8, 3].each do |page_size|
+        positions = []
+        position_repository.retrieve_all_positions(
+          nil, { entered_at: :asc, id: :asc }, {}, page_size) do |ps|
+          positions += ps
+        end
+
+        expect(positions.length).to eq 100
+
+        position = positions[0]
+        expect(position.backtest).to eq nil
+        expect(position.agent.name).to eq('test1')
+        expect(position.entered_at).to eq Time.at(0)
+
+        position = positions[99]
+        expect(position.backtest).to eq nil
+        expect(position.agent.name).to eq('test1')
+        expect(position.entered_at).to eq Time.at(99)
+      end
+    end
+    it 'retuns all positions of test1.' do
+      [500, 50, 10, 8, 3].each do |page_size|
+        positions = []
+        position_repository.retrieve_all_positions(
+          test1.id, { entered_at: :asc, id: :asc }, {}, page_size) do |ps|
+          positions += ps
+        end
+
+        expect(positions.length).to eq 100
+
+        position = positions[0]
+        expect(position.backtest.id).to eq(test1.id)
+        expect(position.backtest.name).to eq('テスト1')
+        expect(position.agent.name).to eq('test1')
+        expect(position.entered_at).to eq Time.at(0)
+
+        position = positions[99]
+        expect(position.backtest.id).to eq(test1.id)
+        expect(position.backtest.name).to eq('テスト1')
+        expect(position.agent.name).to eq('test1')
+        expect(position.entered_at).to eq Time.at(99)
+      end
+    end
+
+    it 'retuns all positions order by entered_at desc.' do
+      positions = []
+      position_repository.retrieve_all_positions(
+        test1.id, { entered_at: :desc, id: :asc }, {}, 8) do |ps|
+        positions += ps
+      end
+
+      expect(positions.length).to eq 100
+
+      position = positions[0]
+      expect(position.backtest.id).to eq(test1.id)
+      expect(position.backtest.name).to eq('テスト1')
+      expect(position.agent.name).to eq('test1')
+      expect(position.entered_at).to eq Time.at(99)
+
+      position = positions[99]
+      expect(position.backtest.id).to eq(test1.id)
+      expect(position.backtest.name).to eq('テスト1')
+      expect(position.agent.name).to eq('test1')
+      expect(position.entered_at).to eq Time.at(0)
+    end
+
+    it 'retuns all positions with filtered by entered_at >= 30.' do
+      positions = []
+      position_repository.retrieve_all_positions(
+        test1.id, { entered_at: :asc, id: :asc },
+        { :entered_at.gte => Time.at(30) }, 8) do |ps|
+        positions += ps
+      end
+
+      expect(positions.length).to eq 70
+
+      position = positions[0]
+      expect(position.backtest.id).to eq(test1.id)
+      expect(position.backtest.name).to eq('テスト1')
+      expect(position.agent.name).to eq('test1')
+      expect(position.entered_at).to eq Time.at(30)
+
+      position = positions[69]
+      expect(position.backtest.id).to eq(test1.id)
+      expect(position.backtest.name).to eq('テスト1')
+      expect(position.agent.name).to eq('test1')
+      expect(position.entered_at).to eq Time.at(99)
+    end
+
+    it 'retuns all positions with filtered by entered_at >= 20 ' \
+    + 'order by entered_at desc.' do
+      positions = []
+      position_repository.retrieve_all_positions(
+        test1.id, { entered_at: :desc, id: :asc },
+        { :entered_at.gte => Time.at(20) }, 8) do |ps|
+        positions += ps
+      end
+
+      expect(positions.length).to eq 80
+
+      position = positions[0]
+      expect(position.backtest.id).to eq(test1.id)
+      expect(position.backtest.name).to eq('テスト1')
+      expect(position.agent.name).to eq('test1')
+      expect(position.entered_at).to eq Time.at(99)
+
+      position = positions[79]
+      expect(position.backtest.id).to eq(test1.id)
+      expect(position.backtest.name).to eq('テスト1')
+      expect(position.agent.name).to eq('test1')
+      expect(position.entered_at).to eq Time.at(20)
+    end
+  end
 end

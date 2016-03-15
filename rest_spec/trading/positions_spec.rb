@@ -214,12 +214,23 @@ describe '建玉取得' do
     expect(position['profit_or_loss']).not_to be nil
   end
 
-  it 'GET /positions/download でCSVデータをダウンロードできる' do
-    r = @client.download_csv('positions/download')
+  it 'GET /positions/download/:token でCSVデータをダウンロードできる' do
+    r = @client.get('onetime-tokens/file-download-token')
+    expect(r.status).to eq 200
+    token = r.body['token']
+
+    r = @client.download_csv("positions/download/#{token}")
     expect(r.status).to eq 200
     expect(r.body.lines.size).to eq 3
 
-    r = @client.download_csv('positions/download', {
+    r = @client.download_csv("positions/download/#{token}")
+    expect(r.status).to eq 401
+
+    r = @client.get('onetime-tokens/file-download-token')
+    expect(r.status).to eq 200
+    token = r.body['token']
+
+    r = @client.download_csv("positions/download/#{token}", {
       'backtest_id' => @test.id,
       'order'       => 'entered_at',
       'direction'   => 'asc',

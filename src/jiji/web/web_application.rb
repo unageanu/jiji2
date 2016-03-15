@@ -47,12 +47,7 @@ module Jiji::Web
 
     def build
       builder = Rack::Builder.new
-      register_base_services(builder)
-      register_icon_services(builder)
-      register_trading_services(builder)
-      register_authentication_service(builder)
-      register_setting_services(builder)
-      register_testing_services(builder)
+      register_apis(builder)
       register_static_files(builder)
       register_root(builder)
       builder
@@ -61,6 +56,16 @@ module Jiji::Web
     attr_reader :container
 
     private
+
+    def register_apis(builder)
+      register_base_services(builder)
+      register_icon_services(builder)
+      register_trading_services(builder)
+      register_authentication_service(builder)
+      register_setting_services(builder)
+      register_download_service(builder)
+      register_testing_services(builder)
+    end
 
     def register_base_services(builder)
       builder.map('/api/echo')          { run EchoService }
@@ -87,8 +92,9 @@ module Jiji::Web
     end
 
     def register_authentication_service(builder)
-      builder.map('/api/authenticator') { run AuthenticationService }
-      builder.map('/api/sessions')      { run SessionService }
+      builder.map('/api/authenticator')  { run AuthenticationService }
+      builder.map('/api/sessions')       { run SessionService }
+      builder.map('/api/onetime-tokens') { run OneTimeTokenService }
     end
 
     def register_setting_services(builder)
@@ -99,6 +105,10 @@ module Jiji::Web
       builder.map("#{base}/password-resetter") { run PasswordResettingService }
       builder.map("#{base}/smtp-server")       { run SMTPServerSettingService }
       builder.map("#{base}/pairs")             { run PairSettingService }
+    end
+
+    def register_download_service(builder)
+      builder.map('/api/positions/download') { run PositionDownloadService }
     end
 
     def register_testing_services(builder)

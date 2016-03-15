@@ -6,13 +6,6 @@ require 'jiji/web/services/abstract_service'
 module Jiji::Web
   class PositionsService < Jiji::Web::AuthenticationRequiredService
 
-    CSV_COLUMNS = [
-      :pair_name, :units, :sell_or_buy, :status, :profit_or_loss,
-      :entry_price, :current_price, :exit_price, :entered_at, :exited_at,
-      :updated_at, [:agent, :name], [:agent, :agent_class],
-      [:agent, :properties], [:backtest, :name]
-    ].freeze
-
     options '/exited-rmt-positions' do
       allow('DELETE,OPTIONS')
     end
@@ -49,21 +42,6 @@ module Jiji::Web
         not_exited: repository.count_positions(
           id, { status: :live }.merge(filter))
       })
-    end
-
-    options '/download' do
-      allow('GET,OPTIONS')
-    end
-
-    get '/download' do
-      id = read_backtest_id_from(request, 'backtest_id', true)
-      sort_order = read_sort_order_from(request, 'order', 'direction', true)
-      download_csv('positions.csv', CSV_COLUMNS) do |out|
-        repository.retrieve_all_positions(id,
-          sort_order, read_filter_condition) do |positions|
-            out << positions
-          end
-      end
     end
 
     options '/:position_id' do

@@ -9,13 +9,16 @@ require 'jiji/web/middlewares/authentication_filter'
 require 'jiji/web/middlewares/security_filter'
 require 'jiji/web/transport/json'
 require 'jiji/web/transport/messagepack'
+require 'jiji/web/transport/csv'
 require 'jiji/web/services/helpers/request_parameter_reader'
+require 'jiji/web/services/helpers/batch_download_support'
 
 module Jiji::Web
   class AbstractService < Base
 
     include Jiji::Errors
     include Helpers::RequestParameterReader
+    include Helpers::BatchDownloadSupport
 
     use Rack::Deflater
     use Sinatra::CommonLogger

@@ -39,6 +39,14 @@ module Jiji
       end
     end
 
+    def download_csv(path, query = nil, header = {})
+      r = @client.request(:get, "#{@api_url}/#{path}", {
+        header: complement_header(header),
+        query:  query
+      })
+      Response.new(r, RawTransport.new)
+    end
+
     def post_file(path, file, header = {})
       r = File.open(file) do |io|
         header = complement_header(header)
@@ -121,6 +129,14 @@ module Jiji
 
       def name
         'json'
+      end
+
+    end
+
+    class RawTransport < Transport
+
+      def deserialize(body)
+        body
       end
 
     end

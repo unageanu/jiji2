@@ -214,6 +214,22 @@ describe '建玉取得' do
     expect(position['profit_or_loss']).not_to be nil
   end
 
+  it 'GET /positions/download でCSVデータをダウンロードできる' do
+    r = @client.download_csv('positions/download')
+    expect(r.status).to eq 200
+    expect(r.body.lines.size).to eq 3
+
+    r = @client.download_csv('positions/download', {
+      'backtest_id' => @test.id,
+      'order'       => 'entered_at',
+      'direction'   => 'asc',
+      'start'       => Time.new(2015, 4, 1).iso8601,
+      'end'         => Time.new(2015, 5, 3).iso8601
+    })
+    expect(r.status).to eq 200
+    expect(r.body.lines.size).to eq 2
+  end
+
   def register_positions
     container    = Jiji::Test::TestContainerFactory.instance.new_container
     data_builder = Jiji::Test::DataBuilder.new
@@ -230,8 +246,8 @@ describe '建玉取得' do
     setting.save
     rmt_setting = data_builder.register_agent_setting
 
-    register_position(data_builder, setting)
-    register_position(data_builder, rmt_setting, @test)
+    register_position(data_builder, rmt_setting)
+    register_position(data_builder, setting, @test)
   end
 
   def register_position(data_builder, agent_setting, backtest = nil)

@@ -45,7 +45,7 @@ describe Jiji::Web::Helpers::BatchDownloadSupport do
       string3:     'a"b"c',
       number:      '10',
       big_decimal: BigDecimal.new(10.234, 10) - BigDecimal.new(8.133, 10),
-      date:        DateTime.new(2016, 03, 14, 16, 45, 23),
+      date:        Time.utc(2016, 03, 14, 16, 45, 23),
       nil:         nil,
       object:      {
         name:   'abc,"',
@@ -80,7 +80,7 @@ describe Jiji::Web::Helpers::BatchDownloadSupport do
         + 'object__name,object__object,object__nil,unknown,unknown__unknown' \
         + "\r\n")
       row = 'abcあいう,"a,b""c""d",a"b"c,10,2.101,' \
-              + '"2016-03-14T16:45:23.000+00:00",,' \
+              + '2016-03-14T16:45:23Z,,' \
               + '"abc,""","{""a"":1,""b"":2}",,,' \
               + "\r\n"
       expect(impl.stream[1]).to eq(row)

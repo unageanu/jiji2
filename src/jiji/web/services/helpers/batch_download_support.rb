@@ -63,13 +63,7 @@ module Jiji::Web::Helpers
       end
 
       def format_csv_row(data)
-        data.map { |value| format_csv_value(value) }.join(',') + "\r\n"
-      end
-
-      def format_csv_value(value)
-        return '' if value.nil?
-        str = value.is_a?(String) ? value : value.to_json
-        str.include?(',') ? "\"#{str.gsub(/\"/, '""')}\"" : str
+        data.map { |value| value.to_csv_value }.join(',') + "\r\n"
       end
 
     end

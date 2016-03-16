@@ -4,6 +4,7 @@ import Validators          from "../../utils/validation/validators"
 import AgentSettingBuilder from "../agents/agent-setting-builder"
 import _                   from "underscore"
 import Deferred            from "../../utils/deferred"
+import Dates               from "../../utils/dates"
 import RangeSelectorModel  from "../widgets/range-selector-model"
 import PairSelectorModel   from "../widgets/pair-selector-model"
 import ValidationUtils     from "../utils/validation-utils"
@@ -48,8 +49,8 @@ export default class BacktestBuilder extends Observable {
   initializeBuilderState() {
     const now        = this.timeSource.now;
     const oneWeekAgo = new Date(now.getTime() - (1000 * 60 * 60 * 24 * 7));
-    const startTime  = this.truncate(oneWeekAgo);
-    const endTime    = this.truncate(now);
+    const startTime  = Dates.truncate(oneWeekAgo);
+    const endTime    = Dates.truncate(now);
 
     this.backtest = {
       pairNames:     [],
@@ -59,10 +60,6 @@ export default class BacktestBuilder extends Observable {
       startTime:     startTime,
       endTime:       endTime
     };
-  }
-
-  truncate(date) {
-    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }
 
   build() {

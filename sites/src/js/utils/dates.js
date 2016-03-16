@@ -24,4 +24,8 @@ export default class Dates {
   static isDateLikeObject(o) {
     return o && o.getTime && o.getTimezoneOffset;
   }
+
+  static truncate(date) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
 }

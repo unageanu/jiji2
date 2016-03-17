@@ -23,6 +23,20 @@ export default class PositionService extends AbstractService {
     return this.xhrManager.xhr(url, "GET");
   }
 
+  createCSVDownloadUrl( start, end, sortOrder, backtestId="rmt" ) {
+    const url = this.urlResolver.resolveServiceUrl(
+      "onetime-tokens/file-download-token");
+    return this.xhrManager.xhr(url, "GET").then((result)=>{
+      return this.serviceUrl( "download/" + result.token, {
+        backtestId: backtestId,
+        start:      start,
+        end:        end,
+        order:      sortOrder.order,
+        direction:  sortOrder.direction
+      });
+    });
+  }
+
   count( backtestId="rmt" ) {
     const url = this.serviceUrl( "count", {
       backtestId: backtestId

@@ -4,6 +4,7 @@ import Chart                      from "./chart/chart"
 import BacktestListModel          from "./backtests/backtest-list-model"
 import PositionsTableModel        from "./positions/positions-table-model"
 import PositionSelectionModel     from "./positions/position-selection-model"
+import PositionDownloader         from "./positions/position-downloader"
 import NotificationsTableModel    from "./notifications/notifications-table-model"
 import NotificationSelectionModel from "./notifications/notification-selection-model"
 import TradingSummaryViewModel    from "./trading-summary/trading-summary-view-model"
@@ -54,6 +55,10 @@ export default class ViewModelFactory {
   createPositionSelectionModel() {
     return new PositionSelectionModel(
       this.positionService, this.urlResolver );
+  }
+  createPositionDownloader() {
+    return new PositionDownloader(
+    this.rate, this.positionService, this.timeSource );
   }
   createNotificationsTableModel(pageSize=100,
     sortOrder={order:"timestamp", direction:"desc"}) {

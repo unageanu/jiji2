@@ -28,6 +28,10 @@ export default class Dates {
   static plusDays(date, n) {
     return new Date(date.getTime() + (1000 * 60 * 60 * 24 * n));
   }
+  static plusYears(date, y) {
+    return new Date(date.getFullYear()+y, date.getMonth(), date.getDate(),
+      date.getHours(), date.getMinutes(), date.getSeconds());
+  }
 
   static truncate(date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());

@@ -30,21 +30,36 @@ describe("Dates", () => {
   });
 
   describe("plusDays", () => {
-    it("plus 7days.", () => {
+    it("plus 7 days.", () => {
       expect( Dates.plusDays(new Date(2015, 5, 10, 1, 19, 23), 7) )
         .toEq( new Date(2015, 5, 17, 1, 19, 23) );
       expect( Dates.plusDays(new Date(2015, 5, 25, 1, 19, 23), 7) )
         .toEq( new Date(2015, 6, 2, 1, 19, 23) );
     });
-    it("plus 0days.", () => {
+    it("plus 0 days.", () => {
       expect( Dates.plusDays(new Date(2015, 5, 10, 1, 19, 23), 0) )
         .toEq( new Date(2015, 5, 10, 1, 19, 23) );
     });
-    it("plus -7days.", () => {
+    it("plus -7 days.", () => {
       expect( Dates.plusDays(new Date(2015, 5, 10, 1, 19, 23), -7) )
         .toEq( new Date(2015, 5, 3, 1, 19, 23) );
       expect( Dates.plusDays(new Date(2015, 5, 2, 1, 19, 23), -7) )
         .toEq( new Date(2015, 4, 26, 1, 19, 23) );
+    });
+  });
+
+  describe("plusYears", () => {
+    it("plus 7 years.", () => {
+      expect( Dates.plusYears(new Date(2015, 5, 10, 1, 19, 23), 7) )
+        .toEq( new Date(2022, 5, 10, 1, 19, 23) );
+    });
+    it("plus 0 years.", () => {
+      expect( Dates.plusYears(new Date(2015, 5, 10, 1, 19, 23), 0) )
+        .toEq( new Date(2015, 5, 10, 1, 19, 23) );
+    });
+    it("plus -7 years.", () => {
+      expect( Dates.plusYears(new Date(2015, 5, 10, 1, 19, 23), -7) )
+        .toEq( new Date(2008, 5, 10, 1, 19, 23) );
     });
   });
 

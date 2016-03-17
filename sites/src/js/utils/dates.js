@@ -25,6 +25,10 @@ export default class Dates {
     return o && o.getTime && o.getTimezoneOffset;
   }
 
+  static plusDays(date, n) {
+    return new Date(date.getTime() + (1000 * 60 * 60 * 24 * n));
+  }
+
   static truncate(date) {
     return new Date(date.getFullYear(), date.getMonth(), date.getDate());
   }

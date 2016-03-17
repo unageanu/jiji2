@@ -22,11 +22,30 @@ describe("Dates", () => {
 
   describe("truncate", () => {
     it("truncate a date.", () => {
-      Dates.setTimezoneOffset(0);
       expect( Dates.truncate(new Date(2015, 5, 10, 1, 19, 23)) )
         .toEq( new Date(2015, 5, 10) );
       expect( Dates.truncate(new Date(2015, 5, 10, 21, 19, 23)) )
         .toEq( new Date(2015, 5, 10) );
     });
   });
+
+  describe("plusDays", () => {
+    it("plus 7days.", () => {
+      expect( Dates.plusDays(new Date(2015, 5, 10, 1, 19, 23), 7) )
+        .toEq( new Date(2015, 5, 17, 1, 19, 23) );
+      expect( Dates.plusDays(new Date(2015, 5, 25, 1, 19, 23), 7) )
+        .toEq( new Date(2015, 6, 2, 1, 19, 23) );
+    });
+    it("plus 0days.", () => {
+      expect( Dates.plusDays(new Date(2015, 5, 10, 1, 19, 23), 0) )
+        .toEq( new Date(2015, 5, 10, 1, 19, 23) );
+    });
+    it("plus -7days.", () => {
+      expect( Dates.plusDays(new Date(2015, 5, 10, 1, 19, 23), -7) )
+        .toEq( new Date(2015, 5, 3, 1, 19, 23) );
+      expect( Dates.plusDays(new Date(2015, 5, 2, 1, 19, 23), -7) )
+        .toEq( new Date(2015, 4, 26, 1, 19, 23) );
+    });
+  });
+
 });

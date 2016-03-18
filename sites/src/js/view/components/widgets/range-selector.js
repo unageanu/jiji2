@@ -7,7 +7,7 @@ const DatePicker   = MUI.DatePicker;
 
 const keys = new Set([
   "startTime", "endTime", "minDate", "maxDate",
-  "startTimeError", "endTimeError"
+  "startTimeError", "endTimeError", "enable"
 ]);
 
 export default class RangeSelector extends AbstractComponent {
@@ -47,6 +47,7 @@ export default class RangeSelector extends AbstractComponent {
       maxDate={this.state.maxDate}
       defaultDate={defaultValue}
       showYearSelector={true}
+      disabled={!this.state.enable}
       style={{
         display: "inline-block",
       }}

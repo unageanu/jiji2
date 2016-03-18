@@ -22,13 +22,14 @@ export default class RMTPositionsPage extends AbstractPage {
     this.model().selection.selectedId = nextProps.params.id;
   }
 
-  render() {
+  render() { 
     return (
       <div className="rmt-positions-page page">
         <Card className="main-card">
           <PositionDetailsView model={this.model().selection} />
           <PositionsTable
             model={this.model().positionTable}
+            downloadModel={this.model().positionDownloader}
             selectionModel={this.model().selection} />
         </Card>
       </div>

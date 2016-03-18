@@ -26,6 +26,7 @@ describe("PositionsTableModel", () => {
         endTime:   new Date(2015, 5, 3)
       });
       expect(model.backtestId).toEqual( "aaa" );
+      expect(model.rangeSelectorModel.enable).toEqual( false );
       expect(model.rangeSelectorModel.startTime).toEqual( new Date(2015,5,1) );
       expect(model.rangeSelectorModel.endTime).toEqual( new Date(2015,5,3) );
       expect(model.rangeSelectorModel.minDate).toEqual( new Date(1995,5,10) );
@@ -37,6 +38,7 @@ describe("PositionsTableModel", () => {
     it( "can initialize a instance for rmt.", () => {
       model.initialize();
       expect(model.backtestId).toEqual( "rmt" );
+      expect(model.rangeSelectorModel.enable).toEqual( false );
       expect(model.rangeSelectorModel.startTime).toEqual( new Date(2015,4,11) );
       expect(model.rangeSelectorModel.endTime).toEqual( new Date(2015,5,10) );
       expect(model.rangeSelectorModel.minDate).toEqual( new Date(1995,5,10) );
@@ -56,7 +58,7 @@ describe("PositionsTableModel", () => {
         endTime:   new Date(2015, 5, 3)
       });
 
-      const d = model.createCSVDownloadUrl("all");
+      const d = model.createCSVDownloadUrl();
       xhrManager.requests[0].resolve({token: "token"});
 
       expect(ContainerJS.utils.Deferred.unpack(d)).toEqual(
@@ -70,7 +72,10 @@ describe("PositionsTableModel", () => {
       model.rangeSelectorModel.startTime = new Date(2015, 5, 1);
       model.rangeSelectorModel.endTime   = new Date(2015, 5, 3);
 
-      const d = model.createCSVDownloadUrl("filtered");
+      model.downloadType = "filtered";
+      expect(model.rangeSelectorModel.enable).toEqual( true );
+
+      const d = model.createCSVDownloadUrl();
       xhrManager.requests[0].resolve({token: "token"});
 
       expect(ContainerJS.utils.Deferred.unpack(d)).toEqual(
@@ -86,10 +91,15 @@ describe("PositionsTableModel", () => {
       model.rangeSelectorModel.startTime = new Date(2015, 5, 3);
       model.rangeSelectorModel.endTime   = new Date(2015, 5, 2);
 
-      const d = model.createCSVDownloadUrl("filtered");
+      model.downloadType = "filtered";
+      const d = model.createCSVDownloadUrl();
 
       expect(ContainerJS.utils.Deferred.unpack(d)).toEqual(null);
       expect(model.rangeSelectorModel.startTimeError).toEqual( '開始日時が不正です' );
+      expect(model.rangeSelectorModel.endTimeError).toEqual( null );
+
+      model.prepare();
+      expect(model.rangeSelectorModel.startTimeError).toEqual( null );
       expect(model.rangeSelectorModel.endTimeError).toEqual( null );
     });
 

@@ -16,6 +16,8 @@ export default class PositionDownloader extends Observable {
       Validators.backtest.startTime,
       Validators.backtest.endTime
     );
+
+    this.downloadType = "all";
   }
 
   initialize(backtest) {
@@ -34,8 +36,13 @@ export default class PositionDownloader extends Observable {
     }
   }
 
-  createCSVDownloadUrl(downloadType) {
-    const type = downloadType;
+  prepare() {
+    this.rangeSelectorModel.startTimeError = null;
+    this.rangeSelectorModel.endTimeError = null;
+  }
+
+  createCSVDownloadUrl() {
+    const type = this.downloadType;
     if ( type !== "all" && !this.rangeSelectorModel.validate()) {
       return Deferred.valueOf(null);
     }
@@ -50,6 +57,14 @@ export default class PositionDownloader extends Observable {
     if (type === "all") return null;
     return Dates.plusDays(this.rangeSelectorModel.endTime, 1);
     // for including all positions in the end date.
+  }
+
+  get downloadType() {
+    return this.getProperty("downloadType");
+  }
+  set downloadType(downloadType) {
+    this.setProperty("downloadType", downloadType);
+    this.rangeSelectorModel.enable = downloadType !== "all"
   }
 
 }

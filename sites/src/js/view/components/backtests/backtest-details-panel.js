@@ -53,6 +53,7 @@ export default class BacktestDetailsPanel extends AbstractComponent {
         <PositionDetailsView model={this.model().selection} />
         <PositionsTable
           model={this.model().positionTable}
+          downloadModel={this.model().positionDownloader}
           selectionModel={this.model().selection}
           onItemTapped={(ev,item) => this.model().selection.selectedId = item.id } />
       </div>;

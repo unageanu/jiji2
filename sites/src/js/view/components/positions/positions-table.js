@@ -1,8 +1,9 @@
-import React               from "react"
-import MUI                 from "material-ui"
-import AbstractComponent   from "../widgets/abstract-component"
-import LoadingImage        from "../widgets/loading-image"
-import PositionColumns     from "../../../viewmodel/positions/position-columns"
+import React                   from "react"
+import MUI                     from "material-ui"
+import AbstractComponent       from "../widgets/abstract-component"
+import LoadingImage            from "../widgets/loading-image"
+import PositionColumns         from "../../../viewmodel/positions/position-columns"
+import DownloadPositionsDialog from "./download-positions-dialog"
 
 const Table        = MUI.Table;
 const FlatButton   = MUI.FlatButton;
@@ -56,6 +57,9 @@ export default class PositionsTable extends AbstractComponent {
           </tbody>
         </table>
         {loading}
+        <DownloadPositionsDialog
+          ref="downloadDialog"
+          model={this.props.downloadModel} />
       </div>
     );
   }
@@ -64,20 +68,29 @@ export default class PositionsTable extends AbstractComponent {
     const prev = () => this.props.model.prev();
     const next = () => this.props.model.next();
     return [
-      <IconButton
-        key="prev"
-        tooltip={"前の" + this.props.model.pageSize +  "件"}
-        disabled={this.state.loading || !this.state.hasPrev}
-        onClick={prev}>
-        <FontIcon className="md-navigate-before"/>
-      </IconButton>,
-      <IconButton
-        key="next"
-        tooltip={"次の" + this.props.model.pageSize +  "件"}
-        disabled={this.state.loading || !this.state.hasNext}
-        onClick={next}>
-        <FontIcon className="md-navigate-next"/>
-      </IconButton>
+      <div className="left">
+        <FlatButton
+          label="CSV形式でダウンロード..."
+          onClick={()=> this.refs.downloadDialog.show()}>
+          <FontIcon className="md-navigate-before"/>
+        </FlatButton>
+      </div>,
+      <div className="right">
+        <IconButton
+          key="prev"
+          tooltip={"前の" + this.props.model.pageSize +  "件"}
+          disabled={this.state.loading || !this.state.hasPrev}
+          onClick={prev}>
+          <FontIcon className="md-navigate-before"/>
+        </IconButton>
+        <IconButton
+          key="next"
+          tooltip={"次の" + this.props.model.pageSize +  "件"}
+          disabled={this.state.loading || !this.state.hasNext}
+          onClick={next}>
+          <FontIcon className="md-navigate-next"/>
+        </IconButton>
+      </div>
     ];
   }
 
@@ -152,10 +165,12 @@ export default class PositionsTable extends AbstractComponent {
 }
 PositionsTable.propTypes = {
   model: React.PropTypes.object,
+  downloadModel: React.PropTypes.object,
   onItemTapped: React.PropTypes.func
 };
 PositionsTable.defaultProps = {
   model: null,
+  downloadModel: null,
   onItemTapped: null
 };
 PositionsTable.contextTypes = {

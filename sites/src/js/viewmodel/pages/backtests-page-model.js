@@ -34,6 +34,7 @@ export default class BacktestsPageModel extends Observable {
     this.selection =
         this.viewModelFactory.createPositionSelectionModel();
     this.selection.attach(this.positionTable);
+    this.positionDownloader = this.viewModelFactory.createPositionDownloader();
 
     this.tradingSummary =
       this.viewModelFactory.createTradingSummaryViewModel();
@@ -104,6 +105,7 @@ export default class BacktestsPageModel extends Observable {
     if (this.activeTab === "trades") {
       this.positionTable.initialize( this.selectedBacktest.id );
       this.positionTable.load();
+      this.positionDownloader.initialize(this.selectedBacktest);
     } else if (this.activeTab === "report") {
       this.tradingSummary.backtestId = this.selectedBacktest.id;
     } else if (this.activeTab === "chart") {

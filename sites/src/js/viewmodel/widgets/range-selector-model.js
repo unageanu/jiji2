@@ -9,6 +9,7 @@ export default class RangeSelectorModel extends Observable {
     super();
     this.startTimeValidator = startTimeValidator;
     this.endTimeValidator   = endTimeValidator;
+    this.enable = true;
   }
 
   initialize(minDate, maxDate, defaultStartTime, defaultEndTime) {
@@ -84,6 +85,12 @@ export default class RangeSelectorModel extends Observable {
   }
   set maxDate(maxDate) {
     this.setProperty("maxDate", maxDate);
+  }
+  get enable() {
+    return this.getProperty("enable");
+  }
+  set enable(enable) {
+    this.setProperty("enable", enable);
   }
 
 }

@@ -17,10 +17,12 @@ export default class RMTPositionsPageModel extends Observable {
     this.selection =
         this.viewModelFactory.createPositionSelectionModel();
     this.selection.attach(this.positionTable);
+    this.positionDownloader = this.viewModelFactory.createPositionDownloader();
   }
 
   initialize( selectedId ) {
     this.positionTable.initialize("rmt");
+    this.positionDownloader.initialize();
     this.positionTable.load().then(
       () => this.selection.selectedId = selectedId
     , ( error ) => console.log(error) );

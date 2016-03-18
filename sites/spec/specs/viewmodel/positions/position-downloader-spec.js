@@ -1,5 +1,6 @@
 import ContainerJS      from "container-js"
 import ContainerFactory from "../../../utils/test-container-factory"
+import Dates            from "src/utils/dates"
 
 describe("PositionsTableModel", () => {
 
@@ -15,7 +16,10 @@ describe("PositionsTableModel", () => {
     model = factory.createPositionDownloader();
     model.initialize("rmt");
     xhrManager = model.positionService.xhrManager;
+
+    Dates.setTimezoneOffset(0);
   });
+  afterEach( ()=> Dates.resetTimezoneOffset() );
 
   describe("#initialize", () => {
 
@@ -69,8 +73,8 @@ describe("PositionsTableModel", () => {
 
     it( "can create a csv download url of filterd positions for the rmt.", () => {
       model.initialize();
-      model.rangeSelectorModel.startTime = new Date(2015, 5, 1);
-      model.rangeSelectorModel.endTime   = new Date(2015, 5, 3);
+      model.rangeSelectorModel.startTime = Dates.date("2015-06-01T00:00:00.000Z");
+      model.rangeSelectorModel.endTime   = Dates.date("2015-06-03T00:00:00.000Z");
 
       model.downloadType = "filtered";
       expect(model.rangeSelectorModel.enable).toEqual( true );
@@ -80,7 +84,7 @@ describe("PositionsTableModel", () => {
 
       expect(ContainerJS.utils.Deferred.unpack(d)).toEqual(
         "/api/positions/download/token?backtest_id=rmt&"
-        + "start=2015-05-31T15%3A00%3A00.000Z&end=2015-06-03T15%3A00%3A00.000Z"
+        + "start=2015-06-01T00%3A00%3A00.000Z&end=2015-06-04T00%3A00%3A00.000Z"
         + "&order=entered_at&direction=desc");
         expect(model.rangeSelectorModel.startTimeError).toEqual( null );
         expect(model.rangeSelectorModel.endTimeError).toEqual( null );

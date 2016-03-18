@@ -23,7 +23,7 @@ describe Jiji::Model::Trading::RMT do
   it 'エージェントを追加/更新できる' do
     @rmt.setup
     agent_setting = @settings.rmt_setting.agent_setting
-    expect(agent_setting.length).to be 0
+    expect(agent_setting.length).to eq 0
 
     agent_setting = @rmt.update_agent_setting([
       {
@@ -165,21 +165,21 @@ describe Jiji::Model::Trading::RMT do
       @time_source.set(Time.local(2015, 5, 1, 23, 59, 59))
       expect(@rmt.balance_of_yesterday).to be nil
       @time_source.set(Time.local(2015, 5, 2, 0, 0, 0))
-      expect(@rmt.balance_of_yesterday).to be 0
+      expect(@rmt.balance_of_yesterday).to eq 0
       @time_source.set(Time.local(2015, 5, 2, 8, 59, 0))
-      expect(@rmt.balance_of_yesterday).to be 0
+      expect(@rmt.balance_of_yesterday).to eq 0
       @time_source.set(Time.local(2015, 5, 2, 9, 0, 0))
-      expect(@rmt.balance_of_yesterday).to be 0
+      expect(@rmt.balance_of_yesterday).to eq 0
       @time_source.set(Time.local(2015, 5, 2, 23, 59, 59))
-      expect(@rmt.balance_of_yesterday).to be 0
+      expect(@rmt.balance_of_yesterday).to eq 0
       @time_source.set(Time.local(2015, 5, 3, 3, 0, 0))
-      expect(@rmt.balance_of_yesterday).to be 4000
+      expect(@rmt.balance_of_yesterday).to eq 4000
       @time_source.set(Time.local(2015, 5, 4, 4, 0, 0))
-      expect(@rmt.balance_of_yesterday).to be 8000
+      expect(@rmt.balance_of_yesterday).to eq 8000
       @time_source.set(Time.local(2015, 5, 5, 5, 0, 0))
-      expect(@rmt.balance_of_yesterday).to be 12_000
+      expect(@rmt.balance_of_yesterday).to eq 12_000
       @time_source.set(Time.local(2015, 5, 6, 6, 0, 0))
-      expect(@rmt.balance_of_yesterday).to be 14_000
+      expect(@rmt.balance_of_yesterday).to eq 14_000
       @time_source.set(Time.local(2015, 5, 7, 7, 0, 0))
       expect(@rmt.balance_of_yesterday).to be nil
     end

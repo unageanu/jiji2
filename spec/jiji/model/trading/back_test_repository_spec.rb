@@ -21,7 +21,7 @@ describe Jiji::Model::Trading::BackTestRepository do
   end
 
   it 'テストを追加できる' do
-    expect(@repository.all.length).to be 0
+    expect(@repository.all.length).to eq 0
 
     test = @repository.register({
       'name'          => 'テスト',
@@ -55,7 +55,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(test.balance).to eq 0
 
     agent_settings = load_agent_settings(test.id)
-    expect(agent_settings.length).to be 3
+    expect(agent_settings.length).to eq 3
 
     expect(agent_settings[0].id).not_to be nil
     expect(agent_settings[0].agent_class).to eq 'TestAgent2@bbb'
@@ -83,7 +83,7 @@ describe Jiji::Model::Trading::BackTestRepository do
 
     expect(test.status).to eq :running
 
-    expect(@repository.all.length).to be 1
+    expect(@repository.all.length).to eq 1
     expect(@repository.all[0]).to be test
 
     test2 = @repository.register({
@@ -109,7 +109,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     expect(test2.balance).to eq 10_000
 
     agent_settings = load_agent_settings(test2.id)
-    expect(agent_settings.length).to be 1
+    expect(agent_settings.length).to eq 1
     expect(agent_settings[0].id).not_to be nil
     expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
     expect(agent_settings[0].name).to eq nil
@@ -120,7 +120,7 @@ describe Jiji::Model::Trading::BackTestRepository do
 
     expect(test2.status).to eq :running
 
-    expect(@repository.all.length).to be 2
+    expect(@repository.all.length).to eq 2
     expect(@repository.all[0]).to be test
     expect(@repository.all[1]).to be test2
   end
@@ -149,7 +149,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     end
 
     it '追加したテストは永続化され、再起動時に読み込まれる' do
-      expect(@repository.all.length).to be 3
+      expect(@repository.all.length).to eq 3
       test = @repository.all[0]
 
       sleep 0.2
@@ -161,7 +161,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
+      expect(agent_settings.length).to eq 1
       expect(agent_settings[0].id).not_to be nil
       expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
       expect(agent_settings[0].name).to eq 'テスト1'
@@ -184,7 +184,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
+      expect(agent_settings.length).to eq 1
       expect(agent_settings[0].id).not_to be nil
       expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
       expect(agent_settings[0].name).to eq 'テスト1'
@@ -206,7 +206,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
+      expect(agent_settings.length).to eq 1
       expect(agent_settings[0].id).not_to be nil
       expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
       expect(agent_settings[0].name).to eq 'テスト1'
@@ -226,7 +226,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       @repository   = @container.lookup(:backtest_repository)
       @repository.load
 
-      expect(@repository.all.length).to be 3
+      expect(@repository.all.length).to eq 3
 
       sleep 0.1
 
@@ -241,7 +241,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.cancelled_state[:orders]).to eq []
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
+      expect(agent_settings.length).to eq 1
       expect(agent_settings[0].id).not_to be nil
       expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
       expect(agent_settings[0].name).to eq 'テスト1'
@@ -264,7 +264,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
+      expect(agent_settings.length).to eq 1
       expect(agent_settings[0].id).not_to be nil
       expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
       expect(agent_settings[0].name).to eq 'テスト1'
@@ -286,7 +286,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
+      expect(agent_settings.length).to eq 1
       expect(agent_settings[0].id).not_to be nil
       expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
       expect(agent_settings[0].name).to eq 'テスト1'
@@ -312,7 +312,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       @repository   = @container.lookup(:backtest_repository)
       @repository.load
 
-      expect(@repository.all.length).to be 3
+      expect(@repository.all.length).to eq 3
 
       test = @repository.all[0]
       expect(test.name).to eq 'テスト0'
@@ -325,7 +325,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.cancelled_state[:orders]).to eq []
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
+      expect(agent_settings.length).to eq 1
       expect(agent_settings[0].id).not_to be nil
       expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
       expect(agent_settings[0].name).to eq 'テスト1'
@@ -350,7 +350,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.cancelled_state[:orders]).to eq []
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
+      expect(agent_settings.length).to eq 1
       expect(agent_settings[0].id).not_to be nil
       expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
       expect(agent_settings[0].name).to eq 'テスト1'
@@ -373,7 +373,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
+      expect(agent_settings.length).to eq 1
       expect(agent_settings[0].id).not_to be nil
       expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
       expect(agent_settings[0].name).to eq 'テスト1'
@@ -411,7 +411,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       @repository   = @container.lookup(:backtest_repository)
       @repository.load
 
-      expect(@repository.all.length).to be 3
+      expect(@repository.all.length).to eq 3
 
       test = @repository.all[0]
       expect(test.name).to eq 'テスト0'
@@ -424,7 +424,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.cancelled_state[:orders]).to eq []
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
+      expect(agent_settings.length).to eq 1
       expect(agent_settings[0].id).not_to be nil
       expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
       expect(agent_settings[0].name).to eq 'テスト1'
@@ -449,7 +449,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.cancelled_state[:orders]).to eq []
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
+      expect(agent_settings.length).to eq 1
       expect(agent_settings[0].id).not_to be nil
       expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
       expect(agent_settings[0].name).to eq 'テスト1'
@@ -472,7 +472,7 @@ describe Jiji::Model::Trading::BackTestRepository do
       expect(test.cancelled_state).to eq nil
       expect(test.pair_names).to eq [:EURJPY, :EURUSD]
       agent_settings = load_agent_settings(test.id)
-      expect(agent_settings.length).to be 1
+      expect(agent_settings.length).to eq 1
       expect(agent_settings[0].id).not_to be nil
       expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
       expect(agent_settings[0].name).to eq 'テスト1'
@@ -514,7 +514,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     describe '#delete' do
       it 'テストを削除できる' do
         backtests = @repository.all
-        expect(backtests.length).to be 3
+        expect(backtests.length).to eq 3
         graph_factory =
           Jiji::Model::Graphing::GraphFactory.new(backtests[1])
         graph = graph_factory.create(
@@ -536,7 +536,7 @@ describe Jiji::Model::Trading::BackTestRepository do
         graph_data = graph.fetch_data(
           Time.new(2015, 4, 1),
           Time.new(2015, 4, 2))
-        expect(graph_data.length).to be 1
+        expect(graph_data.length).to eq 1
 
         position_repository = @container.lookup(:position_repository)
         data_builder.new_position(1, backtests[1]).save
@@ -550,14 +550,14 @@ describe Jiji::Model::Trading::BackTestRepository do
         data.save
         count = Jiji::Model::Logging::LogData
           .where({ backtest_id: backtests[1].id }).count
-        expect(count).to be 1
+        expect(count).to eq 1
 
         notification = Jiji::Model::Notification::Notification.create(
           backtests[1].agents.keys[0], Time.at(100), backtests[1].id)
         notification.save
         count = Jiji::Model::Notification::Notification
           .where({ backtest_id: backtests[1].id }).count
-        expect(count).to be 1
+        expect(count).to eq 1
 
         @repository.delete(backtests[1].id)
 
@@ -574,11 +574,11 @@ describe Jiji::Model::Trading::BackTestRepository do
 
         count = Jiji::Model::Logging::LogData
           .where({ backtest_id: backtests[1].id }).count
-        expect(count).to be 1
+        expect(count).to eq 1
 
         count = Jiji::Model::Notification::Notification
           .where({ backtest_id: backtests[1].id }).count
-        expect(count).to be 1
+        expect(count).to eq 1
 
         backtests = @repository.all.sort_by { |p| p.name }
         expect(backtests.length).to be 2
@@ -603,7 +603,7 @@ describe Jiji::Model::Trading::BackTestRepository do
         @repository.load
 
         backtests = @repository.all.sort_by { |p| p.name }
-        expect(backtests.length).to be 3
+        expect(backtests.length).to eq 3
 
         @repository.delete(backtests[1].id)
 
@@ -643,7 +643,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     describe '#restart' do
       it 'テストを再実行できる' do
         backtests = @repository.all
-        expect(backtests.length).to be 3
+        expect(backtests.length).to eq 3
 
         src = @repository.all[0]
 
@@ -683,7 +683,7 @@ describe Jiji::Model::Trading::BackTestRepository do
         expect(test.cancelled_state).to be nil
         expect(test.pair_names).to eq [:EURJPY, :EURUSD]
         agent_settings = load_agent_settings(test.id)
-        expect(agent_settings.length).to be 1
+        expect(agent_settings.length).to eq 1
         expect(agent_settings[0].id).not_to be nil
         expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
         expect(agent_settings[0].name).to eq 'テスト1'
@@ -708,7 +708,7 @@ describe Jiji::Model::Trading::BackTestRepository do
         expect(test.cancelled_state).to be nil
         expect(test.pair_names).to eq [:EURJPY, :EURUSD]
         agent_settings = load_agent_settings(test.id)
-        expect(agent_settings.length).to be 1
+        expect(agent_settings.length).to eq 1
         expect(agent_settings[0].id).not_to be nil
         expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
         expect(agent_settings[0].name).to eq 'テスト1'
@@ -723,7 +723,7 @@ describe Jiji::Model::Trading::BackTestRepository do
         expect(status[:current_time]).to eq nil
 
         backtests = @repository.all.sort_by { |p| p.name }
-        expect(backtests.length).to be 3
+        expect(backtests.length).to eq 3
         expect(backtests[0].name).to eq 'テスト0'
         expect(backtests[1].name).to eq 'テスト1'
         expect(backtests[2].name).to eq 'テスト2'
@@ -760,7 +760,7 @@ describe Jiji::Model::Trading::BackTestRepository do
         expect(test.cancelled_state).to be nil
         expect(test.pair_names).to eq [:EURJPY, :EURUSD]
         agent_settings = load_agent_settings(test.id)
-        expect(agent_settings.length).to be 1
+        expect(agent_settings.length).to eq 1
         expect(agent_settings[0].id).not_to be nil
         expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
         expect(agent_settings[0].name).to eq 'テスト1'
@@ -785,7 +785,7 @@ describe Jiji::Model::Trading::BackTestRepository do
         expect(test.cancelled_state).to be nil
         expect(test.pair_names).to eq [:EURJPY, :EURUSD]
         agent_settings = load_agent_settings(test.id)
-        expect(agent_settings.length).to be 1
+        expect(agent_settings.length).to eq 1
         expect(agent_settings[0].id).not_to be nil
         expect(agent_settings[0].agent_class).to eq 'TestAgent1@aaa'
         expect(agent_settings[0].name).to eq 'テスト1'

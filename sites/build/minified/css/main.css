@@ -1,6 +1,6 @@
 @charset "UTF-8";
 @import url(https://fonts.googleapis.com/earlyaccess/notosansjapanese.css);
-@import url(https://fonts.googleapis.com/css?family=Roboto|Roboto+Condensed);
+@import url(https://fonts.googleapis.com/css?family=Roboto%7CRoboto+Condensed);
 .slider .bar,.slider .handle{position:relative;height:30px}
 *{font-family:Roboto,'Roboto Condensed','ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'Noto Sans Japanese',sans-serif}
 .slider .bar{background-color:rgba(128,128,128,.11);line-height:0;width:300px}
@@ -112,7 +112,7 @@
 .log-viewer .menu .page-selector .separator{margin-right:8px}
 .log-viewer .menu .scroller{float:right}
 .log-viewer .menu .scroller .scroller-buttons{margin-left:8px}
-.log-viewer .body pre{margin:0;overflow-x:scroll;background-color:#333;padding:1pc;font-size:9pt;color:#EEE;min-height:500px}
+.log-viewer .body pre{margin:0;background-color:#333;padding:1pc;font-size:9pt;color:#EEE;min-height:500px;white-space:pre-wrap}
 .icon-selector .icon-and-action .icon,.icon-selector .icon-and-action a{vertical-align:middle;cursor:pointer}
 .icon-selector .icon-and-action a{margin-left:8px;text-decoration:underline}
 .icon-selector .icons{max-height:500px;overflow-y:scroll}
@@ -138,7 +138,9 @@
 .position-list .profit-or-loss{font-size:20px}
 .position-list .suffix{font-size:11px}
 .position-list .separator{margin:0 4px}
-.positions-table .actions{text-align:right}
+.positions-table .actions{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch}
+.positions-table .actions .left{width:50%}
+.positions-table .actions .right{-webkit-flex:1;-ms-flex:1;flex:1;text-align:right}
 .positions-table table{width:100%;border-collapse:collapse}
 .positions-table table td{padding:8px 2px;text-align:center;font-size:14px;text-overflow:ellipsis}
 .positions-table table td.profitOrLoss{width:5pc;text-align:right}
@@ -154,7 +156,7 @@
 .positions-table table tbody tr.selected,.positions-table table tbody tr:hover{background:rgba(128,128,128,.11)}
 .positions-table table tbody tr.selected:hover{background:rgba(128,128,128,.22)}
 .positions-table .center-information{padding:2pc 0;border-bottom:1px solid #d3d3d3}
-.position-details{font-size:1pc;color:#666}
+.position-details{font-size:1pc;color:#666;margin-bottom:24px}
 .position-details .profit-or-loss{font-size:24px;padding-bottom:8px}
 .position-details .profit-or-loss span.price{margin-left:1pc}
 .position-details .profit-or-loss img,.position-details .profit-or-loss span{vertical-align:middle}
@@ -168,6 +170,10 @@
 .position-details .item .value .live{color:#f03950}
 .position-details .category.closing-policy{border:1px solid #d3d3d3;padding:0 1pc 1pc}
 .position-details .category.closing-policy:before{content:"決済条件";font-size:14px;color:#999;display:inline-block;position:relative;top:-9pt;background-color:#FFF;padding:0 8px}
+.download-positions-dialog .body{margin-top:24px}
+.download-positions-dialog .body .info{color:#999;display:inline-block;font-size:14px;margin-bottom:24px}
+.download-positions-dialog .body .range-selector{margin-left:40px}
+.download-positions-dialog .body .range-selector .selector>div>div:nth-last-child(1){top:-150px!important}
 .page{padding:1pc}
 .login-page{padding:24px}
 .login-page .main-card{padding:5pc;width:750px;margin:0 auto}
@@ -351,7 +357,7 @@ a:visited{color:#761d7a}
 .topbar .buttons{float:right;display:inline-block;margin:1pc}
 .container{display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:stretch;-ms-flex-align:stretch;align-items:stretch}
 .content{-webkit-flex:1;-ms-flex:1;flex:1}
-.left-navi{width:3in}
+.left-navi{width:3in;min-width:3in}
 /*!
  *  Material Design Iconic Font 1.0.1 by Sergey Kupletsky (@zavoloklom) - http://zavoloklom.github.io/material-design-iconic-font/
  *  License - https://github.com/zavoloklom/material-design-iconic-font/blob/gh-pages/License.md (Attribution-ShareAlike 4.0 International license)

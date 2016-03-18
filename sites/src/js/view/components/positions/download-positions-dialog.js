@@ -29,7 +29,7 @@ export default class DownloadPositionsDialog extends AbstractComponent {
     const labelForAll = <span>
       すべての建玉をダウンロードする<br/>
       <span className="info">
-        ※建玉が多いと時間がかかる場合があるのでご注意ください。
+        ※建玉が多いと時間がかかる場合があります。ご注意ください。
       </span>
     </span>;
     return (
@@ -41,14 +41,14 @@ export default class DownloadPositionsDialog extends AbstractComponent {
           { text: "キャンセル"}
         ]}
         modal={true}
-        className="dialog"
+        contentClassName="dialog download-positions-dialog"
         contentStyle={Theme.dialog.contentStyle}>
         <div className="dialog-content">
           <div className="dialog-description">
             建玉データをCSV形式でダウンロードします。<br/>
             ダウンロードする範囲を選択して、[ダウンロード]をクリックしてください。
           </div>
-          <div className="dialog-content">
+          <div className="body">
             <RadioButtonGroup ref="downloadType" name="downloadType"
               valueSelected={this.state.downloadType}
               onChange={this.onDownloadTypeChanged.bind(this)}>
@@ -61,11 +61,9 @@ export default class DownloadPositionsDialog extends AbstractComponent {
                 label="エントリー日時で絞り込む">
               </RadioButton>
             </RadioButtonGroup>
-            <div className="range-selector">
-              <RangeSelector
-                ref="rangeSelector"
-                model={this.props.model.rangeSelectorModel} />
-            </div>
+            <RangeSelector
+              ref="rangeSelector"
+              model={this.props.model.rangeSelectorModel} />
           </div>
         </div>
       </Dialog>
@@ -80,8 +78,9 @@ export default class DownloadPositionsDialog extends AbstractComponent {
     this.refs.rangeSelector.applySetting();
     this.props.model.createCSVDownloadUrl().then((url)=> {
       if (!url) return;
-      window.location.href = url;
       this.refs.dialog.dismiss();
+      setTimeout( () => { window.location.href = url }, 500 );
+      // delay for avoiding dialog problem on IE.
     });
   }
   show() {

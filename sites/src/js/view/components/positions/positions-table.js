@@ -4,6 +4,7 @@ import AbstractComponent       from "../widgets/abstract-component"
 import LoadingImage            from "../widgets/loading-image"
 import PositionColumns         from "../../../viewmodel/positions/position-columns"
 import DownloadPositionsDialog from "./download-positions-dialog"
+import ButtonIcon              from "../widgets/button-icon"
 
 const Table        = MUI.Table;
 const FlatButton   = MUI.FlatButton;
@@ -45,9 +46,7 @@ export default class PositionsTable extends AbstractComponent {
     const actionContent = this.createActionContent();
     return (
       <div className="positions-table">
-        <div className="actions">
-          {actionContent}
-        </div>
+        {actionContent}
         <table>
           <thead>
             <tr>{headers}</tr>
@@ -67,14 +66,16 @@ export default class PositionsTable extends AbstractComponent {
   createActionContent() {
     const prev = () => this.props.model.prev();
     const next = () => this.props.model.next();
-    return [
+    return <div className="actions">
       <div className="left">
         <FlatButton
+          className="button"
           label="CSV形式でダウンロード..."
+          labelStyle={{padding:"0px 16px 0px 8px"}}
           onClick={()=> this.refs.downloadDialog.show()}>
-          <FontIcon className="md-navigate-before"/>
+          <ButtonIcon className="md-file-download"/>
         </FlatButton>
-      </div>,
+      </div>
       <div className="right">
         <IconButton
           key="prev"
@@ -91,7 +92,7 @@ export default class PositionsTable extends AbstractComponent {
           <FontIcon className="md-navigate-next"/>
         </IconButton>
       </div>
-    ];
+    </div>;
   }
 
   createHeaderContent() {

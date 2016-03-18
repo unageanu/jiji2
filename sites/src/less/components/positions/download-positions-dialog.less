@@ -1,0 +1,24 @@
+@import "../../colors.less";
+@import "../../sizes.less";
+
+.download-positions-dialog {
+
+  .body {
+    margin-top: @grid*3;
+
+    .info {
+      color: @font-color-light;
+      display: inline-block;
+      font-size: @font-size-small;
+      margin-bottom: @grid*3;
+    }
+
+    .range-selector {
+      margin-left: @grid*5;
+
+      .selector > div > div:nth-last-child(1) {
+        top: -150px !important;
+      }
+    }
+  }
+}

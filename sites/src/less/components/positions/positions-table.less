@@ -1,10 +1,19 @@
 @import "../../colors.less";
 @import "../../sizes.less";
 
+@positions-table-left-action-panel-width:  50%;
+
 .positions-table {
 
   .actions {
-    text-align: right;
+    .two-column-layout-parent(@positions-table-left-action-panel-width);
+    .left {
+      .two-column-layout-left(@positions-table-left-action-panel-width);
+    }
+    .right {
+      .two-column-layout-right(@positions-table-left-action-panel-width);
+      text-align: right;
+    }
   }
 
   table {

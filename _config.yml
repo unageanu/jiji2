@@ -6,10 +6,10 @@
 # 'jekyll serve'. If you change this file, please restart the server process.
 
 # Site settings
-title: "無料で使えるFXシステムトレードフレームワーク「Jiji」"
+title: "無料で使えるシステムトレードフレームワーク「Jiji」"
 email: masaya.yamauchi@gmail.com
 description: > # this means to ignore newlines until "baseurl:"
-  自分だけの取引アルゴリズムで、誰でも、いますぐ、かんたんにFX自動取引を開始。
+  自分だけの取引アルゴリズムで、今すぐシステムトレードを開始。
   「Jiji」は、無料で使えるFXシステムトレードフレームワークです。
 baseurl: "" # the subpath of your site, e.g. /blog
 url: "http://jiji2.unageanu.net" # the base hostname & protocol for your site

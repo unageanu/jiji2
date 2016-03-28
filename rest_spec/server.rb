@@ -40,7 +40,7 @@ module Jiji
         'bundle exec puma -C config/puma.rb',
         out: File.join(log_dir, "test_server_#{id}.log"), err: :out)
       puts "start server pid=#{pid}"
-      sleep 15
+      sleep 20
       pid
     end
 

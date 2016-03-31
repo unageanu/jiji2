@@ -5,12 +5,20 @@ machine:
     version: 0.10.34
 
 dependencies:
+  pre:
+    - gem -v
+    - rvm @global do gem uninstall bundler -ax
+    - rvm install rubygems 2.4.8 --force
+    - gem install bundler --pre
+    - bundle -v
   post:
     - npm install:
         pwd:
           sites
 test:
   override:
+    - bundle -v
+    - bundle exec bundle -v
     - bundle exec rake
     - npm run-script build:
         pwd:

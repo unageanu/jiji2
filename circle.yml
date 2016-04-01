@@ -8,7 +8,7 @@ dependencies:
   pre:
     - gem -v
     - rvm @global do gem uninstall bundler -ax
-    - rvm install rubygems head --force
+    - rvm install rubygems 2.4.8 --force
     - gem install bundler  -v 1.11.2
     - bundle -v
   post:

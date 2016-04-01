@@ -6,22 +6,19 @@ machine:
 
 dependencies:
   pre:
-    - gem -v
-    - gem install bundler -v 1.10.6
     - gem install rubygems-bundler
     - gem regenerate_binstubs
-    - bundle -v
   post:
-#    - npm install:
-#        pwd:
-#          sites
+   - npm install:
+       pwd:
+         sites
 
 test:
   override:
     - gem -v
     - bundle -v
     - bundle exec bundle -v
-    - bundle exec rake
+#    - bundle exec rake
 #    - npm run-script build:
 #        pwd:
 #          sites

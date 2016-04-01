@@ -18,7 +18,7 @@ test:
     - gem -v
     - bundle -v
     - bundle exec bundle -v
-#    - bundle exec rake
-#    - npm run-script build:
-#        pwd:
-#          sites
+    - bundle exec rake
+    - npm run-script build:
+        pwd:
+          sites

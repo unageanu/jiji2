@@ -6,6 +6,7 @@ machine:
 
 dependencies:
   pre:
+    - gem install bundler -v 1.10.6
     - gem install rubygems-bundler
     - gem regenerate_binstubs
   post:

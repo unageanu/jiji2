@@ -14,7 +14,8 @@ module Jiji::Test
       repository = Jiji::Model::Trading::TickRepository.new
       repository.securities_provider = securities_provider
 
-      Jiji::Model::Securities::VirtualSecurities.new(repository, {
+      Jiji::Model::Securities::VirtualSecurities.new(
+        repository, securities_provider, {
         start_time:  start_time,
         end_time:    end_time,
         backtest_id: backtest_id,

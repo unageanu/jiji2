@@ -14,9 +14,11 @@ module Jiji::Model::Securities
     include Internal::Virtual::RateRetriever
     include Internal::Virtual::Ordering
     include Internal::Virtual::Trading
+    include Internal::Virtual::CalendarRetriever
 
-    def initialize(tick_repository, config)
+    def initialize(tick_repository, securities_provider, config)
       @tick_repository = tick_repository
+      @securities_provider = securities_provider
       @position_builder =
         Trading::Internal::PositionBuilder.new(config[:backtest])
       @order_validator = Internal::Virtual::OrderValidator.new

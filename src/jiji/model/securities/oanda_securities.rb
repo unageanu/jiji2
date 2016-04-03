@@ -22,6 +22,7 @@ module Jiji::Model::Securities
     include Internal::Oanda::Ordering
     include Internal::Oanda::Trading
     include Internal::Oanda::TransactionRetriever
+    include Internal::Oanda::CalendarRetriever
 
     def self.configuration_definition
       [{ id: :access_token, description: 'アクセストークン' }]

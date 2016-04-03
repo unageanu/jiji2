@@ -8,12 +8,14 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   let(:position_repository) { container.lookup(:position_repository) }
   let(:backtest) { backtests[0] }
   let(:backtest_id) { backtests[0].id }
+  let(:securities_provider) do
+    securities_provider = Jiji::Model::Securities::SecuritiesProvider.new
+    securities_provider.set Jiji::Test::Mock::MockSecurities.new({})
+    securities_provider
+  end
   let(:repository) do
     repository = Jiji::Model::Trading::TickRepository.new
-    securities_provider = Jiji::Model::Securities::SecuritiesProvider.new
-
     repository.securities_provider = securities_provider
-    securities_provider.set Jiji::Test::Mock::MockSecurities.new({})
     repository
   end
   let(:pairs) do
@@ -29,7 +31,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   let(:broker) do
     Jiji::Model::Trading::Brokers::BackTestBroker.new(backtest,
       Time.utc(2015, 5, 1), Time.utc(2015, 5, 1, 0, 10),
-      pairs, 100_000, [], repository, position_repository)
+      pairs, 100_000, [], repository, securities_provider, position_repository)
   end
 
   it_behaves_like 'brokerの基本操作ができる'

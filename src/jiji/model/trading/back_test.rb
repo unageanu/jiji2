@@ -19,6 +19,7 @@ module Jiji::Model::Trading
     needs :tick_repository
     needs :position_repository
     needs :pairs
+    needs :securities_provider
 
     store_in collection: 'backtests'
     has_many :graphs,
@@ -212,8 +213,9 @@ module Jiji::Model::Trading
 
     def create_broker
       pairs = (pair_names || []).map { |p| @pairs.get_by_name(p) }
-      Brokers::BackTestBroker.new(self, calcurate_start_time, end_time, pairs,
-        restore_balance, restore_order, @tick_repository, @position_repository)
+      Brokers::BackTestBroker.new(self, calcurate_start_time,
+        end_time, pairs, restore_balance, restore_order, 
+        @tick_repository, @securities_provider, @position_repository)
     end
 
     def create_trading_context(broker, agents, graph_factory)

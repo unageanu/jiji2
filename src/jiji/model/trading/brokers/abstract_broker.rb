@@ -114,7 +114,7 @@ module Jiji::Model::Trading::Brokers
     # pair_name:: 取得対象とする通貨ペアの名前。
     #             例) USDJPY
     #             指定がない場合、すべての通貨ペアの情報を取得します。
-    # 戻り値:: EconomicCalendarInformation
+    # 戻り値:: EconomicCalendarInformationの配列
     def retrieve_economic_calendar_informations(period, pair_name = nil)
       securities.retrieve_calendar(period, pair_name)
     end

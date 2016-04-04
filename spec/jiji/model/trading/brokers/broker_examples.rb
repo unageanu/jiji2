@@ -761,6 +761,25 @@ shared_examples 'brokerの基本操作ができる' do
     broker.destroy
   end
 
+  describe '#retirieve_calendar' do
+    it 'can retirieve financial event informations.' do
+      check_event_information(
+        broker.retrieve_economic_calendar_information(2592000, :EURUSD))
+      check_event_information(
+        broker.retrieve_economic_calendar_information(604800))
+    end
+
+    def check_event_information(events)
+      events.each do |event|
+        expect(event.title).not_to be nil
+        expect(event.currency).not_to be nil
+        expect(event.region).not_to be nil
+        expect(event.unit).not_to be nil
+        expect(event.timestamp).not_to be nil
+      end
+    end
+  end
+
   def sort_by_internal_id(orders_or_positions)
     orders_or_positions.sort_by { |o| o.internal_id }
   end

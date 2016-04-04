@@ -46,6 +46,7 @@ RDoc::Task.new do |rd|
     "src/jiji/model/notification/notificator.rb",
     "src/jiji/model/trading/account.rb",
     "src/jiji/model/trading/closing_policy.rb",
+    "src/jiji/model/trading/economic_calendar_information.rb",
     "src/jiji/model/trading/order.rb",
     "src/jiji/model/trading/pair.rb",
     "src/jiji/model/trading/position.rb",

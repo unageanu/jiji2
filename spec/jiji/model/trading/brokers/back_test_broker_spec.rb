@@ -30,8 +30,11 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   end
   let(:broker) do
     Jiji::Model::Trading::Brokers::BackTestBroker.new(backtest,
-      Time.utc(2015, 5, 1), Time.utc(2015, 5, 1, 0, 10),
-      pairs, 100_000, [], repository, securities_provider, position_repository)
+      Time.utc(2015, 5, 1), Time.utc(2015, 5, 1, 0, 10), pairs, 100_000, [], {
+        tick_repository:     repository,
+        securities_provider: securities_provider,
+        position_repository: position_repository
+      })
   end
 
   it_behaves_like 'brokerの基本操作ができる'

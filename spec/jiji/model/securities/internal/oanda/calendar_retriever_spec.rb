@@ -14,5 +14,4 @@ describe Jiji::Model::Securities::Internal::Oanda::CalendarRetriever do
   end
 
   it_behaves_like 'CalendarRetriever examples'
-
 end if ENV['OANDA_API_ACCESS_TOKEN']

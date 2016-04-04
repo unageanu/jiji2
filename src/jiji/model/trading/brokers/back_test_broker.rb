@@ -14,19 +14,15 @@ module Jiji::Model::Trading::Brokers
 
     attr_reader :position_builder, :securities
 
-    def initialize(backtest, start_time, end_time, pairs, balance,
-      orders, tick_repository, securities_provider, position_repository)
+    def initialize(backtest, start_time, end_time,
+      pairs, balance, orders, modules)
       super()
 
-      positions = position_repository.retrieve_living_positions(backtest.id)
-      config = create_securities_configuration(
-        backtest, start_time, end_time, pairs, orders, positions)
-      @securities = VirtualSecurities.new(
-        tick_repository, securities_provider, config)
-      @backtest_id = backtest.id
+      positions =
+        modules[:position_repository].retrieve_living_positions(backtest.id)
 
-      @position_builder = PositionBuilder.new(backtest)
-
+      build_components(backtest, start_time,
+        end_time, pairs, orders, positions, modules)
       init_account(balance)
       init_positions(positions)
     end
@@ -39,6 +35,17 @@ module Jiji::Model::Trading::Brokers
     end
 
     private
+
+    def build_components(backtest, start_time, end_time,
+      pairs, orders, positions, modules)
+      config = create_securities_configuration(
+        backtest, start_time, end_time, pairs, orders, positions)
+      @securities = VirtualSecurities.new(
+        modules[:tick_repository], modules[:securities_provider], config)
+      @backtest_id = backtest.id
+
+      @position_builder = PositionBuilder.new(backtest)
+    end
 
     def init_account(balance)
       @account = Account.new(nil, balance, 0.04)

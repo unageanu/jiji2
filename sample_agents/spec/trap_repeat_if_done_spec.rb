@@ -10,12 +10,14 @@ describe TrapRepeatIfDone do
   let(:mock_securities) do
     Jiji::Test::Mock::MockSecurities.new({})
   end
+  let(:securities_provider) do
+    securities_provider = Jiji::Model::Securities::SecuritiesProvider.new
+    securities_provider.set mock_securities
+    securities_provider
+  end
   let(:tick_repository) do
     repository = Jiji::Model::Trading::TickRepository.new
-    securities_provider = Jiji::Model::Securities::SecuritiesProvider.new
-
     repository.securities_provider = securities_provider
-    securities_provider.set mock_securities
     repository
   end
   let(:pairs) do
@@ -30,8 +32,11 @@ describe TrapRepeatIfDone do
   end
   let(:broker) do
     broker = Jiji::Model::Trading::Brokers::BackTestBroker.new(backtest,
-      Time.utc(2015, 5, 1), Time.utc(2015, 5, 1, 0, 10),
-      pairs, 100_000, [], tick_repository, position_repository)
+      Time.utc(2015, 5, 1), Time.utc(2015, 5, 1, 0, 10), pairs, 100_000, [], {
+        tick_repository:     tick_repository,
+        securities_provider: securities_provider,
+        position_repository: position_repository
+      })
     Jiji::Model::Trading::Brokers::BrokerProxy.new(broker, nil)
   end
 

@@ -214,8 +214,11 @@ module Jiji::Model::Trading
     def create_broker
       pairs = (pair_names || []).map { |p| @pairs.get_by_name(p) }
       Brokers::BackTestBroker.new(self, calcurate_start_time,
-        end_time, pairs, restore_balance, restore_order, 
-        @tick_repository, @securities_provider, @position_repository)
+        end_time, pairs, restore_balance, restore_order, {
+          tick_repository:     @tick_repository,
+          securities_provider: @securities_provider,
+          position_repository: @position_repository
+        })
     end
 
     def create_trading_context(broker, agents, graph_factory)

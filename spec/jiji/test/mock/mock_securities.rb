@@ -91,12 +91,12 @@ module Jiji::Test::Mock
       super(internal_id)
     end
 
-    def retrieve_calendar(period, pair_name=nil)
+    def retrieve_calendar(period, pair_name = nil)
       return CALENDAR_INFORMATIONS unless pair_name
       if pair_name =~ /USD/
-        CALENDAR_INFORMATIONS.reject {|i| i.currency != 'USD'}
+        CALENDAR_INFORMATIONS.reject { |i| i.currency != 'USD' }
       elsif pair_name =~ /JPY/
-        CALENDAR_INFORMATIONS.reject {|i| i.currency != 'JPY'}
+        CALENDAR_INFORMATIONS.reject { |i| i.currency != 'JPY' }
       else
         []
       end
@@ -105,19 +105,25 @@ module Jiji::Test::Mock
     CalndarInformationSrc = Struct.new(:title, :timestamp, :unit,
       :currency, :forecast, :previous, :actual, :market, :region, :impact)
     CALENDAR_INFORMATIONS = [
-      EconomicCalendarInformation.new( CalndarInformationSrc.new(
-        "Non-farm Payrolls", 1000, "k", "USD", "225", "245", "215",
-        "205", "americas", 3
-      )),
-      EconomicCalendarInformation.new( CalndarInformationSrc.new(
-        "Univ of Mich Sent. (Final)", 2000, "index", "USD", "91",
-        "90", "91.0", "90.5", "americas", 2
-      )),
-      EconomicCalendarInformation.new( CalndarInformationSrc.new(
-        "ISM Manufacturing", 3000, "index", "JPY", "51", "49.5",
-        "51.8", "51", "asia", 3
-      ))
-    ]
+      EconomicCalendarInformation.new(
+        CalndarInformationSrc.new(
+          'Non-farm Payrolls', 1000, 'k', 'USD', '225', '245', '215',
+          '205', 'americas', 3
+        )
+      ),
+      EconomicCalendarInformation.new(
+        CalndarInformationSrc.new(
+          'Univ of Mich Sent. (Final)', 2000, 'index', 'USD', '91',
+          '90', '91.0', '90.5', 'americas', 2
+        )
+      ),
+      EconomicCalendarInformation.new(
+        CalndarInformationSrc.new(
+          'ISM Manufacturing', 3000, 'index', 'JPY', '51', '49.5',
+          '51.8', '51', 'asia', 3
+        )
+      )
+    ].freeze
 
     private
 

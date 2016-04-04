@@ -95,7 +95,7 @@ module Jiji::Model::Trading::Brokers
 
     # 経済カレンダー情報を取得します。
     # 詳細は、以下をご覧ください。
-    # 
+    #
     # http://developer.oanda.com/docs/jp/v1/forex-labs/#section
     #
     # ※現在時刻を起点とした情報のみ取得できます。
@@ -115,10 +115,9 @@ module Jiji::Model::Trading::Brokers
     #             例) USDJPY
     #             指定がない場合、すべての通貨ペアの情報を取得します。
     # 戻り値:: EconomicCalendarInformation
-    def retrieve_economic_calendar_information( period, pair_name=nil )
+    def retrieve_economic_calendar_information(period, pair_name = nil)
       securities.retrieve_calendar(period, pair_name)
     end
-
 
     def destroy #:nodoc:
       securities.destroy if securities

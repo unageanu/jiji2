@@ -764,9 +764,9 @@ shared_examples 'brokerの基本操作ができる' do
   describe '#retirieve_calendar' do
     it 'can retirieve financial event informations.' do
       check_event_information(
-        broker.retrieve_economic_calendar_information(2592000, :EURUSD))
+        broker.retrieve_economic_calendar_information(2_592_000, :EURUSD))
       check_event_information(
-        broker.retrieve_economic_calendar_information(604800))
+        broker.retrieve_economic_calendar_information(604_800))
     end
 
     def check_event_information(events)

@@ -6,8 +6,8 @@ require 'jiji/model/securities/oanda_securities'
 RSpec.shared_examples 'CalendarRetriever examples' do
   describe '#retirieve_calendar' do
     it 'can retirieve financial event informations.' do
-      check_event_information(client.retrieve_calendar(2592000, :USDJPY))
-      check_event_information(client.retrieve_calendar(604800))
+      check_event_information(client.retrieve_calendar(2_592_000, :USDJPY))
+      check_event_information(client.retrieve_calendar(604_800))
     end
 
     def check_event_information(events)
@@ -19,6 +19,5 @@ RSpec.shared_examples 'CalendarRetriever examples' do
         expect(event.timestamp).not_to be nil
       end
     end
-
   end
 end

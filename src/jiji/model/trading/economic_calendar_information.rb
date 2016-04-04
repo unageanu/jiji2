@@ -4,7 +4,6 @@ require 'encase'
 require 'jiji/utils/value_object'
 
 module Jiji::Model::Trading
-
   # 経済カレンダー情報
   class EconomicCalendarInformation
 
@@ -50,7 +49,7 @@ module Jiji::Model::Trading
 
     def initialize(info) #:nodoc:
       @title = info.title
-      @timestamp = Time.at(info.timestamp||0)
+      @timestamp = Time.at(info.timestamp || 0)
       @unit = info.unit
       @currency = info.currency
       @forecast = info.forecast
@@ -60,6 +59,6 @@ module Jiji::Model::Trading
       @region = info.region
       @impact = info.impact
     end
-  end
 
+  end
 end

@@ -11,7 +11,8 @@ module Jiji::Model::Trading::Brokers
 
     def_delegators :@broker, :pairs, :tick, :positions, :orders, :account,
       :modify_order, :cancel_order, :modify_position, :close_position,
-      :refresh, :refresh_positions, :refresh_account, :load_positions
+      :refresh, :refresh_positions, :refresh_account, :load_positions,
+      :retrieve_economic_calendar_informations
 
     attr_reader :agent #:nodoc:
 

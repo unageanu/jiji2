@@ -6,10 +6,10 @@ nav_class_name: "lv2"
 ---
 
 日銀短観や米国雇用統計といった、各種経済指標の開示情報を取得することができます。<br/>
-開示の内容に応じてトレード戦略を切り替えるようなエージェントを作成することが可能です。
+開示の内容に応じて、リアルタイムにトレード戦略を切り替えるようなエージェントを作成することが可能です。
 
 <div class="notice">
-※情報の取得には、 <a href="http://developer.oanda.com/docs/jp/v1/forex-labs/#section" target="_blank">ODANDA API Labsで提供されている機能</a> を利用しています。<br/>
+※情報の取得には、 <a href="http://developer.oanda.com/docs/jp/v1/forex-labs/#section" target="_blank">OANDA API Labsで提供されている機能</a> を利用しています。<br/>
 こちらもあわせてご覧ください。
 </div>
 

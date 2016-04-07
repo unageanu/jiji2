@@ -6,6 +6,8 @@ machine:
 
 dependencies:
   post:
+   - echo Y | rvm @global do gem uninstall bundler
+   - gem install bundler
    - npm install:
        pwd:
          sites

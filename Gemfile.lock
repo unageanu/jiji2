@@ -170,6 +170,7 @@ DEPENDENCIES
   activesupport
   aws-sdk
   bcrypt
+  bundler
   codeclimate-test-reporter
   encase
   figaro

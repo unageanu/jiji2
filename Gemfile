@@ -29,6 +29,7 @@ gem 'aws-sdk'
 gem 'newrelic_rpm'
 
 gem 'rake'
+gem 'bundler'
 
 group :test do
   gem 'rspec'

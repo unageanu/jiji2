@@ -41,7 +41,8 @@
     "require-dir": "0.3.0",
     "webpack": "1.10.5",
     "jasmine-core": "2.3.4",
-    "mkdir-p": "0.0.7"
+    "mkdir-p": "0.0.7",
+    "istanbul": "*"
   },
   "engines": {
     "node": ">=0.10.0"

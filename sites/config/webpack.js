@@ -61,6 +61,22 @@ module.exports = {
       alias: {
         src:     __dirname + '/../src/js'
       }
+    },
+    module: {
+      preLoaders: [{
+        test: /\.js$/,
+        exclude:  /(node_modules|lib|spec|)/,
+        loader: 'isparta-instrumenter-loader',
+        query: {
+          babel: {
+            presets: [
+              'babel-preset-es2015',
+              'babel-preset-react',
+              'babel-preset-stage-0'
+            ].map(require.resolve)
+          }
+        }
+      }]
     }
   })
 }

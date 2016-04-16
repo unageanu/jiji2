@@ -41,12 +41,7 @@
     "require-dir": "0.3.0",
     "webpack": "1.10.5",
     "jasmine-core": "2.3.4",
-    "mkdir-p": "0.0.7",
-    "istanbul": "*",
-    "isparta-instrumenter-loader": "*",
-    "babel-preset-es2015": "*",
-    "babel-preset-react": "*",
-    "babel-preset-stage-0": "*"
+    "mkdir-p": "0.0.7"
   },
   "engines": {
     "node": ">=0.10.0"

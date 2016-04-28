@@ -6,6 +6,7 @@ import ContainerJS  from "container-js";
 
 import modules      from "../composing/modules";
 import routes       from "./routes";
+import babelLoader  from "../composing/babel-loader";
 
 export default class Initializer {
 
@@ -22,7 +23,7 @@ export default class Initializer {
     this.container = new ContainerJS.Container(
       this.modules(),
       ContainerJS.PackagingPolicy.COMMON_JS_MODULE_PER_CLASS,
-      ContainerJS.Loaders.COMMON_JS
+      babelLoader
     );
   }
   initializeView(application, initialRoute) {

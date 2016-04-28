@@ -35,7 +35,7 @@ var base = {
     exprContextRecursive : true,
     exprContextRegExp: /^\.\/(?!main)([a-zA-Z0-9\-\_\/]*)$/,
     exprContextCritical: false,
-    exprContextRequest: '../../../src/js',
+    exprContextRequest: __dirname + '/../src/js',
 
     unknownContextRegExp: /$^/,
     unknownContextCritical: false

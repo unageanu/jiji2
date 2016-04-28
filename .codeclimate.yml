@@ -7,7 +7,7 @@ engines:
   eslint:
     enabled: true
     config:
-      config: sites/config/eslint.json
+      config: sites/config/eslint_for_codeclimete.json
 
 ratings:
   paths:

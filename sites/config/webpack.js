@@ -24,7 +24,7 @@ var base = {
       exclude:  /(node_modules|lib)/,
       loader:  'babel-loader',
       query: {
-        stage : 0,
+        presets: ['es2015', 'react', 'stage-0'],
         cacheDirectory: "cache/babel-cache"
       }
     }, {

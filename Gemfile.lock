@@ -64,7 +64,7 @@ GEM
     mime-types (2.99.1)
     mini_magick (4.5.1)
     minitest (5.8.4)
-    mongo (2.2.4)
+    mongo (2.2.5)
       bson (~> 4.0)
     mongoid (5.1.3)
       activemodel (~> 4.0)

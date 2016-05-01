@@ -5,6 +5,8 @@ machine:
     version: 0.10.34
 
 dependencies:
+  pre:
+   - echo "export rvm_ignore_gemsets_flag=1" >> ~/.rvmrc
   post:
    - npm install:
        pwd:

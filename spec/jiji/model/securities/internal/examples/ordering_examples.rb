@@ -33,6 +33,10 @@ RSpec.shared_examples '注文関連の操作' do
         expect(order.units).to be 1
         expect(order.type).to be :market
 
+        trades = client.retrieve_trades
+        trade = trades.find {|t| t.internal_id == order.internal_id }
+        expect(trade).not_to be nil
+
         sleep wait
 
         order = client.order(:USDJPY, :sell, 2, :market, {
@@ -48,6 +52,10 @@ RSpec.shared_examples '注文関連の操作' do
         expect(order.stop_loss).to eq((bid + 2).to_f)
         expect(order.take_profit).to eq((bid - 2).to_f)
         expect(order.trailing_stop).to eq 5
+
+        trades = client.retrieve_trades
+        trade = trades.find {|t| t.internal_id == order.internal_id }
+        expect(trade).not_to be nil
 
         sleep wait
 

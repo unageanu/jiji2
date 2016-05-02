@@ -151,7 +151,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.2)
-    unicode-display_width (1.0.3)
+    unicode-display_width (1.0.5)
     unparser (0.2.5)
       abstract_type (~> 0.0.7)
       adamantium (~> 0.2.0)

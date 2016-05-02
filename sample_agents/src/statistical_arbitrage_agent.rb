@@ -19,10 +19,13 @@ class StatisticalArbitrageAgent
   end
 
   def post_create
-    graph = graph_factory.create('spread',
+    spread_graph = graph_factory.create('spread',
       :line, :last, ['#779999'])
+    nzd_graph = graph_factory.create('nzd',
+      :rate, :last, ['#779999', '#557777'])
     @trader = StatisticalArbitrage::CointegrationTrader.new(
-      @trade_units.to_i, @distance.to_f, broker, graph)
+      @trade_units.to_i, @distance.to_f,
+      broker, spread_graph, nzd_graph, logger)
   end
 
   def next_tick(tick)
@@ -98,12 +101,14 @@ module StatisticalArbitrage
 
     attr :positions
 
-    def initialize(units, distance, broker, graph=nil, logger=nil)
-      @units     = units
-      @distance  = distance
-      @broker    = broker
-      @logger    = logger
-      @graph     = graph
+    def initialize(units, distance, broker,
+      spread_graph=nil, nzd_graph=nil, logger=nil)
+      @units         = units
+      @distance      = distance
+      @broker        = broker
+      @logger        = logger
+      @spread_graph  = spread_graph
+      @nzd_graph     = nzd_graph
       @positions = {}
     end
 
@@ -114,11 +119,13 @@ module StatisticalArbitrage
 
     def do_trade(tick)
       spread = calculate_spread(tick)
-      @graph << [spread.to_f.round(3)] if @graph
-      @logger.info(spread.to_f.round(3)) if @logger
-
       coint = resolve_coint(tick)
       index = ((spread - coint[:mean]) / (coint[:sd] * @distance)).truncate.to_i
+
+      @spread_graph << [spread.to_f.round(3)] if @spread_graph
+      @nzd_graph    << [tick[:AUDJPY].bid, (tick[:NZDJPY].bid * coint[:slope]) - coint[:mean]] if @nzd_graph
+      @logger.info("#{tick[:AUDJPY].bid} #{tick[:NZDJPY].bid} #{spread.to_f.round(3)} #{index}") if @logger
+
       if index != 0 && !@positions.include?(index.to_s)
         @positions[index.to_s] = create_position( index, spread, coint )
       end

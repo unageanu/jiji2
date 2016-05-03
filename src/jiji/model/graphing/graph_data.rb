@@ -23,9 +23,9 @@ module Jiji::Model::Graphing
       { graph_id: 1, interval: 1, timestamp: 1 },
       { name: 'graph-data_id_interval_timestamp_index' })
 
-    def self.create(graph, value, interval, time = Time.now)
+    def self.create(graph_id, value, interval, time = Time.now)
       GraphData.new do |d|
-        d.graph     = graph
+        d.graph_id  = graph_id
         d.interval  = interval
         d.value     = value
         d.timestamp = time

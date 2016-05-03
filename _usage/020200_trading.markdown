@@ -17,7 +17,7 @@ nav_class_name: "lv2"
 # EURJPYを10000単位、成行で売り
 broker.sell(:EURJPY, 10000)
 # 各種オプションを指定して、EURJPYを10000単位、成行で買い
-broker.buy(:EURJPY,  10000, :market, {
+order_result = broker.buy(:EURJPY,  10000, :market, {
   lower_bound:   135.59,  #成立下限価格
   upper_bound:   135.61,  #成立上限価格
 
@@ -26,6 +26,8 @@ broker.buy(:EURJPY,  10000, :market, {
   take_profit:   135.73,  #テイクプロフィット価格
   trailing_stop: 10       #トレーリングストップのディスタンスをpipsで指定します。  
 })
+# 成行注文の場合、通常、即約定するため、以下のようなコードで注文によって作成された建玉を取得できます
+position = broker.positions[order_result.trade_opened.internal_id]
 
 # 指値135.6で売り注文
 broker.sell(:USDJPY, 10000, :limit, {

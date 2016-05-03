@@ -22,7 +22,7 @@ class StatisticalArbitrageAgent
     spread_graph = graph_factory.create('spread',
       :line, :last, ['#779999'])
     nzd_graph = graph_factory.create('nzd',
-      :rate, :last, ['#779999', '#557777'])
+      :rate, :last, ['#FF6633', '#FFAA22'])
     @trader = StatisticalArbitrage::CointegrationTrader.new(
       @trade_units.to_i, @distance.to_f,
       broker, spread_graph, nzd_graph, logger)
@@ -123,7 +123,7 @@ module StatisticalArbitrage
       index = ((spread - coint[:mean]) / (coint[:sd] * @distance)).truncate.to_i
 
       @spread_graph << [spread.to_f.round(3)] if @spread_graph
-      @nzd_graph    << [tick[:AUDJPY].bid, (tick[:NZDJPY].bid * coint[:slope]) - coint[:mean]] if @nzd_graph
+      @nzd_graph    << [tick[:AUDJPY].bid, (tick[:NZDJPY].bid * coint[:slope]) + coint[:mean]] if @nzd_graph
       @logger.info("#{tick[:AUDJPY].bid} #{tick[:NZDJPY].bid} #{spread.to_f.round(3)} #{index}") if @logger
 
       if index != 0 && !@positions.include?(index.to_s)
@@ -143,20 +143,20 @@ module StatisticalArbitrage
 
     def buy_aud(spread, coint)
       buy_id  = @broker.buy(:AUDJPY, @units).trade_opened.internal_id
-      sell_id = @broker.sell(:NZDJPY, @units).trade_opened.internal_id
+      sell_id = @broker.sell(:NZDJPY, (@units*coint[:slope]).round).trade_opened.internal_id
       Position.new(:buy_aud, spread, coint, [
         @broker.positions[buy_id],
         @broker.positions[sell_id]
-      ])
+      ], @distance)
     end
 
     def sell_aud(spread, coint)
       sell_id = @broker.sell(:AUDJPY, @units).trade_opened.internal_id
-      buy_id  = @broker.buy(:NZDJPY, @units).trade_opened.internal_id
+      buy_id  = @broker.buy(:NZDJPY, (@units*coint[:slope]).round).trade_opened.internal_id
       Position.new(:sell_aud, spread, coint, [
         @broker.positions[sell_id],
         @broker.positions[buy_id]
-      ])
+      ], @distance)
     end
 
   end

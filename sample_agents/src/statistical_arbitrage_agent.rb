@@ -67,7 +67,8 @@ module StatisticalArbitrage
       '2016-02-01' => { slope:0.837360002, mean:20.909344389, sd:2.163306779 },
       '2016-03-01' => { slope:0.879965684, mean:17.162602491, sd:2.221233518 },
       '2016-04-01' => { slope:0.875588818, mean:17.602128212, sd:2.218701436 },
-      'latest'     => { slope:0.875588818, mean:17.602128212, sd:2.218701436 }
+      '2016-05-01' => { slope:0.870884249, mean:17.985573263, sd:2.223409486 },
+      'latest'     => { slope:0.870884249, mean:17.985573263, sd:2.223409486 }
     }
 
     def calculate_spread(tick, coint=resolve_coint(tick))

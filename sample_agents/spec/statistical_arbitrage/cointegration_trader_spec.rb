@@ -16,7 +16,7 @@ describe StatisticalArbitrage::CointegrationTrader do
         .exactly(3).times
         .and_return( create_order_result )
       expect(broker).to receive(:sell)
-        .with(:NZDJPY, 100)
+        .with(:NZDJPY, 50)
         .exactly(3).times
         .and_return( create_order_result )
       positions = { "x" => create_mock_position(false) }
@@ -58,7 +58,7 @@ describe StatisticalArbitrage::CointegrationTrader do
         .exactly(3).times
         .and_return( create_order_result )
       expect(broker).to receive(:sell)
-        .with(:NZDJPY, 100)
+        .with(:NZDJPY, 50)
         .exactly(3).times
         .and_return( create_order_result )
       positions = { "x" => create_mock_position(true) }
@@ -93,7 +93,7 @@ describe StatisticalArbitrage::CointegrationTrader do
         .exactly(3).times
         .and_return( create_order_result )
       expect(broker).to receive(:buy)
-        .with(:NZDJPY, 100)
+        .with(:NZDJPY, 50)
         .exactly(3).times
         .and_return( create_order_result )
       positions = { "x" => create_mock_position(false) }
@@ -135,7 +135,7 @@ describe StatisticalArbitrage::CointegrationTrader do
         .exactly(3).times
         .and_return( create_order_result )
       expect(broker).to receive(:buy)
-        .with(:NZDJPY, 100)
+        .with(:NZDJPY, 50)
         .exactly(3).times
         .and_return( create_order_result )
       positions = { "x" => create_mock_position(true) }
@@ -167,8 +167,12 @@ describe StatisticalArbitrage::CointegrationTrader do
         .exactly(2).times
         .and_return( create_order_result )
       expect(broker).to receive(:buy)
-        .with(:NZDJPY, 100)
-        .exactly(2).times
+        .with(:NZDJPY, 50)
+        .exactly(1).times
+        .and_return( create_order_result )
+      expect(broker).to receive(:buy)
+        .with(:NZDJPY, 63)
+        .exactly(1).times
         .and_return( create_order_result )
       positions = { "x" => create_mock_position(true) }
       allow(broker).to receive(:positions).and_return(positions)

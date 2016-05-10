@@ -125,7 +125,7 @@ module StatisticalArbitrage
 
       @spread_graph << [spread.to_f.round(3)] if @spread_graph
       @nzd_graph    << [tick[:AUDJPY].bid, (tick[:NZDJPY].bid * coint[:slope]) + coint[:mean]] if @nzd_graph
-      @logger.info("#{tick[:AUDJPY].bid} #{tick[:NZDJPY].bid} #{spread.to_f.round(3)} #{index}") if @logger
+      @logger.info("#{tick.timestamp} #{tick[:AUDJPY].bid} #{tick[:NZDJPY].bid} #{spread.to_f.round(3)} #{@distance} #{coint[:sd]} #{coint[:mean]} #{index}") if @logger
 
       if index != 0 && !@positions.include?(index.to_s)
         @positions[index.to_s] = create_position( index, spread, coint )

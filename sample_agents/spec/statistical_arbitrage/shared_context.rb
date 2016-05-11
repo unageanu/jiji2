@@ -13,9 +13,10 @@ RSpec.shared_context 'utils for statistical arbitrage' do
       (BigDecimal.new(value, 10) + 0.03).to_f)
   end
 
-  def create_mock_position(expect_to_receive_close)
+  def create_mock_position(expect_to_receive_close, pair_name)
     mock = double('mock position')
     expect(mock).to receive(:close).at_least(:once) if expect_to_receive_close
+    allow(mock).to receive(:pair_name).and_return(pair_name)
     mock
   end
 

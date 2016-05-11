@@ -74,8 +74,8 @@ describe StatisticalArbitrage::Position do
 
   def create_mock_positions(expect_to_receive_close)
     [
-      create_mock_position(expect_to_receive_close),
-      create_mock_position(expect_to_receive_close)
+      create_mock_position(expect_to_receive_close, :AUDJPY),
+      create_mock_position(expect_to_receive_close, :NZDJPY)
     ]
   end
 

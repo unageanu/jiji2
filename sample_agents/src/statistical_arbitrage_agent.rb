@@ -13,6 +13,8 @@ class StatisticalArbitrageAgent
   # UIから設定可能なプロパティの一覧
   def self.property_infos
     [
+      Property.new('pair1', '通貨ペア1', "AUDJPY"),
+      Property.new('pair2', '通貨ペア2', "NZDJPY"),
       Property.new('trade_units', '取引数量', 10000),
       Property.new('distance',    '取引を仕掛ける間隔(sdに対する倍率)', 1)
     ]
@@ -21,11 +23,11 @@ class StatisticalArbitrageAgent
   def post_create
     spread_graph = graph_factory.create('spread',
       :line, :last, ['#779999'])
-    nzd_graph = graph_factory.create('nzd',
+    rate_graph = graph_factory.create('rate',
       :rate, :last, ['#FF6633', '#FFAA22'])
     @trader = StatisticalArbitrage::CointegrationTrader.new(
-      @trade_units.to_i, @distance.to_f,
-      broker, spread_graph, nzd_graph, logger)
+      @pair1.to_sym, @pair2.to_sym, @trade_units.to_i, @distance.to_f,
+      broker, spread_graph, rate_graph, logger)
   end
 
   def next_tick(tick)
@@ -71,9 +73,9 @@ module StatisticalArbitrage
       'latest'     => { slope:0.870884249, mean:17.985573263, sd:2.223409486 }
     }
 
-    def calculate_spread(tick, coint=resolve_coint(tick))
-      aud = tick[:AUDJPY].bid
-      nzd = tick[:NZDJPY].bid
+    def calculate_spread(pair1, pair2, tick, coint=resolve_coint(tick))
+      aud = tick[pair1].bid
+      nzd = tick[pair2].bid
       bd(aud) - (bd(nzd) * coint[:slope])
     end
 
@@ -102,14 +104,16 @@ module StatisticalArbitrage
 
     attr :positions
 
-    def initialize(units, distance, broker,
-      spread_graph=nil, nzd_graph=nil, logger=nil)
+    def initialize(pair1, pair2, units, distance, broker,
+      spread_graph=nil, rate_graph=nil, logger=nil)
+      @pair1         = pair1
+      @pair2         = pair2
       @units         = units
       @distance      = distance
       @broker        = broker
       @logger        = logger
       @spread_graph  = spread_graph
-      @nzd_graph     = nzd_graph
+      @rate_graph    = rate_graph
       @positions = {}
     end
 
@@ -119,13 +123,13 @@ module StatisticalArbitrage
     end
 
     def do_trade(tick)
-      spread = calculate_spread(tick)
+      spread = calculate_spread(@pair1, @pair2, tick)
       coint = resolve_coint(tick)
       index = ((spread - coint[:mean]) / (coint[:sd] * @distance)).truncate.to_i
 
       @spread_graph << [spread.to_f.round(3)] if @spread_graph
-      @nzd_graph    << [tick[:AUDJPY].bid, (tick[:NZDJPY].bid * coint[:slope]) + coint[:mean]] if @nzd_graph
-      @logger.info("#{tick.timestamp} #{tick[:AUDJPY].bid} #{tick[:NZDJPY].bid} #{spread.to_f.round(3)} #{@distance} #{coint[:sd]} #{coint[:mean]} #{index}") if @logger
+      @rate_graph    << [tick[@pair1].bid, (tick[@pair2].bid * coint[:slope]) + coint[:mean]] if @rate_graph
+      @logger.info("#{tick.timestamp} #{tick[@pair1].bid} #{tick[@pair2].bid} #{spread.to_f.round(3)} #{@distance} #{coint[:sd]} #{coint[:mean]} #{index}") if @logger
 
       if index != 0 && !@positions.include?(index.to_s)
         @positions[index.to_s] = create_position( index, spread, coint )
@@ -143,8 +147,8 @@ module StatisticalArbitrage
     end
 
     def buy_aud(spread, coint)
-      buy_id  = @broker.buy(:AUDJPY, @units).trade_opened.internal_id
-      sell_id = @broker.sell(:NZDJPY, (@units*coint[:slope]).round).trade_opened.internal_id
+      buy_id  = @broker.buy(@pair1, @units).trade_opened.internal_id
+      sell_id = @broker.sell(@pair2, (@units*coint[:slope]).round).trade_opened.internal_id
       Position.new(:buy_aud, spread, coint, [
         @broker.positions[buy_id],
         @broker.positions[sell_id]
@@ -152,8 +156,8 @@ module StatisticalArbitrage
     end
 
     def sell_aud(spread, coint)
-      sell_id = @broker.sell(:AUDJPY, @units).trade_opened.internal_id
-      buy_id  = @broker.buy(:NZDJPY, (@units*coint[:slope]).round).trade_opened.internal_id
+      sell_id = @broker.sell(@pair1, @units).trade_opened.internal_id
+      buy_id  = @broker.buy(@pair2, (@units*coint[:slope]).round).trade_opened.internal_id
       Position.new(:sell_aud, spread, coint, [
         @broker.positions[sell_id],
         @broker.positions[buy_id]
@@ -183,7 +187,8 @@ module StatisticalArbitrage
     end
 
     def take_profit?(tick)
-      current_spread = calculate_spread(tick, @coint)
+      current_spread = calculate_spread(
+        @positions[0].pair_name, @positions[1].pair_name, tick, @coint)
       if @trade_type == :buy_aud
         current_spread >= @spread + @coint[:sd] * @distance
       else

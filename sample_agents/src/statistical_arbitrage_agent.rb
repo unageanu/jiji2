@@ -83,17 +83,8 @@ module StatisticalArbitrage
       bd(price1) - (bd(price2) * coint[:slope])
     end
 
-    def calculate_mean(tick)
-      resolve_coint(tick.timestamp)[:mean]
-    end
-
-    def calculate_sd(tick)
-      resolve_coint(tick.timestamp)[:sd]
-    end
-
-    def resolve_coint(time)
-      key = time.strftime("%Y-%m-01")
-      COINTEGRATIONS[key] || COINTEGRATIONS["latest"]
+    def resolve_coint(time, pair1, pair2)
+      @cointegration_resolver.resolve(time, pair1, pair2)
     end
 
     def bd(v)
@@ -102,11 +93,58 @@ module StatisticalArbitrage
 
   end
 
+  class CointegrationResolver
+    def resolve(time)
+    end
+  end
+
+  class StaticConstantsResolver
+
+    COINTEGRATIONS = {
+      '2014-01-01' => { slope:0.639779926, mean:39.798570231, sd:1.118107989 },
+      '2014-02-01' => { slope:0.472707933, mean:53.086706403, sd:1.410627152 },
+      '2014-03-01' => { slope:0.434243152, mean:56.061332315, sd:1.426766217 },
+      '2014-04-01' => { slope:0.388503806, mean:59.716515347, sd:1.417530649 },
+      '2014-05-01' => { slope:0.452009838, mean:54.565881819, sd:1.400824698 },
+      '2014-06-01' => { slope:0.468971690, mean:53.195204405, sd:1.345733500 },
+      '2014-07-01' => { slope:0.495815150, mean:51.029449076, sd:1.323011803 },
+      '2014-08-01' => { slope:0.507880741, mean:50.059333184, sd:1.289276140 },
+      '2014-09-01' => { slope:0.528603160, mean:48.425611954, sd:1.328614653 },
+      '2014-10-01' => { slope:0.565019583, mean:45.504254407, sd:1.441246028 },
+      '2014-11-01' => { slope:0.565114069, mean:45.575041006, sd:1.435544728 },
+      '2014-12-01' => { slope:0.658238976, mean:37.829951061, sd:1.591378385 },
+      '2015-01-01' => { slope:0.648219391, mean:38.666538200, sd:1.580403641 },
+      '2015-02-01' => { slope:0.621887956, mean:40.839250260, sd:1.587189027 },
+      '2015-03-01' => { slope:0.599479337, mean:42.612445521, sd:1.702255585 },
+      '2015-04-01' => { slope:0.557575116, mean:46.056167220, sd:1.819182217 },
+      '2015-05-01' => { slope:0.503979842, mean:50.493955291, sd:1.998065715 },
+      '2015-06-01' => { slope:0.500765214, mean:50.761523621, sd:1.961816777 },
+      '2015-07-01' => { slope:0.497107112, mean:51.135469439, sd:1.943820297 },
+      '2015-08-01' => { slope:0.503640515, mean:50.550317504, sd:1.923043502 },
+      '2015-09-01' => { slope:0.501153345, mean:50.760732076, sd:1.951388645 },
+      '2015-10-01' => { slope:0.628108957, mean:39.577199938, sd:2.051391140 },
+      '2015-11-01' => { slope:0.711480649, mean:32.131315959, sd:2.077261234 },
+      '2015-12-01' => { slope:0.759938317, mean:27.773159032, sd:2.049069654 },
+      '2016-01-01' => { slope:0.782435872, mean:25.723287669, sd:2.088435715 },
+      '2016-02-01' => { slope:0.837360002, mean:20.909344389, sd:2.163306779 },
+      '2016-03-01' => { slope:0.879965684, mean:17.162602491, sd:2.221233518 },
+      '2016-04-01' => { slope:0.875588818, mean:17.602128212, sd:2.218701436 },
+      '2016-05-01' => { slope:0.870884249, mean:17.985573263, sd:2.223409486 },
+      'latest'     => { slope:0.870884249, mean:17.985573263, sd:2.223409486 }
+    }
+
+    def resolve(time, pair1, pair2)
+      key = time.strftime("%Y-%m-01")
+      COINTEGRATIONS[key] || COINTEGRATIONS["latest"]
+    end
+  end
+
   class CointegrationTrader
 
     include Utils
 
     attr :positions
+    attr_writer :cointegration_resolver
 
     def initialize(pair1, pair2, units, distance, broker,
       spread_graph=nil, rate_graph=nil, logger=nil)
@@ -118,6 +156,8 @@ module StatisticalArbitrage
       @logger        = logger
       @spread_graph  = spread_graph
       @rate_graph    = rate_graph
+
+      @cointegration_resolver = StaticConstantsResolver.new
       @positions = {}
 
       restore_state
@@ -129,7 +169,7 @@ module StatisticalArbitrage
     end
 
     def do_trade(tick)
-      coint = resolve_coint(tick.timestamp)
+      coint = resolve_coint(tick.timestamp, @pair1, @pair2)
       spread = calculate_spread(@pair1, @pair2, tick, coint)
       index = calculate_index(spread, coint)
 
@@ -213,7 +253,7 @@ module StatisticalArbitrage
 
     def register_position(position1, position2)
       trade_type = position1.sell_or_buy == :sell ? :sell_a : :buy_a
-      coint = resolve_coint(position1.entered_at)
+      coint = resolve_coint(position1.entered_at, @pair1, @pair2)
       spread = calculate_spread_from_price(
         position1.entry_price, position2.entry_price, coint)
       index = calculate_index(spread, coint)

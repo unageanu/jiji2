@@ -58,12 +58,12 @@ describe StatisticalArbitrage::Position do
 
   def create_buy_aud_position(expect_to_receive_close,
     spread=20, coint={slope:0.8, mean:20, sd:2})
-    create_position(:buy_aud, expect_to_receive_close, spread, coint)
+    create_position(:buy_a, expect_to_receive_close, spread, coint)
   end
 
   def create_sell_aud_position(expect_to_receive_close,
     spread=20, coint={slope:0.8, mean:20, sd:2})
-    create_position(:sell_aud, expect_to_receive_close, spread, coint)
+    create_position(:sell_a, expect_to_receive_close, spread, coint)
   end
 
   def create_position(type, expect_to_receive_close,

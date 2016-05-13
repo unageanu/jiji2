@@ -15,8 +15,8 @@ class StatisticalArbitrageAgent
   # UIから設定可能なプロパティの一覧
   def self.property_infos
     [
-      Property.new('pair1',          '通貨ペア1', "AUDJPY"),
-      Property.new('pair2',          '通貨ペア2', "NZDJPY"),
+      Property.new('pair_a',         '通貨ペア1', "AUDJPY"),
+      Property.new('pair_b',         '通貨ペア2', "NZDJPY"),
       Property.new('trade_units',    '取引数量', 10000),
       Property.new('distance',       '取引を仕掛ける間隔(sdに対する倍率)', 1),
       Property.new('quandl_api_key', 'Quandl API KEY', ''),
@@ -30,7 +30,7 @@ class StatisticalArbitrageAgent
       :rate, :last, ['#FF6633', '#FFAA22'])
 
     @trader = StatisticalArbitrage::CointegrationTrader.new(
-      @pair1.to_sym, @pair2.to_sym, @trade_units.to_i, @distance.to_f,
+      @pair_a.to_sym, @pair_b.to_sym, @trade_units.to_i, @distance.to_f,
       broker, spread_graph, rate_graph, logger)
 
     if @quandl_api_key.nil? && @quandl_api_key.length > 0
@@ -241,7 +241,7 @@ module StatisticalArbitrage
       index = calculate_index(spread, coint)
 
       register_graph_data(spread, tick, coint)
-      log(spread, tick, coint)
+      log(spread, tick, coint, index)
 
       if index != 0 && !@positions.include?(index.to_s)
         @positions[index.to_s] = create_position( index, spread, coint )
@@ -255,7 +255,7 @@ module StatisticalArbitrage
       @rate_graph   << [tick[@pair1].bid, pair2_price] if @rate_graph
     end
 
-    def log(spread, tick, coint)
+    def log(spread, tick, coint, index)
       return unless @logger
       @logger.info(
          "#{tick.timestamp} #{tick[@pair1].bid} #{tick[@pair2].bid}" \

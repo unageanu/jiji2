@@ -38,19 +38,19 @@ describe StatisticalArbitrage::CointegrationTrader do
       expect(trader.positions.keys).to eq([])
 
       trader.process_tick(create_tick(90, 83, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(["-1"])
+      expect(trader.positions.keys).to eq(["-2"])
 
       trader.process_tick(create_tick(89, 83, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(["-1"])
+      expect(trader.positions.keys).to eq(["-2"])
 
       trader.process_tick(create_tick(88, 83, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(["-1", "-2"])
+      expect(trader.positions.keys).to eq(["-2", "-3"])
 
       trader.process_tick(create_tick(88, 84, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(["-1", "-2"])
+      expect(trader.positions.keys).to eq(["-2", "-3"])
 
       trader.process_tick(create_tick(87, 85, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(["-1", "-2", "-3"])
+      expect(trader.positions.keys).to eq(["-2", "-3", "-4"])
     end
 
     it 'open :buy_aud position if the spread is lower than sd,' \
@@ -77,18 +77,18 @@ describe StatisticalArbitrage::CointegrationTrader do
       trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq([])
       trader.process_tick(create_tick(90, 83, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(["-1"])
+      expect(trader.positions.keys).to eq(["-2"])
       trader.process_tick(create_tick(88, 83, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(["-1", "-2"])
+      expect(trader.positions.keys).to eq(["-2", "-3"])
       trader.process_tick(create_tick(87, 85, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(["-1", "-2", "-3"])
+      expect(trader.positions.keys).to eq(["-2", "-3", "-4"])
 
       trader.process_tick(create_tick(87, 80, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(["-1", "-2"])
+      expect(trader.positions.keys).to eq(["-2", "-3"])
       trader.process_tick(create_tick(89, 80, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(["-1"])
+      expect(trader.positions.keys).to eq(["-2"])
       trader.process_tick(create_tick(89, 78, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(["-1"])
+      expect(trader.positions.keys).to eq(["-2"])
       trader.process_tick(create_tick(90, 78, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq([])
     end
@@ -174,8 +174,7 @@ describe StatisticalArbitrage::CointegrationTrader do
       expect(trader.positions.keys).to eq([])
     end
 
-    it 'uses coint settings of the time that created positions' \
-       + 'on closing positions' do
+    it 'uses coint settings of the time on closing positions' do
 
       broker = double('mock broker')
       expect(broker).to receive(:sell)
@@ -208,6 +207,8 @@ describe StatisticalArbitrage::CointegrationTrader do
       trader.process_tick(create_tick(90, 76, Time.local(2016, 2, 1, 12)))
       expect(trader.positions.keys).to eq(["1", "2"])
       trader.process_tick(create_tick(90, 80, Time.local(2016, 2, 1, 12)))
+      expect(trader.positions.keys).to eq(["1"])
+      trader.process_tick(create_tick(90, 84, Time.local(2016, 2, 1, 12)))
       expect(trader.positions.keys).to eq([])
     end
 
@@ -241,7 +242,7 @@ describe StatisticalArbitrage::CointegrationTrader do
       expect(trader.positions.keys).to eq(["1", "2"])
       trader.process_tick(create_tick(90, 75, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(["1", "2"])
-      trader.process_tick(create_tick(90, 76, Time.local(2015, 5, 1, 12)))
+      trader.process_tick(create_tick(90, 77, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(["1"])
       trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq([])
@@ -297,7 +298,7 @@ describe StatisticalArbitrage::CointegrationTrader do
 
       trader = StatisticalArbitrage::CointegrationTrader.new(
         :AUDJPY, :NZDJPY, 100, 1, broker)
-      expect(trader.positions.keys).to eq(["1", "-1"])
+      expect(trader.positions.keys).to eq(["1", "-2"])
 
       position = trader.positions["1"]
       expect(position.trade_type).to eq(:sell_a)
@@ -316,7 +317,7 @@ describe StatisticalArbitrage::CointegrationTrader do
         Time.utc(2015, 8, 2, 0, 0, 10))
       expect(position.positions[1].entry_price).to eq(54)
 
-      position = trader.positions["-1"]
+      position = trader.positions["-2"]
       expect(position.trade_type).to eq(:buy_a)
       expect(position.spread.round(3)).to eq(15.104)
       expect(position.coint).to eq({

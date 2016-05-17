@@ -34,7 +34,7 @@ RSpec.shared_examples '注文関連の操作' do
         expect(order.type).to be :market
 
         trades = client.retrieve_trades
-        trade = trades.find {|t| t.internal_id == order.internal_id }
+        trade = trades.find { |t| t.internal_id == order.internal_id }
         expect(trade).not_to be nil
 
         sleep wait
@@ -54,7 +54,7 @@ RSpec.shared_examples '注文関連の操作' do
         expect(order.trailing_stop).to eq 5
 
         trades = client.retrieve_trades
-        trade = trades.find {|t| t.internal_id == order.internal_id }
+        trade = trades.find { |t| t.internal_id == order.internal_id }
         expect(trade).not_to be nil
 
         sleep wait

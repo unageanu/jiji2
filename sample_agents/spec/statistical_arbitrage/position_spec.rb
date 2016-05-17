@@ -59,17 +59,17 @@ describe StatisticalArbitrage::Position do
   end
 
   def create_buy_aud_position(expect_to_receive_close,
-    index, spread=20, coint={slope:0.8, mean:20, sd:2})
+    index, spread = 20, coint = { slope: 0.8, mean: 20, sd: 2 })
     create_position(:buy_a, expect_to_receive_close, spread, coint, index)
   end
 
   def create_sell_aud_position(expect_to_receive_close,
-    index, spread=20, coint={slope:0.8, mean:20, sd:2})
+    index, spread = 20, coint = { slope: 0.8, mean: 20, sd: 2 })
     create_position(:sell_a, expect_to_receive_close, spread, coint, index)
   end
 
   def create_position(type, expect_to_receive_close,
-    spread=20, coint={slope:0.8, mean:20, sd:2}, index)
+    spread = 20, coint = { slope: 0.8, mean: 20, sd: 2 }, index = 1)
     StatisticalArbitrage::Position.new(type, spread, coint,
       create_mock_positions(expect_to_receive_close), index, 1)
   end
@@ -80,5 +80,4 @@ describe StatisticalArbitrage::Position do
       create_mock_position(expect_to_receive_close, :NZDJPY)
     ]
   end
-
 end

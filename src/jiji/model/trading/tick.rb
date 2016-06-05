@@ -70,6 +70,10 @@ module Jiji::Model::Trading
         @ask = ask
       end
 
+      def mid #:nodoc:
+        (BigDecimal.new(@bid, 10) + @ask) / 2
+      end
+
     end
 
   end

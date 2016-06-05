@@ -10,7 +10,8 @@ describe Jiji::Model::Trading::Utils::PricingUtils do
   let(:tick) do
     Jiji::Model::Trading::Tick.new({
       EURUSD: data_builder.new_tick_value(1),
-      USDJPY: data_builder.new_tick_value(2)
+      USDJPY: data_builder.new_tick_value(2),
+      EURJPY: data_builder.new_tick_value(3)
     }, Time.utc(2015, 5, 1, 0, 0, 0))
   end
   let(:pricing_utils) do
@@ -44,6 +45,23 @@ describe Jiji::Model::Trading::Utils::PricingUtils do
         .to eq 102.003
       expect(pricing_utils.calculate_current_price(tick, :EURUSD, :sell))
         .to eq 101.003
+    end
+  end
+
+  describe 'calculate_current_counter_rate' do
+    it 'returns the mid rate' do
+      expect(pricing_utils.calculate_current_counter_rate(tick, :USDJPY))
+        .to eq 102.0015
+      expect(pricing_utils.calculate_current_counter_rate(tick, :EURJPY))
+        .to eq 103.0015
+      expect(pricing_utils.calculate_current_counter_rate(tick, :EURUSD))
+        .to eq 101.0015
+      expect(pricing_utils.calculate_current_counter_rate(tick, :JPYJPY))
+        .to eq 1
+      expect(pricing_utils.calculate_current_counter_rate(tick, :EUREUR))
+        .to eq 1
+      expect(pricing_utils.calculate_current_counter_rate(tick, :USDUSD))
+        .to eq 1
     end
   end
 

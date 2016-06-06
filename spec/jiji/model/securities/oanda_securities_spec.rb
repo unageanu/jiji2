@@ -46,4 +46,11 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(account.profit_or_loss).not_to be nil
     end
   end
+
+  describe '#account_currency' do
+    it 'returns the currency of the account.' do
+      expect(@client.account_currency).to eq 'JPY'
+    end
+  end
+
 end if ENV['OANDA_API_ACCESS_TOKEN']

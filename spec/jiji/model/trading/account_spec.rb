@@ -13,7 +13,7 @@ describe Jiji::Model::Trading::Account do
       data_builder.new_position(1),
       data_builder.new_position(2),
       data_builder.new_position(3)
-    ], builder, Jiji::Model::Trading::Account.new(1, 10_000, 0.04))
+    ], builder, Jiji::Model::Trading::Account.new(1, 'JPY', 10_000, 0.04))
   end
   let(:pairs) do
     [
@@ -28,7 +28,7 @@ describe Jiji::Model::Trading::Account do
 
   describe '+/-' do
     it '口座資産を増減できる' do
-      account = Jiji::Model::Trading::Account.new(1, 10_000, 0.04)
+      account = Jiji::Model::Trading::Account.new(1, 'JPY', 10_000, 0.04)
 
       expect(account.balance).to be 10_000
 
@@ -42,7 +42,7 @@ describe Jiji::Model::Trading::Account do
   end
   describe 'update' do
     it '必要証拠金、合計損益が更新される' do
-      account = Jiji::Model::Trading::Account.new(1, 10_000, 0.04)
+      account = Jiji::Model::Trading::Account.new(1, 'JPY', 10_000, 0.04)
 
       account.update(positions, Time.at(100))
 

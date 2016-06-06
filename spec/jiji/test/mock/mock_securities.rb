@@ -80,7 +80,7 @@ module Jiji::Test::Mock
 
     def retrieve_account
       raise 'test' if @config['fail_on_test_connection']
-      account = Account.new(0, @balance, 0.04)
+      account = Account.new(0, 'JPY', @balance, 0.04)
       account.update(@positions, @current_tick ? @current_tick.timestamp : nil)
       account
     end

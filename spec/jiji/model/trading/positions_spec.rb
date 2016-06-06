@@ -15,7 +15,7 @@ describe Jiji::Model::Trading::Positions do
     ]
   end
   let(:account) do
-    Jiji::Model::Trading::Account.new(nil, 1_000_000, 0.04)
+    Jiji::Model::Trading::Account.new(nil, 'JPY', 1_000_000, 0.04)
   end
   let(:positions) do
     Jiji::Model::Trading::Positions.new(original, builder, account)
@@ -878,7 +878,7 @@ describe Jiji::Model::Trading::Positions do
         data_builder.new_position(3)
       ]
 
-      account2 = Jiji::Model::Trading::Account.new(nil, 50_000, 0.04)
+      account2 = Jiji::Model::Trading::Account.new(nil, 'JPY', 50_000, 0.04)
       positions.replace(new_positions, account2)
 
       expect(account2.balance).to eq(50_000)

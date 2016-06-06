@@ -39,11 +39,17 @@ module Jiji::Model::Securities
 
     def retrieve_account
       response = @client.account(@account.account_id).get
-      Account.new(response.account_id,
+      Account.new(response.account_id, response.account_currency,
         response.balance, response.margin_rate) do |a|
         a.profit_or_loss = response.unrealized_pl
         a.margin_used    = response.margin_used
       end
+    end
+
+    def account_currency
+      return @account_currency if @account_currency
+      @account_currency =
+        @client.account(@account.account_id).get.account_currency
     end
 
     def find_account(account_name)

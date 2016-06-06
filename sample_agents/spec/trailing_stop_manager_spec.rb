@@ -19,7 +19,7 @@ describe TrailingStopManager do
     ]
   end
   let(:account) do
-    Jiji::Model::Trading::Account.new(nil, 1_000_000, 0.04)
+    Jiji::Model::Trading::Account.new(nil, 'JPY', 1_000_000, 0.04)
   end
   let(:positions) do
     Jiji::Model::Trading::Positions.new(original, builder, account)

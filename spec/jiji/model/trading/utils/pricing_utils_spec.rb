@@ -18,7 +18,7 @@ describe Jiji::Model::Trading::Utils::PricingUtils do
     Jiji::Model::Trading::Utils::PricingUtils
   end
 
-  describe 'calculate_entry_price' do
+  describe '#calculate_entry_price' do
     it 'returns the ask rate if sell_or_buy == :buy' do
       expect(pricing_utils.calculate_entry_price(tick, :USDJPY, :buy))
         .to eq 102.003
@@ -33,7 +33,7 @@ describe Jiji::Model::Trading::Utils::PricingUtils do
     end
   end
 
-  describe 'calculate_current_price' do
+  describe '#calculate_current_price' do
     it 'returns the bid rate if sell_or_buy == :buy' do
       expect(pricing_utils.calculate_current_price(tick, :USDJPY, :buy))
         .to eq 102
@@ -48,20 +48,42 @@ describe Jiji::Model::Trading::Utils::PricingUtils do
     end
   end
 
-  describe 'calculate_current_counter_rate' do
+  describe '#calculate_current_counter_rate' do
     it 'returns the mid rate' do
-      expect(pricing_utils.calculate_current_counter_rate(tick, :USDJPY))
-        .to eq 102.0015
-      expect(pricing_utils.calculate_current_counter_rate(tick, :EURJPY))
-        .to eq 103.0015
-      expect(pricing_utils.calculate_current_counter_rate(tick, :EURUSD))
-        .to eq 101.0015
-      expect(pricing_utils.calculate_current_counter_rate(tick, :JPYJPY))
-        .to eq 1
-      expect(pricing_utils.calculate_current_counter_rate(tick, :EUREUR))
-        .to eq 1
-      expect(pricing_utils.calculate_current_counter_rate(tick, :USDUSD))
-        .to eq 1
+      expect(pricing_utils.calculate_current_counter_rate(
+        tick, :EURUSD, 'JPY')).to eq 102.0015
+      expect(pricing_utils.calculate_current_counter_rate(
+        tick, :CADEUR, 'JPY')).to eq 103.0015
+      expect(pricing_utils.calculate_current_counter_rate(
+        tick, :CADEUR, 'USD')).to eq 101.0015
+      expect(pricing_utils.calculate_current_counter_rate(
+        tick, :EURJPY, 'JPY')).to eq 1
+      expect(pricing_utils.calculate_current_counter_rate(
+        tick, :CADEUR, 'EUR')).to eq 1
+      expect(pricing_utils.calculate_current_counter_rate(
+        tick, :EURUSD, 'USD')).to eq 1
+    end
+  end
+
+  describe '#counter_pair_for' do
+    it 'returns the counter pair.' do
+      expect(pricing_utils.resolve_counter_pair_for(:EURUSD, 'JPY'))
+        .to eq :USDJPY
+      expect(pricing_utils.resolve_counter_pair_for(:EURGBP, 'JPY'))
+        .to eq :GBPJPY
+      expect(pricing_utils.resolve_counter_pair_for(:USDEUR, 'JPY'))
+        .to eq :EURJPY
+      expect(pricing_utils.resolve_counter_pair_for(:USDJPY, 'JPY'))
+        .to eq :JPYJPY
+
+      expect(pricing_utils.resolve_counter_pair_for(:EURUSD, 'USD'))
+        .to eq :USDUSD
+      expect(pricing_utils.resolve_counter_pair_for(:EURGBP, 'USD'))
+        .to eq :GBPUSD
+      expect(pricing_utils.resolve_counter_pair_for(:USDEUR, 'USD'))
+        .to eq :EURUSD
+      expect(pricing_utils.resolve_counter_pair_for(:USDJPY, 'USD'))
+        .to eq :JPYUSD
     end
   end
 

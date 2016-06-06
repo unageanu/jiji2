@@ -13,7 +13,8 @@ module Jiji::Model::Trading::Utils
         sell_or_buy == :buy ? :sell : :buy)
     end
 
-    def self.calculate_current_counter_rate(tick, counter_pair_id)
+    def self.calculate_current_counter_rate(tick, pair_id, account_currency)
+      counter_pair_id = resolve_counter_pair_for(pair_id, account_currency)
       return 1 if counter_pair_id.to_s[0..2] == counter_pair_id.to_s[3..6]
       tick[counter_pair_id].mid
     end
@@ -22,5 +23,10 @@ module Jiji::Model::Trading::Utils
       value = tick[pair_name]
       sell_or_buy == :buy ? value.ask : value.bid
     end
+
+    def self.resolve_counter_pair_for(pair_name, account_currency)
+      (pair_name.to_s[3..6] + account_currency).to_sym
+    end
+
   end
 end

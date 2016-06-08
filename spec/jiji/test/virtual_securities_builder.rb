@@ -23,7 +23,13 @@ module Jiji::Test
           Jiji::Model::Trading::Pair.new(
             :EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04),
           Jiji::Model::Trading::Pair.new(
-            :USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04)
+            :USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04),
+          Jiji::Model::Trading::Pair.new(
+            :AUDCAD, 'AUD_CAD', 0.01,   10_000_000, 0.001,   0.04),
+          Jiji::Model::Trading::Pair.new(
+            :CADJPY, 'CAD_JPY', 0.01,   10_000_000, 0.001,   0.04),
+          Jiji::Model::Trading::Pair.new(
+            :EURDKK, 'EUR_DKK', 0.01,   10_000_000, 0.001,   0.04)
         ]
       })
     end

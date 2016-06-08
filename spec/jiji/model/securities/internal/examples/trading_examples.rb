@@ -205,6 +205,7 @@ RSpec.shared_examples '建玉関連の操作' do
       expect(result.internal_id).to eq trades[1].internal_id
       expect(result.units).to eq(-1)
       expect(result.price).to be > 0
+      expect(result.profit_or_loss).not_to be nil
       expect(result.timestamp).not_to be nil
 
       sleep wait
@@ -212,6 +213,50 @@ RSpec.shared_examples '建玉関連の操作' do
       expect(result.internal_id).to eq trades[0].internal_id
       expect(result.units).to eq(-1)
       expect(result.price).to be > 0
+      expect(result.profit_or_loss).not_to be nil
+      expect(result.timestamp).not_to be nil
+
+      sleep wait
+      trades = client.retrieve_trades
+      expect(trades.length).to be 0
+
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
+    end
+
+    it 'クロス円でない建玉を決済できる' do
+      saved_positions = position_repository.retrieve_positions(backtest_id)
+      expect(saved_positions.length).to be 0
+
+      ask = BigDecimal.new(tick[:EURDKK].ask, 4)
+
+      client.order(:AUDCAD, :sell, 1)
+
+      sleep wait
+      client.order(:EURDKK, :buy, 2, :market, {
+        stop_loss:     (ask - 0.02).to_f,
+        take_profit:   (ask + 0.02).to_f,
+        trailing_stop: 5
+      })
+
+      sleep wait
+      trades = client.retrieve_trades
+      expect(trades.length).to be 2
+
+      sleep wait
+      result = client.close_trade(trades[1].internal_id)
+      expect(result.internal_id).to eq trades[1].internal_id
+      expect(result.units).to eq(-1)
+      expect(result.price).to be > 0
+      expect(result.profit_or_loss).not_to be nil
+      expect(result.timestamp).not_to be nil
+
+      sleep wait
+      result = client.close_trade(trades[0].internal_id)
+      expect(result.internal_id).to eq trades[0].internal_id
+      expect(result.units).to eq(-1)
+      expect(result.price).to be > 0
+      expect(result.profit_or_loss).not_to be nil
       expect(result.timestamp).not_to be nil
 
       sleep wait

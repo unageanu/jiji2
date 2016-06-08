@@ -189,12 +189,16 @@ module Jiji::Model::Trading
     attr_reader :price
     # 決済時刻
     attr_reader :timestamp
+    # 最終損益
+    attr_reader :profit_or_loss
 
-    def initialize(internal_id, units, price, timestamp) #:nodoc:
-      @internal_id  = internal_id
-      @units        = units
-      @price        = price
-      @timestamp    = timestamp
+    def initialize(internal_id, units,
+      price, timestamp, profit_or_loss) #:nodoc:
+      @internal_id    = internal_id
+      @units          = units
+      @price          = price
+      @timestamp      = timestamp
+      @profit_or_loss = profit_or_loss
     end
 
   end

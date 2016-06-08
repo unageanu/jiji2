@@ -85,6 +85,10 @@ module Jiji::Test::Mock
       account
     end
 
+    def account_currency
+      'JPY'
+    end
+
     def close_trade(internal_id)
       position = find_position_by_internal_id(internal_id)
       @balance += position.profit_or_loss

@@ -32,6 +32,10 @@ module Jiji::Model::Securities
     def destroy
     end
 
+    def account_currency
+      @securities_provider.get.account_currency
+    end
+
     def retrieve_account
       unsupported
     end

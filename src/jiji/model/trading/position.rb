@@ -59,23 +59,24 @@ module Jiji::Model::Trading
       class_name: 'Jiji::Model::Trading::BackTestProperties'
     }
 
-    field :internal_id,    type: String
+    field :internal_id,           type: String
 
-    field :pair_name,      type: Symbol
-    field :units,          type: Integer
-    field :sell_or_buy,    type: Symbol
-    field :status,         type: Symbol
+    field :pair_name,             type: Symbol
+    field :units,                 type: Integer
+    field :sell_or_buy,           type: Symbol
+    field :status,                type: Symbol
 
-    field :profit_or_loss, type: Float
-    field :max_drow_down,  type: Float
+    field :profit_or_loss,        type: Float
+    field :max_drow_down,         type: Float
 
-    field :entry_price,    type: Float
-    field :current_price,  type: Float
-    field :exit_price,     type: Float
+    field :entry_price,           type: Float
+    field :current_price,         type: Float
+    field :exit_price,            type: Float
+    field :current_counter_rate,  type: Float
 
-    field :entered_at,     type: Time
-    field :exited_at,      type: Time
-    field :updated_at,     type: Time
+    field :entered_at,            type: Time
+    field :exited_at,             type: Time
+    field :updated_at,            type: Time
 
     embeds_one :closing_policy
 

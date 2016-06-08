@@ -11,14 +11,15 @@ module Jiji::Model::Trading::Internal
     end
 
     # for internal use.
-    def update_state_to_closed(price = current_price, time = updated_at)
+    def update_state_to_closed(price = current_price,
+      time = updated_at, profit_or_loss=nil)
       return if status != :live
       self.exit_price     = price
       self.current_price  = price
       self.status         = :closed
       self.exited_at      = time
       self.updated_at     = time
-      update_profit_or_loss
+      update_profit_or_loss(profit_or_loss)
     end
 
     # for internal use.
@@ -31,19 +32,21 @@ module Jiji::Model::Trading::Internal
     end
 
     # for internal use.
-    def update_price(tick)
+    def update_price(tick, account_currency)
       return if status != :live
       self.current_price = PricingUtils.calculate_current_price(
         tick, pair_name, sell_or_buy)
+      self.current_counter_rate = PricingUtils.calculate_current_counter_rate(
+        tick, pair_name, account_currency)
       self.updated_at = tick.timestamp
       update_profit_or_loss
     end
 
     # for internal use.
-    def update_profit_or_loss
-      self.profit_or_loss = calculate_profit_or_loss
-      if max_drow_down.nil? || max_drow_down > profit_or_loss
-        self.max_drow_down = profit_or_loss
+    def update_profit_or_loss(profit_or_loss=nil)
+      self.profit_or_loss = profit_or_loss || calculate_profit_or_loss
+      if max_drow_down.nil? || max_drow_down > self.profit_or_loss
+        self.max_drow_down = self.profit_or_loss
       end
     end
 
@@ -84,7 +87,7 @@ module Jiji::Model::Trading::Internal
       return nil if current_price.nil? || entry_price.nil?
       current = actual_amount_of(current_price)
       entry   = actual_amount_of(entry_price)
-      (current - entry) * (sell_or_buy == :buy ? 1 : -1)
+      (current - entry) * (sell_or_buy == :buy ? 1 : -1) * current_counter_rate
     end
   end
 end

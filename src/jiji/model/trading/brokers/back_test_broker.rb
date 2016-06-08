@@ -48,7 +48,7 @@ module Jiji::Model::Trading::Brokers
     end
 
     def init_account(balance)
-      @account = Account.new(nil, balance, 0.04)
+      @account = Account.new(nil, @securities.account_currency, balance, 0.04)
     end
 
     def create_securities_configuration(

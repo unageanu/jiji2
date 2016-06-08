@@ -15,18 +15,19 @@ module Jiji::Model::Trading::Internal
       @backtest = backtest
     end
 
-    def build_from_tick(internal_id,
-      pair_name, units, sell_or_buy, tick, options = {})
+    def build_from_tick(internal_id, pair_name,
+      units, sell_or_buy, tick, account_currency, options = {})
       position = Position.new do |p|
         initialize_trading_information(p, @backtest,
           internal_id, pair_name, units, sell_or_buy)
-        initialize_price_and_time_from_tick(p, tick, pair_name, sell_or_buy)
+        initialize_price_and_time_from_tick(
+          p, tick, pair_name, sell_or_buy, account_currency)
         p.closing_policy = ClosingPolicy.create(options)
       end
       position
     end
 
-    def build_from_order(order, tick, agent = nil)
+    def build_from_order(order, tick, account_currency, agent = nil)
       position = Position.new do |p|
         initialize_trading_information(p, @backtest, order.internal_id,
           order.pair_name, order.units, order.sell_or_buy)
@@ -34,14 +35,14 @@ module Jiji::Model::Trading::Internal
         initialize_agent_information(p, agent)
         p.closing_policy = ClosingPolicy.create(order.extract_options)
       end
-      position.update_price(tick)
+      position.update_price(tick, account_currency)
       position
     end
 
     def build_from_trade(trade)
       Position.new do |p|
         initialize_trading_information_from_trade(p, trade)
-        initialize_price_and_time(p, trade.price.to_f, trade.time)
+        initialize_price_and_time(p, trade.price.to_f, trade.time, nil)
         p.closing_policy = ClosingPolicy.create(
           extract_options_from_trade(trade))
       end
@@ -69,7 +70,8 @@ module Jiji::Model::Trading::Internal
       units, price, time, agent)
       new_position = Position.new do |p|
         initialize_trading_information_from_position(p, position, units)
-        initialize_price_and_time(p, position.entry_price, position.entered_at)
+        initialize_price_and_time(p, position.entry_price, position.entered_at,
+          position.current_counter_rate)
         initialize_agent_information(p, agent)
         p.closing_policy = ClosingPolicy.create(position.closing_policy.to_h)
       end
@@ -77,17 +79,21 @@ module Jiji::Model::Trading::Internal
       new_position
     end
 
-    def initialize_price_and_time(position, entry_price, time)
-      position.entry_price   = entry_price
-      position.entered_at    = time
+    def initialize_price_and_time(position,
+      entry_price, time, current_counter_rate = nil)
+      position.entry_price          = entry_price
+      position.entered_at           = time
+      position.current_counter_rate = current_counter_rate
     end
 
     def initialize_price_and_time_from_tick(
-      position, tick, pair_name, sell_or_buy)
+      position, tick, pair_name, sell_or_buy, account_currency)
       position.entry_price   = PricingUtils.calculate_entry_price(
         tick, pair_name, sell_or_buy)
       position.current_price = PricingUtils.calculate_current_price(
         tick, pair_name, sell_or_buy)
+      position.current_counter_rate = PricingUtils \
+        .calculate_current_counter_rate(tick, pair_name, account_currency)
       position.entered_at    = tick.timestamp
       position.updated_at    = tick.timestamp
     end

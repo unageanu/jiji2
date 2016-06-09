@@ -12,6 +12,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
       position = Jiji::Model::Trading::Position.new do |p|
         p.entry_price = 120
         p.current_price = 125
+        p.current_counter_rate = 1
         p.sell_or_buy = :buy
         p.units = 1
       end
@@ -25,6 +26,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
       position = Jiji::Model::Trading::Position.new do |p|
         p.entry_price = 140
         p.current_price = 135
+        p.current_counter_rate = 1
         p.sell_or_buy = :sell
         p.units = 1
       end
@@ -43,6 +45,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
       position = Jiji::Model::Trading::Position.new do |p|
         p.entry_price = 120
         p.current_price = 125
+        p.current_counter_rate = 1
         p.sell_or_buy = :buy
         p.units = 1
       end
@@ -56,6 +59,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
       position = Jiji::Model::Trading::Position.new do |p|
         p.entry_price = 100
         p.current_price = 95
+        p.current_counter_rate = 1
         p.sell_or_buy = :sell
         p.units = 1
       end
@@ -75,6 +79,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
       position = Jiji::Model::Trading::Position.new do |p|
         p.entry_price = 120
         p.current_price = 125
+        p.current_counter_rate = 1
         p.sell_or_buy = :buy
         p.units = 1
       end
@@ -88,6 +93,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
       position = Jiji::Model::Trading::Position.new do |p|
         p.entry_price = 100
         p.current_price = 95
+        p.current_counter_rate = 1
         p.sell_or_buy = :sell
         p.units = 1
       end
@@ -112,6 +118,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
       position = Jiji::Model::Trading::Position.new do |p|
         p.entry_price = 120
         p.current_price = 125
+        p.current_counter_rate = 1
         p.sell_or_buy = :buy
         p.units = 1
       end
@@ -132,6 +139,7 @@ describe Jiji::Model::Trading::ClosingPolicy do
       position = Jiji::Model::Trading::Position.new do |p|
         p.entry_price = 140
         p.current_price = 135
+        p.current_counter_rate = 1
         p.sell_or_buy = :sell
         p.units = 1
       end

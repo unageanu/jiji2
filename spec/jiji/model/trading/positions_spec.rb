@@ -211,7 +211,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 104.003
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq -30030.0
+      expect(position.profit_or_loss).to eq -30_030.0
       expect(position.agent).to eq nil
 
       position = positions['3']
@@ -226,7 +226,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 104.003
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq -30090.0
+      expect(position.profit_or_loss).to eq -30_090.0
       expect(position.agent).to eq nil
 
       loaded = repository.retrieve_positions
@@ -243,7 +243,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 104.003
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq -30030.0
+      expect(position.profit_or_loss).to eq -30_030.0
       expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '2' }
@@ -258,7 +258,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 104
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq 39940
+      expect(position.profit_or_loss).to eq 39_940
       expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '3' }
@@ -273,7 +273,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 104.003
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq -30090
+      expect(position.profit_or_loss).to eq -30_090
       expect(position.agent).to eq nil
     end
   end
@@ -300,7 +300,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 104.003
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq -30030
+      expect(position.profit_or_loss).to eq -30_030
       expect(position.closing_policy.trailing_stop).to eq 0
       expect(position.closing_policy.trailing_amount).to eq 0
       expect(position.agent).to eq nil
@@ -317,7 +317,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 104
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq 39940
+      expect(position.profit_or_loss).to eq 39_940
       expect(position.closing_policy.trailing_stop).to eq 0
       expect(position.closing_policy.trailing_amount).to eq 0
       expect(position.agent).to eq nil
@@ -334,7 +334,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 104.003
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq -30090
+      expect(position.profit_or_loss).to eq -30_090
       expect(position.closing_policy.trailing_stop).to eq 10
       expect(position.closing_policy.trailing_amount).to eq 104.103
       expect(position.agent).to eq nil
@@ -353,7 +353,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 104.003
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq -30030
+      expect(position.profit_or_loss).to eq -30_030
       expect(position.closing_policy.trailing_stop).to eq 0
       expect(position.closing_policy.trailing_amount).to eq 0
       expect(position.agent).to eq nil
@@ -370,7 +370,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 104
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq 39940
+      expect(position.profit_or_loss).to eq 39_940
       expect(position.closing_policy.trailing_stop).to eq 0
       expect(position.closing_policy.trailing_amount).to eq 0
       expect(position.agent).to eq nil
@@ -387,7 +387,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 104.003
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq -30090
+      expect(position.profit_or_loss).to eq -30_090
       expect(position.closing_policy.trailing_stop).to eq 10
       expect(position.closing_policy.trailing_amount).to eq 104.103
       expect(position.agent).to eq nil
@@ -468,7 +468,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 110
       expect(position.current_price).to eq 104
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq -600000
+      expect(position.profit_or_loss).to eq -600_000
       expect(position.agent.id).to eq agent_setting.id
 
       loaded = repository.retrieve_positions
@@ -532,7 +532,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 110
       expect(position.current_price).to eq 104
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq -600000
+      expect(position.profit_or_loss).to eq -600_000
       expect(position.agent.id).to eq agent_setting.id
     end
 
@@ -639,7 +639,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 109
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq 76967
+      expect(position.profit_or_loss).to eq 76_967
       expect(position.agent.id).to eq agent_setting.id
 
       position = loaded.find { |p| p.internal_id == '3' }
@@ -704,7 +704,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 101
       expect(position.current_price).to eq 110
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq -90000
+      expect(position.profit_or_loss).to eq -90_000
       expect(position.agent).to eq nil
 
       position = loaded.find { |p| p.internal_id == '2' }
@@ -734,7 +734,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 102.003
       expect(position.current_price).to eq 109
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq 76967
+      expect(position.profit_or_loss).to eq 76_967
       expect(position.agent.id).to eq agent_setting.id
 
       position = loaded.find { |p| p.internal_id == '3' }
@@ -749,7 +749,7 @@ describe Jiji::Model::Trading::Positions do
       expect(position.entry_price).to eq 103
       expect(position.current_price).to eq 130
       expect(position.current_counter_rate).to eq 1
-      expect(position.profit_or_loss).to eq -810000
+      expect(position.profit_or_loss).to eq -810_000
       expect(position.agent).to eq nil
     end
 
@@ -863,8 +863,8 @@ describe Jiji::Model::Trading::Positions do
   describe '#apply_close_result' do
     it '決済された建玉がある場合、決済済み状態になる' do
       positions.apply_close_result(data_builder.new_closed_position(
-        10, '1', 10000, 101.05, Time.at(10), 20))
-      expect(account.balance).to eq(1000_020)
+                                     10, '1', 10_000, 101.05, Time.at(10), 20))
+      expect(account.balance).to eq(1_000_020)
       expect(account.profit_or_loss).to eq(-150)
       expect(account.margin_used).to eq 205_203.6
       expect(account.updated_at).to eq Time.at(10)

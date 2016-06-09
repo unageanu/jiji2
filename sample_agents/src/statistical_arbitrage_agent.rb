@@ -197,8 +197,8 @@ module StatisticalArbitrage
 
     def merge(rates1, rates2)
       merged = {}
-      rates1.each { |r| merged[r["date"]] = [r["rate"]] }
-      rates2.each { |r| merged[r["date"]] << r["rate"] if merged[r["date"]] }
+      rates1.each { |r| merged[r['date']] = [r['rate']] }
+      rates2.each { |r| merged[r['date']] << r['rate'] if merged[r['date']] }
       merged.values.reject { |v| v.length < 2 }
     end
 

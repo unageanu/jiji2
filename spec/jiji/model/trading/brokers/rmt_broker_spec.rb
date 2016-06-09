@@ -146,7 +146,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       allow(mock).to receive(:close_trade)
         .and_return(
           Jiji::Model::Trading::ClosedPosition.new(
-            '1', 10_000, 103, Time.at(200))
+            '1', 10_000, 103, Time.at(200), 100)
         )
 
       @provider.set mock

@@ -61,7 +61,7 @@ module Jiji::Model::Trading::Brokers
     def init_account
       @account = securities.retrieve_account
     rescue Jiji::Errors::NotInitializedException
-      @account = Account.new(nil, 0, 0.04)
+      @account = Account.new(nil, 'JPY', 0, 0.04)
     end
 
     # rubocop:disable Lint/HandleExceptions

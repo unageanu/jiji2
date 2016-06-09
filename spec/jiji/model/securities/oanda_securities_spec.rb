@@ -52,5 +52,4 @@ describe Jiji::Model::Securities::OandaSecurities do
       expect(@client.account_currency).to eq 'JPY'
     end
   end
-
 end if ENV['OANDA_API_ACCESS_TOKEN']

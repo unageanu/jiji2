@@ -25,6 +25,5 @@ module Jiji::Model::Trading::Utils
     def self.resolve_counter_pair_for(pair_name, account_currency)
       CounterPairResolver.new.resolve_pair(pair_name, account_currency)
     end
-
   end
 end

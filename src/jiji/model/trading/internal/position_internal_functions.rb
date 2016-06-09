@@ -12,7 +12,7 @@ module Jiji::Model::Trading::Internal
 
     # for internal use.
     def update_state_to_closed(price = current_price,
-      time = updated_at, profit_or_loss=nil)
+      time = updated_at, profit_or_loss = nil)
       return if status != :live
       self.exit_price     = price
       self.current_price  = price
@@ -43,7 +43,7 @@ module Jiji::Model::Trading::Internal
     end
 
     # for internal use.
-    def update_profit_or_loss(profit_or_loss=nil)
+    def update_profit_or_loss(profit_or_loss = nil)
       self.profit_or_loss = profit_or_loss || calculate_profit_or_loss
       if max_drow_down.nil? || max_drow_down > self.profit_or_loss
         self.max_drow_down = self.profit_or_loss

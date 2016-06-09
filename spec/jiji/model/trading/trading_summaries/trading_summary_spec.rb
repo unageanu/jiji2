@@ -259,16 +259,17 @@ describe Jiji::Model::Trading::TradingSummaries::TradingSummary do
 
   def create_position(pair, sell_or_buy, entry_price, current_price,
     units = 1000, agent = nil, entered_at = 100, exited_at = 110)
-    Jiji::Model::Trading::Position.new do |position|
-      position.agent         = agent
-      position.pair_name     = pair
-      position.sell_or_buy   = sell_or_buy
-      position.entry_price   = entry_price
-      position.current_price = current_price
-      position.entered_at    = Time.at(entered_at)
-      position.exited_at     = !exited_at.nil? ? Time.at(exited_at) : nil
-      position.units         = units
-      position.status        = !exited_at.nil? ? :closed : :live
+    Jiji::Model::Trading::Position.new do |p|
+      p.agent                = agent
+      p.pair_name            = pair
+      p.sell_or_buy          = sell_or_buy
+      p.entry_price          = entry_price
+      p.current_price        = current_price
+      p.current_counter_rate = 1
+      p.entered_at           = Time.at(entered_at)
+      p.exited_at            = !exited_at.nil? ? Time.at(exited_at) : nil
+      p.units                = units
+      p.status               = !exited_at.nil? ? :closed : :live
     end
   end
 end

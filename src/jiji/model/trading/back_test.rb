@@ -217,7 +217,8 @@ module Jiji::Model::Trading
         end_time, pairs, restore_balance, restore_order, {
           tick_repository:     @tick_repository,
           securities_provider: @securities_provider,
-          position_repository: @position_repository
+          position_repository: @position_repository,
+          pairs:               @pairs
         })
     end
 

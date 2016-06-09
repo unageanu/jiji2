@@ -141,8 +141,8 @@ BODY
     end
 
     def new_reduced_position(seed, internal_id = seed.to_s,
-        units = seed * 1000, price = 100 + seed, timestamp = Time.at(seed),
-        profit = nil)
+      units = seed * 1000, price = 100 + seed, timestamp = Time.at(seed),
+      profit = nil)
       Jiji::Model::Trading::ReducedPosition.new(
         internal_id, units, price, timestamp, profit)
     end

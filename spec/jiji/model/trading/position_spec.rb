@@ -74,7 +74,7 @@ describe Jiji::Model::Trading::Position do
   it 'RMT向け設定でPositionを作成できる' do
     position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
     position = position_builder.build_from_tick(
-      '1', :EURUSD, 1_000_000, :sell, data_builder.new_tick(2), 'JPY',{
+      '1', :EURUSD, 1_000_000, :sell, data_builder.new_tick(2), 'JPY', {
         take_profit:     102,
         stop_loss:       100,
         trailing_stop:   5,
@@ -92,7 +92,7 @@ describe Jiji::Model::Trading::Position do
     expect(position.entered_at).to eq(Time.at(0))
     expect(position.current_price).to eq(102.003)
     expect(position.current_counter_rate).to eq(102.0015)
-    expect(position.profit_or_loss).to eq(-306004.5)
+    expect(position.profit_or_loss).to eq(-306_004.5)
     expect(position.updated_at).to eq(Time.at(0))
     expect(position.exit_price).to eq(nil)
     expect(position.exited_at).to eq(nil)
@@ -111,8 +111,8 @@ describe Jiji::Model::Trading::Position do
     position = position_builder.build_from_tick(
       nil, :EURUSD, 10_000, :buy, data_builder.new_tick(1), 'JPY')
 
-    expect(position.profit_or_loss).to eq(BigDecimal.new(-30,10) * 101.0015)
-    expect(position.max_drow_down).to eq(BigDecimal.new(-30,10) * 101.0015)
+    expect(position.profit_or_loss).to eq(BigDecimal.new(-30, 10) * 101.0015)
+    expect(position.max_drow_down).to eq(BigDecimal.new(-30, 10) * 101.0015)
     expect(position.current_counter_rate).to eq(101.0015)
 
     position.update_price(data_builder.new_tick(2, Time.at(100)), 'JPY')
@@ -140,7 +140,6 @@ describe Jiji::Model::Trading::Position do
       BigDecimal.new(-10_030, 10) * 100.0015)
     expect(position.max_drow_down).to eq(
       BigDecimal.new(-10_030, 10) * 100.0015)
-
 
     position = position_builder.build_from_tick(
       1, :EURUSD, 100_000, :sell, data_builder.new_tick(1), 'JPY')
@@ -216,7 +215,7 @@ describe Jiji::Model::Trading::Position do
     expect(position.entered_at).to eq(Time.at(0))
     expect(position.current_price).to eq(103.0)
     expect(position.current_counter_rate).to eq(101.0015)
-    expect(position.profit_or_loss).to eq(2016999.955)
+    expect(position.profit_or_loss).to eq(2_016_999.955)
     expect(position.updated_at).to eq(Time.at(300))
     expect(position.exit_price).to eq(nil)
     expect(position.exited_at).to eq(nil)
@@ -315,7 +314,7 @@ describe Jiji::Model::Trading::Position do
     expect(position.entered_at).to eq(Time.at(0))
     expect(position.current_price).to eq(102.003)
     expect(position.current_counter_rate).to eq(102.0015)
-    expect(position.profit_or_loss).to eq(-306004.5)
+    expect(position.profit_or_loss).to eq(-306_004.5)
     expect(position.updated_at).to eq(Time.at(0))
     expect(position.exit_price).to be nil
     expect(position.exited_at).to be nil
@@ -336,7 +335,7 @@ describe Jiji::Model::Trading::Position do
     expect(position.entered_at).to eq(Time.at(0))
     expect(position.current_price).to eq(102.003)
     expect(position.current_counter_rate).to eq(102.0015)
-    expect(position.profit_or_loss).to eq(-306004.5)
+    expect(position.profit_or_loss).to eq(-306_004.5)
     expect(position.updated_at).to eq(Time.at(0))
     expect(position.exit_price).to be nil
     expect(position.exited_at).to be nil

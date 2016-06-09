@@ -4,7 +4,6 @@ require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 
 describe Jiji::Model::Trading::Utils::CounterPairResolver do
-
   include_context 'use data_builder'
   let(:pairs) do
     pairs = double('mock pairs')
@@ -27,7 +26,6 @@ describe Jiji::Model::Trading::Utils::CounterPairResolver do
   let(:resolver) do
     Jiji::Model::Trading::Utils::CounterPairResolver.new
   end
-
 
   describe '#resolve_rate' do
     it 'returns the mid rate' do
@@ -74,5 +72,4 @@ describe Jiji::Model::Trading::Utils::CounterPairResolver do
         .to eq [:EURJPY, :EURDKK]
     end
   end
-
 end

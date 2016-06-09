@@ -3,7 +3,6 @@
 require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Trading::Tick::Value do
-
   describe '#mid' do
     it 'retuns the price between ask and bid.' do
       value = Jiji::Model::Trading::Tick::Value.new(108.052, 108.056)
@@ -13,5 +12,4 @@ describe Jiji::Model::Trading::Tick::Value do
       expect(value.mid).to eq 1.50535
     end
   end
-
 end

@@ -71,5 +71,30 @@ describe Jiji::Model::Trading::Utils::CounterPairResolver do
       expect(resolver.resolve_required_pairs(pairs, :EURDKK, 'JPY'))
         .to eq [:EURJPY, :EURDKK]
     end
+
+    it 'can resolve in all available currency pairs.' do
+      all_pairs = double('mock pairs')
+      allow(all_pairs).to receive(:all).and_return([
+        "USDJPY", "EURJPY", "AUDJPY", "GBPJPY", "NZDJPY", "CADJPY",
+        "CHFJPY", "ZARJPY", "EURUSD", "GBPUSD", "NZDUSD", "AUDUSD",
+        "USDCHF", "EURCHF", "GBPCHF", "EURGBP", "AUDNZD", "AUDCAD",
+        "AUDCHF", "CADCHF", "EURAUD", "EURCAD", "EURDKK", "EURNOK",
+        "EURNZD", "EURSEK", "GBPAUD", "GBPCAD", "GBPNZD", "NZDCAD",
+        "NZDCHF", "USDCAD", "USDDKK", "USDNOK", "USDSEK", "AUDHKD",
+        "AUDSGD", "CADHKD", "CADSGD", "CHFHKD", "CHFZAR", "EURCZK",
+        "EURHKD", "EURHUF", "EURPLN", "EURSGD", "EURTRY", "EURZAR",
+        "GBPHKD", "GBPPLN", "GBPSGD", "GBPZAR", "HKDJPY", "NZDHKD",
+        "NZDSGD", "SGDCHF", "SGDHKD", "SGDJPY", "TRYJPY", "USDCNH",
+        "USDCZK", "USDHKD", "USDHUF", "USDINR", "USDMXN", "USDPLN",
+        "USDSAR", "USDSGD", "USDTHB", "USDTRY", "USDZAR"
+      ].map do |name|
+        Jiji::Model::Trading::Pair.new(name.to_sym, 1, 0.01, 1, 1, 0.04)
+      end)
+      all_pairs.all.each do |pair|
+        expect(resolver.resolve_required_pairs(all_pairs, pair.name, 'JPY'))
+          .not_to eq nil
+      end
+    end
+
   end
 end

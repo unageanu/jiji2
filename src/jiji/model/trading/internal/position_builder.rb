@@ -43,8 +43,7 @@ module Jiji::Model::Trading::Internal
       Position.new do |p|
         initialize_trading_information_from_trade(p, trade)
         initialize_price_and_time(p, trade.price.to_f, trade.time, nil)
-        p.closing_policy = ClosingPolicy.create(
-          extract_options_from_trade(trade))
+        p.closing_policy = ClosingPolicy.create_from_trade(trade)
       end
     end
 
@@ -56,15 +55,6 @@ module Jiji::Model::Trading::Internal
     end
 
     private
-
-    def extract_options_from_trade(trade)
-      {
-        stop_loss:       trade.stop_loss,
-        take_profit:     trade.take_profit,
-        trailing_stop:   trade.trailing_stop,
-        trailing_amount: trade.trailing_amount
-      }
-    end
 
     def create_splited_position(position,
       units, price, time, agent)

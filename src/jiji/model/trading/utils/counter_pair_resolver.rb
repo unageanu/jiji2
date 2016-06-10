@@ -48,12 +48,13 @@ module Jiji::Model::Trading::Utils
     end
 
     def resolve_required_pairs(available_pairs, steps)
-      base = %w(USD EUR).find do |candidate|
+      %w(USD EUR).each do |candidate|
         a = (candidate + steps[1]).to_sym
         b = (candidate + steps[0]).to_sym
-        available_pairs.include?(a) && available_pairs.include?(b)
+        next unless available_pairs.include?(a) && available_pairs.include?(b)
+        return [a, b]
       end
-      [(base + steps[1]).to_sym, (base + steps[0]).to_sym]
+      raise "counter pair is not found. pair=#{steps.join}"
     end
 
   end
@@ -77,9 +78,7 @@ module Jiji::Model::Trading::Utils
     end
 
     def resolve_required_pairs(pairs, pair_name, account_currency)
-      available_pairs = pairs.all.each_with_object(Set.new) do |p, s|
-        s << p.name
-      end
+      available_pairs = convert_to_set(pairs)
       steps = resolve_counter_pairs(pair_name, account_currency)
       find_strategy(available_pairs, steps)
         .resolve_required_pairs(available_pairs, steps)
@@ -93,6 +92,12 @@ module Jiji::Model::Trading::Utils
 
     def resolve_counter_pairs(pair_name, account_currency)
       [pair_name.to_s[3..6], account_currency]
+    end
+
+    def convert_to_set(pairs)
+      pairs.all.each_with_object(Set.new) do |p, s|
+        s << p.name
+      end
     end
 
   end

@@ -50,7 +50,7 @@ module Jiji::Model::Trading::Brokers
     def build_components(backtest, start_time, end_time,
       pairs, orders, positions, modules)
       @account_currency = modules[:securities_provider].get.account_currency
-      config = create_securities_configuration( backtest,
+      config = create_securities_configuration(backtest,
         start_time, end_time, pairs, orders, positions, modules)
       @securities = VirtualSecurities.new(
         modules[:tick_repository], modules[:securities_provider], config)
@@ -63,7 +63,7 @@ module Jiji::Model::Trading::Brokers
       @account = Account.new(nil, @account_currency, balance, 0.04)
     end
 
-    def create_securities_configuration( backtest,
+    def create_securities_configuration(backtest,
       start_time, end_time, pairs, orders, positions, modules)
       {
         start_time: start_time,

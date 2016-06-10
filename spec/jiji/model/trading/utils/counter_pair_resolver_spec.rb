@@ -74,20 +74,21 @@ describe Jiji::Model::Trading::Utils::CounterPairResolver do
 
     it 'can resolve in all available currency pairs.' do
       all_pairs = double('mock pairs')
-      allow(all_pairs).to receive(:all).and_return([
-        "USDJPY", "EURJPY", "AUDJPY", "GBPJPY", "NZDJPY", "CADJPY",
-        "CHFJPY", "ZARJPY", "EURUSD", "GBPUSD", "NZDUSD", "AUDUSD",
-        "USDCHF", "EURCHF", "GBPCHF", "EURGBP", "AUDNZD", "AUDCAD",
-        "AUDCHF", "CADCHF", "EURAUD", "EURCAD", "EURDKK", "EURNOK",
-        "EURNZD", "EURSEK", "GBPAUD", "GBPCAD", "GBPNZD", "NZDCAD",
-        "NZDCHF", "USDCAD", "USDDKK", "USDNOK", "USDSEK", "AUDHKD",
-        "AUDSGD", "CADHKD", "CADSGD", "CHFHKD", "CHFZAR", "EURCZK",
-        "EURHKD", "EURHUF", "EURPLN", "EURSGD", "EURTRY", "EURZAR",
-        "GBPHKD", "GBPPLN", "GBPSGD", "GBPZAR", "HKDJPY", "NZDHKD",
-        "NZDSGD", "SGDCHF", "SGDHKD", "SGDJPY", "TRYJPY", "USDCNH",
-        "USDCZK", "USDHKD", "USDHUF", "USDINR", "USDMXN", "USDPLN",
-        "USDSAR", "USDSGD", "USDTHB", "USDTRY", "USDZAR"
-      ].map do |name|
+      pair_names = %w(
+        USDJPY EURJPY AUDJPY GBPJPY NZDJPY CADJPY
+        CHFJPY ZARJPY EURUSD GBPUSD NZDUSD AUDUSD
+        USDCHF EURCHF GBPCHF EURGBP AUDNZD AUDCAD
+        AUDCHF CADCHF EURAUD EURCAD EURDKK EURNOK
+        EURNZD EURSEK GBPAUD GBPCAD GBPNZD NZDCAD
+        NZDCHF USDCAD USDDKK USDNOK USDSEK AUDHKD
+        AUDSGD CADHKD CADSGD CHFHKD CHFZAR EURCZK
+        EURHKD EURHUF EURPLN EURSGD EURTRY EURZAR
+        GBPHKD GBPPLN GBPSGD GBPZAR HKDJPY NZDHKD
+        NZDSGD SGDCHF SGDHKD SGDJPY TRYJPY USDCNH
+        USDCZK USDHKD USDHUF USDINR USDMXN USDPLN
+        USDSAR USDSGD USDTHB USDTRY USDZAR
+      )
+      allow(all_pairs).to receive(:all).and_return(pair_names.map do |name|
         Jiji::Model::Trading::Pair.new(name.to_sym, 1, 0.01, 1, 1, 0.04)
       end)
       all_pairs.all.each do |pair|
@@ -95,6 +96,5 @@ describe Jiji::Model::Trading::Utils::CounterPairResolver do
           .not_to eq nil
       end
     end
-
   end
 end

@@ -50,7 +50,7 @@ module Jiji::Model::Securities::Internal::Oanda
     def convert_response_to_ticks(prices)
       values = prices.each_with_object({}) do |p, r|
         pair_name = Converter.convert_instrument_to_pair_name(p.instrument)
-        r[pair_name] = Tick::Value.new(p.ask.to_f, p.bid.to_f)
+        r[pair_name] = Tick::Value.new(p.bid.to_f, p.ask.to_f)
       end
       Tick.new(values, Time.now)
     end

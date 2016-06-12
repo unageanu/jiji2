@@ -102,7 +102,7 @@ GEM
     rack-protection (1.5.3)
       rack
     rainbow (2.1.0)
-    rake (11.2.0)
+    rake (11.2.2)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)

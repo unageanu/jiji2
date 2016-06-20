@@ -1,7 +1,8 @@
 {
   "name": "jiji2",
   "version": "1.0.0",
-  "description": "FX auto trading system.",
+  "description": "Forex algorithmic trading framework using OANDA REST API.",
+  "homepage": "http://jiji2.unageanu.net/",
   "main": "",
   "dependencies": {
     "xhr": "2.1.0",

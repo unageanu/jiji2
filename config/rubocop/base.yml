@@ -62,6 +62,12 @@ Style/TrivialAccessors:
 Style/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
+Style/MultilineMethodCallBraceLayout:
+  Enabled: false
+
+Style/MultilineMethodDefinitionBraceLayout:
+  Enabled: false
+
 Style/IfInsideElse:
   Enabled: false
 

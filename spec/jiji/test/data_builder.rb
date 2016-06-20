@@ -43,7 +43,8 @@ module Jiji::Test
       pair_name = :EURJPY, timestamp = Time.at(seed))
       position_builder = Internal::PositionBuilder.new(backtest)
       position = position_builder.build_from_tick(seed, pair_name,
-        seed * 10_000, seed.even? ? :buy : :sell, new_tick(seed, timestamp))
+        seed * 10_000, seed.even? ? :buy : :sell,
+        new_tick(seed, timestamp), 'JPY')
       position.agent = agent
       position
     end
@@ -133,15 +134,17 @@ BODY
     end
 
     def new_closed_position(seed, internal_id = seed.to_s,
-      units = seed * 10_000, price = 100 + seed, timestamp = Time.at(seed))
+      units = seed * 10_000, price = 100 + seed, timestamp = Time.at(seed),
+      profit = nil)
       Jiji::Model::Trading::ClosedPosition.new(
-        internal_id, units, price, timestamp)
+        internal_id, units, price, timestamp, profit)
     end
 
     def new_reduced_position(seed, internal_id = seed.to_s,
-      units = seed * 1000, price = 100 + seed, timestamp = Time.at(seed))
+      units = seed * 1000, price = 100 + seed, timestamp = Time.at(seed),
+      profit = nil)
       Jiji::Model::Trading::ReducedPosition.new(
-        internal_id, units, price, timestamp)
+        internal_id, units, price, timestamp, profit)
     end
 
     def new_order_result(order_opened,

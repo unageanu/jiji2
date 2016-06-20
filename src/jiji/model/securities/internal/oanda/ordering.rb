@@ -84,16 +84,18 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def convert_response_to_reduced_position(item, detail)
       if detail.id
+        # trade_reducedからは損益は取得できない。ローカルで計算した近似値を使う
         return ReducedPosition.new(detail.id.to_s,
-          detail.units, item.price, item.time)
+          detail.units, item.price, item.time, nil)
       else
         return nil
       end
     end
 
     def convert_response_to_closed_position(item, detail)
+      # trade_closedからは損益は取得できない。ローカルで計算した近似値を使う
       ClosedPosition.new(detail[:id].to_s,
-        detail[:units].to_i, item.price, item.time)
+        detail[:units].to_i, item.price, item.time, nil)
     end
 
     def copy_options(order, detail, type)

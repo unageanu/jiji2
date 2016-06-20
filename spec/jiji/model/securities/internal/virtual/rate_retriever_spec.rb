@@ -9,9 +9,12 @@ describe Jiji::Model::Securities::Internal::Virtual::RateRetriever do
     client = Jiji::Test::VirtualSecuritiesBuilder.build
 
     pairs = client.retrieve_pairs
-    expect(pairs.length).to be 2
+    expect(pairs.length).to be 5
     expect(pairs[0].name).to be :EURJPY
     expect(pairs[1].name).to be :USDJPY
+    expect(pairs[2].name).to be :AUDCAD
+    expect(pairs[3].name).to be :CADJPY
+    expect(pairs[4].name).to be :EURDKK
   end
 
   describe '#retrieve_current_tick' do

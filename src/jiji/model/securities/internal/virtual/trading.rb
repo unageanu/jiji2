@@ -32,7 +32,7 @@ module Jiji::Model::Securities::Internal::Virtual
     def close_trade(internal_id)
       position = find_position_by_internal_id(internal_id)
       @positions = @positions.reject { |o| o.internal_id == internal_id }
-      convert_to_closed_position(position, -1)
+      convert_to_closed_position(position, -1, position.profit_or_loss)
     end
 
     private
@@ -44,7 +44,7 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def process_position(tick, position)
-      position.update_price(tick)
+      position.update_price(tick, account_currency)
       position.closing_policy.update_price(
         position, retrieve_pair_by_name(position.pair_name))
       if position.closing_policy.should_close?(position)

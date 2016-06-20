@@ -35,6 +35,14 @@ module Jiji::Model::Trading
       values.each(&block)
     end
 
+    # 通貨ペアに対応する Tick::Value が含まれるか評価します。
+    #
+    # pair_name:: 通貨ペア名
+    # 戻り値:: boolean
+    def include?(pair_name)
+      values.include? pair_name
+    end
+
     # レートの要素数を取得します
     # 戻り値:: レートの要素数
     def length
@@ -68,6 +76,10 @@ module Jiji::Model::Trading
       def initialize(bid = 0, ask = 0) #:nodoc:
         @bid = bid
         @ask = ask
+      end
+
+      def mid #:nodoc:
+        (BigDecimal.new(@bid, 10) + @ask) / 2
       end
 
     end

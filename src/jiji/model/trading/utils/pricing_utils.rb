@@ -17,5 +17,13 @@ module Jiji::Model::Trading::Utils
       value = tick[pair_name]
       sell_or_buy == :buy ? value.ask : value.bid
     end
+
+    def self.calculate_current_counter_rate(tick, pair_name, account_currency)
+      CounterPairResolver.new.resolve_rate(tick, pair_name, account_currency)
+    end
+
+    def self.resolve_counter_pair_for(pair_name, account_currency)
+      CounterPairResolver.new.resolve_pair(pair_name, account_currency)
+    end
   end
 end

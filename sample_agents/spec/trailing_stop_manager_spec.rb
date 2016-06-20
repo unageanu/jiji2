@@ -13,13 +13,13 @@ describe TrailingStopManager do
       EURUSD: new_tick_value(1.0935, 0.00005)
     }, Time.new(2015, 12, 10))
     [
-      builder.build_from_tick(1, :EURJPY, 10_000, :buy,  tick),
-      builder.build_from_tick(2, :EURJPY, 10_000, :sell, tick),
-      builder.build_from_tick(3, :EURUSD, 20_000, :buy,  tick)
+      builder.build_from_tick(1, :EURJPY, 10_000, :buy,  tick, 'JPY'),
+      builder.build_from_tick(2, :EURJPY, 10_000, :sell, tick, 'JPY'),
+      builder.build_from_tick(3, :EURUSD, 20_000, :buy,  tick, 'JPY')
     ]
   end
   let(:account) do
-    Jiji::Model::Trading::Account.new(nil, 1_000_000, 0.04)
+    Jiji::Model::Trading::Account.new(nil, 'JPY', 1_000_000, 0.04)
   end
   let(:positions) do
     Jiji::Model::Trading::Positions.new(original, builder, account)
@@ -45,19 +45,22 @@ describe TrailingStopManager do
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(130.94, 0.03),
-      EURUSD: new_tick_value(1.0930, 0.00005)
+      EURUSD: new_tick_value(1.0930, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 11)), pairs)
     manager.check(positions, pairs)
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(131.03, 0.03),
-      EURUSD: new_tick_value(1.0940, 0.00005)
+      EURUSD: new_tick_value(1.0940, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 12)), pairs)
     manager.check(positions, pairs)
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(131.03, 0.03),
-      EURUSD: new_tick_value(1.0935, 0.00005)
+      EURUSD: new_tick_value(1.0935, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 13)), pairs)
     manager.check(positions, pairs)
   end
@@ -90,31 +93,36 @@ describe TrailingStopManager do
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(130.94, 0.03),
-      EURUSD: new_tick_value(1.0930, 0.00005)
+      EURUSD: new_tick_value(1.0930, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 11)), pairs)
     manager.check(positions, pairs)
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(131.03, 0.03),
-      EURUSD: new_tick_value(1.0940, 0.00005)
+      EURUSD: new_tick_value(1.0940, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 12)), pairs)
     manager.check(positions, pairs)
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(131.05, 0.03),
-      EURUSD: new_tick_value(1.09301, 0.00005)
+      EURUSD: new_tick_value(1.09301, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 13)), pairs)
     manager.check(positions, pairs)
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(131.06, 0.03),
-      EURUSD: new_tick_value(1.0930, 0.00005)
+      EURUSD: new_tick_value(1.0930, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 14)), pairs)
     manager.check(positions, pairs)
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(130.9,  0.03),
-      EURUSD: new_tick_value(1.0932, 0.00005)
+      EURUSD: new_tick_value(1.0932, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 15)), pairs)
     manager.check(positions, pairs)
   end
@@ -137,13 +145,15 @@ describe TrailingStopManager do
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(131.10, 0.03),
-      EURUSD: new_tick_value(1.0940, 0.00005)
+      EURUSD: new_tick_value(1.0940, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 11)), pairs)
     manager.check(positions, pairs)
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(131.20, 0.03),
-      EURUSD: new_tick_value(1.0945, 0.00005)
+      EURUSD: new_tick_value(1.0945, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 12)), pairs)
     manager.check(positions, pairs)
 
@@ -153,7 +163,8 @@ describe TrailingStopManager do
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(130.999, 0.03),
-      EURUSD: new_tick_value(1.0940,  0.00005)
+      EURUSD: new_tick_value(1.0940,  0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 13)), pairs)
     manager.check(positions, pairs)
 
@@ -163,7 +174,8 @@ describe TrailingStopManager do
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(130.8, 0.03),
-      EURUSD: new_tick_value(1.0925, 0.00005)
+      EURUSD: new_tick_value(1.0925, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 14)), pairs)
     manager.check(positions, pairs)
   end
@@ -198,25 +210,29 @@ describe TrailingStopManager do
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(130.94, 0.03),
-      EURUSD: new_tick_value(1.0930, 0.00005)
+      EURUSD: new_tick_value(1.0930, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 11)), pairs)
     manager.check(positions, pairs)
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(131.03, 0.03),
-      EURUSD: new_tick_value(1.0940, 0.00005)
+      EURUSD: new_tick_value(1.0940, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 12)), pairs)
     manager.check(positions, pairs)
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(131.05, 0.03),
-      EURUSD: new_tick_value(1.09301, 0.00005)
+      EURUSD: new_tick_value(1.09301, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 13)), pairs)
     manager.check(positions, pairs)
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(131.06, 0.03),
-      EURUSD: new_tick_value(1.0930, 0.00005)
+      EURUSD: new_tick_value(1.0930, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 14)), pairs)
     manager.check(positions, pairs)
 
@@ -224,13 +240,15 @@ describe TrailingStopManager do
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(130.9,  0.03),
-      EURUSD: new_tick_value(1.0932, 0.00005)
+      EURUSD: new_tick_value(1.0932, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 15)), pairs)
     manager.check(positions, pairs)
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(131.20, 0.03),
-      EURUSD: new_tick_value(1.0945, 0.00005)
+      EURUSD: new_tick_value(1.0945, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 16)), pairs)
     manager.check(positions, pairs)
 
@@ -242,7 +260,8 @@ describe TrailingStopManager do
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(130.999, 0.03),
-      EURUSD: new_tick_value(1.0940,  0.00005)
+      EURUSD: new_tick_value(1.0940,  0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 17)), pairs)
     manager.check(positions, pairs)
 
@@ -252,7 +271,8 @@ describe TrailingStopManager do
 
     positions.update_price(Jiji::Model::Trading::Tick.new({
       EURJPY: new_tick_value(130.8, 0.03),
-      EURUSD: new_tick_value(1.0925, 0.00005)
+      EURUSD: new_tick_value(1.0925, 0.00005),
+      USDJPY: new_tick_value(0.9, 0.2)
     }, Time.new(2015, 12, 18)), pairs)
     manager.check(positions, pairs)
   end

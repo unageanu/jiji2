@@ -56,7 +56,8 @@ module Jiji::Model::Securities::Internal::Virtual
     ].freeze
 
     def register_position(order)
-      position = @position_builder.build_from_order(order, @current_tick)
+      position = @position_builder.build_from_order(order,
+        @current_tick, account_currency)
       result = close_or_reduce_reverse_positions(position)
       if position.units > 0
         @positions << position
@@ -173,18 +174,18 @@ module Jiji::Model::Securities::Internal::Virtual
       PricingUtils.calculate_entry_price(tick, pair_name, sell_or_buy)
     end
 
-    def convert_to_closed_position(position, units = nil)
+    def convert_to_closed_position(position, units = nil, profit = nil)
       price = PricingUtils.calculate_current_price(
         @current_tick, position.pair_name, position.sell_or_buy)
       ClosedPosition.new(position.internal_id,
-        units || position.units, price, @current_tick.timestamp)
+        units || position.units, price, @current_tick.timestamp, profit)
     end
 
     def convert_to_reduced_position(position)
       price = PricingUtils.calculate_current_price(
         @current_tick, position.pair_name, position.sell_or_buy)
-      ReducedPosition.new(position.internal_id,
-        position.units, price, @current_tick.timestamp)
+      ReducedPosition.new(position.internal_id, position.units,
+        price, @current_tick.timestamp, nil)
     end
   end
 end

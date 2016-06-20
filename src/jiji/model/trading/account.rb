@@ -14,6 +14,9 @@ module Jiji::Model::Trading
     # アカウントID
     attr_accessor :account_id
 
+    # アカウントの通貨
+    attr_accessor :account_currency
+
     # 口座資産
     attr_accessor :balance
 
@@ -26,10 +29,12 @@ module Jiji::Model::Trading
     # 最終更新時刻
     attr_accessor :updated_at
 
-    def initialize(account_id, balance, margin_rate, &init) #:nodoc:
-      @account_id  = account_id
-      @balance     = balance
-      @margin_rate = margin_rate
+    def initialize(account_id, account_currency,
+      balance, margin_rate, &init) #:nodoc:
+      @account_id       = account_id
+      @account_currency = account_currency
+      @balance          = balance
+      @margin_rate      = margin_rate
 
       @profit_or_loss = 0
       @margin_used    = 0

@@ -35,7 +35,7 @@ module Jiji::Model::Graphing::Internal
 
     def init_graph_data(time)
       @current = Jiji::Model::Graphing::GraphData.create(
-        @graph, [], @interval.id, time)
+        @graph.id, [], @interval.id, time)
     end
 
     def init_agregate_strategy

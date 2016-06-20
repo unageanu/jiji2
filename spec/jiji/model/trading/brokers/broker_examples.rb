@@ -49,6 +49,7 @@ shared_examples 'brokerの基本操作ができる' do
       p.exited_at     = nil
       p.agent_id      = nil
       p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({})
+      p.current_counter_rate = 1
     end
 
     expect(broker.account.balance).to eq 100_000
@@ -95,10 +96,11 @@ shared_examples 'brokerの基本操作ができる' do
       p.agent_id      = agent_setting.id
       p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
       })
+      p.current_counter_rate = 112.37
     end
 
     expect(broker.account.balance).to eq 100_000
-    expect(broker.account.profit_or_loss).to eq 2298
+    expect(broker.account.profit_or_loss).to eq 2075.26
     expect(broker.account.margin_used).to eq 54_777.44
 
     expect(broker.positions.length).to be 2
@@ -118,7 +120,7 @@ shared_examples 'brokerの基本操作ができる' do
     broker.close_position(buy_position)
 
     expect(broker.account.balance).to eq 102_300
-    expect(broker.account.profit_or_loss).to eq(-2)
+    expect(broker.account.profit_or_loss).to eq(-224.74)
     expect(broker.account.margin_used.to_f).to eq 553.44
 
     expected_position1.status     = :closed
@@ -141,10 +143,11 @@ shared_examples 'brokerの基本操作ができる' do
     expect(broker.next?).to eq true
 
     expect(broker.account.balance).to eq 102_300
-    expect(broker.account.profit_or_loss).to eq(-402)
+    expect(broker.account.profit_or_loss).to eq(-45_188.82)
     expect(broker.account.margin_used.to_f).to eq 569.44
 
     expected_position2.current_price = 1.4236
+    expected_position2.current_counter_rate = 112.41
     expected_position2.updated_at = Time.utc(2015, 5, 1, 0, 0, 30)
     expected_position2.update_profit_or_loss
 
@@ -161,10 +164,11 @@ shared_examples 'brokerの基本操作ができる' do
     broker.refresh
 
     expect(broker.account.balance).to eq 102_300
-    expect(broker.account.profit_or_loss).to eq(-432)
+    expect(broker.account.profit_or_loss).to eq(-48_562.416)
     expect(broker.account.margin_used.to_f).to eq 570.64
 
     expected_position2.current_price = 1.4266
+    expected_position2.current_counter_rate = 112.413
     expected_position2.updated_at = Time.utc(2015, 5, 1, 0, 0, 45)
     expected_position2.update_profit_or_loss
 
@@ -181,10 +185,11 @@ shared_examples 'brokerの基本操作ができる' do
     broker.refresh
 
     expect(broker.account.balance).to eq 102_300
-    expect(broker.account.profit_or_loss).to eq(-412)
+    expect(broker.account.profit_or_loss).to eq(-46_313.332)
     expect(broker.account.margin_used.to_f).to eq 569.84
 
     expected_position2.current_price = 1.4246
+    expected_position2.current_counter_rate = 112.411
     expected_position2.updated_at = Time.utc(2015, 5, 1, 0, 1, 0)
     expected_position2.update_profit_or_loss
 
@@ -200,13 +205,13 @@ shared_examples 'brokerの基本操作ができる' do
 
     broker.positions[expected_position2.internal_id].close
 
-    expect(broker.account.balance).to eq 101_888
+    expect(broker.account.balance).to eq 55_986.668
     expect(broker.account.profit_or_loss).to eq 0
     expect(broker.account.margin_used).to eq 0
 
     broker.refresh
 
-    expect(broker.account.balance).to eq 101_888
+    expect(broker.account.balance).to eq 55_986.668
     expect(broker.account.profit_or_loss).to eq 0
     expect(broker.account.margin_used).to eq 0
 
@@ -225,7 +230,7 @@ shared_examples 'brokerの基本操作ができる' do
 
     broker.refresh
 
-    expect(broker.account.balance).to eq 101_888
+    expect(broker.account.balance).to eq 55_986.668
     expect(broker.account.profit_or_loss).to eq 0
     expect(broker.account.margin_used).to eq 0
 
@@ -376,6 +381,7 @@ shared_examples 'brokerの基本操作ができる' do
       p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
         stop_loss: 135.73
       })
+      p.current_counter_rate = 1
     end
     expected_position2 = Jiji::Model::Trading::Position.new do |p|
       p.backtest      = backtest
@@ -394,6 +400,7 @@ shared_examples 'brokerの基本操作ができる' do
       p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
         take_profit: 112.6
       })
+      p.current_counter_rate = 1
     end
 
     broker.refresh_positions
@@ -491,6 +498,7 @@ shared_examples 'brokerの基本操作ができる' do
         trailing_stop:   5,
         trailing_amount: 1.5229
       })
+      p.current_counter_rate = 112.51
     end
 
     broker.refresh_positions
@@ -511,7 +519,7 @@ shared_examples 'brokerの基本操作ができる' do
     expect(position).to some_position(expected_position3)
 
     expect(broker.account.balance).to eq 98_700
-    expect(broker.account.profit_or_loss).to eq(1869)
+    expect(broker.account.profit_or_loss).to eq(103_231.59)
     expect(broker.account.margin_used.to_f).to eq(45_609.36)
 
     positions = broker.positions
@@ -519,7 +527,7 @@ shared_examples 'brokerの基本操作ができる' do
     position.close
 
     expect(broker.account.balance).to eq 99_660
-    expect(broker.account.profit_or_loss).to eq(909)
+    expect(broker.account.profit_or_loss).to eq(102_271.59)
     expect(broker.account.margin_used.to_f).to eq(609.36)
 
     expected_position2.exit_price    = tick[:USDJPY].bid
@@ -545,13 +553,14 @@ shared_examples 'brokerの基本操作ができる' do
     broker.refresh
 
     expect(broker.account.balance).to eq 99_660
-    expect(broker.account.profit_or_loss).to eq(919)
+    expect(broker.account.profit_or_loss).to eq(103_397.609)
     expect(broker.account.margin_used.to_f).to eq(609.76)
 
     tick = broker.tick
 
     expected_position3.current_price = tick[:EURUSD].bid
-    expected_position3.updated_at    = tick.timestamp
+    expected_position3.current_counter_rate = tick[:USDJPY].mid
+    expected_position3.updated_at = tick.timestamp
     expected_position3.closing_policy.trailing_amount = 1.5239
     expected_position3.update_profit_or_loss
 
@@ -573,7 +582,7 @@ shared_examples 'brokerの基本操作ができる' do
     expect(position).to some_position(expected_position3)
 
     expect(broker.account.balance).to eq 99_660
-    expect(broker.account.profit_or_loss).to eq(919)
+    expect(broker.account.profit_or_loss).to eq(103_397.609)
     expect(broker.account.margin_used.to_f).to eq(609.76)
   end
 
@@ -607,6 +616,7 @@ shared_examples 'brokerの基本操作ができる' do
       p.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
         stop_loss: 130
       })
+      p.current_counter_rate = 1
     end
 
     expect(broker.account.balance).to eq 100_000

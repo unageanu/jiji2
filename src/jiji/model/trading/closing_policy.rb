@@ -50,6 +50,15 @@ module Jiji::Model::Trading
       end
     end
 
+    def self.create_from_trade(trade) #:nodoc:
+      create({
+        stop_loss:       trade.stop_loss,
+        take_profit:     trade.take_profit,
+        trailing_stop:   trade.trailing_stop,
+        trailing_amount: trade.trailing_amount
+      })
+    end
+
     # for internal use.
     def extract_options_for_modify #:nodoc:
       {

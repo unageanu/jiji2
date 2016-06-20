@@ -114,7 +114,7 @@ describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do
     allow(broker).to receive(:next?)
       .and_return(true, true, true, true, false)
     allow(broker).to receive(:account)
-      .and_return(Jiji::Model::Trading::Account.new('a', 10_000, 0.03))
+      .and_return(Jiji::Model::Trading::Account.new('a', 'JPY', 10_000, 0.03))
 
     expect(broker).to receive(:refresh).exactly(refresh_count).times
     if expect_to_refresh_accounts

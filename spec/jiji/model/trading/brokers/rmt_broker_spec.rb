@@ -132,7 +132,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
       mock = double('mock_broker')
       expect(mock).to receive(:retrieve_account)
-        .and_return(Jiji::Model::Trading::Account.new(nil, 50_000, 0.04))
+        .and_return(Jiji::Model::Trading::Account.new(nil, 'JPY', 50_000, 0.04))
       expect(mock).to receive(:retrieve_trades)
         .and_return([
           data_builder.new_position(1),
@@ -146,7 +146,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
       allow(mock).to receive(:close_trade)
         .and_return(
           Jiji::Model::Trading::ClosedPosition.new(
-            '1', 10_000, 103, Time.at(200))
+            '1', 10_000, 103, Time.at(200), 100)
         )
 
       @provider.set mock
@@ -197,7 +197,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
 
       mock2 = double('mock_broker2')
       expect(mock2).to receive(:retrieve_account)
-        .and_return(Jiji::Model::Trading::Account.new(nil, 60_000, 0.04))
+        .and_return(Jiji::Model::Trading::Account.new(nil, 'JPY', 60_000, 0.04))
       expect(mock2).to receive(:retrieve_trades)
         .and_return([
           data_builder.new_position(1),

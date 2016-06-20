@@ -49,6 +49,7 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         expect(result.trade_reduced.internal_id).to eq(positions[0].internal_id)
         expect(result.trade_reduced.price).to be > 0
         expect(result.trade_reduced.units).to be 4
+        expect(result.trade_reduced.profit_or_loss).to be nil
         expect(result.trade_reduced.timestamp).not_to be nil
         expect(result.trades_closed).to eq []
 
@@ -77,6 +78,7 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         expect(result.trades_closed[0].internal_id).to eq(
           positions[0].internal_id)
         expect(result.trades_closed[0].price).to be > 0
+        expect(result.trades_closed[0].profit_or_loss).to be nil
         expect(result.trades_closed[0].units).to be 4
         expect(result.trades_closed[0].timestamp).not_to be nil
 
@@ -100,6 +102,7 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         expect(result.trades_closed[0].internal_id).to eq(
           positions[0].internal_id)
         expect(result.trades_closed[0].price).to be > 0
+        expect(result.trades_closed[0].profit_or_loss).to be nil
         expect(result.trades_closed[0].units).to be 1
         expect(result.trades_closed[0].timestamp).not_to be nil
 
@@ -162,11 +165,13 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         expect(result.trades_closed[0].internal_id).to eq(
           positions[1].internal_id)
         expect(result.trades_closed[0].price).to be > 0
+        expect(result.trades_closed[0].profit_or_loss).to be nil
         expect(result.trades_closed[0].units).to be 5
         expect(result.trades_closed[0].timestamp).not_to be nil
         expect(result.trades_closed[1].internal_id).to eq(
           positions[0].internal_id)
         expect(result.trades_closed[1].price).to be > 0
+        expect(result.trades_closed[1].profit_or_loss).to be nil
         expect(result.trades_closed[1].units).to be 1
         expect(result.trades_closed[1].timestamp).not_to be nil
 

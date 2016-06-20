@@ -90,7 +90,7 @@ module Jiji::Model::Trading::Brokers
       @positions.apply_close_result(result)
       @positions_is_dirty = true
       ClosedPosition.new(result.internal_id,
-        position.units, result.price, result.timestamp)
+        position.units, result.price, result.timestamp, result.profit_or_loss)
     end
 
     # 経済カレンダー情報を取得します。

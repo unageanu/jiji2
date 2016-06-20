@@ -90,7 +90,6 @@ def commit_changes(version)
 end
 def push_to_remote_repository
   sh 'git push origin master'
-  sh 'git push backup master'
 end
 def add_tags(version)
   sh "git tag 'v#{version}'"

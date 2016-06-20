@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Forex algorithmic trading framework using OANDA REST API.",
   "homepage": "http://jiji2.unageanu.net/",
+  "license" : "MIT",
   "main": "",
   "dependencies": {
     "xhr": "2.1.0",

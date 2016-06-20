@@ -26,9 +26,9 @@
   },
   "devDependencies": {
     "deepmerge": "*",
-    "babel-core": "6.7.6",
+    "babel-core": "6.9.1",
     "babel-loader": "6.2.4",
-    "babel-polyfill": "6.7.4",
+    "babel-polyfill": "6.9.1",
     "del": "*",
     "gulp": "*",
     "gulp-autoprefixer": "*",

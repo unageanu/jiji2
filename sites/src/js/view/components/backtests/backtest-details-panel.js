@@ -1,5 +1,5 @@
 import React                  from "react"
-import MUI                    from "material-ui"
+
 import AbstractComponent      from "../widgets/abstract-component"
 import MiniChartView          from "../chart/mini-chart-view"
 import ChartView              from "../chart/chart-view"

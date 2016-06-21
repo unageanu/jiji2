@@ -1,5 +1,5 @@
 import React                  from "react"
-import MUI                    from "material-ui"
+
 import AbstractPage           from "./abstract-page"
 import WelcomeView            from "../initial-settings/welcome-view"
 import MailaddressSettingView from "../initial-settings/mailaddress-and-password-setting-view"
@@ -7,7 +7,7 @@ import SecuritiesSettingView  from "../initial-settings/securities-setting-view"
 import SMTPServerSettingView  from "../initial-settings/smtp-server-setting-view"
 import SettingFinishedView    from "../initial-settings/setting-finished-view"
 
-const Card = MUI.Card;
+import Card from "material-ui/Card"
 
 export default class InitialSettingsPage extends AbstractPage {
 

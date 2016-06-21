@@ -1,6 +1,6 @@
-import ContainerJS  from "container-js";
-import Observable   from "../../utils/observable";
-import Deferred     from "../../utils/deferred";
+import ContainerJS  from "container-js"
+import Observable   from "../../utils/observable"
+import Deferred     from "../../utils/deferred"
 
 export default class Pairs extends Observable {
   constructor() {

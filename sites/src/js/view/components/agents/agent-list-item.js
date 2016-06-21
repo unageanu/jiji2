@@ -1,6 +1,6 @@
 import React       from "react"
 import Router      from "react-router"
-import MUI         from "material-ui"
+
 import AgentIcon   from "../widgets/agent-icon"
 import Environment from "../../environment"
 import Theme       from "../../theme"

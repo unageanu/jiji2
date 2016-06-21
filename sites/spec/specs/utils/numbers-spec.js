@@ -1,4 +1,4 @@
-import Numbers from "src/utils/numbers";
+import Numbers from "src/utils/numbers"
 
 describe("Numbers", () => {
 

@@ -1,13 +1,13 @@
 import React               from "react"
-import MUI                 from "material-ui"
+
 import AbstractComponent   from "../widgets/abstract-component"
 import AgentSelectorDialog from "./agent-selector-dialog"
 import IconSelector        from "../icons/icon-selector"
 import AgentIcon           from "../widgets/agent-icon"
 import ConfirmDialog       from "../widgets/confirm-dialog"
 
-const IconButton = MUI.IconButton;
-const FontIcon   = MUI.FontIcon;
+import IconButton from "material-ui/IconButton"
+import FontIcon from "material-ui/FontIcon"
 
 const keys = new Set([
   "availableAgents", "selectedAgent"

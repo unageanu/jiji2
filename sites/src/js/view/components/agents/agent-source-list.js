@@ -1,12 +1,11 @@
 import React               from "react"
-import MUI                 from "material-ui"
+
 import AbstractComponent   from "../widgets/abstract-component"
 import AgentSourceListItem from "./agent-source-list-item"
 import LoadingImage        from "../widgets/loading-image"
 
-const List         = MUI.List;
-const ListItem     = MUI.ListItem;
-const RaisedButton = MUI.RaisedButton;
+import {List, ListItem} from "material-ui/List"
+import RaisedButton from "material-ui/RaisedButton"
 
 const keys = new Set([
   "sources", "editTarget"

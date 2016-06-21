@@ -1,7 +1,7 @@
 import React   from "react"
-import MUI     from "material-ui"
 
-const Avatar = MUI.Avatar;
+
+import Avatar from "material-ui/Avatar"
 
 export default class AgentIcon extends React.Component {
 

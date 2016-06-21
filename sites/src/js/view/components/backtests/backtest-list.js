@@ -1,11 +1,11 @@
 import React               from "react"
 import Router              from "react-router"
-import MUI                 from "material-ui"
+
 import AbstractComponent   from "../widgets/abstract-component"
 import LoadingImage        from "../widgets/loading-image"
 import BacktestListItem    from "./backtest-list-item"
 
-const List         = MUI.List;
+import {List} from "material-ui/List"
 
 const keys = new Set([
   "selectedBacktestId"

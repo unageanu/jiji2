@@ -1,10 +1,9 @@
 import React       from "react"
 import Router      from "react-router"
-import MUI         from "material-ui"
+
 import Environment from "../../environment"
 
-const List         = MUI.List;
-const ListItem     = MUI.ListItem;
+import {List, ListItem} from "material-ui/List"
 
 export default class AgentClassSelector extends React.Component {
 

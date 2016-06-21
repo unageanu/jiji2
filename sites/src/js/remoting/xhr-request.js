@@ -1,10 +1,10 @@
-import Deferred        from "../utils/deferred";
+import Deferred        from "../utils/deferred"
 import xhr             from "xhr"
 import url             from "url"
 import Msgpack         from "msgpack"
-import HTTPHeaderField from "./http-header-field";
-import Error           from "../model/error";
-import Transformer     from "./transformer";
+import HTTPHeaderField from "./http-header-field"
+import Error           from "../model/error"
+import Transformer     from "./transformer"
 
 export default class XhrRequest {
 

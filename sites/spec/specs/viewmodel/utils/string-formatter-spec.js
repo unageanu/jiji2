@@ -1,4 +1,4 @@
-import StringFormatter  from "src/viewmodel/utils/string-formatter";
+import StringFormatter  from "src/viewmodel/utils/string-formatter"
 
 describe("StringFormatter", () => {
 

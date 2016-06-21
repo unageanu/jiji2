@@ -1,5 +1,5 @@
 
-import Observable  from "../utils/observable";
+import Observable  from "../utils/observable"
 
 const MENU_ITEMS = [
   { route: "/",           text: "ホーム",   iconClassName: "md-home" },

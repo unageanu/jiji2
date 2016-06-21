@@ -1,5 +1,5 @@
 import React               from "react"
-import MUI                 from "material-ui"
+
 import AbstractComponent   from "../widgets/abstract-component"
 import NumberFormatter     from "../../../viewmodel/utils/number-formatter"
 import DateFormatter       from "../../../viewmodel/utils/date-formatter"
@@ -9,7 +9,7 @@ import ConfirmDialog       from "../widgets/confirm-dialog"
 import ButtonIcon          from "../widgets/button-icon"
 import LoadingImage        from "../widgets/loading-image"
 
-const RaisedButton = MUI.RaisedButton;
+import RaisedButton from "material-ui/RaisedButton"
 
 const keys = new Set([
   "selectedBacktest"

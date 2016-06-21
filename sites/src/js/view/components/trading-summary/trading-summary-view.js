@@ -1,6 +1,6 @@
 import React             from "react"
 import Router            from "react-router"
-import MUI               from "material-ui"
+
 import ReactChart        from "react-chartjs"
 import AbstractComponent from "../widgets/abstract-component"
 import SummaryItem       from "./summary-item"
@@ -8,7 +8,7 @@ import CircleGraph       from "./circle-graph"
 import LoadingImage      from "../widgets/loading-image"
 import PriceView         from "../widgets/price-view"
 
-const DropDownMenu  = MUI.DropDownMenu;
+import DropDownMenu from "material-ui/DropDownMenu"
 
 const keys = new Set([
   "summary", "enablePeriodSelector", "availableAggregationPeriods"

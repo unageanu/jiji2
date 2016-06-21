@@ -1,15 +1,15 @@
 import React                   from "react"
-import MUI                     from "material-ui"
+
 import AbstractComponent       from "../widgets/abstract-component"
 import LoadingImage            from "../widgets/loading-image"
 import PositionColumns         from "../../../viewmodel/positions/position-columns"
 import DownloadPositionsDialog from "./download-positions-dialog"
 import ButtonIcon              from "../widgets/button-icon"
 
-const Table        = MUI.Table;
-const FlatButton   = MUI.FlatButton;
-const IconButton   = MUI.IconButton;
-const FontIcon     = MUI.FontIcon;
+import Table from "material-ui/Table"
+import FlatButton from "material-ui/FlatButton"
+import IconButton from "material-ui/IconButton"
+import FontIcon from "material-ui/FontIcon"
 
 const defaultSortOrder = {
   order:     "profit_or_loss",

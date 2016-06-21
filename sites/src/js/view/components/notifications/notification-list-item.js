@@ -1,12 +1,12 @@
 import React               from "react"
-import MUI                 from "material-ui"
+
 import AbstractComponent   from "../widgets/abstract-component"
 import TextInRadius        from "../widgets/text-in-radius"
 import Theme               from "../../theme"
 import Environment         from "../../environment"
 
-const Avatar     = MUI.Avatar;
-const ListItem   = MUI.ListItem;
+import Avatar from "material-ui/Avatar"
+import {List} from "material-ui/List"
 
 const nullNotification = {
 };

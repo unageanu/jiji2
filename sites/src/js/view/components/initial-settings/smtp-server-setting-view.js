@@ -1,10 +1,10 @@
 import React                  from "react"
-import MUI                    from "material-ui"
+
 import Base                   from "../settings/smtp-server-setting-view"
 import LoadingImage           from "../widgets/loading-image"
 
-const RaisedButton = MUI.RaisedButton;
-const FlatButton   = MUI.FlatButton;
+import RaisedButton from "material-ui/RaisedButton"
+import FlatButton from "material-ui/FlatButton"
 
 export default class SMTPServerSettingView extends Base {
 

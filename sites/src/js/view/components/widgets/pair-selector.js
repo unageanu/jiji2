@@ -1,8 +1,8 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import AbstractComponent  from "../widgets/abstract-component"
 
-const Checkbox     = MUI.Checkbox;
+import Checkbox from "material-ui/Checkbox"
 
 const keys = new Set([
   "availablePairs", "pairNames", "pairNamesError"

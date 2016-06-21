@@ -1,12 +1,12 @@
 import React         from "react"
 import Router        from "react-router"
-import MUI           from "material-ui"
+
 import AgentIcon     from "../widgets/agent-icon"
 import Environment   from "../../environment"
 import Theme         from "../../theme"
 import DateFormatter from "../../../viewmodel/utils/date-formatter"
 
-const FontIcon   = MUI.FontIcon;
+import FontIcon from "material-ui/FontIcon"
 
 export default class AgentSourceListItem extends React.Component {
 

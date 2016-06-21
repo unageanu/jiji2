@@ -1,8 +1,8 @@
 import React        from "react"
-import MUI          from "material-ui"
+
 import Deferred     from "../../../utils/deferred"
 
-const Dialog       = MUI.Dialog;
+import Dialog from "material-ui/Dialog"
 
 export default class ConfirmDialog extends React.Component {
 

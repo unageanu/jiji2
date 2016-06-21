@@ -1,9 +1,9 @@
 import React                 from "react"
 import Router                from "react-router"
-import MUI       　　　　     from "material-ui"
+
 import AbstractComponent     from "../widgets/abstract-component"
 
-const TextField    = MUI.TextField;
+import TextField from "material-ui/TextField"
 
 const keys = new Set([
   "editTarget", "fileNameError"

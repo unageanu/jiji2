@@ -1,9 +1,9 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import AgentClassSelector from "./agent-class-selector"
 import Theme              from "../../theme"
 
-const Dialog       = MUI.Dialog;
+import Dialog from "material-ui/Dialog"
 
 export default class AgentSelectorDialog extends React.Component {
 

@@ -1,11 +1,11 @@
 import React               from "react"
-import MUI                 from "material-ui"
+
 import AbstractComponent   from "../widgets/abstract-component"
 import LoadingImage        from "../widgets/loading-image"
 
-const RaisedButton = MUI.RaisedButton;
-const TextField    = MUI.TextField;
-const DropDownMenu = MUI.DropDownMenu;
+import RaisedButton from "material-ui/RaisedButton"
+import TextField from "material-ui/TextField"
+import DropDownMenu from "material-ui/DropDownMenu"
 
 const keys = new Set([
   "availableSecurities", "activeSecuritiesConfiguration",

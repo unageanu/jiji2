@@ -1,5 +1,5 @@
 import React               from "react"
-import MUI                 from "material-ui"
+
 import AbstractPage        from "./abstract-page"
 import AgentSourceList     from "../agents/agent-source-list"
 import AgentSourceListMenu from "../agents/agent-source-list-menu"
@@ -9,7 +9,7 @@ import "brace/mode/ruby"
 import "brace/theme/github"
 import "brace/ext/searchbox"
 
-const Card = MUI.Card;
+import Card from "material-ui/Card"
 
 export default class AgentsPage extends AbstractPage {
 

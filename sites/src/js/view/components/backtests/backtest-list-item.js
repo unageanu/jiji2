@@ -1,5 +1,5 @@
 import React               from "react"
-import MUI                 from "material-ui"
+
 import AbstractComponent   from "../widgets/abstract-component"
 import TextInRadius        from "../widgets/text-in-radius"
 import Theme               from "../../theme"
@@ -8,8 +8,8 @@ import NumberFormatter     from "../../../viewmodel/utils/number-formatter"
 import DateFormatter       from "../../../viewmodel/utils/date-formatter"
 import Utils               from "./utils"
 
-const ListItem       = MUI.ListItem;
-const LinearProgress = MUI.LinearProgress;
+import {ListItem} from "material-ui/List"
+import LinearProgress from "material-ui/LinearProgress"
 
 const nullBacktest = {};
 

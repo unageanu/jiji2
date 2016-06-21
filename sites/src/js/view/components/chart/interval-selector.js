@@ -1,9 +1,9 @@
 import React     from "react"
-import MUI       from "material-ui"
+
 import Intervals from "../../../model/trading/intervals"
 import Theme     from "../../theme"
 
-const DropDownMenu = MUI.DropDownMenu;
+import DropDownMenu from "material-ui/DropDownMenu"
 
 const items = Intervals.all().map(
   (item) => { return { id: item.id, text:item.name }; } );

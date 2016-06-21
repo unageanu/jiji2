@@ -1,9 +1,9 @@
 import React            from "react"
-import MUI              from "material-ui"
+
 import AbstractPage     from "./abstract-page"
 import ChartView        from "../chart/chart-view"
 
-const Card = MUI.Card;
+import Card from "material-ui/Card"
 
 export default class RMTChartPage extends AbstractPage {
 

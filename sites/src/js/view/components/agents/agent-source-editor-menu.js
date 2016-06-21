@@ -1,13 +1,13 @@
 import React             from "react"
 import Router            from "react-router"
-import MUI       　　　　 from "material-ui"
+
 import AbstractComponent from "../widgets/abstract-component"
 import ConfirmDialog     from "../widgets/confirm-dialog"
 import LoadingImage      from "../widgets/loading-image"
 
-const Dialog     = MUI.Dialog;
-const IconButton = MUI.IconButton;
-const FontIcon   = MUI.FontIcon;
+import Dialog from "material-ui/Dialog"
+import IconButton from "material-ui/IconButton"
+import FontIcon from "material-ui/FontIcon"
 
 const keys = new Set([
   "editTarget", "isSaving"

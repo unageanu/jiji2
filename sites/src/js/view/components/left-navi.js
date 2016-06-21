@@ -1,11 +1,8 @@
-import React  from "react";
-import Router from "react-router";
-import MUI    from "material-ui";
+import React  from "react"
+import Router from "react-router"
 
-const Types        = MUI.MenuItem.Types;
-const ListItem     = MUI.ListItem;
-const ListDivider  = MUI.ListDivider;
-const List         = MUI.List;
+import {List, ListItem} from "material-ui/List"
+import ListDivider from "material-ui/Divider"
 
 export default class LeftNavi extends React.Component {
 
@@ -38,7 +35,7 @@ export default class LeftNavi extends React.Component {
     let buffer = [];
     let label  = "";
     this.navigator().menuItems().forEach((item)=> {
-      if (item.type === Types.SUBHEADER) {
+      if (item.type === "header") {
         lists.push(this.createList( label, buffer, lists.length));
         lists.push(<ListDivider key={lists.length+"_divider"}/>);
         buffer = [];

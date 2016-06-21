@@ -1,9 +1,9 @@
 import React                  from "react"
-import MUI                    from "material-ui"
+
 import Base                   from "../settings/securities-setting-view"
 import LoadingImage           from "../widgets/loading-image"
 
-const RaisedButton = MUI.RaisedButton;
+import RaisedButton from "material-ui/RaisedButton"
 
 export default class SecuritiesSettingView extends Base {
 

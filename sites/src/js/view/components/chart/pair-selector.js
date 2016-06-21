@@ -1,5 +1,5 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import Theme              from "../../theme"
 import AbstractComponent  from "../widgets/abstract-component"
 
@@ -7,7 +7,7 @@ const keys = new Set([
   "availablePairs", "selectedPair"
 ]);
 
-const DropDownMenu = MUI.DropDownMenu;
+import DropDownMenu from "material-ui/DropDownMenu"
 const emptyItems   = [{text:""}];
 
 export default class PairSelector extends AbstractComponent {

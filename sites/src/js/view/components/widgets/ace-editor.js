@@ -1,6 +1,6 @@
 import React             from "react"
 import Router            from "react-router"
-import MUI       　　　　 from "material-ui"
+
 import AbstractComponent from "./abstract-component"
 import LoadingImage      from "./loading-image"
 import Editor            from "react-ace"

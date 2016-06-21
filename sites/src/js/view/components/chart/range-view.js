@@ -1,5 +1,5 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import DateFormatter      from "../../../viewmodel/utils/date-formatter"
 import AbstractComponent  from "../widgets/abstract-component"
 

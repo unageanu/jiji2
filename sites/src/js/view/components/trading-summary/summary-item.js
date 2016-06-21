@@ -1,6 +1,6 @@
 import React             from "react"
 import Router            from "react-router"
-import MUI               from "material-ui"
+
 
 export default class SummaryItem extends React.Component {
 

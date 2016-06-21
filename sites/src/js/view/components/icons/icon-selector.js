@@ -1,13 +1,13 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import Dropzone           from "react-dropzone"
 import AbstractComponent  from "../widgets/abstract-component"
 import LoadingImage       from "../widgets/loading-image"
 import AgentIcon          from "../widgets/agent-icon"
 import Theme              from "../../theme"
 
-const FlatButton = MUI.FlatButton;
-const Dialog     = MUI.Dialog;
+import FlatButton from "material-ui/FlatButton"
+import Dialog from "material-ui/Dialog"
 
 const keys = new Set([
   "icons"

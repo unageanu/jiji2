@@ -1,12 +1,11 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import Theme              from "../../theme"
 import RangeSelector      from "../widgets/range-selector"
 import AbstractComponent  from "../widgets/abstract-component"
 
-const Dialog            = MUI.Dialog;
-const RadioButtonGroup  = MUI.RadioButtonGroup;
-const RadioButton       = MUI.RadioButton;
+import Dialog from "material-ui/Dialog"
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
 
 const keys = new Set([
   "downloadType"

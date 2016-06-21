@@ -1,5 +1,5 @@
 import React      from "react"
-import MUI        from "material-ui"
+
 import PriceUtils from "../../../viewmodel/utils/price-utils"
 import TrendIcon  from "./trend-icon"
 

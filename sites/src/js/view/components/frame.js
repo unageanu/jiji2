@@ -1,16 +1,13 @@
-import React                        from "react"
-import MUI                          from "material-ui"
-import Router                       from "react-router"
-import LeftNavi                     from "./left-navi"
-import WindowResizeManager          from "../window-resize-manager"
-import Theme                        from "../theme"
-import UIEventHandler               from "./widgets/ui-evnet-handler"
+import React                          from "react"
 
-const RouteHandler = Router.RouteHandler;
-const Link         = Router.Link;
-const Types        = MUI.MenuItem.Types;
-const IconButton   = MUI.IconButton;
-const FontIcon   = MUI.FontIcon;
+import { Router, RouteHandler, Link } from 'react-router'
+import LeftNavi                       from "./left-navi"
+import WindowResizeManager            from "../window-resize-manager"
+import Theme                          from "../theme"
+import UIEventHandler                 from "./widgets/ui-evnet-handler"
+
+import IconButton from "material-ui/IconButton"
+import FontIcon from "material-ui/FontIcon"
 
 export default class Frame extends React.Component {
   constructor(props) {
@@ -71,7 +68,7 @@ export default class Frame extends React.Component {
 
   navigatorElements() {
     return this.props.application.navigator.menuItems().filter((item)=>{
-      return item.type === Types.SUBHEADER;
+      return item.type === "subheader";
     }).map((item) => {
       return <Link key={item.route} to={item.route}>{item.text}</Link>;
     });

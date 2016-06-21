@@ -1,8 +1,8 @@
 import React                  from "react"
-import MUI                    from "material-ui"
+
 import AbstractComponent      from "../widgets/abstract-component"
 
-const RaisedButton = MUI.RaisedButton;
+import RaisedButton from "material-ui/RaisedButton"
 
 export default class SettingFinishedView extends AbstractComponent {
 

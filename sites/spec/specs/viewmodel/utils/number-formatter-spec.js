@@ -1,4 +1,4 @@
-import NumberFormatter  from "src/viewmodel/utils/number-formatter";
+import NumberFormatter  from "src/viewmodel/utils/number-formatter"
 
 describe("NumberFormatter", () => {
 

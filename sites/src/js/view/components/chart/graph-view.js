@@ -1,5 +1,5 @@
 
-import CreateJS               from "easeljs";
+import CreateJS               from "easeljs"
 import AbstractChartComponent from "./abstract-chart-component"
 import CoordinateCalculator   from "../../../viewmodel/chart/coordinate-calculator"
 

@@ -1,4 +1,4 @@
-import ContainerJS  from "container-js";
+import ContainerJS  from "container-js"
 import Observable   from "../utils/observable"
 
 export default class SessionManager extends Observable {

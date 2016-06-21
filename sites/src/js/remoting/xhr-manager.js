@@ -1,8 +1,8 @@
-import ContainerJS from "container-js";
-import XhrRequest  from "./xhr-request";
-import Observable  from "../utils/observable";
-import Urls        from "../utils/urls";
-import Error       from "../model/error";
+import ContainerJS from "container-js"
+import XhrRequest  from "./xhr-request"
+import Observable  from "../utils/observable"
+import Urls        from "../utils/urls"
+import Error       from "../model/error"
 
 const defaultOptions = {
   timeout: 1000 * 60 * 3,

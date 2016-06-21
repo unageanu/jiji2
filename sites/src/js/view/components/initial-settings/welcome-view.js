@@ -1,9 +1,9 @@
 import React                  from "react"
-import MUI                    from "material-ui"
+
 import AbstractComponent      from "../widgets/abstract-component"
 
-const RaisedButton = MUI.RaisedButton;
-const Checkbox = MUI.Checkbox;
+import RaisedButton from "material-ui/RaisedButton"
+import Checkbox from "material-ui/Checkbox"
 
 const keys = new Set([
   "acceptLicense", "acceptionError"

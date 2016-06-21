@@ -1,4 +1,4 @@
-import DateFormatter  from "src/viewmodel/utils/date-formatter";
+import DateFormatter  from "src/viewmodel/utils/date-formatter"
 
 describe("DateFormatter", () => {
 

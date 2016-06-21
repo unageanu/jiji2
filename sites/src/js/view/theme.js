@@ -1,9 +1,9 @@
-import MUI from "material-ui"
+
 import _   from "underscore"
 
-const Colors           = MUI.Styles.Colors;
-const Spacing          = MUI.Styles.Spacing;
-const ColorManipulator = MUI.Utils.ColorManipulator;
+import Colors from "material-ui/styles/colors"
+import Spacing from "material-ui/styles/spacing"
+import {fade, daken, lighten} from 'material-ui/utils/colorManipulator'
 
 export default {
   spacing: _.defaults({
@@ -26,7 +26,7 @@ export default {
       negativeColor:  "#F03950",
       canvasColor: "#FFF", //"rgba(128, 128, 128, 0.22)",
       borderColor: "#D3D3D3", //Colors.grey300,
-      disabledColor: ColorManipulator.fade("#666666", 0.3),
+      disabledColor: fade("#666666", 0.3),
       backgroundColor: "#FFF",
       backgroundColorDark: "#F1F1F1",
       backgroundColorDarkAlpha: "rgba(128, 128, 128, 0.11)"
@@ -165,7 +165,7 @@ export default {
       },
       tableRow: {
         hoverColor: Colors.grey200,
-        stripeColor: ColorManipulator.lighten(palette.primary1Color, 0.55),
+        stripeColor: lighten(palette.primary1Color, 0.55),
         selectedColor: Colors.grey300,
         textColor: Colors.darkBlack,
         borderColor: palette.borderColor
@@ -187,14 +187,14 @@ export default {
         thumbOffColor: Colors.grey50,
         thumbDisabledColor: Colors.grey400,
         thumbRequiredColor: palette.primary1Color,
-        trackOnColor: ColorManipulator.fade(palette.primary1Color, 0.5),
+        trackOnColor: fade(palette.primary1Color, 0.5),
         trackOffColor: Colors.minBlack,
         trackDisabledColor: Colors.faintBlack,
         labelColor: palette.textColor,
         labelDisabledColor: palette.disabledColor
       },
       toolbar: {
-        backgroundColor: ColorManipulator.darken('#eeeeee', 0.05),
+        backgroundColor: darken('#eeeeee', 0.05),
         height: 56,
         titleFontSize: 20,
         iconColor: 'rgba(0, 0, 0, .40)',
@@ -217,12 +217,12 @@ export default {
     };
 
     // Properties based on previous properties
-    obj.flatButton.disabledTextColor = ColorManipulator.fade(obj.flatButton.textColor, 0.3);
-    obj.floatingActionButton.disabledColor = ColorManipulator.darken(Colors.white, 0.1);
-    obj.floatingActionButton.disabledTextColor = ColorManipulator.fade(palette.textColor, 0.3);
-    obj.raisedButton.disabledColor = ColorManipulator.darken(obj.raisedButton.color, 0.1);
-    obj.raisedButton.disabledTextColor = ColorManipulator.fade(obj.raisedButton.textColor, 0.3);
-    obj.toggle.trackRequiredColor = ColorManipulator.fade(obj.toggle.thumbRequiredColor, 0.5);
+    obj.flatButton.disabledTextColor = fade(obj.flatButton.textColor, 0.3);
+    obj.floatingActionButton.disabledColor = darken(Colors.white, 0.1);
+    obj.floatingActionButton.disabledTextColor = fade(palette.textColor, 0.3);
+    obj.raisedButton.disabledColor = darken(obj.raisedButton.color, 0.1);
+    obj.raisedButton.disabledTextColor = fade(obj.raisedButton.textColor, 0.3);
+    obj.toggle.trackRequiredColor = fade(obj.toggle.thumbRequiredColor, 0.5);
 
     return obj;
   },

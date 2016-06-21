@@ -1,10 +1,10 @@
 import React               from "react"
-import MUI                 from "material-ui"
+
 import AbstractComponent   from "../widgets/abstract-component"
 import LoadingImage        from "../widgets/loading-image"
 
-const RaisedButton = MUI.RaisedButton;
-const TextField    = MUI.TextField;
+import RaisedButton from "material-ui/RaisedButton"
+import TextField from "material-ui/TextField"
 
 const keys = new Set([
   "error", "message", "isSaving"

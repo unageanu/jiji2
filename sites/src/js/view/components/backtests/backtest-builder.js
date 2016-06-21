@@ -1,5 +1,5 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import AbstractComponent  from "../widgets/abstract-component"
 import DateFormatter      from "../../../viewmodel/utils/date-formatter"
 import AgentSettingEditor from "../agents/agent-setting-editor"
@@ -7,8 +7,8 @@ import RangeSelector      from "../widgets/range-selector"
 import PairSelector       from "../widgets/pair-selector"
 import LoadingImage       from "../widgets/loading-image"
 
-const TextField    = MUI.TextField;
-const RaisedButton = MUI.RaisedButton;
+import TextField from "material-ui/TextField"
+import RaisedButton from "material-ui/RaisedButton"
 
 const keys = new Set([
   "name", "memo", "balance",

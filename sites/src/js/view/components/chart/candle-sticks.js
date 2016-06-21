@@ -1,4 +1,4 @@
-import CreateJS               from "easeljs";
+import CreateJS               from "easeljs"
 import AbstractChartComponent from "./abstract-chart-component"
 
 export default class CandleSticks extends AbstractChartComponent {

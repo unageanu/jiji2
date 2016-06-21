@@ -1,12 +1,12 @@
 import "babel-polyfill";
 
-import React        from "react";
-import Router       from "react-router";
-import ContainerJS  from "container-js";
+import React        from "react"
+import Router       from "react-router"
+import ContainerJS  from "container-js"
 
-import modules      from "../composing/modules";
-import routes       from "./routes";
-import babelLoader  from "../composing/babel-loader";
+import modules      from "../composing/modules"
+import routes       from "./routes"
+import babelLoader  from "../composing/babel-loader"
 
 export default class Initializer {
 

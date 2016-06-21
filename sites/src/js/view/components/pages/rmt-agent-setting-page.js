@@ -1,11 +1,11 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import AbstractPage       from "./abstract-page"
 import AgentSettingEditor from "../agents/agent-setting-editor"
 import LoadingImage       from "../widgets/loading-image"
 
-const RaisedButton = MUI.RaisedButton;
-const Card = MUI.Card;
+import RaisedButton from "material-ui/RaisedButton"
+import Card from "material-ui/Card"
 
 const keys = new Set([
   "isSaving", "isLoading", "savedLabel"

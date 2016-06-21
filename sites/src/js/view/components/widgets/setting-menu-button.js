@@ -1,10 +1,10 @@
 import React        from "react"
-import MUI          from "material-ui"
+
 import Theme        from "../../theme"
 import MenuItem     from 'material-ui/MenuItem'
 
-const IconButton = MUI.IconButton;
-const IconMenu   = MUI.IconMenu;
+import IconButton from "material-ui/IconButton"
+import IconMenu   from "material-ui/IconMenu"
 
 export default class SettingMenuButton extends React.Component {
 

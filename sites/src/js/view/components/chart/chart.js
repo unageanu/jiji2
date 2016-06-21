@@ -1,4 +1,4 @@
-import React                from "react";
+import React                from "react"
 
 import CreateJS             from "easeljs"
 import CandleSticks         from "./candle-sticks"

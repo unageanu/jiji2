@@ -1,11 +1,11 @@
 import React        from "react"
-import MUI          from "material-ui"
+
 import AbstractPage from "./abstract-page"
 import LoadingImage from "../widgets/loading-image"
 
-const TextField    = MUI.TextField;
-const Card         = MUI.Card;
-const RaisedButton = MUI.RaisedButton;
+import TextField from "material-ui/TextField"
+import Card from "material-ui/Card"
+import RaisedButton from "material-ui/RaisedButton"
 
 const keys = new Set([
   "error", "isAuthenticating",

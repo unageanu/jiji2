@@ -1,4 +1,4 @@
-import CreateJS             from "easeljs";
+import CreateJS             from "easeljs"
 
 export default class AbstractChartComponent {
 

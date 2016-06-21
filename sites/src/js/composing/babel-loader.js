@@ -1,4 +1,4 @@
-import ContainerJS  from "container-js";
+import ContainerJS  from "container-js"
 
 export default {
   load( moduleName ) {

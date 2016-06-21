@@ -1,9 +1,6 @@
-import React               from "react"
-import MUI                 from "material-ui"
-import AbstractComponent   from "../widgets/abstract-component"
-
-const Tabs  = MUI.Tabs;
-const Tab   = MUI.Tab;
+import React              from "react"
+import AbstractComponent  from "../widgets/abstract-component"
+import {Tabs, Tab}        from "material-ui/Tabs"
 
 export default class BacktestDetailsTab extends AbstractComponent {
 

@@ -1,5 +1,5 @@
-import MockXhrManager   from "./mock/remoting/xhr-manager";
-import MockLocalStorage from "./mock/stores/local-storage";
+import MockXhrManager   from "./mock/remoting/xhr-manager"
+import MockLocalStorage from "./mock/stores/local-storage"
 
 export default (binder) => {
   binder.bind("xhrManager")

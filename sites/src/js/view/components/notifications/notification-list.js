@@ -1,5 +1,5 @@
 import React                from "react"
-import MUI                  from "material-ui"
+
 import AbstractList         from "../widgets/abstract-list"
 import NotificationListItem from "./notification-list-item"
 

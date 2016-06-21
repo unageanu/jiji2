@@ -1,4 +1,4 @@
-import Observable   from "../../utils/observable";
+import Observable   from "../../utils/observable"
 
 export default class eventQueue extends Observable {
 

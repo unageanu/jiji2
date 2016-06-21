@@ -1,9 +1,9 @@
 import React                  from "react"
-import MUI                    from "material-ui"
+
 import AbstractComponent      from "../widgets/abstract-component"
 import AgentListItem          from "./agent-list-item"
 
-const List         = MUI.List;
+import {List} from "material-ui/List"
 
 const keys = new Set([
   "availableAgents", "agentSetting", "selectedAgent"

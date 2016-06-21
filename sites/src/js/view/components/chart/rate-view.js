@@ -1,5 +1,5 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import Draggable          from "react-draggable"
 import DateFormatter      from "../../../viewmodel/utils/date-formatter"
 import NumberFormatter    from "../../../viewmodel/utils/number-formatter"

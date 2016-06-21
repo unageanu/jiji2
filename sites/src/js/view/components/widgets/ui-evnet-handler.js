@@ -1,10 +1,10 @@
-import React             from "react";
-import MUI               from "material-ui"
-import AbstractComponent from "../widgets/abstract-component";
+import React             from "react"
+
+import AbstractComponent from "../widgets/abstract-component"
 import Theme             from "../../theme"
 
-const Snackbar   = MUI.Snackbar;
-const Avatar     = MUI.Avatar;
+import Snackbar from "material-ui/Snackbar"
+import Avatar from "material-ui/Avatar"
 
 export default class UIEventHandler extends AbstractComponent {
 

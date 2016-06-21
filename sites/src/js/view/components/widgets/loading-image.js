@@ -1,7 +1,7 @@
 import React   from "react"
-import MUI     from "material-ui"
 
-const RefreshIndicator = MUI.RefreshIndicator;
+
+import RefreshIndicator from "material-ui/RefreshIndicator"
 
 export default class LoadingImage extends React.Component {
 

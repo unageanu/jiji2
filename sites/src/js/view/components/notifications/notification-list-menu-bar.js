@@ -1,14 +1,14 @@
 import React                from "react"
-import MUI                  from "material-ui"
+
 import AbstractComponent    from "../widgets/abstract-component"
 import NotificationListItem from "./notification-list-item"
 import LoadingImage         from "../widgets/loading-image"
 
-const List   = MUI.List;
-const FlatButton   = MUI.FlatButton;
-const DropDownMenu = MUI.DropDownMenu;
-const IconButton   = MUI.IconButton;
-const FontIcon     = MUI.FontIcon;
+import {List, ListItem} from "material-ui/List"
+import FlatButton from "material-ui/FlatButton"
+import DropDownMenu from "material-ui/DropDownMenu"
+import IconButton from "material-ui/IconButton"
+import FontIcon from "material-ui/FontIcon"
 
 const keys = new Set([
   "hasNext", "hasPrev", "availableFilterConditions",

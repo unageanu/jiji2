@@ -1,13 +1,13 @@
 import React               from "react"
-import MUI                 from "material-ui"
+
 import AbstractComponent   from "../widgets/abstract-component"
 import PositionStatus      from "./position-status"
 import Environment         from "../../environment"
 import Theme               from "../../theme"
 import PriceUtils          from "../../../viewmodel/utils/price-utils"
 
-const ListItem   = MUI.ListItem;
-const Avatar     = MUI.Avatar;
+import {List, ListItem} from "material-ui/List"
+import Avatar from "material-ui/Avatar"
 
 const nullPosition = {};
 

@@ -1,6 +1,6 @@
-import Deferred    from "../utils/deferred";
-import ContainerJS from "container-js";
-import Error       from "../model/error";
+import Deferred    from "../utils/deferred"
+import ContainerJS from "container-js"
+import Error       from "../model/error"
 
 export default class Authenticator {
 

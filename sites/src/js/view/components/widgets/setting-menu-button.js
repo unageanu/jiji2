@@ -1,7 +1,7 @@
 import React        from "react"
 import MUI          from "material-ui"
 import Theme        from "../../theme"
-import MenuItem     from 'material-ui/lib/menus/menu-item'
+import MenuItem     from 'material-ui/MenuItem'
 
 const IconButton = MUI.IconButton;
 const IconMenu   = MUI.IconMenu;

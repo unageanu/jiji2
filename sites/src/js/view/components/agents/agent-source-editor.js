@@ -1,4 +1,5 @@
 import React                 from "react"
+import ReactDOM              from "react-dom"
 import { Router } from 'react-router'
 
 import AbstractComponent     from "../widgets/abstract-component"
@@ -40,7 +41,7 @@ export default class AgentSourceEditor extends AbstractComponent {
     this.updateEditorSizerequest = setTimeout(()=> {
       this.updateEditorSizerequest = null;
       if (!this.refs.editorPanel || !this.refs.editor) return;
-      const elm = React.findDOMNode(this.refs.editorPanel);
+      const elm = ReactDOM.findDOMNode(this.refs.editorPanel);
       this.refs.editor.resize(elm.offsetWidth, elm.offsetHeight);
     }, 100);
   }
@@ -75,7 +76,7 @@ export default class AgentSourceEditor extends AbstractComponent {
         </div>
         <div className="editor" ref="editorPanel">
           {this.createEditor()}
-        </div> 
+        </div>
       </div>
     );
   }

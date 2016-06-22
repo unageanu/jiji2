@@ -1,4 +1,5 @@
 import React                from "react"
+import ReactDOM             from "react-dom"
 
 import CreateJS             from "easeljs"
 import CandleSticks         from "./candle-sticks"
@@ -25,7 +26,7 @@ export default class Chart extends React.Component {
 
   componentDidMount() {
     this.props.model.stageSize = this.props.size;
-    const canvas = React.findDOMNode(this.refs.canvas);
+    const canvas = ReactDOM.findDOMNode(this.refs.canvas);
 
     this.buildStage(canvas, this.props.devicePixelRatio);
     this.buildViewComponents();

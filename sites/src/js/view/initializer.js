@@ -1,7 +1,7 @@
 import "babel-polyfill";
 
 import React        from "react"
-import Router       from "react-router"
+import { Router }   from 'react-router'
 import ContainerJS  from "container-js"
 
 import modules      from "../composing/modules"

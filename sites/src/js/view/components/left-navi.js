@@ -1,5 +1,5 @@
 import React  from "react"
-import Router from "react-router"
+import { Router } from 'react-router'
 
 import {List, ListItem} from "material-ui/List"
 import ListDivider from "material-ui/Divider"

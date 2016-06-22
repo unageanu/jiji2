@@ -1,5 +1,5 @@
 import React      from "react"
-import Router     from "react-router"
+import { Router } from 'react-router'
 
 import Frame             from "./components/frame"
 import Home              from "./components/pages/home-page"

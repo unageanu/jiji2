@@ -1,5 +1,5 @@
 import React            from "react"
-import Router           from "react-router"
+import { Router } from 'react-router'
 
 import AbstractCard     from "../widgets/abstract-card"
 import BalancePanel     from "./balance-panel"

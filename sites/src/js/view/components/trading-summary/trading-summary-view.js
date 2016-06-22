@@ -1,5 +1,5 @@
 import React             from "react"
-import Router            from "react-router"
+import { Router } from 'react-router'
 
 import ReactChart        from "react-chartjs"
 import AbstractComponent from "../widgets/abstract-component"

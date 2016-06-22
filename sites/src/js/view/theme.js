@@ -8,7 +8,11 @@ import {
 } from 'material-ui/styles/colors'
 
 
-const {spacing} = baseTheme;
+const {baseSpacing} = baseTheme;
+const spacing = Object.assign({
+  grid: "8px"
+}, baseSpacing);
+
 const palette = {
   primary1Color:  "#2A5252",
   primary2Color:  "#2B5353", // dark
@@ -30,6 +34,7 @@ const palette = {
 };
 
 export default getMuiTheme({
+  spacing: spacing,
   fontFamily: "Roboto, 'Roboto Condensed', 'ヒラギノ角ゴ Pro W3',"
      + "'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, "
      + "'Noto Sans Japanese', sans-serif",

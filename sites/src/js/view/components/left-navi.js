@@ -2,8 +2,8 @@ import React  from "react"
 import { Router } from 'react-router'
 
 import {List, ListItem} from "material-ui/List"
-import Divider from "material-ui/Divider"
-import Subheader from 'material-ui/Subheader';
+import Divider          from "material-ui/Divider"
+import Subheader        from 'material-ui/Subheader'
 
 export default class LeftNavi extends React.Component {
 
@@ -50,10 +50,14 @@ export default class LeftNavi extends React.Component {
   }
 
   createList(label, items, index) {
-    return <List key={index}>
+    return <List key={index} style={this.createListStyle(label)}>
       <Subheader>{label}</Subheader>
       {items}
     </List>;
+  }
+
+  createListStyle(hasLabel) {
+    return hasLabel ? {} : { paddingTop: this.context.muiTheme.spacing.grid };
   }
 
   createListItem(item, index) {
@@ -93,5 +97,6 @@ export default class LeftNavi extends React.Component {
 }
 LeftNavi.contextTypes = {
   application: React.PropTypes.object.isRequired,
-  router: React.PropTypes.object.isRequired
+  router: React.PropTypes.object.isRequired,
+  muiTheme: React.PropTypes.object.isRequired
 };

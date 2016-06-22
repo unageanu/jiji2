@@ -1,7 +1,8 @@
 import "babel-polyfill";
 
 import React        from "react"
-import { Router }   from 'react-router'
+import ReactDOM     from "react-dom"
+import { Router, hashHistory } from 'react-router'
 import ContainerJS  from "container-js"
 
 import modules      from "../composing/modules"
@@ -27,13 +28,17 @@ export default class Initializer {
     );
   }
   initializeView(application, initialRoute) {
-    const location = Router.HashLocation;
-    if (initialRoute) location.replace(initialRoute);
+    if (initialRoute) hashHistory.replace(initialRoute);
     try {
-      Router.run(this.routes(), location, (Handler) => {
-        const element = document.getElementById("main");
-        React.render(<Handler application={application} />, element);
-      });
+      const element = document.getElementById("main");
+      ReactDOM.render( <Router
+        history={hashHistory}
+        createElement={(component, props) => {
+          props.application = application;
+          return React.createElement(component, props);
+        }}>
+        {this.routes()}
+      </Router>, element);
     } catch (e) {
       this.handleError(e, application);
     }

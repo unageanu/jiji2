@@ -68,9 +68,8 @@ export default class LeftNavi extends React.Component {
   }
 
   isActive(route) {
-    const currentPath = this.router().getCurrentPath();
-    if (route === "/") return currentPath === "/";
-    return currentPath.indexOf(route) === 0;
+    const indexOnly = route === "/";
+    return this.router().isActive({ pathname:route }, indexOnly);
   }
 
   onLeftNavChange(e, key, payload) {
@@ -90,5 +89,5 @@ export default class LeftNavi extends React.Component {
 }
 LeftNavi.contextTypes = {
   application: React.PropTypes.object.isRequired,
-  router: React.PropTypes.func
+  router: React.PropTypes.object.isRequired
 };

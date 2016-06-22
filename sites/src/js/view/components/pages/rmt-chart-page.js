@@ -41,5 +41,5 @@ export default class RMTChartPage extends AbstractPage {
 RMTChartPage.contextTypes = {
   application: React.PropTypes.object.isRequired,
   windowResizeManager: React.PropTypes.object.isRequired,
-  router: React.PropTypes.func
+  router: React.PropTypes.object
 };

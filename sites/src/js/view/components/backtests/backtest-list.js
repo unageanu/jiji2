@@ -71,7 +71,7 @@ export default class BacktestList extends AbstractComponent {
   }
 
   onItemTapped(e, backtest) {
-    this.context.router.transitionTo("/backtests/list/" + backtest.id);
+    this.context.router.push({ pathname: "/backtests/list/" + backtest.id });
   }
 
   model() {
@@ -85,5 +85,5 @@ BacktestList.defaultProps = {
   model: null
 };
 BacktestList.contextTypes = {
-  router: React.PropTypes.func
+  router: React.PropTypes.object
 };

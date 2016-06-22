@@ -65,5 +65,5 @@ export default class InitialSettingsPage extends AbstractPage {
 
 InitialSettingsPage.contextTypes = {
   application: React.PropTypes.object.isRequired,
-  router: React.PropTypes.func
+  router: React.PropTypes.object
 };

@@ -33,5 +33,5 @@ export default class NewBacktestPage extends AbstractPage {
 }
 NewBacktestPage.contextTypes = {
   application: React.PropTypes.object.isRequired,
-  router: React.PropTypes.func
+  router: React.PropTypes.object
 };

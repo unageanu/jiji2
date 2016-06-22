@@ -38,8 +38,9 @@ export default class UIEventHandler extends AbstractComponent {
 
   onActionTouchTap(ev) {
     if ( this.state.event.type == "notificationReceived" ) {
-      this.context.router.transitionTo("/notifications/"
-        + this.state.event.data.additionalData.notificationId);
+      this.context.router.push({
+        pathname: "/notifications/"+ this.state.event.data.additionalData.notificationId
+      });
     }
     this.refs["message-bar"].dismiss();
   }
@@ -71,7 +72,9 @@ export default class UIEventHandler extends AbstractComponent {
     this.refs["message-bar"].show();
   }
   processRoutingEvent(event) {
-    this.context.router.transitionTo(event.route);
+    this.context.routerpush({
+      pathname:event.route
+    });
   }
 
   createMessage(event) {
@@ -109,5 +112,5 @@ export default class UIEventHandler extends AbstractComponent {
 }
 UIEventHandler.contextTypes = {
   application: React.PropTypes.object.isRequired,
-  router: React.PropTypes.func
+  router: React.PropTypes.object
 };

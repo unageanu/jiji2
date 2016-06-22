@@ -42,5 +42,5 @@ export default class RMTPositionsPage extends AbstractPage {
 }
 RMTPositionsPage.contextTypes = {
   application: React.PropTypes.object.isRequired,
-  router: React.PropTypes.func
+  router: React.PropTypes.object
 };

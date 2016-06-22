@@ -55,5 +55,5 @@ export default class NotificationsPage extends AbstractPage {
 }
 NotificationsPage.contextTypes = {
   application: React.PropTypes.object.isRequired,
-  router: React.PropTypes.func
+  router: React.PropTypes.object
 };

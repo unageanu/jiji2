@@ -149,7 +149,9 @@ export default class PositionsTable extends AbstractComponent {
     if ( this.props.onItemTapped ) {
       this.props.onItemTapped(ev, position);
     } else {
-      this.context.router.transitionTo("/rmt/positions/"+position.id);
+      this.context.router.push({
+        pathname:"/rmt/positions/"+position.id
+      });
     }
     ev.preventDefault();
   }
@@ -175,6 +177,6 @@ PositionsTable.defaultProps = {
   onItemTapped: null
 };
 PositionsTable.contextTypes = {
-  router: React.PropTypes.func,
+  router: React.PropTypes.object,
   windowResizeManager: React.PropTypes.object
 };

@@ -136,7 +136,9 @@ export default class BacktestBuilder extends AbstractComponent {
     if (!builder.validate()) return;
 
     builder.build().then(
-      (test) => this.context.router.transitionTo("/backtests/list/" + test.id)
+      (test) => this.context.router.push({
+        pathname:"/backtests/list/" + test.id
+      })
     );
   }
 
@@ -150,5 +152,5 @@ BacktestBuilder.propTypes = {
 BacktestBuilder.defaultProps = {
 };
 BacktestBuilder.contextTypes = {
-  router: React.PropTypes.func
+  router: React.PropTypes.object
 };

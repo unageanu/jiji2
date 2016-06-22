@@ -101,6 +101,6 @@ AbstractList.defaultProps = {
   mobile: false
 };
 AbstractList.contextTypes = {
-  router: React.PropTypes.func,
+  router: React.PropTypes.object,
   windowResizeManager: React.PropTypes.object
 };

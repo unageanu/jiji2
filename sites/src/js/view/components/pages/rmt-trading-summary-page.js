@@ -33,5 +33,5 @@ export default class RMTTradingSummaryPage extends AbstractPage {
 }
 RMTTradingSummaryPage.contextTypes = {
   application: React.PropTypes.object.isRequired,
-  router: React.PropTypes.func
+  router: React.PropTypes.object
 };

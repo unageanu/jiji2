@@ -5,7 +5,7 @@ import DateFormatter          from "../../../viewmodel/utils/date-formatter"
 import Theme                  from "../../theme"
 
 const padding = CoordinateCalculator.padding();
-const palette = Theme.getPalette();
+const palette = Theme.palette;
 const color   = palette.accent1Color;
 const textColor = "#FFF";
 const shadowColor = "rgba(150,150,150,0.5)";

@@ -25,5 +25,5 @@ TextInRadius.propTypes = {
   color: React.PropTypes.string
 };
 TextInRadius.defaultProps = {
-  color: Theme.getPalette().accent4Color
+  color: Theme.palette.accent4Color
 };

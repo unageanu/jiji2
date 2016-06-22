@@ -17,9 +17,9 @@ export default class PositionStatus extends React.Component {
 
   get color() {
     if (this.props.status == "未決済") {
-      return Theme.getPalette().accent4Color;
+      return Theme.palette.accent4Color;
     } else {
-      return Theme.getPalette().textColor;
+      return Theme.palette.textColor;
     }
   }
 }

@@ -2,7 +2,7 @@ import React                            from "react"
 import { Router, Link }                 from 'react-router'
 import LeftNavi                         from "./left-navi"
 import WindowResizeManager              from "../window-resize-manager"
-import Theme                            from "../theme"
+import theme                            from "../theme"
 import UIEventHandler                   from "./widgets/ui-evnet-handler"
 import IconButton                       from "material-ui/IconButton"
 import FontIcon                         from "material-ui/FontIcon"
@@ -20,7 +20,7 @@ export default class Frame extends React.Component {
 
   render() {
     return (
-      <MuiThemeProvider>
+      <MuiThemeProvider muiTheme={theme}>
         <div className="root">
           <div className="topbar">
             <span className="buttons">
@@ -79,8 +79,7 @@ Frame.propTypes =  {
 };
 Frame.childContextTypes = {
   application:         React.PropTypes.object.isRequired,
-  windowResizeManager: React.PropTypes.object,
-  muiTheme:            React.PropTypes.object
+  windowResizeManager: React.PropTypes.object
 };
 Frame.contextTypes = {
   router: React.PropTypes.object

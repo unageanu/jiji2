@@ -24,7 +24,7 @@ export default class AgentSourceListItem extends React.Component {
       className: className,
       innerDivStyle : Object.assign({}, Theme.listItem.innerDivStyle, {
         backgroundColor: this.props.selected
-          ? Theme.getPalette().backgroundColorDarkAlpha : "rgba(0,0,0,0)"
+          ? Theme.palette.backgroundColorDarkAlpha : "rgba(0,0,0,0)"
       }),
       onTouchTap: this.props.onTouchTap,
       primaryText: <div className="primary-text">{agentSource.name}</div>,
@@ -46,7 +46,7 @@ export default class AgentSourceListItem extends React.Component {
     if (agentSource.status !== "error") return null;
     return <span className="right-icon warn">
       <FontIcon
-        style={{color: Theme.getPalette().negativeColor}}
+        style={{color: Theme.palette.negativeColor}}
         className="md-warning"/>
     </span>;
   }

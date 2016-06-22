@@ -19,7 +19,7 @@ export default class Background extends AbstractChartComponent {
     const stageSize = this.chartModel.candleSticks.stageSize;
     this.backgroundShape = this.initializeElement(new CreateJS.Shape());
     this.backgroundShape.graphics
-        .beginFill(Theme.getPalette().backgroundColorDark)
+        .beginFill(Theme.palette.backgroundColorDark)
         .drawRect( 0, 0, stageSize.w, stageSize.h )
         .endFill();
   }

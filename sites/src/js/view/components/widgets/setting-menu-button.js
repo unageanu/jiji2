@@ -16,7 +16,7 @@ export default class SettingMenuButton extends React.Component {
   render() {
     const iconButtonElement = <IconButton
         iconClassName="md-more-vert"
-        iconStyle={{color:Theme.getPalette().textColorLight}}
+        iconStyle={{color:Theme.palette.textColorLight}}
       />;
     const menu = this.createMenuItems();
     return (

@@ -62,7 +62,7 @@ export default class PairSelector extends AbstractComponent {
         labelStyle={
           Object.assign({
             padding: "0px",
-            color: Theme.getPalette().textColorLight
+            color: Theme.palette.textColorLight
           }, Theme.chart.selector, this.props.labelStyle)
         }
         iconStyle={Object.assign({right:"8px"}, this.props.iconStyle)}

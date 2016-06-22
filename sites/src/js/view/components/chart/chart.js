@@ -70,7 +70,7 @@ export default class Chart extends React.Component {
   buildViewComponents() {
     this.slidableMask = this.createSlidableMask();
     this.slidable     = this.createSlidableMask(
-      Theme.getPalette().backgroundColorDark);
+      Theme.palette.backgroundColorDark);
     const model = this.props.model;
 
     this.background    = new Background( model );

@@ -25,7 +25,7 @@ export default class NotificationListItem extends React.Component {
       innerDivStyle : Object.assign( {}, Theme.listItem.innerDivStyle, {
         paddingRight:"72px",
         backgroundColor: this.props.selected
-          ? Theme.getPalette().backgroundColorDarkAlpha : "rgba(0,0,0,0)"
+          ? Theme.palette.backgroundColorDarkAlpha : "rgba(0,0,0,0)"
       }),
       leftAvatar: this.createAvatar(notification),
       primaryText: this.createPrimaryText(notification),

@@ -23,7 +23,7 @@ export default class AgentListItem extends React.Component {
       className: className,
       innerDivStyle : Object.assign({}, Theme.listItem.innerDivStyle, {
         backgroundColor: this.props.selected
-          ? Theme.getPalette().backgroundColorDarkAlpha : "rgba(0,0,0,0)"
+          ? Theme.palette.backgroundColorDarkAlpha : "rgba(0,0,0,0)"
       }),
       leftAvatar: avatar,
       onTouchTap: (ev)=> this.props.onTouchTap(ev, agent ),

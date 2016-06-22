@@ -26,7 +26,7 @@ export default class BacktestListItem extends React.Component {
       className: "list-item",
       innerDivStyle : Object.assign( {}, Theme.listItem.innerDivStyle, {
         backgroundColor: this.props.selected
-          ? Theme.getPalette().backgroundColorDarkAlpha : "rgba(0,0,0,0)"
+          ? Theme.palette.backgroundColorDarkAlpha : "rgba(0,0,0,0)"
       }),
       primaryText: this.createPrimaryText(backtest),
       secondaryText: this.createSecondaryText(backtest),
@@ -69,7 +69,7 @@ export default class BacktestListItem extends React.Component {
           display: "inline-block",
           width: "200px",
           top: "-3px",
-          backgroundColor: Theme.getPalette().borderColor
+          backgroundColor: Theme.palette.borderColor
         }} />
     </span>
   }

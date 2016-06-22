@@ -95,7 +95,7 @@ export default class LogViewer extends AbstractComponent {
   createPageSelectorElement(selector, index) {
     if (selector.action) {
       const className = selector.selected ? "selected" : "";
-      const palette = Theme.getPalette();
+      const palette = Theme.palette;
       return (
         <FlatButton
           className={"selector " + className}

@@ -11,7 +11,8 @@ export default class UIEventHandler extends AbstractComponent {
   constructor(props) {
     super(props);
     this.state = {
-      event: null
+      event: null,
+      open: false
     };
   }
 
@@ -29,24 +30,24 @@ export default class UIEventHandler extends AbstractComponent {
       className="snackbar"
       ref="message-bar"
       style={Theme.snackbar}
+      open={this.state.open}
       message={message}
       action={action}
       autoHideDuration={autoHideDuration}
       onActionTouchTap={this.onActionTouchTap.bind(this)}
-      onDismiss={this.onDismiss.bind(this)} />;
+      onRequestClose={this.onRequestClose.bind(this)} />;
   }
 
   onActionTouchTap(ev) {
     if ( this.state.event.type == "notificationReceived" ) {
-      this.context.router.push({
-        pathname: "/notifications/"+ this.state.event.data.additionalData.notificationId
-      });
+      const notificationId = this.state.event.data.additionalData.notificationId;
+      this.context.router.push({pathname: "/notifications/"+ notificationId});
     }
-    this.refs["message-bar"].dismiss();
+    this.onRequestClose(ev);
   }
 
-  onDismiss(ev) {
-    this.setState({message: "", action: ""});
+  onRequestClose(ev) {
+    this.setState({event:null, open:false});
     setTimeout(() => this.processEventIfExist(), 500);
   }
 
@@ -68,8 +69,7 @@ export default class UIEventHandler extends AbstractComponent {
     }
   }
   processMessageEvent(event) {
-    this.setState({event: event});
-    this.refs["message-bar"].show();
+    this.setState({event: event, open:true});
   }
   processRoutingEvent(event) {
     this.context.routerpush({

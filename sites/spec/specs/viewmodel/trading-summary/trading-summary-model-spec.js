@@ -160,57 +160,51 @@ describe("TradingSummaryModel", () => {
   });
 
   it("pairData", () => {
-    expect(model.pairData).toEqual([{
-      label: "EURJPY",
-      value: 6,
-      valueAndRatio: "6 (60.0%)",
-      color: '#00BFA5',
-     highlight: '#4CD2C0'
-    }, {
-      label: "USDJPY",
-      value: 4,
-      valueAndRatio: "4 (40.0%)",
-      color: '#666699',
-      highlight: '#9494B7'
-    }]);
+    expect(model.pairData).toEqual({
+      labels: ["EURJPY", "USDJPY"],
+      datasets: [{
+        data: [6, 4],
+        borderWidth: [0, 0],
+        backgroundColor: [
+          '#00BFA5', '#666699'
+        ],
+        hoverBackgroundColor: [
+          '#4CD2C0', '#9494B7'
+        ]
+      }]
+    });
   });
 
   it("sellOrBuyData", () => {
-    expect(model.sellOrBuyData).toEqual([{
-      label: "買",
-      color: '#FD8A6A',
-      highlight: '#FD8A6A',
-      value: 4,
-      valueAndRatio: "4 (40.0%)"
-    }, {
-      label: "売",
-      color: '#FFCC66',
-      highlight: '#FFDB94',
-      value: 6,
-      valueAndRatio: "6 (60.0%)"
-    }]);
+    expect(model.sellOrBuyData).toEqual({
+      labels: ["買", "売"],
+      datasets: [{
+        data: [4, 6],
+        borderWidth: [0, 0],
+        backgroundColor: [
+          '#FD8A6A', '#FFCC66'
+        ],
+        hoverBackgroundColor: [
+          '#FEB49E', '#FFDB94'
+        ]
+      }]
+    });
   });
 
   it("winsAndLossesData", () => {
-    expect(model.winsAndLossesData).toEqual([{
-      label: "勝",
-      color: "#F7464A",
-      highlight: "#FF5A5E",
-      value: 4,
-      valueAndRatio: "4 (40.0%)"
-    }, {
-      label: "負",
-      color: "#46BFBD",
-      highlight: "#5AD3D1",
-      value: 4,
-      valueAndRatio: "4 (40.0%)"
-    }, {
-      label: "引き分け",
-      color: "#999",
-      highlight: "#AAA",
-      value: 2,
-      valueAndRatio: "2 (20.0%)"
-    }]);
+    expect(model.winsAndLossesData).toEqual({
+      labels: ["勝", "負", "引き分け"],
+      datasets: [{
+        data: [4, 4, 2],
+        borderWidth: [0, 0, 0],
+        backgroundColor: [
+          "#F7464A", "#46BFBD", "#999"
+        ],
+        hoverBackgroundColor: [
+          "#FF5A5E", "#5AD3D1", "#AAA"
+        ]
+      }]
+    });
   });
 
   it("formatedProfitFactor", () => {

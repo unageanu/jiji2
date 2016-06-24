@@ -12,7 +12,7 @@ const doughnutChartOptions = {
     backgroundColor: "rgba(30,30,30,0.7)",
     custom(values) {
       return `${values.label} ${values.value}`;
-    } 
+    }
   },
   cutoutPercentage : 80
 };
@@ -31,8 +31,7 @@ export default class CircleGraph extends React.Component {
         <div className="circle-graph-body">
           <div className="chart">
             <span>
-              <DoughnutChart
-                redraw={true}
+              <DoughnutChart 
                 data={this.props.data}
                 options={this.getDoughnutChartOptions()}
                 width={this.props.size} height={this.props.size} />
@@ -63,10 +62,10 @@ export default class CircleGraph extends React.Component {
 
 CircleGraph.propTypes = {
   title: React.PropTypes.string.isRequired,
-  data:  React.PropTypes.array,
+  data:  React.PropTypes.object,
   size:  React.PropTypes.number
 };
 CircleGraph.defaultProps = {
-  data: [],
+  data: {},
   size: 200
 };

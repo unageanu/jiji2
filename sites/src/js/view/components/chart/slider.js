@@ -57,8 +57,8 @@ export default class Slider extends AbstractComponent {
     return <Draggable
       axis="x"
       handle=".handle"
-      start={{x: this.state.handlePosition, y: 0}}
-      bound="box all"
+      position={{x: this.state.handlePosition, y: 0}}
+      bounds="parent"
       onStart={this.handleStart.bind(this)}
       onDrag={this.handleDrag.bind(this)}
       onStop={this.handleStop.bind(this)}>
@@ -74,10 +74,10 @@ export default class Slider extends AbstractComponent {
     this.props.chartModel.slider.slideStart();
   }
   handleDrag(event, ui) {
-    this.props.chartModel.slider.slideByHandle(ui.position.left);
+    this.props.chartModel.slider.slideByHandle(ui.lastX);
   }
   handleStop(event, ui) {
-    this.props.chartModel.slider.slideByHandle(ui.position.left);
+    this.props.chartModel.slider.slideByHandle(ui.lastX);
     this.props.chartModel.slider.slideEnd();
   }
 }

@@ -3,7 +3,7 @@ import React              from "react"
 import Theme              from "../../theme"
 import AbstractComponent  from "../widgets/abstract-component"
 import DropDownMenu       from "material-ui/DropDownMenu"
-import MenuItem           from 'material-ui/MenuItem';
+import MenuItem           from 'material-ui/MenuItem'
 
 const keys = new Set([
   "availablePairs", "selectedPair"

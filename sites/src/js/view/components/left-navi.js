@@ -28,7 +28,7 @@ export default class LeftNavi extends React.Component {
 
   getCurrntRoute() {
     return this.navigator().menuItems().find(
-      (item) => item.route && this.router().isActive(item.route));
+      (item) => item.route && this.isActive(item.route));
   }
 
   createLists() {

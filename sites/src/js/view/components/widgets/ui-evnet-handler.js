@@ -52,7 +52,7 @@ export default class UIEventHandler extends AbstractComponent {
   }
 
   processEventIfExist() {
-    if (this.refs["message-bar"].state.open) return;
+    if (this.state.open) return;
     let event = this.eventQueue().shift();
     if (event) {
       this.processEvent(event);
@@ -72,7 +72,7 @@ export default class UIEventHandler extends AbstractComponent {
     this.setState({event: event, open:true});
   }
   processRoutingEvent(event) {
-    this.context.routerpush({
+    this.context.router.push({
       pathname:event.route
     });
   }

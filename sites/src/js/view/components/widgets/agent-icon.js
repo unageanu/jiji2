@@ -11,7 +11,10 @@ export default class AgentIcon extends React.Component {
   }
 
   render() {
-    return  <Avatar src={this.createIconUrl()} {...this.props} />;
+    const {className, ...others} = this.props;
+    return  <Avatar src={this.createIconUrl()}
+      className={(className || "") + " agent-icon"}
+      {...others} />;
   }
 
   createIconUrl() {

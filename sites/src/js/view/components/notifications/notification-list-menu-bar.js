@@ -7,12 +7,13 @@ import LoadingImage         from "../widgets/loading-image"
 import {List, ListItem} from "material-ui/List"
 import FlatButton from "material-ui/FlatButton"
 import DropDownMenu from "material-ui/DropDownMenu"
+import MenuItem     from 'material-ui/MenuItem'
 import IconButton from "material-ui/IconButton"
 import FontIcon from "material-ui/FontIcon"
 
 const keys = new Set([
   "hasNext", "hasPrev", "availableFilterConditions",
-  "filterCondition", "selectedConditionIndex",
+  "filterCondition", "selectedCondition",
   "loading"
 ]);
 
@@ -20,12 +21,13 @@ export default class NotificationListMenuBar extends AbstractComponent {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = { selectedCondition: "all" };
   }
 
   componentWillMount() {
     this.registerPropertyChangeListener(this.props.model, keys);
     const state = this.collectInitialState(this.props.model, keys);
+    state.selectedCondition = "all";
     this.setState(state);
   }
 
@@ -33,13 +35,21 @@ export default class NotificationListMenuBar extends AbstractComponent {
     return <div className="notification-list-menu-bar ">
       <DropDownMenu
         style={{width:"256px"}}
-        menuItems={this.state.availableFilterConditions}
-        selectedIndex={this.state.selectedConditionIndex}
-        onChange={this.onChange.bind(this)}/>
+        value={this.state.selectedCondition}
+        onChange={this.onChange.bind(this)}>
+        {this.createMenuItems()}
+      </DropDownMenu>
       <div className="buttons">
         {this.createButtons()}
       </div>
     </div>;
+  }
+
+  createMenuItems() {
+    return this.state.availableFilterConditions.map((item) => {
+      return <MenuItem key={item.id}
+        value={item.id} primaryText={item.text} />
+    });
   }
 
   createButtons() {
@@ -62,10 +72,11 @@ export default class NotificationListMenuBar extends AbstractComponent {
       </IconButton>
     ];
   }
-  onChange(e, selectedIndex, menuItem) {
-    const item = this.state.availableFilterConditions[selectedIndex];
+  onChange(e, selectedIndex, payload) {
+    const item = this.state.availableFilterConditions
+      .find( (item) => item.id == payload );
     this.props.model.filter(item.condition);
-    this.setState({selectedConditionIndex: selectedIndex});
+    this.setState({selectedCondition: payload});
   }
 }
 NotificationListMenuBar.propTypes = {

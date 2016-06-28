@@ -4,7 +4,7 @@ import Intervals from "../../../model/trading/intervals"
 import Theme     from "../../theme"
 
 import DropDownMenu from "material-ui/DropDownMenu"
-import MenuItem     from 'material-ui/MenuItem';
+import MenuItem     from 'material-ui/MenuItem'
 
 export default class IntervalSelector extends React.Component {
 

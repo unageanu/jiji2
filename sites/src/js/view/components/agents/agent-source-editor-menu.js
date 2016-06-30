@@ -56,14 +56,14 @@ export default class AgentSourceEditorMenu extends AbstractComponent {
             : null
         }</span>
         <ConfirmDialog
-          ref="confirmDialog"
+          ref={(ref) => this.confirmDialog = ref}
           text="ファイルを削除します。よろしいですか?" />
       </span>
     );
   }
 
   confirmRemove() {
-    this.refs.confirmDialog.confilm().then((id)=> {
+    this.confirmDialog.confilm().then((id)=> {
       if (id != "yes") return;
       this.editor().remove();
     });

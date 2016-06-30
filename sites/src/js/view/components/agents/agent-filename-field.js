@@ -14,7 +14,7 @@ export default class AgentFileNameField extends AbstractComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fileName:      null,
+      fileName:      "",
       fileNameError: null
     };
   }

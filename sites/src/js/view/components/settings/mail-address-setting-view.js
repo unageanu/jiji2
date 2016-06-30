@@ -46,7 +46,7 @@ export default class MailAddressSettingView extends AbstractComponent {
               floatingLabelText="メールアドレス"
               errorText={this.state.error}
               onChange={this.onMailAddressChanged.bind(this)}
-              value={this.state.mailAddress}
+              value={this.state.mailAddress || ""}
               style={{ width: "100%" }} />
           </div>
           <div className="buttons">

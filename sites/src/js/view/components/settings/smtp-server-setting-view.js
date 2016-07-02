@@ -88,7 +88,7 @@ export default class SMTPServerSettingView extends AbstractComponent {
              floatingLabelText="SMTPサーバー"
              errorText={this.state.hostError}
              onChange={(e) => this.setState({host: e.target.value}) }
-             value={this.state.host}
+             value={this.state.host || ""}
              style={{ width: "100%" }} />
         </div>
         <div className="port">
@@ -96,7 +96,7 @@ export default class SMTPServerSettingView extends AbstractComponent {
              floatingLabelText="SMTPサーバーポート"
              errorText={this.state.portError}
              onChange={(e) => this.setState({port: e.target.value}) }
-             value={this.state.port}
+             value={this.state.port || ""}
              style={{ width: "100%" }} />
         </div>
       </div>
@@ -106,7 +106,7 @@ export default class SMTPServerSettingView extends AbstractComponent {
              floatingLabelText="ユーザー名"
              errorText={this.state.userNameError}
              onChange={(e) => this.setState({userName: e.target.value}) }
-             value={this.state.userName}
+             value={this.state.userName || ""}
              style={{ width: "100%" }} />
         </div>
         <div className="password">
@@ -116,7 +116,7 @@ export default class SMTPServerSettingView extends AbstractComponent {
             style={{ width: "100%" }}>
              <input type="password"
              onChange={(e) => this.setState({password: e.target.value}) }
-             value={this.state.password} />
+             value={this.state.password || ""} />
           </TextField>
         </div>
       </div>

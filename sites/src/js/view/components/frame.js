@@ -15,7 +15,6 @@ export default class Frame extends React.Component {
     this.state = {};
 
     this.windowResizeManager = new WindowResizeManager();
-    this.setTheme();
   }
 
   render() {
@@ -60,10 +59,6 @@ export default class Frame extends React.Component {
         application        : this.props.application,
         windowResizeManager: this.windowResizeManager
       };
-  }
-
-  setTheme() {
-    //this.themeManager.setTheme(Theme);
   }
 
   navigatorElements() {

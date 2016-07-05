@@ -8,12 +8,12 @@ import {
 } from 'material-ui/styles/colors'
 
 
-const {baseSpacing} = baseTheme;
-const spacing = Object.assign({
+const {spacing, palette} = baseTheme;
+const customSpacing = Object.assign(spacing, {
   grid: "8px"
-}, baseSpacing);
+});
 
-const palette = {
+const customPalette =  Object.assign(palette, {
   primary1Color:  "#2A5252",
   primary2Color:  "#2B5353", // dark
   primary3Color:  "#417E7E", // light
@@ -31,101 +31,101 @@ const palette = {
   backgroundColor: "#FFF",
   backgroundColorDark: "#F1F1F1",
   backgroundColorDarkAlpha: "rgba(128, 128, 128, 0.11)"
-};
+});
 
 export default getMuiTheme({
-  spacing: spacing,
+  spacing: customSpacing,
   fontFamily: "Roboto, 'Roboto Condensed', 'ヒラギノ角ゴ Pro W3',"
      + "'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, "
      + "'Noto Sans Japanese', sans-serif",
-  palette: palette,
+  palette: customPalette,
   appBar: {
-    color: palette.primary1Color,
+    // color: palette.primary1Color,
     textColor: darkWhite,
-    height: spacing.desktopKeylineIncrement
+    // height: spacing.desktopKeylineIncrement
   },
   avatar: {
-    borderColor: 'rgba(0, 0, 0, 0.08)'
+    // borderColor: 'rgba(0, 0, 0, 0.08)'
   },
   button: {
-    height: 36,
-    minWidth: 88,
-    iconButtonSize: spacing.iconSize * 2
+    // height: 36,
+    // minWidth: 88,
+    // iconButtonSize: spacing.iconSize * 2
   },
   checkbox: {
-    boxColor: palette.textColor,
-    checkedColor: palette.primary1Color,
-    requiredColor: palette.primary1Color,
-    disabledColor: palette.disabledColor,
-    labelColor: palette.textColor,
-    labelDisabledColor: palette.disabledColor
+    // boxColor: palette.textColor,
+    // checkedColor: palette.primary1Color,
+    // requiredColor: palette.primary1Color,
+    // disabledColor: palette.disabledColor,
+    // labelColor: palette.textColor,
+    // labelDisabledColor: palette.disabledColor
   },
   datePicker: {
-    color: palette.primary1Color,
+    // color: palette.primary1Color,
     textColor: white,
-    calendarTextColor: palette.textColor,
-    selectColor: palette.primary2Color,
+    // calendarTextColor: palette.textColor,
+    // selectColor: palette.primary2Color,
     selectTextColor: white
   },
   dropDownMenu: {
-    accentColor: palette.borderColor
+    // accentColor: palette.borderColor
   },
   flatButton: {
     color: "#FFF",// palette.canvasColor,
-    textColor: palette.textColor,
+    // textColor: palette.textColor,
     primaryTextColor: palette.accent1Color,
     secondaryTextColor: palette.primary1Color
   },
   floatingActionButton: {
-    buttonSize: 56,
-    miniSize: 40,
+    // buttonSize: 56,
+    // miniSize: 40,
     color: palette.accent1Color,
     iconColor: white,
     secondaryColor: palette.primary1Color,
     secondaryIconColor: white
   },
   inkBar: {
-    backgroundColor: palette.accent1Color
+    // backgroundColor: palette.accent1Color
   },
   leftNav: {
     width: 288,
     color: white
   },
   listItem: {
-    nestedLevelDepth: 18
+    // nestedLevelDepth: 18
   },
   menu: {
     backgroundColor: white,
     containerBackgroundColor: white
   },
   menuItem: {
-    dataHeight: 32,
-    height: 48,
+    // dataHeight: 32,
+    // height: 48,
     hoverColor: "inherited", //"rgba(0, 0, 0, .045)",
-    padding: spacing.desktopGutterLess,
-    selectedTextColor: palette.accent1Color
+    padding: spacing.desktopGutterLess
+    // selectedTextColor: palette.accent1Color
   },
   menuSubheader: {
     padding: spacing.desktopGutterLess,
-    borderColor: palette.borderColor,
+    // borderColor: palette.borderColor,
     textColor: palette.textColorLight
   },
   paper: {
     backgroundColor: white
   },
   radioButton: {
-    borderColor: palette.textColor,
+    // borderColor: palette.textColor,
     backgroundColor: white,
-    checkedColor: palette.primary1Color,
-    requiredColor: palette.primary1Color,
-    disabledColor: palette.disabledColor,
-    size: 24,
-    labelColor: palette.textColor,
-    labelDisabledColor: palette.disabledColor
+    // checkedColor: palette.primary1Color,
+    // requiredColor: palette.primary1Color,
+    // disabledColor: palette.disabledColor,
+    // size: 24,
+    // labelColor: palette.textColor,
+    // labelDisabledColor: palette.disabledColor
   },
   raisedButton: {
     color: white,
-    textColor: palette.textColor,
+    // textColor: palette.textColor,
     primaryColor: palette.accent1Color,
     primaryTextColor: white,
     secondaryColor: palette.primary1Color,
@@ -136,87 +136,87 @@ export default getMuiTheme({
     loadingStrokeColor: palette.accent1Color // palette.primary1Color
   },
   slider: {
-    trackSize: 2,
+    // trackSize: 2,
     trackColor: minBlack,
     trackColorSelected: grey500,
-    handleSize: 12,
-    handleSizeDisabled: 8,
-    handleSizeActive: 18,
+    // handleSize: 12,
+    // handleSizeDisabled: 8,
+    // handleSizeActive: 18,
     handleColorZero: grey400,
     handleFillColor: white,
-    selectionColor: palette.primary3Color,
-    rippleColor: palette.primary1Color
+    selectionColor: palette.primary3Color
+    // rippleColor: palette.primary1Color
   },
   snackbar: {
     textColor: white,
-    backgroundColor: '#323232',
-    actionColor: palette.accent1Color
+    backgroundColor: '#323232'
+    // actionColor: palette.accent1Color
   },
   table: {
     backgroundColor: white
   },
   tableHeader: {
-    borderColor: palette.borderColor
+    // borderColor: palette.borderColor
   },
   tableHeaderColumn: {
-    textColor: lightBlack,
-    height: 56,
-    spacing: 24
+    textColor: lightBlack
+    // height: 56,
+    // spacing: 24
   },
   tableFooter: {
-    borderColor: palette.borderColor,
+    // borderColor: palette.borderColor,
     textColor: lightBlack
   },
   tableRow: {
     hoverColor: grey200,
     stripeColor: lighten(palette.primary1Color, 0.55),
     selectedColor: grey300,
-    textColor: darkBlack,
-    borderColor: palette.borderColor
+    textColor: darkBlack
+    // borderColor: palette.borderColor
   },
   tableRowColumn: {
-    height: 48,
-    spacing: 24
+    // height: 48,
+    // spacing: 24
   },
   timePicker: {
     color: white,
     textColor: grey600,
-    accentColor: palette.primary1Color,
+    // accentColor: palette.primary1Color,
     clockColor: black,
-    selectColor: palette.primary2Color,
+    // selectColor: palette.primary2Color,
     selectTextColor: white
   },
   toggle: {
-    thumbOnColor: palette.primary1Color,
+    // thumbOnColor: palette.primary1Color,
     thumbOffColor: grey50,
     thumbDisabledColor: grey400,
-    thumbRequiredColor: palette.primary1Color,
-    trackOnColor: fade(palette.primary1Color, 0.5),
+    // thumbRequiredColor: palette.primary1Color,
+    // trackOnColor: fade(palette.primary1Color, 0.5),
     trackOffColor: minBlack,
-    trackDisabledColor: faintBlack,
-    labelColor: palette.textColor,
-    labelDisabledColor: palette.disabledColor
+    trackDisabledColor: faintBlack
+    // labelColor: palette.textColor,
+    // labelDisabledColor: palette.disabledColor
   },
   toolbar: {
     backgroundColor: darken('#eeeeee', 0.05),
-    height: 56,
-    titleFontSize: 20,
-    iconColor: 'rgba(0, 0, 0, .40)',
-    separatorColor: 'rgba(0, 0, 0, .175)',
-    menuHoverColor: 'rgba(0, 0, 0, .10)'
+    // height: 56,
+    // titleFontSize: 20,
+    // iconColor: 'rgba(0, 0, 0, .40)',
+    // separatorColor: 'rgba(0, 0, 0, .175)',
+    // menuHoverColor: 'rgba(0, 0, 0, .10)'
   },
   tabs: {
-    backgroundColor: palette.primary1Color
+    // backgroundColor: palette.primary1Color
   },
   textField: {
-    textColor: palette.textColor,
-    hintColor: palette.disabledColor,
-    floatingLabelColor: palette.textColor,
-    disabledTextColor: palette.disabledColor,
+    // textColor: palette.textColor,
+    // hintColor: palette.disabledColor,
+    // floatingLabelColor: palette.textColor,
+    // disabledTextColor: palette.disabledColor,
     errorColor: palette.negativeColor, //Colors.red500,
-    focusColor: palette.accent1Color, //palette.primary1Color,
-    backgroundColor: 'transparent',
-    borderColor: palette.borderColor
+    focusColor: palette.accent1Color //palette.primary1Color,
+    // backgroundColor: 'transparent',
+    // borderColor: palette.borderColor
   },
   chart: {
     selector: {

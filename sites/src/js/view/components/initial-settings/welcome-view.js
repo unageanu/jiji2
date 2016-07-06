@@ -50,6 +50,7 @@ export default class WelcomeView extends AbstractComponent {
               label="初期設定を開始"
               primary={true}
               style={{width:"100%", height: "50px"}}
+              labelStyle={{lineHeight: "50px"}}
               onClick={() => this.props.model.startSetting()}
             />
           </span>

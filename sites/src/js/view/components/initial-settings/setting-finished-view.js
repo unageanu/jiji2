@@ -64,6 +64,7 @@ export default class SettingFinishedView extends AbstractComponent {
               label="利用を開始する"
               onClick={() => this.props.model.exit()}
               primary={true}
+              labelStyle={{lineHeight: "50px"}}
               style={{width:"100%", height: "50px"}}
             />
           </span>

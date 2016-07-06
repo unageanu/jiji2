@@ -108,6 +108,7 @@ extends AbstractComponent {
               onClick={this.next.bind(this)}
               disabled={this.state.isSaving}
               primary={true}
+              labelStyle={{lineHeight: "50px"}}
               style={{width:"100%", height: "50px"}}
             />
           </span>

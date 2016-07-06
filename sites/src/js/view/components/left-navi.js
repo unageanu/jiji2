@@ -76,6 +76,7 @@ export default class LeftNavi extends React.Component {
   }
 
   isActive(route) {
+    if (route == null) return false;
     const indexOnly = route === "/";
     return this.router().isActive({ pathname:route }, indexOnly);
   }

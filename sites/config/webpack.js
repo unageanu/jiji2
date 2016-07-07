@@ -41,8 +41,8 @@ var base = {
   }
 };
 
-function createConfig( root, mainFile, options) {
-  return merge( merge( base, {
+function createConfig( root, mainFile, env, options) {
+  const config = merge( merge( base, {
     entry: '.' + root + '/' + mainFile,
     output: {
       filename: mainFile
@@ -51,15 +51,25 @@ function createConfig( root, mainFile, options) {
       root: __dirname + root
     }
   }), options || {});
+  config.plugins.push(new webpack.DefinePlugin({
+    'process.env':{
+      'NODE_ENV': JSON.stringify(env)
+    }
+  }));
+  return config;
 }
 
 module.exports = {
-  src : createConfig( '/src/js', 'main.js'),
-  spec: createConfig( '/spec',   'all-specs.js', {
-    resolve: {
-      alias: {
-        src:     __dirname + '/../src/js'
+  src : function(env) {
+    return createConfig( '/src/js', 'main.js', env );
+  },
+  spec: function(env) {
+    return createConfig( '/spec', 'all-specs.js', env, {
+      resolve: {
+        alias: {
+          src:     __dirname + '/../src/js'
+        }
       }
-    }
-  })
+    });
+  }
 }

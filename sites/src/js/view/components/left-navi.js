@@ -4,6 +4,7 @@ import { Router } from 'react-router'
 import {List, ListItem} from "material-ui/List"
 import Divider          from "material-ui/Divider"
 import Subheader        from 'material-ui/Subheader'
+import Environment      from "../environment"
 
 export default class LeftNavi extends React.Component {
 
@@ -64,15 +65,13 @@ export default class LeftNavi extends React.Component {
     const selected = this.isActive(item.route);
     const action   = (e) => this.onLeftNavChange(e, null, item);
     const icon     = <div className={ "menu-icon " + item.iconClassName} />;
-    return (
-      <ListItem
-        key={item.route}
-        className={"mui-menu-item" + (selected ? " mui-is-selected" : "")}
-        leftIcon={icon}
-        primaryText={item.text}
-        onTouchTap={action}>
-      </ListItem>
-    );
+    return Environment.get().createListItem({
+      key: item.route,
+      className: "mui-menu-item" + (selected ? " mui-is-selected" : ""),
+      leftIcon: icon,
+      primaryText: item.text,
+      onTouchTap: action
+    });
   }
 
   isActive(route) {

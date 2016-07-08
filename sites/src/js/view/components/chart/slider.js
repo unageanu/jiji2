@@ -74,10 +74,10 @@ export default class Slider extends AbstractComponent {
     this.props.chartModel.slider.slideStart();
   }
   handleDrag(event, ui) {
-    this.props.chartModel.slider.slideByHandle(ui.lastX);
+    this.props.chartModel.slider.slideByHandle(
+      ui.deltaX === 0 ? ui.lastX : ui.x);
   }
   handleStop(event, ui) {
-    this.props.chartModel.slider.slideByHandle(ui.lastX);
     this.props.chartModel.slider.slideEnd();
   }
 }

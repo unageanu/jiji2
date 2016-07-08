@@ -130,6 +130,7 @@ export default class Slider extends Observable {
   }
   slideEnd() {
     if ( !this.enableSlide() ) return;
+
     this.setProperty("currentRange", this.temporaryCurrentRange);
     this.setProperty("positionX",    this.temporaryPositionX);
   }

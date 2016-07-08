@@ -14,8 +14,9 @@ export default class CandleSticks extends AbstractChartComponent {
     this.chartModel.slider.addObserver(
       "propertyChanged", this.onSliderPropertyChanged.bind(this), this);
   }
-  attach( stage ) {
+  attach( stage, stageUpdater ) {
     this.stage = stage;
+    this.stageUpdater = stageUpdater;
     this.stage.addChild(this.sticksShape);
   }
 
@@ -38,7 +39,7 @@ export default class CandleSticks extends AbstractChartComponent {
   slideTo( temporaryStart ) {
     const x = this.calculateSlideX( temporaryStart );
     this.sticksShape.x = x;
-    this.stage.update();
+    this.stageUpdater.requestUpdate();
   }
 
   initSprite(slidableMask) {
@@ -49,7 +50,7 @@ export default class CandleSticks extends AbstractChartComponent {
   update() {
     this.clearScreen();
     this.renderSticks( this.chartModel.candleSticks.sticks );
-    this.stage.update();
+    this.stageUpdater.requestUpdate();
     this.cache();
   }
 

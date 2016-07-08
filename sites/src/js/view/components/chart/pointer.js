@@ -26,9 +26,12 @@ export default class Pointer extends AbstractChartComponent {
   addObservers() {
     this.chartModel.pointer.addObserver(
       "propertyChanged", this.onPropertyChanged.bind(this), this);
+    this.chartModel.pointer.addObserver(
+      "refresh", () => this.stage.update(), this);
   }
-  attach( stage ) {
+  attach( stage, stageUpdater ) {
     this.stage = stage;
+    this.stageUpdater = stageUpdater;
     this.stage.addChild(this.verticalPointer);
     this.stage.addChild(this.horizontalPointer);
   }
@@ -54,7 +57,6 @@ export default class Pointer extends AbstractChartComponent {
     } else if (event.key === "price" || event.key === "balance") {
       this.horizontalLabel.text = event.newValue;
     }
-    this.stage.update();
   }
 
   initSprite(slidableMask) {

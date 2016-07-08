@@ -11,6 +11,7 @@ import PositionsView        from "./positions-view"
 import Pointer              from "./pointer"
 import CoordinateCalculator from "../../../viewmodel/chart/coordinate-calculator"
 import Theme                from "../../theme"
+import StageUpdater         from "./stage-updater"
 
 const padding = CoordinateCalculator.padding();
 
@@ -66,6 +67,8 @@ export default class Chart extends React.Component {
     this.stage.scaleY = scale;
     CreateJS.Touch.enable(this.stage, true, true);
     this.stage.preventSelection = false;
+
+    this.stageUpdater = new StageUpdater(this.stage);
   }
 
   buildViewComponents() {
@@ -83,14 +86,14 @@ export default class Chart extends React.Component {
       this.slidableMask, this.props.devicePixelRatio );
   }
   initViewComponents() {
-    this.background.attach( this.stage );
+    this.background.attach( this.stage, this.stageUpdater );
     this.stage.addChild(this.slidable);
 
-    this.axises.attach( this.stage );
-    this.pointer.attach( this.stage );
-    this.candleSticks.attach( this.stage );
-    this.graphView.attach( this.stage );
-    this.positionsView.attach( this.stage );
+    this.axises.attach( this.stage, this.stageUpdater );
+    this.pointer.attach( this.stage, this.stageUpdater );
+    this.candleSticks.attach( this.stage, this.stageUpdater );
+    this.graphView.attach( this.stage, this.stageUpdater );
+    this.positionsView.attach( this.stage, this.stageUpdater );
   }
 
   registerSlideAction() {
@@ -110,7 +113,6 @@ export default class Chart extends React.Component {
     });
     this.slidable.addEventListener("pressup", (event) => {
       if (!this.slideStart) return;
-      this.doSlide( event.stageX );
       this.props.model.slider.slideEnd();
       this.slideStart = null;
       event.nativeEvent.preventDefault();

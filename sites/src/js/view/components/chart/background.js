@@ -5,8 +5,8 @@ import Theme                  from "../../theme"
 
 export default class Background extends AbstractChartComponent {
 
-  constructor( chartModel ) {
-    super(chartModel);
+  constructor( chartModel, devicePixelRatio ) {
+    super(chartModel, devicePixelRatio);
     this.initSprite();
   }
 
@@ -17,10 +17,12 @@ export default class Background extends AbstractChartComponent {
 
   initSprite() {
     const stageSize = this.chartModel.candleSticks.stageSize;
+    const dpr = this.devicePixelRatio;
     this.backgroundShape = this.initializeElement(new CreateJS.Shape());
     this.backgroundShape.graphics
         .beginFill(Theme.palette.backgroundColorDark)
         .drawRect( 0, 0, stageSize.w, stageSize.h )
         .endFill();
+    this.backgroundShape.cache(0, 0, stageSize.w, stageSize.h, dpr);
   }
 }

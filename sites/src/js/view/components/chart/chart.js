@@ -77,13 +77,13 @@ export default class Chart extends React.Component {
       Theme.palette.backgroundColorDark);
     const model = this.props.model;
 
-    this.background    = new Background( model );
-    this.axises        = new Axises( model, this.slidableMask );
-    this.candleSticks  = new CandleSticks( model, this.slidableMask );
-    this.graphView     = new GraphView( model, this.slidableMask );
-    this.positionsView = new PositionsView( model, this.slidableMask );
-    this.pointer       = new Pointer( model,
-      this.slidableMask, this.props.devicePixelRatio );
+    const dpr = this.props.devicePixelRatio;
+    this.background    = new Background( model, dpr );
+    this.axises        = new Axises( model, this.slidableMask, dpr );
+    this.candleSticks  = new CandleSticks( model, this.slidableMask, dpr );
+    this.graphView     = new GraphView( model, this.slidableMask, dpr );
+    this.positionsView = new PositionsView( model, this.slidableMask, dpr );
+    this.pointer       = new Pointer( model, this.slidableMask, dpr );
   }
   initViewComponents() {
     this.background.attach( this.stage, this.stageUpdater );

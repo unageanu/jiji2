@@ -7,8 +7,8 @@ const padding = CoordinateCalculator.padding();
 
 export default class GraphView extends AbstractChartComponent {
 
-  constructor( chartModel, slidableMask ) {
-    super(chartModel);
+  constructor( chartModel, slidableMask, devicePixelRatio ) {
+    super(chartModel, devicePixelRatio);
     this.initSprite(slidableMask);
   }
 
@@ -112,6 +112,10 @@ export default class GraphView extends AbstractChartComponent {
     g = g.endFill();
   }
 
-  cache() {}
+  cache() {
+    const stageSize = this.chartModel.coordinateCalculator.stageSize;
+    const dpr = this.devicePixelRatio;
+    //this.shape.cache( 0, 0, stageSize.h, stageSize.w, dpr);
+  }
 
 }

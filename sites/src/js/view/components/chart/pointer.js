@@ -17,8 +17,7 @@ const horizontalHandleHeight = 20;
 export default class Pointer extends AbstractChartComponent {
 
   constructor( chartModel, slidableMask, devicePixelRatio ) {
-    super(chartModel);
-    this.devicePixelRatio = devicePixelRatio;
+    super(chartModel, devicePixelRatio);
     this.initSprite(slidableMask);
     this.registerDragAction();
   }
@@ -93,6 +92,8 @@ export default class Pointer extends AbstractChartComponent {
      .lineTo(verticalHandleWidth/2+0.5, axisPosition.vertical-3)
      .lineTo(verticalHandleWidth/2+5, axisPosition.vertical+3)
      .endFill();
+     shape.cache(0, 0, verticalHandleWidth,
+       axisPosition.vertical+verticalHandleHeight+3, this.devicePixelRatio);
 
     this.verticalLabel = this.createLabelText();
     this.verticalLabel.x = 8;
@@ -112,6 +113,8 @@ export default class Pointer extends AbstractChartComponent {
      .drawRect(axisPosition.horizontal+3, 0,
        horizontalHandleWidth, horizontalHandleHeight )
      .endFill();
+     shape.cache(0, 0, axisPosition.horizontal+horizontalHandleWidth+3,
+       horizontalHandleHeight, this.devicePixelRatio);
 
     this.horizontalLabel = this.createLabelText();
     this.horizontalLabel.x = axisPosition.horizontal + 7;
@@ -152,9 +155,6 @@ export default class Pointer extends AbstractChartComponent {
       this.slideYStart = null;
       event.nativeEvent.preventDefault();
     });
-  }
-
-  cache() {
   }
 
   createLabelText( text ) {

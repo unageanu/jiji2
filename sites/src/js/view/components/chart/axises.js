@@ -7,8 +7,8 @@ const padding = CoordinateCalculator.padding();
 
 export default class Axises extends AbstractChartComponent {
 
-  constructor( chartModel, slidableMask ) {
-    super(chartModel);
+  constructor( chartModel, slidableMask, devicePixelRatio ) {
+    super(chartModel, devicePixelRatio);
     this.initSprite(slidableMask);
   }
 
@@ -168,7 +168,12 @@ export default class Axises extends AbstractChartComponent {
   }
 
   cache() {
-
+    const stageSize = this.chartModel.coordinateCalculator.stageSize;
+    const dpr = this.devicePixelRatio;
+    this.verticalLineShape.cache( 0, 0, stageSize.w, stageSize.h, dpr);
+    this.horizontalLineShape.cache( 0, 0, stageSize.w, stageSize.h, dpr);
+    this.verticalAxisLabelContainer.cache( 0, 0, stageSize.w, stageSize.h, dpr);
+    this.horizontalAxisLabelContainer.cache( 0, 0, stageSize.w, stageSize.h, dpr);
   }
 
   drowLine( g, color, lines ) {

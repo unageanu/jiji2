@@ -2,8 +2,9 @@ import CreateJS             from "easeljs"
 
 export default class AbstractChartComponent {
 
-  constructor( chartModel ) {
+  constructor( chartModel, devicePixelRatio ) {
     this.chartModel = chartModel;
+    this.devicePixelRatio = devicePixelRatio;
     this.addObservers();
   }
 

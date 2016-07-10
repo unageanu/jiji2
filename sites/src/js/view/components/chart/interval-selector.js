@@ -39,7 +39,6 @@ export default class IntervalSelector extends React.Component {
         iconStyle={Object.assign({right:"8px"}, this.props.iconStyle)}
         underlineStyle={{margin: "0px"}}
         autoWidth={false}
-        zDepth={5}
         onChange={this.onChange.bind(this)}>
         {this.createMenuItems()}
       </DropDownMenu>

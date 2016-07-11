@@ -33,7 +33,9 @@ export default class Slider extends AbstractComponent {
     if ( e.key === "pageWidth" ) {
       this.setState({ handleWidth: e.newValue});
     } else if ( e.key === "positionX" || e.key === "temporaryPositionX") {
-      this.setState({ handlePosition: e.newValue});
+      if (this.state.handlePosition != e.newValue) {
+        this.setState({ handlePosition: e.newValue});
+      }
     } else if ( e.key === "width") {
       this.setState({ barWidth: e.newValue});
     }

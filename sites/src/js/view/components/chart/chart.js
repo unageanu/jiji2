@@ -104,17 +104,20 @@ export default class Chart extends React.Component {
       }
       this.slideStart = event.stageX;
       this.props.model.slider.slideStart();
+      event.preventDefault();
       event.nativeEvent.preventDefault();
     });
     this.slidable.addEventListener("pressmove", (event) => {
       if (!this.slideStart) return;
       this.doSlide( event.stageX );
+      event.preventDefault();
       event.nativeEvent.preventDefault();
     });
     this.slidable.addEventListener("pressup", (event) => {
       if (!this.slideStart) return;
       this.props.model.slider.slideEnd();
       this.slideStart = null;
+      event.preventDefault();
       event.nativeEvent.preventDefault();
     });
   }
@@ -131,6 +134,7 @@ export default class Chart extends React.Component {
     mask.graphics.beginFill(color)
       .drawRect( padding, padding, axisPosition.horizontal - padding, stageSize.h )
       .endFill();
+    mask.mouseEnabled = false;
     return mask;
   }
 }

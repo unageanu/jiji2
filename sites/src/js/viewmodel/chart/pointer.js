@@ -40,7 +40,6 @@ export default class Pointer extends Observable {
         this.updateTime();
       } else if (e.key === "temporaryCurrentRange") {
         this.updateTime(e.newValue);
-        this.requestRefresh();
       }
     }, this);
   }

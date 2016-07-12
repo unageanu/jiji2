@@ -134,7 +134,6 @@ export default class Chart extends React.Component {
     mask.graphics.beginFill(color)
       .drawRect( padding, padding, axisPosition.horizontal - padding, stageSize.h )
       .endFill();
-    mask.mouseEnabled = false;
     return mask;
   }
 }

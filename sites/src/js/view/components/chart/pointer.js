@@ -94,7 +94,6 @@ export default class Pointer extends AbstractChartComponent {
      .endFill();
     shape.cache(0, 0, verticalHandleWidth,
        axisPosition.vertical+verticalHandleHeight+3, this.devicePixelRatio);
-    shape.mouseEnabled = false;
 
     this.verticalLabel = this.createLabelText();
     this.verticalLabel.x = 8;
@@ -116,7 +115,6 @@ export default class Pointer extends AbstractChartComponent {
      .endFill();
     shape.cache(0, 0, axisPosition.horizontal+horizontalHandleWidth+3,
        horizontalHandleHeight, this.devicePixelRatio);
-    shape.mouseEnabled = false;
 
     this.horizontalLabel = this.createLabelText();
     this.horizontalLabel.x = axisPosition.horizontal + 7;

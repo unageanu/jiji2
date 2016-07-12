@@ -115,7 +115,7 @@ export default class GraphView extends AbstractChartComponent {
   cache() {
     const stageSize = this.chartModel.coordinateCalculator.stageSize;
     const dpr = this.devicePixelRatio;
-    //this.shape.cache( 0, 0, stageSize.h, stageSize.w, dpr);
+    this.shape.cache( 0, 0, stageSize.w, stageSize.h, dpr);
   }
 
 }

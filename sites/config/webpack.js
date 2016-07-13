@@ -42,7 +42,7 @@ var base = {
 };
 
 function createConfig( root, mainFile, env, options) {
-  const config = merge( merge( base, {
+  var config = merge( merge( base, {
     entry: '.' + root + '/' + mainFile,
     output: {
       filename: mainFile

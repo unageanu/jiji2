@@ -25,7 +25,6 @@ export default class AgentSelectorDialog extends React.Component {
     ];
     return (
       <Dialog
-        title=""
         open={this.state.open}
         actions={actions}
         modal={true}

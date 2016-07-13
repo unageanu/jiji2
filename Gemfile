@@ -42,4 +42,5 @@ end
 
 group :development do
   gem 'rubocop'
+  gem 'sigdump'
 end

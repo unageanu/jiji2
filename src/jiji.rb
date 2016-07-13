@@ -1,6 +1,7 @@
 # coding: utf-8
 
 require 'bundler/setup'
+require 'sigdump/setup' if ENV['RACK_ENV'] != 'production'
 
 module Jiji
   module Composing

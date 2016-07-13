@@ -7,9 +7,8 @@
 .slider .range .label{font-size:14px;margin-right:8px}
 .chart .loading{position:absolute;top:16px;right:16px}
 .card.mini-chart .header{padding:0 8px 8px 16px}
-.card.mini-chart .header .icon{margin:0 8px 8px 0;font-size:24px;color:#999;vertical-align:inherit}
+.card.mini-chart .header .icon{margin:0 8px 8px 0;font-size:24px;color:#999}
 .card.mini-chart .header .pair-selector{margin:0 16px 0 0}
-.card.mini-chart .header .setting-menu{margin-top:8px}
 .card.mini-chart .chart{position:relative;background-color:#F1F1F1;border-left:1px solid #FFF;border-right:1px solid #FFF;padding:16px;margin-bottom:8px;overflow:hidden}
 .rate-view{border-left:4px solid #CCC;padding-left:8px;margin-bottom:8px;color:#999;font-size:16px}
 .chart-view .chart,.left-navi{border-left:1px solid #FFF;border-right:1px solid #FFF}
@@ -157,7 +156,7 @@
 .position-details{font-size:16px;color:#666;margin-bottom:24px}
 .position-details .profit-or-loss{font-size:24px;padding-bottom:8px}
 .position-details .profit-or-loss span.price{margin-left:16px}
-.position-details .profit-or-loss img,.position-details .profit-or-loss span{vertical-align:middle}
+.position-details .profit-or-loss .left-icon,.position-details .profit-or-loss span{vertical-align:middle}
 .position-details .informations{display:table;width:100%}
 .position-details .category{display:table-cell;padding-left:16px}
 .position-details .category.first{padding-left:0}
@@ -277,7 +276,7 @@
 .trading-summary-view .data .item{-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;width:50%}
 .trading-summary-view .selector-bar{padding:8px 8px 0 0;text-align:right}
 .trading-summary-view .selector-bar .label{color:#999;height:48px;display:inline-block}
-.trading-summary-view .selector-bar span{vertical-align:middle;text-align:left}
+.trading-summary-view .selector-bar span{text-align:left}
 .trading-summary-view .summary-item .label{color:#999;text-align:right;height:28px}
 .trading-summary-view .summary-item .primary-value{color:#666;font-size:40px;line-height:44px;text-align:right;height:50px;border-bottom:1px solid #00BFA5;margin-left:16px}
 .trading-summary-view .summary-item .primary-value .icon{margin-left:4px}
@@ -303,6 +302,7 @@
 .card,.main-card{overflow:visible!important}
 .trading-summary-view .data .item .details .item .value{color:#666;font-size:18px;text-align:right;padding-left:32px;padding-right:8px}
 .card .header .icon,.card .header .title{font-size:24px;color:#999;vertical-align:middle}
+.agent-icon{background-size:40px!important}
 .card{margin-bottom:16px;padding-bottom:8px}
 .card .header{padding:8px 8px 8px 16px}
 .card .header .title{display:inline-block;margin:8px 0}

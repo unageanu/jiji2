@@ -1,11 +1,12 @@
 import React               from "react"
-import MUI                 from "material-ui"
+
 import AbstractComponent   from "../widgets/abstract-component"
 import LoadingImage        from "../widgets/loading-image"
 
-const RaisedButton = MUI.RaisedButton;
-const TextField    = MUI.TextField;
-const DropDownMenu = MUI.DropDownMenu;
+import RaisedButton from "material-ui/RaisedButton"
+import TextField    from "material-ui/TextField"
+import DropDownMenu from "material-ui/DropDownMenu"
+import MenuItem     from 'material-ui/MenuItem'
 
 const keys = new Set([
   "availableSecurities", "activeSecuritiesConfiguration",
@@ -18,7 +19,7 @@ export default class SecuritiesSettingView extends AbstractComponent {
     super(props);
     this.state = {
       availableSecurities: [],
-      selectedSecuritiesIndex: 0,
+      activeSecuritiesId: null,
       activeSecuritiesConfiguration: [],
       error:   null,
       message: null
@@ -29,8 +30,6 @@ export default class SecuritiesSettingView extends AbstractComponent {
     const model = this.model();
     this.registerPropertyChangeListener(model, keys);
     let state = this.collectInitialState(model, keys);
-    state.selectedSecuritiesIndex = this.getSelectedSecuritiesIndex(
-      model.activeSecuritiesId, model.availableSecurities);
     this.setState(state);
   }
 
@@ -43,7 +42,11 @@ export default class SecuritiesSettingView extends AbstractComponent {
         <ul className="description">
           <li>使用する証券会社を設定します。</li>
           <li>
-            アクセストークンの取得方法は<a  onClick={ () => window.open('http://jiji2.unageanu.net/install/010000_prepare_account.html', '_blank') }>こちら</a>をご覧ください。
+            アクセストークンの取得方法は
+            <a onClick={ () => window.open('http://jiji2.unageanu.net/install/010000_prepare_account.html', '_blank') }>
+              こちら
+            </a>
+            をご覧ください。
           </li>
         </ul>
         <div className="setting-body">
@@ -72,13 +75,15 @@ export default class SecuritiesSettingView extends AbstractComponent {
   creattSecuritiesSelector() {
     if (this.state.availableSecurities.length <= 0) return null;
     return <DropDownMenu
-      menuItems={this.state.availableSecurities}
-      selectedIndex={this.state.selectedSecuritiesIndex}
+      value={this.state.activeSecuritiesId}
       onChange={this.onChangeSecurities.bind(this)}
+      style={{width: "200px"}}
       labelStyle={{
         padding: "0px"
       }}
-      underlineStyle={{margin: "0px"}} />;
+      underlineStyle={{margin: "0px"}} >
+        {this.createMenuItems()}
+      </DropDownMenu>;
   }
   createConfigurator() {
     if (this.state.availableSecurities.length <= 0) return null;
@@ -97,20 +102,15 @@ export default class SecuritiesSettingView extends AbstractComponent {
     this.model().save(this.collectConfigurations());
   }
 
-  onPropertyChanged(k, ev) {
-    if (ev.key === "activeSecuritiesId") {
-      this.setState({
-        selectedSecuritiesIndex:
-          this.getSelectedSecuritiesIndex(ev.newValue)
-      });
-    } else {
-      super.onPropertyChanged(k, ev);
-    }
+  onChangeSecurities(e, selectedIndex, payload) {
+    this.model().activeSecuritiesId = payload;
   }
-  onChangeSecurities(e, selectedIndex, menuItem) {
-    this.model().activeSecuritiesId =
-      this.state.availableSecurities[selectedIndex].id;
-    this.setState({selectedSecuritiesIndex: selectedIndex});
+
+  createMenuItems() {
+    return this.state.availableSecurities.map((item) => {
+      return <MenuItem key={item.id}
+        value={item.id} primaryText={item.text} />
+    });
   }
 
   collectConfigurations() {

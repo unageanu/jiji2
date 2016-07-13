@@ -1,5 +1,5 @@
-import ContainerJS  from "container-js";
-import Observable   from "../../utils/observable";
+import ContainerJS  from "container-js"
+import Observable   from "../../utils/observable"
 
 export default class Rates extends Observable {
   constructor() {

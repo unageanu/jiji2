@@ -1,6 +1,7 @@
 import React                 from "react"
-import Router                from "react-router"
-import MUI       　　　　     from "material-ui"
+import ReactDOM              from "react-dom"
+import { Router } from 'react-router'
+
 import AbstractComponent     from "../widgets/abstract-component"
 import AceEditor             from "../widgets/ace-editor"
 import AgentSourceEditorMenu from "./agent-source-editor-menu"
@@ -25,7 +26,7 @@ export default class AgentSourceEditor extends AbstractComponent {
   }
 
   componentWillMount() {
-    const model = this.editor();
+    const model = this.model();
     this.registerPropertyChangeListener(model, keys);
     let state = this.collectInitialState(model, keys);
     this.setState(state);
@@ -39,15 +40,15 @@ export default class AgentSourceEditor extends AbstractComponent {
     if (this.updateEditorSizerequest) return;
     this.updateEditorSizerequest = setTimeout(()=> {
       this.updateEditorSizerequest = null;
-      if (!this.refs.editorPanel || !this.refs.editor) return;
-      const elm = React.findDOMNode(this.refs.editorPanel);
-      this.refs.editor.resize(elm.offsetWidth, elm.offsetHeight);
+      if (!this.editorPanel || !this.editor) return;
+      const elm = ReactDOM.findDOMNode(this.editorPanel);
+      this.editor.resize(elm.offsetWidth, elm.offsetHeight);
     }, 100);
   }
 
   onPropertyChanged(n, e) {
     if (e.key === "sources") {
-      if (this.refs.aceEditor) this.refs.aceEditor.updateEditorSize();
+      this.updateEditorSize();
     } else {
       super.onPropertyChanged(n, e);
     }
@@ -66,16 +67,18 @@ export default class AgentSourceEditor extends AbstractComponent {
           </li>
         </ul>
         <div className="header">
-          <AgentFileNameField ref="filename" model={this.editor()} />
+          <AgentFileNameField
+           model={this.model()}
+           ref={(ref) => this.fileName = ref} />
             &nbsp;
           <AgentSourceEditorMenu
-            model={this.editor()}
+            model={this.model()}
             onSave={this.save.bind(this)} />
           {errorElement}
         </div>
-        <div className="editor" ref="editorPanel">
+        <div className="editor" ref={(ref) => this.editorPanel = ref} >
           {this.createEditor()}
-        </div> 
+        </div>
       </div>
     );
   }
@@ -83,8 +86,8 @@ export default class AgentSourceEditor extends AbstractComponent {
   createEditor() {
     return <div style={{ display: this.state.editTarget ? "block" : "none" }}>
       <AceEditor
-        ref="editor"
-        targetBody={this.state.targetBody}
+        ref={(ref) => this.editor = ref}
+        targetBody={this.state.targetBody||""}
         onSave={this.save.bind(this)}
         outerWidth={outerWidth}
         outerHeight={
@@ -102,12 +105,12 @@ export default class AgentSourceEditor extends AbstractComponent {
   }
 
   save() {
-    const body = this.refs.editor.value;
-    const name = this.refs.filename.value;
-    this.editor().save(name, body);
+    const body = this.editor.value;
+    const name = this.fileName.value;
+    this.model().save(name, body);
   }
 
-  editor() {
+  model() {
     return this.props.model;
   }
 }

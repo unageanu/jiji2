@@ -130,6 +130,7 @@ export default class Slider extends Observable {
   }
   slideEnd() {
     if ( !this.enableSlide() ) return;
+
     this.setProperty("currentRange", this.temporaryCurrentRange);
     this.setProperty("positionX",    this.temporaryPositionX);
   }
@@ -160,7 +161,7 @@ export default class Slider extends Observable {
     // 左端or右端にする
     if (this.scrollableWidth <= x) {
       x = this.scrollableWidth;
-    } else if (this.positionX < 0) {
+    } else if (x < 0) {
       x = 0;
     }
     const startMs = (x * this.msPerPixel) + this.range.start.getTime();

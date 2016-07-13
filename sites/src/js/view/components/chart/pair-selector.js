@@ -1,13 +1,15 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import Theme              from "../../theme"
 import AbstractComponent  from "../widgets/abstract-component"
+import DropDownMenu       from "material-ui/DropDownMenu"
+import MenuItem           from 'material-ui/MenuItem'
 
 const keys = new Set([
   "availablePairs", "selectedPair"
 ]);
 
-const DropDownMenu = MUI.DropDownMenu;
+
 const emptyItems   = [{text:""}];
 
 export default class PairSelector extends AbstractComponent {
@@ -32,11 +34,9 @@ export default class PairSelector extends AbstractComponent {
   updateState() {
     const items = this.convertPairsToMenuItems(
       this.pairSelector().availablePairs);
-    const selectedIndex = this.getSelectedIndex(
-      this.pairSelector().selectedPair, items);
     this.setState({
       items : items,
-      selectedIndex:selectedIndex
+      selected: this.pairSelector().selectedPair
     });
   }
 
@@ -51,10 +51,7 @@ export default class PairSelector extends AbstractComponent {
     return (
       <DropDownMenu
         className="pair-selector"
-        displayMember="text"
-        valueMember="value"
-        menuItems={this.state.items}
-        selectedIndex={this.state.selectedIndex}
+        value={this.state.selected}
         style={
           Object.assign(
             {width:Theme.chart.pairSelector.width}, this.props.style)
@@ -62,25 +59,28 @@ export default class PairSelector extends AbstractComponent {
         labelStyle={
           Object.assign({
             padding: "0px",
-            color: Theme.getPalette().textColorLight
+            color: Theme.palette.textColorLight
           }, Theme.chart.selector, this.props.labelStyle)
         }
         iconStyle={Object.assign({right:"8px"}, this.props.iconStyle)}
         underlineStyle={{margin: "0px"}}
         autoWidth={false}
-        zDepth={5}
-        onChange={this.onChange.bind(this)}/>
+        onChange={this.onChange.bind(this)}>
+        {this.createMenuItems()}
+      </DropDownMenu>
     );
   }
 
-  onChange(e, selectedIndex, menuItem) {
-    this.pairSelector().selectedPair = this.state.items[selectedIndex].payload;
-    this.setState({selectedIndex: selectedIndex});
+  createMenuItems() {
+    return this.state.items.map((item) => {
+      return <MenuItem key={item.value}
+        value={item.value} primaryText={item.text} />
+    });
   }
 
-  getSelectedIndex(pairName, items) {
-    const index = items.findIndex((item)=>item.text === pairName);
-    return index === -1 ? 0 : index;
+  onChange(e, selectedIndex, payload) {
+    this.pairSelector().selectedPair = payload;
+    this.setState({selected: payload});
   }
 
   pairSelector() {

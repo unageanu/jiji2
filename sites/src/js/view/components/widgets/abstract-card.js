@@ -1,13 +1,11 @@
 import React              from "react"
-import Router             from "react-router"
-import MUI                from "material-ui"
+import { Router } from 'react-router'
+
 import AbstractComponent  from "../widgets/abstract-component"
 import Theme              from "../../theme"
 import SettingMenuButton  from "../widgets/setting-menu-button"
 
-const Card       = MUI.Card;
-const CardTitle  = MUI.CardTitle;
-const CardText   = MUI.CardText;
+import {Card, CardTitle, CardText} from "material-ui/Card"
 
 export default class AbstractCard extends AbstractComponent {
 

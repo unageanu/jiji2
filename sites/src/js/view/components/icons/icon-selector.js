@@ -1,13 +1,13 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import Dropzone           from "react-dropzone"
 import AbstractComponent  from "../widgets/abstract-component"
 import LoadingImage       from "../widgets/loading-image"
 import AgentIcon          from "../widgets/agent-icon"
 import Theme              from "../../theme"
 
-const FlatButton = MUI.FlatButton;
-const Dialog     = MUI.Dialog;
+import FlatButton from "material-ui/FlatButton"
+import Dialog from "material-ui/Dialog"
 
 const keys = new Set([
   "icons"
@@ -20,7 +20,9 @@ export default class IconSelector extends AbstractComponent  {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      open: false
+    };
   }
 
   componentWillMount() {
@@ -33,6 +35,13 @@ export default class IconSelector extends AbstractComponent  {
   }
 
   render() {
+    const actions = [
+      <FlatButton
+        label="キャンセル"
+        primary={false}
+        onTouchTap={this.dismiss.bind(this)}
+      />
+    ];
     const editLink = !this.props.readOnly
       ? <a onTouchTap={this.showDialog.bind(this)}>変更...</a>
       : null;
@@ -46,12 +55,12 @@ export default class IconSelector extends AbstractComponent  {
           {editLink}
         </div>
         <Dialog
-          ref="iconSelectorDialog"
-          title=""
-          actions={[{ text: 'キャンセル' }]}
+          open={this.state.open}
+          actions={actions}
           modal={true}
-          className="dialog"
-          contentStyle={Theme.dialog.contentStyle}>
+          className="icon-selector dialog"
+          contentStyle={Theme.dialog.contentStyle}
+          onRequestClose={this.dismiss.bind(this)}>
           <div className="dialog-content">
             <div className="dialog-description">使用するアイコンを選択してください。</div>
             <div className="icons">
@@ -82,9 +91,12 @@ export default class IconSelector extends AbstractComponent  {
   }
 
   showDialog(ev) {
-    this.setState({ error: null});
-    this.refs.iconSelectorDialog.show();
+    this.setState({ error: null, open:true });
     ev.preventDefault();
+  }
+
+  dismiss() {
+    this.setState({open:false});
   }
 
   createIcons() {
@@ -97,6 +109,7 @@ export default class IconSelector extends AbstractComponent  {
           lineHeight: "normal",
           minWidth: "56px",
           width: "56px",
+          height: "56px",
           padding: "8px"
         }}
         labelStyle={{
@@ -111,7 +124,7 @@ export default class IconSelector extends AbstractComponent  {
 
   onIconSelected(ev, icon) {
     this.props.model.selectedId = icon.id;
-    this.refs.iconSelectorDialog.dismiss();
+    this.dismiss();
     ev.preventDefault();
   }
 

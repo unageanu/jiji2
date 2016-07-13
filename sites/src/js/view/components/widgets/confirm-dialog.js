@@ -1,22 +1,25 @@
 import React        from "react"
-import MUI          from "material-ui"
+
 import Deferred     from "../../../utils/deferred"
 
-const Dialog       = MUI.Dialog;
+import Dialog from "material-ui/Dialog"
+import FlatButton from "material-ui/FlatButton"
 
 export default class ConfirmDialog extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      open: false
+    };
   }
 
   render() {
     return (
       <Dialog
         key="dialog"
-        ref="dialog"
         className="confilm-dialog"
+        open={this.state.open}
         actions={this.createActions()}
         modal={true}
       >
@@ -29,19 +32,21 @@ export default class ConfirmDialog extends React.Component {
 
   createActions() {
     return this.props.actions.map((a) => {
-      a.onTouchTap = (ev) => {
-        this.refs.dialog.dismiss();
+      const touchAction = (ev) => {
         if ( this.state.d ) this.state.d.resolve(a.id);
-        this.setState({d:null})
-      }
-      return a;
+        this.setState({d:null, open:false})
+      };
+      return <FlatButton
+        label={a.text}
+        primary={false}
+        onTouchTap={touchAction}
+      />
     })
   }
 
   confilm() {
     const d = new Deferred();
-    this.refs.dialog.show();
-    this.setState({d:d})
+    this.setState({d:d,open:true})
     return d;
   }
 }

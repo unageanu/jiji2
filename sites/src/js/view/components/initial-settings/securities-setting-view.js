@@ -1,9 +1,9 @@
 import React                  from "react"
-import MUI                    from "material-ui"
+
 import Base                   from "../settings/securities-setting-view"
 import LoadingImage           from "../widgets/loading-image"
 
-const RaisedButton = MUI.RaisedButton;
+import RaisedButton from "material-ui/RaisedButton"
 
 export default class SecuritiesSettingView extends Base {
 
@@ -44,6 +44,7 @@ export default class SecuritiesSettingView extends Base {
               disabled={this.state.isSaving}
               onClick={this.next.bind(this)}
               primary={true}
+              labelStyle={{lineHeight: "50px"}}
               style={{width:"100%", height: "50px"}}
             />
           </span>

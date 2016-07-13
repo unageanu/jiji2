@@ -1,11 +1,11 @@
 import React                from "react"
-import MUI                  from "material-ui"
+
 import AbstractComponent    from "../widgets/abstract-component"
 import PriceUtils           from "../../../viewmodel/utils/price-utils"
 import LoadingImage         from "../widgets/loading-image"
 import PositionStatus       from "./position-status"
 
-const Avatar = MUI.Avatar;
+import Avatar from "material-ui/Avatar"
 
 const nullPosition = {
   profitOrLoss : 0,

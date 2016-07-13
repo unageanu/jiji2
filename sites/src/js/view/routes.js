@@ -1,5 +1,5 @@
 import React      from "react"
-import Router     from "react-router"
+import { Router, Route, IndexRoute } from 'react-router'
 
 import Frame             from "./components/frame"
 import Home              from "./components/pages/home-page"
@@ -16,35 +16,32 @@ import Settings          from "./components/pages/settings-page"
 import InitialSettings   from "./components/pages/initial-settings-page"
 import Login             from "./components/pages/login-page"
 
-const Route        = Router.Route;
-const DefaultRoute = Router.DefaultRoute;
-
 export default (
-  <Route handler={Frame} path="/">
-    <DefaultRoute                      handler={Home} />
-    <Route path="rmt/trading-summary"  handler={RMTTradingSummary} />
-    <Route path="rmt/chart"            handler={RMTChart} />
-    <Route path="rmt/positions"        handler={RMTPositions}>
-      <Route path=":id" handler={RMTPositions} ignoreScrollBehavior={true}>
+  <Route component={Frame} path="/">
+    <IndexRoute                        component={Home} />
+    <Route path="rmt/trading-summary"  component={RMTTradingSummary} />
+    <Route path="rmt/chart"            component={RMTChart} />
+    <Route path="rmt/positions"        component={RMTPositions}>
+      <Route path=":id" component={RMTPositions} ignoreScrollBehavior={true}>
       </Route>
     </Route>
-    <Route path="rmt/agent-setting"    handler={RMTAgentSetting} />
-    <Route path="rmt/logs"             handler={RMTLogs} />
+    <Route path="rmt/agent-setting"    component={RMTAgentSetting} />
+    <Route path="rmt/logs"             component={RMTLogs} />
 
-    <Route path="backtests/new"        handler={NewBackTest} />
-    <Route path="backtests/list"       handler={BackTests}>
-      <Route path=":id" handler={BackTests} ignoreScrollBehavior={true}>
+    <Route path="backtests/new"        component={NewBackTest} />
+    <Route path="backtests/list"       component={BackTests}>
+      <Route path=":id" component={BackTests} ignoreScrollBehavior={true}>
       </Route>
     </Route>
 
-    <Route path="notifications"        handler={Notifications}>
-      <Route path=":id" handler={Notifications} ignoreScrollBehavior={true}>
+    <Route path="notifications"        component={Notifications}>
+      <Route path=":id" component={Notifications} ignoreScrollBehavior={true}>
       </Route>
     </Route>
-    <Route path="agents"               handler={Agents} />
-    <Route path="settings"             handler={Settings} />
+    <Route path="agents"               component={Agents} />
+    <Route path="settings"             component={Settings} />
 
-    <Route path="initial-settings"     handler={InitialSettings} />
-    <Route path="login"                handler={Login} />
+    <Route path="initial-settings"     component={InitialSettings} />
+    <Route path="login"                component={Login} />
   </Route>
 );

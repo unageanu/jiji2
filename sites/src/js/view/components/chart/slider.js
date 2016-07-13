@@ -1,5 +1,5 @@
 import React         from "react"
-import MUI           from "material-ui"
+
 import Draggable     from "react-draggable"
 import DateFormatter from "../../../viewmodel/utils/date-formatter"
 import RangeView     from "./range-view"
@@ -33,7 +33,9 @@ export default class Slider extends AbstractComponent {
     if ( e.key === "pageWidth" ) {
       this.setState({ handleWidth: e.newValue});
     } else if ( e.key === "positionX" || e.key === "temporaryPositionX") {
-      this.setState({ handlePosition: e.newValue});
+      if (this.state.handlePosition != e.newValue) {
+        this.setState({ handlePosition: e.newValue});
+      }
     } else if ( e.key === "width") {
       this.setState({ barWidth: e.newValue});
     }
@@ -57,8 +59,8 @@ export default class Slider extends AbstractComponent {
     return <Draggable
       axis="x"
       handle=".handle"
-      start={{x: this.state.handlePosition, y: 0}}
-      bound="box all"
+      position={{x: this.state.handlePosition, y: 0}}
+      bounds="parent"
       onStart={this.handleStart.bind(this)}
       onDrag={this.handleDrag.bind(this)}
       onStop={this.handleStop.bind(this)}>
@@ -74,10 +76,10 @@ export default class Slider extends AbstractComponent {
     this.props.chartModel.slider.slideStart();
   }
   handleDrag(event, ui) {
-    this.props.chartModel.slider.slideByHandle(ui.position.left);
+    this.props.chartModel.slider.slideByHandle(
+      ui.deltaX === 0 ? ui.lastX : ui.x);
   }
   handleStop(event, ui) {
-    this.props.chartModel.slider.slideByHandle(ui.position.left);
     this.props.chartModel.slider.slideEnd();
   }
 }

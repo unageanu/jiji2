@@ -1,10 +1,10 @@
 import React                  from "react"
-import MUI                    from "material-ui"
+
 import AbstractComponent      from "../widgets/abstract-component"
 import IconSelector           from "../icons/icon-selector"
 import StringFormatter        from "../../../viewmodel/utils/string-formatter"
 
-const TextField    = MUI.TextField;
+import TextField from "material-ui/TextField"
 
 const keys = new Set([
   "selectedAgent"

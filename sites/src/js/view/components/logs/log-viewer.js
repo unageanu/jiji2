@@ -1,12 +1,12 @@
-import React             from "react";
-import MUI               from "material-ui"
-import AbstractComponent from "../widgets/abstract-component";
+import React             from "react"
+
+import AbstractComponent from "../widgets/abstract-component"
 import LoadingImage      from "../widgets/loading-image"
 import Theme             from "../../theme"
 
-const FlatButton   = MUI.FlatButton;
-const IconButton   = MUI.IconButton;
-const Card         = MUI.Card;
+import FlatButton from "material-ui/FlatButton"
+import IconButton from "material-ui/IconButton"
+import Card from "material-ui/Card"
 
 const keys = new Set([
   "items", "pageSelectors"
@@ -95,7 +95,7 @@ export default class LogViewer extends AbstractComponent {
   createPageSelectorElement(selector, index) {
     if (selector.action) {
       const className = selector.selected ? "selected" : "";
-      const palette = Theme.getPalette();
+      const palette = Theme.palette;
       return (
         <FlatButton
           className={"selector " + className}

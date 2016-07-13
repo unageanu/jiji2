@@ -1,5 +1,5 @@
 import React               from "react"
-import MUI                 from "material-ui"
+
 import AbstractComponent   from "../widgets/abstract-component"
 import TextInRadius        from "../widgets/text-in-radius"
 import Theme               from "../../theme"
@@ -8,8 +8,8 @@ import NumberFormatter     from "../../../viewmodel/utils/number-formatter"
 import DateFormatter       from "../../../viewmodel/utils/date-formatter"
 import Utils               from "./utils"
 
-const ListItem       = MUI.ListItem;
-const LinearProgress = MUI.LinearProgress;
+import {ListItem} from "material-ui/List"
+import LinearProgress from "material-ui/LinearProgress"
 
 const nullBacktest = {};
 
@@ -26,7 +26,7 @@ export default class BacktestListItem extends React.Component {
       className: "list-item",
       innerDivStyle : Object.assign( {}, Theme.listItem.innerDivStyle, {
         backgroundColor: this.props.selected
-          ? Theme.getPalette().backgroundColorDarkAlpha : "rgba(0,0,0,0)"
+          ? Theme.palette.backgroundColorDarkAlpha : "rgba(0,0,0,0)"
       }),
       primaryText: this.createPrimaryText(backtest),
       secondaryText: this.createSecondaryText(backtest),
@@ -69,7 +69,7 @@ export default class BacktestListItem extends React.Component {
           display: "inline-block",
           width: "200px",
           top: "-3px",
-          backgroundColor: Theme.getPalette().borderColor
+          backgroundColor: Theme.palette.borderColor
         }} />
     </span>
   }

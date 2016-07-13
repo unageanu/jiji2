@@ -1,7 +1,6 @@
 import React               from "react"
-import MUI                 from "material-ui"
 
-const ListItem   = MUI.ListItem;
+import {List, ListItem} from "material-ui/List"
 
 export default class WebEnvironment {
   createListItem(props) {

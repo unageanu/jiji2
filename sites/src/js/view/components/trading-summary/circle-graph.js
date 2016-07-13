@@ -1,21 +1,20 @@
 import React             from "react"
-import Router            from "react-router"
-import MUI               from "material-ui"
+import { Router } from 'react-router'
+
 import ReactChart        from "react-chartjs"
 import AbstractComponent from "../widgets/abstract-component"
 
 const DoughnutChart = ReactChart.Doughnut;
 const doughnutChartOptions = {
-  tooltipTemplate(values) {
-    return `${values.label} ${values.value}`;
+  legend: { display: false },
+  tooltips: {
+    titleFontFamily: "Roboto Condensed', 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'Noto Sans Japanese', sans-serif",
+    backgroundColor: "rgba(30,30,30,0.7)",
+    custom(values) {
+      return `${values.label} ${values.value}`;
+    }
   },
-  segmentStrokeColor : "#f0f0f0",
-  tooltipFillColor: "rgba(30,30,30,0.7)",
-  tooltipFontFamily: "Roboto Condensed', 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'Noto Sans Japanese', sans-serif",
-  tooltipCornerRadius: 2,
-  percentageInnerCutout : 80,
-  segmentStrokeWidth : 0,
-  segmentShowStroke : false
+  cutoutPercentage : 80
 };
 
 export default class CircleGraph extends React.Component {
@@ -32,8 +31,7 @@ export default class CircleGraph extends React.Component {
         <div className="circle-graph-body">
           <div className="chart">
             <span>
-              <DoughnutChart
-                redraw={true}
+              <DoughnutChart 
                 data={this.props.data}
                 options={this.getDoughnutChartOptions()}
                 width={this.props.size} height={this.props.size} />
@@ -48,10 +46,11 @@ export default class CircleGraph extends React.Component {
   }
 
   createTableRows() {
-    return this.props.data.map( (content, index) => {
+    const data = this.props.data;
+    return data.labels.map( (content, index) => {
       return <div className="item" key={index}>
-        <div className="label">{content.label}</div>
-        <div className="value">{content.value}</div>
+        <div className="label">{content}</div>
+        <div className="value">{data.datasets[0].data[index]}</div>
       </div>
     });
   }
@@ -63,10 +62,10 @@ export default class CircleGraph extends React.Component {
 
 CircleGraph.propTypes = {
   title: React.PropTypes.string.isRequired,
-  data:  React.PropTypes.array,
+  data:  React.PropTypes.object,
   size:  React.PropTypes.number
 };
 CircleGraph.defaultProps = {
-  data: [],
+  data: {},
   size: 200
 };

@@ -1,9 +1,9 @@
 import React                 from "react"
-import Router                from "react-router"
-import MUI       　　　　     from "material-ui"
+import { Router } from 'react-router'
+
 import AbstractComponent     from "../widgets/abstract-component"
 
-const TextField    = MUI.TextField;
+import TextField from "material-ui/TextField"
 
 const keys = new Set([
   "editTarget", "fileNameError"
@@ -14,7 +14,7 @@ export default class AgentFileNameField extends AbstractComponent {
   constructor(props) {
     super(props);
     this.state = {
-      fileName:      null,
+      fileName:      "",
       fileNameError: null
     };
   }

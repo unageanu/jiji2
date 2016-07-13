@@ -7,7 +7,6 @@ var base = {
   resolve: {
     alias: {
       msgpack:           __dirname + '/../lib/msgpack.codec.js',
-      "react-draggable": __dirname + '/../lib/draggable.js',
       easeljs:           __dirname + '/../lib/easeljs-0.8.0.combined.js',
       ga:                __dirname + '/../lib/ga.js'
     }
@@ -24,7 +23,7 @@ var base = {
       exclude:  /(node_modules|lib)/,
       loader:  'babel-loader',
       query: {
-        stage : 0,
+        presets: ['es2015', 'react', 'stage-0'],
         cacheDirectory: "cache/babel-cache"
       }
     }, {
@@ -35,15 +34,15 @@ var base = {
     exprContextRecursive : true,
     exprContextRegExp: /^\.\/(?!main)([a-zA-Z0-9\-\_\/]*)$/,
     exprContextCritical: false,
-    exprContextRequest: '../../../src/js',
+    exprContextRequest: __dirname + '/../src/js',
 
     unknownContextRegExp: /$^/,
     unknownContextCritical: false
   }
 };
 
-function createConfig( root, mainFile, options) {
-  return merge( merge( base, {
+function createConfig( root, mainFile, env, options) {
+  const config = merge( merge( base, {
     entry: '.' + root + '/' + mainFile,
     output: {
       filename: mainFile
@@ -52,15 +51,25 @@ function createConfig( root, mainFile, options) {
       root: __dirname + root
     }
   }), options || {});
+  config.plugins.push(new webpack.DefinePlugin({
+    'process.env':{
+      'NODE_ENV': JSON.stringify(env)
+    }
+  }));
+  return config;
 }
 
 module.exports = {
-  src : createConfig( '/src/js', 'main.js'),
-  spec: createConfig( '/spec',   'all-specs.js', {
-    resolve: {
-      alias: {
-        src:     __dirname + '/../src/js'
+  src : function(env) {
+    return createConfig( '/src/js', 'main.js', env );
+  },
+  spec: function(env) {
+    return createConfig( '/spec', 'all-specs.js', env, {
+      resolve: {
+        alias: {
+          src:     __dirname + '/../src/js'
+        }
       }
-    }
-  })
+    });
+  }
 }

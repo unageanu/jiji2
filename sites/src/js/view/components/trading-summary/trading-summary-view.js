@@ -1,6 +1,6 @@
 import React             from "react"
-import Router            from "react-router"
-import MUI               from "material-ui"
+import { Router } from 'react-router'
+
 import ReactChart        from "react-chartjs"
 import AbstractComponent from "../widgets/abstract-component"
 import SummaryItem       from "./summary-item"
@@ -8,7 +8,8 @@ import CircleGraph       from "./circle-graph"
 import LoadingImage      from "../widgets/loading-image"
 import PriceView         from "../widgets/price-view"
 
-const DropDownMenu  = MUI.DropDownMenu;
+import DropDownMenu from "material-ui/DropDownMenu"
+import MenuItem     from 'material-ui/MenuItem'
 
 const keys = new Set([
   "summary", "enablePeriodSelector", "availableAggregationPeriods"
@@ -22,7 +23,7 @@ export default class TradingSummaryView extends AbstractComponent {
       summary :              null,
       enablePeriodSelector : false,
       availableAggregationPeriods: [],
-      selectedIndex:         0
+      selected:         0
     };
   }
 
@@ -30,6 +31,7 @@ export default class TradingSummaryView extends AbstractComponent {
     const model = this.props.model;
     this.registerPropertyChangeListener(model, keys);
     let state = this.collectInitialState(model, keys);
+    state.selected = state.availableAggregationPeriods[0].id;
     this.setState(state);
   }
 
@@ -156,18 +158,26 @@ export default class TradingSummaryView extends AbstractComponent {
         <span className="label">集計期間: </span>
         <span className="selector">
           <DropDownMenu
-            menuItems={this.state.availableAggregationPeriods}
-            selectedIndex={this.state.selectedIndex}
-            onChange={this.onChange.bind(this)}/>
+            value={this.state.selected}
+            onChange={this.onChange.bind(this)}>
+            {this.createDropDownMenuItems()}
+          </DropDownMenu>
         </span>
       </div>
     );
   }
 
-  onChange(e, selectedIndex, menuItem) {
-    this.props.model.startTime =
-      this.state.availableAggregationPeriods[selectedIndex].time;
-    this.setState({selectedIndex:selectedIndex});
+  createDropDownMenuItems() {
+    return this.state.availableAggregationPeriods.map((item) => {
+      return <MenuItem key={item.id}
+        value={item.id} primaryText={item.text} />
+    });
+  }
+
+  onChange(e, selectedIndex, payload) {
+    this.props.model.startTime = this.state.availableAggregationPeriods
+      .find((item)=> item.id == payload).time;
+    this.setState({selected:payload});
   }
 }
 TradingSummaryView.propTypes = {

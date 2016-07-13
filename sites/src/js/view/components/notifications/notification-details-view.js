@@ -1,11 +1,11 @@
 import React                from "react"
-import MUI                  from "material-ui"
+
 import AbstractComponent    from "../widgets/abstract-component"
 import LoadingImage         from "../widgets/loading-image"
 import ChartView            from "../chart/chart-view"
 
-const Avatar       = MUI.Avatar;
-const RaisedButton   = MUI.RaisedButton;
+import Avatar from "material-ui/Avatar"
+import RaisedButton from "material-ui/RaisedButton"
 
 const keys = new Set([
   "selectedId", "selected"

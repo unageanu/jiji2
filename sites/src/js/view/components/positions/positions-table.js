@@ -1,15 +1,15 @@
 import React                   from "react"
-import MUI                     from "material-ui"
+
 import AbstractComponent       from "../widgets/abstract-component"
 import LoadingImage            from "../widgets/loading-image"
 import PositionColumns         from "../../../viewmodel/positions/position-columns"
 import DownloadPositionsDialog from "./download-positions-dialog"
 import ButtonIcon              from "../widgets/button-icon"
 
-const Table        = MUI.Table;
-const FlatButton   = MUI.FlatButton;
-const IconButton   = MUI.IconButton;
-const FontIcon     = MUI.FontIcon;
+import Table from "material-ui/Table"
+import FlatButton from "material-ui/FlatButton"
+import IconButton from "material-ui/IconButton"
+import FontIcon from "material-ui/FontIcon"
 
 const defaultSortOrder = {
   order:     "profit_or_loss",
@@ -149,7 +149,9 @@ export default class PositionsTable extends AbstractComponent {
     if ( this.props.onItemTapped ) {
       this.props.onItemTapped(ev, position);
     } else {
-      this.context.router.transitionTo("/rmt/positions/"+position.id);
+      this.context.router.push({
+        pathname:"/rmt/positions/"+position.id
+      });
     }
     ev.preventDefault();
   }
@@ -175,6 +177,6 @@ PositionsTable.defaultProps = {
   onItemTapped: null
 };
 PositionsTable.contextTypes = {
-  router: React.PropTypes.func,
+  router: React.PropTypes.object,
   windowResizeManager: React.PropTypes.object
 };

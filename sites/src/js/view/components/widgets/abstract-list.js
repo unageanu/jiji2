@@ -1,9 +1,9 @@
 import React                from "react"
-import MUI                  from "material-ui"
+
 import AbstractComponent    from "../widgets/abstract-component"
 import LoadingImage         from "../widgets/loading-image"
 
-const List   = MUI.List;
+import {List, ListItem} from "material-ui/List"
 
 const modelKeys = new Set([
   "items"
@@ -101,6 +101,6 @@ AbstractList.defaultProps = {
   mobile: false
 };
 AbstractList.contextTypes = {
-  router: React.PropTypes.func,
+  router: React.PropTypes.object,
   windowResizeManager: React.PropTypes.object
 };

@@ -1,5 +1,5 @@
 import React                  from "react"
-import MUI                    from "material-ui"
+
 import AbstractComponent      from "../widgets/abstract-component"
 import AgentList              from "./agent-list"
 import AgentPropertyEditor    from "./agent-property-editor"
@@ -40,7 +40,7 @@ export default class AgentSettingEditor extends AbstractComponent {
             <AgentList model={this.props.model} />
           </div>
           <AgentPropertyEditor
-            ref="agentPropertyEditor"
+            ref={(ref) => this.agentPropertyEditor = ref}
             readOnly={this.props.readOnly}
             model={this.props.model} />
         </div>
@@ -49,7 +49,7 @@ export default class AgentSettingEditor extends AbstractComponent {
   }
 
   applyAgentConfiguration() {
-    this.refs.agentPropertyEditor.applyAgentConfiguration();
+    this.agentPropertyEditor.applyAgentConfiguration();
   }
 }
 AgentSettingEditor.propTypes = {

@@ -1,11 +1,11 @@
 import React                   from "react"
-import MUI                     from "material-ui"
+
 import AbstractPage            from "./abstract-page"
 import NotificationList        from "../notifications/notification-list"
 import NotificationListMenuBar from "../notifications/notification-list-menu-bar"
 import NotificationDetailsView from "../notifications/notification-details-view"
 
-const Card       = MUI.Card;
+import Card from "material-ui/Card"
 
 export default class NotificationsPage extends AbstractPage {
 
@@ -55,5 +55,5 @@ export default class NotificationsPage extends AbstractPage {
 }
 NotificationsPage.contextTypes = {
   application: React.PropTypes.object.isRequired,
-  router: React.PropTypes.func
+  router: React.PropTypes.object
 };

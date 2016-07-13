@@ -1,7 +1,7 @@
-import ContainerJS      from "container-js";
-import Error            from "src/model/error";
-import HTTPHeaderField  from "src/remoting/http-header-field";
-import ContainerFactory from "../../utils/test-container-factory";
+import ContainerJS      from "container-js"
+import Error            from "src/model/error"
+import HTTPHeaderField  from "src/remoting/http-header-field"
+import ContainerFactory from "../../utils/test-container-factory"
 
 function createErrorResponse(status) {
   return {

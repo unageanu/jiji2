@@ -5,7 +5,7 @@ import DateFormatter          from "../../../viewmodel/utils/date-formatter"
 import Theme                  from "../../theme"
 
 const padding = CoordinateCalculator.padding();
-const palette = Theme.getPalette();
+const palette = Theme.palette;
 const color   = palette.accent1Color;
 const textColor = "#FFF";
 const shadowColor = "rgba(150,150,150,0.5)";
@@ -17,8 +17,7 @@ const horizontalHandleHeight = 20;
 export default class Pointer extends AbstractChartComponent {
 
   constructor( chartModel, slidableMask, devicePixelRatio ) {
-    super(chartModel);
-    this.devicePixelRatio = devicePixelRatio;
+    super(chartModel, devicePixelRatio);
     this.initSprite(slidableMask);
     this.registerDragAction();
   }
@@ -26,9 +25,12 @@ export default class Pointer extends AbstractChartComponent {
   addObservers() {
     this.chartModel.pointer.addObserver(
       "propertyChanged", this.onPropertyChanged.bind(this), this);
+    this.chartModel.pointer.addObserver(
+      "refresh", () => this.stage.update(), this);
   }
-  attach( stage ) {
+  attach( stage, stageUpdater ) {
     this.stage = stage;
+    this.stageUpdater = stageUpdater;
     this.stage.addChild(this.verticalPointer);
     this.stage.addChild(this.horizontalPointer);
   }
@@ -54,12 +56,11 @@ export default class Pointer extends AbstractChartComponent {
     } else if (event.key === "price" || event.key === "balance") {
       this.horizontalLabel.text = event.newValue;
     }
-    this.stage.update();
   }
 
   initSprite(slidableMask) {
-    this.verticalPointer   = this.initializeElement(new CreateJS.Container());
-    this.horizontalPointer = this.initializeElement(new CreateJS.Container());
+    this.verticalPointer   = this.initializeElement(new CreateJS.Container(), true);
+    this.horizontalPointer = this.initializeElement(new CreateJS.Container(), true);
   }
   initPointer() {
     if ( this.verticalLabel ) return;
@@ -91,6 +92,8 @@ export default class Pointer extends AbstractChartComponent {
      .lineTo(verticalHandleWidth/2+0.5, axisPosition.vertical-3)
      .lineTo(verticalHandleWidth/2+5, axisPosition.vertical+3)
      .endFill();
+    shape.cache(0, 0, verticalHandleWidth,
+       axisPosition.vertical+verticalHandleHeight+3, this.devicePixelRatio);
 
     this.verticalLabel = this.createLabelText();
     this.verticalLabel.x = 8;
@@ -110,6 +113,8 @@ export default class Pointer extends AbstractChartComponent {
      .drawRect(axisPosition.horizontal+3, 0,
        horizontalHandleWidth, horizontalHandleHeight )
      .endFill();
+    shape.cache(0, 0, axisPosition.horizontal+horizontalHandleWidth+3,
+       horizontalHandleHeight, this.devicePixelRatio);
 
     this.horizontalLabel = this.createLabelText();
     this.horizontalLabel.x = axisPosition.horizontal + 7;
@@ -152,10 +157,9 @@ export default class Pointer extends AbstractChartComponent {
     });
   }
 
-  cache() {
-  }
-
   createLabelText( text ) {
-    return new CreateJS.Text("", "12px Roboto Condensed", textColor);
+    const shape = new CreateJS.Text("", "12px Roboto Condensed", textColor);
+    shape.mouseEnabled = false;
+    return shape;
   }
 }

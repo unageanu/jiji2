@@ -1,10 +1,10 @@
 import React                  from "react"
-import MUI                    from "material-ui"
+
 import Base                   from "../settings/smtp-server-setting-view"
 import LoadingImage           from "../widgets/loading-image"
 
-const RaisedButton = MUI.RaisedButton;
-const FlatButton   = MUI.FlatButton;
+import RaisedButton from "material-ui/RaisedButton"
+import FlatButton from "material-ui/FlatButton"
 
 export default class SMTPServerSettingView extends Base {
 
@@ -30,6 +30,7 @@ export default class SMTPServerSettingView extends Base {
               label="テストメール送信"
               disabled={this.state.isSaving}
               onClick={this.composeTestMail.bind(this)}
+              labelStyle={{lineHeight: "50px"}}
               style={{width:"100%", height: "50px"}}
             />
           </span>
@@ -39,6 +40,7 @@ export default class SMTPServerSettingView extends Base {
               primary={true}
               disabled={this.state.isSaving}
               onClick={this.next.bind(this)}
+              labelStyle={{lineHeight: "50px"}}
               style={{width:"100%", height: "50px"}}
             />
           </span>
@@ -47,6 +49,7 @@ export default class SMTPServerSettingView extends Base {
               label="設定をスキップ"
               disabled={this.state.isSaving}
               onClick={this.skip.bind(this)}
+              labelStyle={{lineHeight: "50px"}}
               style={{width:"100%", height: "50px"}}
             />
           </span>

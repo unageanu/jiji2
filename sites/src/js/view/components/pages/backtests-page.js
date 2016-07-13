@@ -1,10 +1,10 @@
 import React                from "react"
-import MUI                  from "material-ui"
+
 import AbstractPage         from "./abstract-page"
 import BacktestList         from "../backtests/backtest-list"
 import BacktestDetailsPanel from "../backtests/backtest-details-panel"
 
-const Card = MUI.Card;
+import Card from "material-ui/Card"
 
 export default class BacktestsPage extends AbstractPage {
 

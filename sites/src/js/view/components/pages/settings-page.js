@@ -1,5 +1,5 @@
 import React                  from "react"
-import MUI                    from "material-ui"
+
 import AbstractPage           from "./abstract-page"
 import SecuritiesSettingView  from "../settings/securities-setting-view"
 import MailAddressSettingView from "../settings/mail-address-setting-view"
@@ -7,7 +7,7 @@ import PasswordSettingView    from "../settings/password-setting-view"
 import PairSettingView        from "../settings/pair-setting-view"
 import SMTPServerSettingView  from "../settings/smtp-server-setting-view"
 
-const Card = MUI.Card;
+import Card from "material-ui/Card"
 
 export default class SettingsPage extends AbstractPage {
 
@@ -51,5 +51,5 @@ export default class SettingsPage extends AbstractPage {
 
 SettingsPage.contextTypes = {
   application: React.PropTypes.object.isRequired,
-  router: React.PropTypes.func
+  router: React.PropTypes.object
 };

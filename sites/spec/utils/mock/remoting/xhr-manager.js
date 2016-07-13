@@ -1,6 +1,6 @@
-import XhrManager from "src/remoting/xhr-manager";
-import XhrRequest from "src/remoting/xhr-request";
-import Deferred   from "src/utils/deferred";
+import XhrManager from "src/remoting/xhr-manager"
+import XhrRequest from "src/remoting/xhr-request"
+import Deferred   from "src/utils/deferred"
 
 class MockXhrRequest extends XhrRequest {
   constructor(manager, url, method, body, options) {

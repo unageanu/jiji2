@@ -1,5 +1,5 @@
 import React                from "react"
-import MUI                  from "material-ui"
+
 import AbstractList         from "../widgets/abstract-list"
 import NotificationListItem from "./notification-list-item"
 
@@ -26,7 +26,9 @@ export default class NotificationList extends AbstractList {
 
   createAction(notification) {
     return (ev) => {
-      this.context.router.transitionTo("/notifications/"+notification.id);
+      this.context.router.push({
+        pathname: "/notifications/"+notification.id
+      });
       ev.preventDefault();
     };
   }
@@ -43,6 +45,6 @@ NotificationList.defaultProps = {
   autoFill: false
 };
 NotificationList.contextTypes = {
-  router: React.PropTypes.func,
+  router: React.PropTypes.object,
   windowResizeManager: React.PropTypes.object
 };

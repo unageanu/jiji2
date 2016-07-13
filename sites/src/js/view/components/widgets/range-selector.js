@@ -1,9 +1,9 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import DateFormatter      from "../../../viewmodel/utils/date-formatter"
 import AbstractComponent  from "../widgets/abstract-component"
 
-const DatePicker   = MUI.DatePicker;
+import DatePicker from "material-ui/DatePicker"
 
 const keys = new Set([
   "startTime", "endTime", "minDate", "maxDate",

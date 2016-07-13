@@ -1,11 +1,13 @@
-import "babel-core/polyfill";
+import "babel-polyfill";
 
-import React        from "react";
-import Router       from "react-router";
-import ContainerJS  from "container-js";
+import React        from "react"
+import ReactDOM     from "react-dom"
+import { Router, hashHistory } from 'react-router'
+import ContainerJS  from "container-js"
 
-import modules      from "../composing/modules";
-import routes       from "./routes";
+import modules      from "../composing/modules"
+import routes       from "./routes"
+import babelLoader  from "../composing/babel-loader"
 
 export default class Initializer {
 
@@ -22,17 +24,21 @@ export default class Initializer {
     this.container = new ContainerJS.Container(
       this.modules(),
       ContainerJS.PackagingPolicy.COMMON_JS_MODULE_PER_CLASS,
-      ContainerJS.Loaders.COMMON_JS
+      babelLoader
     );
   }
   initializeView(application, initialRoute) {
-    const location = Router.HashLocation;
-    if (initialRoute) location.replace(initialRoute);
+    if (initialRoute) hashHistory.replace(initialRoute);
     try {
-      Router.run(this.routes(), location, (Handler) => {
-        const element = document.getElementById("main");
-        React.render(<Handler application={application} />, element);
-      });
+      const element = document.getElementById("main");
+      ReactDOM.render( <Router
+        history={hashHistory}
+        createElement={(component, props) => {
+          props.application = application;
+          return React.createElement(component, props);
+        }}>
+        {this.routes()}
+      </Router>, element);
     } catch (e) {
       this.handleError(e, application);
     }

@@ -1,5 +1,5 @@
 import React                from "react"
-import MUI                  from "material-ui"
+
 import AbstractList         from "../widgets/abstract-list"
 import PositionListItem     from "./position-list-item"
 
@@ -26,7 +26,9 @@ export default class PositionList extends AbstractList {
   }
   createAction(position) {
     return (ev) => {
-      this.context.router.transitionTo("/rmt/positions/"+position.id);
+      this.context.router.push({
+        pathname: "/rmt/positions/"+position.id
+      });
       ev.preventDefault();
     };
   }
@@ -43,6 +45,6 @@ PositionList.defaultProps = {
   autoFill: false
 };
 PositionList.contextTypes = {
-  router: React.PropTypes.func,
+  router: React.PropTypes.object,
   windowResizeManager: React.PropTypes.object
 };

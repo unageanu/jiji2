@@ -1,7 +1,7 @@
 import React   from "react"
-import MUI     from "material-ui"
 
-const FontIcon = MUI.FontIcon;
+
+import FontIcon from "material-ui/FontIcon"
 
 const iconStyle = {
   height: '100%',

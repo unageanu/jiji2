@@ -1,12 +1,12 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import Theme              from "../../theme"
 import RangeSelector      from "../widgets/range-selector"
 import AbstractComponent  from "../widgets/abstract-component"
 
-const Dialog            = MUI.Dialog;
-const RadioButtonGroup  = MUI.RadioButtonGroup;
-const RadioButton       = MUI.RadioButton;
+import Dialog from "material-ui/Dialog"
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton'
+import FlatButton from "material-ui/FlatButton"
 
 const keys = new Set([
   "downloadType"
@@ -16,7 +16,7 @@ export default class DownloadPositionsDialog extends AbstractComponent {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {open: false};
   }
 
   componentWillMount() {
@@ -32,24 +32,23 @@ export default class DownloadPositionsDialog extends AbstractComponent {
         ※建玉が多いと時間がかかる場合があります。ご注意ください。
       </span>
     </span>;
+
     return (
       <Dialog
-        ref="dialog"
-        title=""
-        actions={[
-          { text: "ダウンロード", onTouchTap: () => this.downloadCSV()  },
-          { text: "キャンセル"}
-        ]}
+        actions={this.createActionButtons()}
+        open={this.state.open}
         modal={true}
         contentClassName="dialog download-positions-dialog"
-        contentStyle={Theme.dialog.contentStyle}>
+        contentStyle={Theme.dialog.contentStyle}
+        onRequestClose={this.dismiss.bind(this)}>
         <div className="dialog-content">
           <div className="dialog-description">
             建玉データをCSV形式でダウンロードします。<br/>
             ダウンロードする範囲を選択して、[ダウンロード]をクリックしてください。
           </div>
           <div className="body">
-            <RadioButtonGroup ref="downloadType" name="downloadType"
+            <RadioButtonGroup
+              name="downloadType"
               valueSelected={this.state.downloadType}
               onChange={this.onDownloadTypeChanged.bind(this)}>
               <RadioButton
@@ -62,7 +61,7 @@ export default class DownloadPositionsDialog extends AbstractComponent {
               </RadioButton>
             </RadioButtonGroup>
             <RangeSelector
-              ref="rangeSelector"
+              ref={(ref) => this.rangeSelector = ref}
               model={this.props.model.rangeSelectorModel} />
           </div>
         </div>
@@ -70,22 +69,39 @@ export default class DownloadPositionsDialog extends AbstractComponent {
     );
   }
 
+  createActionButtons() {
+    return [
+      <FlatButton
+        label="ダウンロード"
+        primary={false}
+        onTouchTap={this.downloadCSV.bind(this)}
+      />, <FlatButton
+        label="キャンセル"
+        primary={false}
+        onTouchTap={this.dismiss.bind(this)}
+      />
+    ];
+  }
+
   onDownloadTypeChanged(ev, newValue) {
     this.props.model.downloadType = newValue;
   }
 
   downloadCSV() {
-    this.refs.rangeSelector.applySetting();
+    this.rangeSelector.applySetting();
     this.props.model.createCSVDownloadUrl().then((url)=> {
       if (!url) return;
-      this.refs.dialog.dismiss();
+      this.dismiss();
       setTimeout( () => { window.location.href = url }, 500 );
       // delay for avoiding dialog problem on IE.
     });
   }
   show() {
     this.props.model.prepare();
-    this.refs.dialog.show();
+    this.setState({open:true});
+  }
+  dismiss() {
+    this.setState({open:false});
   }
 }
 DownloadPositionsDialog.propTypes = {

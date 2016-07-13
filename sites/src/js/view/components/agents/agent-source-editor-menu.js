@@ -1,13 +1,13 @@
 import React             from "react"
-import Router            from "react-router"
-import MUI       　　　　 from "material-ui"
+import { Router } from 'react-router'
+
 import AbstractComponent from "../widgets/abstract-component"
 import ConfirmDialog     from "../widgets/confirm-dialog"
 import LoadingImage      from "../widgets/loading-image"
 
-const Dialog     = MUI.Dialog;
-const IconButton = MUI.IconButton;
-const FontIcon   = MUI.FontIcon;
+import Dialog from "material-ui/Dialog"
+import IconButton from "material-ui/IconButton"
+import FontIcon from "material-ui/FontIcon"
 
 const keys = new Set([
   "editTarget", "isSaving"
@@ -56,14 +56,14 @@ export default class AgentSourceEditorMenu extends AbstractComponent {
             : null
         }</span>
         <ConfirmDialog
-          ref="confirmDialog"
+          ref={(ref) => this.confirmDialog = ref}
           text="ファイルを削除します。よろしいですか?" />
       </span>
     );
   }
 
   confirmRemove() {
-    this.refs.confirmDialog.confilm().then((id)=> {
+    this.confirmDialog.confilm().then((id)=> {
       if (id != "yes") return;
       this.editor().remove();
     });

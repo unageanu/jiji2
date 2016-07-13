@@ -1,7 +1,7 @@
 import React   from "react"
-import MUI     from "material-ui"
 
-const Avatar = MUI.Avatar;
+
+import Avatar from "material-ui/Avatar"
 
 export default class AgentIcon extends React.Component {
 
@@ -11,7 +11,10 @@ export default class AgentIcon extends React.Component {
   }
 
   render() {
-    return  <Avatar src={this.createIconUrl()} {...this.props} />;
+    const {className, iconId, urlResolver, ...others} = this.props;
+    return  <Avatar src={this.createIconUrl()}
+      className={(className || "") + " agent-icon"}
+      {...others} />;
   }
 
   createIconUrl() {

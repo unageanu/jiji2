@@ -1,6 +1,6 @@
 
 global._babelPolyfill = false;
-import "babel-core/polyfill"
+import "babel-polyfill"
 
 import "./specs/errorhandling/error-handler-spec"
 import "./specs/errorhandling/error-messages-spec"

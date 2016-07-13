@@ -1,6 +1,7 @@
 import React             from "react"
-import Router            from "react-router"
-import MUI       　　　　 from "material-ui"
+import ReactDOM          from "react-dom"
+import { Router }        from 'react-router'
+
 import AbstractComponent from "./abstract-component"
 import LoadingImage      from "./loading-image"
 import Editor            from "react-ace"
@@ -18,7 +19,7 @@ export default class AceEditor extends AbstractComponent {
 
   resize(width, height) {
     if (!this.refs.editor) return;
-    const elm = React.findDOMNode(this.refs.editor);
+    const elm = ReactDOM.findDOMNode(this.refs.editor);
     const editor = this.refs.editor.editor;
     elm.style.width  = width + "px";
     elm.style.height = height + "px";

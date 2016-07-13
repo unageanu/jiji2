@@ -1,33 +1,31 @@
 import React     from "react"
-import MUI       from "material-ui"
+
 import Intervals from "../../../model/trading/intervals"
 import Theme     from "../../theme"
 
-const DropDownMenu = MUI.DropDownMenu;
-
-const items = Intervals.all().map(
-  (item) => { return { id: item.id, text:item.name }; } );
+import DropDownMenu from "material-ui/DropDownMenu"
+import MenuItem     from 'material-ui/MenuItem'
 
 export default class IntervalSelector extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 0
+      selected: null
     };
   }
 
   componentWillMount() {
-    const selectedIndex = this.getSelectedIndex(this.preferences().chartInterval);
-    this.setState({selectedIndex:selectedIndex});
+    this.setState({
+      selected: this.preferences().chartInterval
+    });
   }
 
   render() {
     return (
       <DropDownMenu
         className="interval-selector"
-        menuItems={items}
-        selectedIndex={this.state.selectedIndex}
+        value={this.state.selected}
         style={
           Object.assign(
             {width:Theme.chart.intervalSelector.width}, this.props.style)
@@ -35,25 +33,28 @@ export default class IntervalSelector extends React.Component {
         labelStyle={
           Object.assign({
             padding: "0px",
-            color: Theme.getPalette().textColorLight
+            color: Theme.palette.textColorLight
           }, Theme.chart.selector, this.props.labelStyle)
         }
         iconStyle={Object.assign({right:"8px"}, this.props.iconStyle)}
         underlineStyle={{margin: "0px"}}
         autoWidth={false}
-        zDepth={5}
-        onChange={this.onChange.bind(this)}/>
+        onChange={this.onChange.bind(this)}>
+        {this.createMenuItems()}
+      </DropDownMenu>
     );
   }
 
-  onChange(e, selectedIndex, menuItem) {
-    this.preferences().chartInterval = items[selectedIndex].id;
-    this.setState({selectedIndex: selectedIndex});
+  createMenuItems() {
+    return Intervals.all().map((item) => {
+      return <MenuItem key={item.id}
+        value={item.id} primaryText={item.name} />
+    });
   }
 
-  getSelectedIndex(intervalId) {
-    const index = items.findIndex((item)=>item.id === intervalId);
-    return index === -1 ? 0 : index;
+  onChange(e, selectedIndex, payload) {
+    this.preferences().chartInterval = payload;
+    this.setState({selected: payload});
   }
 
   preferences() {

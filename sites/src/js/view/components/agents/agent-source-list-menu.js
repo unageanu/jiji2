@@ -1,11 +1,11 @@
 import React               from "react"
-import MUI                 from "material-ui"
+
 import AbstractComponent   from "../widgets/abstract-component"
 
-const RaisedButton = MUI.RaisedButton;
+import RaisedButton from "material-ui/RaisedButton"
 
-const IconButton = MUI.IconButton;
-const FontIcon   = MUI.FontIcon;
+import IconButton from "material-ui/IconButton"
+import FontIcon from "material-ui/FontIcon"
 
 export default class AgentSourceListMenu extends AbstractComponent {
 

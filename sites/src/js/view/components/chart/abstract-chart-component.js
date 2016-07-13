@@ -1,17 +1,19 @@
-import CreateJS             from "easeljs";
+import CreateJS             from "easeljs"
 
 export default class AbstractChartComponent {
 
-  constructor( chartModel ) {
+  constructor( chartModel, devicePixelRatio ) {
     this.chartModel = chartModel;
+    this.devicePixelRatio = devicePixelRatio;
     this.addObservers();
   }
 
   addObservers() {}
   attach( stage ) {}
 
-  initializeElement(element) {
+  initializeElement(element, mouseEnabled=false) {
     element.x = element.y = 0;
+    element.mouseEnabled = mouseEnabled;
     return element;
   }
 

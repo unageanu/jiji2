@@ -1,5 +1,5 @@
 
-import CreateJS               from "easeljs";
+import CreateJS               from "easeljs"
 import AbstractChartComponent from "./abstract-chart-component"
 import CoordinateCalculator   from "../../../viewmodel/chart/coordinate-calculator"
 
@@ -7,8 +7,8 @@ const padding = CoordinateCalculator.padding();
 
 export default class GraphView extends AbstractChartComponent {
 
-  constructor( chartModel, slidableMask ) {
-    super(chartModel);
+  constructor( chartModel, slidableMask, devicePixelRatio ) {
+    super(chartModel, devicePixelRatio);
     this.initSprite(slidableMask);
   }
 
@@ -18,8 +18,9 @@ export default class GraphView extends AbstractChartComponent {
     if (this.chartModel.graphs) this.chartModel.graphs.addObserver(
       "propertyChanged", this.onGraphPropertyChanged.bind(this), this);
   }
-  attach( stage ) {
+  attach( stage, stageUpdater ) {
     this.stage = stage;
+    this.stageUpdater = stageUpdater;
     this.stage.addChild(this.shape);
   }
   unregisterObservers() {
@@ -41,7 +42,7 @@ export default class GraphView extends AbstractChartComponent {
   slideTo( temporaryStart ) {
     const x = this.calculateSlideX( temporaryStart );
     this.shape.x = x;
-    this.stage.update();
+    this.stageUpdater.requestUpdate();
   }
 
   initSprite(slidableMask) {
@@ -53,7 +54,7 @@ export default class GraphView extends AbstractChartComponent {
     this.clearScreen();
     this.renderGraphs();
     this.cache();
-    this.stage.update();
+    this.stageUpdater.requestUpdate();
   }
 
   clearScreen() {
@@ -111,6 +112,10 @@ export default class GraphView extends AbstractChartComponent {
     g = g.endFill();
   }
 
-  cache() {}
+  cache() {
+    const stageSize = this.chartModel.coordinateCalculator.stageSize;
+    const dpr = this.devicePixelRatio;
+    this.shape.cache( 0, 0, stageSize.w, stageSize.h, dpr);
+  }
 
 }

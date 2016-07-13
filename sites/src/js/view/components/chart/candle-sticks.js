@@ -1,10 +1,10 @@
-import CreateJS               from "easeljs";
+import CreateJS               from "easeljs"
 import AbstractChartComponent from "./abstract-chart-component"
 
 export default class CandleSticks extends AbstractChartComponent {
 
-  constructor( chartModel, slidableMask ) {
-    super(chartModel);
+  constructor( chartModel, slidableMask, devicePixelRatio ) {
+    super(chartModel, devicePixelRatio);
     this.initSprite(slidableMask);
   }
 
@@ -14,8 +14,9 @@ export default class CandleSticks extends AbstractChartComponent {
     this.chartModel.slider.addObserver(
       "propertyChanged", this.onSliderPropertyChanged.bind(this), this);
   }
-  attach( stage ) {
+  attach( stage, stageUpdater ) {
     this.stage = stage;
+    this.stageUpdater = stageUpdater;
     this.stage.addChild(this.sticksShape);
   }
 
@@ -38,7 +39,7 @@ export default class CandleSticks extends AbstractChartComponent {
   slideTo( temporaryStart ) {
     const x = this.calculateSlideX( temporaryStart );
     this.sticksShape.x = x;
-    this.stage.update();
+    this.stageUpdater.requestUpdate();
   }
 
   initSprite(slidableMask) {
@@ -49,8 +50,8 @@ export default class CandleSticks extends AbstractChartComponent {
   update() {
     this.clearScreen();
     this.renderSticks( this.chartModel.candleSticks.sticks );
-    this.stage.update();
     this.cache();
+    this.stageUpdater.requestUpdate();
   }
 
   clearScreen() {
@@ -75,5 +76,8 @@ export default class CandleSticks extends AbstractChartComponent {
   }
 
   cache() {
+    const stageSize = this.chartModel.coordinateCalculator.stageSize;
+    const dpr = this.devicePixelRatio;
+    this.sticksShape.cache( 0, 0, stageSize.w, stageSize.h, dpr);
   }
 }

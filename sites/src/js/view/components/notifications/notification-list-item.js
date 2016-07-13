@@ -1,12 +1,12 @@
 import React               from "react"
-import MUI                 from "material-ui"
+
 import AbstractComponent   from "../widgets/abstract-component"
 import TextInRadius        from "../widgets/text-in-radius"
 import Theme               from "../../theme"
 import Environment         from "../../environment"
 
-const Avatar     = MUI.Avatar;
-const ListItem   = MUI.ListItem;
+import Avatar from "material-ui/Avatar"
+import {List} from "material-ui/List"
 
 const nullNotification = {
 };
@@ -25,7 +25,7 @@ export default class NotificationListItem extends React.Component {
       innerDivStyle : Object.assign( {}, Theme.listItem.innerDivStyle, {
         paddingRight:"72px",
         backgroundColor: this.props.selected
-          ? Theme.getPalette().backgroundColorDarkAlpha : "rgba(0,0,0,0)"
+          ? Theme.palette.backgroundColorDarkAlpha : "rgba(0,0,0,0)"
       }),
       leftAvatar: this.createAvatar(notification),
       primaryText: this.createPrimaryText(notification),

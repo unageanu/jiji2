@@ -1,11 +1,10 @@
-import React  from "react";
-import Router from "react-router";
-import MUI    from "material-ui";
+import React  from "react"
+import { Router } from 'react-router'
 
-const Types        = MUI.MenuItem.Types;
-const ListItem     = MUI.ListItem;
-const ListDivider  = MUI.ListDivider;
-const List         = MUI.List;
+import {List, ListItem} from "material-ui/List"
+import Divider          from "material-ui/Divider"
+import Subheader        from 'material-ui/Subheader'
+import Environment      from "../environment"
 
 export default class LeftNavi extends React.Component {
 
@@ -30,7 +29,7 @@ export default class LeftNavi extends React.Component {
 
   getCurrntRoute() {
     return this.navigator().menuItems().find(
-      (item) => item.route && this.router().isActive(item.route));
+      (item) => item.route && this.isActive(item.route));
   }
 
   createLists() {
@@ -38,9 +37,9 @@ export default class LeftNavi extends React.Component {
     let buffer = [];
     let label  = "";
     this.navigator().menuItems().forEach((item)=> {
-      if (item.type === Types.SUBHEADER) {
+      if (item.type === "header") {
         lists.push(this.createList( label, buffer, lists.length));
-        lists.push(<ListDivider key={lists.length+"_divider"}/>);
+        lists.push(<Divider key={lists.length+"_divider"}/>);
         buffer = [];
         label  = item.text;
       } else{
@@ -52,32 +51,37 @@ export default class LeftNavi extends React.Component {
   }
 
   createList(label, items, index) {
-    return <List subheader={label} key={index}>{items}</List>;
+    return <List key={index} style={this.createListStyle(label)}>
+      <Subheader>{label}</Subheader>
+      {items}
+    </List>;
+  }
+
+  createListStyle(hasLabel) {
+    return hasLabel ? {} : { paddingTop: this.context.muiTheme.spacing.grid };
   }
 
   createListItem(item, index) {
     const selected = this.isActive(item.route);
     const action   = (e) => this.onLeftNavChange(e, null, item);
     const icon     = <div className={ "menu-icon " + item.iconClassName} />;
-    return (
-      <ListItem
-        key={item.route}
-        className={"mui-menu-item" + (selected ? " mui-is-selected" : "")}
-        leftIcon={icon}
-        primaryText={item.text}
-        onTouchTap={action}>
-      </ListItem>
-    );
+    return Environment.get().createListItem({
+      key: item.route,
+      className: "mui-menu-item" + (selected ? " mui-is-selected" : ""),
+      leftIcon: icon,
+      primaryText: item.text,
+      onTouchTap: action
+    });
   }
 
   isActive(route) {
-    const currentPath = this.router().getCurrentPath();
-    if (route === "/") return currentPath === "/";
-    return currentPath.indexOf(route) === 0;
+    if (route == null) return false;
+    const indexOnly = route === "/";
+    return this.router().isActive({ pathname:route }, indexOnly);
   }
 
   onLeftNavChange(e, key, payload) {
-    this.router().transitionTo(payload.route);
+    this.router().push({pathname: payload.route});
     this.googleAnalytics().sendEvent("view " + payload.route);
   }
 
@@ -93,5 +97,6 @@ export default class LeftNavi extends React.Component {
 }
 LeftNavi.contextTypes = {
   application: React.PropTypes.object.isRequired,
-  router: React.PropTypes.func
+  router: React.PropTypes.object.isRequired,
+  muiTheme: React.PropTypes.object.isRequired
 };

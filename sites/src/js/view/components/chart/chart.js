@@ -1,4 +1,5 @@
-import React                from "react";
+import React                from "react"
+import ReactDOM             from "react-dom"
 
 import CreateJS             from "easeljs"
 import CandleSticks         from "./candle-sticks"
@@ -10,6 +11,7 @@ import PositionsView        from "./positions-view"
 import Pointer              from "./pointer"
 import CoordinateCalculator from "../../../viewmodel/chart/coordinate-calculator"
 import Theme                from "../../theme"
+import StageUpdater         from "./stage-updater"
 
 const padding = CoordinateCalculator.padding();
 
@@ -25,7 +27,7 @@ export default class Chart extends React.Component {
 
   componentDidMount() {
     this.props.model.stageSize = this.props.size;
-    const canvas = React.findDOMNode(this.refs.canvas);
+    const canvas = ReactDOM.findDOMNode(this.refs.canvas);
 
     this.buildStage(canvas, this.props.devicePixelRatio);
     this.buildViewComponents();
@@ -65,31 +67,33 @@ export default class Chart extends React.Component {
     this.stage.scaleY = scale;
     CreateJS.Touch.enable(this.stage, true, true);
     this.stage.preventSelection = false;
+
+    this.stageUpdater = new StageUpdater(this.stage);
   }
 
   buildViewComponents() {
     this.slidableMask = this.createSlidableMask();
     this.slidable     = this.createSlidableMask(
-      Theme.getPalette().backgroundColorDark);
+      Theme.palette.backgroundColorDark);
     const model = this.props.model;
 
-    this.background    = new Background( model );
-    this.axises        = new Axises( model, this.slidableMask );
-    this.candleSticks  = new CandleSticks( model, this.slidableMask );
-    this.graphView     = new GraphView( model, this.slidableMask );
-    this.positionsView = new PositionsView( model, this.slidableMask );
-    this.pointer       = new Pointer( model,
-      this.slidableMask, this.props.devicePixelRatio );
+    const dpr = this.props.devicePixelRatio;
+    this.background    = new Background( model, dpr );
+    this.axises        = new Axises( model, this.slidableMask, dpr );
+    this.candleSticks  = new CandleSticks( model, this.slidableMask, dpr );
+    this.graphView     = new GraphView( model, this.slidableMask, dpr );
+    this.positionsView = new PositionsView( model, this.slidableMask, dpr );
+    this.pointer       = new Pointer( model, this.slidableMask, dpr );
   }
   initViewComponents() {
-    this.background.attach( this.stage );
+    this.background.attach( this.stage, this.stageUpdater );
     this.stage.addChild(this.slidable);
 
-    this.axises.attach( this.stage );
-    this.pointer.attach( this.stage );
-    this.candleSticks.attach( this.stage );
-    this.graphView.attach( this.stage );
-    this.positionsView.attach( this.stage );
+    this.axises.attach( this.stage, this.stageUpdater );
+    this.pointer.attach( this.stage, this.stageUpdater );
+    this.candleSticks.attach( this.stage, this.stageUpdater );
+    this.graphView.attach( this.stage, this.stageUpdater );
+    this.positionsView.attach( this.stage, this.stageUpdater );
   }
 
   registerSlideAction() {
@@ -100,18 +104,20 @@ export default class Chart extends React.Component {
       }
       this.slideStart = event.stageX;
       this.props.model.slider.slideStart();
+      event.preventDefault();
       event.nativeEvent.preventDefault();
     });
     this.slidable.addEventListener("pressmove", (event) => {
       if (!this.slideStart) return;
       this.doSlide( event.stageX );
+      event.preventDefault();
       event.nativeEvent.preventDefault();
     });
     this.slidable.addEventListener("pressup", (event) => {
       if (!this.slideStart) return;
-      this.doSlide( event.stageX );
       this.props.model.slider.slideEnd();
       this.slideStart = null;
+      event.preventDefault();
       event.nativeEvent.preventDefault();
     });
   }

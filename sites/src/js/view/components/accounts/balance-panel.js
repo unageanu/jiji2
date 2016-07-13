@@ -28,7 +28,7 @@ export default class BalancePanel extends AbstractComponent {
       <div key="balance panel" className="balance panel" style={style}>
         <div className="title">
           <span className="icon md-account-balance"></span>
-          口座残高
+          <span className="text">口座残高</span>
         </div>
         {this.createContent()}
       </div>

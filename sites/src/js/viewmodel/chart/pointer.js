@@ -113,6 +113,7 @@ export default class Pointer extends Observable {
     this.setProperty("x", this.normalizeX(x));
     this.updateTime();
     this.updateRate();
+    this.requestRefresh();
   }
   get x() {
     return this.getProperty("x");
@@ -121,6 +122,7 @@ export default class Pointer extends Observable {
     this.setProperty("y", this.normalizeY(y));
     this.updatePrice();
     this.updateBalance();
+    this.requestRefresh();
   }
   get y() {
     return this.getProperty("y");
@@ -136,6 +138,10 @@ export default class Pointer extends Observable {
   }
   get balance() {
     return this.getProperty("balance");
+  }
+
+  requestRefresh() {
+    this.fire( "refresh" );
   }
 
   normalizeX(x) {

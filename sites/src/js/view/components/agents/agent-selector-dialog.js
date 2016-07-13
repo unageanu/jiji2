@@ -1,26 +1,37 @@
 import React              from "react"
-import MUI                from "material-ui"
+
 import AgentClassSelector from "./agent-class-selector"
 import Theme              from "../../theme"
 
-const Dialog       = MUI.Dialog;
+import Dialog from "material-ui/Dialog"
+import FlatButton from "material-ui/FlatButton"
 
 export default class AgentSelectorDialog extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      open: false
+    };
   }
 
   render() {
+    const actions = [
+      <FlatButton
+        label="キャンセル"
+        primary={false}
+        onTouchTap={this.dismiss.bind(this)}
+      />
+    ];
     return (
       <Dialog
-        ref="dialog"
         title=""
-        actions={[{text: "キャンセル"}]}
+        open={this.state.open}
+        actions={actions}
         modal={true}
         className="dialog"
-        contentStyle={Theme.dialog.contentStyle}>
+        contentStyle={Theme.dialog.contentStyle}
+        onRequestClose={this.dismiss.bind(this)}>
         <div className="dialog-content">
           <div className="dialog-description">追加するエージェントを選択してください。</div>
           <AgentClassSelector
@@ -33,10 +44,10 @@ export default class AgentSelectorDialog extends React.Component {
   }
 
   show() {
-    this.refs.dialog.show();
+    this.setState({open:true});
   }
-  dismiss(agent) {
-    this.refs.dialog.dismiss();
+  dismiss() {
+    this.setState({open:false});
   }
 }
 AgentSelectorDialog.propTypes = {

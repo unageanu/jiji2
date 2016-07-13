@@ -9,7 +9,7 @@ const colorPattern = [
   { color: "#4B4560", highlight: "#817C8F" },
   { color: "#996666", highlight: "#B79494" },
   { color: "#DF4C52", highlight: "#E98186" },
-  { color: "#FD8A6A", highlight: "#FD8A6A" },
+  { color: "#FD8A6A", highlight: "#FEB49E" },
   { color: "#FFCC66", highlight: "#FFDB94" },
   { color: "#E8CBAB", highlight: "#EFDAC4" },
   { color: "#ADC383", highlight: "#C5D5A8" }
@@ -32,64 +32,78 @@ export default class TradingSummaryModel extends Observable {
   }
 
   get pairData() {
-    return _.sortBy(_.keys(this.pairs).map((key, i) => {
+    const data = this.createInitialDataset();
+    _.sortBy(_.keys(this.pairs), (v) => v.label).forEach((key, i) => {
       const color = colorPattern[i % colorPattern.length];
-      return _.defaults({
-        label: key.toUpperCase(),
-        value: this.pairs[key],
-        valueAndRatio: this.valueAndRatio( this.pairs[key] )
-      }, color);
-    }), (v) => v.label );
+      data.labels.push(key.toUpperCase());
+      data.datasets[0].data.push(this.pairs[key]);
+      data.datasets[0].borderWidth.push(0);
+      data.datasets[0].backgroundColor.push(color.color);
+      data.datasets[0].hoverBackgroundColor.push(color.highlight);
+    });
+    return data;
   }
 
   get sellOrBuyData() {
-    return [{
-      label: "買",
-      color: colorPattern[5].color,
-      highlight: colorPattern[5].highlight,
-      value: this.sellOrBuy.buy,
-      valueAndRatio: this.valueAndRatio( this.sellOrBuy.buy )
-    }, {
-      label: "売",
-      color: colorPattern[6].color,
-      highlight: colorPattern[6].highlight,
-      value: this.sellOrBuy.sell,
-      valueAndRatio: this.valueAndRatio( this.sellOrBuy.sell )
-    }];
+    return {
+      labels: ["買", "売"],
+      datasets: [{
+        data: [this.sellOrBuy.buy, this.sellOrBuy.sell],
+        borderWidth: [0, 0],
+        backgroundColor: [
+            colorPattern[5].color,
+            colorPattern[6].color
+        ],
+        hoverBackgroundColor: [
+            colorPattern[5].highlight,
+            colorPattern[6].highlight
+        ]
+      }]
+    };
   }
 
   get winsAndLossesData() {
     const values = this.winsAndLosses;
-    return [{
-      label: "勝",
-      color: "#F7464A",
-      highlight: "#FF5A5E",
-      value: values.win,
-      valueAndRatio: this.valueAndRatio( values.win )
-    }, {
-      label: "負",
-      color: "#46BFBD",
-      highlight: "#5AD3D1",
-      value: this.winsAndLosses.lose,
-      valueAndRatio: this.valueAndRatio( values.lose )
-    }, {
-      label: "引き分け",
-      color: "#999",
-      highlight: "#AAA",
-      value: this.winsAndLosses.draw,
-      valueAndRatio: this.valueAndRatio( values.draw )
-    }];
+    return {
+      labels: ["勝", "負", "引き分け"],
+      datasets: [{
+        data: [values.win,this.winsAndLosses.lose,this.winsAndLosses.draw],
+        borderWidth: [0, 0, 0],
+        backgroundColor: [
+          "#F7464A", "#46BFBD", "#999"
+        ],
+        hoverBackgroundColor: [
+          "#FF5A5E", "#5AD3D1", "#AAA",
+        ]
+      }]
+    };
   }
 
   get agentsData() {
-    return _.sortBy(_.keys(this.agentSummary).map((key, i) => {
+    const data = this.createInitialDataset();
+    _.sortBy(_.keys(this.agentSummary),
+      (key) => this.agentSummary[key].states.count * -1).forEach((key, i) => {
       const color = colorPattern[i % colorPattern.length];
-      return _.defaults({
-        label: this.agentSummary[key].name || "不明",
-        value: this.agentSummary[key].states.count,
-        valueAndRatio: this.valueAndRatio( this.agentSummary[key].states.count )
-      }, color);
-    }), (v) => v.value * -1 );
+      const summary = this.agentSummary[key];
+      data.labels.push(summary.name || "不明");
+      data.datasets[0].data.push(summary.states.count);
+      data.datasets[0].borderWidth.push(0);
+      data.datasets[0].backgroundColor.push(color.color);
+      data.datasets[0].hoverBackgroundColor.push(color.highlight);
+    });
+    return data;
+  }
+
+  createInitialDataset() {
+    return {
+      labels: [],
+      datasets: [{
+        borderWidth: [],
+        data: [],
+        backgroundColor: [],
+        hoverBackgroundColor: []
+      }]
+    };
   }
 
   get formatedWinPercentage() {

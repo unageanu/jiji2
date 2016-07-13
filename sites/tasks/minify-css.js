@@ -1,7 +1,7 @@
 'use strict';
 
 var gulp      = require('gulp');
-var minifyCSS = require('gulp-minify-css');
+var minifyCSS = require('gulp-clean-css');
 
 gulp.task('minify-css', ['build-less'], function () {
   return gulp.src("./build/apps/css/**/*.css")

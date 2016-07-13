@@ -5,7 +5,7 @@ var webpack       = require('gulp-webpack');
 var configBuilder = require('../config/webpack.js');
 
 function build(env) {
-  const config = configBuilder.src(env);
+  var config = configBuilder.src(env);
   return gulp.src(config.entry)
       .pipe(webpack(config))
       .pipe(gulp.dest("./build/apps/js"));

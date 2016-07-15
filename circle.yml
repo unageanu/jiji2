@@ -2,7 +2,7 @@ machine:
   ruby:
     version: 2.2.3
   node:
-    version: 6.1.0
+    version: 5.8.0
 
 dependencies:
   post:

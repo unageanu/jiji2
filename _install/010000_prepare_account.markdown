@@ -3,7 +3,8 @@ layout: install
 title:  "1. 証券口座の準備"
 ---
 
-<p> OANDA Japan の口座 (無料デモ口座でもOKです) をご用意ください。</p>
+<p>Jijiを利用するには、OANDA Japan の口座 (無料デモ口座でもOKです) が必要です。<br/>
+以下のバナーからOANADA Japan のサイトにアクセスして、口座を作成してください。</p>
 
 <div class="link_to_oanda">
 <a class="link_to_oanda" href="https://click.j-a-net.jp/1578403/517576/" target="_blank">

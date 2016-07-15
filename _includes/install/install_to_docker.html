@@ -157,13 +157,15 @@ $ sudo docker logs jiji_mongodb
 Jijiを停止するには以下のコマンドを実行します。
 
 {% highlight sh %}
-$ sudo /usr/local/bin/docker-compose stop
+$ sudo docker stop jiji_nginx
+$ sudo docker stop jiji_jiji
 {% endhighlight %}
 
 停止したコンテナを再起動するには、start コマンドを実行します。
 
 {% highlight sh %}
-$ sudo /usr/local/bin/docker-compose start
+$ sudo docker start jiji_jiji
+$ sudo docker start jiji_nginx
 {% endhighlight %}
 
 ## 補足2: サービスのログを確認する

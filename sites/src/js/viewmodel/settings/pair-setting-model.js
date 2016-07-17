@@ -19,6 +19,7 @@ export default class PairSettingModel extends PairSelectorModel {
   }
 
   initialize() {
+    this.message = null;
     Deferred.when([
       this.pairSettingService.getPairs(),
       this.pairSettingService.getAllPairs()

@@ -17,6 +17,11 @@ export default class PasswordSettingModel extends Observable {
     this.isSaving = false;
   }
 
+  initialize() {
+    this.error = null;
+    this.message = null;
+  }
+
   save(newPassword, newPassword2, oldPassword) {
     this.message = null;
     if (!this.validate(newPassword, newPassword2)) return;

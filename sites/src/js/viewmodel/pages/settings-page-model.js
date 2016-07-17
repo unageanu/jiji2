@@ -26,5 +26,7 @@ export default class SettingsPageModel extends Observable {
     this.securitiesSetting.initialize();
     this.smtpServerSetting.initialize();
     this.pairSetting.initialize();
+    this.passwordSetting.initialize();
   }
 }
+ 

@@ -14,7 +14,7 @@ export default class HomePageModel extends Observable {
   }
 
   initialize() {
-    this.tradingSummary.startTime =
-      this.tradingSummary.availableAggregationPeriods[0].time;
+    this.tradingSummary.setProperty("startTime",
+      this.tradingSummary.availableAggregationPeriods[0].time, () => false);
   }
 }

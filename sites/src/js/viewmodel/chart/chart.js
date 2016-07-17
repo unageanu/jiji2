@@ -48,13 +48,19 @@ export default class Chart extends Observable {
     this.positions.attach(this.slider);
     this.graphs.attach(this.slider);
     this.pointer.attach(this.slider);
-  } 
+  }
+
+  reset() {
+    this.candleSticks.initialize();
+    this.pointer.initialize();
+    this.slider.initialize();
+  }
 
   initialize( ) {
     this.pointer.initialize();
     return Deferred.when([
       this.pairs.initialize(),
-      this.context.initialize()
+      this.context.reload()
     ]);
   }
 

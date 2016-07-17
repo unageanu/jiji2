@@ -47,9 +47,11 @@ export default class Pointer extends AbstractChartComponent {
       this.show();
     }
     if (event.key === "x") {
-      this.verticalPointer.x = event.newValue - verticalHandleWidth/2;
+      this.verticalPointer.x = event.newValue === null
+        ? -1000 : event.newValue - verticalHandleWidth/2;
     } else if (event.key === "y") {
-      this.horizontalPointer.y = event.newValue - horizontalHandleHeight/2;
+      this.horizontalPointer.y = event.newValue === null
+        ? -1000 : event.newValue - horizontalHandleHeight/2;
     } else if (event.key === "time") {
       this.verticalLabel.text =
         DateFormatter.format(event.newValue, "MM-dd hh:mm");

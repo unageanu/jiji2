@@ -1,6 +1,7 @@
 import ContainerJS          from "container-js"
 import Observable           from "../../utils/observable"
 import Dates                from "../../utils/dates"
+import Deferred             from "../../utils/deferred"
 import Numbers              from "../../utils/numbers"
 import DateFormatter        from "../utils/date-formatter"
 import Intervals            from "../../model/trading/intervals"
@@ -22,7 +23,16 @@ export default class Context extends Observable {
     return this.rates.initialize();
   }
   reload() {
-    return this.rates.reload();
+    if (this.backtest == null) {
+      return this.rates.reload();
+    } else {
+      const range = {
+        start: this.backtest.startTime,
+        end: this.backtest.endTime
+      };
+      this.setProperty("range", range, ()=> false);
+      return Deferred.valueOf(range);
+    }
   }
   registerObservers() {
     this.rates.addObserver("propertyChanged", (n, e) => {

@@ -45,6 +45,11 @@ export default class Slider extends Observable {
     this.coordinateCalculator.removeAllObservers(this);
   }
 
+  initialize() {
+    this.range = null;
+    this.positionX = this.scrollableWidth;
+  }
+
   update() {
     const showLatest = this.scrollableWidth === this.positionX;
     const positionXResolver = this.createPositionXResolver(showLatest);

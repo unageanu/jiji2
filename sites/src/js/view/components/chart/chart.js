@@ -26,6 +26,7 @@ export default class Chart extends React.Component {
   }
 
   componentDidMount() {
+    this.props.model.reset();
     this.props.model.stageSize = this.props.size;
     const canvas = ReactDOM.findDOMNode(this.refs.canvas);
 

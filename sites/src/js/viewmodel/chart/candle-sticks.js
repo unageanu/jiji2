@@ -47,6 +47,11 @@ export default class CandleSticks extends Observable {
     this.slider.removeAllObservers(this);
   }
 
+  initialize() {
+    this.currentRange = null;
+    this.setProperty("sticks", null, () => true );
+  }
+
   update() {
     if (!this.currentRange || !this.selectedPair) return;
     this.coordinateCalculator.prepareUpdate();

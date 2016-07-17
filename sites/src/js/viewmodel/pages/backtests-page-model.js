@@ -109,9 +109,10 @@ export default class BacktestsPageModel extends Observable {
     } else if (this.activeTab === "report") {
       this.tradingSummary.backtestId = this.selectedBacktest.id;
     } else if (this.activeTab === "chart") {
-      this.chart.backtest = this.selectedBacktest;
+      this.chart.reset();
       this.chart.pairSelector.selectedPair =
         this.selectedBacktest ? this.selectedBacktest.pairNames[0] : null;
+      this.chart.backtest = this.selectedBacktest;
     } else if (this.activeTab === "logs") {
       this.logViewer.initialize(this.selectedBacktest.id);
       this.logViewer.load();

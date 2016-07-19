@@ -47,8 +47,38 @@ describe Jiji::Model::Securities::Internal::Virtual::RateRetriever do
       end
 
       expect(client.next?).to be false
-    end
 
+      client = Jiji::Test::VirtualSecuritiesBuilder.build(
+        Time.utc(2015, 4, 1), Time.utc(2015, 4, 2), nil, :one_hour)
+      expect(client.next?).to be true
+      rates = client.retrieve_current_tick
+      expect(rates[:EURJPY].bid).to eq 128.841
+      expect(rates[:EURJPY].ask).to eq 128.87
+      expect(rates[:USDJPY].bid).to eq 119.964
+      expect(rates[:USDJPY].ask).to eq 119.985
+      expect(rates.timestamp).to eq Time.utc(2015, 4, 1)
+
+      expect(client.next?).to be true
+      rates = client.retrieve_current_tick
+      expect(rates[:EURJPY].bid).to eq 128.723
+      expect(rates[:EURJPY].ask).to eq 128.769
+      expect(rates[:USDJPY].bid).to eq 119.7
+      expect(rates[:USDJPY].ask).to eq 119.72
+      expect(rates.timestamp).to eq Time.utc(2015, 4, 1, 1)
+
+      22.times do |i|
+        expect(client.next?).to be true
+        rates = client.retrieve_current_tick
+        expect(rates[:EURJPY].bid).to be > 0
+        expect(rates[:EURJPY].ask).to be > 0
+        expect(rates[:USDJPY].bid).to be > 0
+        expect(rates[:USDJPY].ask).to be > 0
+        expect(rates.timestamp).to eq(Time.utc(2015, 4, 1, 2, 0, 0) + 60*60 * i)
+      end
+
+      expect(client.next?).to be false
+    end
+    
     context '週末などでレート情報がない場合、直近の情報で補完される' do
       it '途中のレートがない場合' do
         start_time = Time.utc(2015, 5, 1, 17)

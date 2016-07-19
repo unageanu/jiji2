@@ -23,8 +23,8 @@ module Jiji::Model::Securities
         Trading::Internal::PositionBuilder.new(config[:backtest])
       @order_validator = Internal::Virtual::OrderValidator.new
 
-      init_rate_retriever_state(
-        config[:start_time], config[:end_time], config[:pairs])
+      init_rate_retriever_state(config[:start_time],
+        config[:end_time], config[:pairs], config[:interval_id])
       init_ordering_state(config[:orders] || [])
       init_trading_state(config[:positions] || [])
     end

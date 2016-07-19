@@ -5,7 +5,8 @@ module Jiji::Test
     def self.build(
       start_time = Time.utc(2015, 4, 1),
       end_time = Time.utc(2015, 4, 1, 6),
-      backtest_id = nil)
+      backtest_id = nil,
+      interval_id = nil)
       oanda_securities = Jiji::Model::Securities::OandaDemoSecurities.new(
         access_token: ENV['OANDA_API_ACCESS_TOKEN'])
       securities_provider = Jiji::Model::Securities::SecuritiesProvider.new
@@ -18,6 +19,7 @@ module Jiji::Test
         repository, securities_provider, {
         start_time:  start_time,
         end_time:    end_time,
+        interval_id: interval_id,
         backtest_id: backtest_id,
         pairs:       [
           Jiji::Model::Trading::Pair.new(

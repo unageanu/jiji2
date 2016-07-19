@@ -39,8 +39,8 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
     end
   end
 
-  describe 'retrieve_tick_history' do
-    it '通貨ペアの価格履歴を取得できる。' do
+  describe '#retrieve_tick_history' do
+    it 'should return ticks for a currency pair.' do
       ticks = client.retrieve_tick_history(:EURJPY,
         Time.utc(2015, 5, 22, 12, 00, 00), Time.utc(2015, 5, 22, 12, 15, 00))
       # p ticks
@@ -53,6 +53,23 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
         expect(v.bid).to be > 0
         expect(v.ask).to be > 0
         time = Time.at(time.to_i + 15).utc
+      end
+    end
+
+    it 'should return ticks per hour.' do
+      ticks = client.retrieve_tick_history(:EURJPY,
+        Time.utc(2015, 5, 22, 12, 00, 00),
+        Time.utc(2015, 5, 23, 12, 00, 00), :one_hour)
+      # p ticks
+      expect(ticks.length).to be 24
+      time = Time.utc(2015, 5, 22, 12, 00, 00)
+      ticks.each do |tick|
+        expect(tick.timestamp).to eq time
+        expect(tick.length).to be 1
+        v = tick[:EURJPY]
+        expect(v.bid).to be > 0
+        expect(v.ask).to be > 0
+        time = Time.at(time.to_i + 60 * 60).utc
       end
     end
   end

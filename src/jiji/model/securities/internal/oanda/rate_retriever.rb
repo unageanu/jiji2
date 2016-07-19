@@ -20,8 +20,13 @@ module Jiji::Model::Securities::Internal::Oanda
       convert_response_to_ticks(prices)
     end
 
-    def retrieve_tick_history(pair_name, start_time, end_time)
-      interval = Jiji::Model::Trading::Interval.new(:fifteen_seconds, 15 * 1000)
+    def retrieve_tick_history(pair_name, start_time,
+      end_time, interval_id=nil)
+      interval = if interval_id.nil?
+        Jiji::Model::Trading::Interval.new(:fifteen_seconds, 15 * 1000)
+      else
+        Intervals.instance.get(interval_id)
+      end
       converter = TickConverter.new(pair_name)
       RateFetcher.new(@client, converter)
         .fetch_and_fill(start_time, end_time, interval, pair_name)

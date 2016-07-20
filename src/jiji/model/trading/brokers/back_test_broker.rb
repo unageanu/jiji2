@@ -16,14 +16,14 @@ module Jiji::Model::Trading::Brokers
     attr_reader :position_builder, :securities
 
     def initialize(backtest, start_time, end_time,
-      pairs, balance, orders, modules)
+      interval_id, pairs, balance, orders, modules)
       super()
 
       positions =
         modules[:position_repository].retrieve_living_positions(backtest.id)
 
       build_components(backtest, start_time,
-        end_time, pairs, orders, positions, modules)
+        end_time, interval_id, pairs, orders, positions, modules)
       init_account(balance)
       init_positions(positions)
     end
@@ -48,10 +48,10 @@ module Jiji::Model::Trading::Brokers
     private
 
     def build_components(backtest, start_time, end_time,
-      pairs, orders, positions, modules)
+      interval_id, pairs, orders, positions, modules)
       @account_currency = modules[:securities_provider].get.account_currency
       config = create_securities_configuration(backtest,
-        start_time, end_time, pairs, orders, positions, modules)
+        start_time, end_time, interval_id, pairs, orders, positions, modules)
       @securities = VirtualSecurities.new(
         modules[:tick_repository], modules[:securities_provider], config)
       @backtest_id = backtest.id
@@ -64,14 +64,15 @@ module Jiji::Model::Trading::Brokers
     end
 
     def create_securities_configuration(backtest,
-      start_time, end_time, pairs, orders, positions, modules)
+      start_time, end_time, interval_id, pairs, orders, positions, modules)
       {
-        start_time: start_time,
-        end_time:   end_time,
-        backtest:   backtest,
-        pairs:      resolve_required_pairs(pairs, modules),
-        orders:     orders,
-        positions:  positions
+        start_time:  start_time,
+        end_time:    end_time,
+        interval_id: interval_id,
+        backtest:    backtest,
+        pairs:       resolve_required_pairs(pairs, modules),
+        orders:      orders,
+        positions:   positions
       }
     end
 

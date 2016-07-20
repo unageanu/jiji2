@@ -24,7 +24,8 @@ describe Jiji::Model::Trading::BackTest do
     test = @repository.register({
       'name'          => 'テスト',
       'start_time'    => Time.new(2014, 12, 8),
-      'end_time'      => Time.new(2014, 12, 9),
+      'end_time'      => Time.new(2015, 2, 9),
+      'interval_id'   => "one_hour",
       'memo'          => 'メモ',
       'pair_names'    => [:EURJPY, :EURUSD],
       'agent_setting' => [
@@ -47,7 +48,8 @@ describe Jiji::Model::Trading::BackTest do
     expect(hash[:name]).to eq 'テスト'
     expect(hash[:memo]).to eq 'メモ'
     expect(hash[:start_time]).to eq Time.new(2014, 12, 8)
-    expect(hash[:end_time]).to eq Time.new(2014, 12, 9)
+    expect(hash[:end_time]).to eq Time.new(2015, 2, 9)
+    expect(hash[:interval_id]).to eq :one_hour
     expect(hash[:pair_names]).to eq [:EURJPY, :EURUSD]
     expect(hash[:balance]).to eq 0
     expect(hash[:status]).to eq :running
@@ -66,7 +68,8 @@ describe Jiji::Model::Trading::BackTest do
     expect(hash[:name]).to eq 'テスト'
     expect(hash[:memo]).to eq 'メモ'
     expect(hash[:start_time]).to eq Time.new(2014, 12, 8)
-    expect(hash[:end_time]).to eq Time.new(2014, 12, 9)
+    expect(hash[:end_time]).to eq Time.new(2015, 2, 9)
+    expect(hash[:interval_id]).to eq :one_hour
     expect(hash[:pair_names]).to eq [:EURJPY, :EURUSD]
     expect(hash[:balance]).to eq 0
     expect(hash[:status]).to eq :running
@@ -79,7 +82,8 @@ describe Jiji::Model::Trading::BackTest do
     expect(hash[:name]).to eq 'テスト'
     expect(hash[:memo]).to eq 'メモ'
     expect(hash[:start_time]).to eq Time.new(2014, 12, 8)
-    expect(hash[:end_time]).to eq Time.new(2014, 12, 9)
+    expect(hash[:end_time]).to eq Time.new(2015, 2, 9)
+    expect(hash[:interval_id]).to eq :one_hour
     expect(hash[:pair_names]).to eq [:EURJPY, :EURUSD]
     expect(hash[:balance]).to eq 0
     expect(hash[:status]).to eq :finished

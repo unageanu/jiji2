@@ -37,12 +37,12 @@ module Jiji::Model::Trading
     field :created_at,    type: Time
     field :memo,          type: String
 
-    field :start_time,     type: Time
-    field :end_time,       type: Time
-    field :interval_id,    type: Symbol, default: nil
-    field :pair_names,     type: Array
-    field :balance,        type: Integer, default: 0
-    field :status,         type: Symbol,  default: :wait_for_start
+    field :start_time,       type: Time
+    field :end_time,         type: Time
+    field :tick_interval_id, type: Symbol, default: nil
+    field :pair_names,       type: Array
+    field :balance,          type: Integer, default: 0
+    field :status,           type: Symbol,  default: :wait_for_start
 
     field :cancelled_state, type: Hash
 
@@ -104,11 +104,11 @@ module Jiji::Model::Trading
 
     def insert_broker_setting_to_hash(hash)
       hash.merge!({
-        pair_names:  pair_names,
-        start_time:  start_time,
-        end_time:    end_time,
-        interval_id: interval_id,
-        balance:     balance
+        pair_names:       pair_names,
+        start_time:       start_time,
+        end_time:         end_time,
+        tick_interval_id: tick_interval_id,
+        balance:          balance
       })
     end
 
@@ -216,7 +216,7 @@ module Jiji::Model::Trading
     def create_broker
       pairs = (pair_names || []).map { |p| @pairs.get_by_name(p) }
       Brokers::BackTestBroker.new(self, calcurate_start_time,
-        end_time, interval_id, pairs, restore_balance, restore_order, {
+        end_time, tick_interval_id, pairs, restore_balance, restore_order, {
           tick_repository:     @tick_repository,
           securities_provider: @securities_provider,
           position_repository: @position_repository,
@@ -261,8 +261,8 @@ module Jiji::Model::Trading
     backtest.pair_names  = (hash['pair_names'] || []).map { |n| n.to_sym }
     backtest.start_time  = hash['start_time']
     backtest.end_time    = hash['end_time']
-    backtest.interval_id = if hash.include? 'interval_id'
-        hash['interval_id'].to_sym
+    backtest.tick_interval_id = if !hash['tick_interval_id'].nil?
+        hash['tick_interval_id'].to_sym
       else
         nil
       end

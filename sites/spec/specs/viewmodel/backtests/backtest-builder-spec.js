@@ -44,6 +44,7 @@ describe("BacktestBuiler", () => {
     expect(target.agentSetting).toEqual([]);
     expect(target.pairSelectorModel.pairNames).toEqual([]);
     expect(target.balance).toEqual(1000000);
+    expect(target.tickIntervalId).toEqual("fifteen_seconds"); 
 
     expect(target.pairs.pairs.length).toEqual(3);
     expect(target.rates.range).toEqual({
@@ -126,15 +127,16 @@ describe("BacktestBuiler", () => {
 
     target.build();
     expect(xhrManager.requests[0].body).toEqual({
-      name:         "テスト",
-      memo:         "",
-      startTime:    new Date(2015, 4, 27),
-      endTime:      new Date(2015, 5, 3),
+      name:           "テスト",
+      memo:           "",
+      startTime:      new Date(2015, 4, 27),
+      endTime:        new Date(2015, 5, 3),
       agentSetting: [
         {agentClass:"TestClassA@あ", agentName:"TestClassA@あ", properties: {}}
       ],
-      pairNames:    ["EURJPY", "USDJPY"],
-      balance:      1000000
+      pairNames:      ["EURJPY", "USDJPY"],
+      balance:        1000000,
+      tickIntervalId: null
     });
 
 
@@ -148,6 +150,7 @@ describe("BacktestBuiler", () => {
     target.updateSelectedAgent("テスト", "ccc", {c:"cc"});
     target.pairSelectorModel.pairNames = ["EURJPY", "USDJPY", "EURUSD", "AUDJPY", "CADJPY"];
     target.balance   = 2000000;
+    target.tickIntervalId = "one_hour";
 
     expect( target.validate() ).toBe(true);
     expect( target.nameError ).toBe(null);
@@ -160,16 +163,17 @@ describe("BacktestBuiler", () => {
 
     target.build();
     expect(xhrManager.requests[1].body).toEqual({
-      name:         "テスト",
-      memo:         "テストメモ",
-      startTime:    new Date(2015, 3, 17),
-      endTime:      new Date(2015, 5, 3),
+      name:          "テスト",
+      memo:          "テストメモ",
+      startTime:     new Date(2015, 3, 17),
+      endTime:       new Date(2015, 5, 3),
       agentSetting: [
         {agentClass:"TestClassA@あ", agentName: "TestClassA@あ", properties: {}},
         {agentClass:"TestClassC@い", agentName: "テスト", iconId: "ccc", properties: {c:"cc"}}
       ],
-      pairNames:    ["EURJPY", "USDJPY", "EURUSD", "AUDJPY", "CADJPY"],
-      balance:      2000000
+      pairNames:     ["EURJPY", "USDJPY", "EURUSD", "AUDJPY", "CADJPY"],
+      balance:       2000000,
+      tickIntervalId: "one_hour"
     });
   });
 

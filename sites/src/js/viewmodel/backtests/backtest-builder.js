@@ -53,12 +53,13 @@ export default class BacktestBuilder extends Observable {
     const endTime    = Dates.truncate(now);
 
     this.backtest = {
-      pairNames:     [],
-      balance:       1000000,
-      name:          "",
-      memo:          "",
-      startTime:     startTime,
-      endTime:       endTime
+      pairNames:      [],
+      balance:        1000000,
+      name:           "",
+      memo:           "",
+      startTime:      startTime,
+      endTime:        endTime,
+      tickIntervalId:  "fifteen_seconds"
     };
   }
 
@@ -69,6 +70,9 @@ export default class BacktestBuilder extends Observable {
     backtest.endTime   = this.rangeSelectorModel.endTime;
     backtest.pairNames = this.pairSelectorModel.pairNames;
     backtest.balance   = Number.parseInt(backtest.balance, 10)
+    if (backtest.tickIntervalId == "fifteen_seconds") {
+      backtest.tickIntervalId = null;
+    }
 
     this.isSaving = true;
     const d = this.backtests.register(backtest)
@@ -142,6 +146,13 @@ export default class BacktestBuilder extends Observable {
   }
   set balanceError(error) {
     this.setProperty("balanceError", error);
+  }
+
+  get tickIntervalId() {
+    return this.backtest.tickIntervalId;
+  }
+  set tickIntervalId(tickIntervalId) {
+    this.backtest.tickIntervalId = tickIntervalId;
   }
 
   get agentSetting() {

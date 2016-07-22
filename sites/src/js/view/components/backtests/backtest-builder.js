@@ -1,11 +1,12 @@
 import React              from "react"
 
-import AbstractComponent  from "../widgets/abstract-component"
-import DateFormatter      from "../../../viewmodel/utils/date-formatter"
-import AgentSettingEditor from "../agents/agent-setting-editor"
-import RangeSelector      from "../widgets/range-selector"
-import PairSelector       from "../widgets/pair-selector"
-import LoadingImage       from "../widgets/loading-image"
+import AbstractComponent    from "../widgets/abstract-component"
+import DateFormatter        from "../../../viewmodel/utils/date-formatter"
+import AgentSettingEditor   from "../agents/agent-setting-editor"
+import RangeSelector        from "../widgets/range-selector"
+import PairSelector         from "../widgets/pair-selector"
+import LoadingImage         from "../widgets/loading-image"
+import TickIntervalSelector from "./tick-interval-selector"
 
 import TextField from "material-ui/TextField"
 import RaisedButton from "material-ui/RaisedButton"
@@ -81,6 +82,17 @@ export default class BacktestBuilder extends AbstractComponent {
                 hintText="初期資金"
                 defaultValue={this.state.balance}
                 errorText={this.state.balanceError} />
+            </div>
+          </div>
+          <div className="item">
+            <div className="label">レート間隔</div>
+            <div className="input">
+              <TickIntervalSelector
+                model={this.model()} />
+              <ul className="desc">
+                <li>エージェントの <code>next_tick(tick)</code> が呼び出される間隔を指定します。</li>
+                <li>1時間や1日にすることでテストの所要時間を大幅に削減できますが、その分、精度は落ちるのでご注意ください。</li>
+              </ul>
             </div>
           </div>
           <div className="item">

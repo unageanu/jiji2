@@ -43,6 +43,26 @@ export default class BacktestModel {
     return DateFormatter.format(this.createdAt, "yyyy-MM-dd hh:mm");
   }
 
+  get tickInterval() {
+    const id = this.tickIntervalId;
+    switch(id) {
+      case "one_minute" :
+        return "1分";
+      case "fifteen_minutes" :
+        return "15分";
+      case "thirty_minutes" :
+        return "30分";
+      case "one_hour" :
+        return "1時間";
+      case "six_hours" :
+        return "6時間";
+      case "one_day" :
+        return "1日";
+      default :
+        return "15秒";
+    }
+  }
+
   get enableDelete() {
     return this.backtest.isFinished();
   }

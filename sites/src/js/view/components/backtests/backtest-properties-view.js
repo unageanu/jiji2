@@ -104,6 +104,7 @@ export default class BacktestPropertiesView extends AbstractComponent {
       this.createItem("期間",    backtest.formatedPeriod, "period"),
       this.createItem("初期資金", "￥ " + backtest.formatedBalance, "balance"),
       this.createItem("通貨ペア", backtest.pairNames.join(" "), "pairs"),
+      this.createItem("レート間隔", backtest.tickInterval, "tickInterval"),
       this.createItem("メモ",    <pre>{backtest.memo}</pre>, "memo")
     ];
   }

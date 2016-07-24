@@ -70,9 +70,6 @@ export default class BacktestBuilder extends Observable {
     backtest.endTime   = this.rangeSelectorModel.endTime;
     backtest.pairNames = this.pairSelectorModel.pairNames;
     backtest.balance   = Number.parseInt(backtest.balance, 10)
-    if (backtest.tickIntervalId == "fifteen_seconds") {
-      backtest.tickIntervalId = null;
-    }
 
     this.isSaving = true;
     const d = this.backtests.register(backtest)

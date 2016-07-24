@@ -44,7 +44,7 @@ describe("BacktestBuiler", () => {
     expect(target.agentSetting).toEqual([]);
     expect(target.pairSelectorModel.pairNames).toEqual([]);
     expect(target.balance).toEqual(1000000);
-    expect(target.tickIntervalId).toEqual("fifteen_seconds"); 
+    expect(target.tickIntervalId).toEqual("fifteen_seconds");
 
     expect(target.pairs.pairs.length).toEqual(3);
     expect(target.rates.range).toEqual({
@@ -136,7 +136,7 @@ describe("BacktestBuiler", () => {
       ],
       pairNames:      ["EURJPY", "USDJPY"],
       balance:        1000000,
-      tickIntervalId: null
+      tickIntervalId: "fifteen_seconds"
     });
 
 

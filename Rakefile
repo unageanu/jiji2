@@ -53,7 +53,8 @@ RDoc::Task.new do |rd|
     "src/jiji/model/trading/positions.rb",
     "src/jiji/model/trading/tick.rb",
     "src/jiji/model/trading/brokers/broker_proxy.rb",
-    "src/jiji/model/trading/brokers/abstract_broker.rb")
+    "src/jiji/model/trading/brokers/abstract_broker.rb",
+    "src/jiji/model/trading/rate.rb")
   rd.options << '--charset=UTF-8 '
 end
 

@@ -5,16 +5,31 @@ require 'jiji/utils/value_object'
 require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
+
+  # 四本値。
+  # open, close, high, low の各値は Tick 型になります。
   class Rate
 
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
-    attr_reader :pair, :open, :close, :high, :low
-    attr_reader :timestamp, :close_timestamp
+    # 通貨ペア 例) :USDJPY
+    attr_reader :pair
+    # 始値
+    attr_reader :open
+    # 終値
+    attr_reader :close
+    # 高値
+    attr_reader :high
+    # 安値
+    attr_reader :low
+    # 日時
+    attr_reader :timestamp
+
+    attr_reader :close_timestamp #:nodoc:
 
     def initialize(pair, timestamp, open, close = open,
-      high = open, low = open, close_timestamp = timestamp)
+      high = open, low = open, close_timestamp = timestamp) #:nodoc:
       @pair            = pair
       @open            = open
       @close           = close
@@ -24,26 +39,18 @@ module Jiji::Model::Trading
       @close_timestamp = close_timestamp
     end
 
-    def buy_swap
-      @open.buy_swap
-    end
-
-    def sell_swap
-      @open.sell_swap
-    end
-
-    def self.create_from_tick(pair_name, *ticks)
+    def self.create_from_tick(pair_name, *ticks) #:nodoc:
       rate = Rate.new(pair_name, ticks[0].timestamp, ticks[0][pair_name])
       ticks.each_with_object(rate) do |n, r|
         r << n
       end
     end
 
-    def self.union(*rates)
+    def self.union(*rates) #:nodoc:
       rates.inject(rates.pop) { |a, e| a + e }
     end
 
-    def to_h
+    def to_h #:nodoc:
       {
         pair:      pair,
         open:      open,
@@ -54,7 +61,7 @@ module Jiji::Model::Trading
       }
     end
 
-    def <<(tick)
+    def <<(tick) #:nodoc:
       value = tick[pair]
       update_open(value, tick.timestamp)
       update_close(value, tick.timestamp)
@@ -62,7 +69,7 @@ module Jiji::Model::Trading
       update_low(value)
     end
 
-    def +(other)
+    def +(other) #:nodoc:
       update_open(other.open, other.timestamp)
       update_close(other.close, other.close_timestamp)
       update_high(other.high)

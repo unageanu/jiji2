@@ -39,7 +39,7 @@ module Jiji::Model::Trading
 
     field :start_time,       type: Time
     field :end_time,         type: Time
-    field :tick_interval_id, type: Symbol, default: nil
+    field :tick_interval_id, type: Symbol, default: :fifteen_seconds
     field :pair_names,       type: Array
     field :balance,          type: Integer, default: 0
     field :status,           type: Symbol,  default: :wait_for_start
@@ -264,7 +264,7 @@ module Jiji::Model::Trading
     backtest.tick_interval_id = if !hash['tick_interval_id'].nil?
         hash['tick_interval_id'].to_sym
       else
-        nil
+        :fifteen_seconds
       end
     backtest.balance     = hash['balance'] || 0
   end

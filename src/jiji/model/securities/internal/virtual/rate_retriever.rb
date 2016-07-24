@@ -7,7 +7,8 @@ module Jiji::Model::Securities::Internal::Virtual
     include Jiji::Errors
     include Jiji::Model::Trading
 
-    def init_rate_retriever_state(start_time, end_time, pairs, interval_id=nil)
+    def init_rate_retriever_state(start_time, end_time,
+      pairs, interval_id=:fifteen_seconds)
       check_period(start_time, end_time)
       @current_time = @start_time = start_time
       @end_time    = end_time
@@ -49,8 +50,9 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def load_next_ticks
+      interval = Intervals.instance.get(@interval_id)
       start_time  = @current_time
-      next_period = @current_time + (60 * 60 * 4)
+      next_period = @current_time + (interval.ms/1000) * 1000
       end_time    = @end_time > next_period ? next_period : @end_time
       pair_names  = @pairs.map { |p| p.name }
       @buffer += @tick_repository.fetch(pair_names,

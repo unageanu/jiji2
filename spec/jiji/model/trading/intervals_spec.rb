@@ -27,7 +27,7 @@ describe Jiji::Model::Trading::Intervals do
   describe '#all' do
     it '一覧を取得できる' do
       all = intervals.all
-      expect(all.size).to eq(6)
+      expect(all.size).to eq(7)
     end
   end
 

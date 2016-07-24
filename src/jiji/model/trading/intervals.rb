@@ -53,16 +53,17 @@ module Jiji::Model::Trading
     private
 
     def register_intervals
-      register_interval(:one_minute, 1)
-      register_interval(:fifteen_minutes,      15)
-      register_interval(:thirty_minutes,       30)
-      register_interval(:one_hour,             60)
-      register_interval(:six_hours, 6 * 60)
-      register_interval(:one_day,         24 * 60)
+      register_interval(:fifteen_seconds,       15)
+      register_interval(:one_minute,          1*60)
+      register_interval(:fifteen_minutes,    15*60)
+      register_interval(:thirty_minutes,     30*60)
+      register_interval(:one_hour,           60*60)
+      register_interval(:six_hours,        6*60*60)
+      register_interval(:one_day,         24*60*60)
     end
 
     def register_interval(id, m)
-      @intervals[id] = Interval.new(id, m * 60 * 1000)
+      @intervals[id] = Interval.new(id, m * 1000)
     end
 
   end

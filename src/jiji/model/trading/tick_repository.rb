@@ -10,7 +10,7 @@ module Jiji::Model::Trading
 
     needs :securities_provider
 
-    def fetch(pairs, start_time, end_time, interval_id = nil)
+    def fetch(pairs, start_time, end_time, interval_id = :fifteen_seconds)
       illegal_argument('illegal pairs') if pairs.blank? || pairs.empty?
       pairs.reduce([]) do |ticks, pair|
         ts = securities_provider.get.retrieve_tick_history(

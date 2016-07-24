@@ -105,7 +105,9 @@ module Jiji::Model::Graphing
     end
 
     def setup_data_savers(saving_interval)
-      @savers = Jiji::Model::Trading::Intervals.instance.all.map do |i|
+      @savers = Jiji::Model::Trading::Intervals.instance.all
+        .reject {|i| i.id == :fifteen_seconds }
+        .map do |i|
         Internal::GraphDataSaver.new(self, i, saving_interval)
       end
     end

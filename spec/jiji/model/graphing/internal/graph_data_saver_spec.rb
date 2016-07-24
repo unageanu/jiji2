@@ -5,6 +5,12 @@ require 'jiji/test/test_configuration'
 describe Jiji::Model::Graphing::Internal::GraphDataSaver do
   include_context 'use backtests'
 
+  let(:intervals_for_graph) do
+    Jiji::Model::Trading::Intervals.instance.all.reject do |i|
+      i.id == :fifteen_seconds
+    end
+  end
+
   context ':average' do
     let(:graph) do
       factory = Jiji::Model::Graphing::GraphFactory.new(backtests[0])
@@ -12,14 +18,14 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
     end
 
     it 'グラフデータを永続化できる' do
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         expect(fetch_data(i.id).length).to be 0
       end
 
       graph << [10, -1, 1.2]
       graph.save_data(Time.utc(2015, 4, 1, 0, 0, 0))
 
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         data = fetch_data(i.id)
         expect(data.length).to be 0
       end
@@ -27,7 +33,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       graph << [12, -3, 1.4]
       graph.save_data(Time.utc(2015, 4, 1, 0, 0, 50))
 
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         data = fetch_data(i.id)
         expect(data.length).to be 0
       end
@@ -35,7 +41,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       graph << [11, -2, 1.3]
       graph.save_data(Time.utc(2015, 4, 1, 0, 1, 0))
 
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         data = fetch_data(i.id)
         expect(data.length).to be 1
         expect(data[0].value).to eq [11, -2, 1.3]
@@ -485,14 +491,14 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
     end
 
     it 'グラフデータを永続化できる' do
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         expect(fetch_data(i.id).length).to be 0
       end
 
       graph << [10, -1, 1.2]
       graph.save_data(Time.utc(2015, 4, 1, 0, 0, 0))
 
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         data = fetch_data(i.id)
         expect(data.length).to be 0
       end
@@ -500,7 +506,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       graph << [12, -3, 1.4]
       graph.save_data(Time.utc(2015, 4, 1, 0, 0, 50))
 
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         data = fetch_data(i.id)
         expect(data.length).to be 0
       end
@@ -508,7 +514,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       graph << [11, -2, 1.3]
       graph.save_data(Time.utc(2015, 4, 1, 0, 1, 0))
 
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         data = fetch_data(i.id)
         expect(data.length).to be 1
         expect(data[0].value).to eq [10, -1, 1.2]
@@ -958,14 +964,14 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
     end
 
     it 'グラフデータを永続化できる' do
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         expect(fetch_data(i.id).length).to be 0
       end
 
       graph << [10, -1, 1.2]
       graph.save_data(Time.utc(2015, 4, 1, 0, 0, 0))
 
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         data = fetch_data(i.id)
         expect(data.length).to be 0
       end
@@ -973,7 +979,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       graph << [12, -3, 1.4]
       graph.save_data(Time.utc(2015, 4, 1, 0, 0, 50))
 
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         data = fetch_data(i.id)
         expect(data.length).to be 0
       end
@@ -1437,14 +1443,14 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
     end
 
     it 'グラフデータを永続化できる' do
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         expect(fetch_data(i.id).length).to be 0
       end
 
       graph << [10, -1, 1.2]
       graph.save_data(Time.utc(2015, 4, 1, 0, 0, 0))
 
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         data = fetch_data(i.id)
         expect(data.length).to be 0
       end
@@ -1452,7 +1458,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       graph << [12, -3, 1.4]
       graph.save_data(Time.utc(2015, 4, 1, 0, 0, 50))
 
-      Jiji::Model::Trading::Intervals.instance.all.each do |i|
+      intervals_for_graph.each do |i|
         data = fetch_data(i.id)
         expect(data.length).to be 0
       end

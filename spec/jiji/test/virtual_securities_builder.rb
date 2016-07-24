@@ -6,7 +6,7 @@ module Jiji::Test
       start_time = Time.utc(2015, 4, 1),
       end_time = Time.utc(2015, 4, 1, 6),
       backtest_id = nil,
-      interval_id = nil)
+      interval_id = :fifteen_seconds)
       oanda_securities = Jiji::Model::Securities::OandaDemoSecurities.new(
         access_token: ENV['OANDA_API_ACCESS_TOKEN'])
       securities_provider = Jiji::Model::Securities::SecuritiesProvider.new

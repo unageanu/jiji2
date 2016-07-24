@@ -53,7 +53,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   end
   let(:broker) do
     Jiji::Model::Trading::Brokers::BackTestBroker.new(backtest,
-      Time.utc(2015, 5, 1), Time.utc(2015, 5, 1, 0, 10),
+      Time.utc(2015, 5, 1), Time.utc(2015, 5, 1, 0, 10), :fifteen_seconds,
       pairs, 100_000, [], modules)
   end
 

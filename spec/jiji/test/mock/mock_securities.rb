@@ -74,7 +74,11 @@ module Jiji::Test::Mock
       interval_ms = Jiji::Model::Trading::Intervals.instance \
         .resolve_collecting_interval(interval)
       create_timestamps(interval_ms / 1000, start_time, end_time).map do |time|
-        Rate.new(pair_name, time, 112, 112.10, 113, 111)
+        Rate.new(pair_name, time,
+          create_tick_value(112,    112.04),
+          create_tick_value(112.10, 112.14),
+          create_tick_value(113.10, 113.14),
+          create_tick_value(111.10, 111.14))
       end
     end
 
@@ -142,16 +146,16 @@ module Jiji::Test::Mock
 
     def create_tick(seed, time = Time.utc(2015, 5, 1) + seed * 1000)
       Tick.new({
-        EURUSD: Tick::Value.new(
-          (BigDecimal.new(1.1234, 10) + seed).to_f,
-          (BigDecimal.new(1.1236, 10) + seed).to_f),
-        USDJPY: Tick::Value.new(
-          (BigDecimal.new(112.10, 10) + seed).to_f,
-          (BigDecimal.new(112.12, 10) + seed).to_f),
-        EURJPY: Tick::Value.new(
-          (BigDecimal.new(135.30, 10) + seed).to_f,
-          (BigDecimal.new(135.33, 10) + seed).to_f)
+        EURUSD: create_tick_value(1.1234, 1.1236, seed),
+        USDJPY: create_tick_value(112.10, 112.12, seed),
+        EURJPY: create_tick_value(135.30, 135.33, seed)
       }, time)
+    end
+
+    def create_tick_value(bid, ask, seed=0)
+      Tick::Value.new(
+        (BigDecimal.new(bid, 10) + seed).to_f,
+        (BigDecimal.new(ask, 10) + seed).to_f)
     end
 
   end

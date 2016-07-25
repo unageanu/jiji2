@@ -30,11 +30,16 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   end
   let(:all_pairs) do
     contents = {
-      EURUSD: Jiji::Model::Trading::Pair.new(:EURUSD, 1, 0.01, 1, 1, 0.04),
-      USDJPY: Jiji::Model::Trading::Pair.new(:USDJPY, 1, 0.01, 1, 1, 0.04),
-      EURJPY: Jiji::Model::Trading::Pair.new(:EURJPY, 1, 0.01, 1, 1, 0.04),
-      USDDKK: Jiji::Model::Trading::Pair.new(:USDDKK, 1, 0.01, 1, 1, 0.04),
-      EURNOK: Jiji::Model::Trading::Pair.new(:EURNOK, 1, 0.01, 1, 1, 0.04)
+      EURJPY: Jiji::Model::Trading::Pair.new(
+        :EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04),
+      EURUSD: Jiji::Model::Trading::Pair.new(
+        :EURUSD, 'EUR_USD', 0.0001, 10_000_000, 0.001,   0.04),
+      USDJPY: Jiji::Model::Trading::Pair.new(
+        :USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04),
+      USDDKK: Jiji::Model::Trading::Pair.new(
+        :USDDKK, 'USD_DKK', 0.0001, 10_000_000, 0.001,   0.04),
+      EURNOK: Jiji::Model::Trading::Pair.new(
+        :EURNOK, 'EUR_NOK', 0.0001, 10_000_000, 0.001,   0.04)
     }
     pairs = double('mock pairs')
     allow(pairs).to receive(:all).and_return(contents.values)
@@ -57,7 +62,7 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
       pairs, 100_000, [], modules)
   end
 
-  # it_behaves_like 'brokerの基本操作ができる'
+  it_behaves_like 'brokerの基本操作ができる'
 
   it '期間内のレートを取得できる' do
     expect(broker.next?).to be true
@@ -104,48 +109,68 @@ describe Jiji::Model::Trading::Brokers::BackTestBroker do
   describe '#resolve_required_pairs' do
     it 'returns required currency pairs' do
       required_pairs = broker.resolve_required_pairs([
-        Jiji::Model::Trading::Pair.new(:EURJPY, 1, 0.01, 1, 1, 0.04),
-        Jiji::Model::Trading::Pair.new(:EURUSD, 1, 0.01, 1, 1, 0.04),
-        Jiji::Model::Trading::Pair.new(:USDDKK, 1, 0.01, 1, 1, 0.04),
-        Jiji::Model::Trading::Pair.new(:EURNOK, 1, 0.01, 1, 1, 0.04)
+        Jiji::Model::Trading::Pair.new(
+          :EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04),
+        Jiji::Model::Trading::Pair.new(
+          :EURUSD, 'EUR_USD', 0.0001, 10_000_000, 0.001,   0.04),
+        Jiji::Model::Trading::Pair.new(
+          :USDDKK, 'USD_DKK', 0.0001, 10_000_000, 0.001,   0.04),
+        Jiji::Model::Trading::Pair.new(
+          :EURNOK, 'EUR_NOK', 0.0001, 10_000_000, 0.001,   0.04)
       ], modules).sort_by { |p| p.name }
       expect(required_pairs).to eq([
-        Jiji::Model::Trading::Pair.new(:EURJPY, 1, 0.01, 1, 1, 0.04),
-        Jiji::Model::Trading::Pair.new(:EURNOK, 1, 0.01, 1, 1, 0.04),
-        Jiji::Model::Trading::Pair.new(:EURUSD, 1, 0.01, 1, 1, 0.04),
-        Jiji::Model::Trading::Pair.new(:USDDKK, 1, 0.01, 1, 1, 0.04),
-        Jiji::Model::Trading::Pair.new(:USDJPY, 1, 0.01, 1, 1, 0.04)
+        Jiji::Model::Trading::Pair.new(
+          :EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04),
+        Jiji::Model::Trading::Pair.new(
+          :EURNOK, 'EUR_NOK', 0.0001, 10_000_000, 0.001,   0.04),
+        Jiji::Model::Trading::Pair.new(
+          :EURUSD, 'EUR_USD', 0.0001, 10_000_000, 0.001,   0.04),
+        Jiji::Model::Trading::Pair.new(
+          :USDDKK, 'USD_DKK', 0.0001, 10_000_000, 0.001,   0.04),
+        Jiji::Model::Trading::Pair.new(
+          :USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04)
       ])
 
       required_pairs = broker.resolve_required_pairs([
-        Jiji::Model::Trading::Pair.new(:EURJPY, 1, 0.01, 1, 1, 0.04)
+        Jiji::Model::Trading::Pair.new(
+          :EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04)
       ], modules).sort_by { |p| p.name }
       expect(required_pairs).to eq([
-        Jiji::Model::Trading::Pair.new(:EURJPY, 1, 0.01, 1, 1, 0.04)
+        Jiji::Model::Trading::Pair.new(
+          :EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04)
       ])
 
       required_pairs = broker.resolve_required_pairs([
-        Jiji::Model::Trading::Pair.new(:EURUSD, 1, 0.01, 1, 1, 0.04)
+        Jiji::Model::Trading::Pair.new(
+          :EURUSD, 'EUR_USD', 0.0001, 10_000_000, 0.001,   0.04)
       ], modules).sort_by { |p| p.name }
       expect(required_pairs).to eq([
-        Jiji::Model::Trading::Pair.new(:EURUSD, 1, 0.01, 1, 1, 0.04),
-        Jiji::Model::Trading::Pair.new(:USDJPY, 1, 0.01, 1, 1, 0.04)
+        Jiji::Model::Trading::Pair.new(
+          :EURUSD, 'EUR_USD', 0.0001, 10_000_000, 0.001,   0.04),
+        Jiji::Model::Trading::Pair.new(
+          :USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04)
       ])
 
       required_pairs = broker.resolve_required_pairs([
-        Jiji::Model::Trading::Pair.new(:USDDKK, 1, 0.01, 1, 1, 0.04)
+        Jiji::Model::Trading::Pair.new(
+          :USDDKK, 'USD_DKK', 0.0001, 10_000_000, 0.001,   0.04)
       ], modules).sort_by { |p| p.name }
       expect(required_pairs).to eq([
-        Jiji::Model::Trading::Pair.new(:USDDKK, 1, 0.01, 1, 1, 0.04),
-        Jiji::Model::Trading::Pair.new(:USDJPY, 1, 0.01, 1, 1, 0.04)
+        Jiji::Model::Trading::Pair.new(
+          :USDDKK, 'USD_DKK', 0.0001, 10_000_000, 0.001,   0.04),
+        Jiji::Model::Trading::Pair.new(
+          :USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04)
       ])
 
       required_pairs = broker.resolve_required_pairs([
-        Jiji::Model::Trading::Pair.new(:EURNOK, 1, 0.01, 1, 1, 0.04)
+        Jiji::Model::Trading::Pair.new(
+          :EURNOK, 'EUR_NOK', 0.0001, 10_000_000, 0.001,   0.04)
       ], modules).sort_by { |p| p.name }
       expect(required_pairs).to eq([
-        Jiji::Model::Trading::Pair.new(:EURJPY, 1, 0.01, 1, 1, 0.04),
-        Jiji::Model::Trading::Pair.new(:EURNOK, 1, 0.01, 1, 1, 0.04)
+        Jiji::Model::Trading::Pair.new(
+          :EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04),
+        Jiji::Model::Trading::Pair.new(
+          :EURNOK, 'EUR_NOK', 0.0001, 10_000_000, 0.001,   0.04)
       ])
     end
   end

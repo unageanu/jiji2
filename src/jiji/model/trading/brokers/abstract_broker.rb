@@ -30,6 +30,15 @@ module Jiji::Model::Trading::Brokers
       @rates_cache ||= securities.retrieve_current_tick
     end
 
+    # 指定した期間、通貨ペアのレート情報(4本値 + 出来高)を取得します。
+    #
+    # 戻り値:: Rate の配列
+    def retrieve_rates(pair_name,
+      interval_id, start_time, end_time)
+      securities.retrieve_rate_history(pair_name,
+        interval_id, start_time, end_time)
+    end
+
     # 建玉一覧を取得します
     #
     # 戻り値:: Positions

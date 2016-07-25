@@ -790,6 +790,34 @@ shared_examples 'brokerの基本操作ができる' do
     end
   end
 
+  describe '#retrieve_rates' do
+    it 'can retirieve historical rates.' do
+      check_rates(broker.retrieve_rates(:EURJPY, :one_hour,
+        Time.utc(2015, 5, 21, 12, 00, 00), Time.utc(2015, 5, 30, 12, 00, 00)),
+        Time.utc(2015, 5, 21, 12, 00, 00), 60*60)
+      check_rates(broker.retrieve_rates(:USDJPY, :one_minute,
+        Time.utc(2015, 5, 21, 12, 00, 00), Time.utc(2015, 5, 22, 12, 00, 00)),
+        Time.utc(2015, 5, 21, 12, 00, 00), 60)
+    end
+
+    def check_rates(rates, start_time, interval)
+      time = start_time
+      rates.each do |rate|
+        expect(rate.timestamp).to eq time
+        expect(rate.open.bid).to be > 0
+        expect(rate.open.ask).to be > 0
+        expect(rate.close.bid).to be > 0
+        expect(rate.close.ask).to be > 0
+        expect(rate.high.bid).to be > 0
+        expect(rate.high.ask).to be > 0
+        expect(rate.low.bid).to be > 0
+        expect(rate.low.ask).to be > 0
+        expect(rate.volume).to be >= 0
+        time = Time.at(time.to_i + interval).utc
+      end
+    end
+  end
+
   def sort_by_internal_id(orders_or_positions)
     orders_or_positions.sort_by { |o| o.internal_id }
   end

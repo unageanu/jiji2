@@ -7,7 +7,7 @@ require 'jiji/web/transport/transportable'
 module Jiji::Model::Trading
 
   # 四本値。
-  # open, close, high, low の各値は Tick 型になります。
+  # open, close, high, low の各値は Tick::Value 型になります。
   class Rate
 
     include Jiji::Utils::ValueObject

@@ -35,7 +35,8 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def retrieve_rate_history(pair_name, interval, start_time, end_time)
-      unsupported
+      @securities_provider.get.retrieve_rate_history(
+        pair_name, interval, start_time, end_time)
     end
 
     def next?

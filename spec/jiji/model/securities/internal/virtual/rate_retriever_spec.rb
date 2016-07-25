@@ -1,9 +1,13 @@
 # coding: utf-8
 
 require 'jiji/test/test_configuration'
+require 'jiji/model/securities/internal/examples/rate_retriever_examples'
 
 describe Jiji::Model::Securities::Internal::Virtual::RateRetriever do
   let(:wait) { 0 }
+  let(:client) { Jiji::Test::VirtualSecuritiesBuilder.build }
+
+  it_behaves_like 'rate_retriever'
 
   it 'pair が取得できる' do
     client = Jiji::Test::VirtualSecuritiesBuilder.build

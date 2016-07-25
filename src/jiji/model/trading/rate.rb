@@ -25,16 +25,19 @@ module Jiji::Model::Trading
     attr_reader :low
     # 日時
     attr_reader :timestamp
+    # 出来高
+    attr_reader :volume
 
     attr_reader :close_timestamp #:nodoc:
 
     def initialize(pair, timestamp, open, close = open,
-      high = open, low = open, close_timestamp = timestamp) #:nodoc:
+      high = open, low = open, volume = 0, close_timestamp = timestamp) #:nodoc:
       @pair            = pair
       @open            = open
       @close           = close
       @high            = high
       @low             = low
+      @volume          = volume
       @timestamp       = timestamp
       @close_timestamp = close_timestamp
     end
@@ -57,6 +60,7 @@ module Jiji::Model::Trading
         close:     close,
         high:      high,
         low:       low,
+        volume:    volume,
         timestamp: timestamp
       }
     end
@@ -79,8 +83,8 @@ module Jiji::Model::Trading
 
     protected
 
-    def values
-      [pair, open, close, high, low, timestamp]
+    def values #:nodoc:
+      [pair, open, close, high, low, volume, timestamp]
     end
 
     private

@@ -158,7 +158,7 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def clone_value(value, time)
       Jiji::Model::Trading::Rate.new(value.pair, time, value.close,
-        value.close, value.close, value.close, time + @interval.ms / 1000)
+        value.close, value.close, value.close, 0, time + @interval.ms / 1000)
     end
 
     def convert_value(value, time = value.time, using_close_value = false)
@@ -174,12 +174,13 @@ module Jiji::Model::Securities::Internal::Oanda
         convert_response_to_tick_value('open',  value),
         convert_response_to_tick_value('close', value),
         convert_response_to_tick_value('high',  value),
-        convert_response_to_tick_value('low',   value))
+        convert_response_to_tick_value('low',   value),
+        value.volume)
     end
 
     def create_rate_using_close_value(value, time)
       close = convert_response_to_tick_value('close', value)
-      Rate.new(@pair_name, time, close, close, close, close)
+      Rate.new(@pair_name, time, close, close, close, close, value.volume)
     end
 
     def convert_response_to_tick_value(id, item)

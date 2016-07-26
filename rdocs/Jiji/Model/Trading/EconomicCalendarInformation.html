@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8 ">
 
-<title>class Jiji::Model::Trading::AbstractPositionResult - RDoc Documentation</title>
+<title>class Jiji::Model::Trading::EconomicCalendarInformation - RDoc Documentation</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../../../";
@@ -83,13 +83,15 @@
   </div>
 </nav>
 
-<main role="main" aria-labelledby="class-Jiji::Model::Trading::AbstractPositionResult">
-  <h1 id="class-Jiji::Model::Trading::AbstractPositionResult" class="class">
-    class Jiji::Model::Trading::AbstractPositionResult
+<main role="main" aria-labelledby="class-Jiji::Model::Trading::EconomicCalendarInformation">
+  <h1 id="class-Jiji::Model::Trading::EconomicCalendarInformation" class="class">
+    class Jiji::Model::Trading::EconomicCalendarInformation
   </h1>
 
   <section class="description">
     
+<p>経済カレンダー情報</p>
+
   </section>
 
   
@@ -109,41 +111,93 @@
       </header>
 
       
-      <div id="attribute-i-internal_id" class="method-detail">
+      <div id="attribute-i-actual" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">internal_id</span><span
+          <span class="method-name">actual</span><span
             class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
         
-        <p>決済された建玉の内部ID</p>
+        <p>実際値。 イベントが実際に起こった後でのみ、取得可能になります。</p>
         
         </div>
       </div>
       
-      <div id="attribute-i-price" class="method-detail">
+      <div id="attribute-i-currency" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">price</span><span
+          <span class="method-name">currency</span><span
             class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
         
-        <p>決済価格</p>
+        <p>ニュースイベントに関連する通貨 例) EUR</p>
         
         </div>
       </div>
       
-      <div id="attribute-i-profit_or_loss" class="method-detail">
+      <div id="attribute-i-forecast" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">profit_or_loss</span><span
+          <span class="method-name">forecast</span><span
             class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
         
-        <p>最終損益</p>
+        <p>フォーキャストの値</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-impact" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">impact</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>市場への影響度? (公式APIに記載なし)</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-market" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">market</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>市場が期待した値</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-previous" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">previous</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>同イベントの前回リリース時の値</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-region" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">region</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>地域 例) europe</p>
         
         </div>
       </div>
@@ -156,20 +210,40 @@
 
         <div class="method-description">
         
-        <p>決済時刻</p>
+        <p>イベントのタイムスタンプ</p>
         
         </div>
       </div>
       
-      <div id="attribute-i-units" class="method-detail">
+      <div id="attribute-i-title" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">units</span><span
+          <span class="method-name">title</span><span
             class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
         
-        <p>取引数/部分決済の場合は、部分決済後の取引数</p>
+        <p>イベントのタイトル 例) Chicago PMI</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-unit" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">unit</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>forecast, previous, actual の各フィールドにおけるデータの形式。　</p>
+<ul><li>
+<p>% .. パーセント</p>
+</li><li>
+<p>k .. 1,000単位の数値</p>
+</li><li>
+<p>index .. インデックス値</p>
+</li></ul>
         
         </div>
       </div>

@@ -149,10 +149,10 @@
 
           
           <div class="method-source-code" id="new-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 124</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 126</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">short_range</span> = <span class="ruby-value">12</span>, <span class="ruby-identifier">long_range</span> = <span class="ruby-value">26</span>,
-    <span class="ruby-identifier">signal_range</span> = <span class="ruby-value">9</span>, <span class="ruby-identifier">smoothing_coefficient</span> = <span class="ruby-value">0.1</span>)
-  <span class="ruby-identifier">fail</span> <span class="ruby-string">&#39;illegal arguments.&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">short_range</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">long_range</span>
+  <span class="ruby-identifier">signal_range</span> = <span class="ruby-value">9</span>, <span class="ruby-identifier">smoothing_coefficient</span> = <span class="ruby-value">0.1</span>)
+  <span class="ruby-identifier">raise</span> <span class="ruby-string">&#39;illegal arguments.&#39;</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">short_range</span> <span class="ruby-operator">&gt;</span> <span class="ruby-identifier">long_range</span>
   <span class="ruby-keyword">super</span>(<span class="ruby-identifier">long_range</span>)
   <span class="ruby-ivar">@short_range</span> = <span class="ruby-identifier">short_range</span>
   <span class="ruby-ivar">@smoothing_coefficient</span> = <span class="ruby-identifier">smoothing_coefficient</span>
@@ -201,7 +201,7 @@
 
           
           <div class="method-source-code" id="restore_state-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 152</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 154</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">restore_state</span>(<span class="ruby-identifier">state</span>)
   <span class="ruby-keyword">super</span>
   <span class="ruby-ivar">@signal</span>.<span class="ruby-identifier">restore_state</span>(<span class="ruby-identifier">state</span>[<span class="ruby-value">:signal_state</span>])
@@ -240,7 +240,7 @@
 
           
           <div class="method-source-code" id="state-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 146</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 148</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">state</span>
   <span class="ruby-identifier">state</span> = <span class="ruby-keyword">super</span>
   <span class="ruby-identifier">state</span>[<span class="ruby-value">:signal_state</span>] = <span class="ruby-ivar">@signal</span>.<span class="ruby-identifier">state</span>

@@ -147,7 +147,7 @@
           <div class="method-source-code" id="create-source">
             <pre><span class="ruby-comment"># File src/jiji/model/graphing/graph_factory.rb, line 22</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">create</span>(<span class="ruby-identifier">label</span>, <span class="ruby-identifier">type</span> = <span class="ruby-value">:line</span>, <span class="ruby-identifier">aggregation_type</span> = <span class="ruby-value">:first</span>,
-    <span class="ruby-identifier">colors</span> = [], <span class="ruby-identifier">axises</span> = [])
+  <span class="ruby-identifier">colors</span> = [], <span class="ruby-identifier">axises</span> = [])
   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@graphs</span>[<span class="ruby-identifier">label</span>] <span class="ruby-keyword">if</span> <span class="ruby-ivar">@graphs</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">label</span>)
 
   <span class="ruby-identifier">graph</span> = <span class="ruby-constant">Graph</span>.<span class="ruby-identifier">get_or_create</span>(<span class="ruby-identifier">label</span>,

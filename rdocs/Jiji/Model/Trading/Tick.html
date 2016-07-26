@@ -93,6 +93,8 @@
     
     <li ><a href="#method-i-each">#each</a>
     
+    <li ><a href="#method-i-include-3F">#include?</a>
+    
     <li ><a href="#method-i-length">#length</a>
     
   </ul>
@@ -238,6 +240,46 @@
       </div>
 
     
+      <div id="method-i-include-3F" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">include?</span><span
+            class="method-args">(pair_name)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>通貨ペアに対応する <a href="Tick/Value.html">Tick::Value</a> が含まれるか評価します。</p>
+<dl class="rdoc-list note-list"><dt>pair_name
+<dd>
+<p>通貨ペア名</p>
+</dd><dt>戻り値
+<dd>
+<p>boolean</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="include-3F-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/tick.rb, line 41</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">include?</span>(<span class="ruby-identifier">pair_name</span>)
+  <span class="ruby-identifier">values</span>.<span class="ruby-identifier">include?</span> <span class="ruby-identifier">pair_name</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
       <div id="method-i-length" class="method-detail ">
         
         <div class="method-heading">
@@ -261,7 +303,7 @@
 
           
           <div class="method-source-code" id="length-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/trading/tick.rb, line 39</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/tick.rb, line 47</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">length</span>
   <span class="ruby-identifier">values</span>.<span class="ruby-identifier">length</span>
 <span class="ruby-keyword">end</span></pre>

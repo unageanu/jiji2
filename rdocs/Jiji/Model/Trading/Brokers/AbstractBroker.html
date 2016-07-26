@@ -97,6 +97,10 @@
     
     <li ><a href="#method-i-positions">#positions</a>
     
+    <li ><a href="#method-i-retrieve_economic_calendar_informations">#retrieve_economic_calendar_informations</a>
+    
+    <li ><a href="#method-i-retrieve_rates">#retrieve_rates</a>
+    
     <li ><a href="#method-i-tick">#tick</a>
     
   </ul>
@@ -177,10 +181,10 @@
 
           
           <div class="method-source-code" id="cancel_order-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 68</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 90</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">cancel_order</span>(<span class="ruby-identifier">order</span>)
   <span class="ruby-identifier">result</span> = <span class="ruby-identifier">securities</span>.<span class="ruby-identifier">cancel_order</span>(<span class="ruby-identifier">order</span>.<span class="ruby-identifier">internal_id</span>)
-  <span class="ruby-ivar">@orders_is_dirty</span>    = <span class="ruby-keyword">true</span>
+  <span class="ruby-ivar">@orders_is_dirty</span> = <span class="ruby-keyword">true</span>
   <span class="ruby-identifier">result</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -219,13 +223,13 @@
 
           
           <div class="method-source-code" id="close_position-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 87</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 109</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">close_position</span>(<span class="ruby-identifier">position</span>)
   <span class="ruby-identifier">result</span> = <span class="ruby-identifier">securities</span>.<span class="ruby-identifier">close_trade</span>(<span class="ruby-identifier">position</span>.<span class="ruby-identifier">internal_id</span>)
   <span class="ruby-ivar">@positions</span>.<span class="ruby-identifier">apply_close_result</span>(<span class="ruby-identifier">result</span>)
   <span class="ruby-ivar">@positions_is_dirty</span> = <span class="ruby-keyword">true</span>
   <span class="ruby-constant">ClosedPosition</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">result</span>.<span class="ruby-identifier">internal_id</span>,
-    <span class="ruby-identifier">position</span>.<span class="ruby-identifier">units</span>, <span class="ruby-identifier">result</span>.<span class="ruby-identifier">price</span>, <span class="ruby-identifier">result</span>.<span class="ruby-identifier">timestamp</span>)
+    <span class="ruby-identifier">position</span>.<span class="ruby-identifier">units</span>, <span class="ruby-identifier">result</span>.<span class="ruby-identifier">price</span>, <span class="ruby-identifier">result</span>.<span class="ruby-identifier">timestamp</span>, <span class="ruby-identifier">result</span>.<span class="ruby-identifier">profit_or_loss</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -262,7 +266,7 @@
 
           
           <div class="method-source-code" id="load_positions-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 121</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 169</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">load_positions</span>
   <span class="ruby-identifier">positions</span> = <span class="ruby-identifier">securities</span>.<span class="ruby-identifier">retrieve_trades</span>
   <span class="ruby-ivar">@positions</span>.<span class="ruby-identifier">update</span>(<span class="ruby-identifier">positions</span>)
@@ -304,7 +308,7 @@
 
           
           <div class="method-source-code" id="modify_order-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 60</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 82</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">modify_order</span>(<span class="ruby-identifier">order</span>)
   <span class="ruby-identifier">securities</span>.<span class="ruby-identifier">modify_order</span>(
     <span class="ruby-identifier">order</span>.<span class="ruby-identifier">internal_id</span>, <span class="ruby-identifier">order</span>.<span class="ruby-identifier">extract_options_for_modify</span>)
@@ -343,7 +347,7 @@
 
           
           <div class="method-source-code" id="modify_position-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 76</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 98</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">modify_position</span>(<span class="ruby-identifier">position</span>)
   <span class="ruby-identifier">securities</span>.<span class="ruby-identifier">modify_trade</span>(
     <span class="ruby-identifier">position</span>.<span class="ruby-identifier">internal_id</span>,
@@ -384,9 +388,9 @@
 
           
           <div class="method-source-code" id="orders-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 43</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 65</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">orders</span>
-  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@orders</span>  <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@orders_is_dirty</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@orders</span>
+  <span class="ruby-keyword">return</span> <span class="ruby-ivar">@orders</span> <span class="ruby-keyword">if</span> <span class="ruby-operator">!</span><span class="ruby-ivar">@orders_is_dirty</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-ivar">@orders</span>
   <span class="ruby-identifier">load_orders</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -459,10 +463,144 @@
 
           
           <div class="method-source-code" id="positions-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 35</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 57</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">positions</span>
   <span class="ruby-keyword">return</span> <span class="ruby-ivar">@positions</span> <span class="ruby-keyword">unless</span> <span class="ruby-ivar">@positions_is_dirty</span>
   <span class="ruby-identifier">load_positions</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-retrieve_economic_calendar_informations" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">retrieve_economic_calendar_informations</span><span
+            class="method-args">(period, pair_name = nil)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>経済カレンダー情報を取得します。 詳細は、以下をご覧ください。</p>
+
+<p><a
+href="http://developer.oanda.com/docs/jp/v1/forex-labs/#section">developer.oanda.com/docs/jp/v1/forex-labs/#section</a></p>
+
+<p>※現在時刻を起点とした情報のみ取得できます。 バックテスト内でも実行することはできますが、返されるのは<strong>テスト内の時間時点の情報で
+はない</strong>のでご注意ください。</p>
+<dl class="rdoc-list note-list"><dt>period
+<dd>
+<p>カレンダーデータを取得する期間。以下のいずれかを指定できます。</p>
+<ul><li>
+<p>3600 .. 1時間</p>
+</li><li>
+<p>43200 .. 12時間</p>
+</li><li>
+<p>86400 .. 1日</p>
+</li><li>
+<p>604800 .. 1週間</p>
+</li><li>
+<p>2592000 .. 1ヶ月</p>
+</li><li>
+<p>7776000 .. 3ヶ月</p>
+</li><li>
+<p>15552000 .. 6ヶ月</p>
+</li><li>
+<p>31536000 .. 1年</p>
+</li></ul>
+</dd><dt>pair_name
+<dd>
+<p>取得対象とする通貨ペアの名前。 例) USDJPY 指定がない場合、すべての通貨ペアの情報を取得します。</p>
+</dd><dt>戻り値
+<dd>
+<p><a
+href="../EconomicCalendarInformation.html">EconomicCalendarInformation</a>
+の配列</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="retrieve_economic_calendar_informations-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 139</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">retrieve_economic_calendar_informations</span>(<span class="ruby-identifier">period</span>, <span class="ruby-identifier">pair_name</span> = <span class="ruby-keyword">nil</span>)
+  <span class="ruby-identifier">securities</span>.<span class="ruby-identifier">retrieve_calendar</span>(<span class="ruby-identifier">period</span>, <span class="ruby-identifier">pair_name</span>)
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-retrieve_rates" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">retrieve_rates</span><span
+            class="method-args">(pair_name, interval, start_time, end_time)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          <p>指定した期間、通貨ペアのレート情報(4本値 + 出来高)を取得します。 一度に最大5000件のデータを取得できます。</p>
+<dl class="rdoc-list note-list"><dt>pair_name
+<dd>
+<p>取得対象の通貨ペア名 例) :USDJPY, :EURJPY</p>
+</dd><dt>interval
+<dd>
+<p>レートを集計する期間。以下のいずれかを指定できます。</p>
+<ul><li>
+<p>:fifteen_seconds .. 15秒足</p>
+</li><li>
+<p>:one_minute      .. 分足</p>
+</li><li>
+<p>:fifteen_minutes .. 15分足</p>
+</li><li>
+<p>:thirty_minutes  .. 30分足</p>
+</li><li>
+<p>:one_hour        .. 1時間足</p>
+</li><li>
+<p>:six_hours       .. 6時間足</p>
+</li><li>
+<p>:one_day         .. 日足</p>
+</li></ul>
+</dd><dt>start_time
+<dd>
+<p>取得開始日時。 Time 型で指定します。</p>
+</dd><dt>end_time
+<dd>
+<p>取得終了日時。 Time 型で指定します。</p>
+</dd><dt>戻り値
+<dd>
+<p><a href="../Rate.html">Rate</a> の配列</p>
+</dd></dl>
+          
+          
+
+          
+          <div class="method-source-code" id="retrieve_rates-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/brokers/abstract_broker.rb, line 48</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">retrieve_rates</span>(<span class="ruby-identifier">pair_name</span>,
+  <span class="ruby-identifier">interval</span>, <span class="ruby-identifier">start_time</span>, <span class="ruby-identifier">end_time</span>)
+  <span class="ruby-identifier">securities</span>.<span class="ruby-identifier">retrieve_rate_history</span>(<span class="ruby-identifier">pair_name</span>,
+    <span class="ruby-identifier">interval</span>, <span class="ruby-identifier">start_time</span>, <span class="ruby-identifier">end_time</span>)
 <span class="ruby-keyword">end</span></pre>
           </div>
           

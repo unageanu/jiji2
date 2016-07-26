@@ -4,7 +4,7 @@
 <head>
 <meta charset="UTF-8 ">
 
-<title>class Jiji::Model::Trading::AbstractPositionResult - RDoc Documentation</title>
+<title>class Jiji::Model::Trading::Rate - RDoc Documentation</title>
 
 <script type="text/javascript">
   var rdoc_rel_prefix = "../../../";
@@ -83,13 +83,16 @@
   </div>
 </nav>
 
-<main role="main" aria-labelledby="class-Jiji::Model::Trading::AbstractPositionResult">
-  <h1 id="class-Jiji::Model::Trading::AbstractPositionResult" class="class">
-    class Jiji::Model::Trading::AbstractPositionResult
+<main role="main" aria-labelledby="class-Jiji::Model::Trading::Rate">
+  <h1 id="class-Jiji::Model::Trading::Rate" class="class">
+    class Jiji::Model::Trading::Rate
   </h1>
 
   <section class="description">
     
+<p>四本値。 open, close, high, low の各値は <a href="Tick/Value.html">Tick::Value</a>
+型になります。</p>
+
   </section>
 
   
@@ -109,41 +112,67 @@
       </header>
 
       
-      <div id="attribute-i-internal_id" class="method-detail">
+      <div id="attribute-i-close" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">internal_id</span><span
+          <span class="method-name">close</span><span
             class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
         
-        <p>決済された建玉の内部ID</p>
+        <p>終値</p>
         
         </div>
       </div>
       
-      <div id="attribute-i-price" class="method-detail">
+      <div id="attribute-i-high" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">price</span><span
+          <span class="method-name">high</span><span
             class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
         
-        <p>決済価格</p>
+        <p>高値</p>
         
         </div>
       </div>
       
-      <div id="attribute-i-profit_or_loss" class="method-detail">
+      <div id="attribute-i-low" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">profit_or_loss</span><span
+          <span class="method-name">low</span><span
             class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
         
-        <p>最終損益</p>
+        <p>安値</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-open" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">open</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>始値</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-pair" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">pair</span><span
+            class="attribute-access-type">[R]</span>
+        </div>
+
+        <div class="method-description">
+        
+        <p>通貨ペア 例) :USDJPY</p>
         
         </div>
       </div>
@@ -156,20 +185,20 @@
 
         <div class="method-description">
         
-        <p>決済時刻</p>
+        <p>日時</p>
         
         </div>
       </div>
       
-      <div id="attribute-i-units" class="method-detail">
+      <div id="attribute-i-volume" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">units</span><span
+          <span class="method-name">volume</span><span
             class="attribute-access-type">[R]</span>
         </div>
 
         <div class="method-description">
         
-        <p>取引数/部分決済の場合は、部分決済後の取引数</p>
+        <p>出来高</p>
         
         </div>
       </div>

@@ -197,7 +197,7 @@
 
           
           <div class="method-source-code" id="destroy-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/graphing/graph.rb, line 112</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/graphing/graph.rb, line 114</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">destroy</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>)
   <span class="ruby-constant">GraphData</span>.<span class="ruby-identifier">where</span>(<span class="ruby-identifier">graph_id</span><span class="ruby-operator">:</span> <span class="ruby-identifier">id</span>).<span class="ruby-identifier">delete</span>
   <span class="ruby-keyword">super</span>
@@ -233,7 +233,9 @@
           <div class="method-source-code" id="setup_data_savers-source">
             <pre><span class="ruby-comment"># File src/jiji/model/graphing/graph.rb, line 106</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">setup_data_savers</span>(<span class="ruby-identifier">saving_interval</span>)
-  <span class="ruby-ivar">@savers</span> = <span class="ruby-constant">Jiji</span><span class="ruby-operator">::</span><span class="ruby-constant">Model</span><span class="ruby-operator">::</span><span class="ruby-constant">Trading</span><span class="ruby-operator">::</span><span class="ruby-constant">Intervals</span>.<span class="ruby-identifier">instance</span>.<span class="ruby-identifier">all</span>.<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
+  <span class="ruby-ivar">@savers</span> = <span class="ruby-constant">Jiji</span><span class="ruby-operator">::</span><span class="ruby-constant">Model</span><span class="ruby-operator">::</span><span class="ruby-constant">Trading</span><span class="ruby-operator">::</span><span class="ruby-constant">Intervals</span>.<span class="ruby-identifier">instance</span>.<span class="ruby-identifier">all</span>
+    .<span class="ruby-identifier">reject</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span> <span class="ruby-identifier">i</span>.<span class="ruby-identifier">id</span> <span class="ruby-operator">==</span> <span class="ruby-value">:fifteen_seconds</span> }
+    .<span class="ruby-identifier">map</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span><span class="ruby-operator">|</span>
     <span class="ruby-constant">Internal</span><span class="ruby-operator">::</span><span class="ruby-constant">GraphDataSaver</span>.<span class="ruby-identifier">new</span>(<span class="ruby-keyword">self</span>, <span class="ruby-identifier">i</span>, <span class="ruby-identifier">saving_interval</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>

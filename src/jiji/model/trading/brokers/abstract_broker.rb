@@ -31,12 +31,25 @@ module Jiji::Model::Trading::Brokers
     end
 
     # 指定した期間、通貨ペアのレート情報(4本値 + 出来高)を取得します。
+    # 一度に最大5000件のデータを取得できます。
+    #
+    # pair_name:: 取得対象の通貨ペア名 例) :USDJPY, :EURJPY
+    # interval:: レートを集計する期間。以下のいずれかを指定できます。
+    #            * :fifteen_seconds .. 15秒足
+    #            * :one_minute      .. 分足
+    #            * :fifteen_minutes .. 15分足
+    #            * :thirty_minutes  .. 30分足
+    #            * :one_hour        .. 1時間足
+    #            * :six_hours       .. 6時間足
+    #            * :one_day         .. 日足
+    # start_time:: 取得開始日時。 Time 型で指定します。
+    # end_time:: 取得終了日時。 Time 型で指定します。
     #
     # 戻り値:: Rate の配列
     def retrieve_rates(pair_name,
-      interval_id, start_time, end_time)
+      interval, start_time, end_time)
       securities.retrieve_rate_history(pair_name,
-        interval_id, start_time, end_time)
+        interval, start_time, end_time)
     end
 
     # 建玉一覧を取得します
@@ -123,7 +136,7 @@ module Jiji::Model::Trading::Brokers
     # pair_name:: 取得対象とする通貨ペアの名前。
     #             例) USDJPY
     #             指定がない場合、すべての通貨ペアの情報を取得します。
-    # 戻り値:: EconomicCalendarInformationの配列
+    # 戻り値:: EconomicCalendarInformation の配列
     def retrieve_economic_calendar_informations(period, pair_name = nil)
       securities.retrieve_calendar(period, pair_name)
     end

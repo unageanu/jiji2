@@ -55,12 +55,10 @@ module Jiji::Test::Mock
       @current_tick
     end
 
-    def retrieve_tick_history(pair_name, start_time, end_time, interval_id = nil)
-      interval = if interval_id.nil?
-        15
-      else
-        Intervals.instance.get(interval_id).ms / 1000
-      end
+    def retrieve_tick_history(pair_name,
+      start_time, end_time, interval_id = nil)
+      interval = interval_id.nil? \
+        ? 15 : Intervals.instance.get(interval_id).ms / 1000
       i = -1
       create_timestamps(interval, start_time, end_time).map do |time|
         create_tick(@seeds[(i += 1) % @seeds.length], time)
@@ -152,7 +150,7 @@ module Jiji::Test::Mock
       }, time)
     end
 
-    def create_tick_value(bid, ask, seed=0)
+    def create_tick_value(bid, ask, seed = 0)
       Tick::Value.new(
         (BigDecimal.new(bid, 10) + seed).to_f,
         (BigDecimal.new(ask, 10) + seed).to_f)

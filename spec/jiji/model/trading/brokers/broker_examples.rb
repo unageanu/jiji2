@@ -793,28 +793,28 @@ shared_examples 'brokerの基本操作ができる' do
   describe '#retrieve_rates' do
     it 'can retirieve historical rates.' do
       check_rates(broker.retrieve_rates(:EURJPY, :one_hour,
-        Time.utc(2015, 5, 21, 12, 00, 00), Time.utc(2015, 5, 30, 12, 00, 00)),
-        Time.utc(2015, 5, 21, 12, 00, 00), 60*60)
+        Time.utc(2015, 5, 21, 12, 0o0, 0o0), Time.utc(2015, 5, 30, 12, 0, 0)),
+        Time.utc(2015, 5, 21, 12, 0o0, 0o0), 60 * 60)
       check_rates(broker.retrieve_rates(:USDJPY, :one_minute,
-        Time.utc(2015, 5, 21, 12, 00, 00), Time.utc(2015, 5, 22, 12, 00, 00)),
-        Time.utc(2015, 5, 21, 12, 00, 00), 60)
+        Time.utc(2015, 5, 21, 12, 0o0, 0o0), Time.utc(2015, 5, 22, 12, 0, 0)),
+        Time.utc(2015, 5, 21, 12, 0o0, 0o0), 60)
     end
 
-    def check_rates(rates, start_time, interval)
-      time = start_time
+    def check_rates(rates, time, interval)
       rates.each do |rate|
         expect(rate.timestamp).to eq time
-        expect(rate.open.bid).to be > 0
-        expect(rate.open.ask).to be > 0
-        expect(rate.close.bid).to be > 0
-        expect(rate.close.ask).to be > 0
-        expect(rate.high.bid).to be > 0
-        expect(rate.high.ask).to be > 0
-        expect(rate.low.bid).to be > 0
-        expect(rate.low.ask).to be > 0
+        check_tick_value(rate.open)
+        check_tick_value(rate.close)
+        check_tick_value(rate.high)
+        check_tick_value(rate.low)
         expect(rate.volume).to be >= 0
         time = Time.at(time.to_i + interval).utc
       end
+    end
+
+    def check_tick_value(value)
+      expect(value.bid).to be > 0
+      expect(value.ask).to be > 0
     end
   end
 

@@ -73,3 +73,6 @@ Style/IfInsideElse:
 
 Metrics/ModuleLength:
   Max: 200
+
+Style/MultilineTernaryOperator:
+  Enabled: false

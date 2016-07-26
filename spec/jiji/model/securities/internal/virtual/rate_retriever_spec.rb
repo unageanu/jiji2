@@ -77,11 +77,11 @@ describe Jiji::Model::Securities::Internal::Virtual::RateRetriever do
         expect(rates[:EURJPY].ask).to be > 0
         expect(rates[:USDJPY].bid).to be > 0
         expect(rates[:USDJPY].ask).to be > 0
-        expect(rates.timestamp).to eq(Time.utc(2015, 4, 1, 2, 0, 0) + 60*60 * i)
+        expect(rates.timestamp).to eq(
+          Time.utc(2015, 4, 1, 2, 0, 0) + 60 * 60 * i)
       end
 
       expect(client.next?).to be false
-
 
       client = Jiji::Test::VirtualSecuritiesBuilder.build(
         Time.utc(2015, 4, 1), Time.utc(2016, 4, 1), nil, :six_hours)
@@ -108,7 +108,8 @@ describe Jiji::Model::Securities::Internal::Virtual::RateRetriever do
         expect(rates[:EURJPY].ask).to be > 0
         expect(rates[:USDJPY].bid).to be > 0
         expect(rates[:USDJPY].ask).to be > 0
-        expect(rates.timestamp).to eq(Time.utc(2015, 4, 1, 12) + 60*60*6*i)
+        expect(rates.timestamp).to eq(
+          Time.utc(2015, 4, 1, 12) + 60 * 60 * 6 * i)
       end
 
       expect(client.next?).to be false

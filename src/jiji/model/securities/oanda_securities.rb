@@ -39,6 +39,8 @@ module Jiji::Model::Securities
 
     def retrieve_account
       response = @client.account(@account.account_id).get
+      p response
+      p response.margin_rate
       Account.new(response.account_id, response.account_currency,
         response.balance, response.margin_rate) do |a|
         a.profit_or_loss = response.unrealized_pl

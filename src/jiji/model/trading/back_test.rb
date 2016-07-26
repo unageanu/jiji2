@@ -261,11 +261,8 @@ module Jiji::Model::Trading
     backtest.pair_names  = (hash['pair_names'] || []).map { |n| n.to_sym }
     backtest.start_time  = hash['start_time']
     backtest.end_time    = hash['end_time']
-    backtest.tick_interval_id = if !hash['tick_interval_id'].nil?
-        hash['tick_interval_id'].to_sym
-      else
-        :fifteen_seconds
-      end
-    backtest.balance     = hash['balance'] || 0
+    backtest.tick_interval_id = !hash['tick_interval_id'].nil? \
+      ? hash['tick_interval_id'].to_sym : :fifteen_seconds
+    backtest.balance = hash['balance'] || 0
   end
 end

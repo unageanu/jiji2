@@ -25,7 +25,7 @@ describe Jiji::Model::Trading::BackTest do
       'name'          => 'テスト',
       'start_time'    => Time.new(2014, 12, 8),
       'end_time'      => Time.new(2015, 2, 9),
-      'tick_interval_id'   => "one_hour",
+      'tick_interval_id' => 'one_hour',
       'memo'          => 'メモ',
       'pair_names'    => [:EURJPY, :EURUSD],
       'agent_setting' => [

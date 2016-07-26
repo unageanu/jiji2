@@ -28,7 +28,6 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
     end
   end
 
-
   describe 'retrieve_current_tick' do
     it '通貨ペアごとの現在価格を取得できる。' do
       tick = client.retrieve_current_tick
@@ -46,10 +45,10 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
   describe '#retrieve_tick_history' do
     it 'should return ticks for a currency pair.' do
       ticks = client.retrieve_tick_history(:EURJPY,
-        Time.utc(2015, 5, 22, 12, 00, 00), Time.utc(2015, 5, 22, 12, 15, 00))
+        Time.utc(2015, 5, 22, 12, 0o0, 0o0), Time.utc(2015, 5, 22, 12, 15, 0o0))
       # p ticks
       expect(ticks.length).to be 15 * 4
-      time = Time.utc(2015, 5, 22, 12, 00, 00)
+      time = Time.utc(2015, 5, 22, 12, 0o0, 0o0)
       ticks.each do |tick|
         expect(tick.timestamp).to eq time
         expect(tick.length).to be 1
@@ -62,11 +61,11 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
 
     it 'should return ticks per hour.' do
       ticks = client.retrieve_tick_history(:EURJPY,
-        Time.utc(2015, 5, 22, 12, 00, 00),
-        Time.utc(2015, 5, 23, 12, 00, 00), :one_hour)
+        Time.utc(2015, 5, 22, 12, 0o0, 0o0),
+        Time.utc(2015, 5, 23, 12, 0o0, 0o0), :one_hour)
       # p ticks
       expect(ticks.length).to be 24
-      time = Time.utc(2015, 5, 22, 12, 00, 00)
+      time = Time.utc(2015, 5, 22, 12, 0o0, 0o0)
       ticks.each do |tick|
         expect(tick.timestamp).to eq time
         expect(tick.length).to be 1
@@ -77,5 +76,4 @@ describe Jiji::Model::Securities::Internal::Oanda::RateRetriever do
       end
     end
   end
-
 end if ENV['OANDA_API_ACCESS_TOKEN']

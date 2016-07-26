@@ -32,28 +32,28 @@ describe Jiji::Messaging::PushNotifier do
 
     expect(push_notifier.sns_service).to receive(:publish).with(
       'target_arn',
-      "{\"default\":\"テスト | リアルトレード\",\"GCM\":\"{\\\"data\\\":" \
-      + "{\\\"title\\\":\\\"テスト | リアルトレード\\\"," \
-      + "\\\"message\\\":\\\"テスト\\\"," \
+      '{"default":"テスト | リアルトレード","GCM":"{\\"data\\":' \
+      + '{\\"title\\":\\"テスト | リアルトレード\\",' \
+      + '\\"message\\":\\"テスト\\",' \
       + '\\"image\\":\\"http://localhost:3000/api/icon-images/aaaa\\"}}"}',
       'テスト | リアルトレード')
     expect(push_notifier.sns_service).to receive(:publish).with(
       'target_arn',
-      "{\"default\":\"テスト | リアルトレード\",\"GCM\":\"{\\\"data\\\":" \
-      + "{\\\"title\\\":\\\"テスト | リアルトレード\\\"," \
-      + "\\\"message\\\":\\\"テスト\\\"," \
+      '{"default":"テスト | リアルトレード","GCM":"{\\"data\\":' \
+      + '{\\"title\\":\\"テスト | リアルトレード\\",' \
+      + '\\"message\\":\\"テスト\\",' \
       + '\\"image\\":\\"http://localhost:3001/api/icon-images/aaaa\\"}}"}',
       'テスト | リアルトレード')
     expect(push_notifier.sns_service).to receive(:publish).with(
       'target_arn',
       '{"default":null,"GCM":"{\\"data\\":'\
-      + "{\\\"message\\\":\\\"テスト\\\",\\\"image\\\":"\
+      + '{\\"message\\":\\"テスト\\",\\"image\\":'\
       + '\\"http://localhost:3000/api/icon-images/default\\"}}"}',
       '')
     expect(push_notifier.sns_service).to receive(:publish).with(
       'target_arn',
       '{"default":null,"GCM":"{\\"data\\":'\
-      + "{\\\"message\\\":\\\"テスト\\\",\\\"image\\\":"\
+      + '{\\"message\\":\\"テスト\\",\\"image\\":'\
       + '\\"http://localhost:3001/api/icon-images/default\\"}}"}',
       '')
 

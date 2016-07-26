@@ -46,9 +46,8 @@ describe Jiji::Model::Trading::TickRepository do
     expect(ticks[3][:EURJPY].ask).to eq(135.633)
     expect(ticks[3].timestamp).to eq(Time.at(75))
 
-
     ticks = repository.fetch([:EURJPY, :USDJPY],
-      Time.at(0), Time.at(60*60*9 + 10), :one_hour)
+      Time.at(0), Time.at(60 * 60 * 9 + 10), :one_hour)
     expect(ticks.length).to eq(10)
     expect(ticks[0][:EURJPY].bid).to eq(135.3)
     expect(ticks[0][:EURJPY].ask).to eq(135.33)
@@ -56,7 +55,7 @@ describe Jiji::Model::Trading::TickRepository do
 
     expect(ticks[9][:EURJPY].bid).to eq(135.5)
     expect(ticks[9][:EURJPY].ask).to eq(135.53)
-    expect(ticks[9].timestamp).to eq(Time.at(60*60*9))
+    expect(ticks[9].timestamp).to eq(Time.at(60 * 60 * 9))
   end
 
   it 'range で tickが登録されている期間を取得できる' do

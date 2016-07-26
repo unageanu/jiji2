@@ -1,42 +1,15 @@
 # coding: utf-8
 
 RSpec.shared_examples 'rate_retriever' do
-
-  describe 'pairs' do
-    it '通貨ペアの一覧を取得できる。' do
-      pairs = client.retrieve_pairs
-      # p pairs
-      expect(pairs.length).to be > 0
-      pairs.each do |pair|
-        expect(pair.name).not_to be nil
-        expect(pair.internal_id).not_to be nil
-        expect(pair.pip).to be > 0
-        expect(pair.max_trade_units).to be > 0
-        expect(pair.precision).to be > 0
-        expect(pair.margin_rate).to be > 0
-      end
-    end
-  end
-
   describe 'retrieve_rate_history' do
-
     it '通貨ペアの4本値の履歴を取得できる。' do
       rates = client.retrieve_rate_history(:EURJPY, :one_hour,
-        Time.utc(2015, 5, 21, 12, 00, 00), Time.utc(2015, 5, 22, 12, 00, 00))
+        Time.utc(2015, 5, 21, 12, 0o0, 0o0), Time.utc(2015, 5, 22, 12, 0, 0))
       # p ticks
       expect(rates.length).to be 24
-      time = Time.utc(2015, 5, 21, 12, 00, 00)
+      time = Time.utc(2015, 5, 21, 12, 0o0, 0o0)
       rates.each do |rate|
-        expect(rate.timestamp).to eq time
-        expect(rate.open.bid).to be > 0
-        expect(rate.open.ask).to be > 0
-        expect(rate.close.bid).to be > 0
-        expect(rate.close.ask).to be > 0
-        expect(rate.high.bid).to be > 0
-        expect(rate.high.ask).to be > 0
-        expect(rate.low.bid).to be > 0
-        expect(rate.low.ask).to be > 0
-        expect(rate.volume).to be >= 0
+        check_rate(rate, time)
         time = Time.at(time.to_i + 60 * 60).utc
       end
     end
@@ -97,7 +70,7 @@ RSpec.shared_examples 'rate_retriever' do
 
     def check_rate(rate, time)
       # puts "#{time} #{rate.timestamp} #{rate.open.bid} #{rate.close.bid}"
-      #puts "#{rate.volume}"
+      # puts "#{rate.volume}"
       expect(rate.timestamp).to eq time
       expect(rate.open.bid).to be > 0
       expect(rate.open.ask).to be > 0
@@ -110,5 +83,4 @@ RSpec.shared_examples 'rate_retriever' do
       expect(rate.volume).to be >= 0
     end
   end
-
 end

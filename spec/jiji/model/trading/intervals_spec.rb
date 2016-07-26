@@ -63,10 +63,10 @@ describe Jiji::Model::Trading::Intervals do
         interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 12, 15, 0))
       ).to eq Time.utc(2015, 5, 1, 12, 15, 0)
       expect(
-        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 12, 15, 01))
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 12, 15, 1))
       ).to eq Time.utc(2015, 5, 1, 12, 15, 0)
       expect(
-        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 13, 15, 01))
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 13, 15, 1))
       ).to eq Time.utc(2015, 5, 1, 13, 15, 0)
 
       interval = intervals.get(:one_day)
@@ -80,7 +80,7 @@ describe Jiji::Model::Trading::Intervals do
         interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 12, 14, 59))
       ).to eq Time.utc(2015, 5, 1, 0, 0, 0)
       expect(
-        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 20, 15, 00))
+        interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 20, 15, 0))
       ).to eq Time.utc(2015, 5, 1, 0, 0, 0)
       expect(
         interval.calcurate_interval_start_time(Time.utc(2015, 5, 1, 23, 59, 59))
@@ -104,10 +104,10 @@ describe Jiji::Model::Trading::Intervals do
         interval.calcurate_interval_start_time(local(2015, 5, 1, 12, 15, 0))
       ).to eq local(2015, 5, 1, 12, 15, 0)
       expect(
-        interval.calcurate_interval_start_time(local(2015, 5, 1, 12, 15, 01))
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 12, 15, 1))
       ).to eq local(2015, 5, 1, 12, 15, 0)
       expect(
-        interval.calcurate_interval_start_time(local(2015, 5, 1, 13, 15, 01))
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 13, 15, 1))
       ).to eq local(2015, 5, 1, 13, 15, 0)
 
       interval = intervals.get(:one_day)
@@ -121,7 +121,7 @@ describe Jiji::Model::Trading::Intervals do
         interval.calcurate_interval_start_time(local(2015, 5, 1, 12, 14, 59))
       ).to eq local(2015, 5, 1, 0, 0, 0)
       expect(
-        interval.calcurate_interval_start_time(local(2015, 5, 1, 20, 15, 00))
+        interval.calcurate_interval_start_time(local(2015, 5, 1, 20, 15, 0))
       ).to eq local(2015, 5, 1, 0, 0, 0)
       expect(
         interval.calcurate_interval_start_time(local(2015, 5, 1, 23, 59, 59))

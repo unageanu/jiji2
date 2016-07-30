@@ -16,5 +16,5 @@ account.margin_rate # 必要証拠金率
 {% endhighlight %}
 
 <div class="next">
-  <a href="020400_getting_financial_and_economic_data.html">次のページへ: 各種金融・経済データを取得する</a>
+  <a href="020310_getting_historical_rates.html">次のページへ: 過去のレート情報を取得する</a>
 </div>

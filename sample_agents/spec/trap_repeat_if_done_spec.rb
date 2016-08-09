@@ -30,13 +30,38 @@ describe TrapRepeatIfDone do
         :USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04)
     ]
   end
+  let(:all_pairs) do
+    contents = {
+      EURJPY: Jiji::Model::Trading::Pair.new(
+        :EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04),
+      EURUSD: Jiji::Model::Trading::Pair.new(
+        :EURUSD, 'EUR_USD', 0.0001, 10_000_000, 0.001,   0.04),
+      USDJPY: Jiji::Model::Trading::Pair.new(
+        :USDJPY, 'USD_JPY', 0.01,   10_000_000, 0.001,   0.04),
+      USDDKK: Jiji::Model::Trading::Pair.new(
+        :USDDKK, 'USD_DKK', 0.0001, 10_000_000, 0.001,   0.04),
+      EURNOK: Jiji::Model::Trading::Pair.new(
+        :EURNOK, 'EUR_NOK', 0.0001, 10_000_000, 0.001,   0.04)
+    }
+    pairs = double('mock pairs')
+    allow(pairs).to receive(:all).and_return(contents.values)
+    allow(pairs).to receive(:get_by_name) do |n|
+      contents[n]
+    end
+    pairs
+  end
+  let(:modules) do
+    {
+      tick_repository:     tick_repository,
+      securities_provider: securities_provider,
+      position_repository: position_repository,
+      pairs:               all_pairs
+    }
+  end
   let(:broker) do
     broker = Jiji::Model::Trading::Brokers::BackTestBroker.new(backtest,
-      Time.utc(2015, 5, 1), Time.utc(2015, 5, 1, 0, 10), pairs, 100_000, [], {
-        tick_repository:     tick_repository,
-        securities_provider: securities_provider,
-        position_repository: position_repository
-      })
+      Time.utc(2015, 5, 1), Time.utc(2015, 5, 1, 0, 10),
+      :fifteen_seconds, pairs, 100_000, [], modules)
     Jiji::Model::Trading::Brokers::BrokerProxy.new(broker, nil)
   end
 

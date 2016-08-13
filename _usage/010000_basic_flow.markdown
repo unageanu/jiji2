@@ -31,7 +31,7 @@ Jijiでの自動取引の流れは次の通りです。<br/>
   <a href="/usage/010400_start_real_trade.html">4. リアル口座で実行</a>
 </div>
 
-  - [リアルトレード - エージェント設定]でエージェントを登録し、リアル口座(OANADAの個人口座 or デモ口座)での実行を開始します。
+  - [リアルトレード - エージェント設定]でエージェントを登録し、リアル口座(OANDAの個人口座 or デモ口座)での実行を開始します。
 
 <div class="section">
   <a href="/usage/010500_analyze_trading.html">5. 取引状況の確認</a>

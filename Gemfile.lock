@@ -15,12 +15,12 @@ GEM
       ice_nine (~> 0.11.0)
       memoizable (~> 0.4.0)
     ast (2.3.0)
-    aws-sdk (2.5.3)
-      aws-sdk-resources (= 2.5.3)
-    aws-sdk-core (2.5.3)
+    aws-sdk (2.5.4)
+      aws-sdk-resources (= 2.5.4)
+    aws-sdk-core (2.5.4)
       jmespath (~> 1.0)
-    aws-sdk-resources (2.5.3)
-      aws-sdk-core (= 2.5.3)
+    aws-sdk-resources (2.5.4)
+      aws-sdk-core (= 2.5.4)
     bcrypt (3.1.11)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
@@ -118,7 +118,7 @@ GEM
     rspec-mocks (3.5.0)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.5.0)
-    rspec-parameterized (0.3.0)
+    rspec-parameterized (0.3.1)
       binding_of_caller
       parser
       proc_to_ast

@@ -125,11 +125,11 @@ module Jiji::Model::Securities::Internal::Oanda
     end
 
     def retrieve_latest_rate(start_time)
-      try_to_retrieve_latest_rate_with_some_interval(start_time) \
+      try_to_retrieve_latest_rate_with_same_interval(start_time) \
       || retrieve_latest_rate_with_long_interval(start_time)
     end
 
-    def try_to_retrieve_latest_rate_with_some_interval(time)
+    def try_to_retrieve_latest_rate_with_same_interval(time)
       rates = fetch(@interval, time - @interval.ms / 1000 * 20, time)
       rates.empty? ? nil : rates.last
     end

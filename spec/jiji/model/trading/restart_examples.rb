@@ -61,8 +61,8 @@ shared_examples '停止と再開ができる' do
     account = retrieve_account
     expect(account.balance).to eq 100_000
     expect(account.profit_or_loss).not_to be nil
-    check_some_orders(orders, retrieve_orders)
-    check_some_positions(positions, retrieve_positions)
+    check_same_orders(orders, retrieve_orders)
+    check_same_positions(positions, retrieve_positions)
     state = retrieve_state
     expect(state[:a]).to be > prev_state[:a]
     expect(state[:b]).to be > 75
@@ -75,7 +75,7 @@ shared_examples '停止と再開ができる' do
     account = retrieve_account
     expect(account.balance).not_to eq 100_000
     expect(account.profit_or_loss).to eq 0
-    check_some_orders(orders, retrieve_orders)
+    check_same_orders(orders, retrieve_orders)
     expect(retrieve_positions.size).to eq 0
     state = retrieve_state
     expect(state[:a]).to be > prev_state[:a]
@@ -94,7 +94,7 @@ shared_examples '停止と再開ができる' do
     account = retrieve_account
     expect(account.balance).not_to eq 100_000
     expect(account.profit_or_loss).to eq 0
-    check_some_orders(orders, retrieve_orders)
+    check_same_orders(orders, retrieve_orders)
     expect(retrieve_positions.size).to eq 0
     state = retrieve_state
     expect(state[:a]).to be > prev_state[:a]
@@ -133,19 +133,19 @@ shared_examples '停止と再開ができる' do
     expect(state[:b]).to be > 75
   end
 
-  def check_some_orders(prev, current)
+  def check_same_orders(prev, current)
     expect(prev.size).to eq current.size
     prev.each do |a|
       b = current.find { |o| o.internal_id == a.internal_id }
-      expect(a).to some_order(b)
+      expect(a).to same_order(b)
     end
   end
 
-  def check_some_positions(prev, current)
+  def check_same_positions(prev, current)
     expect(prev.size).to eq current.size
     prev.each do |a|
       b = current.find { |p| p.internal_id == a.internal_id }
-      expect(a).to some_position_ignore_current_price(b)
+      expect(a).to same_position_ignore_current_price(b)
     end
   end
 

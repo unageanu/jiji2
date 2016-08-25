@@ -1,6 +1,6 @@
 
 module Jiji::Test
-  def self.some_position?(a, b)
+  def self.same_position?(a, b)
     values_a = extract_position_values_without_id(a)
     values_b = extract_position_values_without_id(b)
     values_a == values_b
@@ -15,7 +15,7 @@ module Jiji::Test
     ]
   end
 
-  def self.some_position_ignore_current_price?(a, b)
+  def self.same_position_ignore_current_price?(a, b)
     values_a = extract_position_values_ignore_current_price(a)
     values_b = extract_position_values_ignore_current_price(b)
     values_a == values_b
@@ -30,7 +30,7 @@ module Jiji::Test
     ]
   end
 
-  def self.some_order?(a, b)
+  def self.same_order?(a, b)
     values_a = extract_order_values_without_id(a)
     values_b = extract_order_values_without_id(b)
     values_a == values_b
@@ -41,20 +41,20 @@ module Jiji::Test
   end
 end
 
-RSpec::Matchers.define :some_position do |expected|
+RSpec::Matchers.define :same_position do |expected|
   match do |actual|
-    Jiji::Test.some_position?(actual, expected)
+    Jiji::Test.same_position?(actual, expected)
   end
 end
 
-RSpec::Matchers.define :some_position_ignore_current_price do |expected|
+RSpec::Matchers.define :same_position_ignore_current_price do |expected|
   match do |actual|
-    Jiji::Test.some_position_ignore_current_price?(actual, expected)
+    Jiji::Test.same_position_ignore_current_price?(actual, expected)
   end
 end
 
-RSpec::Matchers.define :some_order do |expected|
+RSpec::Matchers.define :same_order do |expected|
   match do |actual|
-    Jiji::Test.some_order?(actual, expected)
+    Jiji::Test.same_order?(actual, expected)
   end
 end

@@ -169,7 +169,7 @@ describe TrapRepeatIfDone do
       orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
       orders.length.times do |i|
-        expect(orders[i]).to some_order(prev[i])
+        expect(orders[i]).to same_order(prev[i])
       end
 
       # baseが変化しない場合も、新しい注文は登録されない
@@ -179,7 +179,7 @@ describe TrapRepeatIfDone do
       orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
       orders.length.times do |i|
-        expect(orders[i]).to some_order(prev[i])
+        expect(orders[i]).to same_order(prev[i])
       end
 
       # baseが変化すると、新しい注文が登録される
@@ -283,7 +283,7 @@ describe TrapRepeatIfDone do
       orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
       orders.length.times do |i|
-        expect(orders[i]).to some_order(prev[i])
+        expect(orders[i]).to same_order(prev[i])
       end
 
       # 建玉を決済すると、注文が再登録される
@@ -406,7 +406,7 @@ describe TrapRepeatIfDone do
       orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 7
       orders.length.times do |i|
-        expect(orders[i]).to some_order(prev[i])
+        expect(orders[i]).to same_order(prev[i])
       end
     end
   end
@@ -515,7 +515,7 @@ describe TrapRepeatIfDone do
       orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
       orders.length.times do |i|
-        expect(orders[i]).to some_order(prev[i])
+        expect(orders[i]).to same_order(prev[i])
       end
 
       # baseが変化しない場合も、新しい注文は登録されない
@@ -525,7 +525,7 @@ describe TrapRepeatIfDone do
       orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
       orders.length.times do |i|
-        expect(orders[i]).to some_order(prev[i])
+        expect(orders[i]).to same_order(prev[i])
       end
 
       # baseが変化すると、新しい注文が登録される
@@ -629,7 +629,7 @@ describe TrapRepeatIfDone do
       orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 6
       orders.length.times do |i|
-        expect(orders[i]).to some_order(prev[i])
+        expect(orders[i]).to same_order(prev[i])
       end
 
       # 建玉を決済すると、注文が再登録される
@@ -752,7 +752,7 @@ describe TrapRepeatIfDone do
       orders = broker.orders.sort_by { |o| o.internal_id }
       expect(orders.length).to eq 7
       orders.length.times do |i|
-        expect(orders[i]).to some_order(prev[i])
+        expect(orders[i]).to same_order(prev[i])
       end
     end
   end

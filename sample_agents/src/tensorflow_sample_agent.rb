@@ -28,7 +28,7 @@ TensorFlowと連携してトレードするエージェントのサンプル
     @cross = Cross.new
     @mode  = create_mode(@exec_mode)
 
-    @graph = graph_factory.create('MACD',
+    @graph = graph_factory.create('移動平均',
       :rate, :last, ['#FF6633', '#FFAA22'])
   end
 
@@ -148,7 +148,7 @@ TensorFlowと連携してトレードするエージェントのサンプル
 end
 
 
-# トレード結果とその時の各種指標。
+# トレード結果とトレード時の各種指標。
 # MongoDBに格納してTensorFlowの学習データにする
 class TradeAndSignals
 

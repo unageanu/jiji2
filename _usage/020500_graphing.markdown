@@ -8,6 +8,8 @@ nav_class_name: "lv2"
 エージェントでグラフデータを出力しておくことで、 ローソク足チャートにグラフを描くことができます。
 移動平均線やMACDなどをグラフとして表示して、エージェントの動作検証に利用できます。
 
+![エージェント編集画面](/images/usage/graphing/graph01.png)
+
 グラフを描くには、`graph_factory` を使用します。必要な手順は次の通りです。
 
 1. `graph_factory#create(label, type, aggregation_type, colors, axises)`で、名前やオプションを指定してグラフ( `Graph` )を作成
@@ -50,6 +52,11 @@ nav_class_name: "lv2"
         <li><code>:rate</code> .. グラフをレート情報に重ねて表示します。移動平均線やボリンジャーバンド向けです。</li>
         <li><code>:line</code> .. 通常の線グラフとして描画します。グラフは、チャートの下の部分に表示されます。</li>
       </ul>
+
+      <div class="hide-on-mobile" style="margin-left:16px">
+        <img src="/images/usage/graphing/graph02.png" />
+      </div>
+
       省略した場合、 <code>:line</code>が使用されます。
     </td>
   </tr>

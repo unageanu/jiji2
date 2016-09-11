@@ -21,7 +21,7 @@ describe("TableModel", () => {
         this.filterForCount = filterCondition;
         deferred.resolve({count:this.itemCount});
         return deferred;
-      },
+      }, 
       itemCount: 90
     };
     model = new TableModel({name: "asc"}, 20);
@@ -31,6 +31,7 @@ describe("TableModel", () => {
   describe("load", () => {
     it("loadで一覧を取得できる", () => {
       model.load();
+      expect(model.items).toEqual( null );
       loader.deferred.resolve(createItems(0, 20));
 
       expect(loader.offset).toEqual( 0 );

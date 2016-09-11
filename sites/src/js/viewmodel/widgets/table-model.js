@@ -22,6 +22,7 @@ export default class TableModel extends Observable {
 
   load() {
     const d = new Deferred ();
+    this.items = null;
     this.loader.count(this.filterCondition).then((count)=>{
       this.totalCount = count.count;
       this.processCount(count);

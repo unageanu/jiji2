@@ -9,7 +9,7 @@ import IconButton from "material-ui/IconButton"
 import Card from "material-ui/Card"
 
 const keys = new Set([
-  "items", "pageSelectors"
+  "items", "pageSelectors", "loading"
 ]);
 
 export default class LogViewer extends AbstractComponent {
@@ -18,7 +18,8 @@ export default class LogViewer extends AbstractComponent {
     super(props);
     this.state = {
       items : [],
-      pageSelectors: []
+      pageSelectors: [],
+      loading: true
     };
   }
 
@@ -52,7 +53,7 @@ export default class LogViewer extends AbstractComponent {
   }
 
   createBodyContnet() {
-    if (!this.state.items) {
+    if (!this.state.items || this.state.loading) {
       return <div className="center-information loading">
         <LoadingImage left={-20}/>
       </div>;

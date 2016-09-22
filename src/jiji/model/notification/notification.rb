@@ -20,7 +20,8 @@ module Jiji::Model::Notification
       class_name: 'Jiji::Model::Agents::AgentSetting'
     }
     belongs_to :backtest, {
-      class_name: 'Jiji::Model::Trading::BackTestProperties'
+      class_name: 'Jiji::Model::Trading::BackTestProperties',
+      optional: true
     }
 
     field :actions,       type: Array

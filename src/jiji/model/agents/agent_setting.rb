@@ -13,7 +13,8 @@ module Jiji::Model::Agents
     store_in collection: 'agent_settings'
 
     belongs_to :backtest, {
-      class_name: 'Jiji::Model::Trading::BackTestProperties'
+      class_name: 'Jiji::Model::Trading::BackTestProperties',
+      optional: true
     }
     has_many :positions, {
       class_name: 'Jiji::Model::Trading::Position',

@@ -16,7 +16,7 @@ module Jiji::Model::Graphing
 
     belongs_to :backtest, {
       class_name: 'Jiji::Model::Trading::BackTestProperties',
-      optional: true
+      optional:   true
     }
     has_many :graph_data, {
       class_name: 'Jiji::Model::Graphing::GraphData'

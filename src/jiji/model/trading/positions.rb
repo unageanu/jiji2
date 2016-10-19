@@ -83,10 +83,10 @@ module Jiji::Model::Trading
         unless PositionSynchronizer.are_equals?(original, new_position)
           PositionSynchronizer.sync_position(original, new_position)
         end
-        return original
+        original
       else
         new_position.save
-        return new_position
+        new_position
       end
     end
 

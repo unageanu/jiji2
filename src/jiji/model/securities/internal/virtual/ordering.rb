@@ -69,12 +69,12 @@ module Jiji::Model::Securities::Internal::Virtual
     def create_order_result(order, position, result)
       if order.type == :market
         if position.units > 0
-          return OrderResult.new(nil, order, nil, result[:closed])
+          OrderResult.new(nil, order, nil, result[:closed])
         else
-          return OrderResult.new(nil, nil, result[:reduced], result[:closed])
+          OrderResult.new(nil, nil, result[:reduced], result[:closed])
         end
       else
-        return OrderResult.new(order, nil, nil, [])
+        OrderResult.new(order, nil, nil, [])
       end
     end
 

@@ -272,7 +272,7 @@ module Signals
     sd = standard_division(data) { |s| s - ma }
     pivot.each_with_object([]) do |r, res|
       res.unshift(ma + sd * r)
-      res.push(ma + sd * r * -1) if r != 0
+      res.push(ma + sd * r * -1) if r.nonzero?
     end
   end
 
@@ -389,7 +389,7 @@ module Signals
   end
 
   def calculate_rsi(data)
-    (data[0] + data[1]) == 0 ? 0.0 : data[0] / (data[0] + data[1]) * 100
+    (data[0] + data[1]).zero? ? 0.0 : data[0] / (data[0] + data[1]) * 100
   end
 
   def calculate_dmi_from_data(data)

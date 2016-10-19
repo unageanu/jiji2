@@ -7,7 +7,7 @@ module Jiji::Web::Helpers
       if request.env['CONTENT_TYPE'] =~ %r{^application/x-msgpack}
         MessagePack.unpack(request.body)
       else
-        JSON.load(request.body)
+        JSON.parse(request.body)
       end
     end
 

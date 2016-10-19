@@ -22,7 +22,7 @@ describe TensorFlowSampleAgent do
   end
 
   it 'エージェントを実行できる' do
-    test = runner.start_backtest([{
+    runner.start_backtest([{
       agent_class: 'TensorFlowSampleAgent@tensorflow_sample_agent.rb',
       agent_name:  'テスト1',
       properties:  {
@@ -33,8 +33,8 @@ describe TensorFlowSampleAgent do
     sleep 0.5
 
     runner.restart
-    test = runner.tests[0]
+    backtest = runner.tests[0]
 
-    sleep 0.2 until test.process.finished?
+    sleep 0.2 until backtest.process.finished?
   end
 end

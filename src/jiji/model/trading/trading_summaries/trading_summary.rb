@@ -242,7 +242,7 @@ module Jiji::Model::Trading::TradingSummaries
     end
 
     def calculate_profit_factor
-      return 0 if @total_loss == 0
+      return 0 if @total_loss.zero?
       @total_profit / (@total_loss * -1)
     end
 

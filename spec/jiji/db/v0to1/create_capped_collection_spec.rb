@@ -7,8 +7,8 @@ describe Jiji::Db::CreateCappedCollections do
 
   let(:script) do
     Jiji::Db::CreateCappedCollections.new({
-      notifications: { size:  22_240,  max: 3 },
-      log_data:      { size: 400_000,  max: 2 }
+      notifications: { size: 22_240, max: 3 },
+      log_data:      { size: 400_000, max: 2 }
     })
   end
   let(:client) { Jiji::Db::SchemeStatus.mongo_client }

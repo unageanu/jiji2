@@ -21,7 +21,7 @@ module Jiji::Model::Notification
     }
     belongs_to :backtest, {
       class_name: 'Jiji::Model::Trading::BackTestProperties',
-      optional: true
+      optional:   true
     }
 
     field :actions,       type: Array

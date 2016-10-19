@@ -54,11 +54,11 @@ module Jiji::Model::Trading
     store_in collection: 'positions'
     belongs_to :agent, {
       class_name: 'Jiji::Model::Agents::AgentSetting',
-      optional: true
+      optional:   true
     }
     belongs_to :backtest, {
       class_name: 'Jiji::Model::Trading::BackTestProperties',
-      optional: true
+      optional:   true
     }
 
     field :internal_id,           type: String

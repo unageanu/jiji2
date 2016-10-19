@@ -85,10 +85,8 @@ module Jiji::Model::Securities::Internal::Oanda
     def convert_response_to_reduced_position(item, detail)
       if detail.id
         # trade_reducedからは損益は取得できない。ローカルで計算した近似値を使う
-        return ReducedPosition.new(detail.id.to_s,
+        ReducedPosition.new(detail.id.to_s,
           detail.units, item.price, item.time, nil)
-      else
-        return nil
       end
     end
 

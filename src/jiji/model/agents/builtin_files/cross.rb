@@ -75,7 +75,7 @@ class Cross
 
   def calculate_state(fast, lazy)
     @trend = fast <=> lazy
-    @cross = if @cross_prev && @trend != @cross_prev && @trend != 0
+    @cross = if @cross_prev && @trend != @cross_prev && @trend.nonzero?
                @trend > @cross_prev ? :up : :down
              else
                :none

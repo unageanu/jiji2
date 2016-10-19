@@ -77,7 +77,7 @@ module Jiji::Model::Trading
 
     # for internal use.
     def update_price(position, pair) #:nodoc:
-      return if trailing_stop == 0
+      return if trailing_stop && trailing_stop.zero?
       price = BigDecimal.new(position.current_price, 10)
       amount = (trailing_stop * pair.pip)
       self.trailing_amount = calculate_trailing_amount(position, price, amount)
@@ -88,15 +88,17 @@ module Jiji::Model::Trading
     def calculate_trailing_amount(position, price, amount)
       if position.sell_or_buy == :buy
         new_price = (price - amount).to_f
-        trailing_amount == 0 ? new_price : [new_price, trailing_amount].max
+        trailing_amount && trailing_amount.zero? ?
+          new_price : [new_price, trailing_amount].max
       else
         new_price = (price + amount).to_f
-        trailing_amount == 0 ? new_price : [new_price, trailing_amount].min
+        trailing_amount && trailing_amount.zero? ?
+          new_price : [new_price, trailing_amount].min
       end
     end
 
     def should_take_profit?(position)
-      return false if take_profit == 0
+      return false if take_profit && take_profit.zero?
       if position.sell_or_buy == :buy
         return position.current_price >= take_profit
       else
@@ -105,7 +107,7 @@ module Jiji::Model::Trading
     end
 
     def should_stop_loss?(position)
-      return false if stop_loss == 0
+      return false if stop_loss && stop_loss.zero?
       if position.sell_or_buy == :buy
         return position.current_price <= stop_loss
       else
@@ -114,7 +116,7 @@ module Jiji::Model::Trading
     end
 
     def should_trailing_stop?(position)
-      return false if trailing_amount == 0
+      return false if trailing_amount && trailing_amount.zero?
       if position.sell_or_buy == :buy
         return position.current_price <= trailing_amount
       else

@@ -61,7 +61,7 @@ module Jiji::Model::Securities::Internal::Virtual
     def validate_take_profit(options, sell_or_buy)
       price = options[:price]
       take_profit = options[:take_profit]
-      take_profit = nil if take_profit == 0
+      take_profit = nil if take_profit && take_profit.zero?
       return if take_profit.nil?
       should_be_positive_numeric('take_profit', take_profit)
       return if price.nil?
@@ -74,7 +74,7 @@ module Jiji::Model::Securities::Internal::Virtual
     def validate_stop_loss(options, sell_or_buy)
       price = options[:price]
       stop_loss = options[:stop_loss]
-      stop_loss = nil if stop_loss == 0
+      stop_loss = nil if stop_loss && stop_loss.zero?
       return if stop_loss.nil?
       should_be_positive_numeric('stop_loss', stop_loss)
       return if price.nil?

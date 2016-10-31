@@ -119,7 +119,7 @@ GEM
       rspec (>= 2.13, < 4)
       unparser
     rspec-support (3.5.0)
-    rubocop (0.44.1)
+    rubocop (0.45.0)
       parser (>= 2.3.1.1, < 3.0)
       powerpack (~> 0.1)
       rainbow (>= 1.99.1, < 3.0)

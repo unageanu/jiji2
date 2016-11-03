@@ -5,6 +5,8 @@ machine:
     version: 5.8.0
 
 dependencies:
+  pre:
+   - gem install bundler --pre
   post:
    - npm install:
        pwd:

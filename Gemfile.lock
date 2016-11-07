@@ -23,7 +23,7 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     bson (4.1.1)
-    codeclimate-test-reporter (1.0.0)
+    codeclimate-test-reporter (1.0.1)
     coderay (1.1.1)
     concord (0.1.5)
       adamantium (~> 0.2.0)

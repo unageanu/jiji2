@@ -67,7 +67,7 @@ GEM
     msgpack (0.5.12)
     multi_xml (0.5.5)
     netrc (0.11.0)
-    newrelic_rpm (3.17.0.325)
+    newrelic_rpm (3.17.1.326)
     oanda_api (0.9.5)
       http-exceptions (~> 0.0)
       httparty (~> 0.13, >= 0.13.5)

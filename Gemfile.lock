@@ -75,7 +75,7 @@ GEM
       http-exceptions (~> 0.0)
       httparty (~> 0.13, >= 0.13.5)
       persistent_httparty (~> 0.1)
-    parser (2.3.1.4)
+    parser (2.3.2.0)
       ast (~> 2.2)
     persistent_http (2.0.1)
       gene_pool (>= 1.3)

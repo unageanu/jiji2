@@ -16,6 +16,7 @@ gem 'msgpack', '0.5.12'
 gem 'rack'
 gem 'sinatra'
 gem 'puma'
+gem 'grpc'
 
 gem 'mongoid'
 
@@ -44,4 +45,5 @@ end
 group :development do
   gem 'rubocop'
   gem 'sigdump'
+  gem 'grpc-tools'
 end

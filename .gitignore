@@ -5,6 +5,7 @@
 /.env
 /build
 /misc
+*.pyc
 
 ### https://raw.github.com/github/gitignore/8ab86f6bb71e85b5046f1d921bbbe5ceec9063ba/Ruby.gitignore
 

@@ -35,6 +35,11 @@ RuboCop::RakeTask.new(:lint_spec) do |task|
   init_rubocop_task(task, ['spec','rest_spec','sample_agents/spec'])
 end
 
+desc 'Generate stubs.'
+task :generate_stub do |task|
+  sh "grpc_tools_ruby_protoc -I ./rpc/protos --ruby_out=rpc/ruby --python_out=./rpc/python --grpc_out=src/jiji/rpc ./rpc/protos/agent.proto"
+end
+
 RDoc::Task.new do |rd|
   rd.rdoc_dir = 'build/rdocs'
   rd.rdoc_files.include(

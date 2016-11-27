@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package jiji.rpc;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service AgentService {
+
+  rpc NextTick(NextTickRequest) returns (google.protobuf.Empty) {}
+
+  rpc Validate(AgentSource) returns (ValidationResult) {}
+  rpc Register(AgentSource) returns (google.protobuf.Empty) {}
+  rpc Unregister(AgentSource) returns (google.protobuf.Empty) {}
+
+  rpc GetAgentClasses(google.protobuf.Empty) returns (AgentClasses) {}
+
+  rpc CreateAgentInstance(AgentCreationRequest) returns (AgentCreationResult) {}
+
+}
+
+message Tick {
+
+  message Value {
+    double bid = 1;
+    double ask = 2;
+  }
+
+  google.protobuf.Timestamp timestamp = 1;
+  repeated Value values = 2;
+}
+
+message NextTickRequest {
+  string instance_id = 1;
+  Tick tick = 2;
+}
+
+message AgentSource {
+  string name = 1;
+  string body = 2;
+}
+
+message ValidationResult {
+  enum Status {
+    OK = 0;
+    ERROR = 1;
+  }
+  Status status = 1;
+  string error  = 2;
+}
+
+message AgentClasses {
+  message AgentClass {
+    message Property {
+      string id = 1;
+      string name = 2;
+      string default = 3;
+    }
+    string name = 1;
+    string description = 2;
+    repeated Property properties = 3;
+  }
+  repeated AgentClass classes = 1;
+}
+
+message AgentCreationRequest {
+  message PropertySetting {
+    string id = 1;
+    string value = 2;
+  }
+  string name = 1;
+  bytes state = 2;
+  repeated PropertySetting propertySettings = 3;
+}
+
+message AgentCreationResult {
+  string instance_id = 1;
+}

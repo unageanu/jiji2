@@ -60,7 +60,7 @@ GEM
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)
     mime-types (2.99.3)
-    mini_magick (4.5.1)
+    mini_magick (4.6.0)
     minitest (5.10.1)
     mongo (2.4.0)
       bson (~> 4.2.0)

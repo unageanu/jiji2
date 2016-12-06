@@ -68,7 +68,7 @@ GEM
       activemodel (~> 5.0)
       mongo (~> 2.3)
     msgpack (0.5.12)
-    multi_xml (0.5.5)
+    multi_xml (0.6.0)
     netrc (0.11.0)
     newrelic_rpm (3.17.1.326)
     oanda_api (0.9.5)
@@ -97,7 +97,7 @@ GEM
     rack-protection (1.5.3)
       rack
     rainbow (2.1.0)
-    rake (11.3.0)
+    rake (12.0.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)

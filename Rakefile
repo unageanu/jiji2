@@ -25,6 +25,11 @@ RSpec::Core::RakeTask.new(:rest_spec_messagepack) {|t|
   t.pattern    = 'rest_spec/use_messagepack_transport.rb'
 }
 
+desc "Run all python tests"
+task :test_python do |task|
+  sh "PYTHONPATH=./agent_services/python/src/:./agent_services/python/test/ python -m unittest discover -t ./agent_services/python/test/ -s ./agent_services/python/test/"
+end
+
 desc 'Run RuboCop on the src/spec directory'
 task :lint => [:lint_src, :lint_spec]
 

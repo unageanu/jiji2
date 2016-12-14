@@ -6,6 +6,8 @@
 /build
 /misc
 *.pyc
+.vscode
+.python-version
 
 ### https://raw.github.com/github/gitignore/8ab86f6bb71e85b5046f1d921bbbe5ceec9063ba/Ruby.gitignore
 
@@ -51,7 +53,8 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*

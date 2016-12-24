@@ -1,8 +1,8 @@
 import unittest
 
-from agent_registry import AgentRegistry
-from agent_source_loader import register_hook, unregister_hook
-import exceptions
+from jiji.model.agent_registry import AgentRegistry
+from jiji.model.agent_source_loader import register_hook, unregister_hook
+import jiji.model.exceptions
 import importlib
 
 class AgentSourceLoaderTest(unittest.TestCase):
@@ -23,20 +23,20 @@ def test_method3():
     """
 
     AGENT_01 = """
-import agent
+from jiji.model.agent import Agent
 import agent_utils
 
-class TestAgent(agent.Agent):
+class TestAgent(Agent):
 
     def method(self):
         return agent_utils.test_method()
     """
 
     AGENT_02 = """
-import agent
+from jiji.model.agent import Agent
 import agent_utils
 
-class TestAgent(agent.Agent):
+class TestAgent(Agent):
 
     def method(self):
         return agent_utils.test_method() + "x"

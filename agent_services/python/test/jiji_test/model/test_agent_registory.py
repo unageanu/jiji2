@@ -1,17 +1,17 @@
 import unittest
 
-from agent_registry import AgentRegistry
-import exceptions
+from jiji.model.agent_registry import AgentRegistry
+from jiji.model.exceptions import IllegalArgumentError
 
 class AgentRegistoryTest(unittest.TestCase):
 
     SOURCE_01 = """
-import agent
+from jiji.model.agent import Agent
 
-class TestAgent(agent.Agent):
+class TestAgent(Agent):
     pass
 
-class TestAgent2(agent.Agent):
+class TestAgent2(Agent):
     pass
 
 class OtherClass():
@@ -21,9 +21,9 @@ CONST = 100
     """
 
     SOURCE_02 = """
-import agent
+from jiji.model.agent import Agent
 
-class TestAgent(agent.Agent):
+class TestAgent(Agent):
     pass
     """
 
@@ -82,5 +82,5 @@ class TestAgent(agent.Agent):
             self.instance.get_agent_class("NotFound@test")
         with self.assertRaises(KeyError):
             self.instance.get_agent_class("NotFound@not_found")
-        with self.assertRaises(exceptions.IllegalArgumentError):
+        with self.assertRaises(IllegalArgumentError):
             self.instance.get_agent_class("not_found")

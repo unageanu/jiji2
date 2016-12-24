@@ -1,8 +1,8 @@
 import importlib
 import inspect
 
-import agent
-import exceptions
+from jiji.model.agent import Agent
+from jiji.model.exceptions import illigal_argument
 
 class AgentRegistry():
 
@@ -37,7 +37,7 @@ class AgentRegistry():
     def get_agent_class(self, name):
         steps = name.split("@")
         if len(steps) < 2 :
-            return exceptions.illigal_argument('illegal name. name={0}'.format(name))
+            return illigal_argument('illegal name. name={0}'.format(name))
         return self.contexts[steps[1]][steps[0]]
 
     def __extract_class_names(self, item):
@@ -51,7 +51,8 @@ class AgentRegistry():
 
     def __is_agent_class(self, property):
         return inspect.isclass(property) \
-           and issubclass(property, agent.Agent)
+           and issubclass(property, Agent) \
+           and property != Agent
 
     def __invalidate_cache(self, name):
         try:

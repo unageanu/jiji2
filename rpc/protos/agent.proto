@@ -9,14 +9,13 @@ service AgentService {
 
   rpc NextTick(NextTickRequest) returns (google.protobuf.Empty) {}
 
-  rpc Validate(AgentSource) returns (ValidationResult) {}
   rpc Register(AgentSource) returns (google.protobuf.Empty) {}
-  rpc Unregister(AgentSource) returns (google.protobuf.Empty) {}
+  rpc Unregister(AgentSourceName) returns (google.protobuf.Empty) {}
 
   rpc GetAgentClasses(google.protobuf.Empty) returns (AgentClasses) {}
 
   rpc CreateAgentInstance(AgentCreationRequest) returns (AgentCreationResult) {}
-
+  rpc GetAgentState(GetAgentStateRequest) returns (AgentState) {}
 }
 
 message Tick {
@@ -34,6 +33,11 @@ message NextTickRequest {
   string instance_id = 1;
   Tick tick = 2;
 }
+
+message AgentSourceName {
+  string name = 1;
+}
+
 
 message AgentSource {
   string name = 1;
@@ -68,11 +72,20 @@ message AgentCreationRequest {
     string id = 1;
     string value = 2;
   }
-  string name = 1;
-  bytes state = 2;
-  repeated PropertySetting propertySettings = 3;
+  string class_name = 1;
+  string agent_name = 2;
+  bytes state = 3;
+  repeated PropertySetting propertySettings = 4;
 }
 
 message AgentCreationResult {
   string instance_id = 1;
+}
+
+message GetAgentStateRequest {
+  string instance_id = 1;
+}
+
+message AgentState {
+  bytes state = 1;
 }

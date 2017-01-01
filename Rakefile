@@ -30,6 +30,12 @@ task :test_python do |task|
   sh "PYTHONPATH=./agent_services/python/src/:./agent_services/python/test/ python -m unittest discover -t ./agent_services/python/test/ -s ./agent_services/python/test/"
 end
 
+desc "Run all specs in agent_service/python/rpc_test directory"
+RSpec::Core::RakeTask.new(:python_rpc_spec) {|t|
+  t.rspec_opts = '-I src -I spec -I rest_spec -I rpc/ruby -I agent_services/python/rpc_test -fdoc'
+  t.pattern    = 'agent_services/python/rpc_test/all_specs.rb'
+}
+
 desc 'Run RuboCop on the src/spec directory'
 task :lint => [:lint_src, :lint_spec]
 
@@ -42,7 +48,8 @@ end
 
 desc 'Generate stubs.'
 task :generate_stub do |task|
-  sh "grpc_tools_ruby_protoc -I ./rpc/protos --ruby_out=rpc/ruby --python_out=./rpc/python --grpc_out=src/jiji/rpc ./rpc/protos/agent.proto"
+  sh "grpc_tools_ruby_protoc -I ./rpc/protos --ruby_out=rpc/ruby --grpc_out=rpc/ruby ./rpc/protos/agent.proto"
+  sh "python -m grpc_tools.protoc -I./rpc/protos --python_out=./rpc/python --grpc_python_out=./rpc/python ./rpc/protos/agent.proto"
 end
 
 RDoc::Task.new do |rd|

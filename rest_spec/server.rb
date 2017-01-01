@@ -21,6 +21,8 @@ module Jiji
 
       initialize_db
       pid = start_server(id)
+      puts "start server pid=#{pid}"
+
       register_shutdown_fook(pid)
 
       @running = true
@@ -33,14 +35,17 @@ module Jiji
     end
 
     def start_server(id)
-      log_dir = File.join(BUILD_DIR, 'rest_spec')
-      FileUtils.mkdir_p log_dir
-      pid = spawn(
+      log_dir = create_log_dir
+      return spawn(
         { 'RACK_ENV' => 'test', 'PORT' => '3000' },
         'bundle exec puma -C config/puma.rb',
         out: File.join(log_dir, "test_server_#{id}.log"), err: :out)
-      puts "start server pid=#{pid}"
-      pid
+    end
+
+    def create_log_dir
+      log_dir = File.join(BUILD_DIR, 'rest_spec')
+      FileUtils.mkdir_p log_dir
+      log_dir
     end
 
     def register_shutdown_fook(pid)

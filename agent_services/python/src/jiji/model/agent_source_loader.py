@@ -1,7 +1,9 @@
 import sys
+import inject
 import itertools
 from importlib.abc import MetaPathFinder, ResourceLoader
 from importlib.machinery import ModuleSpec
+from jiji.model.agent_registry import AgentRegistry
 
 class AgentSourcePathEntryFinder(MetaPathFinder):
     def __init__(self, registry):
@@ -31,7 +33,7 @@ class AgentSourceLoader(ResourceLoader):
     def get_data(self, path):
         return self.registry.get_agent_source(self.name)
 
-
+@inject.params(agent_registry=AgentRegistry)
 def register_hook(agent_registry):
     sys.meta_path.append(AgentSourcePathEntryFinder(agent_registry))
 

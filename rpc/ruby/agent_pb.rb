@@ -18,6 +18,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :instance_id, :string, 1
     optional :tick, :message, 2, "jiji.rpc.Tick"
   end
+  add_message "jiji.rpc.AgentSourceName" do
+    optional :name, :string, 1
+  end
   add_message "jiji.rpc.AgentSource" do
     optional :name, :string, 1
     optional :body, :string, 2
@@ -44,9 +47,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :default, :string, 3
   end
   add_message "jiji.rpc.AgentCreationRequest" do
-    optional :name, :string, 1
-    optional :state, :bytes, 2
-    repeated :propertySettings, :message, 3, "jiji.rpc.AgentCreationRequest.PropertySetting"
+    optional :class_name, :string, 1
+    optional :agent_name, :string, 2
+    optional :state, :bytes, 3
+    repeated :propertySettings, :message, 4, "jiji.rpc.AgentCreationRequest.PropertySetting"
   end
   add_message "jiji.rpc.AgentCreationRequest.PropertySetting" do
     optional :id, :string, 1
@@ -55,6 +59,12 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "jiji.rpc.AgentCreationResult" do
     optional :instance_id, :string, 1
   end
+  add_message "jiji.rpc.GetAgentStateRequest" do
+    optional :instance_id, :string, 1
+  end
+  add_message "jiji.rpc.AgentState" do
+    optional :state, :bytes, 1
+  end
 end
 
 module Jiji
@@ -62,6 +72,7 @@ module Jiji
     Tick = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.Tick").msgclass
     Tick::Value = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.Tick.Value").msgclass
     NextTickRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.NextTickRequest").msgclass
+    AgentSourceName = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentSourceName").msgclass
     AgentSource = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentSource").msgclass
     ValidationResult = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.ValidationResult").msgclass
     ValidationResult::Status = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.ValidationResult.Status").enummodule
@@ -71,5 +82,7 @@ module Jiji
     AgentCreationRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentCreationRequest").msgclass
     AgentCreationRequest::PropertySetting = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentCreationRequest.PropertySetting").msgclass
     AgentCreationResult = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentCreationResult").msgclass
+    GetAgentStateRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.GetAgentStateRequest").msgclass
+    AgentState = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentState").msgclass
   end
 end

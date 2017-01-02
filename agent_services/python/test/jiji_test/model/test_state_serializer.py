@@ -23,5 +23,5 @@ class StateSerializerTest(unittest.TestCase):
         self.do_serialize_and_deserialize(None)
 
     def do_serialize_and_deserialize(self, state):
-        bytes = self.instance.serialize(state)
-        self.assertEqual(self.instance.deserialize(bytes), state)
+        data = self.instance.serialize(state)
+        self.assertEqual(self.instance.deserialize(data), state)

@@ -2,8 +2,10 @@ import pickle
 
 class StateSerializer():
 
-    def deserialize(self, state):
+    @staticmethod
+    def deserialize(state):
         return pickle.loads(state)
 
-    def serialize(self, state):
+    @staticmethod
+    def serialize(state):
         return pickle.dumps(state)

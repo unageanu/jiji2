@@ -2,13 +2,17 @@
 
 class IllegalArgumentError(Exception):
     def __init__(self, message):
-        self.message = message;
+        super().__init__(message)
+        self.message = message
+
     def __str__(self):
         return self.message
 
 class NotFoundError(Exception):
     def __init__(self, message):
-        self.message = message;
+        super().__init__(message)
+        self.message = message
+
     def __str__(self):
         return self.message
 

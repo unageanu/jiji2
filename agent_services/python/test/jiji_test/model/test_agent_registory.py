@@ -52,18 +52,18 @@ class TestAgent(Agent):
             self.instance.get_agent_source("test2"), self.SOURCE_02)
         classes = self.instance.get_agent_class_names()
         classes.sort()
-        self.assertEqual(classes,
+        self.assertEqual(classes, \
             ["TestAgent2@test", "TestAgent@test", "TestAgent@test2"])
 
 
-        self.instance.unregister_source("test");
+        self.instance.unregister_source("test")
 
         self.assertEqual(self.instance.is_source_registered("test"), False)
         with self.assertRaises(KeyError):
             self.instance.get_agent_source("test")
-        self.assertEqual(self.instance.get_agent_class_names(),
+        self.assertEqual(self.instance.get_agent_class_names(), \
             ["TestAgent@test2"])
-        self.instance.unregister_source("test2");
+        self.instance.unregister_source("test2")
         self.assertEqual(self.instance.is_source_registered("test2"), False)
         with self.assertRaises(KeyError):
             self.instance.get_agent_source("test2")
@@ -75,8 +75,8 @@ class TestAgent(Agent):
 
     def test_get_agent_class(self):
         self.instance.register_source("test", self.SOURCE_02)
-        agentClass = self.instance.get_agent_class("TestAgent@test")
-        self.assertIsNotNone(agentClass())
+        agent_class = self.instance.get_agent_class("TestAgent@test")
+        self.assertIsNotNone(agent_class())
 
         with self.assertRaises(KeyError):
             self.instance.get_agent_class("NotFound@test")

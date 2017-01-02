@@ -1,10 +1,9 @@
 from concurrent import futures
 import time
-import inject
 import grpc
 
 import agent_pb2_grpc
-from jiji.model.agent_source_loader import register_hook, unregister_hook
+from jiji.model.agent_source_loader import register_hook
 from jiji.composing.injector import initialize
 from jiji.services.agent_service import AgentService
 
@@ -12,7 +11,7 @@ _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 
 def serve():
     initialize()
-    register_hook()
+    register_hook() # pylint: disable=no-value-for-parameter
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     register_services(server)
@@ -29,7 +28,7 @@ def serve():
 
 def register_services(server):
     agent_pb2_grpc.add_AgentServiceServicer_to_server(
-        AgentService(), server)
+        AgentService(), server)  # pylint: disable=no-value-for-parameter
 
 if __name__ == '__main__':
     serve()

@@ -2,7 +2,6 @@ import unittest
 
 from jiji.model.agent_builder import AgentBuilder
 from jiji.model.agent_registry import AgentRegistry
-import jiji.model.exceptions as exceptions
 
 class AgentBuilderTest(unittest.TestCase):
 
@@ -46,7 +45,7 @@ class TestAgent(Agent):
             "b": "bbb"
         })
         with self.assertRaises(AttributeError):
-            agent.state
+            agent.state # pylint: disable=pointless-statement
         self.assertEqual(agent.log, [
             "set_properties",
             "post_create"

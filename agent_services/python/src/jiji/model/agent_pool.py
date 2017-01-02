@@ -1,9 +1,4 @@
-import importlib
-import inspect
-import inject
-
 from jiji.model.exceptions import not_found
-from jiji.model.agent_builder import AgentBuilder
 
 class AgentPool():
 
@@ -15,12 +10,12 @@ class AgentPool():
         self.serial += 1
         return str(self.serial)
 
-    def register_instance(self, id, agent_instance):
-        self.pool[id] = agent_instance
-        return id
+    def register_instance(self, instance_id, agent_instance):
+        self.pool[instance_id] = agent_instance
+        return instance_id
 
-    def get_instance(self, id):
+    def get_instance(self, instance_id):
         try:
-            return self.pool[id]
+            return self.pool[instance_id]
         except KeyError:
-            not_found("agent not found. id=" + id)
+            not_found("agent not found. instance_id=" + instance_id)

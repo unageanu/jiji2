@@ -1,6 +1,6 @@
 import inject
 
-def config(binder):
+def config(binder): # pylint: disable=unused-argument
     pass
 
 def initialize():

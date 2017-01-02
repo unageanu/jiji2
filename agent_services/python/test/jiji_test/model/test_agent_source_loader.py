@@ -2,8 +2,6 @@ import unittest
 
 from jiji.model.agent_registry import AgentRegistry
 from jiji.model.agent_source_loader import register_hook, unregister_hook
-import jiji.model.exceptions
-import importlib
 
 class AgentSourceLoaderTest(unittest.TestCase):
 
@@ -56,21 +54,21 @@ raise "error"
     def test_import_utilities(self):
         self.registry.register_source("agent_utils", self.UTILS_01)
         self.registry.register_source("test_agent", self.AGENT_01)
-        agentClass = self.registry.get_agent_class("TestAgent@test_agent")
-        instance1 = agentClass()
+        agent_class = self.registry.get_agent_class("TestAgent@test_agent")
+        instance1 = agent_class()
         self.assertEqual(instance1.method(), "test")
 
         self.registry.register_source("agent_utils", self.UTILS_02)
         self.assertEqual(instance1.method(), "test2")
 
-        agentClass = self.registry.get_agent_class("TestAgent@test_agent")
-        instance2 = agentClass()
+        agent_class = self.registry.get_agent_class("TestAgent@test_agent")
+        instance2 = agent_class()
         self.assertEqual(instance2.method(), "test2")
 
 
         self.registry.register_source("test_agent", self.AGENT_02)
-        agentClass = self.registry.get_agent_class("TestAgent@test_agent")
-        instance3 = agentClass()
+        agent_class = self.registry.get_agent_class("TestAgent@test_agent")
+        instance3 = agent_class()
         self.assertEqual(instance3.method(), "test2x")
         self.assertEqual(instance2.method(), "test2")
         self.assertEqual(instance1.method(), "test2")
@@ -79,8 +77,8 @@ raise "error"
     def test_failed_to_load_utilities(self):
         self.registry.register_source("agent_utils", self.UTILS_01)
         self.registry.register_source("test_agent", self.AGENT_01)
-        agentClass = self.registry.get_agent_class("TestAgent@test_agent")
-        instance1 = agentClass()
+        agent_class = self.registry.get_agent_class("TestAgent@test_agent")
+        instance1 = agent_class()
         self.assertEqual(instance1.method(), "test")
 
         with self.assertRaises(Exception):
@@ -88,15 +86,15 @@ raise "error"
 
         self.assertEqual(instance1.method(), "test")
 
-        agentClass = self.registry.get_agent_class("TestAgent@test_agent")
-        instance2 = agentClass()
+        agent_class = self.registry.get_agent_class("TestAgent@test_agent")
+        instance2 = agent_class()
         self.assertEqual(instance2.method(), "test")
 
         with self.assertRaises(Exception):
-            self.registry.register_source("test_agent", ERROR_01)
+            self.registry.register_source("test_agent", self.ERROR_01)
 
-        agentClass = self.registry.get_agent_class("TestAgent@test_agent")
-        instance3 = agentClass()
+        agent_class = self.registry.get_agent_class("TestAgent@test_agent")
+        instance3 = agent_class()
         self.assertEqual(instance3.method(), "test")
         self.assertEqual(instance2.method(), "test")
         self.assertEqual(instance1.method(), "test")
@@ -104,13 +102,13 @@ raise "error"
     def test_unregister_utility_method(self):
         self.registry.register_source("agent_utils", self.UTILS_01)
         self.registry.register_source("test_agent", self.AGENT_01)
-        agentClass = self.registry.get_agent_class("TestAgent@test_agent")
-        instance1 = agentClass()
+        agent_class = self.registry.get_agent_class("TestAgent@test_agent")
+        instance1 = agent_class()
         self.assertEqual(instance1.method(), "test")
 
         self.registry.register_source("agent_utils", self.UTILS_03)
         self.assertEqual(instance1.method(), "test")
 
-        agentClass = self.registry.get_agent_class("TestAgent@test_agent")
-        instance2 = agentClass()
+        agent_class = self.registry.get_agent_class("TestAgent@test_agent")
+        instance2 = agent_class()
         self.assertEqual(instance2.method(), "test")

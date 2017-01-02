@@ -2,10 +2,15 @@ from abc import ABCMeta
 
 class Agent(metaclass=ABCMeta):
 
-    def get_description(self):
+    def __init__(self):
+        self.properties = {}
+
+    @classmethod
+    def get_description(cls):
         return ""
 
-    def get_property_infos(self):
+    @classmethod
+    def get_property_infos(cls):
         return {}
 
 
@@ -16,7 +21,7 @@ class Agent(metaclass=ABCMeta):
         self.properties = properties
 
 
-    def save_state(self):
+    def save_state(self): # pylint: disable=no-self-use
         return None
 
     def restore_state(self, state):

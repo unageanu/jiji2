@@ -13,10 +13,10 @@ class AgentRegistry():
     def register_source(self, name, body):
         context = dict()
         code = compile(body, name, 'exec')
-        exec(code, context)
+        exec(code, context) # pylint: disable=exec-used
         self.contexts[name] = context
         self.codes[name] = body
-        self.__invalidate_cache(name)
+        self._invalidate_cache(name)
 
     def unregister_source(self, name):
         del self.contexts[name]
@@ -36,7 +36,7 @@ class AgentRegistry():
 
     def get_agent_class(self, name):
         steps = name.split("@")
-        if len(steps) < 2 :
+        if len(steps) < 2:
             return illigal_argument('illegal name. name={0}'.format(name))
         return self.contexts[steps[1]][steps[0]]
 
@@ -44,19 +44,21 @@ class AgentRegistry():
         name = item[0]
         dic = item[1]
         names = []
-        for property in dic.items():
-            if self.__is_agent_class(property[1]):
-                names.append('{0}@{1}'.format(property[0], name))
+        for item in dic.items():
+            if self._is_agent_class(item[1]):
+                names.append('{0}@{1}'.format(item[0], name))
         return names
 
-    def __is_agent_class(self, property):
-        return inspect.isclass(property) \
-           and issubclass(property, Agent) \
-           and property != Agent
+    @staticmethod
+    def _is_agent_class(candidate):
+        return inspect.isclass(candidate) \
+           and issubclass(candidate, Agent) \
+           and candidate != Agent
 
-    def __invalidate_cache(self, name):
+    @staticmethod
+    def _invalidate_cache(name):
         try:
             module = importlib.import_module(name)
             importlib.reload(module)
-        except Exception as e:
+        except Exception: # pylint: disable=broad-except
             pass # ignore

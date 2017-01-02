@@ -18,14 +18,14 @@ class TestAgent(Agent):
         self.log.append("post_create")
 
     def set_properties(self, properties):
-        self.log.append("set_properties_" + str(properties))
+        self.log.append("set_properties")
         self.properties = properties
 
     def save_state(self):
         self.log.append("save_state")
 
     def restore_state(self, state):
-        self.log.append("restore_state_" + str(state))
+        self.log.append("restore_state")
         self.state = state
 
     """
@@ -48,7 +48,7 @@ class TestAgent(Agent):
         with self.assertRaises(AttributeError):
             agent.state
         self.assertEqual(agent.log, [
-            "set_properties_{'a': 'aaa', 'b': 'bbb'}",
+            "set_properties",
             "post_create"
         ])
 
@@ -61,9 +61,9 @@ class TestAgent(Agent):
             "a": "aaa"
         })
         self.assertEqual(agent.log, [
-            "set_properties_{}",
+            "set_properties",
             "post_create",
-            "restore_state_{'a': 'aaa'}"
+            "restore_state"
         ])
 
         with self.assertRaises(KeyError):

@@ -37,7 +37,7 @@ RSpec::Core::RakeTask.new(:python_rpc_spec) {|t|
 }
 
 desc 'Run RuboCop on the src/spec directory'
-task :lint => [:lint_src, :lint_spec]
+task :lint => [:lint_src, :lint_spec, :lint_python]
 
 RuboCop::RakeTask.new(:lint_src) do |task|
   init_rubocop_task(task, ['src','sample_agents/src'])
@@ -46,7 +46,12 @@ RuboCop::RakeTask.new(:lint_spec) do |task|
   init_rubocop_task(task, ['spec','rest_spec','sample_agents/spec'])
 end
 
-desc 'Generate stubs.'
+task :lint_python do |task|
+  sh "PYTHONPATH=./agent_services/python/src/:./agent_services/python/test/:./agent_services/python/rpc_test/:./rpc/python/ pylint --rcfile=config/pylint/pylintrc agent_services/python/src agent_services/python/test/ agent_services/python/rpc_test/"
+end
+
+
+desc 'Generate rpc serices and stubs.'
 task :generate_stub do |task|
   sh "grpc_tools_ruby_protoc -I ./rpc/protos --ruby_out=rpc/ruby --grpc_out=rpc/ruby ./rpc/protos/agent.proto"
   sh "python -m grpc_tools.protoc -I./rpc/protos --python_out=./rpc/python --grpc_python_out=./rpc/python ./rpc/protos/agent.proto"

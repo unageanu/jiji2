@@ -1,3 +1,5 @@
 grpcio==1.0.4
 grpcio-tools==1.0.4
 inject==3.3.1
+
+pylint==1.6.4

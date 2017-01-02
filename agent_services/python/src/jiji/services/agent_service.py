@@ -29,23 +29,25 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
             return empty_pb2.Empty()
         except Exception as error: # pylint: disable=broad-except
             self._handle_error(error, context)
+        return empty_pb2.Empty()
+
 
     def Unregister(self, request, context):
         print(request)
         try:
-            self.agent_registry.unregister_source(request.name, request.body)
-            return empty_pb2.Empty()
+            self.agent_registry.unregister_source(request.name)
         except Exception as error: # pylint: disable=broad-except
             self._handle_error(error, context)
+        return empty_pb2.Empty()
 
     def GetAgentClasses(self, request, context):
-        print(request)
         try:
             agent_class_names = self.agent_registry.get_agent_class_names()
             classes = map(self.__extract_agent_class, agent_class_names)
             return agent_pb2.AgentClasses(classes=classes)
         except Exception as error: # pylint: disable=broad-except
             self._handle_error(error, context)
+        return agent_pb2.AgentClasses(classes=[])
 
     def CreateAgentInstance(self, request, context):
         print(request)
@@ -59,6 +61,7 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
             return agent_pb2.AgentCreationResult(agent_id)
         except Exception as error: # pylint: disable=broad-except
             self._handle_error(error, context)
+        return agent_pb2.AgentCreationResult("")
 
     def GetAgentState(self, request, context):
         print(request)
@@ -68,19 +71,20 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
             return agent_pb2.AgentState(state)
         except Exception as error: # pylint: disable=broad-except
             self._handle_error(error, context)
-
+        return agent_pb2.AgentState(None)
 
     def __extract_agent_class(self, name):
         agent_class = self.agent_registry.get_agent_class(name)
         property_infos = map(self._extract_agent_property_info, \
-            agent_class.get_property_infos().items())
-        return agent_pb2.AgentClasses.AgentClass(name, \
-            agent_class.get_description(), property_infos)
+            agent_class.get_property_infos())
+        return agent_pb2.AgentClasses.AgentClass(name=name, \
+            description=agent_class.get_description(), properties=property_infos)
 
     @staticmethod
     def _extract_agent_property_info(property_info):
-        return agent_pb2.AgentCreationRequest.PropertySetting(
-            property_info[0], property_info[1])
+        return agent_pb2.AgentClasses.AgentClass.Property(
+            id=property_info.property_id, name=property_info.name,
+            default=property_info.default)
 
     @staticmethod
     def _extract_properties(request):

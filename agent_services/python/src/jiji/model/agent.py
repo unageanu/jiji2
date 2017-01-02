@@ -5,13 +5,13 @@ class Agent(metaclass=ABCMeta):
     def __init__(self):
         self.properties = {}
 
-    @classmethod
-    def get_description(cls):
+    @staticmethod
+    def get_description():
         return ""
 
-    @classmethod
-    def get_property_infos(cls):
-        return {}
+    @staticmethod
+    def get_property_infos():
+        return []
 
 
     def post_create(self):
@@ -26,3 +26,10 @@ class Agent(metaclass=ABCMeta):
 
     def restore_state(self, state):
         pass
+
+
+class Property():
+    def __init__(self, property_id, name, default=""):
+        self.property_id = property_id
+        self.name = name
+        self.default = default

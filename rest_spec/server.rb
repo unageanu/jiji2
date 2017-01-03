@@ -36,7 +36,7 @@ module Jiji
 
     def start_server(id)
       log_dir = create_log_dir
-      return spawn(
+      spawn(
         { 'RACK_ENV' => 'test', 'PORT' => '3000' },
         'bundle exec puma -C config/puma.rb',
         out: File.join(log_dir, "test_server_#{id}.log"), err: :out)

@@ -28,11 +28,11 @@ describe StatisticalArbitrageAgent do
       properties:  {
         'pairs' => 'AUD,NZD,CAD',
         'trade_units' => '3000',
-        'distance' => "0.5"
+        'distance' => '0.5'
       }
     }], Time.new(2015, 12, 8, 0, 0, 0),
-    Time.new(2015, 12, 10, 0, 0, 0),
-    :one_hour, [:AUDJPY, :NZDJPY, :CADJPY])
+      Time.new(2015, 12, 10, 0, 0, 0),
+      :one_hour, [:AUDJPY, :NZDJPY, :CADJPY])
 
     sleep 0.5
 

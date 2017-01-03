@@ -32,7 +32,7 @@ class StatisticalArbitrageAgent
       trader = StatisticalArbitrage::CointegrationTrader.new(pairs[0].to_sym,
         pairs[1].to_sym, @trade_units.to_i, @distance.to_f, broker, logger)
       trader.cointegration_resolver = resolver
-      r[pairs.join()] = trader
+      r[pairs.join] = trader
     end
   end
 
@@ -74,8 +74,8 @@ class StatisticalArbitrageAgent
   end
 
   def create_pairs
-    @pairs.split(",").combination(2).map do |pair|
-      pair.map {|p| (p + "JPY").to_sym }
+    @pairs.split(',').combination(2).map do |pair|
+      pair.map { |p| (p + 'JPY').to_sym }
     end
   end
 
@@ -123,7 +123,6 @@ module StatisticalArbitrage
       Math.sqrt(sample_variance(array))
     end
   end
-
 
   class CointegrationTrader
 
@@ -188,8 +187,8 @@ module StatisticalArbitrage
       @broker.sell(@pair2, pair2_units)
       @logger.info("** buy_a : #{@units} #{pair2_units}") if @logger
       Position.new(:buy_a, [
-        {"pair" => @pair1, "units" => @units,      "sell_or_buy" => :buy},
-        {"pair" => @pair2, "units" => pair2_units, "sell_or_buy" => :sell}
+        { 'pair' => @pair1, 'units' => @units,      'sell_or_buy' => :buy },
+        { 'pair' => @pair2, 'units' => pair2_units, 'sell_or_buy' => :sell }
       ], index, @broker)
     end
 
@@ -199,8 +198,8 @@ module StatisticalArbitrage
       @broker.buy(@pair2, pair2_units)
       @logger.info("** sell_a : #{@units} #{pair2_units}") if @logger
       Position.new(:sell_a, [
-        {"pair" => @pair1, "units" => @units,      "sell_or_buy" => :sell},
-        {"pair" => @pair2, "units" => pair2_units, "sell_or_buy" => :buy}
+        { 'pair' => @pair1, 'units' => @units,      'sell_or_buy' => :sell },
+        { 'pair' => @pair2, 'units' => pair2_units, 'sell_or_buy' => :buy }
       ], index, @broker)
     end
 
@@ -233,7 +232,7 @@ module StatisticalArbitrage
     attr_reader :trade_type, :index, :positions
     attr_writer :broker
 
-    def initialize(trade_type, positions, index, broker=nil)
+    def initialize(trade_type, positions, index, broker = nil)
       @trade_type = trade_type
       @index      = index
       @positions  = positions
@@ -257,31 +256,30 @@ module StatisticalArbitrage
 
     def close_positions
       @positions.each do |p|
-        if p["sell_or_buy"] == :sell
-          @broker.buy(p["pair"], p["units"])
+        if p['sell_or_buy'] == :sell
+          @broker.buy(p['pair'], p['units'])
         else
-          @broker.sell(p["pair"], p["units"])
+          @broker.sell(p['pair'], p['units'])
         end
       end
     end
 
     def self.from_hash(hash)
       Position.new(
-        hash["trade_type"].to_sym,
-        hash["positions"],
-        hash["index"].to_i)
+        hash['trade_type'].to_sym,
+        hash['positions'],
+        hash['index'].to_i)
     end
 
     def to_hash
       {
-        "trade_type" => @trade_type,
-        "index" => @index,
-        "positions" => @positions
+        'trade_type' => @trade_type,
+        'index' => @index,
+        'positions' => @positions
       }
     end
 
   end
-
 
   class CointegrationResolver
 
@@ -395,9 +393,9 @@ module StatisticalArbitrage
     }.freeze
 
     def resolve(time, pair1, pair2)
-        key = time.strftime('%Y-%m')
-        COINTEGRATIONS[key] || COINTEGRATIONS['latest']
+      key = time.strftime('%Y-%m')
+      COINTEGRATIONS[key] || COINTEGRATIONS['latest']
     end
-  end
 
+  end
 end

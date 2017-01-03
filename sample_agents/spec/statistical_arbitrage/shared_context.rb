@@ -14,10 +14,10 @@ RSpec.shared_context 'utils for statistical arbitrage' do
 
   def create_mock_position(pair_name,
     sell_or_buy = :sell, units = 5000)
-    return {
-      "pair"        => pair_name,
-      "units"       => units,
-      "sell_or_buy" => sell_or_buy
+    {
+      'pair'        => pair_name,
+      'units'       => units,
+      'sell_or_buy' => sell_or_buy
     }
   end
 end

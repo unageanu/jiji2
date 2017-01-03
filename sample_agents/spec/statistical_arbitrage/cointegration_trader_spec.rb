@@ -280,18 +280,18 @@ describe StatisticalArbitrage::CointegrationTrader do
       expect(trader.positions.keys).to eq(%w(1 2))
 
       expect(trader.save_state).to eq([{
-        "trade_type"=>:sell_a,
-        "index"=>1,
-        "positions"=>[
-          {"pair"=>:AUDJPY, "units"=>100, "sell_or_buy"=>:sell},
-           {"pair"=>:NZDJPY, "units"=>50, "sell_or_buy"=>:buy}
+        'trade_type' => :sell_a,
+        'index' => 1,
+        'positions' => [
+          { 'pair' => :AUDJPY, 'units' => 100, 'sell_or_buy' => :sell },
+          { 'pair' => :NZDJPY, 'units' => 50, 'sell_or_buy' => :buy }
         ]
       }, {
-        "trade_type"=>:sell_a,
-        "index"=>2,
-        "positions"=>[
-          {"pair"=>:AUDJPY, "units"=>100, "sell_or_buy"=>:sell},
-          {"pair"=>:NZDJPY, "units"=>50, "sell_or_buy"=>:buy}
+        'trade_type' => :sell_a,
+        'index' => 2,
+        'positions' => [
+          { 'pair' => :AUDJPY, 'units' => 100, 'sell_or_buy' => :sell },
+          { 'pair' => :NZDJPY, 'units' => 50, 'sell_or_buy' => :buy }
         ]
       }])
     end

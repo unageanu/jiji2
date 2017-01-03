@@ -76,3 +76,12 @@ Metrics/ModuleLength:
 
 Style/MultilineTernaryOperator:
   Enabled: false
+
+Style/SingleLineBlockParams:
+  Methods:
+    - reduce:
+      - a
+      - e
+    - inject:
+      - a
+      - e

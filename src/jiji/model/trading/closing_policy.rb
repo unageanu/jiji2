@@ -87,14 +87,22 @@ module Jiji::Model::Trading
 
     def calculate_trailing_amount(position, price, amount)
       if position.sell_or_buy == :buy
-        new_price = (price - amount).to_f
-        trailing_amount && trailing_amount.zero? ?
-          new_price : [new_price, trailing_amount].max
+        calculate_trailing_amount_for_buying(position, price, amount)
       else
-        new_price = (price + amount).to_f
-        trailing_amount && trailing_amount.zero? ?
-          new_price : [new_price, trailing_amount].min
+        calculate_trailing_amount_for_selling(position, price, amount)
       end
+    end
+
+    def calculate_trailing_amount_for_buying(position, price, amount)
+      new_price = (price - amount).to_f
+      trailing_amount && trailing_amount.zero? ?
+        new_price : [new_price, trailing_amount].max
+    end
+
+    def calculate_trailing_amount_for_selling(position, price, amount)
+      new_price = (price + amount).to_f
+      trailing_amount && trailing_amount.zero? ?
+        new_price : [new_price, trailing_amount].min
     end
 
     def should_take_profit?(position)
@@ -125,10 +133,7 @@ module Jiji::Model::Trading
     end
 
     def values
-      [
-        take_profit,   stop_loss,
-        trailing_stop, trailing_amount
-      ]
+      [take_profit, stop_loss, trailing_stop, trailing_amount]
     end
 
   end

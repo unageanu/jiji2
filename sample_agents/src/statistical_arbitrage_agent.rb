@@ -28,12 +28,7 @@ class StatisticalArbitrageAgent
       :line, :last, ['#779999', '#997799', '#999977'])
 
     resolver = create_resolver
-    @traders = create_pairs.each_with_object({}) do |pairs, r|
-      trader = StatisticalArbitrage::CointegrationTrader.new(pairs[0].to_sym,
-        pairs[1].to_sym, @trade_units.to_i, @distance.to_f, broker, logger)
-      trader.cointegration_resolver = resolver
-      r[pairs.join] = trader
-    end
+    @traders = create_traders(resolver)
   end
 
   def next_tick(tick)
@@ -76,6 +71,15 @@ class StatisticalArbitrageAgent
   def create_pairs
     @pairs.split(',').combination(2).map do |pair|
       pair.map { |p| (p + 'JPY').to_sym }
+    end
+  end
+
+  def create_traders(resolver)
+    create_pairs.each_with_object({}) do |pairs, r|
+      trader = StatisticalArbitrage::CointegrationTrader.new(pairs[0].to_sym,
+        pairs[1].to_sym, @trade_units.to_i, @distance.to_f, broker, logger)
+      trader.cointegration_resolver = resolver
+      r[pairs.join] = trader
     end
   end
 
@@ -164,11 +168,23 @@ module StatisticalArbitrage
 
     def log(spread, tick, coint, index)
       return unless @logger
-      ratio = ((spread - coint[:mean]) / (coint[:sd] * @distance)).round(3)
+      ratio = calculate_ratio(spread, coint)
       @logger.info(
-        "#{tick.timestamp} #{@pair1} #{@pair2} #{tick[@pair1].bid} #{tick[@pair2].bid}" \
+        "#{tick.timestamp} #{@pair1} #{@pair2} #{tick_to_string(tick)}" \
       + " #{spread.to_f.round(3)} #{@distance} " \
-      + " #{coint[:slope]} #{index} #{coint[:sd]} #{coint[:mean]} #{ratio}")
+      + " #{coint_to_string(coint)} #{ratio}")
+    end
+
+    def calculate_ratio(spread, coint)
+      ((spread - coint[:mean]) / (coint[:sd] * @distance)).round(3)
+    end
+
+    def tick_to_string(tick)
+      "#{tick[@pair1].bid} #{tick[@pair2].bid}"
+    end
+
+    def coint_to_string(coint)
+      "#{coint[:slope]} #{index} #{coint[:sd]} #{coint[:mean]}"
     end
 
     def do_takeprofit(index)
@@ -321,6 +337,7 @@ module StatisticalArbitrage
       end
     end
 
+    # rubocop:disable Metrics/AbcSize,Style/MethodLength
     def linner_least_squares(rates)
       a = b = c = d = BigDecimal.new(0.0, 15)
       rates.each do |r|
@@ -334,16 +351,24 @@ module StatisticalArbitrage
       n = rates.size
       [(n * a - b * c) / (n * d - b**2), (d * c - a * b) / (n * d - b**2)]
     end
+    # rubocop:enable Metrics/AbcSize, Style/MethodLength
 
     def retrieve_rates(time, pair1, pair2)
       rates1 = retrieve_rates_from_quandl(time, pair1)
       rates2 = retrieve_rates_from_quandl(time, pair2)
       merged = {}
-      rates1.each { |rate| merged[rate['date']] = [rate['rate']] unless rate['rate'].nil? }
-      rates2.each do |rate|
-        merged[rate['date']] << rate['rate'] if merged.include?(rate['date'])
-      end
+      merge_rates(merged, rates1)
+      merge_rates(merged, rates2)
       merged.values.reject { |d| d.length < 2 }
+    end
+
+    def merge_rates(hash, rates)
+      rates.each do |rate|
+        date = rate['date']
+        next if rate['rate'].nil?
+        hash[date] = [] unless hash.include?(date)
+        hash[date] << rate['rate']
+      end
     end
 
     def retrieve_rates_from_quandl(time, pair)

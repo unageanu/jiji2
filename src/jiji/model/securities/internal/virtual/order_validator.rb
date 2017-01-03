@@ -61,10 +61,8 @@ module Jiji::Model::Securities::Internal::Virtual
     def validate_take_profit(options, sell_or_buy)
       price = options[:price]
       take_profit = options[:take_profit]
-      take_profit = nil if take_profit && take_profit.zero?
-      return if take_profit.nil?
+      return if take_profit.nil? || take_profit.zero? || price.nil?
       should_be_positive_numeric('take_profit', take_profit)
-      return if price.nil?
       if sell_or_buy == :buy ? price > take_profit : price < take_profit
         raise_request_error('Invalid takeProfit error: take_profit is ' \
           "below price. price=#{price} take_profit=#{take_profit}")
@@ -74,10 +72,8 @@ module Jiji::Model::Securities::Internal::Virtual
     def validate_stop_loss(options, sell_or_buy)
       price = options[:price]
       stop_loss = options[:stop_loss]
-      stop_loss = nil if stop_loss && stop_loss.zero?
-      return if stop_loss.nil?
+      return if stop_loss.nil? || stop_loss.zero? || price.nil?
       should_be_positive_numeric('stop_loss', stop_loss)
-      return if price.nil?
       if sell_or_buy == :buy ? price < stop_loss : price > stop_loss
         raise_request_error('Invalid stop_loss error: ' \
           "stop_loss is below price. price=#{price} stop_loss=#{stop_loss}")

@@ -26,7 +26,7 @@ RSpec::Core::RakeTask.new(:rest_spec_messagepack) {|t|
 }
 
 desc "Run all python tests"
-task :test_python do |task|
+task :python_spec do |task|
   sh "PYTHONPATH=./agent_services/python/src/:./agent_services/python/test/ python -m unittest discover -t ./agent_services/python/test/ -s ./agent_services/python/test/"
 end
 
@@ -37,16 +37,16 @@ RSpec::Core::RakeTask.new(:python_rpc_spec) {|t|
 }
 
 desc 'Run RuboCop on the src/spec directory'
-task :lint => [:lint_src, :lint_spec, :lint_python]
+task :lint => [:lint_src, :lint_spec, :lint_python_src]
 
 RuboCop::RakeTask.new(:lint_src) do |task|
   init_rubocop_task(task, ['src','sample_agents/src'])
 end
 RuboCop::RakeTask.new(:lint_spec) do |task|
-  init_rubocop_task(task, ['spec','rest_spec','sample_agents/spec'])
+  init_rubocop_task(task, ['spec','rest_spec','sample_agents/spec', 'agent_services/python/rpc_test'])
 end
 
-task :lint_python do |task|
+task :lint_python_src do |task|
   sh "PYTHONPATH=./agent_services/python/src/:./agent_services/python/test/:./agent_services/python/rpc_test/:./rpc/python/ pylint --rcfile=config/pylint/pylintrc agent_services/python/src agent_services/python/test/ agent_services/python/rpc_test/"
 end
 

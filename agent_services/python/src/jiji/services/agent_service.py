@@ -61,6 +61,14 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
             self._handle_error(error, context)
         return agent_pb2.AgentCreationResult(instance_id="")
 
+    def DeleteAgentInstance(self, request, context):
+        try:
+            self.agent_pool.unregister_instance(request.instance_id)
+            return empty_pb2.Empty()
+        except Exception as error: # pylint: disable=broad-except
+            self._handle_error(error, context)
+        return empty_pb2.Empty()
+
     def GetAgentState(self, request, context):
         print(request)
         try:

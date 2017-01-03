@@ -59,6 +59,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "jiji.rpc.AgentCreationResult" do
     optional :instance_id, :string, 1
   end
+  add_message "jiji.rpc.AgentDeletionRequest" do
+    optional :instance_id, :string, 1
+  end
   add_message "jiji.rpc.GetAgentStateRequest" do
     optional :instance_id, :string, 1
   end
@@ -82,6 +85,7 @@ module Jiji
     AgentCreationRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentCreationRequest").msgclass
     AgentCreationRequest::PropertySetting = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentCreationRequest.PropertySetting").msgclass
     AgentCreationResult = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentCreationResult").msgclass
+    AgentDeletionRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentDeletionRequest").msgclass
     GetAgentStateRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.GetAgentStateRequest").msgclass
     AgentState = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentState").msgclass
   end

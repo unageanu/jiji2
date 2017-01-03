@@ -13,6 +13,8 @@ import agent_pb2 as agent__pb2
 import agent_pb2 as agent__pb2
 import agent_pb2 as agent__pb2
 import agent_pb2 as agent__pb2
+import google.protobuf.empty_pb2 as google_dot_protobuf_dot_empty__pb2
+import agent_pb2 as agent__pb2
 import agent_pb2 as agent__pb2
 
 
@@ -49,6 +51,11 @@ class AgentServiceStub(object):
         request_serializer=agent__pb2.AgentCreationRequest.SerializeToString,
         response_deserializer=agent__pb2.AgentCreationResult.FromString,
         )
+    self.DeleteAgentInstance = channel.unary_unary(
+        '/jiji.rpc.AgentService/DeleteAgentInstance',
+        request_serializer=agent__pb2.AgentDeletionRequest.SerializeToString,
+        response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
     self.GetAgentState = channel.unary_unary(
         '/jiji.rpc.AgentService/GetAgentState',
         request_serializer=agent__pb2.GetAgentStateRequest.SerializeToString,
@@ -79,6 +86,11 @@ class AgentServiceServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def CreateAgentInstance(self, request, context):
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def DeleteAgentInstance(self, request, context):
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
@@ -115,6 +127,11 @@ def add_AgentServiceServicer_to_server(servicer, server):
           servicer.CreateAgentInstance,
           request_deserializer=agent__pb2.AgentCreationRequest.FromString,
           response_serializer=agent__pb2.AgentCreationResult.SerializeToString,
+      ),
+      'DeleteAgentInstance': grpc.unary_unary_rpc_method_handler(
+          servicer.DeleteAgentInstance,
+          request_deserializer=agent__pb2.AgentDeletionRequest.FromString,
+          response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
       ),
       'GetAgentState': grpc.unary_unary_rpc_method_handler(
           servicer.GetAgentState,

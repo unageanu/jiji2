@@ -15,6 +15,8 @@ service AgentService {
   rpc GetAgentClasses(google.protobuf.Empty) returns (AgentClasses) {}
 
   rpc CreateAgentInstance(AgentCreationRequest) returns (AgentCreationResult) {}
+  rpc DeleteAgentInstance(AgentDeletionRequest) returns (google.protobuf.Empty) {}
+
   rpc GetAgentState(GetAgentStateRequest) returns (AgentState) {}
 }
 
@@ -79,6 +81,10 @@ message AgentCreationRequest {
 }
 
 message AgentCreationResult {
+  string instance_id = 1;
+}
+
+message AgentDeletionRequest {
   string instance_id = 1;
 }
 

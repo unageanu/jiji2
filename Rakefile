@@ -6,7 +6,7 @@ require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 require 'rdoc/task'
 
-task :default   => [:spec,:rest_spec,:lint]
+task :default   => [:spec,:rest_spec,:python_spec,:python_rpc_spec,:lint]
 task :rest_spec => [:rest_spec_json, :rest_spec_messagepack]
 
 desc "Run all specs in spec directory"

@@ -12,7 +12,7 @@ nav_class_name: "lv2"
 - 月額料金をなるべく安く済ませるため、もっともシンプルな構成にしています。
   - 月額: $6.5 + データ転送料 ～
   - CloudWatchでの死活監視など必要であれば、別途設定を行ってください。
-- [Amazon Web Service](https://aws.amazon.com/jp/)のアカウントを用意していることを前提としているので、事前にご用意ください。
+- [Amazon Web Service](https://aws.amazon.com/jp/)のアカウントが用意されていることを前提としているので、事前にご用意ください。
 
 <p class="step">1. EC2のコンソールを開きます。</p>
 

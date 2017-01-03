@@ -22,6 +22,8 @@ class StateSerializerTest(unittest.TestCase):
         })
         self.do_serialize_and_deserialize(None)
 
+        self.assertEqual(self.instance.deserialize(b''), None)
+
     def do_serialize_and_deserialize(self, state):
         data = self.instance.serialize(state)
         self.assertEqual(self.instance.deserialize(data), state)

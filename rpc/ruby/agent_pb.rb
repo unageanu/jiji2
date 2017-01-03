@@ -50,7 +50,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :class_name, :string, 1
     optional :agent_name, :string, 2
     optional :state, :bytes, 3
-    repeated :propertySettings, :message, 4, "jiji.rpc.AgentCreationRequest.PropertySetting"
+    repeated :property_settings, :message, 4, "jiji.rpc.AgentCreationRequest.PropertySetting"
   end
   add_message "jiji.rpc.AgentCreationRequest.PropertySetting" do
     optional :id, :string, 1

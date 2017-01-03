@@ -19,6 +19,13 @@ class TestAgent(Agent):
             Property("b", "プロパティ2")
         ]
 
+    def set_properties(self, properties):
+        self.properties = properties
+
+    def post_create(self):
+        print(self.agent_name)
+        print(self.properties)
+
 SOURCE
 
   SOURCE_02 = <<SOURCE.freeze
@@ -48,8 +55,18 @@ SOURCE
     @stub = Jiji::RpcClient.instance.agent_service
   end
 
+  after(:example) do
+    ["test","test2"].each do |n|
+      begin
+        @stub.unregister(Jiji::Rpc::AgentSourceName.new(name: n))
+      rescue
+        # ignore
+      end
+    end
+  end
+
   describe '#register' do
-    it 'can register an agent source file' do
+    it "can register an agent's source file" do
       agent_classes = @stub.get_agent_classes(Google::Protobuf::Empty.new)
       expect(agent_classes.classes.to_a).to eq([])
 
@@ -93,7 +110,7 @@ SOURCE
       expect(agent_class.properties.length).to eq(0)
     end
 
-    it 'can update the agent source file' do
+    it "can update the agent's source file" do
       source = Jiji::Rpc::AgentSource.new(name: 'test', body: SOURCE_01)
       @stub.register(source)
       source = Jiji::Rpc::AgentSource.new(name: 'test2', body: SOURCE_02)
@@ -116,7 +133,7 @@ SOURCE
       expect(agent_class.properties.length).to eq(0)
     end
 
-    it 'can not update the agent source file when file contains syntax error' do
+    it "can not update the agent's source file when file contains syntax error" do
       source = Jiji::Rpc::AgentSource.new(name: 'test', body: SOURCE_03)
       @stub.register(source)
       source = Jiji::Rpc::AgentSource.new(name: 'test2', body: SOURCE_02)
@@ -148,7 +165,7 @@ SOURCE
   end
 
   describe '#unregister' do
-    it 'can unregister the agent source file' do
+    it "can unregister the agent's source file" do
       source = Jiji::Rpc::AgentSource.new(name: 'test', body: SOURCE_03)
       @stub.register(source)
       source = Jiji::Rpc::AgentSource.new(name: 'test2', body: SOURCE_02)
@@ -169,4 +186,40 @@ SOURCE
       expect(agent_classes.classes.length).to eq(0)
     end
   end
+
+  describe '#create_agent_instance' do
+    it 'can create an instance of the agent' do
+      source = Jiji::Rpc::AgentSource.new(name: 'test', body: SOURCE_01)
+      @stub.register(source)
+
+      request = Jiji::Rpc::AgentCreationRequest.new({
+        class_name: 'TestAgent@test',
+        agent_name: 'エージェント1',
+        state: "",
+        property_settings: [
+          Jiji::Rpc::AgentCreationRequest::PropertySetting.new({
+            id: "a", value: "aaaa"
+          }),
+          Jiji::Rpc::AgentCreationRequest::PropertySetting.new({
+            id: "b", value: ""
+          })
+        ]
+      })
+      result = @stub.create_agent_instance(request)
+      expect(result.instance_id).not_to be_empty
+    end
+
+    it 'raises an error if an unknown agent class is specified' do
+      request = Jiji::Rpc::AgentCreationRequest.new({
+        class_name: 'TestAgent@unknown',
+        agent_name: 'エージェント1',
+        state: "",
+        property_settings: []
+      })
+      expect do
+        @stub.create_agent_instance(request)
+      end.to raise_exception(GRPC::BadStatus)
+    end
+  end
+
 end

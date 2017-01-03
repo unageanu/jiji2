@@ -49,18 +49,17 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
         return agent_pb2.AgentClasses(classes=[])
 
     def CreateAgentInstance(self, request, context):
-        print(request)
         try:
-            properties = self._extract_properties(request.properties)
+            properties = self._extract_properties(request)
             state = self.state_serializer.deserialize(request.state)
             agent_id = self.agent_pool.new_id()
             agent_instance = self.agent_builder.build_agent(agent_id, \
-                request.agent_class_name, request.agent_name, properties, state)
-            self.agent_pool.register(agent_id, agent_instance)
-            return agent_pb2.AgentCreationResult(agent_id)
+                request.class_name, request.agent_name, properties, state)
+            self.agent_pool.register_instance(agent_id, agent_instance)
+            return agent_pb2.AgentCreationResult(instance_id=agent_id)
         except Exception as error: # pylint: disable=broad-except
             self._handle_error(error, context)
-        return agent_pb2.AgentCreationResult("")
+        return agent_pb2.AgentCreationResult(instance_id="")
 
     def GetAgentState(self, request, context):
         print(request)
@@ -88,6 +87,6 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
     @staticmethod
     def _extract_properties(request):
         properties = dict()
-        for prop in request.propertySettings:
+        for prop in request.property_settings:
             properties[prop.id] = prop.value
         return properties

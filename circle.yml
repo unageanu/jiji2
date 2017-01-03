@@ -9,7 +9,7 @@ machine:
 dependencies:
   pre:
    - gem install bundler --pre
-   - pip install -r agent_service/python/requirements.txt
+   - pip install -r agent_services/python/requirements.txt
   post:
    - npm install:
        pwd:

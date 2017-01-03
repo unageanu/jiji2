@@ -18,10 +18,14 @@ module Jiji
 
     def start_server(id)
       log_dir = create_log_dir
-      pid = spawn({
-        'PYTHONPATH' => './agent_services/python/src/:./agent_services/python/test/:./rpc/python/'
+      spawn({
+        'PYTHONPATH' => [
+          './agent_services/python/src/',
+          './agent_services/python/test/',
+          './rpc/python/'
+        ].join(':')
       }, 'python agent_services/python/src/jiji/server.py',
-      out: File.join(log_dir, "test_server_python_rpc.log"), err: :out)
+        out: File.join(log_dir, 'test_server_python_rpc.log'), err: :out)
     end
 
     def create_log_dir

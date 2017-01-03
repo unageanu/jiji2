@@ -33,7 +33,6 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
 
 
     def Unregister(self, request, context):
-        print(request)
         try:
             self.agent_registry.unregister_source(request.name)
         except Exception as error: # pylint: disable=broad-except

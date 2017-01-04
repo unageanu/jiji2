@@ -27,6 +27,6 @@ class AgentPoolTest(unittest.TestCase):
         with self.assertRaises(exceptions.NotFoundError):
             self.instance.get_instance(id1)
         self.assertEqual(self.instance.get_instance(id2), "bbb")
-        
+
         with self.assertRaises(exceptions.NotFoundError):
             self.instance.get_instance("not_found")

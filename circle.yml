@@ -9,6 +9,7 @@ machine:
 dependencies:
   pre:
    - gem install bundler --pre
+   - pip install --upgrade cython
    - pip install -r agent_services/python/requirements.txt
   post:
    - npm install:

@@ -70,11 +70,10 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
         return empty_pb2.Empty()
 
     def GetAgentState(self, request, context):
-        print(request)
         try:
-            instance = self.agent_registry.get_instance(request.instance_id)
+            instance = self.agent_pool.get_instance(request.instance_id)
             state = self.state_serializer.serialize(instance.save_state())
-            return agent_pb2.AgentState(state)
+            return agent_pb2.AgentState(state=state)
         except Exception as error: # pylint: disable=broad-except
             self._handle_error(error, context)
         return agent_pb2.AgentState(None)

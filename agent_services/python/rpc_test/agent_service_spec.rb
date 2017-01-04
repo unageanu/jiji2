@@ -23,8 +23,18 @@ class TestAgent(Agent):
         self.properties = properties
 
     def post_create(self):
+        self.x = 0
         print(self.agent_name)
         print(self.properties)
+
+    def save_state(self):
+        state = self.properties.copy()
+        state["x"] = self.x + 1
+        return state
+
+    def restore_state(self, state):
+        print(state)
+        self.x = state["x"]
 
 SOURCE
 
@@ -244,6 +254,42 @@ SOURCE
       expect do
         request = Jiji::Rpc::AgentDeletionRequest.new(instance_id:"not_found")
         result = @stub.delete_agent_instance(request)
+      end.to raise_exception(GRPC::BadStatus)
+    end
+  end
+
+  describe '#get_agent_state' do
+    it 'can retrieve a state of the agent' do
+      source = Jiji::Rpc::AgentSource.new(name: 'test', body: SOURCE_01)
+      @stub.register(source)
+
+      request = Jiji::Rpc::AgentCreationRequest.new({
+        class_name: 'TestAgent@test',
+        agent_name: 'エージェント1',
+        state: "",
+        property_settings: []
+      })
+      result = @stub.create_agent_instance(request)
+      expect(result.instance_id).not_to be_empty
+
+      request = Jiji::Rpc::GetAgentStateRequest.new(instance_id:result.instance_id)
+      result = @stub.get_agent_state(request)
+      expect(result.state).not_to be_empty
+
+      request = Jiji::Rpc::AgentCreationRequest.new({
+        class_name: 'TestAgent@test',
+        agent_name: 'エージェント2',
+        state: result.state,
+        property_settings: []
+      })
+      result = @stub.create_agent_instance(request)
+      expect(result.instance_id).not_to be_empty
+    end
+
+    it 'raises an error if an instance is not found.' do
+      expect do
+        request = Jiji::Rpc::GetAgentStateRequest.new(instance_id:"not_found")
+        result = @stub.get_agent_state(request)
       end.to raise_exception(GRPC::BadStatus)
     end
   end

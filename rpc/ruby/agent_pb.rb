@@ -11,8 +11,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     repeated :values, :message, 2, "jiji.rpc.Tick.Value"
   end
   add_message "jiji.rpc.Tick.Value" do
-    optional :bid, :double, 1
-    optional :ask, :double, 2
+    optional :pair, :string, 1
+    optional :bid, :double, 2
+    optional :ask, :double, 3
   end
   add_message "jiji.rpc.NextTickRequest" do
     optional :instance_id, :string, 1

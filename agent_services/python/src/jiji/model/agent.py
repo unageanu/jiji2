@@ -21,6 +21,10 @@ class Agent(metaclass=ABCMeta):
         self.properties = properties
 
 
+    def next_tick(self, tick):
+        pass
+
+
     def save_state(self): # pylint: disable=no-self-use
         return None
 

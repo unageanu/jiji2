@@ -1,4 +1,6 @@
+from datetime import datetime
 import inject
+
 import agent_pb2
 import agent_pb2_grpc
 from google.protobuf import empty_pb2 # pylint: disable=no-name-in-module
@@ -7,6 +9,7 @@ from jiji.model.agent_registry import AgentRegistry
 from jiji.model.agent_pool import AgentPool
 from jiji.model.agent_builder import AgentBuilder
 from jiji.model.state_serializer import StateSerializer
+from jiji.model.tick import Tick, Value
 from jiji.services.abstract_service import AbstractService
 
 class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
@@ -20,7 +23,11 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
         self.state_serializer = state_serializer
 
     def NextTick(self, request, context):
-        print(request)
+        try:
+            instance = self.agent_pool.get_instance(request.instance_id)
+            instance.next_tick(self._extract_tick_(request.tick))
+        except Exception as error: # pylint: disable=broad-except
+            self._handle_error(error, context)
         return empty_pb2.Empty()
 
     def Register(self, request, context):
@@ -97,3 +104,15 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
         for prop in request.property_settings:
             properties[prop.id] = prop.value
         return properties
+
+    @staticmethod
+    def _extract_tick_(tick):
+        values = AgentService._extract_tick_value(tick.values)
+        return Tick(values, datetime.fromtimestamp(tick.timestamp.seconds))
+
+    @staticmethod
+    def _extract_tick_value(values):
+        result = dict()
+        for value in values:
+            result[value.pair] = Value(value.bid, value.ask)
+        return result

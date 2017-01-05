@@ -23,8 +23,9 @@ service AgentService {
 message Tick {
 
   message Value {
-    double bid = 1;
-    double ask = 2;
+    string pair = 1;
+    double bid = 2;
+    double ask = 3;
   }
 
   google.protobuf.Timestamp timestamp = 1;

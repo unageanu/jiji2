@@ -27,6 +27,9 @@ class TestAgent(Agent):
         print(self.agent_name)
         print(self.properties)
 
+    def next_tick(self, tick):
+        print(tick)
+
     def save_state(self):
         state = self.properties.copy()
         state["x"] = self.x + 1
@@ -289,7 +292,53 @@ SOURCE
     it 'raises an error if an instance is not found.' do
       expect do
         request = Jiji::Rpc::GetAgentStateRequest.new(instance_id:"not_found")
-        result = @stub.get_agent_state(request)
+        @stub.get_agent_state(request)
+      end.to raise_exception(GRPC::BadStatus)
+    end
+  end
+
+  describe '#next_tick' do
+    it 'can send a tick data to the agent' do
+      source = Jiji::Rpc::AgentSource.new(name: 'test', body: SOURCE_01)
+      @stub.register(source)
+
+      request = Jiji::Rpc::AgentCreationRequest.new({
+        class_name: 'TestAgent@test',
+        agent_name: 'エージェント1',
+        state: "",
+        property_settings: []
+      })
+      result = @stub.create_agent_instance(request)
+      expect(result.instance_id).not_to be_empty
+
+      date = DateTime.new(2017, 1, 1, 19, 2, 34)
+      request = Jiji::Rpc::NextTickRequest.new(
+        instance_id: result.instance_id,
+        tick: Jiji::Rpc::Tick.new(
+          timestamp: Google::Protobuf::Timestamp.new(seconds: date.to_i, nanos: 0),
+          values: [
+            Jiji::Rpc::Tick::Value.new(ask: 112.3, bid:112, pair:"USDJPY"),
+            Jiji::Rpc::Tick::Value.new(ask: 122.3, bid:122, pair:"EURJPY")
+          ]
+        )
+      )
+      @stub.next_tick(request)
+    end
+
+    it 'raises an error if an instance is not found.' do
+      expect do
+        date = DateTime.new(2017, 1, 1, 19, 2, 34)
+        request = Jiji::Rpc::NextTickRequest.new(
+          instance_id: "not_found",
+          tick: Jiji::Rpc::Tick.new(
+            timestamp: Google::Protobuf::Timestamp.new(seconds: date.to_i, nanos: 0),
+            values: [
+              Jiji::Rpc::Tick::Value.new(ask: 112.3, bid:112, pair:"USDJPY"),
+              Jiji::Rpc::Tick::Value.new(ask: 122.3, bid:122, pair:"EURJPY")
+            ]
+          )
+        )
+        @stub.next_tick(request)
       end.to raise_exception(GRPC::BadStatus)
     end
   end

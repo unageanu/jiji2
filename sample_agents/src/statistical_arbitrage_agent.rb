@@ -337,7 +337,7 @@ module StatisticalArbitrage
       end
     end
 
-    # rubocop:disable Metrics/AbcSize,Style/MethodLength
+    # rubocop:disable Metrics/AbcSize, Metrics/MethodLength
     def linner_least_squares(rates)
       a = b = c = d = BigDecimal.new(0.0, 15)
       rates.each do |r|
@@ -351,7 +351,7 @@ module StatisticalArbitrage
       n = rates.size
       [(n * a - b * c) / (n * d - b**2), (d * c - a * b) / (n * d - b**2)]
     end
-    # rubocop:enable Metrics/AbcSize, Style/MethodLength
+    # rubocop:enable Metrics/AbcSize, Metrics/MethodLength
 
     def retrieve_rates(time, pair1, pair2)
       rates1 = retrieve_rates_from_quandl(time, pair1)

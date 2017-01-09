@@ -69,10 +69,10 @@ SOURCE
   end
 
   after(:example) do
-    ["test","test2"].each do |n|
+    %w(test test2).each do |n|
       begin
         @stub.unregister(Jiji::Rpc::AgentSourceName.new(name: n))
-      rescue
+      rescue Exception # rubocop:disable Lint/HandleExceptions
         # ignore
       end
     end
@@ -146,7 +146,8 @@ SOURCE
       expect(agent_class.properties.length).to eq(0)
     end
 
-    it "can not update the agent's source file when file contains syntax error" do
+    it "can not update the agent's source file " \
+       'when file contains syntax error' do
       source = Jiji::Rpc::AgentSource.new(name: 'test', body: SOURCE_03)
       @stub.register(source)
       source = Jiji::Rpc::AgentSource.new(name: 'test2', body: SOURCE_02)
@@ -206,15 +207,15 @@ SOURCE
       @stub.register(source)
 
       request = Jiji::Rpc::AgentCreationRequest.new({
-        class_name: 'TestAgent@test',
-        agent_name: 'エージェント1',
-        state: "",
+        class_name:        'TestAgent@test',
+        agent_name:        'エージェント1',
+        state:             '',
         property_settings: [
           Jiji::Rpc::AgentCreationRequest::PropertySetting.new({
-            id: "a", value: "aaaa"
+            id: 'a', value: 'aaaa'
           }),
           Jiji::Rpc::AgentCreationRequest::PropertySetting.new({
-            id: "b", value: ""
+            id: 'b', value: ''
           })
         ]
       })
@@ -224,9 +225,9 @@ SOURCE
 
     it 'raises an error if an unknown agent class is specified' do
       request = Jiji::Rpc::AgentCreationRequest.new({
-        class_name: 'TestAgent@unknown',
-        agent_name: 'エージェント1',
-        state: "",
+        class_name:        'TestAgent@unknown',
+        agent_name:        'エージェント1',
+        state:             '',
         property_settings: []
       })
       expect do
@@ -241,22 +242,23 @@ SOURCE
       @stub.register(source)
 
       request = Jiji::Rpc::AgentCreationRequest.new({
-        class_name: 'TestAgent@test',
-        agent_name: 'エージェント1',
-        state: "",
+        class_name:        'TestAgent@test',
+        agent_name:        'エージェント1',
+        state:             '',
         property_settings: []
       })
       result = @stub.create_agent_instance(request)
       expect(result.instance_id).not_to be_empty
 
-      request = Jiji::Rpc::AgentDeletionRequest.new(instance_id:result.instance_id)
-      result = @stub.delete_agent_instance(request)
+      request = Jiji::Rpc::AgentDeletionRequest.new(
+        instance_id: result.instance_id)
+      @stub.delete_agent_instance(request)
     end
 
     it 'raises an error if an instance is not found.' do
       expect do
-        request = Jiji::Rpc::AgentDeletionRequest.new(instance_id:"not_found")
-        result = @stub.delete_agent_instance(request)
+        request = Jiji::Rpc::AgentDeletionRequest.new(instance_id: 'not_found')
+        @stub.delete_agent_instance(request)
       end.to raise_exception(GRPC::BadStatus)
     end
   end
@@ -267,22 +269,23 @@ SOURCE
       @stub.register(source)
 
       request = Jiji::Rpc::AgentCreationRequest.new({
-        class_name: 'TestAgent@test',
-        agent_name: 'エージェント1',
-        state: "",
+        class_name:        'TestAgent@test',
+        agent_name:        'エージェント1',
+        state:             '',
         property_settings: []
       })
       result = @stub.create_agent_instance(request)
       expect(result.instance_id).not_to be_empty
 
-      request = Jiji::Rpc::GetAgentStateRequest.new(instance_id:result.instance_id)
+      request = Jiji::Rpc::GetAgentStateRequest.new(
+        instance_id: result.instance_id)
       result = @stub.get_agent_state(request)
       expect(result.state).not_to be_empty
 
       request = Jiji::Rpc::AgentCreationRequest.new({
-        class_name: 'TestAgent@test',
-        agent_name: 'エージェント2',
-        state: result.state,
+        class_name:        'TestAgent@test',
+        agent_name:        'エージェント2',
+        state:             result.state,
         property_settings: []
       })
       result = @stub.create_agent_instance(request)
@@ -291,7 +294,7 @@ SOURCE
 
     it 'raises an error if an instance is not found.' do
       expect do
-        request = Jiji::Rpc::GetAgentStateRequest.new(instance_id:"not_found")
+        request = Jiji::Rpc::GetAgentStateRequest.new(instance_id: 'not_found')
         @stub.get_agent_state(request)
       end.to raise_exception(GRPC::BadStatus)
     end
@@ -303,9 +306,9 @@ SOURCE
       @stub.register(source)
 
       request = Jiji::Rpc::AgentCreationRequest.new({
-        class_name: 'TestAgent@test',
-        agent_name: 'エージェント1',
-        state: "",
+        class_name:        'TestAgent@test',
+        agent_name:        'エージェント1',
+        state:             '',
         property_settings: []
       })
       result = @stub.create_agent_instance(request)
@@ -314,11 +317,12 @@ SOURCE
       date = DateTime.new(2017, 1, 1, 19, 2, 34)
       request = Jiji::Rpc::NextTickRequest.new(
         instance_id: result.instance_id,
-        tick: Jiji::Rpc::Tick.new(
-          timestamp: Google::Protobuf::Timestamp.new(seconds: date.to_i, nanos: 0),
-          values: [
-            Jiji::Rpc::Tick::Value.new(ask: 112.3, bid:112, pair:"USDJPY"),
-            Jiji::Rpc::Tick::Value.new(ask: 122.3, bid:122, pair:"EURJPY")
+        tick:        Jiji::Rpc::Tick.new(
+          timestamp: Google::Protobuf::Timestamp.new(
+            seconds: date.to_i, nanos: 0),
+          values:    [
+            Jiji::Rpc::Tick::Value.new(ask: 112.3, bid: 112, pair: 'USDJPY'),
+            Jiji::Rpc::Tick::Value.new(ask: 122.3, bid: 122, pair: 'EURJPY')
           ]
         )
       )
@@ -329,12 +333,13 @@ SOURCE
       expect do
         date = DateTime.new(2017, 1, 1, 19, 2, 34)
         request = Jiji::Rpc::NextTickRequest.new(
-          instance_id: "not_found",
-          tick: Jiji::Rpc::Tick.new(
-            timestamp: Google::Protobuf::Timestamp.new(seconds: date.to_i, nanos: 0),
-            values: [
-              Jiji::Rpc::Tick::Value.new(ask: 112.3, bid:112, pair:"USDJPY"),
-              Jiji::Rpc::Tick::Value.new(ask: 122.3, bid:122, pair:"EURJPY")
+          instance_id: 'not_found',
+          tick:        Jiji::Rpc::Tick.new(
+            timestamp: Google::Protobuf::Timestamp.new(
+              seconds: date.to_i, nanos: 0),
+            values:    [
+              Jiji::Rpc::Tick::Value.new(ask: 112.3, bid: 112, pair: 'USDJPY'),
+              Jiji::Rpc::Tick::Value.new(ask: 122.3, bid: 122, pair: 'EURJPY')
             ]
           )
         )
@@ -342,5 +347,4 @@ SOURCE
       end.to raise_exception(GRPC::BadStatus)
     end
   end
-
 end

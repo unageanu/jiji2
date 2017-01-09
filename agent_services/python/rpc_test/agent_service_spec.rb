@@ -72,7 +72,7 @@ SOURCE
     %w(test test2).each do |n|
       begin
         @stub.unregister(Jiji::Rpc::AgentSourceName.new(name: n))
-      rescue Exception # rubocop:disable Lint/HandleExceptions
+      rescue StandardError # rubocop:disable Lint/HandleExceptions
         # ignore
       end
     end

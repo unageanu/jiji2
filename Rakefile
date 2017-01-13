@@ -6,7 +6,7 @@ require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
 require 'rdoc/task'
 
-task :default   => [:spec,:rest_spec,:python_spec,:python_rpc_spec,:lint]
+task :default   => [:spec,:rest_spec,:rpc_spec,:python_spec,:python_rpc_spec,:lint]
 task :rest_spec => [:rest_spec_json, :rest_spec_messagepack]
 
 desc "Run all specs in spec directory"
@@ -24,6 +24,11 @@ RSpec::Core::RakeTask.new(:rest_spec_messagepack) {|t|
   t.rspec_opts = '-I src -I spec -I rest_spec -I rpc/ruby -fdoc'
   t.pattern    = 'rest_spec/use_messagepack_transport.rb'
 }
+
+desc "Run all tests in rpc_spec directory"
+task :rpc_spec do |task|
+  sh "PYTHONPATH=./agent_services/python/src/:./agent_services/python/test/:./agent_services/python/rpc_test/:./rpc/python/:./rpc_spec python ./rpc_spec/main.py"
+end
 
 desc "Run all python tests"
 task :python_spec do |task|
@@ -53,8 +58,10 @@ end
 
 desc 'Generate rpc serices and stubs.'
 task :generate_stub do |task|
-  sh "grpc_tools_ruby_protoc -I ./rpc/protos --ruby_out=rpc/ruby --grpc_out=rpc/ruby ./rpc/protos/agent.proto"
-  sh "python -m grpc_tools.protoc -I./rpc/protos --python_out=./rpc/python --grpc_python_out=./rpc/python ./rpc/protos/agent.proto"
+  ["agent", "logging"].each do |mod|
+    sh "grpc_tools_ruby_protoc -I ./rpc/protos --ruby_out=rpc/ruby --grpc_out=rpc/ruby ./rpc/protos/#{mod}.proto"
+    sh "python -m grpc_tools.protoc -I./rpc/protos --python_out=./rpc/python --grpc_python_out=./rpc/python ./rpc/protos/#{mod}.proto"
+  end
 end
 
 RDoc::Task.new do |rd|

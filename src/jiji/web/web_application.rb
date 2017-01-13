@@ -20,26 +20,28 @@ module Jiji::Web
     def setup
       @application = @container.lookup(:application)
       @application.setup
-      app = @application
-
-      start_cleanup_thread(app)
+      @rpc_server = @container.lookup(:rpc_server)
+      @rpc_server.start
+      start_cleanup_thread(@application, @rpc_server)
       trap(0) do
         @exit_action_queue << true
         @future.value
       end
     end
 
-    def start_cleanup_thread(application)
-      Thread.new(application) do |app|
+    def start_cleanup_thread(application, rpc_server)
+      Thread.new(application, rpc_server) do |app, rpc|
         loop do
           break unless @exit_action_queue.pop
-          cleanup(app)
+          cleanup(app, rpc)
         end
       end
     end
 
-    def cleanup(app)
+    def cleanup(app, rpc)
       app.tear_down
+      rpc.stop
+
       @future.value = true
     rescue => e
       @future.error = e

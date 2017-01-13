@@ -33,6 +33,10 @@ module Jiji
     end
   end
 
+  module Rpc
+    module Services end
+  end
+
   module Security end
   module Services
     module AWS          end

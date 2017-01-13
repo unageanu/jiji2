@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package jiji.rpc;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service LoggerService {
+
+  rpc log(LoggingRequest) returns (google.protobuf.Empty) {}
+
+}
+
+message LoggingRequest {
+  string instance_id = 1;
+  string log_level = 2;
+  string message = 3;
+}

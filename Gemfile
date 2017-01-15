@@ -23,6 +23,7 @@ gem 'oanda_api'
 gem 'httparty', '0.13.7'
 gem 'persistent_http', '2.0.1'
 gem 'quandl'
+gem 'httpclient'
 
 gem 'mail'
 gem 'aws-sdk'
@@ -37,8 +38,6 @@ group :test do
   gem 'rspec-parameterized'
   gem 'simplecov'
   gem 'codeclimate-test-reporter'
-
-  gem 'httpclient'
 end
 
 group :development do

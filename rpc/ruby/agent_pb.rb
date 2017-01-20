@@ -51,9 +51,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :class_name, :string, 1
     optional :agent_name, :string, 2
     optional :state, :bytes, 3
-    repeated :property_settings, :message, 4, "jiji.rpc.AgentCreationRequest.PropertySetting"
+    repeated :property_settings, :message, 4, "jiji.rpc.PropertySetting"
   end
-  add_message "jiji.rpc.AgentCreationRequest.PropertySetting" do
+  add_message "jiji.rpc.PropertySetting" do
     optional :id, :string, 1
     optional :value, :string, 2
   end
@@ -68,6 +68,17 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   end
   add_message "jiji.rpc.AgentState" do
     optional :state, :bytes, 1
+  end
+  add_message "jiji.rpc.SetAgentPropertiesRequest" do
+    optional :instance_id, :string, 1
+    repeated :property_settings, :message, 2, "jiji.rpc.PropertySetting"
+  end
+  add_message "jiji.rpc.SendActionRequest" do
+    optional :instance_id, :string, 1
+    optional :action_id, :string, 2
+  end
+  add_message "jiji.rpc.SendActionResponse" do
+    optional :message, :string, 1
   end
 end
 
@@ -84,10 +95,13 @@ module Jiji
     AgentClasses::AgentClass = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentClasses.AgentClass").msgclass
     AgentClasses::AgentClass::Property = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentClasses.AgentClass.Property").msgclass
     AgentCreationRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentCreationRequest").msgclass
-    AgentCreationRequest::PropertySetting = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentCreationRequest.PropertySetting").msgclass
+    PropertySetting = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.PropertySetting").msgclass
     AgentCreationResult = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentCreationResult").msgclass
     AgentDeletionRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentDeletionRequest").msgclass
     GetAgentStateRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.GetAgentStateRequest").msgclass
     AgentState = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.AgentState").msgclass
+    SetAgentPropertiesRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.SetAgentPropertiesRequest").msgclass
+    SendActionRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.SendActionRequest").msgclass
+    SendActionResponse = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.SendActionResponse").msgclass
   end
 end

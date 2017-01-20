@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='agent.proto',
   package='jiji.rpc',
   syntax='proto3',
-  serialized_pb=_b('\n\x0b\x61gent.proto\x12\x08jiji.rpc\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8c\x01\n\x04Tick\x12-\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12$\n\x06values\x18\x02 \x03(\x0b\x32\x14.jiji.rpc.Tick.Value\x1a/\n\x05Value\x12\x0c\n\x04pair\x18\x01 \x01(\t\x12\x0b\n\x03\x62id\x18\x02 \x01(\x01\x12\x0b\n\x03\x61sk\x18\x03 \x01(\x01\"D\n\x0fNextTickRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x1c\n\x04tick\x18\x02 \x01(\x0b\x32\x0e.jiji.rpc.Tick\"\x1f\n\x0f\x41gentSourceName\x12\x0c\n\x04name\x18\x01 \x01(\t\")\n\x0b\x41gentSource\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x62ody\x18\x02 \x01(\t\"q\n\x10ValidationResult\x12\x31\n\x06status\x18\x01 \x01(\x0e\x32!.jiji.rpc.ValidationResult.Status\x12\r\n\x05\x65rror\x18\x02 \x01(\t\"\x1b\n\x06Status\x12\x06\n\x02OK\x10\x00\x12\t\n\x05\x45RROR\x10\x01\"\xeb\x01\n\x0c\x41gentClasses\x12\x32\n\x07\x63lasses\x18\x01 \x03(\x0b\x32!.jiji.rpc.AgentClasses.AgentClass\x1a\xa6\x01\n\nAgentClass\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12>\n\nproperties\x18\x03 \x03(\x0b\x32*.jiji.rpc.AgentClasses.AgentClass.Property\x1a\x35\n\x08Property\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07\x64\x65\x66\x61ult\x18\x03 \x01(\t\"\xc6\x01\n\x14\x41gentCreationRequest\x12\x12\n\nclass_name\x18\x01 \x01(\t\x12\x12\n\nagent_name\x18\x02 \x01(\t\x12\r\n\x05state\x18\x03 \x01(\x0c\x12I\n\x11property_settings\x18\x04 \x03(\x0b\x32..jiji.rpc.AgentCreationRequest.PropertySetting\x1a,\n\x0fPropertySetting\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"*\n\x13\x41gentCreationResult\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"+\n\x14\x41gentDeletionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"+\n\x14GetAgentStateRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"\x1b\n\nAgentState\x12\r\n\x05state\x18\x01 \x01(\x0c\x32\x86\x04\n\x0c\x41gentService\x12?\n\x08NextTick\x12\x19.jiji.rpc.NextTickRequest\x1a\x16.google.protobuf.Empty\"\x00\x12;\n\x08Register\x12\x15.jiji.rpc.AgentSource\x1a\x16.google.protobuf.Empty\"\x00\x12\x41\n\nUnregister\x12\x19.jiji.rpc.AgentSourceName\x1a\x16.google.protobuf.Empty\"\x00\x12\x43\n\x0fGetAgentClasses\x12\x16.google.protobuf.Empty\x1a\x16.jiji.rpc.AgentClasses\"\x00\x12V\n\x13\x43reateAgentInstance\x12\x1e.jiji.rpc.AgentCreationRequest\x1a\x1d.jiji.rpc.AgentCreationResult\"\x00\x12O\n\x13\x44\x65leteAgentInstance\x12\x1e.jiji.rpc.AgentDeletionRequest\x1a\x16.google.protobuf.Empty\"\x00\x12G\n\rGetAgentState\x12\x1e.jiji.rpc.GetAgentStateRequest\x1a\x14.jiji.rpc.AgentState\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x0b\x61gent.proto\x12\x08jiji.rpc\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8c\x01\n\x04Tick\x12-\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12$\n\x06values\x18\x02 \x03(\x0b\x32\x14.jiji.rpc.Tick.Value\x1a/\n\x05Value\x12\x0c\n\x04pair\x18\x01 \x01(\t\x12\x0b\n\x03\x62id\x18\x02 \x01(\x01\x12\x0b\n\x03\x61sk\x18\x03 \x01(\x01\"D\n\x0fNextTickRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x1c\n\x04tick\x18\x02 \x01(\x0b\x32\x0e.jiji.rpc.Tick\"\x1f\n\x0f\x41gentSourceName\x12\x0c\n\x04name\x18\x01 \x01(\t\")\n\x0b\x41gentSource\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x62ody\x18\x02 \x01(\t\"q\n\x10ValidationResult\x12\x31\n\x06status\x18\x01 \x01(\x0e\x32!.jiji.rpc.ValidationResult.Status\x12\r\n\x05\x65rror\x18\x02 \x01(\t\"\x1b\n\x06Status\x12\x06\n\x02OK\x10\x00\x12\t\n\x05\x45RROR\x10\x01\"\xeb\x01\n\x0c\x41gentClasses\x12\x32\n\x07\x63lasses\x18\x01 \x03(\x0b\x32!.jiji.rpc.AgentClasses.AgentClass\x1a\xa6\x01\n\nAgentClass\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12>\n\nproperties\x18\x03 \x03(\x0b\x32*.jiji.rpc.AgentClasses.AgentClass.Property\x1a\x35\n\x08Property\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07\x64\x65\x66\x61ult\x18\x03 \x01(\t\"\x83\x01\n\x14\x41gentCreationRequest\x12\x12\n\nclass_name\x18\x01 \x01(\t\x12\x12\n\nagent_name\x18\x02 \x01(\t\x12\r\n\x05state\x18\x03 \x01(\x0c\x12\x34\n\x11property_settings\x18\x04 \x03(\x0b\x32\x19.jiji.rpc.PropertySetting\",\n\x0fPropertySetting\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"*\n\x13\x41gentCreationResult\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"+\n\x14\x41gentDeletionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"+\n\x14GetAgentStateRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"\x1b\n\nAgentState\x12\r\n\x05state\x18\x01 \x01(\x0c\"f\n\x19SetAgentPropertiesRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x34\n\x11property_settings\x18\x02 \x03(\x0b\x32\x19.jiji.rpc.PropertySetting\";\n\x11SendActionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\taction_id\x18\x02 \x01(\t\"%\n\x12SendActionResponse\x12\x0f\n\x07message\x18\x01 \x01(\t2\xa6\x05\n\x0c\x41gentService\x12?\n\x08NextTick\x12\x19.jiji.rpc.NextTickRequest\x1a\x16.google.protobuf.Empty\"\x00\x12;\n\x08Register\x12\x15.jiji.rpc.AgentSource\x1a\x16.google.protobuf.Empty\"\x00\x12\x41\n\nUnregister\x12\x19.jiji.rpc.AgentSourceName\x1a\x16.google.protobuf.Empty\"\x00\x12\x43\n\x0fGetAgentClasses\x12\x16.google.protobuf.Empty\x1a\x16.jiji.rpc.AgentClasses\"\x00\x12V\n\x13\x43reateAgentInstance\x12\x1e.jiji.rpc.AgentCreationRequest\x1a\x1d.jiji.rpc.AgentCreationResult\"\x00\x12O\n\x13\x44\x65leteAgentInstance\x12\x1e.jiji.rpc.AgentDeletionRequest\x1a\x16.google.protobuf.Empty\"\x00\x12G\n\rGetAgentState\x12\x1e.jiji.rpc.GetAgentStateRequest\x1a\x14.jiji.rpc.AgentState\"\x00\x12S\n\x12SetAgentProperties\x12#.jiji.rpc.SetAgentPropertiesRequest\x1a\x16.google.protobuf.Empty\"\x00\x12I\n\nSendAction\x12\x1b.jiji.rpc.SendActionRequest\x1a\x1c.jiji.rpc.SendActionResponse\"\x00\x62\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -398,43 +398,6 @@ _AGENTCLASSES = _descriptor.Descriptor(
 )
 
 
-_AGENTCREATIONREQUEST_PROPERTYSETTING = _descriptor.Descriptor(
-  name='PropertySetting',
-  full_name='jiji.rpc.AgentCreationRequest.PropertySetting',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='jiji.rpc.AgentCreationRequest.PropertySetting.id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='value', full_name='jiji.rpc.AgentCreationRequest.PropertySetting.value', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=884,
-  serialized_end=928,
-)
-
 _AGENTCREATIONREQUEST = _descriptor.Descriptor(
   name='AgentCreationRequest',
   full_name='jiji.rpc.AgentCreationRequest',
@@ -473,7 +436,7 @@ _AGENTCREATIONREQUEST = _descriptor.Descriptor(
   ],
   extensions=[
   ],
-  nested_types=[_AGENTCREATIONREQUEST_PROPERTYSETTING, ],
+  nested_types=[],
   enum_types=[
   ],
   options=None,
@@ -483,7 +446,45 @@ _AGENTCREATIONREQUEST = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=730,
-  serialized_end=928,
+  serialized_end=861,
+)
+
+
+_PROPERTYSETTING = _descriptor.Descriptor(
+  name='PropertySetting',
+  full_name='jiji.rpc.PropertySetting',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='id', full_name='jiji.rpc.PropertySetting.id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='value', full_name='jiji.rpc.PropertySetting.value', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=863,
+  serialized_end=907,
 )
 
 
@@ -513,8 +514,8 @@ _AGENTCREATIONRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=930,
-  serialized_end=972,
+  serialized_start=909,
+  serialized_end=951,
 )
 
 
@@ -544,8 +545,8 @@ _AGENTDELETIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=974,
-  serialized_end=1017,
+  serialized_start=953,
+  serialized_end=996,
 )
 
 
@@ -575,8 +576,8 @@ _GETAGENTSTATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1019,
-  serialized_end=1062,
+  serialized_start=998,
+  serialized_end=1041,
 )
 
 
@@ -606,8 +607,115 @@ _AGENTSTATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1064,
-  serialized_end=1091,
+  serialized_start=1043,
+  serialized_end=1070,
+)
+
+
+_SETAGENTPROPERTIESREQUEST = _descriptor.Descriptor(
+  name='SetAgentPropertiesRequest',
+  full_name='jiji.rpc.SetAgentPropertiesRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='jiji.rpc.SetAgentPropertiesRequest.instance_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='property_settings', full_name='jiji.rpc.SetAgentPropertiesRequest.property_settings', index=1,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1072,
+  serialized_end=1174,
+)
+
+
+_SENDACTIONREQUEST = _descriptor.Descriptor(
+  name='SendActionRequest',
+  full_name='jiji.rpc.SendActionRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='jiji.rpc.SendActionRequest.instance_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='action_id', full_name='jiji.rpc.SendActionRequest.action_id', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1176,
+  serialized_end=1235,
+)
+
+
+_SENDACTIONRESPONSE = _descriptor.Descriptor(
+  name='SendActionResponse',
+  full_name='jiji.rpc.SendActionResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='message', full_name='jiji.rpc.SendActionResponse.message', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1237,
+  serialized_end=1274,
 )
 
 _TICK_VALUE.containing_type = _TICK
@@ -620,8 +728,8 @@ _AGENTCLASSES_AGENTCLASS_PROPERTY.containing_type = _AGENTCLASSES_AGENTCLASS
 _AGENTCLASSES_AGENTCLASS.fields_by_name['properties'].message_type = _AGENTCLASSES_AGENTCLASS_PROPERTY
 _AGENTCLASSES_AGENTCLASS.containing_type = _AGENTCLASSES
 _AGENTCLASSES.fields_by_name['classes'].message_type = _AGENTCLASSES_AGENTCLASS
-_AGENTCREATIONREQUEST_PROPERTYSETTING.containing_type = _AGENTCREATIONREQUEST
-_AGENTCREATIONREQUEST.fields_by_name['property_settings'].message_type = _AGENTCREATIONREQUEST_PROPERTYSETTING
+_AGENTCREATIONREQUEST.fields_by_name['property_settings'].message_type = _PROPERTYSETTING
+_SETAGENTPROPERTIESREQUEST.fields_by_name['property_settings'].message_type = _PROPERTYSETTING
 DESCRIPTOR.message_types_by_name['Tick'] = _TICK
 DESCRIPTOR.message_types_by_name['NextTickRequest'] = _NEXTTICKREQUEST
 DESCRIPTOR.message_types_by_name['AgentSourceName'] = _AGENTSOURCENAME
@@ -629,10 +737,14 @@ DESCRIPTOR.message_types_by_name['AgentSource'] = _AGENTSOURCE
 DESCRIPTOR.message_types_by_name['ValidationResult'] = _VALIDATIONRESULT
 DESCRIPTOR.message_types_by_name['AgentClasses'] = _AGENTCLASSES
 DESCRIPTOR.message_types_by_name['AgentCreationRequest'] = _AGENTCREATIONREQUEST
+DESCRIPTOR.message_types_by_name['PropertySetting'] = _PROPERTYSETTING
 DESCRIPTOR.message_types_by_name['AgentCreationResult'] = _AGENTCREATIONRESULT
 DESCRIPTOR.message_types_by_name['AgentDeletionRequest'] = _AGENTDELETIONREQUEST
 DESCRIPTOR.message_types_by_name['GetAgentStateRequest'] = _GETAGENTSTATEREQUEST
 DESCRIPTOR.message_types_by_name['AgentState'] = _AGENTSTATE
+DESCRIPTOR.message_types_by_name['SetAgentPropertiesRequest'] = _SETAGENTPROPERTIESREQUEST
+DESCRIPTOR.message_types_by_name['SendActionRequest'] = _SENDACTIONREQUEST
+DESCRIPTOR.message_types_by_name['SendActionResponse'] = _SENDACTIONRESPONSE
 
 Tick = _reflection.GeneratedProtocolMessageType('Tick', (_message.Message,), dict(
 
@@ -701,19 +813,18 @@ _sym_db.RegisterMessage(AgentClasses.AgentClass)
 _sym_db.RegisterMessage(AgentClasses.AgentClass.Property)
 
 AgentCreationRequest = _reflection.GeneratedProtocolMessageType('AgentCreationRequest', (_message.Message,), dict(
-
-  PropertySetting = _reflection.GeneratedProtocolMessageType('PropertySetting', (_message.Message,), dict(
-    DESCRIPTOR = _AGENTCREATIONREQUEST_PROPERTYSETTING,
-    __module__ = 'agent_pb2'
-    # @@protoc_insertion_point(class_scope:jiji.rpc.AgentCreationRequest.PropertySetting)
-    ))
-  ,
   DESCRIPTOR = _AGENTCREATIONREQUEST,
   __module__ = 'agent_pb2'
   # @@protoc_insertion_point(class_scope:jiji.rpc.AgentCreationRequest)
   ))
 _sym_db.RegisterMessage(AgentCreationRequest)
-_sym_db.RegisterMessage(AgentCreationRequest.PropertySetting)
+
+PropertySetting = _reflection.GeneratedProtocolMessageType('PropertySetting', (_message.Message,), dict(
+  DESCRIPTOR = _PROPERTYSETTING,
+  __module__ = 'agent_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.PropertySetting)
+  ))
+_sym_db.RegisterMessage(PropertySetting)
 
 AgentCreationResult = _reflection.GeneratedProtocolMessageType('AgentCreationResult', (_message.Message,), dict(
   DESCRIPTOR = _AGENTCREATIONRESULT,
@@ -742,6 +853,27 @@ AgentState = _reflection.GeneratedProtocolMessageType('AgentState', (_message.Me
   # @@protoc_insertion_point(class_scope:jiji.rpc.AgentState)
   ))
 _sym_db.RegisterMessage(AgentState)
+
+SetAgentPropertiesRequest = _reflection.GeneratedProtocolMessageType('SetAgentPropertiesRequest', (_message.Message,), dict(
+  DESCRIPTOR = _SETAGENTPROPERTIESREQUEST,
+  __module__ = 'agent_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.SetAgentPropertiesRequest)
+  ))
+_sym_db.RegisterMessage(SetAgentPropertiesRequest)
+
+SendActionRequest = _reflection.GeneratedProtocolMessageType('SendActionRequest', (_message.Message,), dict(
+  DESCRIPTOR = _SENDACTIONREQUEST,
+  __module__ = 'agent_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.SendActionRequest)
+  ))
+_sym_db.RegisterMessage(SendActionRequest)
+
+SendActionResponse = _reflection.GeneratedProtocolMessageType('SendActionResponse', (_message.Message,), dict(
+  DESCRIPTOR = _SENDACTIONRESPONSE,
+  __module__ = 'agent_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.SendActionResponse)
+  ))
+_sym_db.RegisterMessage(SendActionResponse)
 
 
 try:
@@ -797,6 +929,16 @@ try:
           request_serializer=GetAgentStateRequest.SerializeToString,
           response_deserializer=AgentState.FromString,
           )
+      self.SetAgentProperties = channel.unary_unary(
+          '/jiji.rpc.AgentService/SetAgentProperties',
+          request_serializer=SetAgentPropertiesRequest.SerializeToString,
+          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+          )
+      self.SendAction = channel.unary_unary(
+          '/jiji.rpc.AgentService/SendAction',
+          request_serializer=SendActionRequest.SerializeToString,
+          response_deserializer=SendActionResponse.FromString,
+          )
 
 
   class AgentServiceServicer(object):
@@ -832,6 +974,16 @@ try:
       raise NotImplementedError('Method not implemented!')
 
     def GetAgentState(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def SetAgentProperties(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def SendAction(self, request, context):
       context.set_code(grpc.StatusCode.UNIMPLEMENTED)
       context.set_details('Method not implemented!')
       raise NotImplementedError('Method not implemented!')
@@ -874,6 +1026,16 @@ try:
             request_deserializer=GetAgentStateRequest.FromString,
             response_serializer=AgentState.SerializeToString,
         ),
+        'SetAgentProperties': grpc.unary_unary_rpc_method_handler(
+            servicer.SetAgentProperties,
+            request_deserializer=SetAgentPropertiesRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
+        'SendAction': grpc.unary_unary_rpc_method_handler(
+            servicer.SendAction,
+            request_deserializer=SendActionRequest.FromString,
+            response_serializer=SendActionResponse.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
         'jiji.rpc.AgentService', rpc_method_handlers)
@@ -899,6 +1061,10 @@ try:
     def DeleteAgentInstance(self, request, context):
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def GetAgentState(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def SetAgentProperties(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def SendAction(self, request, context):
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
 
 
@@ -929,6 +1095,12 @@ try:
     def GetAgentState(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
       raise NotImplementedError()
     GetAgentState.future = None
+    def SetAgentProperties(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    SetAgentProperties.future = None
+    def SendAction(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    SendAction.future = None
 
 
   def beta_create_AgentService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
@@ -944,6 +1116,8 @@ try:
       ('jiji.rpc.AgentService', 'GetAgentState'): GetAgentStateRequest.FromString,
       ('jiji.rpc.AgentService', 'NextTick'): NextTickRequest.FromString,
       ('jiji.rpc.AgentService', 'Register'): AgentSource.FromString,
+      ('jiji.rpc.AgentService', 'SendAction'): SendActionRequest.FromString,
+      ('jiji.rpc.AgentService', 'SetAgentProperties'): SetAgentPropertiesRequest.FromString,
       ('jiji.rpc.AgentService', 'Unregister'): AgentSourceName.FromString,
     }
     response_serializers = {
@@ -953,6 +1127,8 @@ try:
       ('jiji.rpc.AgentService', 'GetAgentState'): AgentState.SerializeToString,
       ('jiji.rpc.AgentService', 'NextTick'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
       ('jiji.rpc.AgentService', 'Register'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+      ('jiji.rpc.AgentService', 'SendAction'): SendActionResponse.SerializeToString,
+      ('jiji.rpc.AgentService', 'SetAgentProperties'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
       ('jiji.rpc.AgentService', 'Unregister'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
     }
     method_implementations = {
@@ -962,6 +1138,8 @@ try:
       ('jiji.rpc.AgentService', 'GetAgentState'): face_utilities.unary_unary_inline(servicer.GetAgentState),
       ('jiji.rpc.AgentService', 'NextTick'): face_utilities.unary_unary_inline(servicer.NextTick),
       ('jiji.rpc.AgentService', 'Register'): face_utilities.unary_unary_inline(servicer.Register),
+      ('jiji.rpc.AgentService', 'SendAction'): face_utilities.unary_unary_inline(servicer.SendAction),
+      ('jiji.rpc.AgentService', 'SetAgentProperties'): face_utilities.unary_unary_inline(servicer.SetAgentProperties),
       ('jiji.rpc.AgentService', 'Unregister'): face_utilities.unary_unary_inline(servicer.Unregister),
     }
     server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
@@ -981,6 +1159,8 @@ try:
       ('jiji.rpc.AgentService', 'GetAgentState'): GetAgentStateRequest.SerializeToString,
       ('jiji.rpc.AgentService', 'NextTick'): NextTickRequest.SerializeToString,
       ('jiji.rpc.AgentService', 'Register'): AgentSource.SerializeToString,
+      ('jiji.rpc.AgentService', 'SendAction'): SendActionRequest.SerializeToString,
+      ('jiji.rpc.AgentService', 'SetAgentProperties'): SetAgentPropertiesRequest.SerializeToString,
       ('jiji.rpc.AgentService', 'Unregister'): AgentSourceName.SerializeToString,
     }
     response_deserializers = {
@@ -990,6 +1170,8 @@ try:
       ('jiji.rpc.AgentService', 'GetAgentState'): AgentState.FromString,
       ('jiji.rpc.AgentService', 'NextTick'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
       ('jiji.rpc.AgentService', 'Register'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+      ('jiji.rpc.AgentService', 'SendAction'): SendActionResponse.FromString,
+      ('jiji.rpc.AgentService', 'SetAgentProperties'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
       ('jiji.rpc.AgentService', 'Unregister'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
     }
     cardinalities = {
@@ -999,6 +1181,8 @@ try:
       'GetAgentState': cardinality.Cardinality.UNARY_UNARY,
       'NextTick': cardinality.Cardinality.UNARY_UNARY,
       'Register': cardinality.Cardinality.UNARY_UNARY,
+      'SendAction': cardinality.Cardinality.UNARY_UNARY,
+      'SetAgentProperties': cardinality.Cardinality.UNARY_UNARY,
       'Unregister': cardinality.Cardinality.UNARY_UNARY,
     }
     stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)

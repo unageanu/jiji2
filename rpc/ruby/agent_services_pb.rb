@@ -22,6 +22,8 @@ module Jiji
         rpc :CreateAgentInstance, AgentCreationRequest, AgentCreationResult
         rpc :DeleteAgentInstance, AgentDeletionRequest, Google::Protobuf::Empty
         rpc :GetAgentState, GetAgentStateRequest, AgentState
+        rpc :SetAgentProperties, SetAgentPropertiesRequest, Google::Protobuf::Empty
+        rpc :SendAction, SendActionRequest, SendActionResponse
       end
 
       Stub = Service.rpc_stub_class

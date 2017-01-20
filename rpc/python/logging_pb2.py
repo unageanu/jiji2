@@ -14,16 +14,15 @@ _sym_db = _symbol_database.Default()
 
 
 from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
-from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='logging.proto',
   package='jiji.rpc',
   syntax='proto3',
-  serialized_pb=_b('\n\rlogging.proto\x12\x08jiji.rpc\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"I\n\x0eLoggingRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\tlog_level\x18\x02 \x01(\t\x12\x0f\n\x07message\x18\x03 \x01(\t2J\n\rLoggerService\x12\x39\n\x03log\x12\x18.jiji.rpc.LoggingRequest\x1a\x16.google.protobuf.Empty\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\rlogging.proto\x12\x08jiji.rpc\x1a\x1bgoogle/protobuf/empty.proto\"I\n\x0eLoggingRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\tlog_level\x18\x02 \x01(\t\x12\x0f\n\x07message\x18\x03 \x01(\t2J\n\rLoggerService\x12\x39\n\x03log\x12\x18.jiji.rpc.LoggingRequest\x1a\x16.google.protobuf.Empty\"\x00\x62\x06proto3')
   ,
-  dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
+  dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
@@ -69,8 +68,8 @@ _LOGGINGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=89,
-  serialized_end=162,
+  serialized_start=56,
+  serialized_end=129,
 )
 
 DESCRIPTOR.message_types_by_name['LoggingRequest'] = _LOGGINGREQUEST

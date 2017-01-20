@@ -29,6 +29,7 @@ class TestAgent(Agent):
 
     def next_tick(self, tick):
         print(tick)
+        self.last_tick = tick
 
     def save_state(self):
         state = self.properties.copy()
@@ -38,6 +39,17 @@ class TestAgent(Agent):
     def restore_state(self, state):
         print(state)
         self.x = state["x"]
+
+    def execute_action(self, action):
+        if action == "get_properties":
+          return self.agent_name \
+            + "_" + self.properties["a"] + "_" + self.properties["b"]
+        elif action == "get_last_tick":
+          return str(self.last_tick['USDJPY'].bid) \
+            + "_" + str(self.last_tick['USDJPY'].ask) \
+            + "_" + str(self.last_tick.timestamp)
+        elif action == "error":
+          raise Exception("error")
 
 SOURCE
 
@@ -211,16 +223,23 @@ SOURCE
         agent_name:        'エージェント1',
         state:             '',
         property_settings: [
-          Jiji::Rpc::AgentCreationRequest::PropertySetting.new({
+          Jiji::Rpc::PropertySetting.new({
             id: 'a', value: 'aaaa'
           }),
-          Jiji::Rpc::AgentCreationRequest::PropertySetting.new({
+          Jiji::Rpc::PropertySetting.new({
             id: 'b', value: ''
           })
         ]
       })
       result = @stub.create_agent_instance(request)
       expect(result.instance_id).not_to be_empty
+
+      message = @stub.send_action(Jiji::Rpc::SendActionRequest.new(
+        instance_id: result.instance_id,
+        action_id: "get_properties"
+      )).message
+
+      expect(message).to eq "エージェント1_aaaa_"
     end
 
     it 'raises an error if an unknown agent class is specified' do
@@ -314,7 +333,7 @@ SOURCE
       result = @stub.create_agent_instance(request)
       expect(result.instance_id).not_to be_empty
 
-      date = DateTime.new(2017, 1, 1, 19, 2, 34)
+      date = DateTime.new(2017, 1, 1, 19, 2, 34, 0)
       request = Jiji::Rpc::NextTickRequest.new(
         instance_id: result.instance_id,
         tick:        Jiji::Rpc::Tick.new(
@@ -327,6 +346,35 @@ SOURCE
         )
       )
       @stub.next_tick(request)
+
+      message = @stub.send_action(Jiji::Rpc::SendActionRequest.new(
+        instance_id: result.instance_id,
+        action_id: "get_last_tick"
+      )).message
+
+      expect(message).to eq"112.0_112.3_2017-01-02 04:02:34"
+
+
+      date = DateTime.new(2017, 1, 1, 19, 2, 49, 0)
+      request = Jiji::Rpc::NextTickRequest.new(
+        instance_id: result.instance_id,
+        tick:        Jiji::Rpc::Tick.new(
+          timestamp: Google::Protobuf::Timestamp.new(
+            seconds: date.to_i, nanos: 0),
+          values:    [
+            Jiji::Rpc::Tick::Value.new(ask: 113.3, bid: 113, pair: 'USDJPY'),
+            Jiji::Rpc::Tick::Value.new(ask: 123.3, bid: 123, pair: 'EURJPY')
+          ]
+        )
+      )
+      @stub.next_tick(request)
+
+      message = @stub.send_action(Jiji::Rpc::SendActionRequest.new(
+        instance_id: result.instance_id,
+        action_id: "get_last_tick"
+      )).message
+
+      expect(message).to eq"113.0_113.3_2017-01-02 04:02:49"
     end
 
     it 'raises an error if an instance is not found.' do
@@ -347,4 +395,62 @@ SOURCE
       end.to raise_exception(GRPC::BadStatus)
     end
   end
+
+  describe '#set_agent_Properties' do
+    it 'can update the agent properties' do
+      source = Jiji::Rpc::AgentSource.new(name: 'test', body: SOURCE_01)
+      @stub.register(source)
+
+      request = Jiji::Rpc::AgentCreationRequest.new({
+        class_name:        'TestAgent@test',
+        agent_name:        'エージェント1',
+        state:             '',
+        property_settings: [
+          Jiji::Rpc::PropertySetting.new({
+            id: 'a', value: 'aaaa'
+          }),
+          Jiji::Rpc::PropertySetting.new({
+            id: 'b', value: 'bb'
+          })
+        ]
+      })
+      result = @stub.create_agent_instance(request)
+      expect(result.instance_id).not_to be_empty
+
+      request = Jiji::Rpc::SetAgentPropertiesRequest.new({
+        instance_id: result.instance_id,
+        property_settings: [
+          Jiji::Rpc::PropertySetting.new({
+            id: 'a', value: 'a2'
+          }),
+          Jiji::Rpc::PropertySetting.new({
+            id: 'b', value: 'b2'
+          })
+        ]
+      })
+      @stub.set_agent_properties(request)
+
+      message = @stub.send_action(Jiji::Rpc::SendActionRequest.new(
+        instance_id: result.instance_id,
+        action_id: "get_properties"
+      )).message
+
+      expect(message).to eq "エージェント1_a2_b2"
+    end
+
+    it 'raises an error if an instance is not found.' do
+      expect do
+        request = Jiji::Rpc::SetAgentPropertiesRequest.new({
+          instance_id: "not_found",
+          property_settings: [
+            Jiji::Rpc::PropertySetting.new({
+              id: 'a', value: 'a2'
+            })
+          ]
+        })
+        @stub.set_agent_properties(request)
+      end.to raise_exception(GRPC::BadStatus)
+    end
+  end
+
 end

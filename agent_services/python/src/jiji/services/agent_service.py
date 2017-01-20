@@ -85,6 +85,25 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
             self._handle_error(error, context)
         return agent_pb2.AgentState(None)
 
+    def SetAgentProperties(self, request, context):
+        try:
+            instance = self.agent_pool.get_instance(request.instance_id)
+            properties = self._extract_properties(request)
+            instance.set_properties(properties)
+            return empty_pb2.Empty()
+        except Exception as error: # pylint: disable=broad-except
+            self._handle_error(error, context)
+        return empty_pb2.Empty()
+
+    def SendAction(self, request, context):
+        try:
+            instance = self.agent_pool.get_instance(request.instance_id)
+            message = instance.execute_action(request.action_id)
+            return agent_pb2.SendActionResponse(message=message)
+        except Exception as error: # pylint: disable=broad-except
+            self._handle_error(error, context)
+        return agent_pb2.SendActionResponse(message='ERROR')
+
     def __extract_agent_class(self, name):
         agent_class = self.agent_registry.get_agent_class(name)
         property_infos = map(self._extract_agent_property_info, \

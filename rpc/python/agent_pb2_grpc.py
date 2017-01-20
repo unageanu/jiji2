@@ -16,6 +16,10 @@ import agent_pb2 as agent__pb2
 import google.protobuf.empty_pb2 as google_dot_protobuf_dot_empty__pb2
 import agent_pb2 as agent__pb2
 import agent_pb2 as agent__pb2
+import agent_pb2 as agent__pb2
+import google.protobuf.empty_pb2 as google_dot_protobuf_dot_empty__pb2
+import agent_pb2 as agent__pb2
+import agent_pb2 as agent__pb2
 
 
 class AgentServiceStub(object):
@@ -61,6 +65,16 @@ class AgentServiceStub(object):
         request_serializer=agent__pb2.GetAgentStateRequest.SerializeToString,
         response_deserializer=agent__pb2.AgentState.FromString,
         )
+    self.SetAgentProperties = channel.unary_unary(
+        '/jiji.rpc.AgentService/SetAgentProperties',
+        request_serializer=agent__pb2.SetAgentPropertiesRequest.SerializeToString,
+        response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+        )
+    self.SendAction = channel.unary_unary(
+        '/jiji.rpc.AgentService/SendAction',
+        request_serializer=agent__pb2.SendActionRequest.SerializeToString,
+        response_deserializer=agent__pb2.SendActionResponse.FromString,
+        )
 
 
 class AgentServiceServicer(object):
@@ -96,6 +110,16 @@ class AgentServiceServicer(object):
     raise NotImplementedError('Method not implemented!')
 
   def GetAgentState(self, request, context):
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def SetAgentProperties(self, request, context):
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
+  def SendAction(self, request, context):
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
@@ -137,6 +161,16 @@ def add_AgentServiceServicer_to_server(servicer, server):
           servicer.GetAgentState,
           request_deserializer=agent__pb2.GetAgentStateRequest.FromString,
           response_serializer=agent__pb2.AgentState.SerializeToString,
+      ),
+      'SetAgentProperties': grpc.unary_unary_rpc_method_handler(
+          servicer.SetAgentProperties,
+          request_deserializer=agent__pb2.SetAgentPropertiesRequest.FromString,
+          response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+      ),
+      'SendAction': grpc.unary_unary_rpc_method_handler(
+          servicer.SendAction,
+          request_deserializer=agent__pb2.SendActionRequest.FromString,
+          response_serializer=agent__pb2.SendActionResponse.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

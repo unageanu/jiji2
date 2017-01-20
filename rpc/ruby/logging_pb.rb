@@ -4,7 +4,6 @@
 require 'google/protobuf'
 
 require 'google/protobuf/empty_pb'
-require 'google/protobuf/timestamp_pb'
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "jiji.rpc.LoggingRequest" do
     optional :instance_id, :string, 1

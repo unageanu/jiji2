@@ -9,10 +9,9 @@ class AgentBuilder():
         self.agent_registry = agent_registry
 
     def build_agent(self, instance_id, \
-            agent_class_name, agent_name, properties, state=None):
+            agent_class_name, properties, state=None):
         agent_class = self.agent_registry.get_agent_class(agent_class_name)
         agent_instance = agent_class()
-        agent_instance.agent_name = agent_name
         self.__initialize_agent_instance(instance_id, \
             agent_instance, properties, state)
         return agent_instance

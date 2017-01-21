@@ -24,7 +24,6 @@ class TestAgent(Agent):
 
     def post_create(self):
         self.x = 0
-        print(self.agent_name)
         print(self.properties)
 
     def next_tick(self, tick):
@@ -42,8 +41,7 @@ class TestAgent(Agent):
 
     def execute_action(self, action):
         if action == "get_properties":
-          return self.agent_name \
-            + "_" + self.properties["a"] + "_" + self.properties["b"]
+          return self.properties["a"] + "_" + self.properties["b"]
         elif action == "get_last_tick":
           return str(self.last_tick['USDJPY'].bid) \
             + "_" + str(self.last_tick['USDJPY'].ask) \
@@ -220,7 +218,6 @@ SOURCE
 
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@test',
-        agent_name:        'エージェント1',
         state:             '',
         property_settings: [
           Jiji::Rpc::PropertySetting.new({
@@ -239,13 +236,12 @@ SOURCE
         action_id: "get_properties"
       )).message
 
-      expect(message).to eq "エージェント1_aaaa_"
+      expect(message).to eq "aaaa_"
     end
 
     it 'raises an error if an unknown agent class is specified' do
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@unknown',
-        agent_name:        'エージェント1',
         state:             '',
         property_settings: []
       })
@@ -262,7 +258,6 @@ SOURCE
 
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@test',
-        agent_name:        'エージェント1',
         state:             '',
         property_settings: []
       })
@@ -289,7 +284,6 @@ SOURCE
 
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@test',
-        agent_name:        'エージェント1',
         state:             '',
         property_settings: []
       })
@@ -303,7 +297,6 @@ SOURCE
 
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@test',
-        agent_name:        'エージェント2',
         state:             result.state,
         property_settings: []
       })
@@ -326,7 +319,6 @@ SOURCE
 
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@test',
-        agent_name:        'エージェント1',
         state:             '',
         property_settings: []
       })
@@ -403,7 +395,6 @@ SOURCE
 
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@test',
-        agent_name:        'エージェント1',
         state:             '',
         property_settings: [
           Jiji::Rpc::PropertySetting.new({
@@ -435,7 +426,7 @@ SOURCE
         action_id: "get_properties"
       )).message
 
-      expect(message).to eq "エージェント1_a2_b2"
+      expect(message).to eq "a2_b2"
     end
 
     it 'raises an error if an instance is not found.' do

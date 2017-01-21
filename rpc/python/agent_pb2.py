@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='agent.proto',
   package='jiji.rpc',
   syntax='proto3',
-  serialized_pb=_b('\n\x0b\x61gent.proto\x12\x08jiji.rpc\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8c\x01\n\x04Tick\x12-\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12$\n\x06values\x18\x02 \x03(\x0b\x32\x14.jiji.rpc.Tick.Value\x1a/\n\x05Value\x12\x0c\n\x04pair\x18\x01 \x01(\t\x12\x0b\n\x03\x62id\x18\x02 \x01(\x01\x12\x0b\n\x03\x61sk\x18\x03 \x01(\x01\"D\n\x0fNextTickRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x1c\n\x04tick\x18\x02 \x01(\x0b\x32\x0e.jiji.rpc.Tick\"\x1f\n\x0f\x41gentSourceName\x12\x0c\n\x04name\x18\x01 \x01(\t\")\n\x0b\x41gentSource\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x62ody\x18\x02 \x01(\t\"q\n\x10ValidationResult\x12\x31\n\x06status\x18\x01 \x01(\x0e\x32!.jiji.rpc.ValidationResult.Status\x12\r\n\x05\x65rror\x18\x02 \x01(\t\"\x1b\n\x06Status\x12\x06\n\x02OK\x10\x00\x12\t\n\x05\x45RROR\x10\x01\"\xeb\x01\n\x0c\x41gentClasses\x12\x32\n\x07\x63lasses\x18\x01 \x03(\x0b\x32!.jiji.rpc.AgentClasses.AgentClass\x1a\xa6\x01\n\nAgentClass\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12>\n\nproperties\x18\x03 \x03(\x0b\x32*.jiji.rpc.AgentClasses.AgentClass.Property\x1a\x35\n\x08Property\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07\x64\x65\x66\x61ult\x18\x03 \x01(\t\"\x83\x01\n\x14\x41gentCreationRequest\x12\x12\n\nclass_name\x18\x01 \x01(\t\x12\x12\n\nagent_name\x18\x02 \x01(\t\x12\r\n\x05state\x18\x03 \x01(\x0c\x12\x34\n\x11property_settings\x18\x04 \x03(\x0b\x32\x19.jiji.rpc.PropertySetting\",\n\x0fPropertySetting\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"*\n\x13\x41gentCreationResult\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"+\n\x14\x41gentDeletionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"+\n\x14GetAgentStateRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"\x1b\n\nAgentState\x12\r\n\x05state\x18\x01 \x01(\x0c\"f\n\x19SetAgentPropertiesRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x34\n\x11property_settings\x18\x02 \x03(\x0b\x32\x19.jiji.rpc.PropertySetting\";\n\x11SendActionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\taction_id\x18\x02 \x01(\t\"%\n\x12SendActionResponse\x12\x0f\n\x07message\x18\x01 \x01(\t2\xa6\x05\n\x0c\x41gentService\x12?\n\x08NextTick\x12\x19.jiji.rpc.NextTickRequest\x1a\x16.google.protobuf.Empty\"\x00\x12;\n\x08Register\x12\x15.jiji.rpc.AgentSource\x1a\x16.google.protobuf.Empty\"\x00\x12\x41\n\nUnregister\x12\x19.jiji.rpc.AgentSourceName\x1a\x16.google.protobuf.Empty\"\x00\x12\x43\n\x0fGetAgentClasses\x12\x16.google.protobuf.Empty\x1a\x16.jiji.rpc.AgentClasses\"\x00\x12V\n\x13\x43reateAgentInstance\x12\x1e.jiji.rpc.AgentCreationRequest\x1a\x1d.jiji.rpc.AgentCreationResult\"\x00\x12O\n\x13\x44\x65leteAgentInstance\x12\x1e.jiji.rpc.AgentDeletionRequest\x1a\x16.google.protobuf.Empty\"\x00\x12G\n\rGetAgentState\x12\x1e.jiji.rpc.GetAgentStateRequest\x1a\x14.jiji.rpc.AgentState\"\x00\x12S\n\x12SetAgentProperties\x12#.jiji.rpc.SetAgentPropertiesRequest\x1a\x16.google.protobuf.Empty\"\x00\x12I\n\nSendAction\x12\x1b.jiji.rpc.SendActionRequest\x1a\x1c.jiji.rpc.SendActionResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x0b\x61gent.proto\x12\x08jiji.rpc\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8c\x01\n\x04Tick\x12-\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12$\n\x06values\x18\x02 \x03(\x0b\x32\x14.jiji.rpc.Tick.Value\x1a/\n\x05Value\x12\x0c\n\x04pair\x18\x01 \x01(\t\x12\x0b\n\x03\x62id\x18\x02 \x01(\x01\x12\x0b\n\x03\x61sk\x18\x03 \x01(\x01\"D\n\x0fNextTickRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x1c\n\x04tick\x18\x02 \x01(\x0b\x32\x0e.jiji.rpc.Tick\"\x1f\n\x0f\x41gentSourceName\x12\x0c\n\x04name\x18\x01 \x01(\t\")\n\x0b\x41gentSource\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x62ody\x18\x02 \x01(\t\"q\n\x10ValidationResult\x12\x31\n\x06status\x18\x01 \x01(\x0e\x32!.jiji.rpc.ValidationResult.Status\x12\r\n\x05\x65rror\x18\x02 \x01(\t\"\x1b\n\x06Status\x12\x06\n\x02OK\x10\x00\x12\t\n\x05\x45RROR\x10\x01\"\xeb\x01\n\x0c\x41gentClasses\x12\x32\n\x07\x63lasses\x18\x01 \x03(\x0b\x32!.jiji.rpc.AgentClasses.AgentClass\x1a\xa6\x01\n\nAgentClass\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12>\n\nproperties\x18\x03 \x03(\x0b\x32*.jiji.rpc.AgentClasses.AgentClass.Property\x1a\x35\n\x08Property\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07\x64\x65\x66\x61ult\x18\x03 \x01(\t\"o\n\x14\x41gentCreationRequest\x12\x12\n\nclass_name\x18\x01 \x01(\t\x12\r\n\x05state\x18\x02 \x01(\x0c\x12\x34\n\x11property_settings\x18\x03 \x03(\x0b\x32\x19.jiji.rpc.PropertySetting\",\n\x0fPropertySetting\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"*\n\x13\x41gentCreationResult\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"+\n\x14\x41gentDeletionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"+\n\x14GetAgentStateRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"\x1b\n\nAgentState\x12\r\n\x05state\x18\x01 \x01(\x0c\"f\n\x19SetAgentPropertiesRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x34\n\x11property_settings\x18\x02 \x03(\x0b\x32\x19.jiji.rpc.PropertySetting\";\n\x11SendActionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\taction_id\x18\x02 \x01(\t\"%\n\x12SendActionResponse\x12\x0f\n\x07message\x18\x01 \x01(\t2\xa6\x05\n\x0c\x41gentService\x12?\n\x08NextTick\x12\x19.jiji.rpc.NextTickRequest\x1a\x16.google.protobuf.Empty\"\x00\x12;\n\x08Register\x12\x15.jiji.rpc.AgentSource\x1a\x16.google.protobuf.Empty\"\x00\x12\x41\n\nUnregister\x12\x19.jiji.rpc.AgentSourceName\x1a\x16.google.protobuf.Empty\"\x00\x12\x43\n\x0fGetAgentClasses\x12\x16.google.protobuf.Empty\x1a\x16.jiji.rpc.AgentClasses\"\x00\x12V\n\x13\x43reateAgentInstance\x12\x1e.jiji.rpc.AgentCreationRequest\x1a\x1d.jiji.rpc.AgentCreationResult\"\x00\x12O\n\x13\x44\x65leteAgentInstance\x12\x1e.jiji.rpc.AgentDeletionRequest\x1a\x16.google.protobuf.Empty\"\x00\x12G\n\rGetAgentState\x12\x1e.jiji.rpc.GetAgentStateRequest\x1a\x14.jiji.rpc.AgentState\"\x00\x12S\n\x12SetAgentProperties\x12#.jiji.rpc.SetAgentPropertiesRequest\x1a\x16.google.protobuf.Empty\"\x00\x12I\n\nSendAction\x12\x1b.jiji.rpc.SendActionRequest\x1a\x1c.jiji.rpc.SendActionResponse\"\x00\x62\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -413,22 +413,15 @@ _AGENTCREATIONREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='agent_name', full_name='jiji.rpc.AgentCreationRequest.agent_name', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b("").decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='state', full_name='jiji.rpc.AgentCreationRequest.state', index=2,
-      number=3, type=12, cpp_type=9, label=1,
+      name='state', full_name='jiji.rpc.AgentCreationRequest.state', index=1,
+      number=2, type=12, cpp_type=9, label=1,
       has_default_value=False, default_value=_b(""),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='property_settings', full_name='jiji.rpc.AgentCreationRequest.property_settings', index=3,
-      number=4, type=11, cpp_type=10, label=3,
+      name='property_settings', full_name='jiji.rpc.AgentCreationRequest.property_settings', index=2,
+      number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -445,8 +438,8 @@ _AGENTCREATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=730,
-  serialized_end=861,
+  serialized_start=729,
+  serialized_end=840,
 )
 
 
@@ -483,8 +476,8 @@ _PROPERTYSETTING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=863,
-  serialized_end=907,
+  serialized_start=842,
+  serialized_end=886,
 )
 
 
@@ -514,8 +507,8 @@ _AGENTCREATIONRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=909,
-  serialized_end=951,
+  serialized_start=888,
+  serialized_end=930,
 )
 
 
@@ -545,8 +538,8 @@ _AGENTDELETIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=953,
-  serialized_end=996,
+  serialized_start=932,
+  serialized_end=975,
 )
 
 
@@ -576,8 +569,8 @@ _GETAGENTSTATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=998,
-  serialized_end=1041,
+  serialized_start=977,
+  serialized_end=1020,
 )
 
 
@@ -607,8 +600,8 @@ _AGENTSTATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1043,
-  serialized_end=1070,
+  serialized_start=1022,
+  serialized_end=1049,
 )
 
 
@@ -645,8 +638,8 @@ _SETAGENTPROPERTIESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1072,
-  serialized_end=1174,
+  serialized_start=1051,
+  serialized_end=1153,
 )
 
 
@@ -683,8 +676,8 @@ _SENDACTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1176,
-  serialized_end=1235,
+  serialized_start=1155,
+  serialized_end=1214,
 )
 
 
@@ -714,8 +707,8 @@ _SENDACTIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1237,
-  serialized_end=1274,
+  serialized_start=1216,
+  serialized_end=1253,
 )
 
 _TICK_VALUE.containing_type = _TICK

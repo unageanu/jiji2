@@ -35,11 +35,10 @@ class TestAgent(Agent):
         self.agent_registry.register_source("test", self.SOURCE_01)
 
     def test_build_agent(self):
-        agent = self.builder.build_agent("1", "TestAgent@test", "agent1", {
+        agent = self.builder.build_agent("1", "TestAgent@test", {
             "a": "aaa",
             "b": "bbb"
         })
-        self.assertEqual(agent.agent_name, "agent1")
         self.assertEqual(agent.properties, {
             "a": "aaa",
             "b": "bbb"
@@ -51,10 +50,9 @@ class TestAgent(Agent):
             "post_create"
         ])
 
-        agent = self.builder.build_agent("2", "TestAgent@test", "agent2", {}, {
+        agent = self.builder.build_agent("2", "TestAgent@test", {}, {
             "a": "aaa"
         })
-        self.assertEqual(agent.agent_name, "agent2")
         self.assertEqual(agent.properties, {})
         self.assertEqual(agent.state, {
             "a": "aaa"
@@ -66,4 +64,4 @@ class TestAgent(Agent):
         ])
 
         with self.assertRaises(KeyError):
-            self.builder.build_agent("3", "NotFound@not_found", "agent3", {})
+            self.builder.build_agent("3", "NotFound@not_found", {})

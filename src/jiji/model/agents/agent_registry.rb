@@ -31,7 +31,7 @@ module Jiji::Model::Agents
     end
 
     def each(&block)
-      agent_service_resolver.services.values.each do |service|
+      agent_service_resolver.available_services.each do |service|
         service.retrieve_agent_classes(&block)
       end
     end

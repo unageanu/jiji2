@@ -20,6 +20,12 @@ module Jiji::Model::Agents::LanguageSupports
       end
     end
 
+    def available_services
+      services.values.reject do |v|
+        !v.available?
+      end
+    end
+
     def services
       @services ||= {
         python: python_agent_service,

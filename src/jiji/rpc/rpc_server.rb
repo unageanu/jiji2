@@ -4,7 +4,6 @@ require 'grpc'
 require 'jiji/rpc/services/logging_service'
 
 module Jiji::Rpc
-
   class RpcServer
 
     include Jiji::Rpc::Services

@@ -93,6 +93,9 @@ module Jiji::Model::Agents::Agent
   def restore_state(state)
   end
 
+  def destroy # nodoc
+  end
+
   # エージェントのプロパティ
   class Property
 

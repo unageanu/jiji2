@@ -2,7 +2,6 @@
 
 require 'encase'
 require 'jiji/errors/errors'
-require 'forwardable'
 
 module Jiji::Model::Agents
   class AgentRegistry
@@ -10,28 +9,31 @@ module Jiji::Model::Agents
     include Encase
     include Enumerable
     include Jiji::Errors
-    extend Forwardable
-
-    def_delegators :@builder,
-      :create_agent, :get_agent_property_infos, :get_agent_description
 
     needs :agent_source_repository
+    needs :agent_builder
+    needs :agent_service_resolver
     needs :time_source
 
     def initialize
       @mutex = Mutex.new
       @agents = {}
-      Context._delegates = {}
-      @finder  = Internal::AgentFinder.new(@agents)
-      @builder = Internal::AgentBuilder.new(self)
     end
 
     def on_inject
       load_agent_sources
     end
 
+    def create_agent(name, properties = {})
+      @mutex.synchronize do
+        agent_builder.create_agent(name, properties, @agents)
+      end
+    end
+
     def each(&block)
-      @finder.each(&block)
+      agent_service_resolver.services.values.each do |service|
+        service.retrieve_agent_classes(&block)
+      end
     end
 
     def find_agent_source_by_id(id)
@@ -51,22 +53,21 @@ module Jiji::Model::Agents
       @mutex.synchronize { @agents.values }
     end
 
-    def add_source(name, memo, type, body)
+    def add_source(name, memo, type, body, language = 'ruby')
       @mutex.synchronize do
         already_exists(AgentSource, name: name) if @agents.include? name
-        source = AgentSource.create(
-          name, type, @time_source.now, memo, body)
+        source = AgentSource.create(name, type,
+          @time_source.now, memo, body, language)
         register_source(source)
-        source
       end
     end
 
-    def update_source(name, memo, body)
+    def update_source(name, memo, body, language = 'ruby')
       @mutex.synchronize do
         not_found(AgentSource, name: name) unless @agents[name]
-        @agents[name].update(name, @time_source.now, memo, body)
-        Context._delegates[name] = @agents[name].context
-        @agents[name]
+        source = @agents[name]
+        source.update(name, @time_source.now, memo, body, language)
+        register_source(source)
       end
     end
 
@@ -90,12 +91,6 @@ module Jiji::Model::Agents
       end
     end
 
-    def get_agent_class(name)
-      @mutex.synchronize do
-        @finder.find_agent_class_by(name)
-      end
-    end
-
     private
 
     def load_agent_sources
@@ -107,8 +102,8 @@ module Jiji::Model::Agents
       # エラーがなくなる or すべてエラーになるまで繰り返し、依存関係によるエラーを解消する。
       failed = []
       sources.each do |source|
-        source.evaluate
         register_source(source)
+        source.save
 
         failed << source if source.status == :error
       end
@@ -118,13 +113,17 @@ module Jiji::Model::Agents
     end
 
     def register_source(source)
+      agent_service_resolver.resolve(source.language).register_source(source)
       @agents[source.name] = source
-      Context._delegates[source.name] = source.context
+      source.save
+      source
     end
 
     def unregister_source(name)
+      source = @agents[name]
+      agent_service_resolver.resolve(source.language) \
+        .unregister_source(source.name)
       @agents.delete name
-      Context._delegates.delete name
     end
 
   end

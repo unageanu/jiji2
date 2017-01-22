@@ -9,11 +9,11 @@ describe Jiji::Model::Trading::BackTestRepository do
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
     @repository   = @container.lookup(:backtest_repository)
     @time_source  = @container.lookup(:time_source)
-    @registory    = @container.lookup(:agent_registry)
+    @registry = @container.lookup(:agent_registry)
     @repository.load
 
-    @registory.add_source('aaa', '', :agent, data_builder.new_agent_body(1))
-    @registory.add_source('bbb', '', :agent, data_builder.new_agent_body(2))
+    @registry.add_source('aaa', '', :agent, data_builder.new_agent_body(1))
+    @registry.add_source('bbb', '', :agent, data_builder.new_agent_body(2))
   end
 
   after(:example) do
@@ -488,7 +488,7 @@ describe Jiji::Model::Trading::BackTestRepository do
     end
 
     it 'テストで利用しているエージェントが削除されていた場合も、正しく起動できる' do
-      @registory.add_source('ccc', '', :agent, data_builder.new_agent_body(3))
+      @registry.add_source('ccc', '', :agent, data_builder.new_agent_body(3))
       @repository.register({
         'name'          => 'テスト10',
         'start_time'    => Time.at(100),
@@ -501,7 +501,7 @@ describe Jiji::Model::Trading::BackTestRepository do
         ]
       })
 
-      @registory.remove_source('ccc')
+      @registry.remove_source('ccc')
       @repository.stop
 
       @container    = Jiji::Test::TestContainerFactory.instance.new_container

@@ -50,13 +50,7 @@ module Jiji::Web
       allow('GET,OPTIONS')
     end
     get '/classes' do
-      classes = registry.map do |name|
-        {
-          name:        name,
-          description: registry.get_agent_description(name),
-          properties:  registry.get_agent_property_infos(name)
-        }
-      end
+      classes = registry.map { |cl| cl }
       ok(classes)
     end
 

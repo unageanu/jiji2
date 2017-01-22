@@ -29,7 +29,6 @@ describe Jiji::Model::Agents::AgentSource do
     agents = repository.all
     agent  = repository.get_by_id(agents.first._id)
 
-    expect(agent.context).not_to eq nil
     expect(agent.name).to eq 'test0'
     expect(agent.type).to eq :agent
   end

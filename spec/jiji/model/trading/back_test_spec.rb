@@ -9,11 +9,11 @@ describe Jiji::Model::Trading::BackTest do
     @container    = Jiji::Test::TestContainerFactory.instance.new_container
     @repository   = @container.lookup(:backtest_repository)
     @time_source  = @container.lookup(:time_source)
-    @registory    = @container.lookup(:agent_registry)
+    @registry = @container.lookup(:agent_registry)
     @repository.load
 
-    @registory.add_source('aaa', '', :agent, data_builder.new_agent_body(1))
-    @registory.add_source('bbb', '', :agent, data_builder.new_agent_body(2))
+    @registry.add_source('aaa', '', :agent, data_builder.new_agent_body(1))
+    @registry.add_source('bbb', '', :agent, data_builder.new_agent_body(2))
   end
 
   after(:example) do

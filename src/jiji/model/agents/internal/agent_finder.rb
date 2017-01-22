@@ -6,29 +6,35 @@ module Jiji::Model::Agents::Internal
     include Jiji::Model::Agents
     include Jiji::Errors
 
-    def initialize(agents)
-      @agents = agents
-    end
+    NAME_REGEXP = /([^@]+)@([^@]+)$/
 
     def each(&block)
       checked = Set.new
-      @agents.values.each do |source|
-        find_agent(source.name, source.context, checked) do |name|
-          yield(name)
+      Context._delegates.each do |source_name, context|
+        find_agent(source_name, context, checked) do |name, cl|
+          yield(name, cl)
         end
       end
     end
 
     def find_agent_class_by(name)
-      not_found(Agent, name: name) unless name =~ /([^@]+)@([^@]+)$/
+      agents = Context._delegates
+      steps = AgentFinder.split_class_name(name)
+      class_path = steps[0]
+      agent_name = steps[1]
+      not_found(Agent, name => name) unless agents.include? agent_name
+
+      root = agents[agent_name]
+      path = class_path.split('::')
+      find_class_by(root, path, name)
+    end
+
+    def self.split_class_name(name)
+      not_found(Agent, name: name) unless name =~ NAME_REGEXP
 
       class_path = Regexp.last_match(1)
       agent_name = Regexp.last_match(2)
-      not_found(Agent, name => name) unless @agents.include? agent_name
-
-      root = @agents[agent_name].context
-      path = class_path.split('::')
-      find_class_by(root, path, name)
+      [class_path, agent_name]
     end
 
     private
@@ -59,7 +65,7 @@ module Jiji::Model::Agents::Internal
       m.constants.each do |name|
         cl = m.const_get name
         if cl.is_a?(Class) && cl < Jiji::Model::Agents::Agent
-          yield("#{extract_name(cl.name)}@#{source_name}")
+          yield("#{extract_name(cl.name)}@#{source_name}", cl)
         end
         find_agent(source_name, cl, checked, &block) if cl.is_a?(Module)
       end

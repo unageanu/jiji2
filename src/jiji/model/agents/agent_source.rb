@@ -20,6 +20,7 @@ module Jiji::Model::Agents
     field :type,          type: Symbol
     field :status,        type: Symbol
     field :body,          type: String
+    field :language,      type: String, default: 'ruby'
 
     field :created_at,    type: Time
     field :updated_at,    type: Time
@@ -48,7 +49,8 @@ module Jiji::Model::Agents
       { type: 1, name: 1, id: 1 },
       unique: true, name: 'agent_sources_type_name_id_index')
 
-    def self.create(name, type, created_at, memo = '', body = '')
+    def self.create(name, type, created_at,
+      memo = '', body = '', language = 'ruby')
       source = AgentSource.new do |a|
         a.name       = name
         a.type       = type
@@ -56,34 +58,18 @@ module Jiji::Model::Agents
         a.updated_at = created_at
         a.memo       = memo
         a.body       = body
+        a.language   = language
       end
-      source.evaluate_and_save
       source
     end
 
-    def evaluate_and_save
-      evaluate
-      save
-    end
-
-    def update(name = nil, updated_at = nil, memo = nil, body = nil)
+    def update(name = nil, updated_at = nil,
+      memo = nil, body = nil, language = nil)
       self.name       = name       || self.name
       self.memo       = memo       || self.memo
       self.body       = body       || self.body
+      self.language   = language   || self.language
       self.updated_at = updated_at || self.updated_at
-      evaluate_and_save
-    end
-
-    def evaluate
-      return change_state_to_empty if body.nil? || body.empty?
-      @context = Context.new_context
-      begin
-        @context.module_eval(body, "#{type}/#{name}", 1)
-        change_state_to_normal
-      rescue Exception => e # rubocop:disable Lint/RescueException
-        change_state_to_error(e)
-      end
-      @context
     end
 
     def to_h
@@ -91,23 +77,6 @@ module Jiji::Model::Agents
       insert_file_information_to_hash(hash)
       insert_status_and_error_information_to_hash(hash)
       hash
-    end
-
-    private
-
-    def insert_file_information_to_hash(hash)
-      hash[:id]         = _id
-      hash[:name]       = name
-      hash[:memo]       = memo
-      hash[:type]       = type
-      hash[:body]       = body
-      hash[:created_at] = created_at
-      hash[:updated_at] = updated_at
-    end
-
-    def insert_status_and_error_information_to_hash(hash)
-      hash[:status] = status
-      hash[:error]  = @error
     end
 
     def change_state_to_normal
@@ -123,6 +92,24 @@ module Jiji::Model::Agents
     def change_state_to_error(error)
       @error = error.to_s
       self.status = :error
+    end
+
+    private
+
+    def insert_file_information_to_hash(hash)
+      hash[:id]         = _id
+      hash[:name]       = name
+      hash[:memo]       = memo
+      hash[:type]       = type
+      hash[:body]       = body
+      hash[:language]   = language
+      hash[:created_at] = created_at
+      hash[:updated_at] = updated_at
+    end
+
+    def insert_status_and_error_information_to_hash(hash)
+      hash[:status] = status
+      hash[:error]  = @error
     end
 
   end

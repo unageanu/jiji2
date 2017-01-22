@@ -7,8 +7,8 @@ describe Jiji::Model::Trading::BackTest do
   include_context 'use data_builder'
   include_context 'use container'
 
-  let(:backtest_repository)     { container.lookup(:backtest_repository) }
-  let(:agent_registory)         { container.lookup(:agent_registry) }
+  let(:backtest_repository) { container.lookup(:backtest_repository) }
+  let(:agent_registry) { container.lookup(:agent_registry) }
   let(:position_repository)     { container.lookup(:position_repository) }
   let(:graph_repository)        { container.lookup(:graph_repository) }
   let(:notification_repository) { container.lookup(:notification_repository) }
@@ -18,13 +18,13 @@ describe Jiji::Model::Trading::BackTest do
 
     root = Jiji::Utils::Requires.root
     %w(signals moving_average_agent cross).each do |file|
-      source = agent_registory.add_source("#{file}.rb", '', :agent,
+      source = agent_registry.add_source("#{file}.rb", '', :agent,
         IO.read("#{root}/src/jiji/model/agents/builtin_files/#{file}.rb"))
       raise source.error unless source.error.nil?
     end
     %w(error_agent).each do |file|
       f = File.expand_path("../../agents/builtin_files/#{file}.rb", __FILE__)
-      source = agent_registory.add_source("#{file}.rb", '', :agent, IO.read(f))
+      source = agent_registry.add_source("#{file}.rb", '', :agent, IO.read(f))
       raise source.error unless source.error.nil?
     end
   end

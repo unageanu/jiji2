@@ -11,7 +11,7 @@ module Utils
 
     def register_agent_file(path, filename = File.basename(path))
       root = Jiji::Utils::Requires.root
-      source = @agent_registory.add_source(
+      source = @agent_registry.add_source(
         filename, '', :agent, IO.read("#{root}/#{path}"))
       raise source.error unless source.error.nil?
     end
@@ -42,7 +42,7 @@ module Utils
       @container = Jiji::Test::TestContainerFactory.instance.new_container
       @backtest_repository   = @container.lookup(:backtest_repository)
       @action_dispatcher     = @container.lookup(:action_dispatcher)
-      @agent_registory       = @container.lookup(:agent_registry)
+      @agent_registry = @container.lookup(:agent_registry)
 
       activate_demo_securities
 

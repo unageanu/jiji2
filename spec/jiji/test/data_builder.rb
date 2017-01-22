@@ -182,9 +182,11 @@ BODY
     end
 
     def register_agent(seed)
-      Jiji::Model::Agents::AgentSource.create(
+      source = Jiji::Model::Agents::AgentSource.create(
         "test#{seed}", seed.even? ? :agent : :lib, Time.at(100 * seed), '',
         "class Foo#{seed}; def to_s; return \"xxx#{seed}\"; end; end")
+      source.save
+      source
     end
 
     def register_agent_setting(name = 'test1',

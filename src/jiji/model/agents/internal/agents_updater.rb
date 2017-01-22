@@ -17,15 +17,15 @@ module Jiji::Model::Agents::Internal
 
     def update(agents, new_agent_setting, fail_on_error = false)
       settings = []
-      agents = new_agent_setting.each_with_object({}) do |s, r|
+      after = new_agent_setting.each_with_object({}) do |s, r|
         settings << s = AgentSetting.get_or_create_from_hash(s, backtest_id)
         process_error(!fail_on_error) do
           r[s.id] = create_or_update_agent(agents, s)
         end
       end
       settings.each { |s| s.save }
-      deactivate_removed_agents(agents)
-      agents
+      deactivate_removed_agents(after, agents)
+      after
     end
 
     def restore_agents_from_saved_state
@@ -47,10 +47,18 @@ module Jiji::Model::Agents::Internal
 
     private
 
-    def deactivate_removed_agents(agents)
+    def deactivate_removed_agents(after, before)
+      destroy_removed_agents(after, before)
       AgentSetting.load(backtest_id).each do |setting|
-        setting.active = agents.include?(setting.id)
+        setting.active = after.include?(setting.id)
         setting.save
+      end
+    end
+
+    def destroy_removed_agents(after, before)
+      (before.keys - after.keys).each do |key|
+        agent = before[key]
+        process_error(true) { agent.destroy }
       end
     end
 

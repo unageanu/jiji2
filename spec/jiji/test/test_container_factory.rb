@@ -3,6 +3,7 @@
 require 'rspec/mocks/standalone'
 require 'jiji/composing/container_factory'
 require 'jiji/test/mock/mock_securities'
+require 'jiji/test/mock/mock_python_agent_service'
 
 module Jiji::Test
   class TestContainerFactory < Jiji::Composing::ContainerFactory
@@ -23,6 +24,7 @@ module Jiji::Test
           publish:                    'message_id'
         })
         object :sns_service, mock
+        object :python_agent_service, Mock::MockPythonAgentService.new
       end
     end
 

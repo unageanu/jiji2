@@ -10,10 +10,10 @@ describe Jiji::Model::Trading::RMT do
     @rmt          = @container.lookup(:rmt)
     @time_source  = @container.lookup(:time_source)
     @settings     = @container.lookup(:setting_repository)
-    @registory    = @container.lookup(:agent_registry)
+    @registry = @container.lookup(:agent_registry)
 
-    @registory.add_source('aaa', '', :agent, data_builder.new_agent_body(1))
-    @registory.add_source('bbb', '', :agent, data_builder.new_agent_body(2))
+    @registry.add_source('aaa', '', :agent, data_builder.new_agent_body(1))
+    @registry.add_source('bbb', '', :agent, data_builder.new_agent_body(2))
   end
 
   after(:example) do

@@ -15,7 +15,9 @@ module Jiji
   module Errors         end
 
   module Model
-    module Agents       end
+    module Agents
+      module LanguageSupports end
+    end
     module Graphing     end
     module Logging      end
     module Notification end

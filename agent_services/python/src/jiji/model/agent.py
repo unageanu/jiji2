@@ -24,7 +24,7 @@ class Agent(metaclass=ABCMeta):
     def next_tick(self, tick):
         pass
 
-    def execute_action(self, action):
+    def execute_action(self, action): # pylint: disable=no-self-use, unused-argument
         return 'OK'
 
     def save_state(self): # pylint: disable=no-self-use

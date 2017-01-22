@@ -31,8 +31,8 @@ module Jiji
       puts 'wait for server start up.'
       loop do
         begin
-          get('/version')
-          return
+          response = get('/version')
+          return if response.status == 200
         rescue Errno::ECONNREFUSED
           puts ' sleep 5 seconds...'
           sleep 5

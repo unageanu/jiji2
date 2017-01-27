@@ -58,7 +58,7 @@ end
 
 desc 'Generate rpc serices and stubs.'
 task :generate_stub do |task|
-  ["agent", "logging"].each do |mod|
+  ["agent", "logging", "health_check"].each do |mod|
     sh "grpc_tools_ruby_protoc -I ./rpc/protos --ruby_out=rpc/ruby --grpc_out=rpc/ruby ./rpc/protos/#{mod}.proto"
     sh "python -m grpc_tools.protoc -I./rpc/protos --python_out=./rpc/python --grpc_python_out=./rpc/python ./rpc/protos/#{mod}.proto"
   end

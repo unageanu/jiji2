@@ -1,23 +1,30 @@
 require 'grpc'
 require 'singleton'
-require 'agent_services_pb'
+require 'health_check_services_pb'
 
 module Jiji
   class RpcClient
+
+    SERVER_URL = 'localhost:50051'
 
     include Singleton
 
     def agent_service
       Jiji::Rpc::AgentService::Stub.new(
-        'localhost:50051', :this_channel_is_insecure)
+        SERVER_URL, :this_channel_is_insecure)
+    end
+
+    def health_check_service
+      Jiji::Rpc::HealthCheckService::Stub.new(
+        SERVER_URL, :this_channel_is_insecure)
     end
 
     def wait_for_server_start_up
-      service = agent_service
+      service = health_check_service
       puts 'wait for server start up.'
       loop do
         begin
-          service.get_agent_classes(Google::Protobuf::Empty.new)
+          service.status(Google::Protobuf::Empty.new)
           return
         rescue GRPC::BadStatus => e
           if e.code == 14

@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package jiji.rpc;
+
+import "google/protobuf/empty.proto";
+
+service HealthCheckService {
+
+  rpc Status(google.protobuf.Empty) returns (GetStatusResponse) {}
+
+}
+
+message GetStatusResponse {
+  string status = 3;
+}

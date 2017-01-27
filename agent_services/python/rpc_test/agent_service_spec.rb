@@ -4,6 +4,7 @@ require 'rpc_client'
 
 describe 'AgentService' do
   SOURCE_01 = <<SOURCE.freeze
+import datetime
 from jiji.model.agent import Agent, Property
 
 class TestAgent(Agent):
@@ -43,9 +44,11 @@ class TestAgent(Agent):
         if action == "get_properties":
           return self.properties["a"] + "_" + self.properties["b"]
         elif action == "get_last_tick":
+          timezone = datetime.timezone(datetime.timedelta(0))
+          time = self.last_tick.timestamp.replace(tzinfo=timezone)
           return str(self.last_tick['USDJPY'].bid) \
             + "_" + str(self.last_tick['USDJPY'].ask) \
-            + "_" + str(self.last_tick.timestamp)
+            + "_" + str(time)
         elif action == "error":
           raise Exception("error")
 
@@ -344,7 +347,7 @@ SOURCE
                                     action_id:   'get_last_tick'
       )).message
 
-      expect(message).to eq'112.0_112.3_2017-01-02 04:02:34'
+      expect(message).to eq'112.0_112.3_2017-01-02 04:02:34+00:00'
 
       date = DateTime.new(2017, 1, 1, 19, 2, 49, 0)
       request = Jiji::Rpc::NextTickRequest.new(
@@ -365,7 +368,7 @@ SOURCE
                                     action_id:   'get_last_tick'
       )).message
 
-      expect(message).to eq'113.0_113.3_2017-01-02 04:02:49'
+      expect(message).to eq'113.0_113.3_2017-01-02 04:02:49+00:00'
     end
 
     it 'raises an error if an instance is not found.' do

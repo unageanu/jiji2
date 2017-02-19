@@ -54,8 +54,19 @@ module Jiji::Web
       ok(classes)
     end
 
+    options '/available_languages' do
+      allow('GET,OPTIONS')
+    end
+    get '/available_languages' do
+      ok(agent_service_resolver.available_languages)
+    end
+
     def registry
       lookup(:agent_registry)
+    end
+
+    def agent_service_resolver
+      lookup(:agent_service_resolver)
     end
 
   end

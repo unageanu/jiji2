@@ -16,12 +16,12 @@ RSpec::Core::RakeTask.new(:spec) {|t|
 
 desc "Run all specs in rest_spec directory using json transport"
 RSpec::Core::RakeTask.new(:rest_spec_json) {|t|
-  t.rspec_opts = '-I src -I spec -I rest_spec -I rpc/ruby -fdoc'
+  t.rspec_opts = '-I src -I spec -I rest_spec -I rpc/ruby -I agent_services/python/rpc_test -fdoc'
   t.pattern    = 'rest_spec/use_json_transport.rb'
 }
 desc "Run all specs in rest_spec directory using messagepack transport"
 RSpec::Core::RakeTask.new(:rest_spec_messagepack) {|t|
-  t.rspec_opts = '-I src -I spec -I rest_spec -I rpc/ruby -fdoc'
+  t.rspec_opts = '-I src -I spec -I rest_spec -I rpc/ruby -I agent_services/python/rpc_test -fdoc'
   t.pattern    = 'rest_spec/use_messagepack_transport.rb'
 }
 

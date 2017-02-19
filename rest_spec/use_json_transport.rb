@@ -1,10 +1,8 @@
 # coding: utf-8
 require 'server'
-require 'client'
+require 'python_rpc_server'
 
-Jiji::Client.instance.transport = Jiji::Client::JsonTransport.new
-Jiji::Server.instance.setup('json')
-
-Jiji::Client.instance.wait_for_server_start_up
+Jiji::PythonRpcServer.start_python_rpc_server
+Jiji::Server.start_jiji_server('json')
 
 require 'all_specs'

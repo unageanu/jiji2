@@ -6,6 +6,7 @@ require 'singleton'
 require 'fileutils'
 require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
+require 'client'
 
 module Jiji
   class Server
@@ -53,6 +54,15 @@ module Jiji
         raise "failed to kill server. pid=#{pid}" unless system("kill #{pid}")
         puts "stop server pid=#{pid}"
       end
+    end
+
+    def self.start_jiji_server(transport)
+      Jiji::Client.instance.transport = transport == "json" \
+        ? Jiji::Client::JsonTransport.new \
+        : Jiji::Client::MessagePackTransport.new
+      Jiji::Server.instance.setup(transport)
+
+      Jiji::Client.instance.wait_for_server_start_up
     end
 
   end

@@ -5,6 +5,7 @@ ENV['ENABLE_COVERADGE_REPORT'] = 'false'
 require 'singleton'
 require 'fileutils'
 require 'server'
+require 'rpc_client'
 
 module Jiji
   class PythonRpcServer < Jiji::Server
@@ -32,6 +33,11 @@ module Jiji
       log_dir = File.join(BUILD_DIR, 'python_rpc_spec')
       FileUtils.mkdir_p log_dir
       log_dir
+    end
+
+    def self.start_python_rpc_server
+      Jiji::PythonRpcServer.instance.setup('python_rpc')
+      Jiji::RpcClient.instance.wait_for_server_start_up
     end
 
   end

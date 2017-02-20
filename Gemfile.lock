@@ -88,7 +88,7 @@ GEM
       parser
       unparser
     procto (0.0.3)
-    puma (3.7.0)
+    puma (3.7.1)
     quandl (1.0.3)
       activesupport (>= 4.2.3)
       json (~> 1.8.3)

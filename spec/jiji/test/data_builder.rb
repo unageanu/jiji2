@@ -243,5 +243,58 @@ BODY
       File.expand_path('../', __FILE__)
     end
 
+    def new_python_agent_body(id='1')
+      return <<SOURCE.freeze
+import datetime
+from jiji.model.agent import Agent, Property
+
+class TestAgent(Agent):
+
+    @staticmethod
+    def get_description():
+        return "description#{id}"
+
+    @staticmethod
+    def get_property_infos():
+        return [
+            Property("a", "プロパティ1", "aa"),
+            Property("b", "プロパティ2")
+        ]
+
+    def set_properties(self, properties):
+        self.properties = properties
+
+    def post_create(self):
+        self.x = 0
+        print(self.properties)
+
+    def next_tick(self, tick):
+        print(tick)
+        self.last_tick = tick
+
+    def save_state(self):
+        state = self.properties.copy()
+        state["x"] = self.x + 1
+        return state
+
+    def restore_state(self, state):
+        print(state)
+        self.x = state["x"]
+
+    def execute_action(self, action):
+        if action == "get_properties":
+          return self.properties["a"] + "_" + self.properties["b"]
+        elif action == "get_last_tick":
+          timezone = datetime.timezone(datetime.timedelta(0))
+          time = self.last_tick.timestamp.replace(tzinfo=timezone)
+          return str(self.last_tick['USDJPY'].bid) \
+            + "_" + str(self.last_tick['USDJPY'].ask) \
+            + "_" + str(time)
+        elif action == "error":
+          raise Exception("error")
+
+SOURCE
+    end
+
   end
 end

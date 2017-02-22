@@ -20,7 +20,8 @@ module Jiji::Web
     post '/sources' do
       body = load_body
       source = registry.add_source(
-        body['name'], body['memo'] || '', body['type'], body['body'] || '')
+        body['name'], body['memo'] || '', body['type'], body['body'] || '',
+        body['language'] || 'ruby')
       created(source.to_h)
     end
 
@@ -36,8 +37,9 @@ module Jiji::Web
       if body.include?('name') && body['name'] != target.name
         registry.rename_source(target.name, body['name'])
       end
-      result = registry.update_source(
-        body['name'] || target.name, body['memo'] || '', body['body'] || '')
+      result = registry.update_source( body['name'] || target.name,
+        body['memo'] || '', body['body'] || '',
+        body['language'] || target.language)
       ok(result)
     end
     delete '/sources/:id' do

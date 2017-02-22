@@ -54,10 +54,10 @@ module Jiji::Web
       ok(classes)
     end
 
-    options '/available_languages' do
+    options '/available-languages' do
       allow('GET,OPTIONS')
     end
-    get '/available_languages' do
+    get '/available-languages' do
       ok(agent_service_resolver.available_languages)
     end
 

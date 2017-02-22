@@ -191,8 +191,8 @@ describe 'エージェント' do
     }])
   end
 
-  it 'GET /agents/available_languages' do
-    r = @client.get('agents/available_languages')
+  it 'GET /agents/available-languages' do
+    r = @client.get('agents/available-languages')
     expect(r.status).to eq 200
 
     expect(r.body).to eq ['python', 'ruby']

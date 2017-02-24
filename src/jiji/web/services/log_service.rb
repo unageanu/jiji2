@@ -13,7 +13,7 @@ module Jiji::Web
     get '/:backtest_id' do
       index     = request['offset'] ? request['offset'].to_i : 0
       id        = read_backtest_id_from(params, 'backtest_id', true)
-      ok(retrive_log_data(id, index))
+      ok(retrive_log_data(id, index) || {})
     end
 
     options '/:backtest_id/count' do

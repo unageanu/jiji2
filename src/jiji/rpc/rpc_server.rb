@@ -1,12 +1,17 @@
 # coding: utf-8
 
 require 'grpc'
+require 'encase'
 require 'jiji/rpc/services/logging_service'
+require 'jiji/rpc/services/health_check_service'
 
 module Jiji::Rpc
   class RpcServer
 
-    include Jiji::Rpc::Services
+    include Encase
+
+    needs :logging_service
+    needs :health_check_service
 
     def start
       @server = GRPC::RpcServer.new
@@ -29,7 +34,8 @@ module Jiji::Rpc
     end
 
     def register_services(server)
-      server.handle(LoggingService)
+      server.handle(logging_service)
+      server.handle(health_check_service)
     end
 
   end

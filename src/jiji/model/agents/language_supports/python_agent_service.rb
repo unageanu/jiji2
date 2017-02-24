@@ -10,9 +10,16 @@ module Jiji::Model::Agents::LanguageSupports
 
     include Jiji::Rpc
 
+    SERVER_URL = 'localhost:50051'
+
     def stub
       @stub ||= AgentService::Stub.new(
-        'localhost:50051', :this_channel_is_insecure)
+        SERVER_URL, :this_channel_is_insecure)
+    end
+
+    def health_check_service_stub
+      @health_check_service_stub ||= HealthCheckService::Stub.new(
+        SERVER_URL, :this_channel_is_insecure)
     end
 
   end

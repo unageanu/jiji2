@@ -77,8 +77,8 @@ module Jiji::Model::Agents::Internal
     end
 
     def create_agent(setting)
-      agent = @agent_registry.create_agent(
-        setting.agent_class, setting.properties_with_indifferent_access)
+      agent = @agent_registry.create_agent(setting.agent_class,
+        setting.name, setting.properties_with_indifferent_access)
       agent.agent_name = setting.name || setting.agent_class
       inject_components_to(agent, setting)
       agent.post_create

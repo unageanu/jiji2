@@ -22,5 +22,8 @@ require 'trading/logs_spec'
 require 'trading/notifications_spec'
 require 'trading/action_spec'
 
+require 'trading/python/agents_spec'
+require 'trading/python/backtest_spec'
+
 require 'utils/echo_spec'
 require 'utils/version_spec'

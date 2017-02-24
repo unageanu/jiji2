@@ -20,6 +20,8 @@ class Agent(metaclass=ABCMeta):
     def set_properties(self, properties):
         self.properties = properties
 
+    def set_agent_name(self, agent_name):
+        self.agent_name = agent_name
 
     def next_tick(self, tick):
         pass

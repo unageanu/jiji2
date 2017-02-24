@@ -8,7 +8,7 @@ class AgentPool():
 
     def new_id(self):
         self.serial += 1
-        return str(self.serial)
+        return "python_" + str(self.serial)
 
     def register_instance(self, instance_id, agent_instance):
         self.pool[instance_id] = agent_instance

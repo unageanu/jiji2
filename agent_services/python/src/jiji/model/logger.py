@@ -18,6 +18,9 @@ class Logger():
     def error(self, message):
         self.stub.log(self.__create_request("ERROR", message))
 
+    def fatal(self, message):
+        self.stub.log(self.__create_request("FATAL", message))
+
     def __create_request(self, log_level, message):
         return logging_pb2.LoggingRequest(instance_id=self.instance_id, \
             log_level=log_level, message=message)

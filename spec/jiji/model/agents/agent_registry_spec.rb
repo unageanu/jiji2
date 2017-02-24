@@ -200,36 +200,36 @@ describe Jiji::Model::Agents::AgentRegistry do
     end
 
     it 'agentを作成できる' do
-      agent = @registry.create_agent('TestAgent1@aaa', foo: 'var')
+      agent = @registry.create_agent('TestAgent1@aaa', 'test', foo: 'var')
       expect(agent).not_to be nil
       expect(agent.properties[:foo]).to eq 'var'
 
-      agent = @registry.create_agent('Var::TestAgent@bbb', foo: 'var2')
+      agent = @registry.create_agent('Var::TestAgent@bbb', 'test', foo: 'var2')
       expect(agent).not_to be nil
       expect(agent.properties[:foo]).to eq 'var2'
     end
 
     it '名前に対応するクラスが存在しない場合エラー' do
       expect do
-        @registry.create_agent('TestAgentX@aaa')
+        @registry.create_agent('TestAgentX@aaa', 'test')
       end.to raise_exception(Jiji::Errors::NotFoundException)
       expect do
-        @registry.create_agent('TestAgent1@bbb')
+        @registry.create_agent('TestAgent1@bbb', 'test')
       end.to raise_exception(Jiji::Errors::NotFoundException)
       expect do
-        @registry.create_agent('Var::TestAgentX@bbb')
+        @registry.create_agent('Var::TestAgentX@bbb', 'test')
       end.to raise_exception(Jiji::Errors::NotFoundException)
     end
 
     it '定数やAgent派生でないクラスを指定した場合、エラー' do
       expect do
-        @registry.create_agent('Var::NotAgent@ccc')
+        @registry.create_agent('Var::NotAgent@ccc', 'test')
       end.to raise_exception(Jiji::Errors::NotFoundException)
       expect do
-        @registry.create_agent('Var::CONST@ccc')
+        @registry.create_agent('Var::CONST@ccc', 'test')
       end.to raise_exception(Jiji::Errors::NotFoundException)
       expect do
-        @registry.create_agent('Var::Mod@ccc')
+        @registry.create_agent('Var::Mod@ccc', 'test')
       end.to raise_exception(Jiji::Errors::NotFoundException)
     end
   end
@@ -374,18 +374,18 @@ BODY
     expect(names.include?('TestModule2::TestAgent2@bbb')).to be true
     expect(names.include?('TestAgent1@bbb')).to be true
 
-    agent = @registry.create_agent('TestModule2::TestAgent2@bbb')
+    agent = @registry.create_agent('TestModule2::TestAgent2@bbb', 'test')
     agent.post_create
-    agent = @registry.create_agent('TestAgent1@bbb')
+    agent = @registry.create_agent('TestAgent1@bbb', 'test')
     agent.post_create
 
     new_container = Jiji::Test::TestContainerFactory.instance.new_container
     @repository   = new_container.lookup(:agent_source_repository)
     @registry = new_container.lookup(:agent_registry)
 
-    agent = @registry.create_agent('TestModule2::TestAgent2@bbb')
+    agent = @registry.create_agent('TestModule2::TestAgent2@bbb', 'test')
     agent.post_create
-    agent = @registry.create_agent('TestAgent1@bbb')
+    agent = @registry.create_agent('TestAgent1@bbb', 'test')
     agent.post_create
   end
 

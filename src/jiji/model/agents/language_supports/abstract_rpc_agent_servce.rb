@@ -8,11 +8,14 @@ module Jiji::Model::Agents::LanguageSupports
   class AbstractRpcAgentService
 
     include Jiji::Rpc
+    include Encase
+
+    needs :agent_proxy_pool
 
     def available?
-      stub.stub.get_agent_classes(Google::Protobuf::Empty.new)
-      true
-    rescue Exception # rubocop:disable Lint/RescueException
+      health_check_service_stub.status(Google::Protobuf::Empty.new)
+      return true
+    rescue GRPC::BadStatus => e
       false
     end
 
@@ -22,6 +25,7 @@ module Jiji::Model::Agents::LanguageSupports
         body: agent_source.body
       })
       stub.register(source)
+      agent_source.change_state_to_normal
     rescue Exception => e # rubocop:disable Lint/RescueException
       agent_source.change_state_to_error(e)
     end
@@ -42,15 +46,15 @@ module Jiji::Model::Agents::LanguageSupports
       end
     end
 
-    def create_agent_instance(config, state = '')
+    def create_agent_instance(class_name, agent_name, properties, state = '')
       request = AgentCreationRequest.new({
-        class_name:        config.class_name,
-        agent_name:        config.agent_name,
+        class_name:        class_name,
+        agent_name:        agent_name,
         state:             state,
-        property_settings: create_property_settings(config.property_settings)
+        property_settings: create_property_settings(properties)
       })
       instance_id = stub.create_agent_instance(request).instance_id
-      AgentProxy.new(instance_id, self)
+      return create_and_register_agent_pool(instance_id)
     end
 
     def delete_agent_instance(instance_id)
@@ -89,10 +93,16 @@ module Jiji::Model::Agents::LanguageSupports
 
     private
 
+    def create_and_register_agent_pool(instance_id)
+      proxy = AgentProxy.new(instance_id, self)
+      agent_proxy_pool[instance_id] = proxy
+      return proxy
+    end
+
     def create_property_settings(property_settings)
       property_settings.map do |item|
         PropertySetting.new({
-          id: item.id, value: item.value
+          id: item[0], value: item[1].to_s
         })
       end
     end
@@ -102,7 +112,7 @@ module Jiji::Model::Agents::LanguageSupports
         timestamp: Google::Protobuf::Timestamp.new(
           seconds: tick.timestamp.to_i, nanos: 0),
         values:    tick.map do |k, v|
-          Tick::Value.new(ask: v.ask, bid: v.bid, pair: k)
+          Tick::Value.new(ask: v.ask, bid: v.bid, pair: k.to_s)
         end
       )
     end

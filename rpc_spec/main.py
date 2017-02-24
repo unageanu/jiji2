@@ -3,6 +3,7 @@ import time
 import unittest
 import grpc
 
+from google.protobuf import empty_pb2 # pylint: disable=no-name-in-module
 from server import Server
 from jiji.rpc.stub_factory import StubFactory
 from jiji.model.logger import Logger
@@ -16,10 +17,10 @@ def suite():
 
 def wait_for_server_startup():
     stub_factory = StubFactory()
-    logger = Logger("1", stub_factory)
+    health_check_service = stub_factory.create_health_check_service_stub()
     while True:
         try:
-            logger.info("check startup")
+            health_check_service.Status(empty_pb2.Empty())
             return
         except grpc._channel._Rendezvous:
             print("wait for server startup")

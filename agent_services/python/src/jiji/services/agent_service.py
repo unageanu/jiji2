@@ -61,7 +61,7 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
             state = self.state_serializer.deserialize(request.state)
             agent_id = self.agent_pool.new_id()
             agent_instance = self.agent_builder.build_agent(agent_id, \
-                request.class_name, properties, state)
+                request.class_name, request.agent_name, properties, state)
             self.agent_pool.register_instance(agent_id, agent_instance)
             return agent_pb2.AgentCreationResult(instance_id=agent_id)
         except Exception as error: # pylint: disable=broad-except

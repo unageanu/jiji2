@@ -24,9 +24,9 @@ module Jiji::Model::Agents
       load_agent_sources
     end
 
-    def create_agent(name, properties = {})
+    def create_agent(class_name, agent_name, properties = {})
       @mutex.synchronize do
-        agent_builder.create_agent(name, properties, @agents)
+        agent_builder.create_agent(class_name, agent_name, properties, @agents)
       end
     end
 

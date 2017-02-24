@@ -11,12 +11,12 @@ module Jiji::Model::Agents::Internal
 
     needs :agent_service_resolver
 
-    def create_agent(name, properties, agents)
-      source_name = AgentFinder.split_class_name(name)
+    def create_agent(class_name, agent_name, properties, agents)
+      source_name = AgentFinder.split_class_name(class_name)
       agent = agents[source_name[1]]
       not_found(AgentSource, name: source_name[1]) unless agent
       service = agent_service_resolver.resolve(agent.language)
-      service.create_agent_instance(name, properties)
+      service.create_agent_instance(class_name, agent_name, properties)
     end
 
   end

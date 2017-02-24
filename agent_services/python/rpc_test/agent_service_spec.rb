@@ -221,6 +221,7 @@ SOURCE
 
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@test',
+        agent_name:        'テスト',
         state:             '',
         property_settings: [
           Jiji::Rpc::PropertySetting.new({

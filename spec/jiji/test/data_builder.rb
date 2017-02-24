@@ -266,10 +266,10 @@ class TestAgent(Agent):
 
     def post_create(self):
         self.x = 0
-        print(self.properties)
+#        self.logger.info("properties:" + self.properties["a"] + "_" + self.properties["b"])
 
     def next_tick(self, tick):
-        print(tick)
+        self.logger.warn("tick:" + str(tick['EURUSD'].bid) + " " + str(tick['EURUSD'].ask))
         self.last_tick = tick
 
     def save_state(self):

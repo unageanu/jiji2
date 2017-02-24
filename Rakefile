@@ -32,13 +32,13 @@ end
 
 desc "Run all python tests"
 task :python_spec do |task|
-  sh "PYTHONPATH=./agent_services/python/src/:./agent_services/python/test/ python -m unittest discover -t ./agent_services/python/test/ -s ./agent_services/python/test/"
+  sh "PYTHONPATH=./agent_services/python/src/:./agent_services/python/test/:./rpc/python/ python -m unittest discover -t ./agent_services/python/test/ -s ./agent_services/python/test/"
 end
 
 desc "Run all specs in agent_service/python/rpc_test directory"
 RSpec::Core::RakeTask.new(:python_rpc_spec) {|t|
   t.rspec_opts = '-I src -I spec -I rest_spec -I rpc/ruby -I agent_services/python/rpc_test -fdoc'
-  t.pattern    = 'agent_services/python/rpc_test/all_specs.rb'
+  t.pattern    = 'agent_services/python/rpc_test/all_rpc_specs.rb'
 }
 
 desc 'Run RuboCop on the src/spec directory'

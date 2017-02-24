@@ -36,8 +36,8 @@ module Jiji::Model::Agents::LanguageSupports
       end
     end
 
-    def create_agent_instance(name, properties)
-      cl = get_agent_class(name)
+    def create_agent_instance(class_name, agent_name, properties)
+      cl = get_agent_class(class_name)
       agent = cl.new
       agent.properties = properties
       agent

@@ -1,5 +1,6 @@
 grpcio==1.0.4
 grpcio-tools==1.0.4
 inject==3.3.1
+pymongo==3.4.0
 
 pylint==1.6.4

@@ -9,10 +9,10 @@ class AgentPoolTest(unittest.TestCase):
         self.instance = AgentPool()
 
     def test_new_id(self):
-        self.assertEqual(self.instance.new_id(), "1")
-        self.assertEqual(self.instance.new_id(), "2")
-        self.assertEqual(self.instance.new_id(), "3")
-        self.assertEqual(self.instance.new_id(), "4")
+        self.assertEqual(self.instance.new_id(), "python_1")
+        self.assertEqual(self.instance.new_id(), "python_2")
+        self.assertEqual(self.instance.new_id(), "python_3")
+        self.assertEqual(self.instance.new_id(), "python_4")
 
     def test_register_instance(self):
         id1 = self.instance.new_id()

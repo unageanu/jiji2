@@ -11,22 +11,18 @@ class AgentBuilder():
         self.agent_registry = agent_registry
         self.stub_factory = stub_factory
 
-    def build_agent(self, instance_id, \
-            agent_class_name, agent_name, properties, state=None):
-        agent_class = self.agent_registry.get_agent_class(agent_class_name)
-        agent_instance = agent_class()
-        self.__initialize_agent_instance(instance_id, \
-            agent_instance, agent_name or agent_class_name, properties, state)
-        return agent_instance
+    def create_agent(self, instance_id, class_name, agent_name, properties):
+        agent_class = self.agent_registry.get_agent_class(class_name)
+        instance = agent_class()
+        self.__initialize_agent_instance(instance_id,
+            instance, agent_name or class_name, properties)
+        return instance
 
     def __initialize_agent_instance(self, \
-            instance_id, instance, agent_name, properties, state):
-        instance.set_properties(properties)
+            instance_id, instance, agent_name, properties):
         instance.set_agent_name(agent_name)
+        instance.set_properties(properties)
         self.__inject_components(instance_id, instance)
-        instance.post_create()
-        if state:
-            instance.restore_state(state)
         return instance
 
     def __inject_components(self, instance_id, instance):

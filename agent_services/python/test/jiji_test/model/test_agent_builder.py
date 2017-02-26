@@ -36,8 +36,8 @@ class TestAgent(Agent):
         self.builder = AgentBuilder(self.agent_registry, self.stub_factory)
         self.agent_registry.register_source("test", self.SOURCE_01)
 
-    def test_build_agent(self):
-        agent = self.builder.build_agent("1", "TestAgent@test", "test", {
+    def test_create_and_initialize_agent(self):
+        agent = self.builder.create_agent("1", "TestAgent@test", "test", {
             "a": "aaa",
             "b": "bbb"
         })
@@ -50,22 +50,21 @@ class TestAgent(Agent):
             agent.state # pylint: disable=pointless-statement
         self.assertEqual(agent.log, [
             "set_properties",
-            "post_create"
         ])
 
-        agent = self.builder.build_agent("2", "TestAgent@test", None, {}, {
+        agent = self.builder.create_agent("2", "TestAgent@test", "test", {})
+        agent.restore_state({
             "a": "aaa"
         })
         self.assertEqual(agent.properties, {})
-        self.assertEqual(agent.agent_name, "TestAgent@test")
+        self.assertEqual(agent.agent_name, "test")
         self.assertEqual(agent.state, {
             "a": "aaa"
         })
         self.assertEqual(agent.log, [
             "set_properties",
-            "post_create",
             "restore_state"
         ])
 
         with self.assertRaises(KeyError):
-            self.builder.build_agent("3", "NotFound@not_found", "test", {})
+            self.builder.create_agent("3", "NotFound@not_found", None, {})

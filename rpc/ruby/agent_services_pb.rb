@@ -20,8 +20,10 @@ module Jiji
         rpc :Unregister, AgentSourceName, Google::Protobuf::Empty
         rpc :GetAgentClasses, Google::Protobuf::Empty, AgentClasses
         rpc :CreateAgentInstance, AgentCreationRequest, AgentCreationResult
+        rpc :ExecPostCreate, ExecPostCreateRequest, Google::Protobuf::Empty
         rpc :DeleteAgentInstance, AgentDeletionRequest, Google::Protobuf::Empty
         rpc :GetAgentState, GetAgentStateRequest, AgentState
+        rpc :RestoreAgentState, RestoreAgentStateRequest, Google::Protobuf::Empty
         rpc :SetAgentProperties, SetAgentPropertiesRequest, Google::Protobuf::Empty
         rpc :SendAction, SendActionRequest, SendActionResponse
       end

@@ -52,7 +52,7 @@ describe '/backtest' do
     r = @client.get("logs/#{id}",  {
       'index' => 0
     })
-    return r.body['body']
+    return r.body['body'].split(/\n/)
   end
 
   def wait_for_the_end_of_backtest(test_id)

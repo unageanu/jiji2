@@ -46,15 +46,29 @@ module Jiji::Model::Agents::LanguageSupports
       end
     end
 
-    def create_agent_instance(class_name, agent_name, properties, state = '')
+    def create_agent_instance(class_name, agent_name, properties)
       request = AgentCreationRequest.new({
         class_name:        class_name,
         agent_name:        agent_name,
-        state:             state,
         property_settings: create_property_settings(properties)
       })
       instance_id = stub.create_agent_instance(request).instance_id
-      return create_and_register_agent_pool(instance_id)
+      return create_and_register_proxy(instance_id)
+    end
+
+    def exec_post_create(instance_id)
+      request = ExecPostCreateRequest.new({
+        instance_id:       instance_id
+      })
+      stub.exec_post_create(request)
+    end
+
+    def restore_instance_state(instance_id, state = '')
+      request = RestoreInstanceStateRequest.new({
+        instance_id:       instance_id,
+        state:             state
+      })
+      stub.restore_instance_state(request)
     end
 
     def delete_agent_instance(instance_id)
@@ -93,7 +107,7 @@ module Jiji::Model::Agents::LanguageSupports
 
     private
 
-    def create_and_register_agent_pool(instance_id)
+    def create_and_register_proxy(instance_id)
       proxy = AgentProxy.new(instance_id, self)
       agent_proxy_pool[instance_id] = proxy
       return proxy

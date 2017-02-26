@@ -21,7 +21,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='agent.proto',
   package='jiji.rpc',
   syntax='proto3',
-  serialized_pb=_b('\n\x0b\x61gent.proto\x12\x08jiji.rpc\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8c\x01\n\x04Tick\x12-\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12$\n\x06values\x18\x02 \x03(\x0b\x32\x14.jiji.rpc.Tick.Value\x1a/\n\x05Value\x12\x0c\n\x04pair\x18\x01 \x01(\t\x12\x0b\n\x03\x62id\x18\x02 \x01(\x01\x12\x0b\n\x03\x61sk\x18\x03 \x01(\x01\"D\n\x0fNextTickRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x1c\n\x04tick\x18\x02 \x01(\x0b\x32\x0e.jiji.rpc.Tick\"\x1f\n\x0f\x41gentSourceName\x12\x0c\n\x04name\x18\x01 \x01(\t\")\n\x0b\x41gentSource\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x62ody\x18\x02 \x01(\t\"q\n\x10ValidationResult\x12\x31\n\x06status\x18\x01 \x01(\x0e\x32!.jiji.rpc.ValidationResult.Status\x12\r\n\x05\x65rror\x18\x02 \x01(\t\"\x1b\n\x06Status\x12\x06\n\x02OK\x10\x00\x12\t\n\x05\x45RROR\x10\x01\"\xeb\x01\n\x0c\x41gentClasses\x12\x32\n\x07\x63lasses\x18\x01 \x03(\x0b\x32!.jiji.rpc.AgentClasses.AgentClass\x1a\xa6\x01\n\nAgentClass\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12>\n\nproperties\x18\x03 \x03(\x0b\x32*.jiji.rpc.AgentClasses.AgentClass.Property\x1a\x35\n\x08Property\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07\x64\x65\x66\x61ult\x18\x03 \x01(\t\"\x83\x01\n\x14\x41gentCreationRequest\x12\x12\n\nclass_name\x18\x01 \x01(\t\x12\x12\n\nagent_name\x18\x02 \x01(\t\x12\r\n\x05state\x18\x03 \x01(\x0c\x12\x34\n\x11property_settings\x18\x04 \x03(\x0b\x32\x19.jiji.rpc.PropertySetting\",\n\x0fPropertySetting\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"*\n\x13\x41gentCreationResult\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"+\n\x14\x41gentDeletionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"+\n\x14GetAgentStateRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"\x1b\n\nAgentState\x12\r\n\x05state\x18\x01 \x01(\x0c\"f\n\x19SetAgentPropertiesRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x34\n\x11property_settings\x18\x02 \x03(\x0b\x32\x19.jiji.rpc.PropertySetting\";\n\x11SendActionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\taction_id\x18\x02 \x01(\t\"%\n\x12SendActionResponse\x12\x0f\n\x07message\x18\x01 \x01(\t2\xa6\x05\n\x0c\x41gentService\x12?\n\x08NextTick\x12\x19.jiji.rpc.NextTickRequest\x1a\x16.google.protobuf.Empty\"\x00\x12;\n\x08Register\x12\x15.jiji.rpc.AgentSource\x1a\x16.google.protobuf.Empty\"\x00\x12\x41\n\nUnregister\x12\x19.jiji.rpc.AgentSourceName\x1a\x16.google.protobuf.Empty\"\x00\x12\x43\n\x0fGetAgentClasses\x12\x16.google.protobuf.Empty\x1a\x16.jiji.rpc.AgentClasses\"\x00\x12V\n\x13\x43reateAgentInstance\x12\x1e.jiji.rpc.AgentCreationRequest\x1a\x1d.jiji.rpc.AgentCreationResult\"\x00\x12O\n\x13\x44\x65leteAgentInstance\x12\x1e.jiji.rpc.AgentDeletionRequest\x1a\x16.google.protobuf.Empty\"\x00\x12G\n\rGetAgentState\x12\x1e.jiji.rpc.GetAgentStateRequest\x1a\x14.jiji.rpc.AgentState\"\x00\x12S\n\x12SetAgentProperties\x12#.jiji.rpc.SetAgentPropertiesRequest\x1a\x16.google.protobuf.Empty\"\x00\x12I\n\nSendAction\x12\x1b.jiji.rpc.SendActionRequest\x1a\x1c.jiji.rpc.SendActionResponse\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x0b\x61gent.proto\x12\x08jiji.rpc\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x8c\x01\n\x04Tick\x12-\n\ttimestamp\x18\x01 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12$\n\x06values\x18\x02 \x03(\x0b\x32\x14.jiji.rpc.Tick.Value\x1a/\n\x05Value\x12\x0c\n\x04pair\x18\x01 \x01(\t\x12\x0b\n\x03\x62id\x18\x02 \x01(\x01\x12\x0b\n\x03\x61sk\x18\x03 \x01(\x01\"D\n\x0fNextTickRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x1c\n\x04tick\x18\x02 \x01(\x0b\x32\x0e.jiji.rpc.Tick\"\x1f\n\x0f\x41gentSourceName\x12\x0c\n\x04name\x18\x01 \x01(\t\")\n\x0b\x41gentSource\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0c\n\x04\x62ody\x18\x02 \x01(\t\"q\n\x10ValidationResult\x12\x31\n\x06status\x18\x01 \x01(\x0e\x32!.jiji.rpc.ValidationResult.Status\x12\r\n\x05\x65rror\x18\x02 \x01(\t\"\x1b\n\x06Status\x12\x06\n\x02OK\x10\x00\x12\t\n\x05\x45RROR\x10\x01\"\xeb\x01\n\x0c\x41gentClasses\x12\x32\n\x07\x63lasses\x18\x01 \x03(\x0b\x32!.jiji.rpc.AgentClasses.AgentClass\x1a\xa6\x01\n\nAgentClass\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12>\n\nproperties\x18\x03 \x03(\x0b\x32*.jiji.rpc.AgentClasses.AgentClass.Property\x1a\x35\n\x08Property\x12\n\n\x02id\x18\x01 \x01(\t\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x0f\n\x07\x64\x65\x66\x61ult\x18\x03 \x01(\t\"t\n\x14\x41gentCreationRequest\x12\x12\n\nclass_name\x18\x01 \x01(\t\x12\x12\n\nagent_name\x18\x02 \x01(\t\x12\x34\n\x11property_settings\x18\x03 \x03(\x0b\x32\x19.jiji.rpc.PropertySetting\",\n\x0fPropertySetting\x12\n\n\x02id\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"*\n\x13\x41gentCreationResult\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\",\n\x15\x45xecPostCreateRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"+\n\x14\x41gentDeletionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"+\n\x14GetAgentStateRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"\x1b\n\nAgentState\x12\r\n\x05state\x18\x01 \x01(\x0c\">\n\x18RestoreAgentStateRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\r\n\x05state\x18\x02 \x01(\x0c\"f\n\x19SetAgentPropertiesRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x34\n\x11property_settings\x18\x02 \x03(\x0b\x32\x19.jiji.rpc.PropertySetting\";\n\x11SendActionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\taction_id\x18\x02 \x01(\t\"%\n\x12SendActionResponse\x12\x0f\n\x07message\x18\x01 \x01(\t2\xc6\x06\n\x0c\x41gentService\x12?\n\x08NextTick\x12\x19.jiji.rpc.NextTickRequest\x1a\x16.google.protobuf.Empty\"\x00\x12;\n\x08Register\x12\x15.jiji.rpc.AgentSource\x1a\x16.google.protobuf.Empty\"\x00\x12\x41\n\nUnregister\x12\x19.jiji.rpc.AgentSourceName\x1a\x16.google.protobuf.Empty\"\x00\x12\x43\n\x0fGetAgentClasses\x12\x16.google.protobuf.Empty\x1a\x16.jiji.rpc.AgentClasses\"\x00\x12V\n\x13\x43reateAgentInstance\x12\x1e.jiji.rpc.AgentCreationRequest\x1a\x1d.jiji.rpc.AgentCreationResult\"\x00\x12K\n\x0e\x45xecPostCreate\x12\x1f.jiji.rpc.ExecPostCreateRequest\x1a\x16.google.protobuf.Empty\"\x00\x12O\n\x13\x44\x65leteAgentInstance\x12\x1e.jiji.rpc.AgentDeletionRequest\x1a\x16.google.protobuf.Empty\"\x00\x12G\n\rGetAgentState\x12\x1e.jiji.rpc.GetAgentStateRequest\x1a\x14.jiji.rpc.AgentState\"\x00\x12Q\n\x11RestoreAgentState\x12\".jiji.rpc.RestoreAgentStateRequest\x1a\x16.google.protobuf.Empty\"\x00\x12S\n\x12SetAgentProperties\x12#.jiji.rpc.SetAgentPropertiesRequest\x1a\x16.google.protobuf.Empty\"\x00\x12I\n\nSendAction\x12\x1b.jiji.rpc.SendActionRequest\x1a\x1c.jiji.rpc.SendActionResponse\"\x00\x62\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -420,15 +420,8 @@ _AGENTCREATIONREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
-      name='state', full_name='jiji.rpc.AgentCreationRequest.state', index=2,
-      number=3, type=12, cpp_type=9, label=1,
-      has_default_value=False, default_value=_b(""),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      options=None),
-    _descriptor.FieldDescriptor(
-      name='property_settings', full_name='jiji.rpc.AgentCreationRequest.property_settings', index=3,
-      number=4, type=11, cpp_type=10, label=3,
+      name='property_settings', full_name='jiji.rpc.AgentCreationRequest.property_settings', index=2,
+      number=3, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
@@ -445,8 +438,8 @@ _AGENTCREATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=730,
-  serialized_end=861,
+  serialized_start=729,
+  serialized_end=845,
 )
 
 
@@ -483,8 +476,8 @@ _PROPERTYSETTING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=863,
-  serialized_end=907,
+  serialized_start=847,
+  serialized_end=891,
 )
 
 
@@ -514,8 +507,39 @@ _AGENTCREATIONRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=909,
-  serialized_end=951,
+  serialized_start=893,
+  serialized_end=935,
+)
+
+
+_EXECPOSTCREATEREQUEST = _descriptor.Descriptor(
+  name='ExecPostCreateRequest',
+  full_name='jiji.rpc.ExecPostCreateRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='jiji.rpc.ExecPostCreateRequest.instance_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=937,
+  serialized_end=981,
 )
 
 
@@ -545,8 +569,8 @@ _AGENTDELETIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=953,
-  serialized_end=996,
+  serialized_start=983,
+  serialized_end=1026,
 )
 
 
@@ -576,8 +600,8 @@ _GETAGENTSTATEREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=998,
-  serialized_end=1041,
+  serialized_start=1028,
+  serialized_end=1071,
 )
 
 
@@ -607,8 +631,46 @@ _AGENTSTATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1043,
-  serialized_end=1070,
+  serialized_start=1073,
+  serialized_end=1100,
+)
+
+
+_RESTOREAGENTSTATEREQUEST = _descriptor.Descriptor(
+  name='RestoreAgentStateRequest',
+  full_name='jiji.rpc.RestoreAgentStateRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='jiji.rpc.RestoreAgentStateRequest.instance_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='state', full_name='jiji.rpc.RestoreAgentStateRequest.state', index=1,
+      number=2, type=12, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b(""),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1102,
+  serialized_end=1164,
 )
 
 
@@ -645,8 +707,8 @@ _SETAGENTPROPERTIESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1072,
-  serialized_end=1174,
+  serialized_start=1166,
+  serialized_end=1268,
 )
 
 
@@ -683,8 +745,8 @@ _SENDACTIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1176,
-  serialized_end=1235,
+  serialized_start=1270,
+  serialized_end=1329,
 )
 
 
@@ -714,8 +776,8 @@ _SENDACTIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1237,
-  serialized_end=1274,
+  serialized_start=1331,
+  serialized_end=1368,
 )
 
 _TICK_VALUE.containing_type = _TICK
@@ -739,9 +801,11 @@ DESCRIPTOR.message_types_by_name['AgentClasses'] = _AGENTCLASSES
 DESCRIPTOR.message_types_by_name['AgentCreationRequest'] = _AGENTCREATIONREQUEST
 DESCRIPTOR.message_types_by_name['PropertySetting'] = _PROPERTYSETTING
 DESCRIPTOR.message_types_by_name['AgentCreationResult'] = _AGENTCREATIONRESULT
+DESCRIPTOR.message_types_by_name['ExecPostCreateRequest'] = _EXECPOSTCREATEREQUEST
 DESCRIPTOR.message_types_by_name['AgentDeletionRequest'] = _AGENTDELETIONREQUEST
 DESCRIPTOR.message_types_by_name['GetAgentStateRequest'] = _GETAGENTSTATEREQUEST
 DESCRIPTOR.message_types_by_name['AgentState'] = _AGENTSTATE
+DESCRIPTOR.message_types_by_name['RestoreAgentStateRequest'] = _RESTOREAGENTSTATEREQUEST
 DESCRIPTOR.message_types_by_name['SetAgentPropertiesRequest'] = _SETAGENTPROPERTIESREQUEST
 DESCRIPTOR.message_types_by_name['SendActionRequest'] = _SENDACTIONREQUEST
 DESCRIPTOR.message_types_by_name['SendActionResponse'] = _SENDACTIONRESPONSE
@@ -833,6 +897,13 @@ AgentCreationResult = _reflection.GeneratedProtocolMessageType('AgentCreationRes
   ))
 _sym_db.RegisterMessage(AgentCreationResult)
 
+ExecPostCreateRequest = _reflection.GeneratedProtocolMessageType('ExecPostCreateRequest', (_message.Message,), dict(
+  DESCRIPTOR = _EXECPOSTCREATEREQUEST,
+  __module__ = 'agent_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.ExecPostCreateRequest)
+  ))
+_sym_db.RegisterMessage(ExecPostCreateRequest)
+
 AgentDeletionRequest = _reflection.GeneratedProtocolMessageType('AgentDeletionRequest', (_message.Message,), dict(
   DESCRIPTOR = _AGENTDELETIONREQUEST,
   __module__ = 'agent_pb2'
@@ -853,6 +924,13 @@ AgentState = _reflection.GeneratedProtocolMessageType('AgentState', (_message.Me
   # @@protoc_insertion_point(class_scope:jiji.rpc.AgentState)
   ))
 _sym_db.RegisterMessage(AgentState)
+
+RestoreAgentStateRequest = _reflection.GeneratedProtocolMessageType('RestoreAgentStateRequest', (_message.Message,), dict(
+  DESCRIPTOR = _RESTOREAGENTSTATEREQUEST,
+  __module__ = 'agent_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.RestoreAgentStateRequest)
+  ))
+_sym_db.RegisterMessage(RestoreAgentStateRequest)
 
 SetAgentPropertiesRequest = _reflection.GeneratedProtocolMessageType('SetAgentPropertiesRequest', (_message.Message,), dict(
   DESCRIPTOR = _SETAGENTPROPERTIESREQUEST,
@@ -919,6 +997,11 @@ try:
           request_serializer=AgentCreationRequest.SerializeToString,
           response_deserializer=AgentCreationResult.FromString,
           )
+      self.ExecPostCreate = channel.unary_unary(
+          '/jiji.rpc.AgentService/ExecPostCreate',
+          request_serializer=ExecPostCreateRequest.SerializeToString,
+          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+          )
       self.DeleteAgentInstance = channel.unary_unary(
           '/jiji.rpc.AgentService/DeleteAgentInstance',
           request_serializer=AgentDeletionRequest.SerializeToString,
@@ -928,6 +1011,11 @@ try:
           '/jiji.rpc.AgentService/GetAgentState',
           request_serializer=GetAgentStateRequest.SerializeToString,
           response_deserializer=AgentState.FromString,
+          )
+      self.RestoreAgentState = channel.unary_unary(
+          '/jiji.rpc.AgentService/RestoreAgentState',
+          request_serializer=RestoreAgentStateRequest.SerializeToString,
+          response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
           )
       self.SetAgentProperties = channel.unary_unary(
           '/jiji.rpc.AgentService/SetAgentProperties',
@@ -968,12 +1056,22 @@ try:
       context.set_details('Method not implemented!')
       raise NotImplementedError('Method not implemented!')
 
+    def ExecPostCreate(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
     def DeleteAgentInstance(self, request, context):
       context.set_code(grpc.StatusCode.UNIMPLEMENTED)
       context.set_details('Method not implemented!')
       raise NotImplementedError('Method not implemented!')
 
     def GetAgentState(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def RestoreAgentState(self, request, context):
       context.set_code(grpc.StatusCode.UNIMPLEMENTED)
       context.set_details('Method not implemented!')
       raise NotImplementedError('Method not implemented!')
@@ -1016,6 +1114,11 @@ try:
             request_deserializer=AgentCreationRequest.FromString,
             response_serializer=AgentCreationResult.SerializeToString,
         ),
+        'ExecPostCreate': grpc.unary_unary_rpc_method_handler(
+            servicer.ExecPostCreate,
+            request_deserializer=ExecPostCreateRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+        ),
         'DeleteAgentInstance': grpc.unary_unary_rpc_method_handler(
             servicer.DeleteAgentInstance,
             request_deserializer=AgentDeletionRequest.FromString,
@@ -1025,6 +1128,11 @@ try:
             servicer.GetAgentState,
             request_deserializer=GetAgentStateRequest.FromString,
             response_serializer=AgentState.SerializeToString,
+        ),
+        'RestoreAgentState': grpc.unary_unary_rpc_method_handler(
+            servicer.RestoreAgentState,
+            request_deserializer=RestoreAgentStateRequest.FromString,
+            response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
         'SetAgentProperties': grpc.unary_unary_rpc_method_handler(
             servicer.SetAgentProperties,
@@ -1058,9 +1166,13 @@ try:
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def CreateAgentInstance(self, request, context):
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def ExecPostCreate(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def DeleteAgentInstance(self, request, context):
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def GetAgentState(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def RestoreAgentState(self, request, context):
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def SetAgentProperties(self, request, context):
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
@@ -1089,12 +1201,18 @@ try:
     def CreateAgentInstance(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
       raise NotImplementedError()
     CreateAgentInstance.future = None
+    def ExecPostCreate(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    ExecPostCreate.future = None
     def DeleteAgentInstance(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
       raise NotImplementedError()
     DeleteAgentInstance.future = None
     def GetAgentState(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
       raise NotImplementedError()
     GetAgentState.future = None
+    def RestoreAgentState(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    RestoreAgentState.future = None
     def SetAgentProperties(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
       raise NotImplementedError()
     SetAgentProperties.future = None
@@ -1112,10 +1230,12 @@ try:
     request_deserializers = {
       ('jiji.rpc.AgentService', 'CreateAgentInstance'): AgentCreationRequest.FromString,
       ('jiji.rpc.AgentService', 'DeleteAgentInstance'): AgentDeletionRequest.FromString,
+      ('jiji.rpc.AgentService', 'ExecPostCreate'): ExecPostCreateRequest.FromString,
       ('jiji.rpc.AgentService', 'GetAgentClasses'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
       ('jiji.rpc.AgentService', 'GetAgentState'): GetAgentStateRequest.FromString,
       ('jiji.rpc.AgentService', 'NextTick'): NextTickRequest.FromString,
       ('jiji.rpc.AgentService', 'Register'): AgentSource.FromString,
+      ('jiji.rpc.AgentService', 'RestoreAgentState'): RestoreAgentStateRequest.FromString,
       ('jiji.rpc.AgentService', 'SendAction'): SendActionRequest.FromString,
       ('jiji.rpc.AgentService', 'SetAgentProperties'): SetAgentPropertiesRequest.FromString,
       ('jiji.rpc.AgentService', 'Unregister'): AgentSourceName.FromString,
@@ -1123,10 +1243,12 @@ try:
     response_serializers = {
       ('jiji.rpc.AgentService', 'CreateAgentInstance'): AgentCreationResult.SerializeToString,
       ('jiji.rpc.AgentService', 'DeleteAgentInstance'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+      ('jiji.rpc.AgentService', 'ExecPostCreate'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
       ('jiji.rpc.AgentService', 'GetAgentClasses'): AgentClasses.SerializeToString,
       ('jiji.rpc.AgentService', 'GetAgentState'): AgentState.SerializeToString,
       ('jiji.rpc.AgentService', 'NextTick'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
       ('jiji.rpc.AgentService', 'Register'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+      ('jiji.rpc.AgentService', 'RestoreAgentState'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
       ('jiji.rpc.AgentService', 'SendAction'): SendActionResponse.SerializeToString,
       ('jiji.rpc.AgentService', 'SetAgentProperties'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
       ('jiji.rpc.AgentService', 'Unregister'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
@@ -1134,10 +1256,12 @@ try:
     method_implementations = {
       ('jiji.rpc.AgentService', 'CreateAgentInstance'): face_utilities.unary_unary_inline(servicer.CreateAgentInstance),
       ('jiji.rpc.AgentService', 'DeleteAgentInstance'): face_utilities.unary_unary_inline(servicer.DeleteAgentInstance),
+      ('jiji.rpc.AgentService', 'ExecPostCreate'): face_utilities.unary_unary_inline(servicer.ExecPostCreate),
       ('jiji.rpc.AgentService', 'GetAgentClasses'): face_utilities.unary_unary_inline(servicer.GetAgentClasses),
       ('jiji.rpc.AgentService', 'GetAgentState'): face_utilities.unary_unary_inline(servicer.GetAgentState),
       ('jiji.rpc.AgentService', 'NextTick'): face_utilities.unary_unary_inline(servicer.NextTick),
       ('jiji.rpc.AgentService', 'Register'): face_utilities.unary_unary_inline(servicer.Register),
+      ('jiji.rpc.AgentService', 'RestoreAgentState'): face_utilities.unary_unary_inline(servicer.RestoreAgentState),
       ('jiji.rpc.AgentService', 'SendAction'): face_utilities.unary_unary_inline(servicer.SendAction),
       ('jiji.rpc.AgentService', 'SetAgentProperties'): face_utilities.unary_unary_inline(servicer.SetAgentProperties),
       ('jiji.rpc.AgentService', 'Unregister'): face_utilities.unary_unary_inline(servicer.Unregister),
@@ -1155,10 +1279,12 @@ try:
     request_serializers = {
       ('jiji.rpc.AgentService', 'CreateAgentInstance'): AgentCreationRequest.SerializeToString,
       ('jiji.rpc.AgentService', 'DeleteAgentInstance'): AgentDeletionRequest.SerializeToString,
+      ('jiji.rpc.AgentService', 'ExecPostCreate'): ExecPostCreateRequest.SerializeToString,
       ('jiji.rpc.AgentService', 'GetAgentClasses'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
       ('jiji.rpc.AgentService', 'GetAgentState'): GetAgentStateRequest.SerializeToString,
       ('jiji.rpc.AgentService', 'NextTick'): NextTickRequest.SerializeToString,
       ('jiji.rpc.AgentService', 'Register'): AgentSource.SerializeToString,
+      ('jiji.rpc.AgentService', 'RestoreAgentState'): RestoreAgentStateRequest.SerializeToString,
       ('jiji.rpc.AgentService', 'SendAction'): SendActionRequest.SerializeToString,
       ('jiji.rpc.AgentService', 'SetAgentProperties'): SetAgentPropertiesRequest.SerializeToString,
       ('jiji.rpc.AgentService', 'Unregister'): AgentSourceName.SerializeToString,
@@ -1166,10 +1292,12 @@ try:
     response_deserializers = {
       ('jiji.rpc.AgentService', 'CreateAgentInstance'): AgentCreationResult.FromString,
       ('jiji.rpc.AgentService', 'DeleteAgentInstance'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+      ('jiji.rpc.AgentService', 'ExecPostCreate'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
       ('jiji.rpc.AgentService', 'GetAgentClasses'): AgentClasses.FromString,
       ('jiji.rpc.AgentService', 'GetAgentState'): AgentState.FromString,
       ('jiji.rpc.AgentService', 'NextTick'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
       ('jiji.rpc.AgentService', 'Register'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+      ('jiji.rpc.AgentService', 'RestoreAgentState'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
       ('jiji.rpc.AgentService', 'SendAction'): SendActionResponse.FromString,
       ('jiji.rpc.AgentService', 'SetAgentProperties'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
       ('jiji.rpc.AgentService', 'Unregister'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
@@ -1177,10 +1305,12 @@ try:
     cardinalities = {
       'CreateAgentInstance': cardinality.Cardinality.UNARY_UNARY,
       'DeleteAgentInstance': cardinality.Cardinality.UNARY_UNARY,
+      'ExecPostCreate': cardinality.Cardinality.UNARY_UNARY,
       'GetAgentClasses': cardinality.Cardinality.UNARY_UNARY,
       'GetAgentState': cardinality.Cardinality.UNARY_UNARY,
       'NextTick': cardinality.Cardinality.UNARY_UNARY,
       'Register': cardinality.Cardinality.UNARY_UNARY,
+      'RestoreAgentState': cardinality.Cardinality.UNARY_UNARY,
       'SendAction': cardinality.Cardinality.UNARY_UNARY,
       'SetAgentProperties': cardinality.Cardinality.UNARY_UNARY,
       'Unregister': cardinality.Cardinality.UNARY_UNARY,

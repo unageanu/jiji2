@@ -58,15 +58,23 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
     def CreateAgentInstance(self, request, context):
         try:
             properties = self._extract_properties(request)
-            state = self.state_serializer.deserialize(request.state)
             agent_id = self.agent_pool.new_id()
-            agent_instance = self.agent_builder.build_agent(agent_id, \
-                request.class_name, request.agent_name, properties, state)
+            agent_instance = self.agent_builder.create_agent(
+                agent_id, request.class_name, request.agent_name, properties)
             self.agent_pool.register_instance(agent_id, agent_instance)
             return agent_pb2.AgentCreationResult(instance_id=agent_id)
         except Exception as error: # pylint: disable=broad-except
             self._handle_error(error, context)
         return agent_pb2.AgentCreationResult(instance_id="")
+
+    def ExecPostCreate(self, request, context):
+        try:
+            instance = self.agent_pool.get_instance(request.instance_id)
+            instance.post_create()
+            return empty_pb2.Empty()
+        except Exception as error: # pylint: disable=broad-except
+            self._handle_error(error, context)
+        return empty_pb2.Empty()
 
     def DeleteAgentInstance(self, request, context):
         try:
@@ -84,6 +92,16 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
         except Exception as error: # pylint: disable=broad-except
             self._handle_error(error, context)
         return agent_pb2.AgentState(None)
+
+    def RestoreAgentState(self, request, context):
+        try:
+            state = self.state_serializer.deserialize(request.state)
+            instance = self.agent_pool.get_instance(request.instance_id)
+            instance.restore_state(state)
+            return empty_pb2.Empty()
+        except Exception as error: # pylint: disable=broad-except
+            self._handle_error(error, context)
+        return empty_pb2.Empty()
 
     def SetAgentProperties(self, request, context):
         try:

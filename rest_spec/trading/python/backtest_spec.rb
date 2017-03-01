@@ -44,8 +44,10 @@ describe '/backtest' do
     test_id = r.body['id']
 
     wait_for_the_end_of_backtest(test_id)
-
-    p retrieve_log(test_id)
+    logs = retrieve_log(test_id)
+    expect(logs.find {|l| l =~ /WARN \-\- \: tick\:1\.1234 1\.1236/}).not_to be nil
+    expect(logs.find {|l| l =~ /WARN \-\- \: tick\:1\.3834 1\.3836/}).not_to be nil
+    expect(logs.find {|l| l =~ /INFO \-\- \: properties\:1_bb/}).not_to be nil
   end
 
   def retrieve_log(id)

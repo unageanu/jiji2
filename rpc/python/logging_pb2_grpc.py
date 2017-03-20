@@ -14,8 +14,8 @@ class LoggerServiceStub(object):
     Args:
       channel: A grpc.Channel.
     """
-    self.log = channel.unary_unary(
-        '/jiji.rpc.LoggerService/log',
+    self.Log = channel.unary_unary(
+        '/jiji.rpc.LoggerService/Log',
         request_serializer=logging__pb2.LoggingRequest.SerializeToString,
         response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
         )
@@ -23,7 +23,7 @@ class LoggerServiceStub(object):
 
 class LoggerServiceServicer(object):
 
-  def log(self, request, context):
+  def Log(self, request, context):
     context.set_code(grpc.StatusCode.UNIMPLEMENTED)
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
@@ -31,8 +31,8 @@ class LoggerServiceServicer(object):
 
 def add_LoggerServiceServicer_to_server(servicer, server):
   rpc_method_handlers = {
-      'log': grpc.unary_unary_rpc_method_handler(
-          servicer.log,
+      'Log': grpc.unary_unary_rpc_method_handler(
+          servicer.Log,
           request_deserializer=logging__pb2.LoggingRequest.FromString,
           response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
       ),

@@ -7,19 +7,19 @@ class Logger():
         self.stub = stub_factory.create_logger_stub()
 
     def info(self, message):
-        self.stub.log(self.__create_request("INFO", message))
+        self.stub.Log(self.__create_request("INFO", message))
 
     def debug(self, message):
-        self.stub.log(self.__create_request("DEBUG", message))
+        self.stub.Log(self.__create_request("DEBUG", message))
 
     def warn(self, message):
-        self.stub.log(self.__create_request("WARN", message))
+        self.stub.Log(self.__create_request("WARN", message))
 
     def error(self, message):
-        self.stub.log(self.__create_request("ERROR", message))
+        self.stub.Log(self.__create_request("ERROR", message))
 
     def fatal(self, message):
-        self.stub.log(self.__create_request("FATAL", message))
+        self.stub.Log(self.__create_request("FATAL", message))
 
     def __create_request(self, log_level, message):
         return logging_pb2.LoggingRequest(instance_id=self.instance_id, \

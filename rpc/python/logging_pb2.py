@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='logging.proto',
   package='jiji.rpc',
   syntax='proto3',
-  serialized_pb=_b('\n\rlogging.proto\x12\x08jiji.rpc\x1a\x1bgoogle/protobuf/empty.proto\"I\n\x0eLoggingRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\tlog_level\x18\x02 \x01(\t\x12\x0f\n\x07message\x18\x03 \x01(\t2J\n\rLoggerService\x12\x39\n\x03log\x12\x18.jiji.rpc.LoggingRequest\x1a\x16.google.protobuf.Empty\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\rlogging.proto\x12\x08jiji.rpc\x1a\x1bgoogle/protobuf/empty.proto\"I\n\x0eLoggingRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\tlog_level\x18\x02 \x01(\t\x12\x0f\n\x07message\x18\x03 \x01(\t2J\n\rLoggerService\x12\x39\n\x03Log\x12\x18.jiji.rpc.LoggingRequest\x1a\x16.google.protobuf.Empty\"\x00\x62\x06proto3')
   ,
   dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
@@ -100,8 +100,8 @@ try:
       Args:
         channel: A grpc.Channel.
       """
-      self.log = channel.unary_unary(
-          '/jiji.rpc.LoggerService/log',
+      self.Log = channel.unary_unary(
+          '/jiji.rpc.LoggerService/Log',
           request_serializer=LoggingRequest.SerializeToString,
           response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
           )
@@ -109,7 +109,7 @@ try:
 
   class LoggerServiceServicer(object):
 
-    def log(self, request, context):
+    def Log(self, request, context):
       context.set_code(grpc.StatusCode.UNIMPLEMENTED)
       context.set_details('Method not implemented!')
       raise NotImplementedError('Method not implemented!')
@@ -117,8 +117,8 @@ try:
 
   def add_LoggerServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
-        'log': grpc.unary_unary_rpc_method_handler(
-            servicer.log,
+        'Log': grpc.unary_unary_rpc_method_handler(
+            servicer.Log,
             request_deserializer=LoggingRequest.FromString,
             response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
         ),
@@ -134,7 +134,7 @@ try:
     It is recommended to use the GA API (classes and functions in this
     file not marked beta) for all further purposes. This class was generated
     only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    def log(self, request, context):
+    def Log(self, request, context):
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
 
 
@@ -144,9 +144,9 @@ try:
     It is recommended to use the GA API (classes and functions in this
     file not marked beta) for all further purposes. This class was generated
     only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
-    def log(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+    def Log(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
       raise NotImplementedError()
-    log.future = None
+    Log.future = None
 
 
   def beta_create_LoggerService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
@@ -156,13 +156,13 @@ try:
     file not marked beta) for all further purposes. This function was
     generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
     request_deserializers = {
-      ('jiji.rpc.LoggerService', 'log'): LoggingRequest.FromString,
+      ('jiji.rpc.LoggerService', 'Log'): LoggingRequest.FromString,
     }
     response_serializers = {
-      ('jiji.rpc.LoggerService', 'log'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
+      ('jiji.rpc.LoggerService', 'Log'): google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
     }
     method_implementations = {
-      ('jiji.rpc.LoggerService', 'log'): face_utilities.unary_unary_inline(servicer.log),
+      ('jiji.rpc.LoggerService', 'Log'): face_utilities.unary_unary_inline(servicer.Log),
     }
     server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
     return beta_implementations.server(method_implementations, options=server_options)
@@ -175,13 +175,13 @@ try:
     file not marked beta) for all further purposes. This function was
     generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
     request_serializers = {
-      ('jiji.rpc.LoggerService', 'log'): LoggingRequest.SerializeToString,
+      ('jiji.rpc.LoggerService', 'Log'): LoggingRequest.SerializeToString,
     }
     response_deserializers = {
-      ('jiji.rpc.LoggerService', 'log'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
+      ('jiji.rpc.LoggerService', 'Log'): google_dot_protobuf_dot_empty__pb2.Empty.FromString,
     }
     cardinalities = {
-      'log': cardinality.Cardinality.UNARY_UNARY,
+      'Log': cardinality.Cardinality.UNARY_UNARY,
     }
     stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
     return beta_implementations.dynamic_stub(channel, 'jiji.rpc.LoggerService', cardinalities, options=stub_options)

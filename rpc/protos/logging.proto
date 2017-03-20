@@ -6,7 +6,7 @@ import "google/protobuf/empty.proto";
 
 service LoggerService {
 
-  rpc log(LoggingRequest) returns (google.protobuf.Empty) {}
+  rpc Log(LoggingRequest) returns (google.protobuf.Empty) {}
 
 }
 

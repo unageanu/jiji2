@@ -15,7 +15,7 @@ module Jiji
         self.unmarshal_class_method = :decode
         self.service_name = 'jiji.rpc.LoggerService'
 
-        rpc :log, LoggingRequest, Google::Protobuf::Empty
+        rpc :Log, LoggingRequest, Google::Protobuf::Empty
       end
 
       Stub = Service.rpc_stub_class

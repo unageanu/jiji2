@@ -222,7 +222,6 @@ SOURCE
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@test',
         agent_name:        'テスト',
-        state:             '',
         property_settings: [
           Jiji::Rpc::PropertySetting.new({
             id: 'a', value: 'aaaa'
@@ -246,7 +245,6 @@ SOURCE
     it 'raises an error if an unknown agent class is specified' do
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@unknown',
-        state:             '',
         property_settings: []
       })
       expect do
@@ -262,7 +260,6 @@ SOURCE
 
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@test',
-        state:             '',
         property_settings: []
       })
       result = @stub.create_agent_instance(request)
@@ -288,24 +285,33 @@ SOURCE
 
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@test',
-        state:             '',
         property_settings: []
       })
       result = @stub.create_agent_instance(request)
       expect(result.instance_id).not_to be_empty
+      instance_id = result.instance_id
+
+      request = Jiji::Rpc::ExecPostCreateRequest.new(
+        instance_id: instance_id)
+      result = @stub.exec_post_create(request)
 
       request = Jiji::Rpc::GetAgentStateRequest.new(
-        instance_id: result.instance_id)
+        instance_id: instance_id)
       result = @stub.get_agent_state(request)
       expect(result.state).not_to be_empty
+      state = result.state
 
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@test',
-        state:             result.state,
         property_settings: []
       })
       result = @stub.create_agent_instance(request)
       expect(result.instance_id).not_to be_empty
+      instance_id = result.instance_id
+
+      request = Jiji::Rpc::RestoreAgentStateRequest.new(
+        instance_id: instance_id, state:state)
+      @stub.restore_agent_state(request)
     end
 
     it 'raises an error if an instance is not found.' do
@@ -323,7 +329,6 @@ SOURCE
 
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@test',
-        state:             '',
         property_settings: []
       })
       result = @stub.create_agent_instance(request)
@@ -398,7 +403,6 @@ SOURCE
 
       request = Jiji::Rpc::AgentCreationRequest.new({
         class_name:        'TestAgent@test',
-        state:             '',
         property_settings: [
           Jiji::Rpc::PropertySetting.new({
             id: 'a', value: 'aaaa'

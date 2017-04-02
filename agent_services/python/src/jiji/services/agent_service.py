@@ -11,6 +11,7 @@ from jiji.model.agent_builder import AgentBuilder
 from jiji.model.state_serializer import StateSerializer
 from jiji.model.tick import Tick, Value
 from jiji.services.abstract_service import AbstractService
+from jiji.services.converters import convert_tick, convert_properties, convert_agent_property_info
 
 class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
 
@@ -25,7 +26,7 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
     def NextTick(self, request, context):
         try:
             instance = self.agent_pool.get_instance(request.instance_id)
-            instance.next_tick(self._extract_tick_(request.tick))
+            instance.next_tick(convert_tick(request.tick))
         except Exception as error: # pylint: disable=broad-except
             self._handle_error(error, context)
         return empty_pb2.Empty()
@@ -57,7 +58,7 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
 
     def CreateAgentInstance(self, request, context):
         try:
-            properties = self._extract_properties(request)
+            properties = convert_properties(request)
             agent_id = self.agent_pool.new_id()
             agent_instance = self.agent_builder.create_agent(
                 agent_id, request.class_name, request.agent_name, properties)
@@ -91,7 +92,7 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
             return agent_pb2.AgentState(state=state)
         except Exception as error: # pylint: disable=broad-except
             self._handle_error(error, context)
-        return agent_pb2.AgentState(None)
+        return agent_pb2.AgentState(state=None)
 
     def RestoreAgentState(self, request, context):
         try:
@@ -106,7 +107,7 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
     def SetAgentProperties(self, request, context):
         try:
             instance = self.agent_pool.get_instance(request.instance_id)
-            properties = self._extract_properties(request)
+            properties = convert_properties(request)
             instance.set_properties(properties)
             return empty_pb2.Empty()
         except Exception as error: # pylint: disable=broad-except
@@ -124,32 +125,7 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
 
     def __extract_agent_class(self, name):
         agent_class = self.agent_registry.get_agent_class(name)
-        property_infos = map(self._extract_agent_property_info, \
+        property_infos = map(convert_agent_property_info, \
             agent_class.get_property_infos())
         return agent_pb2.AgentClasses.AgentClass(name=name, \
             description=agent_class.get_description(), properties=property_infos)
-
-    @staticmethod
-    def _extract_agent_property_info(property_info):
-        return agent_pb2.AgentClasses.AgentClass.Property(
-            id=property_info.property_id, name=property_info.name,
-            default=property_info.default)
-
-    @staticmethod
-    def _extract_properties(request):
-        properties = dict()
-        for prop in request.property_settings:
-            properties[prop.id] = prop.value
-        return properties
-
-    @staticmethod
-    def _extract_tick_(tick):
-        values = AgentService._extract_tick_value(tick.values)
-        return Tick(values, datetime.fromtimestamp(tick.timestamp.seconds))
-
-    @staticmethod
-    def _extract_tick_value(values):
-        result = dict()
-        for value in values:
-            result[value.pair] = Value(value.bid, value.ask)
-        return result

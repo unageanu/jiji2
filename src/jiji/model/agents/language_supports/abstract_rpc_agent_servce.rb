@@ -3,11 +3,13 @@
 require 'encase'
 require 'jiji/errors/errors'
 require 'forwardable'
+require 'jiji/rpc/converters'
 
 module Jiji::Model::Agents::LanguageSupports
   class AbstractRpcAgentService
 
     include Jiji::Rpc
+    include Jiji::Rpc::Converters
     include Encase
 
     needs :agent_proxy_pool
@@ -50,7 +52,7 @@ module Jiji::Model::Agents::LanguageSupports
       request = AgentCreationRequest.new({
         class_name:        class_name,
         agent_name:        agent_name,
-        property_settings: create_property_settings(properties)
+        property_settings: convert_property_settings(properties)
       })
       instance_id = stub.create_agent_instance(request).instance_id
       return create_and_register_proxy(instance_id)
@@ -84,7 +86,7 @@ module Jiji::Model::Agents::LanguageSupports
     def set_properties(instance_id, properties)
       request = SetAgentPropertiesRequest.new({
         instance_id:       instance_id,
-        property_settings: create_property_settings(properties)
+        property_settings: convert_property_settings(properties)
       })
       stub.set_agent_properties(request)
     end
@@ -92,7 +94,7 @@ module Jiji::Model::Agents::LanguageSupports
     def next_tick(instance_id, tick)
       request = NextTickRequest.new(
         instance_id: instance_id,
-        tick:        create_tick(tick)
+        tick:        convert_tick(tick)
       )
       stub.next_tick(request)
     end
@@ -111,24 +113,6 @@ module Jiji::Model::Agents::LanguageSupports
       proxy = AgentProxy.new(instance_id, self)
       agent_proxy_pool[instance_id] = proxy
       return proxy
-    end
-
-    def create_property_settings(property_settings)
-      property_settings.map do |item|
-        PropertySetting.new({
-          id: item[0], value: item[1].to_s
-        })
-      end
-    end
-
-    def create_tick(tick)
-      Tick.new(
-        timestamp: Google::Protobuf::Timestamp.new(
-          seconds: tick.timestamp.to_i, nanos: 0),
-        values:    tick.map do |k, v|
-          Tick::Value.new(ask: v.ask, bid: v.bid, pair: k.to_s)
-        end
-      )
     end
 
   end

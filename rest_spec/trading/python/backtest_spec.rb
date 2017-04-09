@@ -45,8 +45,11 @@ describe '/backtest' do
 
     wait_for_the_end_of_backtest(test_id)
     logs = retrieve_log(test_id)
-    expect(logs.find {|l| l =~ /WARN \-\- \: tick\:1\.1234 1\.1236/}).not_to be nil
-    expect(logs.find {|l| l =~ /WARN \-\- \: tick\:1\.3834 1\.3836/}).not_to be nil
+    #logs.each {|l| puts l }
+    expect(logs.find {|l| l =~ /WARN \-\- \: tick:135\.3 135\.33 2015\-06\-02T09:00:00/}).not_to be nil
+    expect(logs.find {|l| l =~ /WARN \-\- \: get_tick:1\.1234 1\.1236 2015\-06\-02T09:00:00/}).not_to be nil
+    expect(logs.find {|l| l =~ /INFO \-\- \: pair:EURJPY EUR_JPY 0\.01 10000000 0\.001 0\.04/}).not_to be nil
+    expect(logs.find {|l| l =~ /WARN \-\- \: rate:112\.04 112\.0 112\.14 112\.1 113\.14 113\.1 111\.14 111\.1 0 2017\-04\-03T12:00:00/}).not_to be nil
     expect(logs.find {|l| l =~ /INFO \-\- \: properties\:1_bb/}).not_to be nil
   end
 

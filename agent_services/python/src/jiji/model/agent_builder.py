@@ -3,6 +3,7 @@ import inject
 from jiji.model.agent_registry import AgentRegistry
 from jiji.rpc.stub_factory import StubFactory
 from jiji.model.logger import Logger
+from jiji.model.broker import Broker
 
 class AgentBuilder():
 
@@ -32,7 +33,7 @@ class AgentBuilder():
         instance.notifier = self.__create_notifier(instance_id)
 
     def __create_broker(self, instance_id):
-        pass #TODO
+        return Broker(instance_id, self.stub_factory)
 
     def __create_logger(self, instance_id):
         return Logger(instance_id, self.stub_factory)

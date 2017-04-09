@@ -265,12 +265,32 @@ class TestAgent(Agent):
         self.properties = properties
 
     def post_create(self):
+        self.firsttime = True
         self.x = 0
         self.logger.info("properties:" + self.properties["a"] + "_" + self.properties["b"])
 
+        for pair in self.broker.get_pairs().values():
+            self.logger.info("pair:" + pair.name + " " + pair.internal_id \
+                + " " + str(pair.pip) + " " + str(pair.max_trade_units) + " " + str(pair.precision) \
+                + " " + str(pair.margin_rate))
+
     def next_tick(self, tick):
-        self.logger.warn("tick:" + str(tick['EURUSD'].bid) + " " + str(tick['EURUSD'].ask))
+        self._print_tick("tick", tick, "EURJPY")
         self.last_tick = tick
+
+        if self.firsttime:
+            new_tick = self.broker.get_tick()
+            self._print_tick("get_tick", new_tick, "EURUSD")
+            rates = self.broker.retrieve_rates('EURJPY', 'one_minute', \
+              datetime.datetime(2017, 4, 3, 12, 0, 0), datetime.datetime(2017, 4, 3, 13, 0, 0))
+            for rate in rates:
+                self.logger.warn("rate:" + str(rate.open.ask) + " " + str(rate.open.bid) + " " \
+                    + str(rate.close.ask) + " " + str(rate.close.bid) + " " \
+                    + str(rate.high.ask) + " " + str(rate.high.bid) + " " \
+                    + str(rate.low.ask) + " " + str(rate.low.bid) + " " \
+                    + str(rate.volume) + " " + rate.timestamp.isoformat())
+
+            self.firsttime = False
 
     def save_state(self):
         state = self.properties.copy()
@@ -292,6 +312,9 @@ class TestAgent(Agent):
             + "_" + str(time)
         elif action == "error":
           raise Exception("error")
+
+    def _print_tick(self, id, tick, pair):
+        self.logger.warn(id + ":" + str(tick[pair].bid) + " " + str(tick[pair].ask) + " " + tick.timestamp.isoformat())
 
 SOURCE
     end

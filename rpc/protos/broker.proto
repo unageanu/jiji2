@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package jiji.rpc;
+
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+import "agent.proto";
+
+service BrokerService {
+
+  rpc GetPairs(GetPairsRequest) returns (GetPairsResponse) {}
+  rpc GetTick(GetTickRequest) returns (Tick) {}
+  rpc RetrieveRates(RetrieveRatesRequest) returns (Rates) {}
+
+}
+
+message GetPairsRequest {
+  string instance_id = 1;
+}
+message GetPairsResponse {
+  repeated Pair pairs = 1;
+}
+message Pair {
+  string name = 1;
+  string internal_id = 2;
+  double pip = 3;
+  uint64 max_trade_units = 4;
+  double precision = 5;
+  double margin_rate = 6;
+}
+
+message GetTickRequest {
+  string instance_id = 1;
+}
+
+message RetrieveRatesRequest {
+  string instance_id = 1;
+  string pair_name = 2;
+  string interval = 3;
+  google.protobuf.Timestamp start_time = 4;
+  google.protobuf.Timestamp end_time = 5;
+}
+message Rates {
+  repeated Rate rates = 1;
+}
+message Rate {
+  string pair = 1;
+  Tick.Value open = 2;
+  Tick.Value close = 3;
+  Tick.Value high = 4;
+  Tick.Value low = 5;
+  google.protobuf.Timestamp timestamp = 6;
+  uint64 volume = 7;
+}

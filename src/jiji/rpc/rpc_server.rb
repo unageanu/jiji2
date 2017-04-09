@@ -4,6 +4,7 @@ require 'grpc'
 require 'encase'
 require 'jiji/rpc/services/logging_service'
 require 'jiji/rpc/services/health_check_service'
+require 'jiji/rpc/services/broker_service'
 
 module Jiji::Rpc
   class RpcServer
@@ -12,6 +13,7 @@ module Jiji::Rpc
 
     needs :logging_service
     needs :health_check_service
+    needs :broker_service
 
     def start
       @server = GRPC::RpcServer.new
@@ -36,6 +38,7 @@ module Jiji::Rpc
     def register_services(server)
       server.handle(logging_service)
       server.handle(health_check_service)
+      server.handle(broker_service)
     end
 
   end

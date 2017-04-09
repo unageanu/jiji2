@@ -11,6 +11,7 @@ module Jiji::Composing::Configurators
 
         object :logging_service,      Services::LoggingService.new
         object :health_check_service, Services::HealthCheckService.new
+        object :broker_service,       Services::BrokerService.new
       end
     end
 

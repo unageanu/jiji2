@@ -1,13 +1,14 @@
 # coding: utf-8
 
 require 'grpc'
+require 'jiji/rpc/converters/converters'
 
 module Jiji::Rpc::Services
   module RpcServiceMixin
-
     include Encase
     include Jiji::Errors
     include GRPC::Core
+    include Jiji::Rpc::Converters
 
     needs :logger_factory
     needs :agent_proxy_pool
@@ -27,16 +28,16 @@ module Jiji::Rpc::Services
     private
 
     def resolve_error_code(exception)
-      if (exception.is_a?(NotFoundException))
-        return StatusCodes::NOT_FOUND
-      elsif (exception.is_a?(ArgumentError))
-        return StatusCodes::INVALID_ARGUMENT
-      elsif (exception.is_a?(ActiveModel::StrictValidationFailed))
-        return StatusCodes::FAILED_PRECONDITION
-      elsif (exception.is_a?(IllegalStateException))
-        return StatusCodes::FAILED_PRECONDITION
+      if exception.is_a?(NotFoundException)
+        StatusCodes::NOT_FOUND
+      elsif exception.is_a?(ArgumentError)
+        StatusCodes::INVALID_ARGUMENT
+      elsif exception.is_a?(ActiveModel::StrictValidationFailed)
+        StatusCodes::FAILED_PRECONDITION
+      elsif exception.is_a?(IllegalStateException)
+        StatusCodes::FAILED_PRECONDITION
       else
-        return StatusCodes::INTERNAL
+        StatusCodes::INTERNAL
       end
     end
 
@@ -52,6 +53,5 @@ module Jiji::Rpc::Services
     def logger
       @logger ||= logger_factory.create_system_logger
     end
-
   end
 end

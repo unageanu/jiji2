@@ -243,8 +243,8 @@ BODY
       File.expand_path('../', __FILE__)
     end
 
-    def new_python_agent_body(id='1')
-      return <<SOURCE.freeze
+    def new_python_agent_body(id = '1')
+      <<SOURCE.freeze
 import datetime
 from jiji.model.agent import Agent, Property
 

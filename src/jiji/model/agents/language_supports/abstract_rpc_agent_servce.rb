@@ -3,7 +3,7 @@
 require 'encase'
 require 'jiji/errors/errors'
 require 'forwardable'
-require 'jiji/rpc/converters'
+require 'jiji/rpc/converters/converters'
 
 module Jiji::Model::Agents::LanguageSupports
   class AbstractRpcAgentService
@@ -52,23 +52,23 @@ module Jiji::Model::Agents::LanguageSupports
       request = AgentCreationRequest.new({
         class_name:        class_name,
         agent_name:        agent_name,
-        property_settings: convert_property_settings(properties)
+        property_settings: convert_property_settings_to_pb(properties)
       })
       instance_id = stub.create_agent_instance(request).instance_id
-      return create_and_register_proxy(instance_id)
+      create_and_register_proxy(instance_id)
     end
 
     def exec_post_create(instance_id)
       request = ExecPostCreateRequest.new({
-        instance_id:       instance_id
+        instance_id: instance_id
       })
       stub.exec_post_create(request)
     end
 
     def restore_instance_state(instance_id, state = '')
       request = RestoreInstanceStateRequest.new({
-        instance_id:       instance_id,
-        state:             state
+        instance_id: instance_id,
+        state:       state
       })
       stub.restore_instance_state(request)
     end
@@ -86,7 +86,7 @@ module Jiji::Model::Agents::LanguageSupports
     def set_properties(instance_id, properties)
       request = SetAgentPropertiesRequest.new({
         instance_id:       instance_id,
-        property_settings: convert_property_settings(properties)
+        property_settings: convert_property_settings_to_pb(properties)
       })
       stub.set_agent_properties(request)
     end
@@ -94,7 +94,7 @@ module Jiji::Model::Agents::LanguageSupports
     def next_tick(instance_id, tick)
       request = NextTickRequest.new(
         instance_id: instance_id,
-        tick:        convert_tick(tick)
+        tick:        convert_tick_to_pb(tick)
       )
       stub.next_tick(request)
     end
@@ -112,7 +112,7 @@ module Jiji::Model::Agents::LanguageSupports
     def create_and_register_proxy(instance_id)
       proxy = AgentProxy.new(instance_id, self)
       agent_proxy_pool[instance_id] = proxy
-      return proxy
+      proxy
     end
 
   end

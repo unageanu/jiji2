@@ -3,7 +3,6 @@
 
 require 'google/protobuf'
 
-require 'google/protobuf/empty_pb'
 require 'google/protobuf/timestamp_pb'
 require 'agent_pb'
 Google::Protobuf::DescriptorPool.generated_pool.build do
@@ -43,6 +42,139 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :timestamp, :message, 6, "google.protobuf.Timestamp"
     optional :volume, :uint64, 7
   end
+  add_message "jiji.rpc.GetAccountRequest" do
+    optional :instance_id, :string, 1
+  end
+  add_message "jiji.rpc.Account" do
+    optional :account_id, :string, 1
+    optional :account_currency, :string, 2
+    optional :balance, :double, 3
+    optional :profit_or_loss, :double, 4
+    optional :margin_used, :double, 5
+    optional :margin_rate, :float, 6
+    optional :updated_at, :message, 7, "google.protobuf.Timestamp"
+  end
+  add_message "jiji.rpc.GetPositionsRequest" do
+    optional :instance_id, :string, 1
+  end
+  add_message "jiji.rpc.Positions" do
+    repeated :positions, :message, 1, "jiji.rpc.Position"
+  end
+  add_message "jiji.rpc.Position" do
+    optional :internal_id, :string, 1
+    optional :pair_name, :string, 2
+    optional :units, :uint64, 3
+    optional :sell_or_buy, :string, 4
+    optional :status, :string, 5
+    optional :profit_or_loss, :double, 6
+    optional :max_drow_down, :double, 7
+    optional :entry_price, :double, 8
+    optional :current_price, :double, 9
+    optional :exit_price, :double, 10
+    optional :current_counter_rate, :double, 11
+    optional :entered_at, :message, 12, "google.protobuf.Timestamp"
+    optional :exited_at, :message, 13, "google.protobuf.Timestamp"
+    optional :updated_at, :message, 14, "google.protobuf.Timestamp"
+  end
+  add_message "jiji.rpc.GetOrdersRequest" do
+    optional :instance_id, :string, 1
+  end
+  add_message "jiji.rpc.Orders" do
+    repeated :orders, :message, 1, "jiji.rpc.Order"
+  end
+  add_message "jiji.rpc.Order" do
+    optional :pair_name, :string, 1
+    optional :sell_or_buy, :string, 2
+    optional :internal_id, :string, 3
+    optional :type, :string, 4
+    optional :last_modified, :message, 5, "google.protobuf.Timestamp"
+    optional :units, :uint64, 6
+    optional :price, :double, 7
+    optional :expiry, :message, 8, "google.protobuf.Timestamp"
+    optional :lower_bound, :double, 9
+    optional :upper_bound, :double, 10
+    optional :stop_loss, :double, 11
+    optional :take_profit, :double, 12
+    optional :trailing_stop, :uint32, 13
+  end
+  add_message "jiji.rpc.OrderRequest" do
+    optional :instance_id, :string, 1
+    optional :pair_name, :string, 2
+    optional :sell_or_buy, :string, 3
+    optional :units, :uint64, 4
+    optional :type, :string, 5
+    optional :option, :message, 6, "jiji.rpc.OrderRequest.Option"
+  end
+  add_message "jiji.rpc.OrderRequest.Option" do
+    optional :lower_bound, :double, 1
+    optional :upper_bound, :double, 2
+    optional :stop_loss, :double, 3
+    optional :take_profit, :double, 4
+    optional :trailing_stop, :uint32, 5
+    optional :price, :double, 6
+    optional :expiry, :message, 7, "google.protobuf.Timestamp"
+  end
+  add_message "jiji.rpc.OrderResponse" do
+    optional :order_opened, :message, 1, "jiji.rpc.Order"
+    optional :trade_opened, :message, 2, "jiji.rpc.Order"
+    optional :trade_reduced, :message, 3, "jiji.rpc.PositionInfo"
+    repeated :trades_closed, :message, 4, "jiji.rpc.PositionInfo"
+  end
+  add_message "jiji.rpc.PositionInfo" do
+    optional :internal_id, :string, 1
+    optional :units, :uint64, 2
+    optional :price, :double, 3
+    optional :timestamp, :message, 4, "google.protobuf.Timestamp"
+    optional :profit_or_loss, :double, 5
+  end
+  add_message "jiji.rpc.ModifyOrderRequest" do
+    optional :instance_id, :string, 1
+    optional :modified_order, :message, 2, "jiji.rpc.Order"
+  end
+  add_message "jiji.rpc.ModifyOrderResponse" do
+    optional :modified_order, :message, 1, "jiji.rpc.Order"
+  end
+  add_message "jiji.rpc.CancelOrderRequest" do
+    optional :instance_id, :string, 1
+    optional :order_id, :string, 2
+  end
+  add_message "jiji.rpc.CancelOrderResponse" do
+    optional :cancelled_order, :message, 1, "jiji.rpc.Order"
+  end
+  add_message "jiji.rpc.ModifyPositionRequest" do
+    optional :instance_id, :string, 1
+    optional :modified_position, :message, 2, "jiji.rpc.Position"
+  end
+  add_message "jiji.rpc.ModifyPositionResponse" do
+    optional :modified_position, :message, 1, "jiji.rpc.Position"
+  end
+  add_message "jiji.rpc.ClosePositionRequest" do
+    optional :instance_id, :string, 1
+    optional :position_id, :string, 2
+  end
+  add_message "jiji.rpc.ClosePositionResponse" do
+    optional :closed_position, :message, 1, "jiji.rpc.PositionInfo"
+  end
+  add_message "jiji.rpc.RetrieveEconomicCalendarInformationsRequest" do
+    optional :instance_id, :string, 1
+    optional :period, :uint32, 2
+    optional :pair_name, :string, 3
+  end
+  add_message "jiji.rpc.EconomicCalendarInformations" do
+    repeated :informations, :message, 1, "jiji.rpc.EconomicCalendarInformation"
+  end
+  add_message "jiji.rpc.EconomicCalendarInformation" do
+    optional :title, :string, 1
+    optional :timestamp, :message, 2, "google.protobuf.Timestamp"
+    optional :unit, :string, 3
+    optional :currency, :string, 4
+    optional :forecast, :string, 5
+    optional :previous, :string, 6
+    optional :actual, :string, 7
+    optional :market, :string, 8
+    optional :region, :string, 9
+    optional :impact, :float, 10
+  end
 end
 
 module Jiji
@@ -54,5 +186,28 @@ module Jiji
     RetrieveRatesRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.RetrieveRatesRequest").msgclass
     Rates = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.Rates").msgclass
     Rate = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.Rate").msgclass
+    GetAccountRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.GetAccountRequest").msgclass
+    Account = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.Account").msgclass
+    GetPositionsRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.GetPositionsRequest").msgclass
+    Positions = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.Positions").msgclass
+    Position = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.Position").msgclass
+    GetOrdersRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.GetOrdersRequest").msgclass
+    Orders = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.Orders").msgclass
+    Order = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.Order").msgclass
+    OrderRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.OrderRequest").msgclass
+    OrderRequest::Option = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.OrderRequest.Option").msgclass
+    OrderResponse = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.OrderResponse").msgclass
+    PositionInfo = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.PositionInfo").msgclass
+    ModifyOrderRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.ModifyOrderRequest").msgclass
+    ModifyOrderResponse = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.ModifyOrderResponse").msgclass
+    CancelOrderRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.CancelOrderRequest").msgclass
+    CancelOrderResponse = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.CancelOrderResponse").msgclass
+    ModifyPositionRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.ModifyPositionRequest").msgclass
+    ModifyPositionResponse = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.ModifyPositionResponse").msgclass
+    ClosePositionRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.ClosePositionRequest").msgclass
+    ClosePositionResponse = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.ClosePositionResponse").msgclass
+    RetrieveEconomicCalendarInformationsRequest = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.RetrieveEconomicCalendarInformationsRequest").msgclass
+    EconomicCalendarInformations = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.EconomicCalendarInformations").msgclass
+    EconomicCalendarInformation = Google::Protobuf::DescriptorPool.generated_pool.lookup("jiji.rpc.EconomicCalendarInformation").msgclass
   end
 end

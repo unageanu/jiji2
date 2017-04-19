@@ -2,15 +2,27 @@ syntax = "proto3";
 
 package jiji.rpc;
 
-import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 import "agent.proto";
 
 service BrokerService {
 
+  rpc GetAccount(GetAccountRequest) returns (Account) {}
   rpc GetPairs(GetPairsRequest) returns (GetPairsResponse) {}
   rpc GetTick(GetTickRequest) returns (Tick) {}
   rpc RetrieveRates(RetrieveRatesRequest) returns (Rates) {}
+
+  rpc GetPositions(GetPositionsRequest) returns (Positions) {}
+  rpc GetOrders(GetOrdersRequest) returns (Orders) {}
+
+  rpc Order(OrderRequest) returns (OrderResponse) {}
+  rpc ModifyOrder(ModifyOrderRequest) returns (ModifyOrderResponse) {}
+  rpc CancelOrder(CancelOrderRequest) returns (CancelOrderResponse) {}
+
+  rpc ModifyPosition(ModifyPositionRequest) returns (ModifyPositionResponse) {}
+  rpc ClosePosition(ClosePositionRequest) returns (ClosePositionResponse) {}
+
+  rpc RetrieveEconomicCalendarInformations(RetrieveEconomicCalendarInformationsRequest) returns (EconomicCalendarInformations) {}
 
 }
 
@@ -51,4 +63,154 @@ message Rate {
   Tick.Value low = 5;
   google.protobuf.Timestamp timestamp = 6;
   uint64 volume = 7;
+}
+
+message GetAccountRequest {
+  string instance_id = 1;
+}
+message Account {
+  string account_id = 1;
+  string account_currency = 2;
+  double balance = 3;
+  double profit_or_loss = 4;
+  double margin_used = 5;
+  float margin_rate = 6;
+  google.protobuf.Timestamp updated_at = 7;
+}
+
+message GetPositionsRequest {
+  string instance_id = 1;
+}
+message Positions {
+  repeated Position positions = 1;
+}
+message Position {
+  string internal_id = 1;
+
+  string pair_name = 2;
+  uint64 units = 3;
+  string sell_or_buy = 4;
+  string status = 5;
+
+  double profit_or_loss = 6;
+  double max_drow_down = 7;
+
+  double entry_price = 8;
+  double current_price = 9;
+  double exit_price = 10;
+  double current_counter_rate = 11;
+
+  google.protobuf.Timestamp entered_at = 12;
+  google.protobuf.Timestamp exited_at = 13;
+  google.protobuf.Timestamp updated_at = 14;
+}
+
+message GetOrdersRequest {
+  string instance_id = 1;
+}
+message Orders {
+  repeated Order orders = 1;
+}
+message Order {
+  string pair_name = 1;
+  string sell_or_buy = 2;
+  string internal_id = 3;
+  string type = 4;
+  google.protobuf.Timestamp last_modified = 5;
+  uint64 units = 6;
+  double price = 7;
+  google.protobuf.Timestamp expiry = 8;
+  double lower_bound = 9;
+  double upper_bound = 10;
+  double stop_loss = 11;
+  double take_profit = 12;
+  uint32 trailing_stop = 13;
+}
+
+message OrderRequest {
+  string instance_id = 1;
+  string pair_name = 2;
+  string sell_or_buy = 3;
+  uint64 units = 4;
+  string type = 5;
+  Option option = 6;
+
+  message Option {
+    double lower_bound = 1;
+    double upper_bound = 2;
+    double stop_loss = 3;
+    double take_profit = 4;
+    uint32 trailing_stop = 5;
+    double price = 6;
+    google.protobuf.Timestamp expiry = 7;
+  }
+}
+
+
+message OrderResponse {
+  Order order_opened = 1;
+  Order trade_opened = 2;
+  PositionInfo trade_reduced = 3;
+  repeated PositionInfo trades_closed = 4;
+}
+message PositionInfo {
+  string internal_id = 1;
+  uint64 units = 2;
+  double price = 3;
+  google.protobuf.Timestamp timestamp = 4;
+  double profit_or_loss = 5;
+}
+
+message ModifyOrderRequest {
+  string instance_id = 1;
+  Order modified_order = 2;
+}
+message ModifyOrderResponse {
+  Order modified_order = 1;
+}
+
+message CancelOrderRequest {
+  string instance_id = 1;
+  string order_id = 2;
+}
+message CancelOrderResponse {
+  Order cancelled_order = 1;
+}
+
+
+message ModifyPositionRequest {
+  string instance_id = 1;
+  Position modified_position = 2;
+}
+message ModifyPositionResponse {
+  Position modified_position = 1;
+}
+
+message ClosePositionRequest {
+  string instance_id = 1;
+  string position_id = 2;
+}
+message ClosePositionResponse {
+  PositionInfo closed_position = 1;
+}
+
+message RetrieveEconomicCalendarInformationsRequest {
+  string instance_id = 1;
+  uint32 period = 2;
+  string pair_name = 3;
+}
+message EconomicCalendarInformations {
+  repeated EconomicCalendarInformation informations = 1;
+}
+message EconomicCalendarInformation {
+  string title = 1;
+  google.protobuf.Timestamp timestamp = 2;
+  string unit = 3;
+  string currency = 4;
+  string forecast = 5;
+  string previous = 6;
+  string actual = 7;
+  string market = 8;
+  string region = 9;
+  float impact = 10;
 }

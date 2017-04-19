@@ -10,7 +10,7 @@ module Jiji::Model::Agents::LanguageSupports
 
     include Jiji::Rpc
 
-    SERVER_URL = 'localhost:50051'
+    SERVER_URL = 'localhost:50051'.freeze
 
     def stub
       @stub ||= AgentService::Stub.new(

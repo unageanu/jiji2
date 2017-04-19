@@ -13,7 +13,6 @@ from google.protobuf import descriptor_pb2
 _sym_db = _symbol_database.Default()
 
 
-from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 import agent_pb2 as agent__pb2
 
@@ -22,9 +21,9 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='broker.proto',
   package='jiji.rpc',
   syntax='proto3',
-  serialized_pb=_b('\n\x0c\x62roker.proto\x12\x08jiji.rpc\x1a\x1bgoogle/protobuf/empty.proto\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x0b\x61gent.proto\"&\n\x0fGetPairsRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"1\n\x10GetPairsResponse\x12\x1d\n\x05pairs\x18\x01 \x03(\x0b\x32\x0e.jiji.rpc.Pair\"w\n\x04Pair\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0binternal_id\x18\x02 \x01(\t\x12\x0b\n\x03pip\x18\x03 \x01(\x01\x12\x17\n\x0fmax_trade_units\x18\x04 \x01(\x04\x12\x11\n\tprecision\x18\x05 \x01(\x01\x12\x13\n\x0bmargin_rate\x18\x06 \x01(\x01\"%\n\x0eGetTickRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"\xae\x01\n\x14RetrieveRatesRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\tpair_name\x18\x02 \x01(\t\x12\x10\n\x08interval\x18\x03 \x01(\t\x12.\n\nstart_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"&\n\x05Rates\x12\x1d\n\x05rates\x18\x01 \x03(\x0b\x32\x0e.jiji.rpc.Rate\"\xe3\x01\n\x04Rate\x12\x0c\n\x04pair\x18\x01 \x01(\t\x12\"\n\x04open\x18\x02 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12#\n\x05\x63lose\x18\x03 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12\"\n\x04high\x18\x04 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12!\n\x03low\x18\x05 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12-\n\ttimestamp\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06volume\x18\x07 \x01(\x04\x32\xcf\x01\n\rBrokerService\x12\x43\n\x08GetPairs\x12\x19.jiji.rpc.GetPairsRequest\x1a\x1a.jiji.rpc.GetPairsResponse\"\x00\x12\x35\n\x07GetTick\x12\x18.jiji.rpc.GetTickRequest\x1a\x0e.jiji.rpc.Tick\"\x00\x12\x42\n\rRetrieveRates\x12\x1e.jiji.rpc.RetrieveRatesRequest\x1a\x0f.jiji.rpc.Rates\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x0c\x62roker.proto\x12\x08jiji.rpc\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x0b\x61gent.proto\"&\n\x0fGetPairsRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"1\n\x10GetPairsResponse\x12\x1d\n\x05pairs\x18\x01 \x03(\x0b\x32\x0e.jiji.rpc.Pair\"w\n\x04Pair\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0binternal_id\x18\x02 \x01(\t\x12\x0b\n\x03pip\x18\x03 \x01(\x01\x12\x17\n\x0fmax_trade_units\x18\x04 \x01(\x04\x12\x11\n\tprecision\x18\x05 \x01(\x01\x12\x13\n\x0bmargin_rate\x18\x06 \x01(\x01\"%\n\x0eGetTickRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"\xae\x01\n\x14RetrieveRatesRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\tpair_name\x18\x02 \x01(\t\x12\x10\n\x08interval\x18\x03 \x01(\t\x12.\n\nstart_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"&\n\x05Rates\x12\x1d\n\x05rates\x18\x01 \x03(\x0b\x32\x0e.jiji.rpc.Rate\"\xe3\x01\n\x04Rate\x12\x0c\n\x04pair\x18\x01 \x01(\t\x12\"\n\x04open\x18\x02 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12#\n\x05\x63lose\x18\x03 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12\"\n\x04high\x18\x04 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12!\n\x03low\x18\x05 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12-\n\ttimestamp\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06volume\x18\x07 \x01(\x04\"(\n\x11GetAccountRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"\xba\x01\n\x07\x41\x63\x63ount\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x18\n\x10\x61\x63\x63ount_currency\x18\x02 \x01(\t\x12\x0f\n\x07\x62\x61lance\x18\x03 \x01(\x01\x12\x16\n\x0eprofit_or_loss\x18\x04 \x01(\x01\x12\x13\n\x0bmargin_used\x18\x05 \x01(\x01\x12\x13\n\x0bmargin_rate\x18\x06 \x01(\x02\x12.\n\nupdated_at\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"*\n\x13GetPositionsRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"2\n\tPositions\x12%\n\tpositions\x18\x01 \x03(\x0b\x32\x12.jiji.rpc.Position\"\x82\x03\n\x08Position\x12\x13\n\x0binternal_id\x18\x01 \x01(\t\x12\x11\n\tpair_name\x18\x02 \x01(\t\x12\r\n\x05units\x18\x03 \x01(\x04\x12\x13\n\x0bsell_or_buy\x18\x04 \x01(\t\x12\x0e\n\x06status\x18\x05 \x01(\t\x12\x16\n\x0eprofit_or_loss\x18\x06 \x01(\x01\x12\x15\n\rmax_drow_down\x18\x07 \x01(\x01\x12\x13\n\x0b\x65ntry_price\x18\x08 \x01(\x01\x12\x15\n\rcurrent_price\x18\t \x01(\x01\x12\x12\n\nexit_price\x18\n \x01(\x01\x12\x1c\n\x14\x63urrent_counter_rate\x18\x0b \x01(\x01\x12.\n\nentered_at\x18\x0c \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12-\n\texited_at\x18\r \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nupdated_at\x18\x0e \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\'\n\x10GetOrdersRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\")\n\x06Orders\x12\x1f\n\x06orders\x18\x01 \x03(\x0b\x32\x0f.jiji.rpc.Order\"\xb8\x02\n\x05Order\x12\x11\n\tpair_name\x18\x01 \x01(\t\x12\x13\n\x0bsell_or_buy\x18\x02 \x01(\t\x12\x13\n\x0binternal_id\x18\x03 \x01(\t\x12\x0c\n\x04type\x18\x04 \x01(\t\x12\x31\n\rlast_modified\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\r\n\x05units\x18\x06 \x01(\x04\x12\r\n\x05price\x18\x07 \x01(\x01\x12*\n\x06\x65xpiry\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0blower_bound\x18\t \x01(\x01\x12\x13\n\x0bupper_bound\x18\n \x01(\x01\x12\x11\n\tstop_loss\x18\x0b \x01(\x01\x12\x13\n\x0btake_profit\x18\x0c \x01(\x01\x12\x15\n\rtrailing_stop\x18\r \x01(\r\"\xc6\x02\n\x0cOrderRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\tpair_name\x18\x02 \x01(\t\x12\x13\n\x0bsell_or_buy\x18\x03 \x01(\t\x12\r\n\x05units\x18\x04 \x01(\x04\x12\x0c\n\x04type\x18\x05 \x01(\t\x12-\n\x06option\x18\x06 \x01(\x0b\x32\x1d.jiji.rpc.OrderRequest.Option\x1a\xac\x01\n\x06Option\x12\x13\n\x0blower_bound\x18\x01 \x01(\x01\x12\x13\n\x0bupper_bound\x18\x02 \x01(\x01\x12\x11\n\tstop_loss\x18\x03 \x01(\x01\x12\x13\n\x0btake_profit\x18\x04 \x01(\x01\x12\x15\n\rtrailing_stop\x18\x05 \x01(\r\x12\r\n\x05price\x18\x06 \x01(\x01\x12*\n\x06\x65xpiry\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xbb\x01\n\rOrderResponse\x12%\n\x0corder_opened\x18\x01 \x01(\x0b\x32\x0f.jiji.rpc.Order\x12%\n\x0ctrade_opened\x18\x02 \x01(\x0b\x32\x0f.jiji.rpc.Order\x12-\n\rtrade_reduced\x18\x03 \x01(\x0b\x32\x16.jiji.rpc.PositionInfo\x12-\n\rtrades_closed\x18\x04 \x03(\x0b\x32\x16.jiji.rpc.PositionInfo\"\x88\x01\n\x0cPositionInfo\x12\x13\n\x0binternal_id\x18\x01 \x01(\t\x12\r\n\x05units\x18\x02 \x01(\x04\x12\r\n\x05price\x18\x03 \x01(\x01\x12-\n\ttimestamp\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x16\n\x0eprofit_or_loss\x18\x05 \x01(\x01\"R\n\x12ModifyOrderRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\'\n\x0emodified_order\x18\x02 \x01(\x0b\x32\x0f.jiji.rpc.Order\">\n\x13ModifyOrderResponse\x12\'\n\x0emodified_order\x18\x01 \x01(\x0b\x32\x0f.jiji.rpc.Order\";\n\x12\x43\x61ncelOrderRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x10\n\x08order_id\x18\x02 \x01(\t\"?\n\x13\x43\x61ncelOrderResponse\x12(\n\x0f\x63\x61ncelled_order\x18\x01 \x01(\x0b\x32\x0f.jiji.rpc.Order\"[\n\x15ModifyPositionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12-\n\x11modified_position\x18\x02 \x01(\x0b\x32\x12.jiji.rpc.Position\"G\n\x16ModifyPositionResponse\x12-\n\x11modified_position\x18\x01 \x01(\x0b\x32\x12.jiji.rpc.Position\"@\n\x14\x43losePositionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x13\n\x0bposition_id\x18\x02 \x01(\t\"H\n\x15\x43losePositionResponse\x12/\n\x0f\x63losed_position\x18\x01 \x01(\x0b\x32\x16.jiji.rpc.PositionInfo\"e\n+RetrieveEconomicCalendarInformationsRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x0e\n\x06period\x18\x02 \x01(\r\x12\x11\n\tpair_name\x18\x03 \x01(\t\"[\n\x1c\x45\x63onomicCalendarInformations\x12;\n\x0cinformations\x18\x01 \x03(\x0b\x32%.jiji.rpc.EconomicCalendarInformation\"\xdf\x01\n\x1b\x45\x63onomicCalendarInformation\x12\r\n\x05title\x18\x01 \x01(\t\x12-\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0c\n\x04unit\x18\x03 \x01(\t\x12\x10\n\x08\x63urrency\x18\x04 \x01(\t\x12\x10\n\x08\x66orecast\x18\x05 \x01(\t\x12\x10\n\x08previous\x18\x06 \x01(\t\x12\x0e\n\x06\x61\x63tual\x18\x07 \x01(\t\x12\x0e\n\x06market\x18\x08 \x01(\t\x12\x0e\n\x06region\x18\t \x01(\t\x12\x0e\n\x06impact\x18\n \x01(\x02\x32\x9f\x07\n\rBrokerService\x12>\n\nGetAccount\x12\x1b.jiji.rpc.GetAccountRequest\x1a\x11.jiji.rpc.Account\"\x00\x12\x43\n\x08GetPairs\x12\x19.jiji.rpc.GetPairsRequest\x1a\x1a.jiji.rpc.GetPairsResponse\"\x00\x12\x35\n\x07GetTick\x12\x18.jiji.rpc.GetTickRequest\x1a\x0e.jiji.rpc.Tick\"\x00\x12\x42\n\rRetrieveRates\x12\x1e.jiji.rpc.RetrieveRatesRequest\x1a\x0f.jiji.rpc.Rates\"\x00\x12\x44\n\x0cGetPositions\x12\x1d.jiji.rpc.GetPositionsRequest\x1a\x13.jiji.rpc.Positions\"\x00\x12;\n\tGetOrders\x12\x1a.jiji.rpc.GetOrdersRequest\x1a\x10.jiji.rpc.Orders\"\x00\x12:\n\x05Order\x12\x16.jiji.rpc.OrderRequest\x1a\x17.jiji.rpc.OrderResponse\"\x00\x12L\n\x0bModifyOrder\x12\x1c.jiji.rpc.ModifyOrderRequest\x1a\x1d.jiji.rpc.ModifyOrderResponse\"\x00\x12L\n\x0b\x43\x61ncelOrder\x12\x1c.jiji.rpc.CancelOrderRequest\x1a\x1d.jiji.rpc.CancelOrderResponse\"\x00\x12U\n\x0eModifyPosition\x12\x1f.jiji.rpc.ModifyPositionRequest\x1a .jiji.rpc.ModifyPositionResponse\"\x00\x12R\n\rClosePosition\x12\x1e.jiji.rpc.ClosePositionRequest\x1a\x1f.jiji.rpc.ClosePositionResponse\"\x00\x12\x87\x01\n$RetrieveEconomicCalendarInformations\x12\x35.jiji.rpc.RetrieveEconomicCalendarInformationsRequest\x1a&.jiji.rpc.EconomicCalendarInformations\"\x00\x62\x06proto3')
   ,
-  dependencies=[google_dot_protobuf_dot_empty__pb2.DESCRIPTOR,google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,agent__pb2.DESCRIPTOR,])
+  dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,agent__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
@@ -56,8 +55,8 @@ _GETPAIRSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=101,
-  serialized_end=139,
+  serialized_start=72,
+  serialized_end=110,
 )
 
 
@@ -87,8 +86,8 @@ _GETPAIRSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=141,
-  serialized_end=190,
+  serialized_start=112,
+  serialized_end=161,
 )
 
 
@@ -153,8 +152,8 @@ _PAIR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=192,
-  serialized_end=311,
+  serialized_start=163,
+  serialized_end=282,
 )
 
 
@@ -184,8 +183,8 @@ _GETTICKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=313,
-  serialized_end=350,
+  serialized_start=284,
+  serialized_end=321,
 )
 
 
@@ -243,8 +242,8 @@ _RETRIEVERATESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=353,
-  serialized_end=527,
+  serialized_start=324,
+  serialized_end=498,
 )
 
 
@@ -274,8 +273,8 @@ _RATES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=529,
-  serialized_end=567,
+  serialized_start=500,
+  serialized_end=538,
 )
 
 
@@ -347,8 +346,1168 @@ _RATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=570,
-  serialized_end=797,
+  serialized_start=541,
+  serialized_end=768,
+)
+
+
+_GETACCOUNTREQUEST = _descriptor.Descriptor(
+  name='GetAccountRequest',
+  full_name='jiji.rpc.GetAccountRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='jiji.rpc.GetAccountRequest.instance_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=770,
+  serialized_end=810,
+)
+
+
+_ACCOUNT = _descriptor.Descriptor(
+  name='Account',
+  full_name='jiji.rpc.Account',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='account_id', full_name='jiji.rpc.Account.account_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='account_currency', full_name='jiji.rpc.Account.account_currency', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='balance', full_name='jiji.rpc.Account.balance', index=2,
+      number=3, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='profit_or_loss', full_name='jiji.rpc.Account.profit_or_loss', index=3,
+      number=4, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='margin_used', full_name='jiji.rpc.Account.margin_used', index=4,
+      number=5, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='margin_rate', full_name='jiji.rpc.Account.margin_rate', index=5,
+      number=6, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='updated_at', full_name='jiji.rpc.Account.updated_at', index=6,
+      number=7, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=813,
+  serialized_end=999,
+)
+
+
+_GETPOSITIONSREQUEST = _descriptor.Descriptor(
+  name='GetPositionsRequest',
+  full_name='jiji.rpc.GetPositionsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='jiji.rpc.GetPositionsRequest.instance_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1001,
+  serialized_end=1043,
+)
+
+
+_POSITIONS = _descriptor.Descriptor(
+  name='Positions',
+  full_name='jiji.rpc.Positions',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='positions', full_name='jiji.rpc.Positions.positions', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1045,
+  serialized_end=1095,
+)
+
+
+_POSITION = _descriptor.Descriptor(
+  name='Position',
+  full_name='jiji.rpc.Position',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='internal_id', full_name='jiji.rpc.Position.internal_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='pair_name', full_name='jiji.rpc.Position.pair_name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='units', full_name='jiji.rpc.Position.units', index=2,
+      number=3, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='sell_or_buy', full_name='jiji.rpc.Position.sell_or_buy', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='status', full_name='jiji.rpc.Position.status', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='profit_or_loss', full_name='jiji.rpc.Position.profit_or_loss', index=5,
+      number=6, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='max_drow_down', full_name='jiji.rpc.Position.max_drow_down', index=6,
+      number=7, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='entry_price', full_name='jiji.rpc.Position.entry_price', index=7,
+      number=8, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='current_price', full_name='jiji.rpc.Position.current_price', index=8,
+      number=9, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='exit_price', full_name='jiji.rpc.Position.exit_price', index=9,
+      number=10, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='current_counter_rate', full_name='jiji.rpc.Position.current_counter_rate', index=10,
+      number=11, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='entered_at', full_name='jiji.rpc.Position.entered_at', index=11,
+      number=12, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='exited_at', full_name='jiji.rpc.Position.exited_at', index=12,
+      number=13, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='updated_at', full_name='jiji.rpc.Position.updated_at', index=13,
+      number=14, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1098,
+  serialized_end=1484,
+)
+
+
+_GETORDERSREQUEST = _descriptor.Descriptor(
+  name='GetOrdersRequest',
+  full_name='jiji.rpc.GetOrdersRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='jiji.rpc.GetOrdersRequest.instance_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1486,
+  serialized_end=1525,
+)
+
+
+_ORDERS = _descriptor.Descriptor(
+  name='Orders',
+  full_name='jiji.rpc.Orders',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='orders', full_name='jiji.rpc.Orders.orders', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1527,
+  serialized_end=1568,
+)
+
+
+_ORDER = _descriptor.Descriptor(
+  name='Order',
+  full_name='jiji.rpc.Order',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='pair_name', full_name='jiji.rpc.Order.pair_name', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='sell_or_buy', full_name='jiji.rpc.Order.sell_or_buy', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='internal_id', full_name='jiji.rpc.Order.internal_id', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='type', full_name='jiji.rpc.Order.type', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='last_modified', full_name='jiji.rpc.Order.last_modified', index=4,
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='units', full_name='jiji.rpc.Order.units', index=5,
+      number=6, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='price', full_name='jiji.rpc.Order.price', index=6,
+      number=7, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='expiry', full_name='jiji.rpc.Order.expiry', index=7,
+      number=8, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='lower_bound', full_name='jiji.rpc.Order.lower_bound', index=8,
+      number=9, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='upper_bound', full_name='jiji.rpc.Order.upper_bound', index=9,
+      number=10, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='stop_loss', full_name='jiji.rpc.Order.stop_loss', index=10,
+      number=11, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='take_profit', full_name='jiji.rpc.Order.take_profit', index=11,
+      number=12, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='trailing_stop', full_name='jiji.rpc.Order.trailing_stop', index=12,
+      number=13, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1571,
+  serialized_end=1883,
+)
+
+
+_ORDERREQUEST_OPTION = _descriptor.Descriptor(
+  name='Option',
+  full_name='jiji.rpc.OrderRequest.Option',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='lower_bound', full_name='jiji.rpc.OrderRequest.Option.lower_bound', index=0,
+      number=1, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='upper_bound', full_name='jiji.rpc.OrderRequest.Option.upper_bound', index=1,
+      number=2, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='stop_loss', full_name='jiji.rpc.OrderRequest.Option.stop_loss', index=2,
+      number=3, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='take_profit', full_name='jiji.rpc.OrderRequest.Option.take_profit', index=3,
+      number=4, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='trailing_stop', full_name='jiji.rpc.OrderRequest.Option.trailing_stop', index=4,
+      number=5, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='price', full_name='jiji.rpc.OrderRequest.Option.price', index=5,
+      number=6, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='expiry', full_name='jiji.rpc.OrderRequest.Option.expiry', index=6,
+      number=7, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2040,
+  serialized_end=2212,
+)
+
+_ORDERREQUEST = _descriptor.Descriptor(
+  name='OrderRequest',
+  full_name='jiji.rpc.OrderRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='jiji.rpc.OrderRequest.instance_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='pair_name', full_name='jiji.rpc.OrderRequest.pair_name', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='sell_or_buy', full_name='jiji.rpc.OrderRequest.sell_or_buy', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='units', full_name='jiji.rpc.OrderRequest.units', index=3,
+      number=4, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='type', full_name='jiji.rpc.OrderRequest.type', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='option', full_name='jiji.rpc.OrderRequest.option', index=5,
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[_ORDERREQUEST_OPTION, ],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=1886,
+  serialized_end=2212,
+)
+
+
+_ORDERRESPONSE = _descriptor.Descriptor(
+  name='OrderResponse',
+  full_name='jiji.rpc.OrderResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='order_opened', full_name='jiji.rpc.OrderResponse.order_opened', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='trade_opened', full_name='jiji.rpc.OrderResponse.trade_opened', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='trade_reduced', full_name='jiji.rpc.OrderResponse.trade_reduced', index=2,
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='trades_closed', full_name='jiji.rpc.OrderResponse.trades_closed', index=3,
+      number=4, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2215,
+  serialized_end=2402,
+)
+
+
+_POSITIONINFO = _descriptor.Descriptor(
+  name='PositionInfo',
+  full_name='jiji.rpc.PositionInfo',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='internal_id', full_name='jiji.rpc.PositionInfo.internal_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='units', full_name='jiji.rpc.PositionInfo.units', index=1,
+      number=2, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='price', full_name='jiji.rpc.PositionInfo.price', index=2,
+      number=3, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='timestamp', full_name='jiji.rpc.PositionInfo.timestamp', index=3,
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='profit_or_loss', full_name='jiji.rpc.PositionInfo.profit_or_loss', index=4,
+      number=5, type=1, cpp_type=5, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2405,
+  serialized_end=2541,
+)
+
+
+_MODIFYORDERREQUEST = _descriptor.Descriptor(
+  name='ModifyOrderRequest',
+  full_name='jiji.rpc.ModifyOrderRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='jiji.rpc.ModifyOrderRequest.instance_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='modified_order', full_name='jiji.rpc.ModifyOrderRequest.modified_order', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2543,
+  serialized_end=2625,
+)
+
+
+_MODIFYORDERRESPONSE = _descriptor.Descriptor(
+  name='ModifyOrderResponse',
+  full_name='jiji.rpc.ModifyOrderResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='modified_order', full_name='jiji.rpc.ModifyOrderResponse.modified_order', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2627,
+  serialized_end=2689,
+)
+
+
+_CANCELORDERREQUEST = _descriptor.Descriptor(
+  name='CancelOrderRequest',
+  full_name='jiji.rpc.CancelOrderRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='jiji.rpc.CancelOrderRequest.instance_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='order_id', full_name='jiji.rpc.CancelOrderRequest.order_id', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2691,
+  serialized_end=2750,
+)
+
+
+_CANCELORDERRESPONSE = _descriptor.Descriptor(
+  name='CancelOrderResponse',
+  full_name='jiji.rpc.CancelOrderResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='cancelled_order', full_name='jiji.rpc.CancelOrderResponse.cancelled_order', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2752,
+  serialized_end=2815,
+)
+
+
+_MODIFYPOSITIONREQUEST = _descriptor.Descriptor(
+  name='ModifyPositionRequest',
+  full_name='jiji.rpc.ModifyPositionRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='jiji.rpc.ModifyPositionRequest.instance_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='modified_position', full_name='jiji.rpc.ModifyPositionRequest.modified_position', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2817,
+  serialized_end=2908,
+)
+
+
+_MODIFYPOSITIONRESPONSE = _descriptor.Descriptor(
+  name='ModifyPositionResponse',
+  full_name='jiji.rpc.ModifyPositionResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='modified_position', full_name='jiji.rpc.ModifyPositionResponse.modified_position', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2910,
+  serialized_end=2981,
+)
+
+
+_CLOSEPOSITIONREQUEST = _descriptor.Descriptor(
+  name='ClosePositionRequest',
+  full_name='jiji.rpc.ClosePositionRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='jiji.rpc.ClosePositionRequest.instance_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='position_id', full_name='jiji.rpc.ClosePositionRequest.position_id', index=1,
+      number=2, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=2983,
+  serialized_end=3047,
+)
+
+
+_CLOSEPOSITIONRESPONSE = _descriptor.Descriptor(
+  name='ClosePositionResponse',
+  full_name='jiji.rpc.ClosePositionResponse',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='closed_position', full_name='jiji.rpc.ClosePositionResponse.closed_position', index=0,
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3049,
+  serialized_end=3121,
+)
+
+
+_RETRIEVEECONOMICCALENDARINFORMATIONSREQUEST = _descriptor.Descriptor(
+  name='RetrieveEconomicCalendarInformationsRequest',
+  full_name='jiji.rpc.RetrieveEconomicCalendarInformationsRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='instance_id', full_name='jiji.rpc.RetrieveEconomicCalendarInformationsRequest.instance_id', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='period', full_name='jiji.rpc.RetrieveEconomicCalendarInformationsRequest.period', index=1,
+      number=2, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='pair_name', full_name='jiji.rpc.RetrieveEconomicCalendarInformationsRequest.pair_name', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3123,
+  serialized_end=3224,
+)
+
+
+_ECONOMICCALENDARINFORMATIONS = _descriptor.Descriptor(
+  name='EconomicCalendarInformations',
+  full_name='jiji.rpc.EconomicCalendarInformations',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='informations', full_name='jiji.rpc.EconomicCalendarInformations.informations', index=0,
+      number=1, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3226,
+  serialized_end=3317,
+)
+
+
+_ECONOMICCALENDARINFORMATION = _descriptor.Descriptor(
+  name='EconomicCalendarInformation',
+  full_name='jiji.rpc.EconomicCalendarInformation',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='title', full_name='jiji.rpc.EconomicCalendarInformation.title', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='timestamp', full_name='jiji.rpc.EconomicCalendarInformation.timestamp', index=1,
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='unit', full_name='jiji.rpc.EconomicCalendarInformation.unit', index=2,
+      number=3, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='currency', full_name='jiji.rpc.EconomicCalendarInformation.currency', index=3,
+      number=4, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='forecast', full_name='jiji.rpc.EconomicCalendarInformation.forecast', index=4,
+      number=5, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='previous', full_name='jiji.rpc.EconomicCalendarInformation.previous', index=5,
+      number=6, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='actual', full_name='jiji.rpc.EconomicCalendarInformation.actual', index=6,
+      number=7, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='market', full_name='jiji.rpc.EconomicCalendarInformation.market', index=7,
+      number=8, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='region', full_name='jiji.rpc.EconomicCalendarInformation.region', index=8,
+      number=9, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+    _descriptor.FieldDescriptor(
+      name='impact', full_name='jiji.rpc.EconomicCalendarInformation.impact', index=9,
+      number=10, type=2, cpp_type=6, label=1,
+      has_default_value=False, default_value=float(0),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=3320,
+  serialized_end=3543,
 )
 
 _GETPAIRSRESPONSE.fields_by_name['pairs'].message_type = _PAIR
@@ -360,6 +1519,30 @@ _RATE.fields_by_name['close'].message_type = agent__pb2._TICK_VALUE
 _RATE.fields_by_name['high'].message_type = agent__pb2._TICK_VALUE
 _RATE.fields_by_name['low'].message_type = agent__pb2._TICK_VALUE
 _RATE.fields_by_name['timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ACCOUNT.fields_by_name['updated_at'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_POSITIONS.fields_by_name['positions'].message_type = _POSITION
+_POSITION.fields_by_name['entered_at'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_POSITION.fields_by_name['exited_at'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_POSITION.fields_by_name['updated_at'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ORDERS.fields_by_name['orders'].message_type = _ORDER
+_ORDER.fields_by_name['last_modified'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ORDER.fields_by_name['expiry'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ORDERREQUEST_OPTION.fields_by_name['expiry'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ORDERREQUEST_OPTION.containing_type = _ORDERREQUEST
+_ORDERREQUEST.fields_by_name['option'].message_type = _ORDERREQUEST_OPTION
+_ORDERRESPONSE.fields_by_name['order_opened'].message_type = _ORDER
+_ORDERRESPONSE.fields_by_name['trade_opened'].message_type = _ORDER
+_ORDERRESPONSE.fields_by_name['trade_reduced'].message_type = _POSITIONINFO
+_ORDERRESPONSE.fields_by_name['trades_closed'].message_type = _POSITIONINFO
+_POSITIONINFO.fields_by_name['timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_MODIFYORDERREQUEST.fields_by_name['modified_order'].message_type = _ORDER
+_MODIFYORDERRESPONSE.fields_by_name['modified_order'].message_type = _ORDER
+_CANCELORDERRESPONSE.fields_by_name['cancelled_order'].message_type = _ORDER
+_MODIFYPOSITIONREQUEST.fields_by_name['modified_position'].message_type = _POSITION
+_MODIFYPOSITIONRESPONSE.fields_by_name['modified_position'].message_type = _POSITION
+_CLOSEPOSITIONRESPONSE.fields_by_name['closed_position'].message_type = _POSITIONINFO
+_ECONOMICCALENDARINFORMATIONS.fields_by_name['informations'].message_type = _ECONOMICCALENDARINFORMATION
+_ECONOMICCALENDARINFORMATION.fields_by_name['timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 DESCRIPTOR.message_types_by_name['GetPairsRequest'] = _GETPAIRSREQUEST
 DESCRIPTOR.message_types_by_name['GetPairsResponse'] = _GETPAIRSRESPONSE
 DESCRIPTOR.message_types_by_name['Pair'] = _PAIR
@@ -367,6 +1550,28 @@ DESCRIPTOR.message_types_by_name['GetTickRequest'] = _GETTICKREQUEST
 DESCRIPTOR.message_types_by_name['RetrieveRatesRequest'] = _RETRIEVERATESREQUEST
 DESCRIPTOR.message_types_by_name['Rates'] = _RATES
 DESCRIPTOR.message_types_by_name['Rate'] = _RATE
+DESCRIPTOR.message_types_by_name['GetAccountRequest'] = _GETACCOUNTREQUEST
+DESCRIPTOR.message_types_by_name['Account'] = _ACCOUNT
+DESCRIPTOR.message_types_by_name['GetPositionsRequest'] = _GETPOSITIONSREQUEST
+DESCRIPTOR.message_types_by_name['Positions'] = _POSITIONS
+DESCRIPTOR.message_types_by_name['Position'] = _POSITION
+DESCRIPTOR.message_types_by_name['GetOrdersRequest'] = _GETORDERSREQUEST
+DESCRIPTOR.message_types_by_name['Orders'] = _ORDERS
+DESCRIPTOR.message_types_by_name['Order'] = _ORDER
+DESCRIPTOR.message_types_by_name['OrderRequest'] = _ORDERREQUEST
+DESCRIPTOR.message_types_by_name['OrderResponse'] = _ORDERRESPONSE
+DESCRIPTOR.message_types_by_name['PositionInfo'] = _POSITIONINFO
+DESCRIPTOR.message_types_by_name['ModifyOrderRequest'] = _MODIFYORDERREQUEST
+DESCRIPTOR.message_types_by_name['ModifyOrderResponse'] = _MODIFYORDERRESPONSE
+DESCRIPTOR.message_types_by_name['CancelOrderRequest'] = _CANCELORDERREQUEST
+DESCRIPTOR.message_types_by_name['CancelOrderResponse'] = _CANCELORDERRESPONSE
+DESCRIPTOR.message_types_by_name['ModifyPositionRequest'] = _MODIFYPOSITIONREQUEST
+DESCRIPTOR.message_types_by_name['ModifyPositionResponse'] = _MODIFYPOSITIONRESPONSE
+DESCRIPTOR.message_types_by_name['ClosePositionRequest'] = _CLOSEPOSITIONREQUEST
+DESCRIPTOR.message_types_by_name['ClosePositionResponse'] = _CLOSEPOSITIONRESPONSE
+DESCRIPTOR.message_types_by_name['RetrieveEconomicCalendarInformationsRequest'] = _RETRIEVEECONOMICCALENDARINFORMATIONSREQUEST
+DESCRIPTOR.message_types_by_name['EconomicCalendarInformations'] = _ECONOMICCALENDARINFORMATIONS
+DESCRIPTOR.message_types_by_name['EconomicCalendarInformation'] = _ECONOMICCALENDARINFORMATION
 
 GetPairsRequest = _reflection.GeneratedProtocolMessageType('GetPairsRequest', (_message.Message,), dict(
   DESCRIPTOR = _GETPAIRSREQUEST,
@@ -417,6 +1622,168 @@ Rate = _reflection.GeneratedProtocolMessageType('Rate', (_message.Message,), dic
   ))
 _sym_db.RegisterMessage(Rate)
 
+GetAccountRequest = _reflection.GeneratedProtocolMessageType('GetAccountRequest', (_message.Message,), dict(
+  DESCRIPTOR = _GETACCOUNTREQUEST,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.GetAccountRequest)
+  ))
+_sym_db.RegisterMessage(GetAccountRequest)
+
+Account = _reflection.GeneratedProtocolMessageType('Account', (_message.Message,), dict(
+  DESCRIPTOR = _ACCOUNT,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.Account)
+  ))
+_sym_db.RegisterMessage(Account)
+
+GetPositionsRequest = _reflection.GeneratedProtocolMessageType('GetPositionsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _GETPOSITIONSREQUEST,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.GetPositionsRequest)
+  ))
+_sym_db.RegisterMessage(GetPositionsRequest)
+
+Positions = _reflection.GeneratedProtocolMessageType('Positions', (_message.Message,), dict(
+  DESCRIPTOR = _POSITIONS,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.Positions)
+  ))
+_sym_db.RegisterMessage(Positions)
+
+Position = _reflection.GeneratedProtocolMessageType('Position', (_message.Message,), dict(
+  DESCRIPTOR = _POSITION,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.Position)
+  ))
+_sym_db.RegisterMessage(Position)
+
+GetOrdersRequest = _reflection.GeneratedProtocolMessageType('GetOrdersRequest', (_message.Message,), dict(
+  DESCRIPTOR = _GETORDERSREQUEST,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.GetOrdersRequest)
+  ))
+_sym_db.RegisterMessage(GetOrdersRequest)
+
+Orders = _reflection.GeneratedProtocolMessageType('Orders', (_message.Message,), dict(
+  DESCRIPTOR = _ORDERS,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.Orders)
+  ))
+_sym_db.RegisterMessage(Orders)
+
+Order = _reflection.GeneratedProtocolMessageType('Order', (_message.Message,), dict(
+  DESCRIPTOR = _ORDER,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.Order)
+  ))
+_sym_db.RegisterMessage(Order)
+
+OrderRequest = _reflection.GeneratedProtocolMessageType('OrderRequest', (_message.Message,), dict(
+
+  Option = _reflection.GeneratedProtocolMessageType('Option', (_message.Message,), dict(
+    DESCRIPTOR = _ORDERREQUEST_OPTION,
+    __module__ = 'broker_pb2'
+    # @@protoc_insertion_point(class_scope:jiji.rpc.OrderRequest.Option)
+    ))
+  ,
+  DESCRIPTOR = _ORDERREQUEST,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.OrderRequest)
+  ))
+_sym_db.RegisterMessage(OrderRequest)
+_sym_db.RegisterMessage(OrderRequest.Option)
+
+OrderResponse = _reflection.GeneratedProtocolMessageType('OrderResponse', (_message.Message,), dict(
+  DESCRIPTOR = _ORDERRESPONSE,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.OrderResponse)
+  ))
+_sym_db.RegisterMessage(OrderResponse)
+
+PositionInfo = _reflection.GeneratedProtocolMessageType('PositionInfo', (_message.Message,), dict(
+  DESCRIPTOR = _POSITIONINFO,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.PositionInfo)
+  ))
+_sym_db.RegisterMessage(PositionInfo)
+
+ModifyOrderRequest = _reflection.GeneratedProtocolMessageType('ModifyOrderRequest', (_message.Message,), dict(
+  DESCRIPTOR = _MODIFYORDERREQUEST,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.ModifyOrderRequest)
+  ))
+_sym_db.RegisterMessage(ModifyOrderRequest)
+
+ModifyOrderResponse = _reflection.GeneratedProtocolMessageType('ModifyOrderResponse', (_message.Message,), dict(
+  DESCRIPTOR = _MODIFYORDERRESPONSE,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.ModifyOrderResponse)
+  ))
+_sym_db.RegisterMessage(ModifyOrderResponse)
+
+CancelOrderRequest = _reflection.GeneratedProtocolMessageType('CancelOrderRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CANCELORDERREQUEST,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.CancelOrderRequest)
+  ))
+_sym_db.RegisterMessage(CancelOrderRequest)
+
+CancelOrderResponse = _reflection.GeneratedProtocolMessageType('CancelOrderResponse', (_message.Message,), dict(
+  DESCRIPTOR = _CANCELORDERRESPONSE,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.CancelOrderResponse)
+  ))
+_sym_db.RegisterMessage(CancelOrderResponse)
+
+ModifyPositionRequest = _reflection.GeneratedProtocolMessageType('ModifyPositionRequest', (_message.Message,), dict(
+  DESCRIPTOR = _MODIFYPOSITIONREQUEST,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.ModifyPositionRequest)
+  ))
+_sym_db.RegisterMessage(ModifyPositionRequest)
+
+ModifyPositionResponse = _reflection.GeneratedProtocolMessageType('ModifyPositionResponse', (_message.Message,), dict(
+  DESCRIPTOR = _MODIFYPOSITIONRESPONSE,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.ModifyPositionResponse)
+  ))
+_sym_db.RegisterMessage(ModifyPositionResponse)
+
+ClosePositionRequest = _reflection.GeneratedProtocolMessageType('ClosePositionRequest', (_message.Message,), dict(
+  DESCRIPTOR = _CLOSEPOSITIONREQUEST,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.ClosePositionRequest)
+  ))
+_sym_db.RegisterMessage(ClosePositionRequest)
+
+ClosePositionResponse = _reflection.GeneratedProtocolMessageType('ClosePositionResponse', (_message.Message,), dict(
+  DESCRIPTOR = _CLOSEPOSITIONRESPONSE,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.ClosePositionResponse)
+  ))
+_sym_db.RegisterMessage(ClosePositionResponse)
+
+RetrieveEconomicCalendarInformationsRequest = _reflection.GeneratedProtocolMessageType('RetrieveEconomicCalendarInformationsRequest', (_message.Message,), dict(
+  DESCRIPTOR = _RETRIEVEECONOMICCALENDARINFORMATIONSREQUEST,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.RetrieveEconomicCalendarInformationsRequest)
+  ))
+_sym_db.RegisterMessage(RetrieveEconomicCalendarInformationsRequest)
+
+EconomicCalendarInformations = _reflection.GeneratedProtocolMessageType('EconomicCalendarInformations', (_message.Message,), dict(
+  DESCRIPTOR = _ECONOMICCALENDARINFORMATIONS,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.EconomicCalendarInformations)
+  ))
+_sym_db.RegisterMessage(EconomicCalendarInformations)
+
+EconomicCalendarInformation = _reflection.GeneratedProtocolMessageType('EconomicCalendarInformation', (_message.Message,), dict(
+  DESCRIPTOR = _ECONOMICCALENDARINFORMATION,
+  __module__ = 'broker_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.EconomicCalendarInformation)
+  ))
+_sym_db.RegisterMessage(EconomicCalendarInformation)
+
 
 try:
   # THESE ELEMENTS WILL BE DEPRECATED.
@@ -436,6 +1803,11 @@ try:
       Args:
         channel: A grpc.Channel.
       """
+      self.GetAccount = channel.unary_unary(
+          '/jiji.rpc.BrokerService/GetAccount',
+          request_serializer=GetAccountRequest.SerializeToString,
+          response_deserializer=Account.FromString,
+          )
       self.GetPairs = channel.unary_unary(
           '/jiji.rpc.BrokerService/GetPairs',
           request_serializer=GetPairsRequest.SerializeToString,
@@ -451,9 +1823,54 @@ try:
           request_serializer=RetrieveRatesRequest.SerializeToString,
           response_deserializer=Rates.FromString,
           )
+      self.GetPositions = channel.unary_unary(
+          '/jiji.rpc.BrokerService/GetPositions',
+          request_serializer=GetPositionsRequest.SerializeToString,
+          response_deserializer=Positions.FromString,
+          )
+      self.GetOrders = channel.unary_unary(
+          '/jiji.rpc.BrokerService/GetOrders',
+          request_serializer=GetOrdersRequest.SerializeToString,
+          response_deserializer=Orders.FromString,
+          )
+      self.Order = channel.unary_unary(
+          '/jiji.rpc.BrokerService/Order',
+          request_serializer=OrderRequest.SerializeToString,
+          response_deserializer=OrderResponse.FromString,
+          )
+      self.ModifyOrder = channel.unary_unary(
+          '/jiji.rpc.BrokerService/ModifyOrder',
+          request_serializer=ModifyOrderRequest.SerializeToString,
+          response_deserializer=ModifyOrderResponse.FromString,
+          )
+      self.CancelOrder = channel.unary_unary(
+          '/jiji.rpc.BrokerService/CancelOrder',
+          request_serializer=CancelOrderRequest.SerializeToString,
+          response_deserializer=CancelOrderResponse.FromString,
+          )
+      self.ModifyPosition = channel.unary_unary(
+          '/jiji.rpc.BrokerService/ModifyPosition',
+          request_serializer=ModifyPositionRequest.SerializeToString,
+          response_deserializer=ModifyPositionResponse.FromString,
+          )
+      self.ClosePosition = channel.unary_unary(
+          '/jiji.rpc.BrokerService/ClosePosition',
+          request_serializer=ClosePositionRequest.SerializeToString,
+          response_deserializer=ClosePositionResponse.FromString,
+          )
+      self.RetrieveEconomicCalendarInformations = channel.unary_unary(
+          '/jiji.rpc.BrokerService/RetrieveEconomicCalendarInformations',
+          request_serializer=RetrieveEconomicCalendarInformationsRequest.SerializeToString,
+          response_deserializer=EconomicCalendarInformations.FromString,
+          )
 
 
   class BrokerServiceServicer(object):
+
+    def GetAccount(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
 
     def GetPairs(self, request, context):
       context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -470,9 +1887,54 @@ try:
       context.set_details('Method not implemented!')
       raise NotImplementedError('Method not implemented!')
 
+    def GetPositions(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def GetOrders(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def Order(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def ModifyOrder(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def CancelOrder(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def ModifyPosition(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def ClosePosition(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
+    def RetrieveEconomicCalendarInformations(self, request, context):
+      context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+      context.set_details('Method not implemented!')
+      raise NotImplementedError('Method not implemented!')
+
 
   def add_BrokerServiceServicer_to_server(servicer, server):
     rpc_method_handlers = {
+        'GetAccount': grpc.unary_unary_rpc_method_handler(
+            servicer.GetAccount,
+            request_deserializer=GetAccountRequest.FromString,
+            response_serializer=Account.SerializeToString,
+        ),
         'GetPairs': grpc.unary_unary_rpc_method_handler(
             servicer.GetPairs,
             request_deserializer=GetPairsRequest.FromString,
@@ -488,6 +1950,46 @@ try:
             request_deserializer=RetrieveRatesRequest.FromString,
             response_serializer=Rates.SerializeToString,
         ),
+        'GetPositions': grpc.unary_unary_rpc_method_handler(
+            servicer.GetPositions,
+            request_deserializer=GetPositionsRequest.FromString,
+            response_serializer=Positions.SerializeToString,
+        ),
+        'GetOrders': grpc.unary_unary_rpc_method_handler(
+            servicer.GetOrders,
+            request_deserializer=GetOrdersRequest.FromString,
+            response_serializer=Orders.SerializeToString,
+        ),
+        'Order': grpc.unary_unary_rpc_method_handler(
+            servicer.Order,
+            request_deserializer=OrderRequest.FromString,
+            response_serializer=OrderResponse.SerializeToString,
+        ),
+        'ModifyOrder': grpc.unary_unary_rpc_method_handler(
+            servicer.ModifyOrder,
+            request_deserializer=ModifyOrderRequest.FromString,
+            response_serializer=ModifyOrderResponse.SerializeToString,
+        ),
+        'CancelOrder': grpc.unary_unary_rpc_method_handler(
+            servicer.CancelOrder,
+            request_deserializer=CancelOrderRequest.FromString,
+            response_serializer=CancelOrderResponse.SerializeToString,
+        ),
+        'ModifyPosition': grpc.unary_unary_rpc_method_handler(
+            servicer.ModifyPosition,
+            request_deserializer=ModifyPositionRequest.FromString,
+            response_serializer=ModifyPositionResponse.SerializeToString,
+        ),
+        'ClosePosition': grpc.unary_unary_rpc_method_handler(
+            servicer.ClosePosition,
+            request_deserializer=ClosePositionRequest.FromString,
+            response_serializer=ClosePositionResponse.SerializeToString,
+        ),
+        'RetrieveEconomicCalendarInformations': grpc.unary_unary_rpc_method_handler(
+            servicer.RetrieveEconomicCalendarInformations,
+            request_deserializer=RetrieveEconomicCalendarInformationsRequest.FromString,
+            response_serializer=EconomicCalendarInformations.SerializeToString,
+        ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
         'jiji.rpc.BrokerService', rpc_method_handlers)
@@ -500,11 +2002,29 @@ try:
     It is recommended to use the GA API (classes and functions in this
     file not marked beta) for all further purposes. This class was generated
     only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def GetAccount(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def GetPairs(self, request, context):
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def GetTick(self, request, context):
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
     def RetrieveRates(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def GetPositions(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def GetOrders(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def Order(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def ModifyOrder(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def CancelOrder(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def ModifyPosition(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def ClosePosition(self, request, context):
+      context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
+    def RetrieveEconomicCalendarInformations(self, request, context):
       context.code(beta_interfaces.StatusCode.UNIMPLEMENTED)
 
 
@@ -514,6 +2034,9 @@ try:
     It is recommended to use the GA API (classes and functions in this
     file not marked beta) for all further purposes. This class was generated
     only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0."""
+    def GetAccount(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    GetAccount.future = None
     def GetPairs(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
       raise NotImplementedError()
     GetPairs.future = None
@@ -523,6 +2046,30 @@ try:
     def RetrieveRates(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
       raise NotImplementedError()
     RetrieveRates.future = None
+    def GetPositions(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    GetPositions.future = None
+    def GetOrders(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    GetOrders.future = None
+    def Order(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    Order.future = None
+    def ModifyOrder(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    ModifyOrder.future = None
+    def CancelOrder(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    CancelOrder.future = None
+    def ModifyPosition(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    ModifyPosition.future = None
+    def ClosePosition(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    ClosePosition.future = None
+    def RetrieveEconomicCalendarInformations(self, request, timeout, metadata=None, with_call=False, protocol_options=None):
+      raise NotImplementedError()
+    RetrieveEconomicCalendarInformations.future = None
 
 
   def beta_create_BrokerService_server(servicer, pool=None, pool_size=None, default_timeout=None, maximum_timeout=None):
@@ -532,18 +2079,45 @@ try:
     file not marked beta) for all further purposes. This function was
     generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
     request_deserializers = {
+      ('jiji.rpc.BrokerService', 'CancelOrder'): CancelOrderRequest.FromString,
+      ('jiji.rpc.BrokerService', 'ClosePosition'): ClosePositionRequest.FromString,
+      ('jiji.rpc.BrokerService', 'GetAccount'): GetAccountRequest.FromString,
+      ('jiji.rpc.BrokerService', 'GetOrders'): GetOrdersRequest.FromString,
       ('jiji.rpc.BrokerService', 'GetPairs'): GetPairsRequest.FromString,
+      ('jiji.rpc.BrokerService', 'GetPositions'): GetPositionsRequest.FromString,
       ('jiji.rpc.BrokerService', 'GetTick'): GetTickRequest.FromString,
+      ('jiji.rpc.BrokerService', 'ModifyOrder'): ModifyOrderRequest.FromString,
+      ('jiji.rpc.BrokerService', 'ModifyPosition'): ModifyPositionRequest.FromString,
+      ('jiji.rpc.BrokerService', 'Order'): OrderRequest.FromString,
+      ('jiji.rpc.BrokerService', 'RetrieveEconomicCalendarInformations'): RetrieveEconomicCalendarInformationsRequest.FromString,
       ('jiji.rpc.BrokerService', 'RetrieveRates'): RetrieveRatesRequest.FromString,
     }
     response_serializers = {
+      ('jiji.rpc.BrokerService', 'CancelOrder'): CancelOrderResponse.SerializeToString,
+      ('jiji.rpc.BrokerService', 'ClosePosition'): ClosePositionResponse.SerializeToString,
+      ('jiji.rpc.BrokerService', 'GetAccount'): Account.SerializeToString,
+      ('jiji.rpc.BrokerService', 'GetOrders'): Orders.SerializeToString,
       ('jiji.rpc.BrokerService', 'GetPairs'): GetPairsResponse.SerializeToString,
+      ('jiji.rpc.BrokerService', 'GetPositions'): Positions.SerializeToString,
       ('jiji.rpc.BrokerService', 'GetTick'): agent__pb2.Tick.SerializeToString,
+      ('jiji.rpc.BrokerService', 'ModifyOrder'): ModifyOrderResponse.SerializeToString,
+      ('jiji.rpc.BrokerService', 'ModifyPosition'): ModifyPositionResponse.SerializeToString,
+      ('jiji.rpc.BrokerService', 'Order'): OrderResponse.SerializeToString,
+      ('jiji.rpc.BrokerService', 'RetrieveEconomicCalendarInformations'): EconomicCalendarInformations.SerializeToString,
       ('jiji.rpc.BrokerService', 'RetrieveRates'): Rates.SerializeToString,
     }
     method_implementations = {
+      ('jiji.rpc.BrokerService', 'CancelOrder'): face_utilities.unary_unary_inline(servicer.CancelOrder),
+      ('jiji.rpc.BrokerService', 'ClosePosition'): face_utilities.unary_unary_inline(servicer.ClosePosition),
+      ('jiji.rpc.BrokerService', 'GetAccount'): face_utilities.unary_unary_inline(servicer.GetAccount),
+      ('jiji.rpc.BrokerService', 'GetOrders'): face_utilities.unary_unary_inline(servicer.GetOrders),
       ('jiji.rpc.BrokerService', 'GetPairs'): face_utilities.unary_unary_inline(servicer.GetPairs),
+      ('jiji.rpc.BrokerService', 'GetPositions'): face_utilities.unary_unary_inline(servicer.GetPositions),
       ('jiji.rpc.BrokerService', 'GetTick'): face_utilities.unary_unary_inline(servicer.GetTick),
+      ('jiji.rpc.BrokerService', 'ModifyOrder'): face_utilities.unary_unary_inline(servicer.ModifyOrder),
+      ('jiji.rpc.BrokerService', 'ModifyPosition'): face_utilities.unary_unary_inline(servicer.ModifyPosition),
+      ('jiji.rpc.BrokerService', 'Order'): face_utilities.unary_unary_inline(servicer.Order),
+      ('jiji.rpc.BrokerService', 'RetrieveEconomicCalendarInformations'): face_utilities.unary_unary_inline(servicer.RetrieveEconomicCalendarInformations),
       ('jiji.rpc.BrokerService', 'RetrieveRates'): face_utilities.unary_unary_inline(servicer.RetrieveRates),
     }
     server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
@@ -557,18 +2131,45 @@ try:
     file not marked beta) for all further purposes. This function was
     generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
     request_serializers = {
+      ('jiji.rpc.BrokerService', 'CancelOrder'): CancelOrderRequest.SerializeToString,
+      ('jiji.rpc.BrokerService', 'ClosePosition'): ClosePositionRequest.SerializeToString,
+      ('jiji.rpc.BrokerService', 'GetAccount'): GetAccountRequest.SerializeToString,
+      ('jiji.rpc.BrokerService', 'GetOrders'): GetOrdersRequest.SerializeToString,
       ('jiji.rpc.BrokerService', 'GetPairs'): GetPairsRequest.SerializeToString,
+      ('jiji.rpc.BrokerService', 'GetPositions'): GetPositionsRequest.SerializeToString,
       ('jiji.rpc.BrokerService', 'GetTick'): GetTickRequest.SerializeToString,
+      ('jiji.rpc.BrokerService', 'ModifyOrder'): ModifyOrderRequest.SerializeToString,
+      ('jiji.rpc.BrokerService', 'ModifyPosition'): ModifyPositionRequest.SerializeToString,
+      ('jiji.rpc.BrokerService', 'Order'): OrderRequest.SerializeToString,
+      ('jiji.rpc.BrokerService', 'RetrieveEconomicCalendarInformations'): RetrieveEconomicCalendarInformationsRequest.SerializeToString,
       ('jiji.rpc.BrokerService', 'RetrieveRates'): RetrieveRatesRequest.SerializeToString,
     }
     response_deserializers = {
+      ('jiji.rpc.BrokerService', 'CancelOrder'): CancelOrderResponse.FromString,
+      ('jiji.rpc.BrokerService', 'ClosePosition'): ClosePositionResponse.FromString,
+      ('jiji.rpc.BrokerService', 'GetAccount'): Account.FromString,
+      ('jiji.rpc.BrokerService', 'GetOrders'): Orders.FromString,
       ('jiji.rpc.BrokerService', 'GetPairs'): GetPairsResponse.FromString,
+      ('jiji.rpc.BrokerService', 'GetPositions'): Positions.FromString,
       ('jiji.rpc.BrokerService', 'GetTick'): agent__pb2.Tick.FromString,
+      ('jiji.rpc.BrokerService', 'ModifyOrder'): ModifyOrderResponse.FromString,
+      ('jiji.rpc.BrokerService', 'ModifyPosition'): ModifyPositionResponse.FromString,
+      ('jiji.rpc.BrokerService', 'Order'): OrderResponse.FromString,
+      ('jiji.rpc.BrokerService', 'RetrieveEconomicCalendarInformations'): EconomicCalendarInformations.FromString,
       ('jiji.rpc.BrokerService', 'RetrieveRates'): Rates.FromString,
     }
     cardinalities = {
+      'CancelOrder': cardinality.Cardinality.UNARY_UNARY,
+      'ClosePosition': cardinality.Cardinality.UNARY_UNARY,
+      'GetAccount': cardinality.Cardinality.UNARY_UNARY,
+      'GetOrders': cardinality.Cardinality.UNARY_UNARY,
       'GetPairs': cardinality.Cardinality.UNARY_UNARY,
+      'GetPositions': cardinality.Cardinality.UNARY_UNARY,
       'GetTick': cardinality.Cardinality.UNARY_UNARY,
+      'ModifyOrder': cardinality.Cardinality.UNARY_UNARY,
+      'ModifyPosition': cardinality.Cardinality.UNARY_UNARY,
+      'Order': cardinality.Cardinality.UNARY_UNARY,
+      'RetrieveEconomicCalendarInformations': cardinality.Cardinality.UNARY_UNARY,
       'RetrieveRates': cardinality.Cardinality.UNARY_UNARY,
     }
     stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)

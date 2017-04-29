@@ -37,7 +37,6 @@ describe Jiji::Rpc::Converters::PrimitiveConverter do
 
   describe '#convert_hash_values_to_pb' do
     it 'converts Google::Protobuf::timestamp to Time' do
-      time = Google::Protobuf::Timestamp.new(seconds: 1_459_782_000, nanos: 0)
       converted = converter.convert_hash_values_to_pb({
         time: Time.new(2016, 4, 5)
       })

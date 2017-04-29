@@ -5,7 +5,7 @@ require 'health_check_services_pb'
 module Jiji
   class RpcClient
 
-    SERVER_URL = 'localhost:50051'
+    SERVER_URL = 'localhost:50051'.freeze
 
     include Singleton
 

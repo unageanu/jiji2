@@ -1,4 +1,3 @@
-from datetime import datetime
 import inject
 
 import agent_pb2
@@ -9,7 +8,6 @@ from jiji.model.agent_registry import AgentRegistry
 from jiji.model.agent_pool import AgentPool
 from jiji.model.agent_builder import AgentBuilder
 from jiji.model.state_serializer import StateSerializer
-from jiji.model.tick import Tick, Value
 from jiji.services.abstract_service import AbstractService
 from jiji.services.converters import convert_tick, convert_properties, convert_agent_property_info
 

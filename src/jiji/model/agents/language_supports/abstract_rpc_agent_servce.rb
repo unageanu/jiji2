@@ -17,7 +17,7 @@ module Jiji::Model::Agents::LanguageSupports
     def available?
       health_check_service_stub.status(Google::Protobuf::Empty.new)
       return true
-    rescue GRPC::BadStatus => e
+    rescue GRPC::BadStatus
       false
     end
 

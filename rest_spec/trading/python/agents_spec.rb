@@ -15,13 +15,12 @@ describe '/agents' do
 
     expect(r.body.length).to be >= 3
 
-
     r = @client.post('agents/sources', {
-      name: 'python_test1',
-      memo: 'メモ1',
-      type: :agent,
+      name:     'python_test1',
+      memo:     'メモ1',
+      type:     :agent,
       language: 'python',
-      body: @data_builder.new_python_agent_body
+      body:     @data_builder.new_python_agent_body
     })
     expect(r.status).to eq 201
 
@@ -48,10 +47,10 @@ describe '/agents' do
     expect(r.status).to eq 200
     expect(r.body.find { |i| i['name'] == 'TestAgent@python_test1' }).to eq({
       'name' => 'TestAgent@python_test1',
-      'description' => "description1",
+      'description' => 'description1',
       'properties' => [
-        {"id"=>"a", "name"=>"プロパティ1", "default"=>"aa"},
-        {"id"=>"b", "name"=>"プロパティ2", "default"=>""}
+        { 'id' => 'a', 'name' => 'プロパティ1', 'default' => 'aa' },
+        { 'id' => 'b', 'name' => 'プロパティ2', 'default' => '' }
       ]
     })
   end
@@ -109,5 +108,4 @@ describe '/agents' do
     r = @client.get("agents/sources/#{id}")
     expect(r.status).to eq 404
   end
-
 end

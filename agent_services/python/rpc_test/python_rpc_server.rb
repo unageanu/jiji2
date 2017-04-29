@@ -12,6 +12,11 @@ module Jiji
 
     include Singleton
 
+    def self.start_python_rpc_server
+      Jiji::PythonRpcServer.instance.setup('python_rpc')
+      Jiji::RpcClient.instance.wait_for_server_start_up
+    end
+
     private
 
     def initialize_db
@@ -33,11 +38,6 @@ module Jiji
       log_dir = File.join(BUILD_DIR, 'python_rpc_spec')
       FileUtils.mkdir_p log_dir
       log_dir
-    end
-
-    def self.start_python_rpc_server
-      Jiji::PythonRpcServer.instance.setup('python_rpc')
-      Jiji::RpcClient.instance.wait_for_server_start_up
     end
 
   end

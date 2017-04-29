@@ -8,7 +8,7 @@ class StubFactory():
     def create_logger_stub(self):
         return logging_pb2.LoggerServiceStub(self.__channel())
 
-    def create_health_check_service_stub(self):
+    def create_health_check_service(self):
         return health_check_pb2.HealthCheckServiceStub(self.__channel())
 
     def create_broker_stub(self):

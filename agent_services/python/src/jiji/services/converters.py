@@ -1,15 +1,13 @@
 from datetime import datetime
-import agent_pb2
-import agent_pb2_grpc
-from google.protobuf import empty_pb2 # pylint: disable=no-name-in-module
-from google.protobuf.timestamp_pb2 import Timestamp
+from agent_pb2 import AgentClasses
+from google.protobuf import timestamp_pb2  # pylint: disable=no-name-in-module
 
 from jiji.model.tick import Tick, Value
 from jiji.model.pairs import Pair
 from jiji.model.rate import Rate
 
 def convert_agent_property_info(property_info):
-    return agent_pb2.AgentClasses.AgentClass.Property(
+    return AgentClasses.AgentClass.Property(
         id=property_info.property_id, name=property_info.name,
         default=property_info.default)
 
@@ -52,4 +50,4 @@ def convert_timestamp_from(pb_timestamp):
     return datetime.fromtimestamp(pb_timestamp.seconds)
 
 def convert_timestamp_to(timestamp):
-    return Timestamp(seconds=int(timestamp.timestamp()), nanos=0)
+    return timestamp_pb2.Timestamp(seconds=int(timestamp.timestamp()), nanos=0)

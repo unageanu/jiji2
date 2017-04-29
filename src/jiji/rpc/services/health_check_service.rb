@@ -12,7 +12,7 @@ module Jiji::Rpc::Services
     include RpcServiceMixin
 
     def status(request, call)
-      Jiji::Rpc::GetStatusResponse.new(status:"OK")
+      Jiji::Rpc::GetStatusResponse.new(status: 'OK')
     rescue Exception => e # rubocop:disable Lint/RescueException
       handle_exception(e, call)
       return Google::Protobuf::Empty.new

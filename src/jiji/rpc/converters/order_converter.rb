@@ -65,6 +65,10 @@ module Jiji::Rpc::Converters
       converted.expiry = convert_timestamp_from_pb(order.expiry)
       converted.lower_bound = number_or_nil(order.lower_bound)
       converted.upper_bound = number_or_nil(order.upper_bound)
+      update_colsing_options(converted, order)
+    end
+
+    def update_colsing_options(converted, order)
       converted.stop_loss = number_or_nil(order.stop_loss)
       converted.take_profit = number_or_nil(order.take_profit)
       converted.trailing_stop = number_or_nil(order.trailing_stop)

@@ -10,13 +10,12 @@ describe '/backtest' do
   end
 
   it '`POST /backtests` can register and execute a backtest' do
-
     r = @client.post('agents/sources', {
-      name: 'python_test1',
-      memo: 'メモ1',
-      type: :agent,
+      name:     'python_test1',
+      memo:     'メモ1',
+      type:     :agent,
       language: 'python',
-      body: @data_builder.new_python_agent_body
+      body:     @data_builder.new_python_agent_body
     })
     expect(r.status).to eq 201
 
@@ -45,19 +44,22 @@ describe '/backtest' do
 
     wait_for_the_end_of_backtest(test_id)
     logs = retrieve_log(test_id)
-    #logs.each {|l| puts l }
-    expect(logs.find {|l| l =~ /WARN \-\- \: tick:135\.3 135\.33 2015\-06\-02T09:00:00/}).not_to be nil
-    expect(logs.find {|l| l =~ /WARN \-\- \: get_tick:1\.1234 1\.1236 2015\-06\-02T09:00:00/}).not_to be nil
-    expect(logs.find {|l| l =~ /INFO \-\- \: pair:EURJPY EUR_JPY 0\.01 10000000 0\.001 0\.04/}).not_to be nil
-    expect(logs.find {|l| l =~ /WARN \-\- \: rate:112\.04 112\.0 112\.14 112\.1 113\.14 113\.1 111\.14 111\.1 0 2017\-04\-03T12:00:00/}).not_to be nil
-    expect(logs.find {|l| l =~ /INFO \-\- \: properties\:1_bb/}).not_to be nil
+    # logs.each {|l| puts l }
+
+    # rubocop:disable Style/LineLength
+    expect(logs.find { |l| l =~ /WARN \-\- \: tick:135\.3 135\.33 2015\-06\-02T09:00:00/ }).not_to be nil
+    expect(logs.find { |l| l =~ /WARN \-\- \: get_tick:1\.1234 1\.1236 2015\-06\-02T09:00:00/ }).not_to be nil
+    expect(logs.find { |l| l =~ /INFO \-\- \: pair:EURJPY EUR_JPY 0\.01 10000000 0\.001 0\.04/ }).not_to be nil
+    expect(logs.find { |l| l =~ /WARN \-\- \: rate:112\.04 112\.0 112\.14 112\.1 113\.14 113\.1 111\.14 111\.1 0 2017\-04\-03T12:00:00/ }).not_to be nil
+    expect(logs.find { |l| l =~ /INFO \-\- \: properties\:1_bb/ }).not_to be nil
+    # rubocop:enable Style/LineLength
   end
 
   def retrieve_log(id)
-    r = @client.get("logs/#{id}",  {
+    r = @client.get("logs/#{id}", {
       'index' => 0
     })
-    return r.body['body'].split(/\n/)
+    r.body['body'].split(/\n/)
   end
 
   def wait_for_the_end_of_backtest(test_id)
@@ -68,5 +70,4 @@ describe '/backtest' do
       sleep 2
     end
   end
-
 end

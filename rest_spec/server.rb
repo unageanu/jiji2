@@ -29,6 +29,15 @@ module Jiji
       @running = true
     end
 
+    def self.start_jiji_server(transport)
+      Jiji::Client.instance.transport = transport == 'json' \
+        ? Jiji::Client::JsonTransport.new \
+        : Jiji::Client::MessagePackTransport.new
+      Jiji::Server.instance.setup(transport)
+
+      Jiji::Client.instance.wait_for_server_start_up
+    end
+
     private
 
     def initialize_db
@@ -54,15 +63,6 @@ module Jiji
         raise "failed to kill server. pid=#{pid}" unless system("kill #{pid}")
         puts "stop server pid=#{pid}"
       end
-    end
-
-    def self.start_jiji_server(transport)
-      Jiji::Client.instance.transport = transport == "json" \
-        ? Jiji::Client::JsonTransport.new \
-        : Jiji::Client::MessagePackTransport.new
-      Jiji::Server.instance.setup(transport)
-
-      Jiji::Client.instance.wait_for_server_start_up
     end
 
   end

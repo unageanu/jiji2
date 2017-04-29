@@ -27,7 +27,7 @@ module Jiji::Rpc::Services
 
     private
 
-    def resolve_error_code(exception)
+    def resolve_error_code(exception) # rubocop:disable Style/MethodLength
       if exception.is_a?(NotFoundException)
         StatusCodes::NOT_FOUND
       elsif exception.is_a?(ArgumentError)

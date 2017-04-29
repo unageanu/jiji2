@@ -9,7 +9,7 @@ module Jiji::Test::Mock
     end
 
     def available?
-      return false
+      false
     end
 
   end

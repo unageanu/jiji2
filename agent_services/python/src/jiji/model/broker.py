@@ -1,8 +1,6 @@
 import broker_pb2
-from google.protobuf import empty_pb2 # pylint: disable=no-name-in-module
 
-from jiji.services.converters import *
-from datetime import datetime
+from jiji.services.converters import * # pylint: disable=wildcard-import,unused-wildcard-import
 
 class Broker():
 

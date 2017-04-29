@@ -4,6 +4,7 @@ class Agent(metaclass=ABCMeta):
 
     def __init__(self):
         self.properties = {}
+        self.agent_name = None
 
     @staticmethod
     def get_description():

@@ -1,6 +1,6 @@
 
 class Rate():
-    def __init__(self, pair, open, close, high, low, timestamp, volume):
+    def __init__(self, pair, open, close, high, low, timestamp, volume): # pylint: disable=redefined-builtin
         self.pair = pair
         self.open = open
         self.close = close

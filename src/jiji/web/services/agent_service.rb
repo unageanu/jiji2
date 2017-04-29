@@ -37,7 +37,7 @@ module Jiji::Web
       if body.include?('name') && body['name'] != target.name
         registry.rename_source(target.name, body['name'])
       end
-      result = registry.update_source( body['name'] || target.name,
+      result = registry.update_source(body['name'] || target.name,
         body['memo'] || '', body['body'] || '',
         body['language'] || target.language)
       ok(result)

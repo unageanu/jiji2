@@ -293,7 +293,7 @@ SOURCE
 
       request = Jiji::Rpc::ExecPostCreateRequest.new(
         instance_id: instance_id)
-      result = @stub.exec_post_create(request)
+      @stub.exec_post_create(request)
 
       request = Jiji::Rpc::GetAgentStateRequest.new(
         instance_id: instance_id)
@@ -310,7 +310,7 @@ SOURCE
       instance_id = result.instance_id
 
       request = Jiji::Rpc::RestoreAgentStateRequest.new(
-        instance_id: instance_id, state:state)
+        instance_id: instance_id, state: state)
       @stub.restore_agent_state(request)
     end
 

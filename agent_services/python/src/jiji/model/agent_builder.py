@@ -15,7 +15,7 @@ class AgentBuilder():
     def create_agent(self, instance_id, class_name, agent_name, properties):
         agent_class = self.agent_registry.get_agent_class(class_name)
         instance = agent_class()
-        self.__initialize_agent_instance(instance_id,
+        self.__initialize_agent_instance(instance_id, \
             instance, agent_name or class_name, properties)
         return instance
 

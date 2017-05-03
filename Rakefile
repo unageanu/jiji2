@@ -62,7 +62,7 @@ desc 'Release new version.'
 task :release, ["version"] do |task, args|
   version = args.version
 
-  #merge_branch
+  merge_branch
   update_version(version)
   bulid_release_js
   commit_changes(version)

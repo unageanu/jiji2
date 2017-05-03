@@ -12,8 +12,8 @@ class ClosingPolicyModel {
       NumberFormatter.insertThousandsSeparator(this.takeProfit) : "-";
   }
   get formatedLossCut() {
-    return this.lossCut ?
-      NumberFormatter.insertThousandsSeparator(this.lossCut) : "-";
+    return this.stopLoss ?
+      NumberFormatter.insertThousandsSeparator(this.stopLoss) : "-";
   }
 }
 

@@ -48,7 +48,7 @@ describe("PositionsTableModel", () => {
       expect(model.items[0].formatedExitedAt).not.toBe( null );
       expect(model.items[0].closingPolicy.takeProfit).toEqual( undefined );
       expect(model.items[0].closingPolicy.formatedTakeProfit).toEqual( "-" );
-      expect(model.items[0].closingPolicy.lossCut).toEqual( undefined );
+      expect(model.items[0].closingPolicy.stopLoss).toEqual( undefined );
       expect(model.items[0].closingPolicy.formatedLossCut).toEqual( "-" );
 
       expect(model.items[1].enteredAt).toEqual( new Date(1000) );
@@ -67,7 +67,7 @@ describe("PositionsTableModel", () => {
       expect(model.items[1].formatedExitedAt).toEqual( "" );
       expect(model.items[1].closingPolicy.takeProfit).toEqual( 1001 );
       expect(model.items[1].closingPolicy.formatedTakeProfit).toEqual( "1,001" );
-      expect(model.items[1].closingPolicy.lossCut).toEqual( 1011 );
+      expect(model.items[1].closingPolicy.stopLoss).toEqual( 1011 );
       expect(model.items[1].closingPolicy.formatedLossCut).toEqual( "1,011" );
       expect(model.hasNext).toEqual( true );
       expect(model.hasPrev).toEqual( false );
@@ -273,7 +273,7 @@ describe("PositionsTableModel", () => {
         exitedAt:     i%2===0 ? new Date(i*1000+10) : null,
         closingPolicy: i%2===0 ? null : {
           takeProfit: i+1000,
-          lossCut:    i+1010
+          stopLoss:    i+1010
         }
       });
     }

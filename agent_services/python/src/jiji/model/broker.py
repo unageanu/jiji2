@@ -26,3 +26,8 @@ class Broker():
             end_time=convert_timestamp_to(end_time))
         rates = self.stub.RetrieveRates(request)
         return convert_rates(rates.rates)
+
+    def get_account(self):
+        response = self.stub.GetAccount(
+            broker_pb2.GetAccountRequest(instance_id=self.instance_id))
+        return convert_account(response)

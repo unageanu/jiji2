@@ -7,6 +7,7 @@ require 'jiji/rpc/converters/position_converter'
 require 'jiji/rpc/converters/primitive_converter'
 require 'jiji/rpc/converters/rate_converter'
 require 'jiji/rpc/converters/tick_converter'
+require 'jiji/rpc/converters/account_converter'
 
 module Jiji::Rpc
   module Converters
@@ -17,5 +18,6 @@ module Jiji::Rpc
     include Jiji::Rpc::Converters::PrimitiveConverter
     include Jiji::Rpc::Converters::RateConverter
     include Jiji::Rpc::Converters::TickConverter
+    include Jiji::Rpc::Converters::AccountConverter
   end
 end

@@ -44,7 +44,7 @@ describe '/backtest' do
 
     wait_for_the_end_of_backtest(test_id)
     logs = retrieve_log(test_id)
-    # logs.each {|l| puts l }
+    #logs.each {|l| puts l }
 
     # rubocop:disable Style/LineLength
     expect(logs.find { |l| l =~ /WARN \-\- \: tick:135\.3 135\.33 2015\-06\-02T09:00:00/ }).not_to be nil
@@ -52,6 +52,7 @@ describe '/backtest' do
     expect(logs.find { |l| l =~ /INFO \-\- \: pair:EURJPY EUR_JPY 0\.01 10000000 0\.001 0\.04/ }).not_to be nil
     expect(logs.find { |l| l =~ /WARN \-\- \: rate:112\.04 112\.0 112\.14 112\.1 113\.14 113\.1 111\.14 111\.1 0 2017\-04\-03T12:00:00/ }).not_to be nil
     expect(logs.find { |l| l =~ /INFO \-\- \: properties\:1_bb/ }).not_to be nil
+    expect(logs.find { |l| l =~ /INFO \-\- \: account\: 1000000\.0\s+[\d\.]+\s+0\.0\s+0\.0\s+2015-06-02\s+09:00:00\s+JPY/ }).not_to be nil
     # rubocop:enable Style/LineLength
   end
 

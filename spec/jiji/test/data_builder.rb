@@ -290,6 +290,7 @@ class TestAgent(Agent):
                     + str(rate.low.ask) + " " + str(rate.low.bid) + " " \
                     + str(rate.volume) + " " + rate.timestamp.isoformat())
 
+            self.print_account()
             self.firsttime = False
 
     def save_state(self):
@@ -312,6 +313,16 @@ class TestAgent(Agent):
             + "_" + str(time)
         elif action == "error":
           raise Exception("error")
+
+    def print_account(self):
+        account = self.broker.get_account()
+        self.logger.info("account: {0} {1} {2} {3} {4} {5} {6}".format(
+          account.balance, account.account_id, \
+          account.margin_rate, account.margin_used, account.profit_or_loss, account.updated_at, \
+          account.account_currency))
+
+    def create_order(self):
+        self.broker.order()
 
     def _print_tick(self, id, tick, pair):
         self.logger.warn(id + ":" + str(tick[pair].bid) + " " + str(tick[pair].ask) + " " + tick.timestamp.isoformat())

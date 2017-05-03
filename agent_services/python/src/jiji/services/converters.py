@@ -5,6 +5,7 @@ from google.protobuf import timestamp_pb2  # pylint: disable=no-name-in-module
 from jiji.model.tick import Tick, Value
 from jiji.model.pairs import Pair
 from jiji.model.rate import Rate
+from jiji.model.account import Account
 
 def convert_agent_property_info(property_info):
     return AgentClasses.AgentClass.Property(
@@ -51,3 +52,8 @@ def convert_timestamp_from(pb_timestamp):
 
 def convert_timestamp_to(timestamp):
     return timestamp_pb2.Timestamp(seconds=int(timestamp.timestamp()), nanos=0)
+
+def convert_account(pb_account):
+    return Account(pb_account.account_id, pb_account.account_currency,
+        pb_account.balance, pb_account.profit_or_loss, pb_account.margin_used, \
+        pb_account.margin_rate, convert_timestamp_from(pb_account.updated_at))

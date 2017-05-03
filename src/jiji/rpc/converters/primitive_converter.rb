@@ -26,6 +26,8 @@ module Jiji::Rpc::Converters
         value.to_s
       elsif value.is_a? Jiji::Model::Trading::Tick::Value
         convert_tick_value_to_pb(value, nil)
+      elsif value.is_a? BigDecimal
+        value.to_f #TODO
       else
         value
       end

@@ -1,11 +1,14 @@
 from datetime import datetime
+from decimal import Decimal
 from agent_pb2 import AgentClasses
+from primitives_pb2 import Decimal as RpcDcecimal
 from google.protobuf import timestamp_pb2  # pylint: disable=no-name-in-module
 
 from jiji.model.tick import Tick, Value
 from jiji.model.pairs import Pair
 from jiji.model.rate import Rate
 from jiji.model.account import Account
+from jiji.model.exceptions import illigal_argument
 
 def convert_agent_property_info(property_info):
     return AgentClasses.AgentClass.Property(
@@ -57,3 +60,9 @@ def convert_account(pb_account):
     return Account(pb_account.account_id, pb_account.account_currency,
         pb_account.balance, pb_account.profit_or_loss, pb_account.margin_used, \
         pb_account.margin_rate, convert_timestamp_from(pb_account.updated_at))
+
+def convert_decimal_from(pb_decimal):
+    return Decimal(pb_decimal.value)
+
+def convert_decimal_to(decimal):
+    return RpcDcecimal(value=str(decimal))

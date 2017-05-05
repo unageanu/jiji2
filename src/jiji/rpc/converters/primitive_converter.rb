@@ -27,7 +27,9 @@ module Jiji::Rpc::Converters
       elsif value.is_a? Jiji::Model::Trading::Tick::Value
         convert_tick_value_to_pb(value, nil)
       elsif value.is_a? BigDecimal
-        value.to_f #TODO
+        convert_decimal_to_pb(value)
+      elsif value.is_a?(Double) || value.is_a?(Float)
+        convert_decimal_to_pb(BigDcimal.new(value))
       else
         value
       end
@@ -42,6 +44,16 @@ module Jiji::Rpc::Converters
     def convert_timestamp_from_pb(timestamp)
       return nil unless timestamp
       Time.at(timestamp.seconds)
+    end
+
+    def convert_decimal_to_pb(decimal)
+      return nil unless decimal
+      Jiji::Rpc::Decimal.new(value:decimal.to_s)
+    end
+
+    def convert_decimal_from_pb(decimal)
+      return nil unless decimal
+      BigDecimal::new(decimal.value)
     end
 
     def convert_property_settings_to_pb(property_settings)

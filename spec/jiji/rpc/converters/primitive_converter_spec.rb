@@ -35,6 +35,56 @@ describe Jiji::Rpc::Converters::PrimitiveConverter do
     end
   end
 
+  describe '#convert_decimal_from_pb' do
+    it 'converts Rpc::Decimal to BigDecimal' do
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'0.04'))
+      expect(converted.to_s).to eq '0.04'
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'-0.003'))
+      expect(converted.to_s).to eq '-0.003'
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'123456'))
+      expect(converted.to_s).to eq '123456.0'
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'0'))
+      expect(converted.to_s).to eq '0.0'
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'-0'))
+      expect(converted.to_s).to eq '-0.0'
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'NaN'))
+      expect(converted.to_s).to eq 'NaN'
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'Infinity'))
+      expect(converted.to_s).to eq 'Infinity'
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'-Infinity'))
+      expect(converted.to_s).to eq '-Infinity'
+    end
+    it 'returns nil when a decimal is nil' do
+      converted = converter.convert_decimal_from_pb(nil)
+      expect(converted).to eq nil
+    end
+  end
+
+  describe '#convert_decimal_to_pb' do
+    it 'converts BigDecimal to Rpc::Decimal' do
+      converted = converter.convert_decimal_to_pb(BigDecimal.new('0.04'))
+      expect(converted.value).to eq '0.04'
+      converted = converter.convert_decimal_to_pb(BigDecimal.new('-0.003'))
+      expect(converted.value).to eq '-0.003'
+      converted = converter.convert_decimal_to_pb(BigDecimal.new('123456'))
+      expect(converted.value).to eq '123456.0'
+      converted = converter.convert_decimal_to_pb(BigDecimal.new('0'))
+      expect(converted.value).to eq '0.0'
+      converted = converter.convert_decimal_to_pb(BigDecimal.new('-0'))
+      expect(converted.value).to eq '-0.0'
+      converted = converter.convert_decimal_to_pb(BigDecimal.new('NaN'))
+      expect(converted.value).to eq 'NaN'
+      converted = converter.convert_decimal_to_pb(BigDecimal.new('Infinity'))
+      expect(converted.value).to eq 'Infinity'
+      converted = converter.convert_decimal_to_pb(BigDecimal.new('-Infinity'))
+      expect(converted.value).to eq '-Infinity'
+    end
+    it 'returns nil when a time is nil' do
+      converted = converter.convert_decimal_to_pb(nil)
+      expect(converted).to eq nil
+    end
+  end
+
   describe '#convert_hash_values_to_pb' do
     it 'converts Google::Protobuf::timestamp to Time' do
       converted = converter.convert_hash_values_to_pb({

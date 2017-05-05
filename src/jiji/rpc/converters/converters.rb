@@ -1,6 +1,12 @@
 # coding: utf-8
 
 require 'grpc'
+require 'broker_pb'
+require 'broker_services_pb'
+require 'logging_pb'
+require 'logging_services_pb'
+require 'primitives_pb'
+
 require 'jiji/rpc/converters/order_converter'
 require 'jiji/rpc/converters/pair_converter'
 require 'jiji/rpc/converters/position_converter'

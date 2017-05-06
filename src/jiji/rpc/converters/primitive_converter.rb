@@ -28,10 +28,19 @@ module Jiji::Rpc::Converters
         convert_tick_value_to_pb(value, nil)
       elsif value.is_a? BigDecimal
         convert_decimal_to_pb(value)
-      elsif value.is_a?(Double) || value.is_a?(Float)
-        convert_decimal_to_pb(BigDcimal.new(value))
+      elsif value.is_a?(Float)
+        convert_decimal_to_pb(BigDecimal.new(value, 16))
       else
         value
+      end
+    end
+
+    def convert_numeric_to_pb_decimal(hash, keys)
+      keys.each do |k|
+        value = hash[k]
+        next if value.nil?
+        value = BigDecimal.new(value, 16) unless value.is_a?(BigDecimal)
+        hash[k] = convert_decimal_to_pb(value)
       end
     end
 
@@ -48,12 +57,12 @@ module Jiji::Rpc::Converters
 
     def convert_decimal_to_pb(decimal)
       return nil unless decimal
-      Jiji::Rpc::Decimal.new(value:decimal.to_s)
+      Jiji::Rpc::Decimal.new(value: decimal.to_s)
     end
 
     def convert_decimal_from_pb(decimal)
       return nil unless decimal
-      BigDecimal::new(decimal.value)
+      BigDecimal.new(decimal.value)
     end
 
     def convert_property_settings_to_pb(property_settings)

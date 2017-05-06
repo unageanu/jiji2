@@ -21,11 +21,11 @@ describe Jiji::Rpc::Converters::TickConverter do
       expect(converted.timestamp.nanos).to be 0
 
       expect(converted.values.length).to be 2
-      expect(converted.values[0].bid).to eq 112.1
-      expect(converted.values[0].ask).to eq 112.34
+      expect(converted.values[0].bid.value).to eq '112.1'
+      expect(converted.values[0].ask.value).to eq '112.34'
       expect(converted.values[0].pair).to eq 'EURJPY'
-      expect(converted.values[1].bid).to eq 102.1
-      expect(converted.values[1].ask).to eq 102.34
+      expect(converted.values[1].bid.value).to eq '102.1'
+      expect(converted.values[1].ask.value).to eq '102.34'
       expect(converted.values[1].pair).to eq 'USDJPY'
     end
     it 'returns nil when a tick is nil' do
@@ -38,8 +38,8 @@ describe Jiji::Rpc::Converters::TickConverter do
     it 'converts Tick::Value to Rpc::Tick::Value' do
       converted = converter.convert_tick_value_to_pb(
         Jiji::Model::Trading::Tick::Value.new(112.1, 112.34), 'EURJPY')
-      expect(converted.bid).to eq 112.1
-      expect(converted.ask).to eq 112.34
+      expect(converted.bid.value).to eq '112.1'
+      expect(converted.ask.value).to eq '112.34'
       expect(converted.pair).to eq 'EURJPY'
     end
     it 'returns nil when a tick value is nil' do

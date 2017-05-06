@@ -37,21 +37,21 @@ describe Jiji::Rpc::Converters::PrimitiveConverter do
 
   describe '#convert_decimal_from_pb' do
     it 'converts Rpc::Decimal to BigDecimal' do
-      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'0.04'))
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value: '0.04'))
       expect(converted.to_s).to eq '0.04'
-      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'-0.003'))
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value: '-0.003'))
       expect(converted.to_s).to eq '-0.003'
-      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'123456'))
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value: '123456'))
       expect(converted.to_s).to eq '123456.0'
-      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'0'))
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value: '0'))
       expect(converted.to_s).to eq '0.0'
-      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'-0'))
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value: '-0'))
       expect(converted.to_s).to eq '-0.0'
-      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'NaN'))
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value: 'NaN'))
       expect(converted.to_s).to eq 'NaN'
-      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'Infinity'))
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value: 'Infinity'))
       expect(converted.to_s).to eq 'Infinity'
-      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value:'-Infinity'))
+      converted = converter.convert_decimal_from_pb(Jiji::Rpc::Decimal.new(value: '-Infinity'))
       expect(converted.to_s).to eq '-Infinity'
     end
     it 'returns nil when a decimal is nil' do

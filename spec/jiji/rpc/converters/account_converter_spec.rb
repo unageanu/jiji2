@@ -29,27 +29,26 @@ describe Jiji::Rpc::Converters::AccountConverter do
       converted = converter.convert_account_to_pb(account)
       expect(converted.account_id).to eq '1'
       expect(converted.account_currency).to eq 'JPY'
-      expect(converted.balance).to eq 10_000
-      expect(converted.profit_or_loss).to eq 0
+      expect(converted.balance.value).to eq '10000.0'
+      expect(converted.profit_or_loss.value).to eq '0.0'
       expect(converted.updated_at).to eq nil
-      expect(converted.margin_used).to eq 0
-      expect(converted.margin_rate.round(2)).to eq 0.04
+      expect(converted.margin_used.value).to eq '0.0'
+      expect(converted.margin_rate.value).to eq '0.04'
 
       account.update(positions, Time.at(100))
       converted = converter.convert_account_to_pb(account)
       expect(converted.account_id).to eq '1'
       expect(converted.account_currency).to eq 'JPY'
-      expect(converted.balance).to eq 10_000
-      expect(converted.profit_or_loss).to eq -180.0
+      expect(converted.balance.value).to eq '10000.0'
+      expect(converted.profit_or_loss.value).to eq '-180.0'
       expect(converted.updated_at.seconds).to eq 100
       expect(converted.updated_at.nanos).to eq 0
-      expect(converted.margin_used.round(1)).to eq 245_604.8
-      expect(converted.margin_rate.round(2)).to eq 0.04
+      expect(converted.margin_used.value).to eq '245604.8'
+      expect(converted.margin_rate.value).to eq '0.04'
     end
     it 'returns nil when an order is nil' do
       converted = converter.convert_account_to_pb(nil)
       expect(converted).to eq nil
     end
   end
-
 end

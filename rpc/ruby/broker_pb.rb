@@ -5,6 +5,7 @@ require 'google/protobuf'
 
 require 'google/protobuf/timestamp_pb'
 require 'agent_pb'
+require 'primitives_pb'
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "jiji.rpc.GetPairsRequest" do
     optional :instance_id, :string, 1
@@ -15,10 +16,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "jiji.rpc.Pair" do
     optional :name, :string, 1
     optional :internal_id, :string, 2
-    optional :pip, :double, 3
+    optional :pip, :message, 3, "jiji.rpc.Decimal"
     optional :max_trade_units, :uint64, 4
-    optional :precision, :double, 5
-    optional :margin_rate, :double, 6
+    optional :precision, :message, 5, "jiji.rpc.Decimal"
+    optional :margin_rate, :message, 6, "jiji.rpc.Decimal"
   end
   add_message "jiji.rpc.GetTickRequest" do
     optional :instance_id, :string, 1
@@ -48,10 +49,10 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "jiji.rpc.Account" do
     optional :account_id, :string, 1
     optional :account_currency, :string, 2
-    optional :balance, :double, 3
-    optional :profit_or_loss, :double, 4
-    optional :margin_used, :double, 5
-    optional :margin_rate, :float, 6
+    optional :balance, :message, 3, "jiji.rpc.Decimal"
+    optional :profit_or_loss, :message, 4, "jiji.rpc.Decimal"
+    optional :margin_used, :message, 5, "jiji.rpc.Decimal"
+    optional :margin_rate, :message, 6, "jiji.rpc.Decimal"
     optional :updated_at, :message, 7, "google.protobuf.Timestamp"
   end
   add_message "jiji.rpc.GetPositionsRequest" do
@@ -66,12 +67,12 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :units, :uint64, 3
     optional :sell_or_buy, :string, 4
     optional :status, :string, 5
-    optional :profit_or_loss, :double, 6
-    optional :max_drow_down, :double, 7
-    optional :entry_price, :double, 8
-    optional :current_price, :double, 9
-    optional :exit_price, :double, 10
-    optional :current_counter_rate, :double, 11
+    optional :profit_or_loss, :message, 6, "jiji.rpc.Decimal"
+    optional :max_drow_down, :message, 7, "jiji.rpc.Decimal"
+    optional :entry_price, :message, 8, "jiji.rpc.Decimal"
+    optional :current_price, :message, 9, "jiji.rpc.Decimal"
+    optional :exit_price, :message, 10, "jiji.rpc.Decimal"
+    optional :current_counter_rate, :message, 11, "jiji.rpc.Decimal"
     optional :entered_at, :message, 12, "google.protobuf.Timestamp"
     optional :exited_at, :message, 13, "google.protobuf.Timestamp"
     optional :updated_at, :message, 14, "google.protobuf.Timestamp"
@@ -89,12 +90,12 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :type, :string, 4
     optional :last_modified, :message, 5, "google.protobuf.Timestamp"
     optional :units, :uint64, 6
-    optional :price, :double, 7
+    optional :price, :message, 7, "jiji.rpc.Decimal"
     optional :expiry, :message, 8, "google.protobuf.Timestamp"
-    optional :lower_bound, :double, 9
-    optional :upper_bound, :double, 10
-    optional :stop_loss, :double, 11
-    optional :take_profit, :double, 12
+    optional :lower_bound, :message, 9, "jiji.rpc.Decimal"
+    optional :upper_bound, :message, 10, "jiji.rpc.Decimal"
+    optional :stop_loss, :message, 11, "jiji.rpc.Decimal"
+    optional :take_profit, :message, 12, "jiji.rpc.Decimal"
     optional :trailing_stop, :uint32, 13
   end
   add_message "jiji.rpc.OrderRequest" do
@@ -106,12 +107,12 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :option, :message, 6, "jiji.rpc.OrderRequest.Option"
   end
   add_message "jiji.rpc.OrderRequest.Option" do
-    optional :lower_bound, :double, 1
-    optional :upper_bound, :double, 2
-    optional :stop_loss, :double, 3
-    optional :take_profit, :double, 4
+    optional :lower_bound, :message, 1, "jiji.rpc.Decimal"
+    optional :upper_bound, :message, 2, "jiji.rpc.Decimal"
+    optional :stop_loss, :message, 3, "jiji.rpc.Decimal"
+    optional :take_profit, :message, 4, "jiji.rpc.Decimal"
     optional :trailing_stop, :uint32, 5
-    optional :price, :double, 6
+    optional :price, :message, 6, "jiji.rpc.Decimal"
     optional :expiry, :message, 7, "google.protobuf.Timestamp"
   end
   add_message "jiji.rpc.OrderResponse" do
@@ -123,9 +124,9 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "jiji.rpc.PositionInfo" do
     optional :internal_id, :string, 1
     optional :units, :uint64, 2
-    optional :price, :double, 3
+    optional :price, :message, 3, "jiji.rpc.Decimal"
     optional :timestamp, :message, 4, "google.protobuf.Timestamp"
-    optional :profit_or_loss, :double, 5
+    optional :profit_or_loss, :message, 5, "jiji.rpc.Decimal"
   end
   add_message "jiji.rpc.ModifyOrderRequest" do
     optional :instance_id, :string, 1
@@ -173,7 +174,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :actual, :string, 7
     optional :market, :string, 8
     optional :region, :string, 9
-    optional :impact, :float, 10
+    optional :impact, :message, 10, "jiji.rpc.Decimal"
   end
 end
 

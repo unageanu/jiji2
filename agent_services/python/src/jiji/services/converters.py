@@ -32,13 +32,17 @@ def convert_tick_values(values):
     return result
 
 def convert_tick_value(value):
-    return Value(value.bid, value.ask)
+    return Value(convert_decimal_from(value.bid), \
+        convert_decimal_from(value.ask))
 
 def convert_pairs(pairs):
     values = dict()
     for pair in pairs:
-        values[pair.name] = Pair(pair.name, pair.internal_id, pair.pip, \
-            pair.max_trade_units, pair.precision, pair.margin_rate)
+        values[pair.name] = Pair(pair.name, pair.internal_id, \
+            convert_decimal_from(pair.pip), \
+            pair.max_trade_units, \
+            convert_decimal_from(pair.precision), \
+            convert_decimal_from(pair.margin_rate))
     return values
 
 def convert_rates(rates):
@@ -57,9 +61,12 @@ def convert_timestamp_to(timestamp):
     return timestamp_pb2.Timestamp(seconds=int(timestamp.timestamp()), nanos=0)
 
 def convert_account(pb_account):
-    return Account(pb_account.account_id, pb_account.account_currency,
-        pb_account.balance, pb_account.profit_or_loss, pb_account.margin_used, \
-        pb_account.margin_rate, convert_timestamp_from(pb_account.updated_at))
+    return Account(pb_account.account_id, pb_account.account_currency, \
+        convert_decimal_from(pb_account.balance), \
+        convert_decimal_from(pb_account.profit_or_loss), \
+        convert_decimal_from(pb_account.margin_used), \
+        convert_decimal_from(pb_account.margin_rate), \
+        convert_timestamp_from(pb_account.updated_at))
 
 def convert_decimal_from(pb_decimal):
     return Decimal(pb_decimal.value)

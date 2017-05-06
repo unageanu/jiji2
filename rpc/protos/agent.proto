@@ -4,6 +4,7 @@ package jiji.rpc;
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
+import "primitives.proto";
 
 service AgentService {
 
@@ -30,8 +31,8 @@ message Tick {
 
   message Value {
     string pair = 1;
-    double bid = 2;
-    double ask = 3;
+    Decimal bid = 2;
+    Decimal ask = 3;
   }
 
   google.protobuf.Timestamp timestamp = 1;

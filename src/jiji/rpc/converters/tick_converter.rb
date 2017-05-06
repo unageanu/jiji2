@@ -18,7 +18,10 @@ module Jiji::Rpc::Converters
 
     def convert_tick_value_to_pb(value, pair)
       return nil unless value
-      args = { ask: value.ask, bid: value.bid }
+      args = {
+        ask: convert_decimal_to_pb(value.ask),
+        bid: convert_decimal_to_pb(value.bid)
+      }
       args[:pair] = pair if pair
       Tick::Value.new(args)
     end

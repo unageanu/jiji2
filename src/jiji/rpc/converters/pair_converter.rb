@@ -15,7 +15,13 @@ module Jiji::Rpc::Converters
 
     def convert_pair_to_pb(pair)
       return nil unless pair
-      Pair.new(convert_hash_values_to_pb(pair.to_h))
+      hash = pair.to_h
+      convert_numeric_to_pb_decimal(hash, [
+        :pip,
+        :precision,
+        :margin_rate
+      ])
+      Pair.new(convert_hash_values_to_pb(hash))
     end
   end
 end

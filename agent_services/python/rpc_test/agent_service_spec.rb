@@ -341,8 +341,8 @@ SOURCE
           timestamp: Google::Protobuf::Timestamp.new(
             seconds: date.to_i, nanos: 0),
           values:    [
-            Jiji::Rpc::Tick::Value.new(ask: 112.3, bid: 112, pair: 'USDJPY'),
-            Jiji::Rpc::Tick::Value.new(ask: 122.3, bid: 122, pair: 'EURJPY')
+            new_tick('112.3', '112', 'USDJPY'),
+            new_tick('122.3', '122', 'EURJPY')
           ]
         )
       )
@@ -353,7 +353,7 @@ SOURCE
                                     action_id:   'get_last_tick'
       )).message
 
-      expect(message).to eq'112.0_112.3_2017-01-02 04:02:34+00:00'
+      expect(message).to eq'112_112.3_2017-01-02 04:02:34+00:00'
 
       date = DateTime.new(2017, 1, 1, 19, 2, 49, 0)
       request = Jiji::Rpc::NextTickRequest.new(
@@ -362,8 +362,8 @@ SOURCE
           timestamp: Google::Protobuf::Timestamp.new(
             seconds: date.to_i, nanos: 0),
           values:    [
-            Jiji::Rpc::Tick::Value.new(ask: 113.3, bid: 113, pair: 'USDJPY'),
-            Jiji::Rpc::Tick::Value.new(ask: 123.3, bid: 123, pair: 'EURJPY')
+            new_tick('113.3', '113', 'USDJPY'),
+            new_tick('123.3', '123', 'EURJPY')
           ]
         )
       )
@@ -374,7 +374,7 @@ SOURCE
                                     action_id:   'get_last_tick'
       )).message
 
-      expect(message).to eq'113.0_113.3_2017-01-02 04:02:49+00:00'
+      expect(message).to eq'113_113.3_2017-01-02 04:02:49+00:00'
     end
 
     it 'raises an error if an instance is not found.' do
@@ -386,8 +386,8 @@ SOURCE
             timestamp: Google::Protobuf::Timestamp.new(
               seconds: date.to_i, nanos: 0),
             values:    [
-              Jiji::Rpc::Tick::Value.new(ask: 112.3, bid: 112, pair: 'USDJPY'),
-              Jiji::Rpc::Tick::Value.new(ask: 122.3, bid: 122, pair: 'EURJPY')
+              new_tick('112.3', '112', 'USDJPY'),
+              new_tick('122.3', '122', 'EURJPY')
             ]
           )
         )
@@ -449,5 +449,13 @@ SOURCE
         @stub.set_agent_properties(request)
       end.to raise_exception(GRPC::BadStatus)
     end
+  end
+
+  def new_tick(ask, bid, pair)
+    Jiji::Rpc::Tick::Value.new(ask: decimal(ask), bid: decimal(bid), pair: pair)
+  end
+
+  def decimal(value)
+    Jiji::Rpc::Decimal.new(value: value)
   end
 end

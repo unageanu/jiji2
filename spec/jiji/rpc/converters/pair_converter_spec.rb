@@ -18,10 +18,10 @@ describe Jiji::Rpc::Converters::PairConverter do
         Pair.new(:EURJPY, 'EUR_JPY', 0.01,   10_000_000, 0.001,   0.04))
       expect(converted.name).to eq 'EURJPY'
       expect(converted.internal_id).to eq 'EUR_JPY'
-      expect(converted.pip).to eq 0.01
+      expect(converted.pip.value).to eq '0.01'
       expect(converted.max_trade_units).to eq 10_000_000
-      expect(converted.precision).to eq 0.001
-      expect(converted.margin_rate).to eq 0.04
+      expect(converted.precision.value).to eq '0.001'
+      expect(converted.margin_rate.value).to eq '0.04'
     end
     it 'returns nil when a pair is nil' do
       converted = converter.convert_pair_to_pb(nil)

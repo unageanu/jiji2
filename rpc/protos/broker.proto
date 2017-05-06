@@ -4,6 +4,7 @@ package jiji.rpc;
 
 import "google/protobuf/timestamp.proto";
 import "agent.proto";
+import "primitives.proto";
 
 service BrokerService {
 
@@ -35,10 +36,10 @@ message GetPairsResponse {
 message Pair {
   string name = 1;
   string internal_id = 2;
-  double pip = 3;
+  Decimal pip = 3;
   uint64 max_trade_units = 4;
-  double precision = 5;
-  double margin_rate = 6;
+  Decimal precision = 5;
+  Decimal margin_rate = 6;
 }
 
 message GetTickRequest {
@@ -71,10 +72,10 @@ message GetAccountRequest {
 message Account {
   string account_id = 1;
   string account_currency = 2;
-  double balance = 3;
-  double profit_or_loss = 4;
-  double margin_used = 5;
-  float margin_rate = 6;
+  Decimal balance = 3;
+  Decimal profit_or_loss = 4;
+  Decimal margin_used = 5;
+  Decimal margin_rate = 6;
   google.protobuf.Timestamp updated_at = 7;
 }
 
@@ -92,13 +93,13 @@ message Position {
   string sell_or_buy = 4;
   string status = 5;
 
-  double profit_or_loss = 6;
-  double max_drow_down = 7;
+  Decimal profit_or_loss = 6;
+  Decimal max_drow_down = 7;
 
-  double entry_price = 8;
-  double current_price = 9;
-  double exit_price = 10;
-  double current_counter_rate = 11;
+  Decimal entry_price = 8;
+  Decimal current_price = 9;
+  Decimal exit_price = 10;
+  Decimal current_counter_rate = 11;
 
   google.protobuf.Timestamp entered_at = 12;
   google.protobuf.Timestamp exited_at = 13;
@@ -118,12 +119,12 @@ message Order {
   string type = 4;
   google.protobuf.Timestamp last_modified = 5;
   uint64 units = 6;
-  double price = 7;
+  Decimal price = 7;
   google.protobuf.Timestamp expiry = 8;
-  double lower_bound = 9;
-  double upper_bound = 10;
-  double stop_loss = 11;
-  double take_profit = 12;
+  Decimal lower_bound = 9;
+  Decimal upper_bound = 10;
+  Decimal stop_loss = 11;
+  Decimal take_profit = 12;
   uint32 trailing_stop = 13;
 }
 
@@ -136,12 +137,12 @@ message OrderRequest {
   Option option = 6;
 
   message Option {
-    double lower_bound = 1;
-    double upper_bound = 2;
-    double stop_loss = 3;
-    double take_profit = 4;
+    Decimal lower_bound = 1;
+    Decimal upper_bound = 2;
+    Decimal stop_loss = 3;
+    Decimal take_profit = 4;
     uint32 trailing_stop = 5;
-    double price = 6;
+    Decimal price = 6;
     google.protobuf.Timestamp expiry = 7;
   }
 }
@@ -156,9 +157,9 @@ message OrderResponse {
 message PositionInfo {
   string internal_id = 1;
   uint64 units = 2;
-  double price = 3;
+  Decimal price = 3;
   google.protobuf.Timestamp timestamp = 4;
-  double profit_or_loss = 5;
+  Decimal profit_or_loss = 5;
 }
 
 message ModifyOrderRequest {
@@ -212,5 +213,5 @@ message EconomicCalendarInformation {
   string actual = 7;
   string market = 8;
   string region = 9;
-  float impact = 10;
+  Decimal impact = 10;
 }

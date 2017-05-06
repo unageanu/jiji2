@@ -15,15 +15,16 @@ _sym_db = _symbol_database.Default()
 
 from google.protobuf import timestamp_pb2 as google_dot_protobuf_dot_timestamp__pb2
 import agent_pb2 as agent__pb2
+import primitives_pb2 as primitives__pb2
 
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='broker.proto',
   package='jiji.rpc',
   syntax='proto3',
-  serialized_pb=_b('\n\x0c\x62roker.proto\x12\x08jiji.rpc\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x0b\x61gent.proto\"&\n\x0fGetPairsRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"1\n\x10GetPairsResponse\x12\x1d\n\x05pairs\x18\x01 \x03(\x0b\x32\x0e.jiji.rpc.Pair\"w\n\x04Pair\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0binternal_id\x18\x02 \x01(\t\x12\x0b\n\x03pip\x18\x03 \x01(\x01\x12\x17\n\x0fmax_trade_units\x18\x04 \x01(\x04\x12\x11\n\tprecision\x18\x05 \x01(\x01\x12\x13\n\x0bmargin_rate\x18\x06 \x01(\x01\"%\n\x0eGetTickRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"\xae\x01\n\x14RetrieveRatesRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\tpair_name\x18\x02 \x01(\t\x12\x10\n\x08interval\x18\x03 \x01(\t\x12.\n\nstart_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"&\n\x05Rates\x12\x1d\n\x05rates\x18\x01 \x03(\x0b\x32\x0e.jiji.rpc.Rate\"\xe3\x01\n\x04Rate\x12\x0c\n\x04pair\x18\x01 \x01(\t\x12\"\n\x04open\x18\x02 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12#\n\x05\x63lose\x18\x03 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12\"\n\x04high\x18\x04 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12!\n\x03low\x18\x05 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12-\n\ttimestamp\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06volume\x18\x07 \x01(\x04\"(\n\x11GetAccountRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"\xba\x01\n\x07\x41\x63\x63ount\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x18\n\x10\x61\x63\x63ount_currency\x18\x02 \x01(\t\x12\x0f\n\x07\x62\x61lance\x18\x03 \x01(\x01\x12\x16\n\x0eprofit_or_loss\x18\x04 \x01(\x01\x12\x13\n\x0bmargin_used\x18\x05 \x01(\x01\x12\x13\n\x0bmargin_rate\x18\x06 \x01(\x02\x12.\n\nupdated_at\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"*\n\x13GetPositionsRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"2\n\tPositions\x12%\n\tpositions\x18\x01 \x03(\x0b\x32\x12.jiji.rpc.Position\"\x82\x03\n\x08Position\x12\x13\n\x0binternal_id\x18\x01 \x01(\t\x12\x11\n\tpair_name\x18\x02 \x01(\t\x12\r\n\x05units\x18\x03 \x01(\x04\x12\x13\n\x0bsell_or_buy\x18\x04 \x01(\t\x12\x0e\n\x06status\x18\x05 \x01(\t\x12\x16\n\x0eprofit_or_loss\x18\x06 \x01(\x01\x12\x15\n\rmax_drow_down\x18\x07 \x01(\x01\x12\x13\n\x0b\x65ntry_price\x18\x08 \x01(\x01\x12\x15\n\rcurrent_price\x18\t \x01(\x01\x12\x12\n\nexit_price\x18\n \x01(\x01\x12\x1c\n\x14\x63urrent_counter_rate\x18\x0b \x01(\x01\x12.\n\nentered_at\x18\x0c \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12-\n\texited_at\x18\r \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nupdated_at\x18\x0e \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\'\n\x10GetOrdersRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\")\n\x06Orders\x12\x1f\n\x06orders\x18\x01 \x03(\x0b\x32\x0f.jiji.rpc.Order\"\xb8\x02\n\x05Order\x12\x11\n\tpair_name\x18\x01 \x01(\t\x12\x13\n\x0bsell_or_buy\x18\x02 \x01(\t\x12\x13\n\x0binternal_id\x18\x03 \x01(\t\x12\x0c\n\x04type\x18\x04 \x01(\t\x12\x31\n\rlast_modified\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\r\n\x05units\x18\x06 \x01(\x04\x12\r\n\x05price\x18\x07 \x01(\x01\x12*\n\x06\x65xpiry\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x13\n\x0blower_bound\x18\t \x01(\x01\x12\x13\n\x0bupper_bound\x18\n \x01(\x01\x12\x11\n\tstop_loss\x18\x0b \x01(\x01\x12\x13\n\x0btake_profit\x18\x0c \x01(\x01\x12\x15\n\rtrailing_stop\x18\r \x01(\r\"\xc6\x02\n\x0cOrderRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\tpair_name\x18\x02 \x01(\t\x12\x13\n\x0bsell_or_buy\x18\x03 \x01(\t\x12\r\n\x05units\x18\x04 \x01(\x04\x12\x0c\n\x04type\x18\x05 \x01(\t\x12-\n\x06option\x18\x06 \x01(\x0b\x32\x1d.jiji.rpc.OrderRequest.Option\x1a\xac\x01\n\x06Option\x12\x13\n\x0blower_bound\x18\x01 \x01(\x01\x12\x13\n\x0bupper_bound\x18\x02 \x01(\x01\x12\x11\n\tstop_loss\x18\x03 \x01(\x01\x12\x13\n\x0btake_profit\x18\x04 \x01(\x01\x12\x15\n\rtrailing_stop\x18\x05 \x01(\r\x12\r\n\x05price\x18\x06 \x01(\x01\x12*\n\x06\x65xpiry\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xbb\x01\n\rOrderResponse\x12%\n\x0corder_opened\x18\x01 \x01(\x0b\x32\x0f.jiji.rpc.Order\x12%\n\x0ctrade_opened\x18\x02 \x01(\x0b\x32\x0f.jiji.rpc.Order\x12-\n\rtrade_reduced\x18\x03 \x01(\x0b\x32\x16.jiji.rpc.PositionInfo\x12-\n\rtrades_closed\x18\x04 \x03(\x0b\x32\x16.jiji.rpc.PositionInfo\"\x88\x01\n\x0cPositionInfo\x12\x13\n\x0binternal_id\x18\x01 \x01(\t\x12\r\n\x05units\x18\x02 \x01(\x04\x12\r\n\x05price\x18\x03 \x01(\x01\x12-\n\ttimestamp\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x16\n\x0eprofit_or_loss\x18\x05 \x01(\x01\"R\n\x12ModifyOrderRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\'\n\x0emodified_order\x18\x02 \x01(\x0b\x32\x0f.jiji.rpc.Order\">\n\x13ModifyOrderResponse\x12\'\n\x0emodified_order\x18\x01 \x01(\x0b\x32\x0f.jiji.rpc.Order\";\n\x12\x43\x61ncelOrderRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x10\n\x08order_id\x18\x02 \x01(\t\"?\n\x13\x43\x61ncelOrderResponse\x12(\n\x0f\x63\x61ncelled_order\x18\x01 \x01(\x0b\x32\x0f.jiji.rpc.Order\"[\n\x15ModifyPositionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12-\n\x11modified_position\x18\x02 \x01(\x0b\x32\x12.jiji.rpc.Position\"G\n\x16ModifyPositionResponse\x12-\n\x11modified_position\x18\x01 \x01(\x0b\x32\x12.jiji.rpc.Position\"@\n\x14\x43losePositionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x13\n\x0bposition_id\x18\x02 \x01(\t\"H\n\x15\x43losePositionResponse\x12/\n\x0f\x63losed_position\x18\x01 \x01(\x0b\x32\x16.jiji.rpc.PositionInfo\"e\n+RetrieveEconomicCalendarInformationsRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x0e\n\x06period\x18\x02 \x01(\r\x12\x11\n\tpair_name\x18\x03 \x01(\t\"[\n\x1c\x45\x63onomicCalendarInformations\x12;\n\x0cinformations\x18\x01 \x03(\x0b\x32%.jiji.rpc.EconomicCalendarInformation\"\xdf\x01\n\x1b\x45\x63onomicCalendarInformation\x12\r\n\x05title\x18\x01 \x01(\t\x12-\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0c\n\x04unit\x18\x03 \x01(\t\x12\x10\n\x08\x63urrency\x18\x04 \x01(\t\x12\x10\n\x08\x66orecast\x18\x05 \x01(\t\x12\x10\n\x08previous\x18\x06 \x01(\t\x12\x0e\n\x06\x61\x63tual\x18\x07 \x01(\t\x12\x0e\n\x06market\x18\x08 \x01(\t\x12\x0e\n\x06region\x18\t \x01(\t\x12\x0e\n\x06impact\x18\n \x01(\x02\x32\x9f\x07\n\rBrokerService\x12>\n\nGetAccount\x12\x1b.jiji.rpc.GetAccountRequest\x1a\x11.jiji.rpc.Account\"\x00\x12\x43\n\x08GetPairs\x12\x19.jiji.rpc.GetPairsRequest\x1a\x1a.jiji.rpc.GetPairsResponse\"\x00\x12\x35\n\x07GetTick\x12\x18.jiji.rpc.GetTickRequest\x1a\x0e.jiji.rpc.Tick\"\x00\x12\x42\n\rRetrieveRates\x12\x1e.jiji.rpc.RetrieveRatesRequest\x1a\x0f.jiji.rpc.Rates\"\x00\x12\x44\n\x0cGetPositions\x12\x1d.jiji.rpc.GetPositionsRequest\x1a\x13.jiji.rpc.Positions\"\x00\x12;\n\tGetOrders\x12\x1a.jiji.rpc.GetOrdersRequest\x1a\x10.jiji.rpc.Orders\"\x00\x12:\n\x05Order\x12\x16.jiji.rpc.OrderRequest\x1a\x17.jiji.rpc.OrderResponse\"\x00\x12L\n\x0bModifyOrder\x12\x1c.jiji.rpc.ModifyOrderRequest\x1a\x1d.jiji.rpc.ModifyOrderResponse\"\x00\x12L\n\x0b\x43\x61ncelOrder\x12\x1c.jiji.rpc.CancelOrderRequest\x1a\x1d.jiji.rpc.CancelOrderResponse\"\x00\x12U\n\x0eModifyPosition\x12\x1f.jiji.rpc.ModifyPositionRequest\x1a .jiji.rpc.ModifyPositionResponse\"\x00\x12R\n\rClosePosition\x12\x1e.jiji.rpc.ClosePositionRequest\x1a\x1f.jiji.rpc.ClosePositionResponse\"\x00\x12\x87\x01\n$RetrieveEconomicCalendarInformations\x12\x35.jiji.rpc.RetrieveEconomicCalendarInformationsRequest\x1a&.jiji.rpc.EconomicCalendarInformations\"\x00\x62\x06proto3')
+  serialized_pb=_b('\n\x0c\x62roker.proto\x12\x08jiji.rpc\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x0b\x61gent.proto\x1a\x10primitives.proto\"&\n\x0fGetPairsRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"1\n\x10GetPairsResponse\x12\x1d\n\x05pairs\x18\x01 \x03(\x0b\x32\x0e.jiji.rpc.Pair\"\xb0\x01\n\x04Pair\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x13\n\x0binternal_id\x18\x02 \x01(\t\x12\x1e\n\x03pip\x18\x03 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12\x17\n\x0fmax_trade_units\x18\x04 \x01(\x04\x12$\n\tprecision\x18\x05 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12&\n\x0bmargin_rate\x18\x06 \x01(\x0b\x32\x11.jiji.rpc.Decimal\"%\n\x0eGetTickRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"\xae\x01\n\x14RetrieveRatesRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\tpair_name\x18\x02 \x01(\t\x12\x10\n\x08interval\x18\x03 \x01(\t\x12.\n\nstart_time\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12,\n\x08\x65nd_time\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"&\n\x05Rates\x12\x1d\n\x05rates\x18\x01 \x03(\x0b\x32\x0e.jiji.rpc.Rate\"\xe3\x01\n\x04Rate\x12\x0c\n\x04pair\x18\x01 \x01(\t\x12\"\n\x04open\x18\x02 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12#\n\x05\x63lose\x18\x03 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12\"\n\x04high\x18\x04 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12!\n\x03low\x18\x05 \x01(\x0b\x32\x14.jiji.rpc.Tick.Value\x12-\n\ttimestamp\x18\x06 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0e\n\x06volume\x18\x07 \x01(\x04\"(\n\x11GetAccountRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"\x86\x02\n\x07\x41\x63\x63ount\x12\x12\n\naccount_id\x18\x01 \x01(\t\x12\x18\n\x10\x61\x63\x63ount_currency\x18\x02 \x01(\t\x12\"\n\x07\x62\x61lance\x18\x03 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12)\n\x0eprofit_or_loss\x18\x04 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12&\n\x0bmargin_used\x18\x05 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12&\n\x0bmargin_rate\x18\x06 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12.\n\nupdated_at\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"*\n\x13GetPositionsRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\"2\n\tPositions\x12%\n\tpositions\x18\x01 \x03(\x0b\x32\x12.jiji.rpc.Position\"\xf4\x03\n\x08Position\x12\x13\n\x0binternal_id\x18\x01 \x01(\t\x12\x11\n\tpair_name\x18\x02 \x01(\t\x12\r\n\x05units\x18\x03 \x01(\x04\x12\x13\n\x0bsell_or_buy\x18\x04 \x01(\t\x12\x0e\n\x06status\x18\x05 \x01(\t\x12)\n\x0eprofit_or_loss\x18\x06 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12(\n\rmax_drow_down\x18\x07 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12&\n\x0b\x65ntry_price\x18\x08 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12(\n\rcurrent_price\x18\t \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12%\n\nexit_price\x18\n \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12/\n\x14\x63urrent_counter_rate\x18\x0b \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12.\n\nentered_at\x18\x0c \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12-\n\texited_at\x18\r \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12.\n\nupdated_at\x18\x0e \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\'\n\x10GetOrdersRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\")\n\x06Orders\x12\x1f\n\x06orders\x18\x01 \x03(\x0b\x32\x0f.jiji.rpc.Order\"\x97\x03\n\x05Order\x12\x11\n\tpair_name\x18\x01 \x01(\t\x12\x13\n\x0bsell_or_buy\x18\x02 \x01(\t\x12\x13\n\x0binternal_id\x18\x03 \x01(\t\x12\x0c\n\x04type\x18\x04 \x01(\t\x12\x31\n\rlast_modified\x18\x05 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\r\n\x05units\x18\x06 \x01(\x04\x12 \n\x05price\x18\x07 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12*\n\x06\x65xpiry\x18\x08 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12&\n\x0blower_bound\x18\t \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12&\n\x0bupper_bound\x18\n \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12$\n\tstop_loss\x18\x0b \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12&\n\x0btake_profit\x18\x0c \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12\x15\n\rtrailing_stop\x18\r \x01(\r\"\xa5\x03\n\x0cOrderRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x11\n\tpair_name\x18\x02 \x01(\t\x12\x13\n\x0bsell_or_buy\x18\x03 \x01(\t\x12\r\n\x05units\x18\x04 \x01(\x04\x12\x0c\n\x04type\x18\x05 \x01(\t\x12-\n\x06option\x18\x06 \x01(\x0b\x32\x1d.jiji.rpc.OrderRequest.Option\x1a\x8b\x02\n\x06Option\x12&\n\x0blower_bound\x18\x01 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12&\n\x0bupper_bound\x18\x02 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12$\n\tstop_loss\x18\x03 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12&\n\x0btake_profit\x18\x04 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12\x15\n\rtrailing_stop\x18\x05 \x01(\r\x12 \n\x05price\x18\x06 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12*\n\x06\x65xpiry\x18\x07 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\"\xbb\x01\n\rOrderResponse\x12%\n\x0corder_opened\x18\x01 \x01(\x0b\x32\x0f.jiji.rpc.Order\x12%\n\x0ctrade_opened\x18\x02 \x01(\x0b\x32\x0f.jiji.rpc.Order\x12-\n\rtrade_reduced\x18\x03 \x01(\x0b\x32\x16.jiji.rpc.PositionInfo\x12-\n\rtrades_closed\x18\x04 \x03(\x0b\x32\x16.jiji.rpc.PositionInfo\"\xae\x01\n\x0cPositionInfo\x12\x13\n\x0binternal_id\x18\x01 \x01(\t\x12\r\n\x05units\x18\x02 \x01(\x04\x12 \n\x05price\x18\x03 \x01(\x0b\x32\x11.jiji.rpc.Decimal\x12-\n\ttimestamp\x18\x04 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12)\n\x0eprofit_or_loss\x18\x05 \x01(\x0b\x32\x11.jiji.rpc.Decimal\"R\n\x12ModifyOrderRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\'\n\x0emodified_order\x18\x02 \x01(\x0b\x32\x0f.jiji.rpc.Order\">\n\x13ModifyOrderResponse\x12\'\n\x0emodified_order\x18\x01 \x01(\x0b\x32\x0f.jiji.rpc.Order\";\n\x12\x43\x61ncelOrderRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x10\n\x08order_id\x18\x02 \x01(\t\"?\n\x13\x43\x61ncelOrderResponse\x12(\n\x0f\x63\x61ncelled_order\x18\x01 \x01(\x0b\x32\x0f.jiji.rpc.Order\"[\n\x15ModifyPositionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12-\n\x11modified_position\x18\x02 \x01(\x0b\x32\x12.jiji.rpc.Position\"G\n\x16ModifyPositionResponse\x12-\n\x11modified_position\x18\x01 \x01(\x0b\x32\x12.jiji.rpc.Position\"@\n\x14\x43losePositionRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x13\n\x0bposition_id\x18\x02 \x01(\t\"H\n\x15\x43losePositionResponse\x12/\n\x0f\x63losed_position\x18\x01 \x01(\x0b\x32\x16.jiji.rpc.PositionInfo\"e\n+RetrieveEconomicCalendarInformationsRequest\x12\x13\n\x0binstance_id\x18\x01 \x01(\t\x12\x0e\n\x06period\x18\x02 \x01(\r\x12\x11\n\tpair_name\x18\x03 \x01(\t\"[\n\x1c\x45\x63onomicCalendarInformations\x12;\n\x0cinformations\x18\x01 \x03(\x0b\x32%.jiji.rpc.EconomicCalendarInformation\"\xf2\x01\n\x1b\x45\x63onomicCalendarInformation\x12\r\n\x05title\x18\x01 \x01(\t\x12-\n\ttimestamp\x18\x02 \x01(\x0b\x32\x1a.google.protobuf.Timestamp\x12\x0c\n\x04unit\x18\x03 \x01(\t\x12\x10\n\x08\x63urrency\x18\x04 \x01(\t\x12\x10\n\x08\x66orecast\x18\x05 \x01(\t\x12\x10\n\x08previous\x18\x06 \x01(\t\x12\x0e\n\x06\x61\x63tual\x18\x07 \x01(\t\x12\x0e\n\x06market\x18\x08 \x01(\t\x12\x0e\n\x06region\x18\t \x01(\t\x12!\n\x06impact\x18\n \x01(\x0b\x32\x11.jiji.rpc.Decimal2\x9f\x07\n\rBrokerService\x12>\n\nGetAccount\x12\x1b.jiji.rpc.GetAccountRequest\x1a\x11.jiji.rpc.Account\"\x00\x12\x43\n\x08GetPairs\x12\x19.jiji.rpc.GetPairsRequest\x1a\x1a.jiji.rpc.GetPairsResponse\"\x00\x12\x35\n\x07GetTick\x12\x18.jiji.rpc.GetTickRequest\x1a\x0e.jiji.rpc.Tick\"\x00\x12\x42\n\rRetrieveRates\x12\x1e.jiji.rpc.RetrieveRatesRequest\x1a\x0f.jiji.rpc.Rates\"\x00\x12\x44\n\x0cGetPositions\x12\x1d.jiji.rpc.GetPositionsRequest\x1a\x13.jiji.rpc.Positions\"\x00\x12;\n\tGetOrders\x12\x1a.jiji.rpc.GetOrdersRequest\x1a\x10.jiji.rpc.Orders\"\x00\x12:\n\x05Order\x12\x16.jiji.rpc.OrderRequest\x1a\x17.jiji.rpc.OrderResponse\"\x00\x12L\n\x0bModifyOrder\x12\x1c.jiji.rpc.ModifyOrderRequest\x1a\x1d.jiji.rpc.ModifyOrderResponse\"\x00\x12L\n\x0b\x43\x61ncelOrder\x12\x1c.jiji.rpc.CancelOrderRequest\x1a\x1d.jiji.rpc.CancelOrderResponse\"\x00\x12U\n\x0eModifyPosition\x12\x1f.jiji.rpc.ModifyPositionRequest\x1a .jiji.rpc.ModifyPositionResponse\"\x00\x12R\n\rClosePosition\x12\x1e.jiji.rpc.ClosePositionRequest\x1a\x1f.jiji.rpc.ClosePositionResponse\"\x00\x12\x87\x01\n$RetrieveEconomicCalendarInformations\x12\x35.jiji.rpc.RetrieveEconomicCalendarInformationsRequest\x1a&.jiji.rpc.EconomicCalendarInformations\"\x00\x62\x06proto3')
   ,
-  dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,agent__pb2.DESCRIPTOR,])
+  dependencies=[google_dot_protobuf_dot_timestamp__pb2.DESCRIPTOR,agent__pb2.DESCRIPTOR,primitives__pb2.DESCRIPTOR,])
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 
@@ -55,8 +56,8 @@ _GETPAIRSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=72,
-  serialized_end=110,
+  serialized_start=90,
+  serialized_end=128,
 )
 
 
@@ -86,8 +87,8 @@ _GETPAIRSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=112,
-  serialized_end=161,
+  serialized_start=130,
+  serialized_end=179,
 )
 
 
@@ -114,8 +115,8 @@ _PAIR = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='pip', full_name='jiji.rpc.Pair.pip', index=2,
-      number=3, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -128,15 +129,15 @@ _PAIR = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='precision', full_name='jiji.rpc.Pair.precision', index=4,
-      number=5, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='margin_rate', full_name='jiji.rpc.Pair.margin_rate', index=5,
-      number=6, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -152,8 +153,8 @@ _PAIR = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=163,
-  serialized_end=282,
+  serialized_start=182,
+  serialized_end=358,
 )
 
 
@@ -183,8 +184,8 @@ _GETTICKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=284,
-  serialized_end=321,
+  serialized_start=360,
+  serialized_end=397,
 )
 
 
@@ -242,8 +243,8 @@ _RETRIEVERATESREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=324,
-  serialized_end=498,
+  serialized_start=400,
+  serialized_end=574,
 )
 
 
@@ -273,8 +274,8 @@ _RATES = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=500,
-  serialized_end=538,
+  serialized_start=576,
+  serialized_end=614,
 )
 
 
@@ -346,8 +347,8 @@ _RATE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=541,
-  serialized_end=768,
+  serialized_start=617,
+  serialized_end=844,
 )
 
 
@@ -377,8 +378,8 @@ _GETACCOUNTREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=770,
-  serialized_end=810,
+  serialized_start=846,
+  serialized_end=886,
 )
 
 
@@ -405,29 +406,29 @@ _ACCOUNT = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='balance', full_name='jiji.rpc.Account.balance', index=2,
-      number=3, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='profit_or_loss', full_name='jiji.rpc.Account.profit_or_loss', index=3,
-      number=4, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='margin_used', full_name='jiji.rpc.Account.margin_used', index=4,
-      number=5, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='margin_rate', full_name='jiji.rpc.Account.margin_rate', index=5,
-      number=6, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -450,8 +451,8 @@ _ACCOUNT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=813,
-  serialized_end=999,
+  serialized_start=889,
+  serialized_end=1151,
 )
 
 
@@ -481,8 +482,8 @@ _GETPOSITIONSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1001,
-  serialized_end=1043,
+  serialized_start=1153,
+  serialized_end=1195,
 )
 
 
@@ -512,8 +513,8 @@ _POSITIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1045,
-  serialized_end=1095,
+  serialized_start=1197,
+  serialized_end=1247,
 )
 
 
@@ -561,43 +562,43 @@ _POSITION = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='profit_or_loss', full_name='jiji.rpc.Position.profit_or_loss', index=5,
-      number=6, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='max_drow_down', full_name='jiji.rpc.Position.max_drow_down', index=6,
-      number=7, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=7, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='entry_price', full_name='jiji.rpc.Position.entry_price', index=7,
-      number=8, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=8, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='current_price', full_name='jiji.rpc.Position.current_price', index=8,
-      number=9, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=9, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='exit_price', full_name='jiji.rpc.Position.exit_price', index=9,
-      number=10, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=10, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='current_counter_rate', full_name='jiji.rpc.Position.current_counter_rate', index=10,
-      number=11, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=11, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -634,8 +635,8 @@ _POSITION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1098,
-  serialized_end=1484,
+  serialized_start=1250,
+  serialized_end=1750,
 )
 
 
@@ -665,8 +666,8 @@ _GETORDERSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1486,
-  serialized_end=1525,
+  serialized_start=1752,
+  serialized_end=1791,
 )
 
 
@@ -696,8 +697,8 @@ _ORDERS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1527,
-  serialized_end=1568,
+  serialized_start=1793,
+  serialized_end=1834,
 )
 
 
@@ -752,8 +753,8 @@ _ORDER = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='price', full_name='jiji.rpc.Order.price', index=6,
-      number=7, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=7, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -766,29 +767,29 @@ _ORDER = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='lower_bound', full_name='jiji.rpc.Order.lower_bound', index=8,
-      number=9, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=9, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='upper_bound', full_name='jiji.rpc.Order.upper_bound', index=9,
-      number=10, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=10, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='stop_loss', full_name='jiji.rpc.Order.stop_loss', index=10,
-      number=11, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=11, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='take_profit', full_name='jiji.rpc.Order.take_profit', index=11,
-      number=12, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=12, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -811,8 +812,8 @@ _ORDER = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1571,
-  serialized_end=1883,
+  serialized_start=1837,
+  serialized_end=2244,
 )
 
 
@@ -825,29 +826,29 @@ _ORDERREQUEST_OPTION = _descriptor.Descriptor(
   fields=[
     _descriptor.FieldDescriptor(
       name='lower_bound', full_name='jiji.rpc.OrderRequest.Option.lower_bound', index=0,
-      number=1, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=1, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='upper_bound', full_name='jiji.rpc.OrderRequest.Option.upper_bound', index=1,
-      number=2, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=2, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='stop_loss', full_name='jiji.rpc.OrderRequest.Option.stop_loss', index=2,
-      number=3, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
     _descriptor.FieldDescriptor(
       name='take_profit', full_name='jiji.rpc.OrderRequest.Option.take_profit', index=3,
-      number=4, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=4, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -860,8 +861,8 @@ _ORDERREQUEST_OPTION = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='price', full_name='jiji.rpc.OrderRequest.Option.price', index=5,
-      number=6, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=6, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -884,8 +885,8 @@ _ORDERREQUEST_OPTION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2040,
-  serialized_end=2212,
+  serialized_start=2401,
+  serialized_end=2668,
 )
 
 _ORDERREQUEST = _descriptor.Descriptor(
@@ -949,8 +950,8 @@ _ORDERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1886,
-  serialized_end=2212,
+  serialized_start=2247,
+  serialized_end=2668,
 )
 
 
@@ -1001,8 +1002,8 @@ _ORDERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2215,
-  serialized_end=2402,
+  serialized_start=2671,
+  serialized_end=2858,
 )
 
 
@@ -1029,8 +1030,8 @@ _POSITIONINFO = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='price', full_name='jiji.rpc.PositionInfo.price', index=2,
-      number=3, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=3, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1043,8 +1044,8 @@ _POSITIONINFO = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='profit_or_loss', full_name='jiji.rpc.PositionInfo.profit_or_loss', index=4,
-      number=5, type=1, cpp_type=5, label=1,
-      has_default_value=False, default_value=float(0),
+      number=5, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1060,8 +1061,8 @@ _POSITIONINFO = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2405,
-  serialized_end=2541,
+  serialized_start=2861,
+  serialized_end=3035,
 )
 
 
@@ -1098,8 +1099,8 @@ _MODIFYORDERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2543,
-  serialized_end=2625,
+  serialized_start=3037,
+  serialized_end=3119,
 )
 
 
@@ -1129,8 +1130,8 @@ _MODIFYORDERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2627,
-  serialized_end=2689,
+  serialized_start=3121,
+  serialized_end=3183,
 )
 
 
@@ -1167,8 +1168,8 @@ _CANCELORDERREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2691,
-  serialized_end=2750,
+  serialized_start=3185,
+  serialized_end=3244,
 )
 
 
@@ -1198,8 +1199,8 @@ _CANCELORDERRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2752,
-  serialized_end=2815,
+  serialized_start=3246,
+  serialized_end=3309,
 )
 
 
@@ -1236,8 +1237,8 @@ _MODIFYPOSITIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2817,
-  serialized_end=2908,
+  serialized_start=3311,
+  serialized_end=3402,
 )
 
 
@@ -1267,8 +1268,8 @@ _MODIFYPOSITIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2910,
-  serialized_end=2981,
+  serialized_start=3404,
+  serialized_end=3475,
 )
 
 
@@ -1305,8 +1306,8 @@ _CLOSEPOSITIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2983,
-  serialized_end=3047,
+  serialized_start=3477,
+  serialized_end=3541,
 )
 
 
@@ -1336,8 +1337,8 @@ _CLOSEPOSITIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3049,
-  serialized_end=3121,
+  serialized_start=3543,
+  serialized_end=3615,
 )
 
 
@@ -1381,8 +1382,8 @@ _RETRIEVEECONOMICCALENDARINFORMATIONSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3123,
-  serialized_end=3224,
+  serialized_start=3617,
+  serialized_end=3718,
 )
 
 
@@ -1412,8 +1413,8 @@ _ECONOMICCALENDARINFORMATIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3226,
-  serialized_end=3317,
+  serialized_start=3720,
+  serialized_end=3811,
 )
 
 
@@ -1489,8 +1490,8 @@ _ECONOMICCALENDARINFORMATION = _descriptor.Descriptor(
       options=None),
     _descriptor.FieldDescriptor(
       name='impact', full_name='jiji.rpc.EconomicCalendarInformation.impact', index=9,
-      number=10, type=2, cpp_type=6, label=1,
-      has_default_value=False, default_value=float(0),
+      number=10, type=11, cpp_type=10, label=1,
+      has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       options=None),
@@ -1506,11 +1507,14 @@ _ECONOMICCALENDARINFORMATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3320,
-  serialized_end=3543,
+  serialized_start=3814,
+  serialized_end=4056,
 )
 
 _GETPAIRSRESPONSE.fields_by_name['pairs'].message_type = _PAIR
+_PAIR.fields_by_name['pip'].message_type = primitives__pb2._DECIMAL
+_PAIR.fields_by_name['precision'].message_type = primitives__pb2._DECIMAL
+_PAIR.fields_by_name['margin_rate'].message_type = primitives__pb2._DECIMAL
 _RETRIEVERATESREQUEST.fields_by_name['start_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _RETRIEVERATESREQUEST.fields_by_name['end_time'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _RATES.fields_by_name['rates'].message_type = _RATE
@@ -1519,14 +1523,34 @@ _RATE.fields_by_name['close'].message_type = agent__pb2._TICK_VALUE
 _RATE.fields_by_name['high'].message_type = agent__pb2._TICK_VALUE
 _RATE.fields_by_name['low'].message_type = agent__pb2._TICK_VALUE
 _RATE.fields_by_name['timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ACCOUNT.fields_by_name['balance'].message_type = primitives__pb2._DECIMAL
+_ACCOUNT.fields_by_name['profit_or_loss'].message_type = primitives__pb2._DECIMAL
+_ACCOUNT.fields_by_name['margin_used'].message_type = primitives__pb2._DECIMAL
+_ACCOUNT.fields_by_name['margin_rate'].message_type = primitives__pb2._DECIMAL
 _ACCOUNT.fields_by_name['updated_at'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _POSITIONS.fields_by_name['positions'].message_type = _POSITION
+_POSITION.fields_by_name['profit_or_loss'].message_type = primitives__pb2._DECIMAL
+_POSITION.fields_by_name['max_drow_down'].message_type = primitives__pb2._DECIMAL
+_POSITION.fields_by_name['entry_price'].message_type = primitives__pb2._DECIMAL
+_POSITION.fields_by_name['current_price'].message_type = primitives__pb2._DECIMAL
+_POSITION.fields_by_name['exit_price'].message_type = primitives__pb2._DECIMAL
+_POSITION.fields_by_name['current_counter_rate'].message_type = primitives__pb2._DECIMAL
 _POSITION.fields_by_name['entered_at'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _POSITION.fields_by_name['exited_at'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _POSITION.fields_by_name['updated_at'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _ORDERS.fields_by_name['orders'].message_type = _ORDER
 _ORDER.fields_by_name['last_modified'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ORDER.fields_by_name['price'].message_type = primitives__pb2._DECIMAL
 _ORDER.fields_by_name['expiry'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ORDER.fields_by_name['lower_bound'].message_type = primitives__pb2._DECIMAL
+_ORDER.fields_by_name['upper_bound'].message_type = primitives__pb2._DECIMAL
+_ORDER.fields_by_name['stop_loss'].message_type = primitives__pb2._DECIMAL
+_ORDER.fields_by_name['take_profit'].message_type = primitives__pb2._DECIMAL
+_ORDERREQUEST_OPTION.fields_by_name['lower_bound'].message_type = primitives__pb2._DECIMAL
+_ORDERREQUEST_OPTION.fields_by_name['upper_bound'].message_type = primitives__pb2._DECIMAL
+_ORDERREQUEST_OPTION.fields_by_name['stop_loss'].message_type = primitives__pb2._DECIMAL
+_ORDERREQUEST_OPTION.fields_by_name['take_profit'].message_type = primitives__pb2._DECIMAL
+_ORDERREQUEST_OPTION.fields_by_name['price'].message_type = primitives__pb2._DECIMAL
 _ORDERREQUEST_OPTION.fields_by_name['expiry'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
 _ORDERREQUEST_OPTION.containing_type = _ORDERREQUEST
 _ORDERREQUEST.fields_by_name['option'].message_type = _ORDERREQUEST_OPTION
@@ -1534,7 +1558,9 @@ _ORDERRESPONSE.fields_by_name['order_opened'].message_type = _ORDER
 _ORDERRESPONSE.fields_by_name['trade_opened'].message_type = _ORDER
 _ORDERRESPONSE.fields_by_name['trade_reduced'].message_type = _POSITIONINFO
 _ORDERRESPONSE.fields_by_name['trades_closed'].message_type = _POSITIONINFO
+_POSITIONINFO.fields_by_name['price'].message_type = primitives__pb2._DECIMAL
 _POSITIONINFO.fields_by_name['timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_POSITIONINFO.fields_by_name['profit_or_loss'].message_type = primitives__pb2._DECIMAL
 _MODIFYORDERREQUEST.fields_by_name['modified_order'].message_type = _ORDER
 _MODIFYORDERRESPONSE.fields_by_name['modified_order'].message_type = _ORDER
 _CANCELORDERRESPONSE.fields_by_name['cancelled_order'].message_type = _ORDER
@@ -1543,6 +1569,7 @@ _MODIFYPOSITIONRESPONSE.fields_by_name['modified_position'].message_type = _POSI
 _CLOSEPOSITIONRESPONSE.fields_by_name['closed_position'].message_type = _POSITIONINFO
 _ECONOMICCALENDARINFORMATIONS.fields_by_name['informations'].message_type = _ECONOMICCALENDARINFORMATION
 _ECONOMICCALENDARINFORMATION.fields_by_name['timestamp'].message_type = google_dot_protobuf_dot_timestamp__pb2._TIMESTAMP
+_ECONOMICCALENDARINFORMATION.fields_by_name['impact'].message_type = primitives__pb2._DECIMAL
 DESCRIPTOR.message_types_by_name['GetPairsRequest'] = _GETPAIRSREQUEST
 DESCRIPTOR.message_types_by_name['GetPairsResponse'] = _GETPAIRSRESPONSE
 DESCRIPTOR.message_types_by_name['Pair'] = _PAIR

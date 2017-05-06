@@ -13,16 +13,16 @@ module Jiji::Rpc::Converters
       end)
     end
 
-    def convert_orders_options_from_pb(option)
+    def convert_order_options_from_pb(option)
       return nil unless option
       {
-        stop_loss:     number_or_nil(option.stop_loss),
-        take_profit:   number_or_nil(option.take_profit),
+        stop_loss:     convert_decimal_from_pb(option.stop_loss),
+        take_profit:   convert_decimal_from_pb(option.take_profit),
         trailing_stop: number_or_nil(option.trailing_stop),
-        price:         number_or_nil(option.price),
+        price:         convert_decimal_from_pb(option.price),
         expiry:        convert_timestamp_from_pb(option.expiry),
-        lower_bound:   number_or_nil(option.lower_bound),
-        upper_bound:   number_or_nil(option.upper_bound)
+        lower_bound:   convert_decimal_from_pb(option.lower_bound),
+        upper_bound:   convert_decimal_from_pb(option.upper_bound)
       }
     end
 
@@ -49,28 +49,41 @@ module Jiji::Rpc::Converters
 
     def convert_order_to_pb(order)
       return nil unless order
-      Order.new(convert_hash_values_to_pb(order.to_h))
+      hash = order.to_h
+      convert_numeric_to_pb_decimal(hash, [
+        :price,
+        :lower_bound,
+        :upper_bound,
+        :stop_loss,
+        :take_profit
+      ])
+      Order.new(convert_hash_values_to_pb(hash))
     end
 
     def convert_position_info_to_pb(position)
       return nil unless position
-      PositionInfo.new(convert_hash_values_to_pb(position.to_h))
+      hash = position.to_h
+      convert_numeric_to_pb_decimal(hash, [
+        :price,
+        :profit_or_loss
+      ])
+      PositionInfo.new(convert_hash_values_to_pb(hash))
     end
 
     private
 
     def update_order_properties(converted, order)
       converted.units = number_or_nil(order.units)
-      converted.price = number_or_nil(order.price)
+      converted.price = convert_decimal_from_pb(order.price)
       converted.expiry = convert_timestamp_from_pb(order.expiry)
-      converted.lower_bound = number_or_nil(order.lower_bound)
-      converted.upper_bound = number_or_nil(order.upper_bound)
+      converted.lower_bound = convert_decimal_from_pb(order.lower_bound)
+      converted.upper_bound = convert_decimal_from_pb(order.upper_bound)
       update_colsing_options(converted, order)
     end
 
     def update_colsing_options(converted, order)
-      converted.stop_loss = number_or_nil(order.stop_loss)
-      converted.take_profit = number_or_nil(order.take_profit)
+      converted.stop_loss = convert_decimal_from_pb(order.stop_loss)
+      converted.take_profit = convert_decimal_from_pb(order.take_profit)
       converted.trailing_stop = number_or_nil(order.trailing_stop)
     end
   end

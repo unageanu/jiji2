@@ -55,14 +55,14 @@ describe Jiji::Rpc::Converters::RateConverter do
       )
       converted = converter.convert_rate_to_pb(rate)
       expect(converted.pair).to eq('EURJPY')
-      expect(converted.open.bid).to eq(101)
-      expect(converted.open.ask).to eq(101.003)
-      expect(converted.close.bid).to eq(102)
-      expect(converted.close.ask).to eq(102.003)
-      expect(converted.high.bid).to eq(110)
-      expect(converted.high.ask).to eq(110.003)
-      expect(converted.low.bid).to eq(90)
-      expect(converted.low.ask).to eq(90.003)
+      expect(converted.open.bid.value).to eq('101.0')
+      expect(converted.open.ask.value).to eq('101.003')
+      expect(converted.close.bid.value).to eq('102.0')
+      expect(converted.close.ask.value).to eq('102.003')
+      expect(converted.high.bid.value).to eq('110.0')
+      expect(converted.high.ask.value).to eq('110.003')
+      expect(converted.low.bid.value).to eq('90.0')
+      expect(converted.low.ask.value).to eq('90.003')
       expect(converted.timestamp.seconds).to eq 1_388_502_000
       expect(converted.timestamp.nanos).to be 0
     end

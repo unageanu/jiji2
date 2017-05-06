@@ -5,6 +5,7 @@ require 'google/protobuf'
 
 require 'google/protobuf/empty_pb'
 require 'google/protobuf/timestamp_pb'
+require 'primitives_pb'
 Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "jiji.rpc.Tick" do
     optional :timestamp, :message, 1, "google.protobuf.Timestamp"
@@ -12,8 +13,8 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   end
   add_message "jiji.rpc.Tick.Value" do
     optional :pair, :string, 1
-    optional :bid, :double, 2
-    optional :ask, :double, 3
+    optional :bid, :message, 2, "jiji.rpc.Decimal"
+    optional :ask, :message, 3, "jiji.rpc.Decimal"
   end
   add_message "jiji.rpc.NextTickRequest" do
     optional :instance_id, :string, 1

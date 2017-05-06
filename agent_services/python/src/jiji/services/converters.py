@@ -8,7 +8,6 @@ from jiji.model.tick import Tick, Value
 from jiji.model.pairs import Pair
 from jiji.model.rate import Rate
 from jiji.model.account import Account
-from jiji.model.exceptions import illigal_argument
 
 def convert_agent_property_info(property_info):
     return AgentClasses.AgentClass.Property(

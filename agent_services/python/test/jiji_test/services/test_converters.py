@@ -1,5 +1,4 @@
 import unittest
-from datetime import datetime
 from decimal import Decimal
 
 from jiji.services.converters import convert_decimal_from, convert_decimal_to

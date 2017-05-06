@@ -1,6 +1,7 @@
 # coding: utf-8
 
 require 'grpc'
+require 'jiji/rpc/converters/tick_converter'
 
 module Jiji::Rpc::Converters
   module PrimitiveConverter
@@ -20,19 +21,10 @@ module Jiji::Rpc::Converters
     end
 
     def convert_hash_value_to_pb(value)
-      if value.is_a? Time
-        convert_timestamp_to_pb(value)
-      elsif value.is_a? Symbol
-        value.to_s
-      elsif value.is_a? Jiji::Model::Trading::Tick::Value
-        convert_tick_value_to_pb(value, nil)
-      elsif value.is_a? BigDecimal
-        convert_decimal_to_pb(value)
-      elsif value.is_a?(Float)
-        convert_decimal_to_pb(BigDecimal.new(value, 16))
-      else
-        value
+      converter = hash_value_converters.find do |c|
+        c.target?(value)
       end
+      converter ? converter.convert(value) : value
     end
 
     def convert_numeric_to_pb_decimal(hash, keys)
@@ -88,5 +80,93 @@ module Jiji::Rpc::Converters
       return nil if string == default_value
       string.to_sym
     end
+
+    private
+
+    def hash_value_converters
+      @hash_value_converters ||= [
+        TimeConverter.new,
+        SymbolConverter.new,
+        TickValueConverter.new,
+        BigDecimalConverter.new,
+        FloatConverter.new
+      ]
+    end
+  end
+
+  class ValueConverter
+
+    include PrimitiveConverter
+
+    def target?(value)
+      false
+    end
+
+    def convert(value)
+      value
+    end
+
+  end
+
+  class TimeConverter < ValueConverter
+
+    def target?(value)
+      value.is_a? Time
+    end
+
+    def convert(value)
+      convert_timestamp_to_pb(value)
+    end
+
+  end
+
+  class SymbolConverter < ValueConverter
+
+    def target?(value)
+      value.is_a? Symbol
+    end
+
+    def convert(value)
+      value.to_s
+    end
+
+  end
+
+  class TickValueConverter < ValueConverter
+
+    include TickConverter
+
+    def target?(value)
+      value.is_a? Jiji::Model::Trading::Tick::Value
+    end
+
+    def convert(value)
+      convert_tick_value_to_pb(value, nil)
+    end
+
+  end
+
+  class BigDecimalConverter < ValueConverter
+
+    def target?(value)
+      value.is_a? BigDecimal
+    end
+
+    def convert(value)
+      convert_decimal_to_pb(value)
+    end
+
+  end
+
+  class FloatConverter < ValueConverter
+
+    def target?(value)
+      value.is_a? Float
+    end
+
+    def convert(value)
+      convert_decimal_to_pb(BigDecimal.new(value, 16))
+    end
+
   end
 end

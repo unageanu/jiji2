@@ -39,7 +39,7 @@ describe Jiji::Rpc::Converters::OrderConverter do
       expect(converted.sell_or_buy).to eq 'sell'
       expect(converted.internal_id).to eq '2'
       expect(converted.type).to eq 'limit'
-      expect(converted.last_modified.seconds).to eq 1_491_015_699
+      expect(converted.last_modified.seconds).to eq 1_491_048_099
       expect(converted.last_modified.nanos).to eq 0
       expect(converted.units).to eq nil
       expect(converted.price).to eq nil
@@ -103,7 +103,7 @@ describe Jiji::Rpc::Converters::OrderConverter do
       expect(converted.sell_or_buy).to eq :sell
       expect(converted.internal_id).to eq '2'
       expect(converted.type).to eq :limit
-      expect(converted.last_modified).to eq Time.new(2017, 4, 1, 12, 1, 39)
+      expect(converted.last_modified).to eq Time.utc(2017, 4, 1, 12, 1, 39)
       expect(converted.units).to eq nil
       expect(converted.price).to eq nil
       expect(converted.expiry).to eq nil
@@ -137,7 +137,7 @@ describe Jiji::Rpc::Converters::OrderConverter do
       converted = converter.convert_order_result_to_pb(order_result)
       expect(converted.order_opened).to eq nil
       expect(converted.trade_opened.pair_name).to eq 'USDJPY'
-      expect(converted.trade_opened.last_modified.seconds).to eq 1_491_015_699
+      expect(converted.trade_opened.last_modified.seconds).to eq 1_491_048_099
       expect(converted.trade_opened.last_modified.nanos).to eq 0
       expect(converted.trade_opened.units).to eq nil
       expect(converted.trade_reduced).to eq nil
@@ -221,6 +221,6 @@ describe Jiji::Rpc::Converters::OrderConverter do
 
   def create_minimum_setting_order
     Jiji::Model::Trading::Order.new(
-      :USDJPY, '2', :sell, :limit, Time.new(2017, 4, 1, 12, 1, 39))
+      :USDJPY, '2', :sell, :limit, Time.utc(2017, 4, 1, 12, 1, 39))
   end
 end

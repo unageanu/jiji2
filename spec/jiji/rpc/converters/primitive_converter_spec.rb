@@ -13,8 +13,8 @@ describe Jiji::Rpc::Converters::PrimitiveConverter do
 
   describe '#convert_timestamp_to_pb' do
     it 'converts Time to Google::Protobuf::Timestamp' do
-      converted = converter.convert_timestamp_to_pb(Time.new(2016, 4, 5))
-      expect(converted.seconds).to eq 1_459_782_000
+      converted = converter.convert_timestamp_to_pb(Time.utc(2016, 4, 5))
+      expect(converted.seconds).to eq 1_459_814_400
       expect(converted.nanos).to be 0
     end
     it 'returns nil when a time is nil' do
@@ -25,9 +25,9 @@ describe Jiji::Rpc::Converters::PrimitiveConverter do
 
   describe '#convert_timestamp_from_pb' do
     it 'converts Google::Protobuf::timestamp to Time' do
-      time = Google::Protobuf::Timestamp.new(seconds: 1_459_782_000, nanos: 0)
+      time = Google::Protobuf::Timestamp.new(seconds: 1_459_814_400, nanos: 0)
       converted = converter.convert_timestamp_from_pb(time)
-      expect(converted).to eq Time.new(2016, 4, 5)
+      expect(converted).to eq Time.utc(2016, 4, 5)
     end
     it 'returns nil when a time is nil' do
       converted = converter.convert_timestamp_from_pb(nil)
@@ -96,9 +96,9 @@ describe Jiji::Rpc::Converters::PrimitiveConverter do
   describe '#convert_hash_values_to_pb' do
     it 'converts Google::Protobuf::timestamp to Time' do
       converted = converter.convert_hash_values_to_pb({
-        time: Time.new(2016, 4, 5)
+        time: Time.utc(2016, 4, 5)
       })
-      expect(converted[:time].seconds).to eq 1_459_782_000
+      expect(converted[:time].seconds).to eq 1_459_814_400
       expect(converted[:time].nanos).to be 0
     end
     it 'converts Symbol to String' do

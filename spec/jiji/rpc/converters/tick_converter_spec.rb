@@ -16,8 +16,8 @@ describe Jiji::Rpc::Converters::TickConverter do
       converted = converter.convert_tick_to_pb(Jiji::Model::Trading::Tick.new({
         EURJPY: Jiji::Model::Trading::Tick::Value.new(112.1, 112.34),
         USDJPY: Jiji::Model::Trading::Tick::Value.new(102.1, 102.34)
-      }, Time.new(2017, 4, 15, 12, 34, 20)))
-      expect(converted.timestamp.seconds).to eq 1_492_227_260
+      }, Time.utc(2017, 4, 15, 12, 34, 20)))
+      expect(converted.timestamp.seconds).to eq 1_492_259_660
       expect(converted.timestamp.nanos).to be 0
 
       expect(converted.values.length).to be 2

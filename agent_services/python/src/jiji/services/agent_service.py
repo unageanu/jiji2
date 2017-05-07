@@ -9,7 +9,8 @@ from jiji.model.agent_pool import AgentPool
 from jiji.model.agent_builder import AgentBuilder
 from jiji.model.state_serializer import StateSerializer
 from jiji.services.abstract_service import AbstractService
-from jiji.services.converters import convert_tick, convert_properties, convert_agent_property_info
+from jiji.services.converters import convert_tick, convert_properties, \
+    convert_agent_property_info, convert_optional_string_to
 
 class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
 
@@ -116,10 +117,11 @@ class AgentService(AbstractService, agent_pb2_grpc.AgentServiceServicer):
         try:
             instance = self.agent_pool.get_instance(request.instance_id)
             message = instance.execute_action(request.action_id)
-            return agent_pb2.SendActionResponse(message=message)
+            return agent_pb2.SendActionResponse(
+                message=convert_optional_string_to(message))
         except Exception as error: # pylint: disable=broad-except
             self._handle_error(error, context)
-        return agent_pb2.SendActionResponse(message='ERROR')
+        return agent_pb2.SendActionResponse()
 
     def __extract_agent_class(self, name):
         agent_class = self.agent_registry.get_agent_class(name)

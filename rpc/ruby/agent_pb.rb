@@ -85,7 +85,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :action_id, :string, 2
   end
   add_message "jiji.rpc.SendActionResponse" do
-    optional :message, :string, 1
+    optional :message, :message, 1, "jiji.rpc.OptionalString"
   end
 end
 

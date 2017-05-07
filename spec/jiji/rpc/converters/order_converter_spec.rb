@@ -24,7 +24,7 @@ describe Jiji::Rpc::Converters::OrderConverter do
       expect(converted.type).to eq 'market'
       expect(converted.last_modified.seconds).to eq 10
       expect(converted.last_modified.nanos).to eq 0
-      expect(converted.units).to eq 100_000
+      expect(converted.units.value).to eq 100_000
       expect(converted.price.value).to eq '110.0'
       expect(converted.expiry.seconds).to eq 20
       expect(converted.expiry.nanos).to eq 0
@@ -32,7 +32,7 @@ describe Jiji::Rpc::Converters::OrderConverter do
       expect(converted.upper_bound.value).to eq '111.0'
       expect(converted.stop_loss.value).to eq '108.0'
       expect(converted.take_profit.value).to eq '112.0'
-      expect(converted.trailing_stop).to eq 10
+      expect(converted.trailing_stop.value).to eq 10
 
       converted = converter.convert_order_to_pb(create_minimum_setting_order)
       expect(converted.pair_name).to eq 'USDJPY'
@@ -41,14 +41,14 @@ describe Jiji::Rpc::Converters::OrderConverter do
       expect(converted.type).to eq 'limit'
       expect(converted.last_modified.seconds).to eq 1_491_015_699
       expect(converted.last_modified.nanos).to eq 0
-      expect(converted.units).to eq 0
+      expect(converted.units).to eq nil
       expect(converted.price).to eq nil
       expect(converted.expiry).to eq nil
       expect(converted.lower_bound).to eq nil
       expect(converted.upper_bound).to eq nil
       expect(converted.stop_loss).to eq nil
       expect(converted.take_profit).to eq nil
-      expect(converted.trailing_stop).to eq 0
+      expect(converted.trailing_stop).to eq nil
     end
     it 'returns nil when an order is nil' do
       converted = converter.convert_order_to_pb(nil)
@@ -127,7 +127,7 @@ describe Jiji::Rpc::Converters::OrderConverter do
       expect(converted.order_opened.pair_name).to eq 'EURJPY'
       expect(converted.order_opened.last_modified.seconds).to eq 10
       expect(converted.order_opened.last_modified.nanos).to eq 0
-      expect(converted.order_opened.units).to eq 100_000
+      expect(converted.order_opened.units.value).to eq 100_000
       expect(converted.trade_opened).to eq nil
       expect(converted.trade_reduced).to eq nil
       expect(converted.trades_closed).to eq []
@@ -139,7 +139,7 @@ describe Jiji::Rpc::Converters::OrderConverter do
       expect(converted.trade_opened.pair_name).to eq 'USDJPY'
       expect(converted.trade_opened.last_modified.seconds).to eq 1_491_015_699
       expect(converted.trade_opened.last_modified.nanos).to eq 0
-      expect(converted.trade_opened.units).to eq 0
+      expect(converted.trade_opened.units).to eq nil
       expect(converted.trade_reduced).to eq nil
       expect(converted.trades_closed).to eq []
 
@@ -185,7 +185,7 @@ describe Jiji::Rpc::Converters::OrderConverter do
         upper_bound:   Jiji::Rpc::Decimal.new(value: '101'),
         stop_loss:     Jiji::Rpc::Decimal.new(value: '103'),
         take_profit:   Jiji::Rpc::Decimal.new(value: '104'),
-        trailing_stop: 10,
+        trailing_stop: Jiji::Rpc::OptionalUInt32.new(value: 10),
         price:         Jiji::Rpc::Decimal.new(value: '105'),
         expiry:        Google::Protobuf::Timestamp.new(
           seconds: 100, nanos: 0)

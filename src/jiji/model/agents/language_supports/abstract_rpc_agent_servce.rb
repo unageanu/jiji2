@@ -104,7 +104,7 @@ module Jiji::Model::Agents::LanguageSupports
         instance_id: instance_id,
         action_id:   action
       })
-      stub.send_action(request).message
+      convert_optional_string_from_pb(stub.send_action(request).message)
     end
 
     private

@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   name='primitives.proto',
   package='jiji.rpc',
   syntax='proto3',
-  serialized_pb=_b('\n\x10primitives.proto\x12\x08jiji.rpc\"\x18\n\x07\x44\x65\x63imal\x12\r\n\x05value\x18\x01 \x01(\tb\x06proto3')
+  serialized_pb=_b('\n\x10primitives.proto\x12\x08jiji.rpc\"\x18\n\x07\x44\x65\x63imal\x12\r\n\x05value\x18\x01 \x01(\t\"\x1f\n\x0eOptionalString\x12\r\n\x05value\x18\x01 \x01(\t\"\x1f\n\x0eOptionalUInt32\x12\r\n\x05value\x18\x01 \x01(\r\"\x1f\n\x0eOptionalUInt64\x12\r\n\x05value\x18\x01 \x01(\x04\x62\x06proto3')
 )
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
@@ -56,7 +56,103 @@ _DECIMAL = _descriptor.Descriptor(
   serialized_end=54,
 )
 
+
+_OPTIONALSTRING = _descriptor.Descriptor(
+  name='OptionalString',
+  full_name='jiji.rpc.OptionalString',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='jiji.rpc.OptionalString.value', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=_b("").decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=56,
+  serialized_end=87,
+)
+
+
+_OPTIONALUINT32 = _descriptor.Descriptor(
+  name='OptionalUInt32',
+  full_name='jiji.rpc.OptionalUInt32',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='jiji.rpc.OptionalUInt32.value', index=0,
+      number=1, type=13, cpp_type=3, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=89,
+  serialized_end=120,
+)
+
+
+_OPTIONALUINT64 = _descriptor.Descriptor(
+  name='OptionalUInt64',
+  full_name='jiji.rpc.OptionalUInt64',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='value', full_name='jiji.rpc.OptionalUInt64.value', index=0,
+      number=1, type=4, cpp_type=4, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      options=None),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=122,
+  serialized_end=153,
+)
+
 DESCRIPTOR.message_types_by_name['Decimal'] = _DECIMAL
+DESCRIPTOR.message_types_by_name['OptionalString'] = _OPTIONALSTRING
+DESCRIPTOR.message_types_by_name['OptionalUInt32'] = _OPTIONALUINT32
+DESCRIPTOR.message_types_by_name['OptionalUInt64'] = _OPTIONALUINT64
 
 Decimal = _reflection.GeneratedProtocolMessageType('Decimal', (_message.Message,), dict(
   DESCRIPTOR = _DECIMAL,
@@ -64,6 +160,27 @@ Decimal = _reflection.GeneratedProtocolMessageType('Decimal', (_message.Message,
   # @@protoc_insertion_point(class_scope:jiji.rpc.Decimal)
   ))
 _sym_db.RegisterMessage(Decimal)
+
+OptionalString = _reflection.GeneratedProtocolMessageType('OptionalString', (_message.Message,), dict(
+  DESCRIPTOR = _OPTIONALSTRING,
+  __module__ = 'primitives_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.OptionalString)
+  ))
+_sym_db.RegisterMessage(OptionalString)
+
+OptionalUInt32 = _reflection.GeneratedProtocolMessageType('OptionalUInt32', (_message.Message,), dict(
+  DESCRIPTOR = _OPTIONALUINT32,
+  __module__ = 'primitives_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.OptionalUInt32)
+  ))
+_sym_db.RegisterMessage(OptionalUInt32)
+
+OptionalUInt64 = _reflection.GeneratedProtocolMessageType('OptionalUInt64', (_message.Message,), dict(
+  DESCRIPTOR = _OPTIONALUINT64,
+  __module__ = 'primitives_pb2'
+  # @@protoc_insertion_point(class_scope:jiji.rpc.OptionalUInt64)
+  ))
+_sym_db.RegisterMessage(OptionalUInt64)
 
 
 try:

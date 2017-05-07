@@ -239,7 +239,7 @@ SOURCE
                                     action_id:   'get_properties'
       )).message
 
-      expect(message).to eq 'aaaa_'
+      expect(message.value).to eq 'aaaa_'
     end
 
     it 'raises an error if an unknown agent class is specified' do
@@ -353,7 +353,7 @@ SOURCE
                                     action_id:   'get_last_tick'
       )).message
 
-      expect(message).to eq'112_112.3_2017-01-02 04:02:34+00:00'
+      expect(message.value).to eq'112_112.3_2017-01-02 04:02:34+00:00'
 
       date = DateTime.new(2017, 1, 1, 19, 2, 49, 0)
       request = Jiji::Rpc::NextTickRequest.new(
@@ -374,7 +374,7 @@ SOURCE
                                     action_id:   'get_last_tick'
       )).message
 
-      expect(message).to eq'113_113.3_2017-01-02 04:02:49+00:00'
+      expect(message.value).to eq'113_113.3_2017-01-02 04:02:49+00:00'
     end
 
     it 'raises an error if an instance is not found.' do
@@ -433,7 +433,7 @@ SOURCE
                                     action_id:   'get_properties'
       )).message
 
-      expect(message).to eq 'a2_b2'
+      expect(message.value).to eq 'a2_b2'
     end
 
     it 'raises an error if an instance is not found.' do

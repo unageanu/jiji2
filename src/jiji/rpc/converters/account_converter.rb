@@ -9,7 +9,7 @@ module Jiji::Rpc::Converters
     def convert_account_to_pb(account)
       return nil unless account
       hash = account.to_h
-      convert_numeric_to_pb_decimal(hash, [
+      convert_numerics_to_pb_decimal(hash, [
         :balance,
         :profit_or_loss,
         :margin_used,

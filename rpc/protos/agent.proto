@@ -122,5 +122,5 @@ message SendActionRequest{
   string action_id = 2;
 }
 message SendActionResponse {
-  string message = 1;
+  OptionalString message = 1;
 }

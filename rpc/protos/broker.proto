@@ -118,14 +118,14 @@ message Order {
   string internal_id = 3;
   string type = 4;
   google.protobuf.Timestamp last_modified = 5;
-  uint64 units = 6;
+  OptionalUInt64 units = 6;
   Decimal price = 7;
   google.protobuf.Timestamp expiry = 8;
   Decimal lower_bound = 9;
   Decimal upper_bound = 10;
   Decimal stop_loss = 11;
   Decimal take_profit = 12;
-  uint32 trailing_stop = 13;
+  OptionalUInt32 trailing_stop = 13;
 }
 
 message OrderRequest {
@@ -141,7 +141,7 @@ message OrderRequest {
     Decimal upper_bound = 2;
     Decimal stop_loss = 3;
     Decimal take_profit = 4;
-    uint32 trailing_stop = 5;
+    OptionalUInt32 trailing_stop = 5;
     Decimal price = 6;
     google.protobuf.Timestamp expiry = 7;
   }
@@ -198,7 +198,7 @@ message ClosePositionResponse {
 message RetrieveEconomicCalendarInformationsRequest {
   string instance_id = 1;
   uint32 period = 2;
-  string pair_name = 3;
+  OptionalString pair_name = 3;
 }
 message EconomicCalendarInformations {
   repeated EconomicCalendarInformation informations = 1;

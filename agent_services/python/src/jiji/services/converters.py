@@ -1,7 +1,7 @@
 from datetime import datetime
 from decimal import Decimal
 from agent_pb2 import AgentClasses
-from primitives_pb2 import Decimal as RpcDcecimal
+from primitives_pb2 import Decimal as RpcDcecimal, OptionalString, OptionalUInt32, OptionalUInt64
 from google.protobuf import timestamp_pb2  # pylint: disable=no-name-in-module
 
 from jiji.model.tick import Tick, Value
@@ -58,6 +58,24 @@ def convert_timestamp_from(pb_timestamp):
 
 def convert_timestamp_to(timestamp):
     return timestamp_pb2.Timestamp(seconds=int(timestamp.timestamp()), nanos=0)
+
+def convert_optional_string_from(pb_optional_string):
+    return None if (pb_optional_string is None) else pb_optional_string.value
+
+def convert_optional_string_to(string):
+    return None if (string is None) else OptionalString(value=string)
+
+def convert_optional_int32_from(pb_optional_integer):
+    return None if (pb_optional_integer is None) else pb_optional_integer.value
+
+def convert_optional_int32_to(integer):
+    return None if (integer is None) else OptionalUInt32(value=integer)
+
+def convert_optional_int64_from(pb_optional_integer):
+    return None if (pb_optional_integer is None) else pb_optional_integer.value
+
+def convert_optional_int64_to(integer):
+    return None if (integer is None) else OptionalUInt64(value=integer)
 
 def convert_account(pb_account):
     return Account(pb_account.account_id, pb_account.account_currency, \

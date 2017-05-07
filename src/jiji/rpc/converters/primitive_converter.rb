@@ -27,12 +27,20 @@ module Jiji::Rpc::Converters
       converter ? converter.convert(value) : value
     end
 
-    def convert_numeric_to_pb_decimal(hash, keys)
+    def convert_numerics_to_pb_decimal(hash, keys)
       keys.each do |k|
         value = hash[k]
         next if value.nil?
         value = BigDecimal.new(value, 16) unless value.is_a?(BigDecimal)
         hash[k] = convert_decimal_to_pb(value)
+      end
+    end
+
+    def convert_strings_to_optional_string(hash, keys)
+      keys.each do |k|
+        value = hash[k]
+        next if value.nil?
+        hash[k] = convert_optional_string_to_pb(value)
       end
     end
 
@@ -57,6 +65,36 @@ module Jiji::Rpc::Converters
       BigDecimal.new(decimal.value)
     end
 
+    def convert_optional_string_to_pb(string)
+      return nil unless string
+      Jiji::Rpc::OptionalString.new(value: string)
+    end
+
+    def convert_optional_string_from_pb(string)
+      return nil unless string
+      string.value
+    end
+
+    def convert_optional_uint32_to_pb(int)
+      return nil unless int
+      Jiji::Rpc::OptionalUInt32.new(value: int)
+    end
+
+    def convert_optional_uint32_from_pb(int)
+      return nil unless int
+      int.value
+    end
+
+    def convert_optional_uint64_to_pb(int)
+      return nil unless int
+      Jiji::Rpc::OptionalUInt64.new(value: int)
+    end
+
+    def convert_optional_uint64_from_pb(int)
+      return nil unless int
+      int.value
+    end
+
     def convert_property_settings_to_pb(property_settings)
       return [] unless property_settings
       property_settings.map do |item|
@@ -66,20 +104,20 @@ module Jiji::Rpc::Converters
       end
     end
 
-    def number_or_nil(number, default_value = 0)
-      return nil if number == default_value
-      number
-    end
-
-    def string_or_nil(string, default_value = '')
-      return nil if string == default_value
-      string
-    end
-
-    def symbol_or_nil(string, default_value = '')
-      return nil if string == default_value
-      string.to_sym
-    end
+    # def number_or_nil(number, default_value = 0)
+    #   return nil if number == default_value
+    #   number
+    # end
+    #
+    # def string_or_nil(string, default_value = '')
+    #   return nil if string == default_value
+    #   string
+    # end
+    #
+    # def symbol_or_nil(string, default_value = '')
+    #   return nil if string == default_value
+    #   string.to_sym
+    # end
 
     private
 

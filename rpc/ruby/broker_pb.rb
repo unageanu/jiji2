@@ -89,14 +89,14 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :internal_id, :string, 3
     optional :type, :string, 4
     optional :last_modified, :message, 5, "google.protobuf.Timestamp"
-    optional :units, :uint64, 6
+    optional :units, :message, 6, "jiji.rpc.OptionalUInt64"
     optional :price, :message, 7, "jiji.rpc.Decimal"
     optional :expiry, :message, 8, "google.protobuf.Timestamp"
     optional :lower_bound, :message, 9, "jiji.rpc.Decimal"
     optional :upper_bound, :message, 10, "jiji.rpc.Decimal"
     optional :stop_loss, :message, 11, "jiji.rpc.Decimal"
     optional :take_profit, :message, 12, "jiji.rpc.Decimal"
-    optional :trailing_stop, :uint32, 13
+    optional :trailing_stop, :message, 13, "jiji.rpc.OptionalUInt32"
   end
   add_message "jiji.rpc.OrderRequest" do
     optional :instance_id, :string, 1
@@ -111,7 +111,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
     optional :upper_bound, :message, 2, "jiji.rpc.Decimal"
     optional :stop_loss, :message, 3, "jiji.rpc.Decimal"
     optional :take_profit, :message, 4, "jiji.rpc.Decimal"
-    optional :trailing_stop, :uint32, 5
+    optional :trailing_stop, :message, 5, "jiji.rpc.OptionalUInt32"
     optional :price, :message, 6, "jiji.rpc.Decimal"
     optional :expiry, :message, 7, "google.protobuf.Timestamp"
   end
@@ -159,7 +159,7 @@ Google::Protobuf::DescriptorPool.generated_pool.build do
   add_message "jiji.rpc.RetrieveEconomicCalendarInformationsRequest" do
     optional :instance_id, :string, 1
     optional :period, :uint32, 2
-    optional :pair_name, :string, 3
+    optional :pair_name, :message, 3, "jiji.rpc.OptionalString"
   end
   add_message "jiji.rpc.EconomicCalendarInformations" do
     repeated :informations, :message, 1, "jiji.rpc.EconomicCalendarInformation"

@@ -5,3 +5,13 @@ package jiji.rpc;
 message Decimal {
   string value = 1;
 }
+
+message OptionalString {
+  string value = 1;
+}
+message OptionalUInt32 {
+  uint32 value = 1;
+}
+message OptionalUInt64 {
+  uint64 value = 1;
+}

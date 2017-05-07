@@ -18,7 +18,7 @@ module Jiji::Rpc::Converters
       {
         stop_loss:     convert_decimal_from_pb(option.stop_loss),
         take_profit:   convert_decimal_from_pb(option.take_profit),
-        trailing_stop: number_or_nil(option.trailing_stop),
+        trailing_stop: convert_optional_uint32_from_pb(option.trailing_stop),
         price:         convert_decimal_from_pb(option.price),
         expiry:        convert_timestamp_from_pb(option.expiry),
         lower_bound:   convert_decimal_from_pb(option.lower_bound),
@@ -47,23 +47,27 @@ module Jiji::Rpc::Converters
       converted
     end
 
+    DECIMAL_FIELD_KEYS = [
+      :price,
+      :lower_bound,
+      :upper_bound,
+      :stop_loss,
+      :take_profit
+    ].freeze
+
     def convert_order_to_pb(order)
       return nil unless order
       hash = order.to_h
-      convert_numeric_to_pb_decimal(hash, [
-        :price,
-        :lower_bound,
-        :upper_bound,
-        :stop_loss,
-        :take_profit
-      ])
+      convert_numerics_to_pb_decimal(hash, DECIMAL_FIELD_KEYS)
+      hash[:units] = convert_optional_uint64_to_pb(hash[:units])
+      hash[:trailing_stop] = convert_optional_uint32_to_pb(hash[:trailing_stop])
       Order.new(convert_hash_values_to_pb(hash))
     end
 
     def convert_position_info_to_pb(position)
       return nil unless position
       hash = position.to_h
-      convert_numeric_to_pb_decimal(hash, [
+      convert_numerics_to_pb_decimal(hash, [
         :price,
         :profit_or_loss
       ])
@@ -73,7 +77,7 @@ module Jiji::Rpc::Converters
     private
 
     def update_order_properties(converted, order)
-      converted.units = number_or_nil(order.units)
+      converted.units = convert_optional_uint64_from_pb(order.units)
       converted.price = convert_decimal_from_pb(order.price)
       converted.expiry = convert_timestamp_from_pb(order.expiry)
       converted.lower_bound = convert_decimal_from_pb(order.lower_bound)
@@ -84,7 +88,8 @@ module Jiji::Rpc::Converters
     def update_colsing_options(converted, order)
       converted.stop_loss = convert_decimal_from_pb(order.stop_loss)
       converted.take_profit = convert_decimal_from_pb(order.take_profit)
-      converted.trailing_stop = number_or_nil(order.trailing_stop)
+      converted.trailing_stop =
+        convert_optional_uint32_from_pb(order.trailing_stop)
     end
   end
 end

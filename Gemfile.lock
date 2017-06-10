@@ -55,7 +55,7 @@ GEM
     jmespath (1.3.1)
     json (1.8.6)
     lru_redux (1.1.0)
-    mail (2.6.5)
+    mail (2.6.6)
       mime-types (>= 1.16, < 4)
     memoizable (0.4.2)
       thread_safe (~> 0.3, >= 0.3.1)

@@ -450,7 +450,7 @@ GEM
     bson (4.2.2)
     codeclimate-test-reporter (1.0.8)
       simplecov (<= 0.13)
-    coderay (1.1.1)
+    coderay (1.1.2)
     concord (0.1.5)
       adamantium (~> 0.2.0)
       equalizer (~> 0.0.9)

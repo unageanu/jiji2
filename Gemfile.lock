@@ -134,7 +134,7 @@ GEM
     aws-sdk-dynamodbstreams (1.0.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-ec2 (1.7.0)
+    aws-sdk-ec2 (1.8.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
     aws-sdk-ecr (1.1.0)

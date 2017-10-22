@@ -445,7 +445,7 @@ GEM
     aws-sigv2 (1.0.1)
     aws-sigv4 (1.0.2)
     bcrypt (3.1.11)
-    binding_of_caller (0.7.2)
+    binding_of_caller (0.7.3)
       debug_inspector (>= 0.0.1)
     bson (4.2.2)
     codeclimate-test-reporter (1.0.8)

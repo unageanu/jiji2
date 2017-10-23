@@ -12,6 +12,7 @@ task :rest_spec => [:rest_spec_json, :rest_spec_messagepack]
 desc "Run all specs in spec directory"
 RSpec::Core::RakeTask.new(:spec) {|t|
   t.rspec_opts = '-I src -I spec -I sample_agents/src -I sample_agents/spec -fdoc'
+  t.pattern    = ['spec/**/*_spec.rb', 'sample_agents/spec/**/*_spec.rb']
 }
 
 desc "Run all specs in rest_spec directory using json transport"
@@ -62,7 +63,7 @@ desc 'Release new version.'
 task :release, ["version"] do |task, args|
   version = args.version
 
-  #merge_branch
+  merge_branch
   update_version(version)
   bulid_release_js
   commit_changes(version)

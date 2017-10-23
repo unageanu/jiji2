@@ -291,6 +291,7 @@ class TestAgent(Agent):
                     + str(rate.volume) + " " + rate.timestamp.isoformat())
 
             self.print_account()
+            self._order()
             self.firsttime = False
 
     def save_state(self):
@@ -321,8 +322,34 @@ class TestAgent(Agent):
           account.margin_rate, account.margin_used, account.profit_or_loss, account.updated_at, \
           account.account_currency))
 
-    def create_order(self):
-        self.broker.order()
+    def _order(self):
+      self.broker.sell("EURJPY", 10000)
+      order_result = self.broker.buy("EURJPY",  10000, "market", {
+        "lower_bound":   135.59,
+        "upper_bound":   135.61,
+        "stop_loss":     135.23,
+        "take_profit":   135.73,
+        "trailing_stop": 10
+      })
+      position = self.broker.positions[order_result.trade_opened.internal_id]
+
+      self.broker.sell("USDJPY", 10000, "limit", {
+        "price":         122.6,
+        "expiry":        datetime.datetime(2015, 5, 2)
+      })
+      self.broker.buy("USDJPY", 10000, "stop", {
+        "price":       112.404,
+        "expiry":      datetime.datetime(2015, 5, 2),
+        "lower_bound":   112.401,
+        "upper_bound":   112.407,
+        "stop_loss":     111.404,
+        "take_profit":   113.404,
+        "trailing_stop": 10
+      })
+      self.broker.buy("EURUSD", 10000, "marketIfTouched", {
+        "price":         1.4325,
+        "expiry":        datetime.datetime(2015, 5, 2)
+      })
 
     def _print_tick(self, id, tick, pair):
         self.logger.warn(id + ":" + str(tick[pair].bid) + " " + str(tick[pair].ask) + " " + tick.timestamp.isoformat())

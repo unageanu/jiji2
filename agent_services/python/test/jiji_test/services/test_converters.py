@@ -23,7 +23,11 @@ class ConvertersTest(unittest.TestCase):
         self.assert_convert_decimal('-0')
         self.assert_convert_decimal('Infinity')
         self.assert_convert_decimal('-Infinity')
+        self.assert_convert_decimal(4)
+        self.assert_convert_decimal(1.333)
+        self.assert_convert_decimal(0)
+        self.assert_convert_decimal(None)
 
     def assert_convert_decimal(self, value):
-        pb_decimal = convert_decimal_to(Decimal(value))
-        self.assertEqual(str(convert_decimal_from(pb_decimal)), value)
+        pb_decimal = convert_decimal_to(value)
+        self.assertEqual(str(convert_decimal_from(pb_decimal)), str(value))

@@ -1,6 +1,7 @@
 import broker_pb2
 
-from jiji.services.converters import * # pylint: disable=wildcard-import,unused-wildcard-import
+from jiji.rpc.converters.account_converter import convert_account_from
+from jiji.rpc.converters.primitive_converter import convert_timestamp_to
 
 class Broker():
 
@@ -30,4 +31,21 @@ class Broker():
     def get_account(self):
         response = self.stub.GetAccount(
             broker_pb2.GetAccountRequest(instance_id=self.instance_id))
-        return convert_account(response)
+        return convert_account_from(response)
+
+    def sell(pair_name, units, type = "market", options = {}):
+        return self._order("sell", pair_name, units, type, options)
+
+    def buy(pair_name, units, type = "market", options = {}):
+        return self._order("buy", pair_name, units, type, options)
+
+    def _order(sell_or_buy, pair_name, units, type, options):
+        request = broker_pb2.OrderRequest(
+            instance_id=self.instance_id,
+            pair_name=pair_name,
+            sell_or_buy=sell_or_buy,
+            units=units,
+            type=type,
+            option=options)
+        response = self.stub.Order(request)
+        return convert_order_response(response)

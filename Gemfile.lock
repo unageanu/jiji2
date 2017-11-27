@@ -13,7 +13,7 @@ GEM
       ice_nine (~> 0.11.0)
       memoizable (~> 0.4.0)
     ast (2.3.0)
-    aws-partitions (1.39.0)
+    aws-partitions (1.40.0)
     aws-sdk (3.0.1)
       aws-sdk-resources (~> 3)
     aws-sdk-acm (1.2.0)

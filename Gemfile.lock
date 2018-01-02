@@ -582,7 +582,7 @@ GEM
     mime-types (2.99.3)
     mini_magick (4.8.0)
     mini_mime (1.0.0)
-    minitest (5.10.3)
+    minitest (5.11.0)
     mongo (2.4.3)
       bson (>= 4.2.1, < 5.0.0)
     mongoid (6.2.1)

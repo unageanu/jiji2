@@ -12,7 +12,7 @@ GEM
     adamantium (0.2.0)
       ice_nine (~> 0.11.0)
       memoizable (~> 0.4.0)
-    ast (2.3.0)
+    ast (2.4.0)
     aws-partitions (1.56.0)
     aws-sdk (3.0.1)
       aws-sdk-resources (~> 3)

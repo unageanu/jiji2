@@ -624,7 +624,7 @@ GEM
       activesupport (>= 4.2.3)
       json (~> 1.8.3)
       rest-client (~> 1.8.0)
-    rack (2.0.3)
+    rack (2.0.4)
     rack-protection (2.0.0)
       rack
     rainbow (3.0.0)

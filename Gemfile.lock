@@ -155,7 +155,7 @@ GEM
     aws-sdk-ec2 (1.28.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-ecr (1.2.0)
+    aws-sdk-ecr (1.3.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
     aws-sdk-ecs (1.8.0)

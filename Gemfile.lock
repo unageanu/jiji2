@@ -477,7 +477,7 @@ GEM
     aws-sdk-sagemakerruntime (1.0.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
-    aws-sdk-serverlessapplicationrepository (1.1.0)
+    aws-sdk-serverlessapplicationrepository (1.2.0)
       aws-sdk-core (~> 3)
       aws-sigv4 (~> 1.0)
     aws-sdk-servicecatalog (1.4.0)
@@ -628,7 +628,7 @@ GEM
     rack-protection (2.0.1)
       rack
     rainbow (3.0.0)
-    rake (12.3.0)
+    rake (12.3.1)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)

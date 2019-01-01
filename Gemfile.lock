@@ -701,8 +701,8 @@ GEM
     bcrypt (3.1.12)
     binding_ninja (0.2.2)
     bson (4.3.0)
-    codeclimate-test-reporter (1.0.7)
-      simplecov
+    codeclimate-test-reporter (1.0.9)
+      simplecov (<= 0.13)
     coderay (1.1.2)
     concord (0.1.5)
       adamantium (~> 0.2.0)
@@ -811,8 +811,8 @@ GEM
       unicode-display_width (~> 1.4.0)
     ruby-progressbar (1.10.0)
     sigdump (0.2.4)
-    simplecov (0.16.1)
-      docile (~> 1.1)
+    simplecov (0.13.0)
+      docile (~> 1.1.0)
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
@@ -877,7 +877,7 @@ DEPENDENCIES
   validates_email_format_of
 
 RUBY VERSION
-   ruby 2.5.1p57
+   ruby 2.6.0p0
 
 BUNDLED WITH
-   1.16.5
+   1.17.2

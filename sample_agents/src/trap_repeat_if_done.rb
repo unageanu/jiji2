@@ -92,8 +92,8 @@ class TrapRepeatIfDone
     current_price = @mode.resolve_current_price(tick[@target_pair.name])
     base = resolve_base_price(current_price)
     6.times do |n| # baseを基準に、上下3つのトラップを仕掛ける
-      trap_open_price = BigDecimal.new(base, 10) \
-        + BigDecimal.new(@trap_interval_pips, 10) * (n - 3) * @target_pair.pip
+      trap_open_price = BigDecimal(base, 10) \
+        + BigDecimal(@trap_interval_pips, 10) * (n - 3) * @target_pair.pip
       yield trap_open_price
     end
   end
@@ -106,7 +106,7 @@ class TrapRepeatIfDone
   #  resolve_base_price(120.51) # -> 120.50
   #
   def resolve_base_price(current_price)
-    current_price = BigDecimal.new(current_price, 10)
+    current_price = BigDecimal(current_price, 10)
     pip_precision = 1 / @target_pair.pip
     (current_price * pip_precision / @trap_interval_pips).ceil \
       * @trap_interval_pips / pip_precision
@@ -185,8 +185,8 @@ class TrapRepeatIfDone
     end
 
     def calculate_price(price, pips)
-      price = BigDecimal.new(price, 10)
-      pips  = BigDecimal.new(pips,  10) * @target_pair.pip
+      price = BigDecimal(price, 10)
+      pips  = BigDecimal(pips,  10) * @target_pair.pip
       (price + pips).to_f
     end
 

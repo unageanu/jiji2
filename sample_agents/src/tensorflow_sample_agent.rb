@@ -284,7 +284,7 @@ class SignalCalculator
   end
 
   def calculate_estrangement(price, ma)
-    ((BigDecimal.new(price, 10) - ma) / ma * 100).to_f
+    ((BigDecimal(price, 10) - ma) / ma * 100).to_f
   end
 
 end

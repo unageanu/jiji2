@@ -201,14 +201,14 @@ module Jiji::Model::Trading::TradingSummaries
       super(:profit_or_loss)
       @max_profit   = nil
       @max_loss     = nil
-      @total_profit = BigDecimal.new(0, 10)
-      @total_loss   = BigDecimal.new(0, 10)
+      @total_profit = BigDecimal(0, 10)
+      @total_loss   = BigDecimal(0, 10)
       @win_count    = 0
       @lose_count   = 0
     end
 
     def process(position)
-      profit_or_loss = BigDecimal.new(position.profit_or_loss, 10)
+      profit_or_loss = BigDecimal(position.profit_or_loss, 10)
       update_max_profit_and_max_loss(profit_or_loss)
       update_total_profit_and_total_loss(profit_or_loss)
     end
@@ -252,7 +252,7 @@ module Jiji::Model::Trading::TradingSummaries
 
     def initialize
       super(:holding_period)
-      @total_period = BigDecimal.new(0, 10)
+      @total_period = BigDecimal(0, 10)
       @max_period   = nil
       @min_period   = nil
       @count = 0
@@ -289,7 +289,7 @@ module Jiji::Model::Trading::TradingSummaries
 
     def initialize
       super(:units)
-      @total_units = BigDecimal.new(0, 10)
+      @total_units = BigDecimal(0, 10)
       @max_units   = nil
       @min_units   = nil
       @count = 0

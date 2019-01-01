@@ -44,7 +44,7 @@ describe Jiji::Web::Helpers::BatchDownloadSupport do
       string2:     'a,b"c"d',
       string3:     'a"b"c',
       number:      '10',
-      big_decimal: BigDecimal.new(10.234, 10) - BigDecimal.new(8.133, 10),
+      big_decimal: BigDecimal(10.234, 10) - BigDecimal(8.133, 10),
       date:        Time.utc(2016, 0o3, 14, 16, 45, 23),
       nil:         nil,
       object:      {

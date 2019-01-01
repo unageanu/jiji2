@@ -36,7 +36,7 @@ module Jiji::Model::Graphing::Internal
     class Average < AbstractStrategy
 
       def initial_context
-        { count: 0, sum: BigDecimal.new(0, 10) }
+        { count: 0, sum: BigDecimal(0, 10) }
       end
 
       def update_context(value, context)

@@ -78,7 +78,7 @@ module Jiji::Model::Trading
     # for internal use.
     def update_price(position, pair) #:nodoc:
       return if trailing_stop && trailing_stop.zero?
-      price = BigDecimal.new(position.current_price, 10)
+      price = BigDecimal(position.current_price, 10)
       amount = (trailing_stop * pair.pip)
       self.trailing_amount = calculate_trailing_amount(position, price, amount)
     end

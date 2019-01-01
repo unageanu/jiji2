@@ -187,7 +187,7 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         saved_positions = position_repository.retrieve_positions(backtest_id)
         expect(saved_positions.length).to be 0
 
-        bid = BigDecimal.new(tick[:EURJPY].bid, 4)
+        bid = BigDecimal(tick[:EURJPY].bid, 4)
 
         sleep wait
         result = client.order(:EURJPY, :sell, 1, :limit, {

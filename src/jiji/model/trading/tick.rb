@@ -79,7 +79,7 @@ module Jiji::Model::Trading
       end
 
       def mid #:nodoc:
-        (BigDecimal.new(@bid, 10) + @ask) / 2
+        (BigDecimal(@bid, 10) + @ask) / 2
       end
 
     end

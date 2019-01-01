@@ -458,6 +458,6 @@ describe RangeBreakChecker do
 
   def new_tick_value(bid, spread)
     Jiji::Model::Trading::Tick::Value.new(
-      bid, BigDecimal.new(bid, 10) + spread)
+      bid, BigDecimal(bid, 10) + spread)
   end
 end

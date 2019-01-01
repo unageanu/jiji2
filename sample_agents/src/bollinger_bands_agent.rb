@@ -50,7 +50,7 @@ end
 module BollingerBands
   module Utils
     def bd(v)
-      BigDecimal.new(v.to_f, 10)
+      BigDecimal(v.to_f, 10)
     end
 
     def sum(array)

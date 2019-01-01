@@ -102,7 +102,7 @@ module StatisticalArbitrage
     end
 
     def bd(v)
-      BigDecimal.new(v.to_f, 10)
+      BigDecimal(v.to_f, 10)
     end
 
     def sum(array)
@@ -324,7 +324,7 @@ module StatisticalArbitrage
     end
 
     def linner_least_squares(rates)
-      a = b = c = d = BigDecimal.new(0.0, 15)
+      a = b = c = d = BigDecimal(0.0, 15)
       rates.each do |r|
         x = r[0]
         y = r[1]

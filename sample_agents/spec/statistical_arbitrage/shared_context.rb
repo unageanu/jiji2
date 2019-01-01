@@ -8,8 +8,8 @@ RSpec.shared_context 'utils for statistical arbitrage' do
 
   def new_tick_value(value)
     Jiji::Model::Trading::Tick::Value.new(
-      BigDecimal.new(value, 10).to_f,
-      (BigDecimal.new(value, 10) + 0.03).to_f)
+      BigDecimal(value, 10).to_f,
+      (BigDecimal(value, 10) + 0.03).to_f)
   end
 
   def create_mock_position(pair_name,

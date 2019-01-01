@@ -53,7 +53,7 @@ module Jiji::Model::Trading::Internal
     private
 
     def actual_amount_of(price)
-      BigDecimal.new(price, 10) * units
+      BigDecimal(price, 10) * units
     end
 
     def insert_trading_information_to_hash(h)

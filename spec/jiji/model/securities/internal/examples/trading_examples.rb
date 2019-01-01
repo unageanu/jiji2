@@ -21,7 +21,7 @@ RSpec.shared_examples '建玉関連の操作' do
       saved_positions = position_repository.retrieve_positions(backtest_id)
       expect(saved_positions.length).to be 0
 
-      ask = BigDecimal.new(tick[:USDJPY].ask, 4)
+      ask = BigDecimal(tick[:USDJPY].ask, 4)
 
       client.order(:EURJPY, :sell, 1)
 
@@ -96,8 +96,8 @@ RSpec.shared_examples '建玉関連の操作' do
       saved_positions = position_repository.retrieve_positions(backtest_id)
       expect(saved_positions.length).to be 0
 
-      bid = BigDecimal.new(tick[:EURJPY].bid, 4)
-      ask = BigDecimal.new(tick[:USDJPY].ask, 4)
+      bid = BigDecimal(tick[:EURJPY].bid, 4)
+      ask = BigDecimal(tick[:USDJPY].ask, 4)
 
       client.order(:EURJPY, :sell, 1)
 
@@ -185,7 +185,7 @@ RSpec.shared_examples '建玉関連の操作' do
       saved_positions = position_repository.retrieve_positions(backtest_id)
       expect(saved_positions.length).to be 0
 
-      ask = BigDecimal.new(tick[:USDJPY].ask, 4)
+      ask = BigDecimal(tick[:USDJPY].ask, 4)
 
       client.order(:EURJPY, :sell, 1)
 
@@ -228,7 +228,7 @@ RSpec.shared_examples '建玉関連の操作' do
       saved_positions = position_repository.retrieve_positions(backtest_id)
       expect(saved_positions.length).to be 0
 
-      ask = BigDecimal.new(tick[:EURDKK].ask, 4)
+      ask = BigDecimal(tick[:EURDKK].ask, 4)
 
       client.order(:AUDCAD, :sell, 1)
 

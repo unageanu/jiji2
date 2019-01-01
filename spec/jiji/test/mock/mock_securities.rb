@@ -152,8 +152,8 @@ module Jiji::Test::Mock
 
     def create_tick_value(bid, ask, seed = 0)
       Tick::Value.new(
-        (BigDecimal.new(bid, 10) + seed).to_f,
-        (BigDecimal.new(ask, 10) + seed).to_f)
+        (BigDecimal(bid, 10) + seed).to_f,
+        (BigDecimal(ask, 10) + seed).to_f)
     end
 
   end

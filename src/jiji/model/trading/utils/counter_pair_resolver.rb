@@ -43,8 +43,8 @@ module Jiji::Model::Trading::Utils
 
     def resolve_rate(tick, steps)
       pairs = resolve_required_pairs(tick, steps)
-      (BigDecimal.new(tick[pairs[0]].mid, 10) \
-           / BigDecimal.new(tick[pairs[1]].mid, 10)).round(6)
+      (BigDecimal(tick[pairs[0]].mid, 10) \
+           / BigDecimal(tick[pairs[1]].mid, 10)).round(6)
     end
 
     def resolve_required_pairs(available_pairs, steps)

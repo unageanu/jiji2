@@ -23,3 +23,9 @@ jobs:
       - run:
           name: Test
           command: bundle exec rake
+
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - test

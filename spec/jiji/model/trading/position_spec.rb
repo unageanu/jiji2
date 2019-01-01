@@ -172,7 +172,7 @@ describe Jiji::Model::Trading::Position do
     expect(position.current_price).to eq(100.003)
     expect(position.current_counter_rate).to eq(100.0015)
     expect(position.updated_at).to eq(Time.at(100))
-    expect(position.profit_or_loss).to eq(
+    expect(BigDecimal.new(position.profit_or_loss, 10)).to eq(
       BigDecimal.new(99_700, 10) * 100.0015)
     expect(position.max_drow_down).to eq(
       BigDecimal.new(-200_300, 10) * 103.0015)

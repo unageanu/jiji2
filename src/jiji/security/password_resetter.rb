@@ -37,8 +37,8 @@ module Jiji::Security
 
     def send_mail(mail_address, token)
       mail_body = create_mail_body(token)
-      mail_composer.compose(mail_address, MAIL_TITLE) do |_mail|
-        text_part do
+      mail_composer.compose(mail_address, MAIL_TITLE) do |mail|
+        mail.text_part do
           content_type 'text/plain; charset=UTF-8'
           body mail_body
         end

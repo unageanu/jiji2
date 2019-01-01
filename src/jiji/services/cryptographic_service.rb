@@ -16,7 +16,10 @@ module Jiji::Services
     private
 
     def new_encryptor(secret)
-      ActiveSupport::MessageEncryptor.new(secret)
+      key = ActiveSupport::KeyGenerator
+        .new(secret)
+        .generate_key(secret, 32)
+      ActiveSupport::MessageEncryptor.new(key)
     end
 
     def default_secret

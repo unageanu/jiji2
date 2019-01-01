@@ -15,7 +15,7 @@ jobs:
             - bundle-
       - run:
           name: xxx
-          command: gem install rubocop
+          command: gem install abstract_type
       - run:
           name: Bundle Install
           command: bundle check || bundle install

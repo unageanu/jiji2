@@ -14,12 +14,18 @@ jobs:
             - bundle-{{ checksum "Gemfile.lock" }}
             - bundle-
       - run:
+          name: xxx
+          command: gem install rubocop
+      - run:
           name: Bundle Install
           command: bundle check || bundle install
       - save_cache:
           key: bundle-{{ checksum "Gemfile.lock" }}
           paths:
             - vendor/bundle
+      - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://localhost:27017 -timeout 1m
       - run:
           name: Test
           command: bundle exec rake

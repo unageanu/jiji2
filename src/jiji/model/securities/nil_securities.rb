@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 module Jiji::Model::Securities
   class NilSecurities
@@ -14,8 +14,7 @@ module Jiji::Model::Securities
       true
     end
 
-    def destroy
-    end
+    def destroy; end
 
   end
 end

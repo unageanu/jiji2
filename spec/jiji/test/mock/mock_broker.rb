@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 module Jiji::Test::Mock
   class MockBroker < Jiji::Model::Trading::Brokers::AbstractBroker
@@ -31,12 +31,11 @@ module Jiji::Test::Mock
       new_tick
     end
 
-    def refresh
-    end
+    def refresh; end
 
     def new_tick
       now = @time_source.now
-      pairs  = [:EURJPY, :USDJPY, :EURUSD]
+      pairs  = %i[EURJPY USDJPY EURUSD]
       values = pairs.each_with_object({}) do |pair_name, r|
         r[pair_name] = new_tick_value(now.sec % 10)
         r

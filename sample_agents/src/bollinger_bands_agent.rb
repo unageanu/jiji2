@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'quandl'
 require 'lru_redux'
 
@@ -170,6 +172,7 @@ module BollingerBands
 
     def log(tick, bands, index)
       return unless @logger
+
       @logger.info(
         "#{tick.timestamp} #{tick[@pair].bid}" \
       + " #{bands[:sd]} #{bands[:mean]} #{index}")
@@ -206,6 +209,7 @@ module BollingerBands
     def restore_state
       @broker.positions.each do |p|
         next unless p.pair_name == @pair
+
         register_position(p)
       end
     end

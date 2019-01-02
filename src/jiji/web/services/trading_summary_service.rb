@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sinatra/base'
 require 'jiji/web/services/abstract_service'

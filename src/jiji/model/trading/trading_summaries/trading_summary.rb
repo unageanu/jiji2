@@ -1,8 +1,6 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
-require 'thread'
-
 module Jiji::Model::Trading::TradingSummaries
   class CompositeSummary
 
@@ -64,8 +62,7 @@ module Jiji::Model::Trading::TradingSummaries
       @name = name
     end
 
-    def process(position)
-    end
+    def process(position); end
 
     def calculate_avg(sum, count)
       count > 0 ? (sum / count) : 0
@@ -81,8 +78,8 @@ module Jiji::Model::Trading::TradingSummaries
     end
 
     def process(position)
-      agent_id   = (position.agent && position.agent.id) || ''
-      agent_name = (position.agent && position.agent.name) || ''
+      agent_id   = (position.agent&.id) || ''
+      agent_name = (position.agent&.name) || ''
       unless @agent_summary.include?(agent_id)
         @agent_summary[agent_id] = CompositeSummary.new(agent_name)
       end
@@ -243,6 +240,7 @@ module Jiji::Model::Trading::TradingSummaries
 
     def calculate_profit_factor
       return 0 if @total_loss.zero?
+
       @total_profit / (@total_loss * -1)
     end
 
@@ -260,6 +258,7 @@ module Jiji::Model::Trading::TradingSummaries
 
     def process(position)
       return unless position.exited_at
+
       period = position.exited_at.to_i - position.entered_at.to_i
       update_max_and_min(period)
       update_total_period(period)

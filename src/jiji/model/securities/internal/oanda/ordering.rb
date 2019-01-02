@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'oanda_api'
 require 'jiji/model/securities/internal/oanda/converter'
@@ -55,13 +55,14 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def convert_expiry_date(options)
       return unless options[:expiry]
+
       if options[:expiry].is_a?(Time)
         options[:expiry] = options[:expiry].utc.to_datetime.rfc3339
       end
     end
 
     def convert_response_to_order_result(res, type)
-      args = [:order_opened, :trade_opened].map do |m|
+      args = %i[order_opened trade_opened].map do |m|
         value = res.method(m).call
         value.id ? convert_response_to_order(res, value, type) : nil
       end

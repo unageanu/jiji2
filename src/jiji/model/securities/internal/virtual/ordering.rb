@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'oanda_api'
 
@@ -49,10 +49,10 @@ module Jiji::Model::Securities::Internal::Virtual
 
     private
 
-    MODIFIABLE_PROPERTIES = [
-      :units, :price, :expiry, :lower_bound,
-      :upper_bound, :stop_loss, :take_profit,
-      :trailing_stop
+    MODIFIABLE_PROPERTIES = %i[
+      units price expiry lower_bound
+      upper_bound stop_loss take_profit
+      trailing_stop
     ].freeze
 
     def register_position(order)
@@ -89,8 +89,8 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def remove_closed_positions(closed)
-      @positions = @positions.reject do |p|
-        !closed.find do |item|
+      @positions = @positions.select do |p|
+        closed.find do |item|
           p.internal_id == item.internal_id
         end.nil?
       end
@@ -99,6 +99,7 @@ module Jiji::Model::Securities::Internal::Virtual
     def close_or_reduce_reverse_position(result, reverse_position, position)
       units = position.units
       return unless units > 0
+
       if reverse_position.units <= units
         result[:closed] << convert_to_closed_position(reverse_position)
         position.units -= reverse_position.units
@@ -129,6 +130,7 @@ module Jiji::Model::Securities::Internal::Virtual
 
     def process_order(tick, order)
       return true if !order.expiry.nil? && order.expiry <= tick.timestamp
+
       if order.carried_out?(tick)
         register_position(order)
         true
@@ -163,14 +165,15 @@ module Jiji::Model::Securities::Internal::Virtual
 
     def init_optional_properties(order, options)
       order.expiry = options[:expiry] || nil
-      [:lower_bound, :upper_bound,
-       :stop_loss, :take_profit, :trailing_stop].each do |key|
+      %i[lower_bound upper_bound
+         stop_loss take_profit trailing_stop].each do |key|
         order.method("#{key}=").call(options[key] || 0)
       end
     end
 
     def resolve_price(type, pair_name, sell_or_buy, options, tick)
       return options[:price] || nil if type != :market
+
       PricingUtils.calculate_entry_price(tick, pair_name, sell_or_buy)
     end
 

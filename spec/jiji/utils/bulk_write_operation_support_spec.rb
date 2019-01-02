@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 
@@ -65,8 +65,8 @@ describe Jiji::Utils::BulkWriteOperationSupport do
 
     Jiji::Utils::BulkWriteOperationSupport.end_transaction
 
-    expect(all_names_of_a).to eq %w(a1 a2)
-    expect(all_names_of_b).to eq %w(b1 b2)
+    expect(all_names_of_a).to eq %w[a1 a2]
+    expect(all_names_of_b).to eq %w[b1 b2]
   end
 
   it '永続化の順番が前後しても、親から順にソートして永続化できる' do
@@ -99,8 +99,8 @@ describe Jiji::Utils::BulkWriteOperationSupport do
 
     Jiji::Utils::BulkWriteOperationSupport.end_transaction
 
-    expect(all_names_of_a).to eq %w(a1 a2)
-    expect(all_names_of_b).to eq %w(b1 b2)
+    expect(all_names_of_a).to eq %w[a1 a2]
+    expect(all_names_of_b).to eq %w[b1 b2]
   end
 
   it '永続化済みドキュメントのupdateができる' do
@@ -138,8 +138,8 @@ describe Jiji::Utils::BulkWriteOperationSupport do
 
     Jiji::Utils::BulkWriteOperationSupport.end_transaction
 
-    expect(all_names_of_a).to eq %w(a1_2 a2)
-    expect(all_names_of_b).to eq %w(b1_2 b2)
+    expect(all_names_of_a).to eq %w[a1_2 a2]
+    expect(all_names_of_b).to eq %w[b1_2 b2]
   end
 
   it '複数回saveを呼び出しても、永続化は1度だけ行われる' do
@@ -183,8 +183,8 @@ describe Jiji::Utils::BulkWriteOperationSupport do
 
     Jiji::Utils::BulkWriteOperationSupport.end_transaction
 
-    expect(all_names_of_a).to eq %w(a1_2 a2)
-    expect(all_names_of_b).to eq %w(b1_2 b2)
+    expect(all_names_of_a).to eq %w[a1_2 a2]
+    expect(all_names_of_b).to eq %w[b1_2 b2]
   end
 
   it '更新がない場合、何もしない' do

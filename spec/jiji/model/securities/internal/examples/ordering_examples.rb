@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 RSpec.shared_examples '注文関連の操作' do
   describe 'Ordering' do

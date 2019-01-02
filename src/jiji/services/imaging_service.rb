@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'mini_magick'
 
@@ -24,6 +24,7 @@ module Jiji::Services
     def resize_to_fit_longest_edge(cmd, img, w, h)
       cols, rows = img[:dimensions]
       return if w == cols && h == rows
+
       scale = calculate_scale(w, h, cols, rows)
       cmd.resize "#{(cols * scale).ceil}x#{(rows * scale).ceil}"
     end

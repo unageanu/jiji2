@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 
@@ -65,11 +65,11 @@ describe Jiji::Messaging::PushNotifier do
       message: 'テスト',
       image:   'aaaa'
     }, Logger.new(STDOUT))
-    expect(message_ids).to eq %w(message_id message_id)
+    expect(message_ids).to eq %w[message_id message_id]
 
     message_ids = push_notifier.notify({
       message: 'テスト'
     }, Logger.new(STDOUT))
-    expect(message_ids).to eq %w(message_id message_id)
+    expect(message_ids).to eq %w[message_id message_id]
   end
 end

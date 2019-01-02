@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'client'
 
@@ -21,7 +21,7 @@ describe 'グラフデータ取得' do
 
     r = @client.get('graph/rmt', {
       'start' => start_time.iso8601,
-      'end'   => end_time.iso8601
+      'end' => end_time.iso8601
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 2
@@ -39,7 +39,7 @@ describe 'グラフデータ取得' do
 
     r = @client.get("graph/#{@test._id}", {
       'start' => start_time.iso8601,
-      'end'   => end_time.iso8601
+      'end' => end_time.iso8601
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
@@ -55,10 +55,10 @@ describe 'グラフデータ取得' do
     start_time = Time.new(2015, 4, 1)
     end_time   = Time.new(2015, 4, 9)
 
-    %w(one_minute one_hour one_day).each do |interval|
+    %w[one_minute one_hour one_day].each do |interval|
       r = @client.get("graph/data/rmt/#{interval}", {
         'start' => start_time.iso8601,
-        'end'   => end_time.iso8601
+        'end' => end_time.iso8601
       })
       expect(r.status).to eq 200
       expect(r.body.length).to be 2
@@ -77,10 +77,10 @@ describe 'グラフデータ取得' do
     start_time = Time.new(2015, 4, 1)
     end_time   = Time.new(2015, 4, 9)
 
-    %w(one_minute one_hour one_day).each do |interval|
+    %w[one_minute one_hour one_day].each do |interval|
       r = @client.get("graph/data/#{@test._id}/#{interval}", {
         'start' => start_time.iso8601,
-        'end'   => end_time.iso8601
+        'end' => end_time.iso8601
       })
       expect(r.status).to eq 200
       expect(r.body.length).to be 1

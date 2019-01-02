@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/model/trading/back_test'
@@ -86,9 +86,9 @@ module Jiji::Model::Graphing
 
     def fetch_data(start_time, end_time, interval = :one_minute) #:nodoc:
       graph_data.where(
-        :interval      => interval,
+        :interval => interval,
         :timestamp.gte => start_time,
-        :timestamp.lt  => end_time
+        :timestamp.lt => end_time
       )
     end
 

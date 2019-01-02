@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'httpclient'
 require 'singleton'
@@ -23,30 +23,28 @@ module Jiji
     def transport=(transport)
       @transport        = transport
 
-      @client.debug_dev.close if @client.debug_dev
+      @client.debug_dev&.close
       @client.debug_dev = debug_device
     end
 
     def wait_for_server_start_up
       puts 'wait for server start up.'
       loop do
-        begin
-          get('/version')
-          return
-        rescue Errno::ECONNREFUSED
-          puts ' sleep 5 seconds...'
-          sleep 5
-        end
+        get('/version')
+        return
+      rescue Errno::ECONNREFUSED
+        puts ' sleep 5 seconds...'
+        sleep 5
       end
     end
 
-    [:get, :delete, :options].each do |m|
+    %i[get delete options].each do |m|
       define_method(m) do |path, query = nil, header = {}|
         do_request(m, path, nil, query,  header)
       end
     end
 
-    [:post, :put].each do |m|
+    %i[post put].each do |m|
       define_method(m) do |path, body, header = {}|
         do_request(m, path, body, nil, header)
       end

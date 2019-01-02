@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'set'
 
@@ -48,10 +48,11 @@ module Jiji::Model::Trading::Utils
     end
 
     def resolve_required_pairs(available_pairs, steps)
-      %w(USD EUR).each do |candidate|
+      %w[USD EUR].each do |candidate|
         a = (candidate + steps[1]).to_sym
         b = (candidate + steps[0]).to_sym
         next unless available_pairs.include?(a) && available_pairs.include?(b)
+
         return [a, b]
       end
       raise "counter pair is not found. pair=#{steps.join}"

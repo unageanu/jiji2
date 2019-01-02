@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'json'
@@ -68,6 +68,7 @@ module Jiji::Web
 
     def publish_access_control_allow_header_if_allow_crossdomain(allow_methods)
       return unless AllowCrossDomainRequestFilter.allow_cross_domain_request?
+
       headers({
         'Access-Control-Allow-Headers' =>
           'X-Requested-With, X-HTTP-Method-Override, ' \
@@ -79,8 +80,8 @@ module Jiji::Web
     def no_cache
       @no_cache ||= {
         'Cache-Control' => 'no-cache, no-store',
-        'Expires'       => '-1',
-        'Pragma'        => 'no-cache'
+        'Expires' => '-1',
+        'Pragma' => 'no-cache'
       }
     end
 
@@ -88,7 +89,7 @@ module Jiji::Web
       max_age = 60 * 60 * 24 * 365
       @cacheable ||= {
         'Cache-Control' => "public max_age=#{max_age}",
-        'Expires'       => max_age.to_s
+        'Expires' => max_age.to_s
       }
     end
 

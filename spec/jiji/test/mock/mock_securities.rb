@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/data_builder'
 
@@ -35,8 +35,7 @@ module Jiji::Test::Mock
       @serial = 0
     end
 
-    def destroy
-    end
+    def destroy; end
 
     def retrieve_pairs
       @pairs ||= [
@@ -87,6 +86,7 @@ module Jiji::Test::Mock
 
     def retrieve_account
       raise 'test' if @config['fail_on_test_connection']
+
       account = Account.new(0, 'JPY', @balance, 0.04)
       account.update(@positions, @current_tick ? @current_tick.timestamp : nil)
       account
@@ -104,10 +104,11 @@ module Jiji::Test::Mock
 
     def retrieve_calendar(period, pair_name = nil)
       return CALENDAR_INFORMATIONS unless pair_name
-      if pair_name =~ /USD/
-        CALENDAR_INFORMATIONS.reject { |i| i.currency != 'USD' }
-      elsif pair_name =~ /JPY/
-        CALENDAR_INFORMATIONS.reject { |i| i.currency != 'JPY' }
+
+      if /USD/.match?(pair_name)
+        CALENDAR_INFORMATIONS.select { |i| i.currency == 'USD' }
+      elsif /JPY/.match?(pair_name)
+        CALENDAR_INFORMATIONS.select { |i| i.currency == 'JPY' }
       else
         []
       end

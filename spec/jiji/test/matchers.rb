@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module Jiji::Test
   def self.same_position?(a, b)

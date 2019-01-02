@@ -1,7 +1,6 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
-require 'thread'
 require 'jiji/errors/errors'
 require 'jiji/model/trading/brokers/abstract_broker'
 

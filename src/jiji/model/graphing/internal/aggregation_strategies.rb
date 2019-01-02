@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 module Jiji::Model::Graphing::Internal
   module AggregationStrategies
@@ -46,6 +46,7 @@ module Jiji::Model::Graphing::Internal
 
       def calculate_value(context)
         return 0 unless context && context[:count] > 0
+
         (context[:sum] / context[:count]).to_f
       end
 

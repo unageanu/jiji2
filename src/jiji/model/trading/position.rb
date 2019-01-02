@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
@@ -113,7 +113,7 @@ module Jiji::Model::Trading
 
     # 建玉の変更を反映します。
     def modify
-      @broker.modify_position(self) if @broker
+      @broker&.modify_position(self)
     end
 
     # 建玉を決済します。

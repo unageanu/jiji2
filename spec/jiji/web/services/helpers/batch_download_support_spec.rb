@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
@@ -57,8 +57,8 @@ describe Jiji::Web::Helpers::BatchDownloadSupport do
   let(:keys) do
     [
       :string1, :string2, :string3, :number, :big_decimal, :date, :nil,
-      [:object, :name], [:object, :object], [:object, :nil],
-      :unknown, [:unknown, :unknown]
+      %i[object name], %i[object object], %i[object nil],
+      :unknown, %i[unknown unknown]
     ]
   end
 

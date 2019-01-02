@@ -1,4 +1,5 @@
-# coding: utf-8
+# frozen_string_literal: true
+
 require 'forwardable'
 
 module Jiji::Model::Trading
@@ -109,6 +110,7 @@ module Jiji::Model::Trading
 
     def split(result, agent)
       return unless @map.include?(result.internal_id)
+
       position = @map[result.internal_id]
 
       new_position = @position_builder.split_and_close(position,
@@ -121,6 +123,7 @@ module Jiji::Model::Trading
 
     def close(internal_id, price, timestamp, profit)
       return unless @map.include?(internal_id)
+
       position = @map[internal_id]
       position.update_state_to_closed(price, timestamp, profit)
       position.save
@@ -150,9 +153,9 @@ module Jiji::Model::Trading
         position.save
       end
 
-      SYNCHRONIZE_PROPERTIES = [
-        :pair_name, :units, :sell_or_buy,
-        :entry_price, :entered_at, :closing_policy
+      SYNCHRONIZE_PROPERTIES = %i[
+        pair_name units sell_or_buy
+        entry_price entered_at closing_policy
       ].freeze
 
     end

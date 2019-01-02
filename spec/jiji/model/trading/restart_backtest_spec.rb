@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/utils/requires'
@@ -21,12 +21,12 @@ describe 'バックテストの停止と再開のテスト' do
 
   def start_trade
     @target = @backtest_repository.register({
-      'name'          => 'テスト',
-      'start_time'    => Time.new(2015, 6, 20, 0,  0, 0),
-      'end_time'      => Time.new(2015, 6, 21, 0,  0, 0),
-      'memo'          => 'メモ',
-      'balance'       => 100_000,
-      'pair_names'    => [:USDJPY, :EURJPY],
+      'name' => 'テスト',
+      'start_time' => Time.new(2015, 6, 20, 0, 0, 0),
+      'end_time' => Time.new(2015, 6, 21, 0, 0, 0),
+      'memo' => 'メモ',
+      'balance' => 100_000,
+      'pair_names' => %i[USDJPY EURJPY],
       'agent_setting' => [
         {
           agent_class: 'RestartTestAgent@restart_test_agent.rb',

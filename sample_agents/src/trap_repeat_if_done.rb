@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 # === トラップリピートイフダンのような注文を発行するエージェント
 class TrapRepeatIfDoneAgent
@@ -5,9 +6,9 @@ class TrapRepeatIfDoneAgent
   include Jiji::Model::Agents::Agent
 
   def self.description
-    <<-STR
-トラップリピートイフダンのような注文を発行するエージェント
-      STR
+    <<~STR
+      トラップリピートイフダンのような注文を発行するエージェント
+    STR
   end
 
   # UIから設定可能なプロパティの一覧
@@ -74,6 +75,7 @@ class TrapRepeatIfDone
 
     each_traps(broker.tick) do |trap_open_price|
       next if order_or_position_exists?(trap_open_price, broker)
+
       register_order(trap_open_price, broker)
     end
   end
@@ -130,6 +132,7 @@ class TrapRepeatIfDone
   def order_exists?(trap_open_price, broker)
     key = key_for(trap_open_price)
     return false unless @registerd_orders.include? key
+
     id = @registerd_orders[key]
     order = broker.orders.find { |o| o.internal_id == id }
     !order.nil?
@@ -177,12 +180,10 @@ class TrapRepeatIfDone
     #
     # tick_value:: 現在の価格を格納するTick::Valueオブジェクト
     # 戻り値:: 現在価格
-    def resolve_current_price(tick_value)
-    end
+    def resolve_current_price(tick_value); end
 
     # 注文を登録する
-    def register_order(trap_open_price, broker)
-    end
+    def register_order(trap_open_price, broker); end
 
     def calculate_price(price, pips)
       price = BigDecimal(price, 10)
@@ -192,6 +193,7 @@ class TrapRepeatIfDone
 
     def pring_order_log(mode, options, timestamp)
       return unless @logger
+
       message = [
         mode, timestamp, options[:price], options[:take_profit],
         options[:lower_bound], options[:upper_bound]

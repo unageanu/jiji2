@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 
@@ -38,6 +38,7 @@ module Jiji::Model::Agents::Internal
       AgentSetting.load(backtest_id).each do |setting|
         agent = agents[setting.id]
         next unless agent
+
         process_error do
           setting.state = agent.state
           setting.save
@@ -96,7 +97,8 @@ module Jiji::Model::Agents::Internal
     def restore_state(agent, setting)
       state = setting.state_with_indifferent_access
       return unless state
-      process_error { agent.restore_state(state) if agent }
+
+      process_error { agent&.restore_state(state) }
     end
 
     def process_error(ignore = true)
@@ -111,7 +113,7 @@ module Jiji::Model::Agents::Internal
     end
 
     def log(error)
-      @components[:logger].error(error) if @components[:logger]
+      @components[:logger]&.error(error)
     end
 
   end

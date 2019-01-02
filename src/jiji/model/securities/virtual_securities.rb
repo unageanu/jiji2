@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'oanda_api'
 require 'jiji/model/securities/internal/virtual/ordering'
@@ -29,8 +29,7 @@ module Jiji::Model::Securities
       init_trading_state(config[:positions] || [])
     end
 
-    def destroy
-    end
+    def destroy; end
 
     def account_currency
       @securities_provider.get.account_currency

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'oanda_api'
 require 'jiji/model/securities/internal/oanda/converter'
@@ -23,7 +23,7 @@ module Jiji::Model::Securities::Internal::Virtual
     def modify_trade(internal_id, options = {})
       position = find_position_by_internal_id(internal_id)
       policy = position.closing_policy
-      [:take_profit, :stop_loss, :trailing_stop].each do |key|
+      %i[take_profit stop_loss trailing_stop].each do |key|
         policy.method("#{key}=").call(options[key]) if options.include?(key)
       end
       position.clone

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 module Jiji::Model::Graphing::Internal
   class GraphDataSaver
@@ -24,7 +24,7 @@ module Jiji::Model::Graphing::Internal
     private
 
     def recreate_graph_data(time)
-      @current.save if @current
+      @current&.save
 
       time = @interval.calcurate_interval_start_time(time)
       @next_recreate_point = time + (@interval.ms / 1000)

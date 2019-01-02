@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'oanda_api'
 require 'jiji/model/securities/internal/oanda/converter'
@@ -34,8 +34,7 @@ module Jiji::Model::Securities
       @position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
     end
 
-    def destroy
-    end
+    def destroy; end
 
     def retrieve_account
       response = @client.account(@account.account_id).get
@@ -48,6 +47,7 @@ module Jiji::Model::Securities
 
     def account_currency
       return @account_currency if @account_currency
+
       @account_currency =
         @client.account(@account.account_id).get.account_currency
     end

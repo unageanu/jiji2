@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 
@@ -54,7 +54,7 @@ describe Jiji::Model::Notification::NotificationRepository do
 
   it '検索条件を指定して、一覧を取得できる' do
     notifications = notification_repository.retrieve_notifications({
-      :backtest_id  => nil,
+      :backtest_id => nil,
       :timestamp.gt => Time.at(30)
     }, { timestamp: :asc, id: :asc }, nil, nil)
 
@@ -65,7 +65,7 @@ describe Jiji::Model::Notification::NotificationRepository do
     expect(notifications[68].timestamp).to eq(Time.at(99))
 
     notifications = notification_repository.retrieve_notifications({
-        :backtest_id  => backtests[0].id,
+        :backtest_id => backtests[0].id,
         :timestamp.gt => Time.at(30)
     }, { timestamp: :asc, id: :asc }, nil, nil)
 
@@ -81,7 +81,7 @@ describe Jiji::Model::Notification::NotificationRepository do
     expect(count).to eq(200)
 
     count = notification_repository.count_notifications({
-      :backtest_id  => nil,
+      :backtest_id => nil,
       :timestamp.gt => Time.at(30)
     })
     expect(count).to eq(69)

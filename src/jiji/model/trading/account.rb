@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
@@ -70,6 +70,7 @@ module Jiji::Model::Trading
 
       def process(position)
         return if position.status != :live
+
         @profit_or_loss += position.profit_or_loss || 0
         @total_price    +=
           BigDecimal(position.current_price || position.entry_price, 10) \

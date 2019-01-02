@@ -7,19 +7,19 @@ Style/AsciiComments:
   Enabled: false
 
 # 1行目にあわせる
-Style/AlignParameters:
+Layout/AlignParameters:
   EnforcedStyle: with_fixed_indentation
 
 # 引数で渡す場合など、Hashのbracesは、ずれてもよい。
-Style/IndentHash:
+Layout/IndentHash:
   Enabled: false
 
 # 1行目にあわせる
-Style/IndentArray:
+Layout/IndentArray:
   EnforcedStyle: consistent
 
 # テーブル形式にそろえる
-Style/AlignHash:
+Layout/AlignHash:
   EnforcedColonStyle: table
 
 # 明示的にメソッドを指定した方がわかりやすい場合もある。
@@ -36,7 +36,7 @@ Lint/UnusedMethodArgument:
   Enabled: false
 
 # class body の前後に改行を挿入する。
-Style/EmptyLinesAroundClassBody:
+Layout/EmptyLinesAroundClassBody:
   EnforcedStyle: empty_lines
 
 # 条件or処理が長い場合、if-endを使いたい。
@@ -59,13 +59,13 @@ Metrics/ParameterLists:
 Style/TrivialAccessors:
   ExactNameMatch:	true
 
-Style/MultilineMethodCallIndentation:
+Layout/MultilineMethodCallIndentation:
   EnforcedStyle: indented
 
-Style/MultilineMethodCallBraceLayout:
+Layout/MultilineMethodCallBraceLayout:
   Enabled: false
 
-Style/MultilineMethodDefinitionBraceLayout:
+Layout/MultilineMethodDefinitionBraceLayout:
   Enabled: false
 
 Style/IfInsideElse:

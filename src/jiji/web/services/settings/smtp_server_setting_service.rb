@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sinatra/base'
 require 'jiji/web/services/abstract_service'
@@ -55,6 +55,7 @@ module Jiji::Web
 
     def load_smtp_server_setting(body)
       return nil unless body.include? 'smtp_host'
+
       {
         address:   body['smtp_host'],
         port:      body['smtp_port'],

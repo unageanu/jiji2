@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'mail'
 require 'encase'
@@ -6,16 +6,16 @@ require 'encase'
 module Jiji::Messaging
   class MailComposer
 
-    FROM   = 'jiji@unageanu.net'.freeze
-    DOMAIN = 'unageanu.net'.freeze
+    FROM   = 'jiji@unageanu.net'
+    DOMAIN = 'unageanu.net'
 
-    TEST_MAIL_BODY = <<BODY.freeze
-メール送信のテスト用メールです。
+    TEST_MAIL_BODY = <<~BODY
+      メール送信のテスト用メールです。
 
-----
-無料で使えるFXシステムトレードフレームワーク「Jiji」
-http://jiji2.unageanu.net
-BODY
+      ----
+      無料で使えるFXシステムトレードフレームワーク「Jiji」
+      http://jiji2.unageanu.net
+    BODY
 
     include Encase
     include Jiji::Errors
@@ -46,6 +46,7 @@ BODY
     def smtp_server
       return postmark_smtp_server     if postmark_smtp_server.available?
       return user_setting_smtp_server if user_setting_smtp_server.available?
+
       illegal_state('SMTP server is not set.')
     end
 

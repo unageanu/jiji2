@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'securerandom'
 require 'set'
@@ -28,8 +28,7 @@ module Jiji::Model::Trading::Brokers
       init_positions(positions)
     end
 
-    def destroy
-    end
+    def destroy; end
 
     def next?
       securities.next?

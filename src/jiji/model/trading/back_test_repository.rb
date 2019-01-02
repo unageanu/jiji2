@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'thread/pool'
@@ -22,19 +22,17 @@ module Jiji::Model::Trading
     end
 
     def runnings
-      @backtests.values.reject do |b|
-        b.retrieve_process_status != :running
+      @backtests.values.select do |b|
+        b.retrieve_process_status == :running
       end
     end
 
     def collect_backtests_by_id(ids)
       tests = ids.map do |id|
-        begin
-          get(id)
-        rescue Jiji::Errors::NotFoundException
-          # ignore
-          nil
-        end
+        get(id)
+      rescue Jiji::Errors::NotFoundException
+        # ignore
+        nil
       end
       tests.reject { |test| test.nil? }
     end

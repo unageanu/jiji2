@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class RestartTestAgent
 
   include Jiji::Model::Agents::Agent

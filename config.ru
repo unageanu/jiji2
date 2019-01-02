@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 base = File.dirname(__FILE__)
 $LOAD_PATH.unshift File.join(base, 'src')

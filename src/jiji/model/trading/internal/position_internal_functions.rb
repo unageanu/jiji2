@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jiji::Model::Trading::Internal
   module PositionInternalFunctions
     include Jiji::Model::Trading::Utils
@@ -5,6 +7,7 @@ module Jiji::Model::Trading::Internal
     # for internal use.
     def update_state_for_reduce(units, time)
       return if status != :live
+
       self.units          = self.units - units
       self.updated_at     = time
       update_profit_or_loss
@@ -14,6 +17,7 @@ module Jiji::Model::Trading::Internal
     def update_state_to_closed(price = current_price,
       time = updated_at, profit_or_loss = nil)
       return if status != :live
+
       self.exit_price     = price
       self.current_price  = price
       self.status         = :closed
@@ -25,6 +29,7 @@ module Jiji::Model::Trading::Internal
     # for internal use.
     def update_state_to_lost(price = current_price, time = updated_at)
       return if status != :live
+
       self.current_price  = price
       self.status         = :lost
       self.updated_at     = time
@@ -34,6 +39,7 @@ module Jiji::Model::Trading::Internal
     # for internal use.
     def update_price(tick, account_currency)
       return if status != :live
+
       self.current_price = PricingUtils.calculate_current_price(
         tick, pair_name, sell_or_buy)
       self.current_counter_rate = PricingUtils.calculate_current_counter_rate(
@@ -85,6 +91,7 @@ module Jiji::Model::Trading::Internal
 
     def calculate_profit_or_loss
       return nil if current_price.nil? || entry_price.nil?
+
       current = actual_amount_of(current_price)
       entry   = actual_amount_of(entry_price)
       (current - entry) * (sell_or_buy == :buy ? 1 : -1) * current_counter_rate

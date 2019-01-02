@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'jiji/errors/errors'
@@ -16,6 +16,7 @@ module Jiji::Security
 
     def authenticate(password)
       raise AuthFailedException unless validate_password(password)
+
       session_store.new_session(expiration_date, :user).token
     end
 

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 ENV['ENABLE_COVERADGE_REPORT'] = 'false'
 
@@ -46,6 +46,7 @@ module Jiji
     def register_shutdown_fook(pid)
       at_exit do
         raise "failed to kill server. pid=#{pid}" unless system("kill #{pid}")
+
         puts "stop server pid=#{pid}"
       end
     end

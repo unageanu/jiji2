@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sample_agent_test_configuration'
 require 'utils/agent_runner'
@@ -11,7 +11,7 @@ describe RangeBreakAgent do
   before(:example) do
     runner.register_agent_file(
       'sample_agents/src/range_break_agent.rb')
-    %w(signals moving_average_agent cross).each do |file|
+    %w[signals moving_average_agent cross].each do |file|
       runner.register_agent_file(
         "/src/jiji/model/agents/builtin_files/#{file}.rb")
     end
@@ -30,7 +30,7 @@ describe RangeBreakAgent do
         'range_period' => '480',
         'range_pips' => '100',
         'trailing_stop_pips' => '30',
-        'trade_units' =>        '1'
+        'trade_units' => '1'
       }
     }])
 

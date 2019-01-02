@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sample_agent_test_configuration'
 require 'statistical_arbitrage/shared_context'
@@ -125,13 +125,13 @@ describe StatisticalArbitrage::CointegrationTrader do
       expect(trader.positions.keys).to eq(['1'])
 
       trader.process_tick(create_tick(92, 74, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
 
       trader.process_tick(create_tick(92, 71, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
 
       trader.process_tick(create_tick(93, 71, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2 3))
+      expect(trader.positions.keys).to eq(%w[1 2 3])
     end
 
     it 'open :sell_aud position if the spread is higher than sd,' \
@@ -163,9 +163,9 @@ describe StatisticalArbitrage::CointegrationTrader do
       trader.process_tick(create_tick(90, 74, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
       trader.process_tick(create_tick(92, 71, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
       trader.process_tick(create_tick(93, 71, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2 3))
+      expect(trader.positions.keys).to eq(%w[1 2 3])
 
       trader.process_tick(create_tick(90, 75, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
@@ -207,9 +207,9 @@ describe StatisticalArbitrage::CointegrationTrader do
       trader.process_tick(create_tick(90, 74, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
       trader.process_tick(create_tick(90, 73, Time.local(2015, 10, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
       trader.process_tick(create_tick(90, 76, Time.local(2016, 2, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
       trader.process_tick(create_tick(90, 80, Time.local(2016, 2, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
       trader.process_tick(create_tick(90, 84, Time.local(2016, 2, 1, 12)))
@@ -246,9 +246,9 @@ describe StatisticalArbitrage::CointegrationTrader do
       trader.process_tick(create_tick(90, 75, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
       trader.process_tick(create_tick(90, 74, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
       trader.process_tick(create_tick(90, 75, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
       trader.process_tick(create_tick(90, 77, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
       trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))
@@ -277,21 +277,21 @@ describe StatisticalArbitrage::CointegrationTrader do
       trader.process_tick(create_tick(90, 75, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
       trader.process_tick(create_tick(90, 74, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
 
       expect(trader.save_state).to eq([{
-        "trade_type"=>:sell_a,
-        "index"=>1,
-        "positions"=>[
-          {"pair"=>:AUDJPY, "units"=>100, "sell_or_buy"=>:sell},
-           {"pair"=>:NZDJPY, "units"=>50, "sell_or_buy"=>:buy}
+        'trade_type' => :sell_a,
+        'index' => 1,
+        'positions' => [
+          { 'pair' => :AUDJPY, 'units' => 100, 'sell_or_buy' => :sell },
+          { 'pair' => :NZDJPY, 'units' => 50, 'sell_or_buy' => :buy }
         ]
       }, {
-        "trade_type"=>:sell_a,
-        "index"=>2,
-        "positions"=>[
-          {"pair"=>:AUDJPY, "units"=>100, "sell_or_buy"=>:sell},
-          {"pair"=>:NZDJPY, "units"=>50, "sell_or_buy"=>:buy}
+        'trade_type' => :sell_a,
+        'index' => 2,
+        'positions' => [
+          { 'pair' => :AUDJPY, 'units' => 100, 'sell_or_buy' => :sell },
+          { 'pair' => :NZDJPY, 'units' => 50, 'sell_or_buy' => :buy }
         ]
       }])
     end
@@ -330,16 +330,16 @@ describe StatisticalArbitrage::CointegrationTrader do
       trader.process_tick(create_tick(90, 75, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
       trader.process_tick(create_tick(90, 74, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
 
       states = trader.save_state
       trader = StatisticalArbitrage::CointegrationTrader.new(
         :AUDJPY, :NZDJPY, 100, 0.5, broker)
       trader.restore_state(states)
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
 
       trader.process_tick(create_tick(90, 75, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
       trader.process_tick(create_tick(90, 77, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
       trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))

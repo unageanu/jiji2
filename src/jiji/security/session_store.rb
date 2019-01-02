@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'jiji/errors/errors'
@@ -37,6 +37,7 @@ module Jiji::Security
       s = @sessions[token]
       return false if s.nil? || s.expired?(time_source.now)
       return false if required_authority && !s.has?(required_authority)
+
       true
     end
 

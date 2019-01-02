@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'jiji/errors/errors'
@@ -10,7 +10,7 @@ module Jiji::Security
     include Encase
     include Jiji::Errors
 
-    MAIL_TITLE = '[Jiji] パスワードの再設定'.freeze
+    MAIL_TITLE = '[Jiji] パスワードの再設定'
 
     needs :setting_repository
     needs :session_store

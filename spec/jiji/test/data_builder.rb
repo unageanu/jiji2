@@ -49,7 +49,7 @@ module Jiji::Test
       position
     end
 
-    def new_agent_body(seed, parent = nil)
+    def new_agent_body(seed, parent = nil, sleep = 0)
       <<BODY
 class TestAgent#{seed} #{parent ? ' < ' + parent : ''}
 
@@ -75,6 +75,10 @@ class TestAgent#{seed} #{parent ? ' < ' + parent : ''}
   def restore_state(state)
     fail "test" if agent_name =~ /restore_state_error/
     @restored_state = state
+  end
+
+  def next_tick(tick)
+    sleep #{sleep} if #{sleep} > 0
   end
 
   attr_reader :restored_state

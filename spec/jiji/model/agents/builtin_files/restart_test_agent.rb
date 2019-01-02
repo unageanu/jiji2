@@ -15,6 +15,8 @@ class RestartTestAgent
     @current_tick = tick
     @a += 1
     @b += 1
+
+    sleep 0.25
   end
 
   def state

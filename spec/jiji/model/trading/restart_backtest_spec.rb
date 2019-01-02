@@ -5,8 +5,8 @@ require 'jiji/utils/requires'
 require 'jiji/model/trading/restart_examples'
 
 describe 'バックテストの停止と再開のテスト' do
-  let(:long_sleep_time)  { 0.5 }
-  let(:short_sleep_time) { 0.3 }
+  let(:long_sleep_time)  { 7 }
+  let(:short_sleep_time) { 5 }
 
   before(:example) do
     @backtest_repository = container.lookup(:backtest_repository)

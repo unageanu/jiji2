@@ -20,8 +20,8 @@ gem 'puma'
 gem 'mongoid'
 
 gem 'oanda_api'
-gem 'httparty', '0.13.7'
-gem 'persistent_http', '2.0.1'
+gem 'httparty'
+gem 'persistent_http'
 gem 'quandl'
 gem 'httpclient'
 

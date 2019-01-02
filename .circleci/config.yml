@@ -7,6 +7,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Env
+          command: env
+      - run:
           name: Which bundler?
           command: bundle -v
       - restore_cache:

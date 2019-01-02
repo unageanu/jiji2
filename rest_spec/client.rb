@@ -13,7 +13,7 @@ module Jiji
     attr_accessor :transport
 
     def initialize(transport = MessagePackTransport.new)
-      @api_url          = 'http://localhost:3000/api'
+      @api_url          = 'http://localhost:5001/api'
       @client           = HTTPClient.new
       @transport        = transport
       @client.debug_dev = debug_device

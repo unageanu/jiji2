@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/utils/requires'
@@ -11,7 +11,7 @@ shared_examples '停止と再開ができる' do
     @container = container
     @action_dispatcher   = @container.lookup(:action_dispatcher)
     @agent_registry      = @container.lookup(:agent_registry)
-    %w(restart_test_agent).each do |file|
+    %w[restart_test_agent].each do |file|
       f = File.expand_path("../../agents/builtin_files/#{file}.rb", __FILE__)
       source = @agent_registry.add_source("#{file}.rb", '', :agent, IO.read(f))
       p source.error

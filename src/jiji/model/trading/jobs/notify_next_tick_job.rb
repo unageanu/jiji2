@@ -1,8 +1,6 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
-require 'thread'
-
 module Jiji::Model::Trading::Jobs
   class NotifyNextTickJob
 
@@ -41,7 +39,7 @@ module Jiji::Model::Trading::Jobs
     end
 
     def add_balance_graph_data(context)
-      @balance_graph = create_balance_graph(context) unless @balance_graph
+      @balance_graph ||= create_balance_graph(context)
       @balance_graph << [context.broker.account.balance]
     end
 
@@ -78,6 +76,7 @@ module Jiji::Model::Trading::Jobs
 
     def before_do_next(trading_context, queue)
       raise 'no agent.' if trading_context.agents.values.empty?
+
       super
     end
 
@@ -95,12 +94,14 @@ module Jiji::Model::Trading::Jobs
 
     def start_transaction
       return if BulkWriteOperationSupport.in_transaction?
+
       BulkWriteOperationSupport.begin_transaction
     end
 
     def refresh_transaction
       return unless BulkWriteOperationSupport.in_transaction?
       return if BulkWriteOperationSupport.transaction.size < 500
+
       BulkWriteOperationSupport.end_transaction
     end
 
@@ -116,11 +117,13 @@ module Jiji::Model::Trading::Jobs
     def calculate_progress(timestamp)
       return 0.0 if timestamp <= @start_time
       return 1.0 if timestamp >= @end_time
+
       (timestamp.to_i - @start_time.to_i).to_f / @sec
     end
 
     def push_next_job_if_required(context, queue)
       return end_transaction unless context.alive?
+
       if context.broker.next?
         queue << self
       else

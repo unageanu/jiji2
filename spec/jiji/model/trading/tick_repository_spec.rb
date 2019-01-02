@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
@@ -8,7 +8,7 @@ describe Jiji::Model::Trading::TickRepository do
   let(:repository) { container.lookup(:tick_repository) }
 
   it 'fetch で tickの一覧を取得できる' do
-    ticks = repository.fetch([:EURJPY, :USDJPY], Time.at(0), Time.at(75))
+    ticks = repository.fetch(%i[EURJPY USDJPY], Time.at(0), Time.at(75))
 
     expect(ticks.length).to eq(5)
     expect(ticks[0][:EURJPY].bid).to eq(135.3)
@@ -46,7 +46,7 @@ describe Jiji::Model::Trading::TickRepository do
     expect(ticks[3][:EURJPY].ask).to eq(135.633)
     expect(ticks[3].timestamp).to eq(Time.at(75))
 
-    ticks = repository.fetch([:EURJPY, :USDJPY],
+    ticks = repository.fetch(%i[EURJPY USDJPY],
       Time.at(0), Time.at(60 * 60 * 9 + 10), :one_hour)
     expect(ticks.length).to eq(10)
     expect(ticks[0][:EURJPY].bid).to eq(135.3)

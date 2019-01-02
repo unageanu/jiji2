@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 RSpec.shared_examples '注文関連の操作' do
   describe 'Ordering' do
@@ -16,7 +16,7 @@ RSpec.shared_examples '注文関連の操作' do
     end
 
     describe '成行注文' do
-      let(:bid) { BigDecimal.new(tick[:USDJPY].bid, 4) }
+      let(:bid) { BigDecimal(tick[:USDJPY].bid, 4) }
 
       before(:example) do
         bid # orderの前に、client.retrieve_current_tickを呼び出しておく必要がある
@@ -96,8 +96,8 @@ RSpec.shared_examples '注文関連の操作' do
     end
 
     describe '指値注文' do
-      let(:bid) { BigDecimal.new(tick[:EURJPY].bid, 4) }
-      let(:ask) { BigDecimal.new(tick[:EURJPY].ask, 4) }
+      let(:bid) { BigDecimal(tick[:EURJPY].bid, 4) }
+      let(:ask) { BigDecimal(tick[:EURJPY].ask, 4) }
 
       it '指値で注文ができる' do
         saved_positions = position_repository.retrieve_positions(backtest_id)
@@ -354,8 +354,8 @@ RSpec.shared_examples '注文関連の操作' do
     end
 
     describe '逆指値注文' do
-      let(:bid) { BigDecimal.new(tick[:USDJPY].bid, 4) }
-      let(:ask) { BigDecimal.new(tick[:USDJPY].ask, 4) }
+      let(:bid) { BigDecimal(tick[:USDJPY].bid, 4) }
+      let(:ask) { BigDecimal(tick[:USDJPY].ask, 4) }
 
       it '逆指値で注文ができる' do
         saved_positions = position_repository.retrieve_positions(backtest_id)
@@ -612,8 +612,8 @@ RSpec.shared_examples '注文関連の操作' do
     end
 
     describe 'Market If Touched注文' do
-      let(:bid) { BigDecimal.new(tick[:EURJPY].bid, 4) }
-      let(:ask) { BigDecimal.new(tick[:EURJPY].ask, 4) }
+      let(:bid) { BigDecimal(tick[:EURJPY].bid, 4) }
+      let(:ask) { BigDecimal(tick[:EURJPY].ask, 4) }
 
       it 'Market If Touched 注文ができる' do
         saved_positions = position_repository.retrieve_positions(backtest_id)
@@ -868,7 +868,7 @@ RSpec.shared_examples '注文関連の操作' do
     end
 
     it '注文方法が不明な場合、エラーになる' do
-      bid = BigDecimal.new(tick[:USDJPY].bid, 4)
+      bid = BigDecimal(tick[:USDJPY].bid, 4)
 
       expect do
         client.order(:EURJPY, :buy, 0, :unknown)
@@ -884,8 +884,8 @@ RSpec.shared_examples '注文関連の操作' do
     end
 
     describe '指値注文の変更' do
-      let(:ask) { BigDecimal.new(tick[:EURJPY].ask, 4) }
-      let(:bid) { BigDecimal.new(tick[:EURJPY].bid, 4) }
+      let(:ask) { BigDecimal(tick[:EURJPY].ask, 4) }
+      let(:bid) { BigDecimal(tick[:EURJPY].bid, 4) }
 
       before(:example) do
         @orders << client.order(:EURJPY, :buy, 1, :limit, {
@@ -1122,8 +1122,8 @@ RSpec.shared_examples '注文関連の操作' do
     end
 
     describe '逆指値注文の変更' do
-      let(:ask) { BigDecimal.new(tick[:USDJPY].ask, 4) }
-      let(:bid) { BigDecimal.new(tick[:USDJPY].bid, 4) }
+      let(:ask) { BigDecimal(tick[:USDJPY].ask, 4) }
+      let(:bid) { BigDecimal(tick[:USDJPY].bid, 4) }
 
       before(:example) do
         @orders << client.order(:USDJPY, :sell, 10, :stop, {
@@ -1360,8 +1360,8 @@ RSpec.shared_examples '注文関連の操作' do
     end
 
     describe 'Market If Touched 注文の変更' do
-      let(:ask) { BigDecimal.new(tick[:EURJPY].ask, 4) }
-      let(:bid) { BigDecimal.new(tick[:EURJPY].bid, 4) }
+      let(:ask) { BigDecimal(tick[:EURJPY].ask, 4) }
+      let(:bid) { BigDecimal(tick[:EURJPY].bid, 4) }
 
       before(:example) do
         @orders << client.order(:EURJPY, :buy, 1, :marketIfTouched, {
@@ -1600,8 +1600,8 @@ RSpec.shared_examples '注文関連の操作' do
       saved_positions = position_repository.retrieve_positions(backtest_id)
       expect(saved_positions.length).to be 0
 
-      bid = BigDecimal.new(tick[:EURJPY].bid, 4)
-      ask = BigDecimal.new(tick[:EURJPY].ask, 4)
+      bid = BigDecimal(tick[:EURJPY].bid, 4)
+      ask = BigDecimal(tick[:EURJPY].ask, 4)
 
       client.order(:EURJPY, :buy, 1, :limit, {
         price:  (ask - 1).to_f,

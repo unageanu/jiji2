@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'client'
 require 'uri'
@@ -11,12 +11,12 @@ describe 'バックテスト' do
 
   it 'POST /backtests でバックテストを登録できる' do
     r = @client.post('backtests', {
-      'name'          => 'テスト',
-      'start_time'    => Time.utc(2015, 6, 2),
-      'end_time'      => Time.utc(2015, 6, 2, 0, 10, 0),
-      'memo'          => 'メモ',
-      'pair_names'    => [:EURJPY, :EURUSD],
-      'balance'       => 1_000_000,
+      'name' => 'テスト',
+      'start_time' => Time.utc(2015, 6, 2),
+      'end_time' => Time.utc(2015, 6, 2, 0, 10, 0),
+      'memo' => 'メモ',
+      'pair_names' => %i[EURJPY EURUSD],
+      'balance' => 1_000_000,
       'agent_setting' => [
         {
           agent_class: 'TestAgent1@テスト1',

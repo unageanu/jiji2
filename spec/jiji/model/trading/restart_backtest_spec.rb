@@ -1,12 +1,12 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/utils/requires'
 require 'jiji/model/trading/restart_examples'
 
 describe 'バックテストの停止と再開のテスト' do
-  let(:long_sleep_time)  { 0.5 }
-  let(:short_sleep_time) { 0.3 }
+  let(:long_sleep_time)  { 7 }
+  let(:short_sleep_time) { 5 }
 
   before(:example) do
     @backtest_repository = container.lookup(:backtest_repository)
@@ -21,12 +21,12 @@ describe 'バックテストの停止と再開のテスト' do
 
   def start_trade
     @target = @backtest_repository.register({
-      'name'          => 'テスト',
-      'start_time'    => Time.new(2015, 6, 20, 0,  0, 0),
-      'end_time'      => Time.new(2015, 6, 21, 0,  0, 0),
-      'memo'          => 'メモ',
-      'balance'       => 100_000,
-      'pair_names'    => [:USDJPY, :EURJPY],
+      'name' => 'テスト',
+      'start_time' => Time.new(2015, 6, 20, 0, 0, 0),
+      'end_time' => Time.new(2015, 6, 21, 0, 0, 0),
+      'memo' => 'メモ',
+      'balance' => 100_000,
+      'pair_names' => %i[USDJPY EURJPY],
       'agent_setting' => [
         {
           agent_class: 'RestartTestAgent@restart_test_agent.rb',

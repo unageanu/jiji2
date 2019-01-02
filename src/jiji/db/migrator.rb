@@ -1,4 +1,5 @@
-# coding: utf-8
+# frozen_string_literal: true
+
 require 'encase'
 require 'mongoid'
 require 'jiji/configurations/mongoid_configuration'
@@ -39,10 +40,11 @@ module Jiji::Db
 
     def run_script(script, status, logger)
       return if status.applied? script.id
+
       script.call(status, logger)
       status.mark_as_applied(script.id)
       status.save
-    rescue => e
+    rescue StandardError => e
       logger.error(e)
     end
 

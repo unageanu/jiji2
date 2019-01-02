@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/model/agents/agent'
 require 'date'
@@ -11,9 +11,9 @@ class TensorFlowSampleAgent
   include Jiji::Model::Agents::Agent
 
   def self.description
-    <<-STR
-TensorFlowと連携してトレードするエージェントのサンプル
-      STR
+    <<~STR
+      TensorFlowと連携してトレードするエージェントのサンプル
+    STR
   end
 
   def self.property_infos
@@ -36,6 +36,7 @@ TensorFlowと連携してトレードするエージェントのサンプル
   def next_tick(tick)
     date = tick.timestamp.to_date
     return if !@current_date.nil? && @current_date == date
+
     @current_date = date
 
     signal = @calculator.next_tick(tick)
@@ -57,6 +58,7 @@ TensorFlowと連携してトレードするエージェントのサンプル
   def buy(signal)
     close_exist_positions
     return unless @mode.do_trade?(signal, 'buy')
+
     result = broker.buy(:USDJPY, 10_000)
     @current_position = broker.positions[result.trade_opened.internal_id]
     @current_signal = signal
@@ -65,6 +67,7 @@ TensorFlowと連携してトレードするエージェントのサンプル
   def sell(signal)
     close_exist_positions
     return unless @mode.do_trade?(signal, 'sell')
+
     result = broker.sell(:USDJPY, 10_000)
     @current_position = broker.positions[result.trade_opened.internal_id]
     @current_signal = signal
@@ -72,6 +75,7 @@ TensorFlowと連携してトレードするエージェントのサンプル
 
   def close_exist_positions
     return unless @current_position
+
     @current_position.close
     @mode.after_position_closed(@current_signal, @current_position)
     @current_position = nil
@@ -187,6 +191,7 @@ class TradeAndSignals
     TradeAndSignals.new do |ts|
       signal_data.each do |pair|
         next if pair[0] == :ma5 || pair[0] == :ma10
+
         ts.send("#{pair[0]}=".to_sym, pair[1])
       end
       ts.profit_or_loss = position.profit_or_loss
@@ -284,7 +289,7 @@ class SignalCalculator
   end
 
   def calculate_estrangement(price, ma)
-    ((BigDecimal.new(price, 10) - ma) / ma * 100).to_f
+    ((BigDecimal(price, 10) - ma) / ma * 100).to_f
   end
 
 end

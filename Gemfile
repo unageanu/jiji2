@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.2.3'
+ruby '2.6.0'
 
 gem 'encase'
 
@@ -12,7 +12,7 @@ gem 'figaro'
 gem 'validates_email_format_of'
 gem 'mini_magick'
 
-gem 'msgpack', '0.5.12'
+gem 'msgpack'
 gem 'rack'
 gem 'sinatra'
 gem 'puma'
@@ -20,8 +20,8 @@ gem 'puma'
 gem 'mongoid'
 
 gem 'oanda_api'
-gem 'httparty', '0.13.7'
-gem 'persistent_http', '2.0.1'
+gem 'httparty'
+gem 'persistent_http'
 gem 'quandl'
 gem 'httpclient'
 

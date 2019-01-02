@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sample_agent_test_configuration'
 require 'statistical_arbitrage/shared_context'
@@ -72,9 +72,9 @@ describe StatisticalArbitrage::Position do
     it 'converts a position to hash.' do
       sell_aud = create_sell_aud_position(1)
       expect(sell_aud.to_hash).to eq({
-        "trade_type" => :sell_a,
-        "index" => 1,
-        "positions" => [
+        'trade_type' => :sell_a,
+        'index' => 1,
+        'positions' => [
           create_mock_position(:AUDJPY, :sell, 5000),
           create_mock_position(:NZDJPY, :buy, 5000)
         ]
@@ -82,9 +82,9 @@ describe StatisticalArbitrage::Position do
 
       buy_aud = create_buy_aud_position(-2)
       expect(buy_aud.to_hash).to eq({
-        "trade_type" => :buy_a,
-        "index" => -2,
-        "positions" => [
+        'trade_type' => :buy_a,
+        'index' => -2,
+        'positions' => [
           create_mock_position(:AUDJPY, :buy, 5000),
           create_mock_position(:NZDJPY, :sell, 5000)
         ]
@@ -95,9 +95,9 @@ describe StatisticalArbitrage::Position do
   describe '#from_hash' do
     it 'creates a position from hash.' do
       sell_aud = StatisticalArbitrage::Position.from_hash({
-        "trade_type" => :sell_a,
-        "index" => 1,
-        "positions" => [
+        'trade_type' => :sell_a,
+        'index' => 1,
+        'positions' => [
           create_mock_position(:AUDJPY, :sell, 5000),
           create_mock_position(:NZDJPY, :buy, 5000)
         ]
@@ -110,9 +110,9 @@ describe StatisticalArbitrage::Position do
       ])
 
       buy_aud = StatisticalArbitrage::Position.from_hash({
-        "trade_type" => :buy_a,
-        "index" => -2,
-        "positions" => [
+        'trade_type' => :buy_a,
+        'index' => -2,
+        'positions' => [
           create_mock_position(:AUDJPY, :buy, 5000),
           create_mock_position(:NZDJPY, :sell, 5000)
         ]
@@ -141,8 +141,8 @@ describe StatisticalArbitrage::Position do
 
   def create_mock_positions(type)
     [
-      create_mock_position(:AUDJPY, type==:sell_a ? :sell : :buy, 5000),
-      create_mock_position(:NZDJPY, type==:sell_a ? :buy : :sell, 5000)
+      create_mock_position(:AUDJPY, type == :sell_a ? :sell : :buy, 5000),
+      create_mock_position(:NZDJPY, type == :sell_a ? :buy : :sell, 5000)
     ]
   end
 end

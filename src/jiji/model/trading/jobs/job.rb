@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 module Jiji::Model::Trading::Jobs
   class Job
@@ -16,8 +16,7 @@ module Jiji::Model::Trading::Jobs
       raise e
     end
 
-    def call(_context, queue)
-    end
+    def call(_context, queue); end
 
     def self.create_from(&block)
       ProcJob.new(&block)

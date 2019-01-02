@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/model/trading/brokers/broker_examples'
@@ -20,7 +20,7 @@ describe Jiji::Model::Trading::Brokers::RMTBroker do
   end
 
   after(:example) do
-    @rmt.stop_rmt_process if @rmt
+    @rmt&.stop_rmt_process
   end
 
   context 'プラグインが未設定の場合' do

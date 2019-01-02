@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
@@ -90,23 +90,27 @@ module Jiji::Model::Trading
 
     def update_open(value, timestamp)
       return unless timestamp < @timestamp
+
       @open      = value
       @timestamp = timestamp
     end
 
     def update_close(value, timestamp)
       return unless timestamp > @close_timestamp
+
       @close           = value
       @close_timestamp = timestamp
     end
 
     def update_high(value)
       return unless @high.bid < value.bid
+
       @high = value
     end
 
     def update_low(value)
       return unless @low.bid > value.bid
+
       @low = value
     end
 

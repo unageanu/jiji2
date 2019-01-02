@@ -1,4 +1,4 @@
-require 'thread'
+# frozen_string_literal: true
 
 module Jiji::Utils
   class Future

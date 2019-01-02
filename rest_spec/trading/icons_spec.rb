@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 describe 'アイコン' do
   let(:data_builder) { Jiji::Test::DataBuilder.new }

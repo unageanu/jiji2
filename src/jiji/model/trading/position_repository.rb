@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 
@@ -47,6 +47,7 @@ module Jiji::Model::Trading
         yield positions = retrieve_positions(backtest_id,
           sort_order, offset, page_size, filter_conditions)
         break unless positions.length == page_size
+
         offset += page_size
       end
     end
@@ -63,21 +64,21 @@ module Jiji::Model::Trading
 
     def delete_closed_positions_of_rmt(exited_before)
       Position.where(
-        :backtest_id  => nil,
-        :status       => :closed,
+        :backtest_id => nil,
+        :status => :closed,
         :exited_at.lt => exited_before
       ).delete
       Position.where(
-        :backtest_id   => nil,
-        :status        => :lost,
+        :backtest_id => nil,
+        :status => :lost,
         :updated_at.lt => exited_before
       ).delete
     end
 
     def create_base_condition(backtest_id, end_time)
       {
-        :backtest_id   => backtest_id,
-        :status.ne     => :lost,
+        :backtest_id => backtest_id,
+        :status.ne => :lost,
         :entered_at.lt => end_time
       }
     end

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 
@@ -27,8 +27,8 @@ describe Jiji::Model::Settings::PairSetting do
       pairs.get_by_name(:USDJPY)
     ]
 
-    @setting.pair_names = %w(USDJPY EURUSD)
-    expect(@setting.pair_names).to eq %w(USDJPY EURUSD)
+    @setting.pair_names = %w[USDJPY EURUSD]
+    expect(@setting.pair_names).to eq %w[USDJPY EURUSD]
     expect(@setting.pairs_for_use).to eq [
       pairs.get_by_name(:EURUSD),
       pairs.get_by_name(:USDJPY)
@@ -36,14 +36,14 @@ describe Jiji::Model::Settings::PairSetting do
 
     @setting.save
 
-    expect(@setting.pair_names).to eq %w(USDJPY EURUSD)
+    expect(@setting.pair_names).to eq %w[USDJPY EURUSD]
     expect(@setting.pairs_for_use).to eq [
       pairs.get_by_name(:EURUSD),
       pairs.get_by_name(:USDJPY)
     ]
 
     recreate_setting
-    expect(@setting.pair_names).to eq %w(USDJPY EURUSD)
+    expect(@setting.pair_names).to eq %w[USDJPY EURUSD]
     expect(@setting.pairs_for_use).to eq [
       pairs.get_by_name(:EURUSD),
       pairs.get_by_name(:USDJPY)

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'set'
 
@@ -43,15 +43,16 @@ module Jiji::Model::Trading::Utils
 
     def resolve_rate(tick, steps)
       pairs = resolve_required_pairs(tick, steps)
-      (BigDecimal.new(tick[pairs[0]].mid, 10) \
-           / BigDecimal.new(tick[pairs[1]].mid, 10)).round(6)
+      (BigDecimal(tick[pairs[0]].mid, 10) \
+           / BigDecimal(tick[pairs[1]].mid, 10)).round(6)
     end
 
     def resolve_required_pairs(available_pairs, steps)
-      %w(USD EUR).each do |candidate|
+      %w[USD EUR].each do |candidate|
         a = (candidate + steps[1]).to_sym
         b = (candidate + steps[0]).to_sym
         next unless available_pairs.include?(a) && available_pairs.include?(b)
+
         return [a, b]
       end
       raise "counter pair is not found. pair=#{steps.join}"

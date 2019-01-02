@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
@@ -51,8 +51,7 @@ module Jiji::Model::Agents::Agent
   #
   # * コンストラクタと違い、このメソッド内ではbrokerやgraph_factory,logger
   #   等が使用可能です。
-  def post_create
-  end
+  def post_create; end
 
   # レート情報が通知されるメソッドです。
   #
@@ -61,8 +60,7 @@ module Jiji::Model::Agents::Agent
   #   を実装します
   #
   # tick:: Jiji::Model::Trading::Tick
-  def next_tick(tick)
-  end
+  def next_tick(tick); end
 
   # アクションを実行します。
   #
@@ -90,8 +88,7 @@ module Jiji::Model::Agents::Agent
   # * 必要に応じてオーバーライドしてください。
   #
   # state:: 状態データ
-  def restore_state(state)
-  end
+  def restore_state(state); end
 
   # エージェントのプロパティ
   class Property

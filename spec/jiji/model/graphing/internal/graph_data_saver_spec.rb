@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 
@@ -58,8 +58,8 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[1].value).to eq [11, -2, 1.3]
       expect(data[1].timestamp).to eq Time.utc(2015, 4, 1, 0, 1, 0)
 
-      [:fifteen_minutes, :thirty_minutes,
-       :one_hour, :six_hours, :one_day].each do |i|
+      %i[fifteen_minutes thirty_minutes
+         one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [10.75, -2.75, 1.25]
@@ -78,8 +78,8 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[2].value).to eq [10, -5, 1.1]
       expect(data[2].timestamp).to eq Time.utc(2015, 4, 1, 0, 2, 0)
 
-      [:fifteen_minutes, :thirty_minutes,
-       :one_hour, :six_hours, :one_day].each do |i|
+      %i[fifteen_minutes thirty_minutes
+         one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [11, -3, 1]
@@ -105,7 +105,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [11, -3, 1]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:thirty_minutes, :one_hour, :six_hours, :one_day].each do |i|
+      %i[thirty_minutes one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [11, -3, 1.1]
@@ -140,7 +140,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [11, -3, 1.1]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:one_hour, :six_hours, :one_day].each do |i|
+      %i[one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [10, -3, 1.1]
@@ -186,7 +186,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [10, -3, 1.1]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:six_hours, :one_day].each do |i|
+      %i[six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [11, -4, 1.2]
@@ -531,8 +531,8 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[1].value).to eq [11, -2, 1.3]
       expect(data[1].timestamp).to eq Time.utc(2015, 4, 1, 0, 1, 0)
 
-      [:fifteen_minutes, :thirty_minutes,
-       :one_hour, :six_hours, :one_day].each do |i|
+      %i[fifteen_minutes thirty_minutes
+         one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [10, -1, 1.2]
@@ -551,8 +551,8 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[2].value).to eq [10, -5, 1.1]
       expect(data[2].timestamp).to eq Time.utc(2015, 4, 1, 0, 2, 0)
 
-      [:fifteen_minutes, :thirty_minutes,
-       :one_hour, :six_hours, :one_day].each do |i|
+      %i[fifteen_minutes thirty_minutes
+         one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [10, -1, 1.2]
@@ -578,7 +578,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [10, -1, 1.2]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:thirty_minutes, :one_hour, :six_hours, :one_day].each do |i|
+      %i[thirty_minutes one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [10, -1, 1.2]
@@ -613,7 +613,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [10, -1, 1.2]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:one_hour, :six_hours, :one_day].each do |i|
+      %i[one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [10, -1, 1.2]
@@ -659,7 +659,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [10, -1, 1.2]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:six_hours, :one_day].each do |i|
+      %i[six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [10, -1, 1.2]
@@ -992,8 +992,8 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [12, -3, 1.4]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:fifteen_minutes, :thirty_minutes,
-       :one_hour, :six_hours, :one_day].each do |i|
+      %i[fifteen_minutes thirty_minutes
+         one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [11, -2, 1.3]
@@ -1010,8 +1010,8 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[1].value).to eq [11, -2, 1.3]
       expect(data[1].timestamp).to eq Time.utc(2015, 4, 1, 0, 1, 0)
 
-      [:fifteen_minutes, :thirty_minutes,
-       :one_hour, :six_hours, :one_day].each do |i|
+      %i[fifteen_minutes thirty_minutes
+         one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [10, -5, 1.1]
@@ -1030,8 +1030,8 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[2].value).to eq [10, -5, 1.1]
       expect(data[2].timestamp).to eq Time.utc(2015, 4, 1, 0, 2, 0)
 
-      [:fifteen_minutes, :thirty_minutes,
-       :one_hour, :six_hours, :one_day].each do |i|
+      %i[fifteen_minutes thirty_minutes
+         one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [12, -4, 0]
@@ -1057,7 +1057,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [12, -4, 0]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:thirty_minutes, :one_hour, :six_hours, :one_day].each do |i|
+      %i[thirty_minutes one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [11, -3, 1.6]
@@ -1092,7 +1092,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [11, -3, 1.6]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:one_hour, :six_hours, :one_day].each do |i|
+      %i[one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [4, -3, 1.1]
@@ -1138,7 +1138,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [4, -3, 1.1]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:six_hours, :one_day].each do |i|
+      %i[six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 1
         expect(data[0].value).to eq [18, -11, 1.9]
@@ -1471,8 +1471,8 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [11, -2, 1.3]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:fifteen_minutes, :thirty_minutes,
-       :one_hour, :six_hours, :one_day].each do |i|
+      %i[fifteen_minutes thirty_minutes
+         one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 0
       end
@@ -1487,8 +1487,8 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[1].value).to eq [11, -2, 1.3]
       expect(data[1].timestamp).to eq Time.utc(2015, 4, 1, 0, 1, 0)
 
-      [:fifteen_minutes, :thirty_minutes,
-       :one_hour, :six_hours, :one_day].each do |i|
+      %i[fifteen_minutes thirty_minutes
+         one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 0
       end
@@ -1505,8 +1505,8 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[2].value).to eq [10, -5, 1.1]
       expect(data[2].timestamp).to eq Time.utc(2015, 4, 1, 0, 2, 0)
 
-      [:fifteen_minutes, :thirty_minutes,
-       :one_hour, :six_hours, :one_day].each do |i|
+      %i[fifteen_minutes thirty_minutes
+         one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 0
       end
@@ -1530,7 +1530,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [11, -3, 1]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:thirty_minutes, :one_hour, :six_hours, :one_day].each do |i|
+      %i[thirty_minutes one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 0
       end
@@ -1563,7 +1563,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [11, -3, 1.1]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:one_hour, :six_hours, :one_day].each do |i|
+      %i[one_hour six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 0
       end
@@ -1607,7 +1607,7 @@ describe Jiji::Model::Graphing::Internal::GraphDataSaver do
       expect(data[0].value).to eq [10, -3, 1.1]
       expect(data[0].timestamp).to eq Time.utc(2015, 4, 1, 0, 0, 0)
 
-      [:six_hours, :one_day].each do |i|
+      %i[six_hours one_day].each do |i|
         data = fetch_data(i)
         expect(data.length).to be 0
       end

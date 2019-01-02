@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
@@ -76,6 +76,7 @@ module Jiji::Model::Agents
 
     def evaluate
       return change_state_to_empty if body.nil? || body.empty?
+
       @context = Context.new_context
       begin
         @context.module_eval(body, "#{type}/#{name}", 1)

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'client'
 
@@ -10,7 +10,7 @@ describe 'ユーザー情報の設定' do
   it 'PUT /settings/user/password　でパスワードを変更できる' do
     r = @client.put('/settings/user/password', {
       'old_password' => 'test',
-      'password'     => 'test2'
+      'password' => 'test2'
     })
     expect(r.status).to eq 204
   end
@@ -18,7 +18,7 @@ describe 'ユーザー情報の設定' do
   it '古いパスワードが一致しない場合、エラーになる' do
     r = @client.put('/settings/user/password', {
       'old_password' => 'not_match',
-      'password'     => 'test3'
+      'password' => 'test3'
     })
     expect(r.status).to eq 401
   end

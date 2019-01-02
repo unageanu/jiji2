@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'jiji/configurations/mongoid_configuration'
@@ -113,6 +113,7 @@ module Jiji::Model::Trading
     def collect_properties(keys = instance_variables.map { |n| n[1..-1] })
       keys.each_with_object({}) do |name, obj|
         next if name == 'broker'
+
         obj[name.to_sym] = instance_variable_get('@' + name.to_s)
       end
     end
@@ -132,7 +133,7 @@ module Jiji::Model::Trading
     end
 
     def market_if_touched?(current_price)
-      @initial_price = current_price unless @initial_price
+      @initial_price ||= current_price
       @initial_price < price ? upper?(current_price) : lower?(current_price)
     end
 

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'oanda_api'
 require 'jiji/model/securities/internal/oanda/converter'
@@ -11,7 +11,7 @@ module Jiji::Model::Securities::Internal::Oanda
     def retrieve_pairs
       @client.instruments({
         account_id: @account.account_id,
-        fields:     %w(displayName pip maxTradeUnits precision marginRate)
+        fields:     %w[displayName pip maxTradeUnits precision marginRate]
       }).get.map { |item| convert_response_to_pair(item) }
     end
 
@@ -140,6 +140,7 @@ module Jiji::Model::Securities::Internal::Oanda
       4.times do
         rates = fetch(interval, time - step, time)
         return rates.last unless rates.empty?
+
         time -= step
       end
       illegal_argument('failed to load rate.')

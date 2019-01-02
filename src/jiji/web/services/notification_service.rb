@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sinatra/base'
 require 'jiji/web/services/abstract_service'
@@ -88,6 +88,7 @@ module Jiji::Web
 
     def load_backtest_id_condition(condition, param)
       return if param['backtest_id'].nil?
+
       condition[:backtest_id] =
         read_backtest_id_from(param, 'backtest_id', true)
     end
@@ -95,6 +96,7 @@ module Jiji::Web
     def load_status_condition(condition, param)
       status = param['status']
       return unless status
+
       if status == 'not_read'
         condition[:read_at] = Notification::DEFAULT_READ_AT
       end

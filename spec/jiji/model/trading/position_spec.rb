@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
@@ -111,8 +111,8 @@ describe Jiji::Model::Trading::Position do
     position = position_builder.build_from_tick(
       nil, :EURUSD, 10_000, :buy, data_builder.new_tick(1), 'JPY')
 
-    expect(position.profit_or_loss).to eq(BigDecimal.new(-30, 10) * 101.0015)
-    expect(position.max_drow_down).to eq(BigDecimal.new(-30, 10) * 101.0015)
+    expect(position.profit_or_loss).to eq(BigDecimal(-30, 10) * 101.0015)
+    expect(position.max_drow_down).to eq(BigDecimal(-30, 10) * 101.0015)
     expect(position.current_counter_rate).to eq(101.0015)
 
     position.update_price(data_builder.new_tick(2, Time.at(100)), 'JPY')
@@ -120,16 +120,16 @@ describe Jiji::Model::Trading::Position do
     expect(position.current_price).to eq(102.00)
     expect(position.current_counter_rate).to eq(102.0015)
     expect(position.updated_at).to eq(Time.at(100))
-    expect(position.profit_or_loss).to eq(BigDecimal.new(9970, 10) * 102.0015)
-    expect(position.max_drow_down).to eq(BigDecimal.new(-30, 10) * 101.0015)
+    expect(position.profit_or_loss).to eq(BigDecimal(9970, 10) * 102.0015)
+    expect(position.max_drow_down).to eq(BigDecimal(-30, 10) * 101.0015)
 
     position.update_price(data_builder.new_tick(3, Time.at(200)), 'JPY')
     expect(position.entry_price).to eq(101.003)
     expect(position.current_price).to eq(103.00)
     expect(position.current_counter_rate).to eq(103.0015)
     expect(position.updated_at).to eq(Time.at(200))
-    expect(position.profit_or_loss).to eq(BigDecimal.new(19_970, 10) * 103.0015)
-    expect(position.max_drow_down).to eq(BigDecimal.new(-30, 10) * 101.0015)
+    expect(position.profit_or_loss).to eq(BigDecimal(19_970, 10) * 103.0015)
+    expect(position.max_drow_down).to eq(BigDecimal(-30, 10) * 101.0015)
 
     position.update_price(data_builder.new_tick(0, Time.at(300)), 'JPY')
     expect(position.entry_price).to eq(101.003)
@@ -137,15 +137,15 @@ describe Jiji::Model::Trading::Position do
     expect(position.current_counter_rate).to eq(100.0015)
     expect(position.updated_at).to eq(Time.at(300))
     expect(position.profit_or_loss).to eq(
-      BigDecimal.new(-10_030, 10) * 100.0015)
+      BigDecimal(-10_030, 10) * 100.0015)
     expect(position.max_drow_down).to eq(
-      BigDecimal.new(-10_030, 10) * 100.0015)
+      BigDecimal(-10_030, 10) * 100.0015)
 
     position = position_builder.build_from_tick(
       1, :EURUSD, 100_000, :sell, data_builder.new_tick(1), 'JPY')
 
-    expect(position.profit_or_loss).to eq(BigDecimal.new(-300, 10) * 101.0015)
-    expect(position.max_drow_down).to eq(BigDecimal.new(-300, 10) * 101.0015)
+    expect(position.profit_or_loss).to eq(BigDecimal(-300, 10) * 101.0015)
+    expect(position.max_drow_down).to eq(BigDecimal(-300, 10) * 101.0015)
 
     position.update_price(data_builder.new_tick(2, Time.at(100)), 'JPY')
     expect(position.entry_price).to eq(101.00)
@@ -153,9 +153,9 @@ describe Jiji::Model::Trading::Position do
     expect(position.current_counter_rate).to eq(102.0015)
     expect(position.updated_at).to eq(Time.at(100))
     expect(position.profit_or_loss).to eq(
-      BigDecimal.new(-100_300, 10) * 102.0015)
+      BigDecimal(-100_300, 10) * 102.0015)
     expect(position.max_drow_down).to eq(
-      BigDecimal.new(-100_300, 10) * 102.0015)
+      BigDecimal(-100_300, 10) * 102.0015)
 
     position.update_price(data_builder.new_tick(3, Time.at(200)), 'JPY')
     expect(position.entry_price).to eq(101.00)
@@ -163,19 +163,19 @@ describe Jiji::Model::Trading::Position do
     expect(position.current_counter_rate).to eq(103.0015)
     expect(position.updated_at).to eq(Time.at(200))
     expect(position.profit_or_loss).to eq(
-      BigDecimal.new(-200_300, 10) * 103.0015)
+      BigDecimal(-200_300, 10) * 103.0015)
     expect(position.max_drow_down).to eq(
-      BigDecimal.new(-200_300, 10) * 103.0015)
+      BigDecimal(-200_300, 10) * 103.0015)
 
     position.update_price(data_builder.new_tick(0, Time.at(100)), 'JPY')
     expect(position.entry_price).to eq(101.00)
     expect(position.current_price).to eq(100.003)
     expect(position.current_counter_rate).to eq(100.0015)
     expect(position.updated_at).to eq(Time.at(100))
-    expect(position.profit_or_loss).to eq(
-      BigDecimal.new(99_700, 10) * 100.0015)
+    expect(BigDecimal(position.profit_or_loss, 10)).to eq(
+      BigDecimal(99_700, 10) * 100.0015)
     expect(position.max_drow_down).to eq(
-      BigDecimal.new(-200_300, 10) * 103.0015)
+      BigDecimal(-200_300, 10) * 103.0015)
   end
 
   it 'update_state_for_reduce で取引数を削減できる' do

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
@@ -77,8 +77,9 @@ module Jiji::Model::Trading
 
     # for internal use.
     def update_price(position, pair) #:nodoc:
-      return if trailing_stop && trailing_stop.zero?
-      price = BigDecimal.new(position.current_price, 10)
+      return if trailing_stop&.zero?
+
+      price = BigDecimal(position.current_price, 10)
       amount = (trailing_stop * pair.pip)
       self.trailing_amount = calculate_trailing_amount(position, price, amount)
     end
@@ -88,17 +89,17 @@ module Jiji::Model::Trading
     def calculate_trailing_amount(position, price, amount)
       if position.sell_or_buy == :buy
         new_price = (price - amount).to_f
-        trailing_amount && trailing_amount.zero? ?
+        trailing_amount&.zero? ?
           new_price : [new_price, trailing_amount].max
       else
         new_price = (price + amount).to_f
-        trailing_amount && trailing_amount.zero? ?
+        trailing_amount&.zero? ?
           new_price : [new_price, trailing_amount].min
       end
     end
 
     def should_take_profit?(position)
-      return false if take_profit && take_profit.zero?
+      return false if take_profit&.zero?
       if position.sell_or_buy == :buy
         return position.current_price >= take_profit
       else
@@ -107,7 +108,7 @@ module Jiji::Model::Trading
     end
 
     def should_stop_loss?(position)
-      return false if stop_loss && stop_loss.zero?
+      return false if stop_loss&.zero?
       if position.sell_or_buy == :buy
         return position.current_price <= stop_loss
       else
@@ -116,7 +117,7 @@ module Jiji::Model::Trading
     end
 
     def should_trailing_stop?(position)
-      return false if trailing_amount && trailing_amount.zero?
+      return false if trailing_amount&.zero?
       if position.sell_or_buy == :buy
         return position.current_price <= trailing_amount
       else

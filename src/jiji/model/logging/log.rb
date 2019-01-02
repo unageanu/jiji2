@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/pagenation'
@@ -18,6 +18,7 @@ module Jiji::Model::Logging
       query = Query.new(filter, { timestamp: :asc }, index, 1)
       data = query.execute(LogData)
       return @current if @current && data.length == index
+
       data[0]
     end
 
@@ -27,7 +28,7 @@ module Jiji::Model::Logging
     end
 
     def write(message)
-      @current = create_log_data unless @current
+      @current ||= create_log_data
       @current << message
       shift if @current.full?
     end
@@ -48,7 +49,7 @@ module Jiji::Model::Logging
     end
 
     def save_current_log_data
-      @current.save if @current
+      @current&.save
       @current = nil
     end
 

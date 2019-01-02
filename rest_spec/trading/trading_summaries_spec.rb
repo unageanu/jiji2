@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'client'
 
@@ -19,7 +19,7 @@ describe '取引サマリ取得' do
   it 'GET /trading-summaries/rmt でリアルトレードのサマリを取得できる' do
     r = @client.get('trading-summaries/rmt', {
       'start' => Time.new(2015, 5, 1).iso8601,
-      'end'   => Time.new(2015, 5, 9).iso8601
+      'end' => Time.new(2015, 5, 9).iso8601
     })
     expect(r.status).to eq 200
     expect(r.body['states']['count']).to be 2
@@ -38,7 +38,7 @@ describe '取引サマリ取得' do
   it 'GET /trading-summaries/:backtest_id でバックテストのサマリを取得できる' do
     r = @client.get("trading-summaries/#{@test._id}", {
       'start' => Time.new(2015, 5, 1).iso8601,
-      'end'   => Time.new(2015, 5, 9).iso8601
+      'end' => Time.new(2015, 5, 9).iso8601
     })
     expect(r.status).to eq 200
     expect(r.body['states']['count']).to be 2

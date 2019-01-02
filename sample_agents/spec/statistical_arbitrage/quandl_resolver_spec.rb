@@ -1,5 +1,4 @@
-
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sample_agent_test_configuration'
 require 'statistical_arbitrage/shared_context'

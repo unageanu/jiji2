@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'rspec/mocks/standalone'
 require 'jiji/composing/container_factory'

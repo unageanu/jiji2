@@ -1,9 +1,8 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
-require 'thread'
 require 'jiji/web/transport/transportable'
 require 'jiji/model/trading/internal/worker_mixin'
 
@@ -141,13 +140,13 @@ module Jiji::Model::Trading
     end
 
     def pause
-      @process.pause if @process
+      @process&.pause
       save_state if status == :running
     end
 
     def cancel
       illegal_state if @trading_context.finished?
-      @process.cancel if @process
+      @process&.cancel
       save_state if status == :running
     end
 
@@ -181,6 +180,7 @@ module Jiji::Model::Trading
 
     def collect_cancelled_state(status)
       return nil if status[:current_time].nil?
+
       {
         cancelled_time: status[:current_time],
         orders:         @broker.orders.map { |o| o.to_h },
@@ -235,6 +235,7 @@ module Jiji::Model::Trading
 
     def restore_order
       return [] unless cancelled_state && cancelled_state[:orders]
+
       cancelled_state[:orders].map do |o|
         order = Order.new(nil, nil, nil, nil, nil)
         order.from_h(o)

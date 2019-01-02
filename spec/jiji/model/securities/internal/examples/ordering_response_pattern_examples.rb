@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエーションパターン)' do
   describe 'Ordering' do
@@ -14,7 +14,7 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         sleep wait
         begin
           client.cancel_order(o.internal_id)
-        rescue
+        rescue StandardError
           p $ERROR_INFO
         end
       end
@@ -23,7 +23,7 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         sleep wait
         begin
           client.close_trade(t.internal_id)
-        rescue
+        rescue StandardError
           p $ERROR_INFO
         end
       end
@@ -187,7 +187,7 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         saved_positions = position_repository.retrieve_positions(backtest_id)
         expect(saved_positions.length).to be 0
 
-        bid = BigDecimal.new(tick[:EURJPY].bid, 4)
+        bid = BigDecimal(tick[:EURJPY].bid, 4)
 
         sleep wait
         result = client.order(:EURJPY, :sell, 1, :limit, {

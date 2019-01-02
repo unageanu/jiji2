@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 # === トラップリピートイフダンのような注文を発行するエージェント
 class TrapRepeatIfDoneAgent
@@ -5,9 +6,9 @@ class TrapRepeatIfDoneAgent
   include Jiji::Model::Agents::Agent
 
   def self.description
-    <<-STR
-トラップリピートイフダンのような注文を発行するエージェント
-      STR
+    <<~STR
+      トラップリピートイフダンのような注文を発行するエージェント
+    STR
   end
 
   # UIから設定可能なプロパティの一覧
@@ -74,6 +75,7 @@ class TrapRepeatIfDone
 
     each_traps(broker.tick) do |trap_open_price|
       next if order_or_position_exists?(trap_open_price, broker)
+
       register_order(trap_open_price, broker)
     end
   end
@@ -92,8 +94,8 @@ class TrapRepeatIfDone
     current_price = @mode.resolve_current_price(tick[@target_pair.name])
     base = resolve_base_price(current_price)
     6.times do |n| # baseを基準に、上下3つのトラップを仕掛ける
-      trap_open_price = BigDecimal.new(base, 10) \
-        + BigDecimal.new(@trap_interval_pips, 10) * (n - 3) * @target_pair.pip
+      trap_open_price = BigDecimal(base, 10) \
+        + BigDecimal(@trap_interval_pips, 10) * (n - 3) * @target_pair.pip
       yield trap_open_price
     end
   end
@@ -106,7 +108,7 @@ class TrapRepeatIfDone
   #  resolve_base_price(120.51) # -> 120.50
   #
   def resolve_base_price(current_price)
-    current_price = BigDecimal.new(current_price, 10)
+    current_price = BigDecimal(current_price, 10)
     pip_precision = 1 / @target_pair.pip
     (current_price * pip_precision / @trap_interval_pips).ceil \
       * @trap_interval_pips / pip_precision
@@ -130,6 +132,7 @@ class TrapRepeatIfDone
   def order_exists?(trap_open_price, broker)
     key = key_for(trap_open_price)
     return false unless @registerd_orders.include? key
+
     id = @registerd_orders[key]
     order = broker.orders.find { |o| o.internal_id == id }
     !order.nil?
@@ -177,21 +180,20 @@ class TrapRepeatIfDone
     #
     # tick_value:: 現在の価格を格納するTick::Valueオブジェクト
     # 戻り値:: 現在価格
-    def resolve_current_price(tick_value)
-    end
+    def resolve_current_price(tick_value); end
 
     # 注文を登録する
-    def register_order(trap_open_price, broker)
-    end
+    def register_order(trap_open_price, broker); end
 
     def calculate_price(price, pips)
-      price = BigDecimal.new(price, 10)
-      pips  = BigDecimal.new(pips,  10) * @target_pair.pip
+      price = BigDecimal(price, 10)
+      pips  = BigDecimal(pips,  10) * @target_pair.pip
       (price + pips).to_f
     end
 
     def pring_order_log(mode, options, timestamp)
       return unless @logger
+
       message = [
         mode, timestamp, options[:price], options[:take_profit],
         options[:lower_bound], options[:upper_bound]

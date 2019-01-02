@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 class ArgumentError
 
@@ -114,6 +114,7 @@ module Jiji::Errors
 
   def to_string(param)
     return '' if param.nil?
+
     param.map { |v| v.join('=') }.join(' ')
   end
 end

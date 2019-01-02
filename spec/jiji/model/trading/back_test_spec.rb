@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 
@@ -22,12 +22,12 @@ describe Jiji::Model::Trading::BackTest do
 
   it 'to_hでハッシュに変換できる' do
     test = @repository.register({
-      'name'          => 'テスト',
-      'start_time'    => Time.new(2014, 12, 8),
-      'end_time'      => Time.new(2015, 2, 9),
+      'name' => 'テスト',
+      'start_time' => Time.new(2014, 12, 8),
+      'end_time' => Time.new(2015, 2, 9),
       'tick_interval_id' => 'one_hour',
-      'memo'          => 'メモ',
-      'pair_names'    => [:EURJPY, :EURUSD],
+      'memo' => 'メモ',
+      'pair_names' => %i[EURJPY EURUSD],
       'agent_setting' => [
         {
           agent_class: 'TestAgent1@aaa',
@@ -50,7 +50,7 @@ describe Jiji::Model::Trading::BackTest do
     expect(hash[:start_time]).to eq Time.new(2014, 12, 8)
     expect(hash[:end_time]).to eq Time.new(2015, 2, 9)
     expect(hash[:tick_interval_id]).to eq :one_hour
-    expect(hash[:pair_names]).to eq [:EURJPY, :EURUSD]
+    expect(hash[:pair_names]).to eq %i[EURJPY EURUSD]
     expect(hash[:balance]).to eq 0
     expect(hash[:status]).to eq :running
     expect(hash[:progress]).to be >= 0
@@ -70,7 +70,7 @@ describe Jiji::Model::Trading::BackTest do
     expect(hash[:start_time]).to eq Time.new(2014, 12, 8)
     expect(hash[:end_time]).to eq Time.new(2015, 2, 9)
     expect(hash[:tick_interval_id]).to eq :one_hour
-    expect(hash[:pair_names]).to eq [:EURJPY, :EURUSD]
+    expect(hash[:pair_names]).to eq %i[EURJPY EURUSD]
     expect(hash[:balance]).to eq 0
     expect(hash[:status]).to eq :running
     expect(hash[:progress]).to be >= 0
@@ -84,7 +84,7 @@ describe Jiji::Model::Trading::BackTest do
     expect(hash[:start_time]).to eq Time.new(2014, 12, 8)
     expect(hash[:end_time]).to eq Time.new(2015, 2, 9)
     expect(hash[:tick_interval_id]).to eq :one_hour
-    expect(hash[:pair_names]).to eq [:EURJPY, :EURUSD]
+    expect(hash[:pair_names]).to eq %i[EURJPY EURUSD]
     expect(hash[:balance]).to eq 0
     expect(hash[:status]).to eq :finished
     expect(hash[:progress]).to be >= 0

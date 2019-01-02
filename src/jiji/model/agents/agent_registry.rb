@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'jiji/errors/errors'
@@ -80,6 +80,7 @@ module Jiji::Model::Agents
 
     def rename_source(old_name, new_name)
       return if old_name == new_name
+
       @mutex.synchronize do
         not_found(AgentSource, name: old_name) unless @agents[old_name]
         already_exists(AgentSource, name: new_name) if @agents[new_name]
@@ -114,6 +115,7 @@ module Jiji::Model::Agents
       end
       return if failed.empty?
       return if failed.length == sources.length # すべてエラーならこれ以上リトライしない
+
       load(failed)
     end
 

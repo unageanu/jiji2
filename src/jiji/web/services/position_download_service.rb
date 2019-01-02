@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sinatra/base'
 require 'jiji/web/services/abstract_service'
@@ -9,8 +9,8 @@ module Jiji::Web
     CSV_COLUMNS = [
       :pair_name, :units, :sell_or_buy, :status, :profit_or_loss,
       :entry_price, :current_price, :exit_price, :entered_at, :exited_at,
-      :updated_at, [:agent, :name], [:agent, :agent_class],
-      [:agent, :properties], [:backtest, :name]
+      :updated_at, %i[agent name], %i[agent agent_class],
+      %i[agent properties], %i[backtest name]
     ].freeze
 
     options '/:token' do

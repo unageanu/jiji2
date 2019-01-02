@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'client'
 
@@ -18,10 +18,10 @@ describe '通知取得' do
 
   it 'GET /notificationsで通知一覧を取得できる' do
     r = @client.get('notifications', {
-      'order'       => 'timestamp',
-      'direction'   => 'desc',
-      'offset'      => 1,
-      'limit'       => 10,
+      'order' => 'timestamp',
+      'direction' => 'desc',
+      'offset' => 1,
+      'limit' => 10,
       'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
@@ -52,10 +52,10 @@ describe '通知取得' do
     expect(notification['read_at']).to be nil
 
     r = @client.get('notifications', {
-      'order'       => 'timestamp',
-      'direction'   => 'asc',
-      'offset'      => 1,
-      'limit'       => 10,
+      'order' => 'timestamp',
+      'direction' => 'asc',
+      'offset' => 1,
+      'limit' => 10,
       'backtest_id' => @test._id.to_s
     })
     expect(r.status).to eq 200
@@ -88,10 +88,10 @@ describe '通知取得' do
     expect(notification['read_at']).to eq nil
 
     r = @client.get('notifications', {
-      'order'       => 'timestamp',
-      'direction'   => 'desc',
-      'offset'      => 0,
-      'limit'       => 1
+      'order' => 'timestamp',
+      'direction' => 'desc',
+      'offset' => 0,
+      'limit' => 1
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
@@ -108,11 +108,11 @@ describe '通知取得' do
     expect(notification['read_at']).to eq nil
 
     r = @client.get('notifications', {
-      'order'       => 'timestamp',
-      'direction'   => 'desc',
-      'offset'      => 0,
-      'limit'       => 10,
-      'status'      => 'not_read'
+      'order' => 'timestamp',
+      'direction' => 'desc',
+      'offset' => 0,
+      'limit' => 10,
+      'status' => 'not_read'
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 4
@@ -150,7 +150,7 @@ describe '通知取得' do
 
     r = @client.get('notifications/count', {
       'backtest_id' => 'rmt',
-      'status'      => 'not_read'
+      'status' => 'not_read'
     })
     expect(r.status).to eq 200
     expect(r.body['count']).to be 2
@@ -159,10 +159,10 @@ describe '通知取得' do
 
   it 'GET /notifications/:notificatio_id で通知を取得できる' do
     r = @client.get('notifications', {
-      'order'       => 'timestamp',
-      'direction'   => 'asc',
-      'offset'      => 0,
-      'limit'       => 10,
+      'order' => 'timestamp',
+      'direction' => 'asc',
+      'offset' => 0,
+      'limit' => 10,
       'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
@@ -185,10 +185,10 @@ describe '通知取得' do
 
   it 'PUT /notifications/:notificatio_id/read で通知を既読にできる' do
     r = @client.get('notifications', {
-      'order'       => 'timestamp',
-      'direction'   => 'asc',
-      'offset'      => 0,
-      'limit'       => 10,
+      'order' => 'timestamp',
+      'direction' => 'asc',
+      'offset' => 0,
+      'limit' => 10,
       'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
@@ -207,10 +207,10 @@ describe '通知取得' do
     expect(r.status).to eq 200
 
     r = @client.get('notifications', {
-      'order'       => 'timestamp',
-      'direction'   => 'asc',
-      'offset'      => 0,
-      'limit'       => 10,
+      'order' => 'timestamp',
+      'direction' => 'asc',
+      'offset' => 0,
+      'limit' => 10,
       'backtest_id' => 'rmt'
     })
     expect(r.status).to eq 200
@@ -231,7 +231,7 @@ describe '通知取得' do
     expect(r.status).to eq 400
 
     r = @client.put('notifications/read', {
-      'read'        => true,
+      'read' => true,
       'backtest_id' => @test._id.to_s
     })
     expect(r.status).to eq 204
@@ -242,7 +242,7 @@ describe '通知取得' do
     expect(r.body['not_read']).to be 1
 
     r = @client.put('notifications/read', {
-      'read'        => true
+      'read' => true
     })
     expect(r.status).to eq 204
 

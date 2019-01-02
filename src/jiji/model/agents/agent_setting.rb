@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
@@ -60,6 +60,7 @@ module Jiji::Model::Agents
 
     def state_with_indifferent_access
       return nil if state.nil?
+
       state.with_indifferent_access
     end
 

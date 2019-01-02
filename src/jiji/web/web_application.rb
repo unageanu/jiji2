@@ -1,10 +1,8 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'rack'
 require 'singleton'
 require 'jiji/composing/container_factory'
-require 'thread'
-
 module Jiji::Web
   class WebApplication
 
@@ -33,6 +31,7 @@ module Jiji::Web
       Thread.new(application) do |app|
         loop do
           break unless @exit_action_queue.pop
+
           cleanup(app)
         end
       end
@@ -41,7 +40,7 @@ module Jiji::Web
     def cleanup(app)
       app.tear_down
       @future.value = true
-    rescue => e
+    rescue StandardError => e
       @future.error = e
     end
 
@@ -113,6 +112,7 @@ module Jiji::Web
 
     def register_testing_services(builder)
       return unless ENV['RACK_ENV'] == 'test'
+
       builder.map('/api/testing/mail') { run Test::MailService }
     end
 

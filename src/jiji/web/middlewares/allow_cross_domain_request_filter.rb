@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sinatra/base'
 require 'jiji/web/middlewares/base'
@@ -10,7 +10,7 @@ module Jiji::Web
       if AllowCrossDomainRequestFilter.allow_cross_domain_request?
         headers({
           'Access-Control-Allow-Origin' => '*',
-          'Access-Control-Max-Age'      => 10 * 24 * 60 * 60
+          'Access-Control-Max-Age' => 10 * 24 * 60 * 60
         })
       end
     end

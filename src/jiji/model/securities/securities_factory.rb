@@ -1,6 +1,4 @@
-# coding: utf-8
-
-require 'thread'
+# frozen_string_literal: true
 
 # rubocop:disable Lint/HandleExceptions
 begin

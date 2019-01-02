@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/utils/requires'
 Jiji::Utils::Requires.require_all('jiji/model')
@@ -25,7 +25,7 @@ module Jiji::Test
     end
 
     def new_tick(seed, timestamp = Time.at(0))
-      pairs  = [:EURJPY, :USDJPY, :EURUSD]
+      pairs  = %i[EURJPY USDJPY EURUSD]
       values = pairs.each_with_object({}) do |pair_name, r|
         r[pair_name] = new_tick_value(seed)
         r
@@ -35,8 +35,8 @@ module Jiji::Test
 
     def new_tick_value(seed)
       Tick::Value.new(
-        (BigDecimal.new(100, 10) + seed).to_f,
-        (BigDecimal.new(100.003, 10) + seed).to_f)
+        (BigDecimal(100, 10) + seed).to_f,
+        (BigDecimal(100.003, 10) + seed).to_f)
     end
 
     def new_position(seed, backtest = nil, agent = nil,
@@ -49,61 +49,65 @@ module Jiji::Test
       position
     end
 
-    def new_agent_body(seed, parent = nil)
-      <<BODY
-class TestAgent#{seed} #{parent ? ' < ' + parent : ''}
+    def new_agent_body(seed, parent = nil, sleep = 0)
+      <<~BODY
+        class TestAgent#{seed} #{parent ? ' < ' + parent : ''}
 
-  include Jiji::Model::Agents::Agent
+          include Jiji::Model::Agents::Agent
 
-  def self.property_infos
-    return [
-      Property.new(:a, "aa", 1),
-      Property.new(:b, "bb", #{seed})
-    ]
-  end
+          def self.property_infos
+            return [
+              Property.new(:a, "aa", 1),
+              Property.new(:b, "bb", #{seed})
+            ]
+          end
 
-  def self.description
-    "description#{seed}"
-  end
+          def self.description
+            "description#{seed}"
+          end
 
-  def state
-    fail "test" if agent_name =~ /state_error/
-    return nil  if agent_name =~ /state_nil/
-    {:name => agent_name, :number => #{seed} }
-  end
+          def state
+            fail "test" if agent_name =~ /state_error/
+            return nil  if agent_name =~ /state_nil/
+            {:name => agent_name, :number => #{seed} }
+          end
 
-  def restore_state(state)
-    fail "test" if agent_name =~ /restore_state_error/
-    @restored_state = state
-  end
+          def restore_state(state)
+            fail "test" if agent_name =~ /restore_state_error/
+            @restored_state = state
+          end
 
-  attr_reader :restored_state
+          def next_tick(tick)
+            sleep #{sleep} if #{sleep} > 0
+          end
 
-end
-BODY
+          attr_reader :restored_state
+
+        end
+      BODY
     end
 
     def new_notification_agent_body(seed, parent = nil)
-      <<BODY
-class TestAgent#{seed} #{parent ? ' < ' + parent : ''}
+      <<~BODY
+        class TestAgent#{seed} #{parent ? ' < ' + parent : ''}
 
-  include Jiji::Model::Agents::Agent
+          include Jiji::Model::Agents::Agent
 
-  def post_create
-    notifier.push_notification('テスト通知', [
-      {label: "アクション1", action: "aaa"},
-      {label: "アクション2", action: "bbb"}
-    ])
-  end
+          def post_create
+            notifier.push_notification('テスト通知', [
+              {label: "アクション1", action: "aaa"},
+              {label: "アクション2", action: "bbb"}
+            ])
+          end
 
-  def execute_action(action)
-    fail "test" if action == "error"
-    notifier.push_notification("do action " + action)
-    return "OK " + action
-  end
+          def execute_action(action)
+            fail "test" if action == "error"
+            notifier.push_notification("do action " + action)
+            return "OK " + action
+          end
 
-end
-BODY
+        end
+      BODY
     end
 
     def new_trading_context(broker = Mock::MockBroker.new, agents = nil,
@@ -166,12 +170,12 @@ BODY
     def register_backtest(seed, repository,
       start_time = Time.at(seed * 100), end_time = Time.at((seed + 1) * 200))
       repository.register(
-        'name'          => "テスト#{seed}",
-        'start_time'    => start_time,
-        'end_time'      => end_time,
-        'balance'       => 1_000_000,
-        'memo'          => "メモ#{seed}",
-        'pair_names'    => [:EURJPY, :EURUSD],
+        'name' => "テスト#{seed}",
+        'start_time' => start_time,
+        'end_time' => end_time,
+        'balance' => 1_000_000,
+        'memo' => "メモ#{seed}",
+        'pair_names' => %i[EURJPY EURUSD],
         'agent_setting' => [
           {
             agent_class: 'TestAgent1@aaa',
@@ -218,7 +222,7 @@ BODY
         sleep wait
         begin
           client.cancel_order(o.internal_id)
-        rescue
+        rescue StandardError
           p $ERROR_INFO
         end
       end
@@ -227,7 +231,7 @@ BODY
         sleep wait
         begin
           client.close_trade(t.internal_id)
-        rescue
+        rescue StandardError
           p $ERROR_INFO
         end
       end
@@ -238,7 +242,7 @@ BODY
     end
 
     def base_dir
-      File.expand_path('../', __FILE__)
+      File.expand_path(__dir__)
     end
 
   end

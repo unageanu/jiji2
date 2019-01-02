@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'aws-sdk'
@@ -39,7 +39,7 @@ module Jiji::Services::AWS
     private
 
     def run(&block)
-      return yield
+      yield
     rescue Aws::SNS::Errors::ServiceError => e
       internal_server_error(e)
     end
@@ -53,19 +53,14 @@ module Jiji::Services::AWS
       @cryptographic_service.decrypt(src, SECRET)
     end
 
-    REGION     = 'ap-northeast-1'.freeze
+    REGION     = 'ap-northeast-1'
 
     SECRET     = '49+$sAa87fLLcU6x)(MNi|WC3C725_G/tP5tfStU' \
                  + 'cz6$)R/*!Li2v4XVcSt-hA#B*-)%tL9N'
-    ACCESS_KEY = 'QzJyQjBrbHVpNmRwdVM4bTRDbzBLQXZCVlNET0lkOXhwNWxIOWt1NGl6T' \
-                 + 'T0tLVRqcGk4UFgxZHRDUG1Gd3U0a0lSR1E9PQ==--caa3b860a406ef' \
-                 + '7c4e0ab44dcfaea57b85760d9c'
-    SECRET_KEY = 'QTBteWwxOHo5NXQ5NG0rZ3lNNEJlWlRIS3hIcVVxaG14TGd2Qk9RcHptc' \
-                 + 'GtxLzVPbmZiNEJpV2RtZTl5NFc0MXk1a2Ura1pHeXgyWWh4YS9XMTR0' \
-                 + 'alE9PS0ta0IxWmhpRXdpazZoRm1ISW5ZblVBdz09--0ac7362604ddb' \
-                 + 'e30c782b9e1ddec55edb9a48617'
+    ACCESS_KEY = 'dE1QeitrWGRvQmdIWW4wRkViWFB6Nmw2ZEFRM0NDaWRaVWJ4emhoM3JDWT0tLUVrUlFzKy9BaVM4dzI2YjY5REhETnc9PQ==--8b8fd48e26bebf5a3f9137118bf86c05d857849d'
+    SECRET_KEY = 'Y0FTUzFDNnJwV0dxNnZNOEJRL2NSWVBCdDFMYUJ4WURWa2o0UHlIZzE5U2ZOZXNhOUxkS0p4S2hPN1lBMkZSbXFFQXhWWUZaSmI0YlI0cGh5NjNnWUE9PS0tMnB0b0xDMXVIb0pYVldzRWtROG5nQT09--3429708a79ee71f4dc9de6b792ff94ade747eb84'
     GCM_ARN    = 'arn:aws:sns:ap-northeast-1:452935723537:app/GCM/jiji2-gcm' \
-      .freeze
+
 
   end
 end

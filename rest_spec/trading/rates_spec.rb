@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'client'
 
@@ -19,11 +19,11 @@ describe 'レート取得' do
     start_time = Time.now - 60 * 60 * 24 * 10
     end_time   = Time.now
 
-    %w(EURJPY EURUSD).each do |pair|
-      %w(one_minute one_hour one_day).each do |interval|
+    %w[EURJPY EURUSD].each do |pair|
+      %w[one_minute one_hour one_day].each do |interval|
         r = @client.get("/rates/#{pair}/#{interval}", {
           'start' => (start_time += 1).iso8601,
-          'end'   => (end_time += 1).iso8601
+          'end' => (end_time += 1).iso8601
         })
         expect(r.status).to eq 200
         expect(r.body.length).to be > 0
@@ -32,21 +32,21 @@ describe 'レート取得' do
 
     r = @client.get('/rates/EURJPY/one_minute', {
       'start' => (end_time + 60 * 2).iso8601,
-      'end'   => (end_time + 60 * 3).iso8601
+      'end' => (end_time + 60 * 3).iso8601
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be > 0
 
     r = @client.get('/rates/EURJPY/one_minute', {
       'start' => start_time.iso8601,
-      'end'   => (end_time + 60).iso8601
+      'end' => (end_time + 60).iso8601
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be > 0
 
     range = {
       'start' => start_time.iso8601,
-      'end'   => (end_time + 60).iso8601
+      'end' => (end_time + 60).iso8601
     }
 
     r = @client.get('/rates/UNKNOWN_PAIR/one_minute', range)

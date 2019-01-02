@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
@@ -69,12 +69,12 @@ describe Jiji::Model::Trading::Utils::CounterPairResolver do
       expect(resolver.resolve_required_pairs(pairs, :EURUSD, 'USD')).to eq []
 
       expect(resolver.resolve_required_pairs(pairs, :EURDKK, 'JPY'))
-        .to eq [:EURJPY, :EURDKK]
+        .to eq %i[EURJPY EURDKK]
     end
 
     it 'can resolve in all available currency pairs.' do
       all_pairs = double('mock pairs')
-      pair_names = %w(
+      pair_names = %w[
         USDJPY EURJPY AUDJPY GBPJPY NZDJPY CADJPY
         CHFJPY ZARJPY EURUSD GBPUSD NZDUSD AUDUSD
         USDCHF EURCHF GBPCHF EURGBP AUDNZD AUDCAD
@@ -87,7 +87,7 @@ describe Jiji::Model::Trading::Utils::CounterPairResolver do
         NZDSGD SGDCHF SGDHKD SGDJPY TRYJPY USDCNH
         USDCZK USDHKD USDHUF USDINR USDMXN USDPLN
         USDSAR USDSGD USDTHB USDTRY USDZAR
-      )
+      ]
       allow(all_pairs).to receive(:all).and_return(pair_names.map do |name|
         Jiji::Model::Trading::Pair.new(name.to_sym, 1, 0.01, 1, 1, 0.04)
       end)

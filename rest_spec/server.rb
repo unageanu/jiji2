@@ -36,7 +36,7 @@ module Jiji
       log_dir = File.join(BUILD_DIR, 'rest_spec')
       FileUtils.mkdir_p log_dir
       pid = spawn(
-        { 'RACK_ENV' => 'test', 'PORT' => '5001' },
+        { 'RACK_ENV' => 'test', 'HOST' => '127.0.0.1', 'PORT' => '3000' },
         'bundle exec puma -C config/puma.rb',
         out: File.join(log_dir, "test_server_#{id}.log"), err: :out)
       puts "start server pid=#{pid}"

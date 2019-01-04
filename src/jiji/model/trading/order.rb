@@ -7,6 +7,7 @@ require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
   # 注文
+  # ※各フィールドについて、詳しくは <a href="http://developer.oanda.com/rest-live-v20/order-df/">公式リファレンス</a> を参照ください。
   class Order
 
     include Jiji::Errors
@@ -29,24 +30,37 @@ module Jiji::Model::Trading
     attr_accessor :units
     # 執行価格(type)
     attr_accessor :price
-    # 有効期限
-    attr_accessor :expiry
-    # 許容するスリッページの下限価格
-    attr_accessor :lower_bound
-    # 許容するスリッページの上限価格
-    attr_accessor :upper_bound
 
-    # 約定後のポジションを損切りする価格
-    # * 約定後、ポジションがこの価格になると(買いの場合は下回る、売りの場合は上回ると)
-    #   ポジションが決済されます
-    attr_accessor :stop_loss
-    # 約定後のポジションを利益確定する価格
-    # * 約定後、ポジションがこの価格になると(買いの場合は上回る、売りの場合は下回ると)
-    #   ポジションが決済されます
-    attr_accessor :take_profit
+    attr_accessor :time_in_force
+    attr_accessor :gtd_time
 
-    # トレーリングストップのディスタンス（pipsで小数第一位まで）
-    attr_accessor :trailing_stop
+    attr_accessor :price_bound
+    attr_accessor :position_fill
+    attr_accessor :trigger_condition
+
+    attr_accessor :take_profit_on_fill
+    attr_accessor :stop_loss_on_fill
+    attr_accessor :trailing_stop_loss_on_fill
+
+    attr_accessor :client_extensions
+    attr_accessor :trade_client_extensions
+
+    # # 許容するスリッページの下限価格
+    # attr_accessor :lower_bound
+    # # 許容するスリッページの上限価格
+    # attr_accessor :upper_bound
+
+    # # 約定後のポジションを損切りする価格
+    # # * 約定後、ポジションがこの価格になると(買いの場合は下回る、売りの場合は上回ると)
+    # #   ポジションが決済されます
+    # attr_accessor :stop_loss
+    # # 約定後のポジションを利益確定する価格
+    # # * 約定後、ポジションがこの価格になると(買いの場合は上回る、売りの場合は下回ると)
+    # #   ポジションが決済されます
+    # attr_accessor :take_profit
+
+    # # トレーリングストップのディスタンス（pipsで小数第一位まで）
+    # attr_accessor :trailing_stop
 
     def initialize(pair_name, internal_id,
       sell_or_buy, type, last_modified) #:nodoc:
@@ -152,12 +166,12 @@ module Jiji::Model::Trading
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
-    # 新規作成された注文
-    # * 注文が約定しなかった場合に返されます
+    # 注文( Jiji::Model::Trading::Order )
     attr_reader :order_opened
 
-    # 新規建玉となった注文
+    # 注文によって作成された建玉 ( Jiji::Model::Trading::Position )
     # * 注文が約定し、新しい建玉が生成された場合に返されます
+    # * 約定しな買った場合、nil が返されます。
     attr_reader :trade_opened
 
     # 注文が約定した結果、既存の建玉の一部が決済された場合の建玉の情報

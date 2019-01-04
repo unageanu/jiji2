@@ -31,16 +31,7 @@ module Jiji::Model::Trading
       }
     end
 
-    # Hashの値から、新しい ClosingPolicy を作成します。
-    #
-    #  Jiji::Model::Trading::ClosingPolicy.create({
-    #    stop_loss:     130,
-    #    take_profit:   140.5,
-    #    trailing_stop: 10
-    #  })
-    #
-    # options:: 値
-    # 戻り値:: 新しい ClosingPolicy
+    # for internal use.
     def self.create(options)
       ClosingPolicy.new do |c|
         c.take_profit     = options[:take_profit]     || 0
@@ -52,11 +43,31 @@ module Jiji::Model::Trading
 
     def self.create_from_trade(trade) #:nodoc:
       create({
-        stop_loss:       trade.stop_loss,
-        take_profit:     trade.take_profit,
-        trailing_stop:   trade.trailing_stop,
-        trailing_amount: trade.trailing_amount
+        stop_loss:       extract_stop_loss_from_trade(trade),
+        take_profit:     extract_take_profit_from_trade(trade),
+        trailing_stop:   extract_trailing_stop_from_trade(trade),
+        trailing_amount: extract_trailing_amount_from_trade(trade)
       })
+    end
+
+    def self.extract_stop_loss_from_trade(trade)
+      price = trade["stopLossOrder"] && trade["stopLossOrder"]["price"]
+      price ? BigDecimal(price, 10) : 0
+    end
+
+    def self.extract_take_profit_from_trade(trade)
+      price = trade["takeProfitOrder"] && trade["takeProfitOrder"]["price"]
+      price ? BigDecimal(price, 10) : 0
+    end
+
+    def self.extract_trailing_stop_from_trade(trade)
+      price = trade["trailingStopLossOrder"] && trade["trailingStopLossOrder"]["distance"]
+      price ? BigDecimal(price, 10) : 0
+    end
+
+    def self.extract_trailing_amount_from_trade(trade)
+      price = trade["trailingStopLossOrder"] && trade["trailingStopLossOrder"]["trailingStopValue"]
+      price ? BigDecimal(price, 10) : 0
     end
 
     # for internal use.

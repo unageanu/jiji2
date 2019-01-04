@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'oanda_api'
 require 'jiji/model/securities/internal/virtual/ordering'
 require 'jiji/model/securities/internal/virtual/rate_retriever'
 require 'jiji/model/securities/internal/virtual/trading'

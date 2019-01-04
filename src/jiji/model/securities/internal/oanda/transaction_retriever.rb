@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'oanda_api'
 require 'jiji/model/securities/internal/oanda/converter'
 
 module Jiji::Model::Securities::Internal::Oanda
@@ -16,7 +15,7 @@ module Jiji::Model::Securities::Internal::Oanda
       end
       param[:max_id] = max_id if max_id
       param[:min_id] = min_id if min_id
-      @client.account(@account.account_id).transactions(param).get
+      @client.account(@account["id"]).transactions(param).get
     end
   end
 end

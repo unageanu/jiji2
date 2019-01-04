@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'oanda_api'
 require 'jiji/model/securities/internal/oanda/converter'
 
 module Jiji::Model::Securities::Internal::Virtual

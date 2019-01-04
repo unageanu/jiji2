@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'oanda_api'
-
 module Jiji::Model::Securities::Internal::Virtual
   module Ordering
     include Jiji::Errors

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'oanda_api'
 require 'jiji/model/securities/internal/oanda/converter'
 
 module Jiji::Model::Securities::Internal::Oanda
@@ -15,26 +14,26 @@ module Jiji::Model::Securities::Internal::Oanda
           Converter.convert_pair_name_to_instrument(pair_name)
       end
       param[:max_id] = max_id if max_id
-      @client.account(@account.account_id)
-        .trades(param).get.map do |item|
+      @client.account(@account["id"])
+        .trades(param).show["trades"].map do |item|
         convert_response_to_position(item)
       end
     end
 
     def retrieve_trade_by_id(internal_id)
-      response = @client.account(@account.account_id)
-        .trade(internal_id).get
+      response = @client.account(@account["id"])
+        .trade(internal_id).show["trade"]
       convert_response_to_position(response)
     end
 
     def modify_trade(internal_id, options = {})
-      response = @client.account(@account.account_id)
+      response = @client.account(@account["id"])
         .trade({ id: internal_id }.merge(options)).update
       convert_response_to_position(response)
     end
 
     def close_trade(internal_id)
-      response = @client.account(@account.account_id)
+      response = @client.account(@account["id"])
         .trade(internal_id).close
       ClosedPosition.new(internal_id, -1, response.price,
         response.time, response.profit)

@@ -25,5 +25,9 @@ module Jiji::Model::Trading::Utils
     def self.resolve_counter_pair_for(pair_name, account_currency)
       CounterPairResolver.new.resolve_pair(pair_name, account_currency)
     end
+
+    def self.detect_sell_or_buy(units)
+      units.to_i > 0 ? :buy : :sell
+    end
   end
 end

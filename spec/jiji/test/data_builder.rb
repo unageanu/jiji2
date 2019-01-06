@@ -128,12 +128,40 @@ module Jiji::Test
         pair_name, internal_id, seed.even? ? :buy : :sell, type, timestamp)
       order.units         = seed * 10_000
       order.price         = 100 + seed
-      order.expiry        = timestamp + 10
-      order.lower_bound   = 99 + seed
-      order.upper_bound   = 101 + seed
-      order.stop_loss     = (seed.even? ? 98 : 102) + seed
-      order.take_profit   = (seed.even? ? 102 : 98) + seed
-      order.trailing_stop = seed
+      order.gtd_time      = timestamp + 10
+      order.price_bound   = 101 + seed
+      order.position_fill = "DEFAULT"
+      order.client_extensions = {
+        id: "clientId",
+        tag: "clientTag",
+        comment: "clientComment"
+      }
+      order.take_profit_on_fill = {
+        price: (seed.even? ? 102 : 98) + seed
+      }
+      order.stop_loss_on_fill = {
+        price: (seed.even? ? 98 : 102) + seed,
+        time_in_force: "GTC",
+        client_extensions: {
+          id: "clientId2",
+          tag: "clientTag",
+          comment: "clientComment"
+        }
+      }
+      order.trailing_stop_loss_on_fill = {
+        distance: seed,
+        time_in_force: "GTC",
+        client_extensions: {
+          id: "clientId3",
+          tag: "clientTag",
+          comment: "clientComment"
+        }
+      }
+      order.trade_client_extensions = {
+        id: "tradeClientId",
+        tag: "tradeClientTag",
+        comment: "tradeClientComment"
+      }
       order
     end
 

@@ -27,9 +27,15 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       client.order(:USDJPY, :buy, 2, :market, {
-        stop_loss:     ask - 2,
-        take_profit:   ask + 2,
-        trailing_stop: 5
+        stop_loss_on_fill: {
+          price: ask - 2
+        },
+        take_profit_on_fill: {
+          price: ask + 2
+        },
+        trailing_stop_loss_on_fill: {
+          distance: 5
+        }
       })
 
       sleep wait
@@ -103,9 +109,15 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       client.order(:USDJPY, :buy, 2, :market, {
-        stop_loss:     ask - 2,
-        take_profit:   ask + 2,
-        trailing_stop: 5
+        stop_loss_on_fill: {
+          price: ask - 2
+        },
+        take_profit_on_fill: {
+          price: ask + 2
+        },
+        trailing_stop_loss_on_fill: {
+          distance: 5
+        }
       })
 
       sleep wait
@@ -114,9 +126,15 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       trade = client.modify_trade(trades[1].internal_id, {
-        stop_loss:     bid + 3,
-        take_profit:   bid - 3,
-        trailing_stop: 6
+        stop_loss_on_fill: {
+          price: bid + 3
+        },
+        take_profit_on_fill: {
+          price: bid - 3
+        },
+        trailing_stop_loss_on_fill: {
+          distance: 6
+        }
       })
       expect(trade.internal_id).not_to be nil
       expect(trade.pair_name).to eq :EURJPY
@@ -132,9 +150,15 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       trade = client.modify_trade(trades[0].internal_id, {
-        stop_loss:     ask - 3,
-        take_profit:   ask + 3,
-        trailing_stop: 7
+        stop_loss_on_fill: {
+          price: ask - 3
+        },
+        take_profit_on_fill: {
+          price: ask + 3
+        },
+        trailing_stop_loss_on_fill: {
+          distance: 7
+        }
       })
       expect(trade.internal_id).not_to be nil
       expect(trade.pair_name).to eq :USDJPY
@@ -191,9 +215,15 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       client.order(:USDJPY, :buy, 2, :market, {
-        stop_loss:     ask - 2,
-        take_profit:   ask + 2,
-        trailing_stop: 5
+        stop_loss_on_fill: {
+          price: ask - 2
+        },
+        take_profit_on_fill: {
+          price: ask + 2
+        },
+        trailing_stop_loss_on_fill: {
+          distance: 5
+        }
       })
 
       sleep wait
@@ -234,9 +264,15 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       client.order(:EURDKK, :buy, 2, :market, {
-        stop_loss:     ask - 0.02,
-        take_profit:   ask + 0.02,
-        trailing_stop: 5
+        stop_loss_on_fill: {
+          price: ask - 0.02
+        },
+        take_profit_on_fill: {
+          price: ask + 0.02
+        },
+        trailing_stop_loss_on_fill: {
+          distance: 5
+        }
       })
 
       sleep wait

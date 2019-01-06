@@ -31,12 +31,13 @@ module Jiji::Model::Trading::Internal
       position = Position.new do |p|
         initialize_trading_information(p, @backtest, order.internal_id,
           order.pair_name, order.units, order.sell_or_buy)
-        price = order.type == :market ? PricingUtils.calculate_current_price(
+        price = order.type == :market ? PricingUtils.calculate_entry_price(
           tick, order.pair_name, order.sell_or_buy) : order.price
         initialize_price_and_time(p, price, tick.timestamp)
         initialize_agent_information(p, agent)
         p.closing_policy = ClosingPolicy.create_from_order(order, price)
       end
+      position.update_price(tick, account_currency)
       position
     end
 

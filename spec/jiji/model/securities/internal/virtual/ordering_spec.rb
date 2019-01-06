@@ -19,8 +19,8 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       container.lookup(:position_repository)
     end
 
-    # it_behaves_like '注文関連の操作'
-    it_behaves_like '注文関連の操作(建玉がある場合のバリエーションパターン)'
+    it_behaves_like '注文関連の操作'
+    #it_behaves_like '注文関連の操作(建玉がある場合のバリエーションパターン)'
 
     it 'レート更新時に、注文が条件を満たすと約定する' do
       saved_positions = position_repository.retrieve_positions(backtest_id)

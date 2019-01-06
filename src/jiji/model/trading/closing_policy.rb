@@ -43,37 +43,37 @@ module Jiji::Model::Trading
 
     def self.create_from_order(order, price) #:nodoc:
       create({
-        stop_loss:       extract_stop_loss_from_order(order, price),
-        take_profit:     extract_take_profit_from_order(order),
-        trailing_stop:   extract_trailing_stop_from_order(order),
-        trailing_amount: extract_trailing_amount_from_order(order)
+        stop_loss:       extract_stop_loss_from_order(order.stop_loss_on_fill, price),
+        take_profit:     extract_take_profit_from_order(order.take_profit_on_fill),
+        trailing_stop:   extract_trailing_stop_from_order(order.trailing_stop_loss_on_fill),
+        trailing_amount: extract_trailing_amount_from_order(order.trailing_stop_loss_on_fill)
       })
     end
 
-    def self.extract_stop_loss_from_order(order, price)
-      if order.stop_loss_on_fill
-        if order.stop_loss_on_fill[:price]
-          BigDecimal(order.stop_loss_on_fill[:price], 10)
-        elsif order.stop_loss_on_fill[:distance]
-          BigDecimal(price, 10) + order.stop_loss_on_fill[:distance]
+    def self.extract_stop_loss_from_order(stop_loss_on_fill, price)
+      if stop_loss_on_fill
+        if stop_loss_on_fill[:price]
+          BigDecimal(stop_loss_on_fill[:price], 10)
+        elsif stop_loss_on_fill[:distance]
+          BigDecimal(price, 10) + stop_loss_on_fill[:distance]
         end
       else
         0
       end
     end
 
-    def self.extract_take_profit_from_order(order)
-      price = order.take_profit_on_fill && order.take_profit_on_fill[:price]
+    def self.extract_take_profit_from_order(take_profit_on_fill)
+      price = take_profit_on_fill && take_profit_on_fill[:price]
       price ? BigDecimal(price, 10) : 0
     end
 
-    def self.extract_trailing_stop_from_order(order)
-      price = order.trailing_stop_loss_on_fill && order.trailing_stop_loss_on_fill[:distance]
+    def self.extract_trailing_stop_from_order(trailing_stop_loss_on_fill)
+      price = trailing_stop_loss_on_fill && trailing_stop_loss_on_fill[:distance]
       price ? BigDecimal(price, 10) : 0
     end
 
-    def self.extract_trailing_amount_from_order(order)
-      price = order.trailing_stop_loss_on_fill && order.trailing_stop_loss_on_fill[:trailing_stop_value]
+    def self.extract_trailing_amount_from_order(trailing_stop_loss_on_fill)
+      price = trailing_stop_loss_on_fill && trailing_stop_loss_on_fill[:trailing_stop_value]
       price ? BigDecimal(price, 10) : 0
     end
 
@@ -113,6 +113,23 @@ module Jiji::Model::Trading
         take_profit:   take_profit,
         trailing_stop: trailing_stop
       }
+    end
+
+    def update_from_order_options(options, price) #:nodoc:
+      if options.include?(:stopLossOnFill)
+        self.stop_loss = !options[:stopLossOnFill].nil? ? \
+          ClosingPolicy.extract_stop_loss_from_order(options[:stopLossOnFill], price) : 0
+      end
+      if options.include?(:takeProfitOnFill)
+        self.take_profit = !options[:takeProfitOnFill].nil? ? \
+          ClosingPolicy.extract_take_profit_from_order(options[:takeProfitOnFill]) : 0
+      end
+      if options.include?(:trailingStopLossOnFill)
+        self.trailing_stop = !options[:trailingStopLossOnFill].nil? ? \
+          ClosingPolicy.extract_trailing_stop_from_order(options[:trailingStopLossOnFill]) : 0
+        self.trailing_amount = !options[:trailingStopLossOnFill].nil? ? \
+          ClosingPolicy.extract_trailing_amount_from_order(options[:trailingStopLossOnFill]) : 0
+      end
     end
 
     # for internal use.

@@ -70,6 +70,7 @@ module Jiji::Model::Trading
       @type          = type
       @last_modified = last_modified
       @units = @price = @time_in_force = @gtd_time = nil
+      @price_bound = @position_fill = nil
       @take_profit_on_fill = @stop_loss_on_fill = @trailing_stop_loss_on_fill = nil
       @client_extensions = @trade_client_extensions = nil
     end

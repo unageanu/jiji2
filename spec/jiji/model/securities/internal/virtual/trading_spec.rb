@@ -25,20 +25,26 @@ if ENV['OANDA_API_ACCESS_TOKEN']
 
       rates1 = client.retrieve_current_tick
 
-      order1 = client.order(:EURJPY, :sell, 1, :market, {
-        stop_loss: 128.9
+      trade1 = client.order(:EURJPY, :sell, 1, :market, {
+        stop_loss_on_fill: {
+          price: 128.9
+        }
       }).trade_opened
-      order2 = client.order(:USDJPY, :buy, 10, :market, {
-        take_profit: 119.97
+      trade2 = client.order(:USDJPY, :buy, 10, :market, {
+        take_profit_on_fill: {
+          price: 119.97
+        }
       }).trade_opened
-      order3 = client.order(:EURJPY, :sell, 2, :market, {
-        trailing_stop: 10
+      trade3 = client.order(:EURJPY, :sell, 2, :market, {
+        trailing_stop_loss_on_fill: {
+          distance: 10
+        }
       }).trade_opened
 
       positions = client.retrieve_trades
       expect(positions.length).to be 3
 
-      position = positions.find { |o| o.internal_id == order1.internal_id }
+      position = positions.find { |o| o.internal_id == trade1.internal_id }
       expect(position.pair_name).to eq :EURJPY
       expect(position.units).to eq 1
       expect(position.sell_or_buy).to eq :sell
@@ -52,7 +58,7 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       expect(position.closing_policy.trailing_stop).to eq(0)
       expect(position.closing_policy.trailing_amount).to eq(0)
 
-      position = positions.find { |o| o.internal_id == order2.internal_id }
+      position = positions.find { |o| o.internal_id == trade2.internal_id }
       expect(position.pair_name).to eq :USDJPY
       expect(position.units).to eq 10
       expect(position.sell_or_buy).to eq :buy
@@ -66,7 +72,7 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       expect(position.closing_policy.trailing_stop).to eq(0)
       expect(position.closing_policy.trailing_amount).to eq(0)
 
-      position = positions.find { |o| o.internal_id == order3.internal_id }
+      position = positions.find { |o| o.internal_id == trade3.internal_id }
       expect(position.pair_name).to eq :EURJPY
       expect(position.units).to eq 2
       expect(position.sell_or_buy).to eq :sell
@@ -84,7 +90,7 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       positions = client.retrieve_trades
       expect(positions.length).to be 3
 
-      position = positions.find { |o| o.internal_id == order1.internal_id }
+      position = positions.find { |o| o.internal_id == trade1.internal_id }
       expect(position.pair_name).to eq :EURJPY
       expect(position.units).to eq 1
       expect(position.sell_or_buy).to eq :sell
@@ -98,7 +104,7 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       expect(position.closing_policy.trailing_stop).to eq(0)
       expect(position.closing_policy.trailing_amount).to eq(0)
 
-      position = positions.find { |o| o.internal_id == order2.internal_id }
+      position = positions.find { |o| o.internal_id == trade2.internal_id }
       expect(position.pair_name).to eq :USDJPY
       expect(position.units).to eq 10
       expect(position.sell_or_buy).to eq :buy
@@ -112,7 +118,7 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       expect(position.closing_policy.trailing_stop).to eq(0)
       expect(position.closing_policy.trailing_amount).to eq(0)
 
-      position = positions.find { |o| o.internal_id == order3.internal_id }
+      position = positions.find { |o| o.internal_id == trade3.internal_id }
       expect(position.pair_name).to eq :EURJPY
       expect(position.units).to eq 2
       expect(position.sell_or_buy).to eq :sell
@@ -136,7 +142,7 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       positions = client.retrieve_trades
       expect(positions.length).to be 2
 
-      position = positions.find { |o| o.internal_id == order1.internal_id }
+      position = positions.find { |o| o.internal_id == trade1.internal_id }
       expect(position.pair_name).to eq :EURJPY
       expect(position.units).to eq 1
       expect(position.sell_or_buy).to eq :sell
@@ -150,10 +156,10 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       expect(position.closing_policy.trailing_stop).to eq(0)
       expect(position.closing_policy.trailing_amount).to eq(0)
 
-      position = positions.find { |o| o.internal_id == order2.internal_id }
+      position = positions.find { |o| o.internal_id == trade2.internal_id }
       expect(position).to be nil
 
-      position = positions.find { |o| o.internal_id == order3.internal_id }
+      position = positions.find { |o| o.internal_id == trade3.internal_id }
       expect(position.pair_name).to eq :EURJPY
       expect(position.units).to eq 2
       expect(position.sell_or_buy).to eq :sell
@@ -177,13 +183,13 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       positions = client.retrieve_trades
       expect(positions.length).to be 1
 
-      position = positions.find { |o| o.internal_id == order1.internal_id }
+      position = positions.find { |o| o.internal_id == trade1.internal_id }
       expect(position).to be nil
 
-      position = positions.find { |o| o.internal_id == order2.internal_id }
+      position = positions.find { |o| o.internal_id == trade2.internal_id }
       expect(position).to be nil
 
-      position = positions.find { |o| o.internal_id == order3.internal_id }
+      position = positions.find { |o| o.internal_id == trade3.internal_id }
       expect(position.pair_name).to eq :EURJPY
       expect(position.units).to eq 2
       expect(position.sell_or_buy).to eq :sell

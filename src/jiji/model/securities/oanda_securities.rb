@@ -38,9 +38,9 @@ module Jiji::Model::Securities
     def retrieve_account
       response = @client.account(@account["id"]).show["account"]
       Account.new(response["id"], response["currency"],
-        response["balance"], response["marginRate"]) do |a|
-        a.profit_or_loss = response["unrealizedPL"]
-        a.margin_used    = response["marginUsed"]
+        BigDecimal(response["balance"], 10), BigDecimal(response["marginRate"], 10)) do |a|
+        a.profit_or_loss = BigDecimal(response["unrealizedPL"], 10)
+        a.margin_used    = BigDecimal(response["marginUsed"], 10)
       end
     end
 

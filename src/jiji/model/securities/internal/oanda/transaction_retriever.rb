@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-require 'jiji/model/securities/internal/oanda/converter'
+require 'jiji/model/securities/internal/utils/converter'
 
 module Jiji::Model::Securities::Internal::Oanda
   module TransactionRetriever
     include Jiji::Errors
+    include Jiji::Model::Securities::Internal::Utils
 
     def retrieve_transactions(count = 500,
       pair_name = nil, min_id = nil, max_id = nil)

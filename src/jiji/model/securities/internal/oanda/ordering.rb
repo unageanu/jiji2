@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
-require 'jiji/model/securities/internal/oanda/converter'
+require 'jiji/model/securities/internal/utils/converter'
 
 module Jiji::Model::Securities::Internal::Oanda
   module Ordering
     include Jiji::Errors
     include Jiji::Model::Trading
     include Jiji::Model::Trading::Utils
+    include Jiji::Model::Securities::Internal::Utils
 
     def order(pair_name, sell_or_buy, units, type = :market, options = {})
       options = Converter.convert_option_to_oanda(options)
@@ -121,16 +122,14 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def copy_options(order, detail, type)
       order.units             = detail["units"].to_i.abs
-      order.gtd_time          = detail["gtdTime"] ? Time.parse(detail["gtdTime"]) : nil
-      ["timeInForce", "positionFill", "triggerCondition",
-       "clientExtensions", "takeProfitOnFill", "stopLossOnFill",
-       "trailingStopLossOnFill", "tradeClientExtensions"
+      [
+        "timeInForce", "positionFill", "triggerCondition",
+        "clientExtensions", "takeProfitOnFill", "stopLossOnFill",
+        "trailingStopLossOnFill", "tradeClientExtensions", "gtdTime",
+        "priceBound", "price"
       ].each do |key|
         order.send("#{key.underscore.downcase}=",
           Converter.convert_option_value_from_oanda(key, detail[key]))
-      end
-      ["priceBound", "price"].each do |key|
-        order.send("#{key.underscore.downcase}=", BigDecimal(detail[key], 10)) if detail[key]
       end
     end
   end

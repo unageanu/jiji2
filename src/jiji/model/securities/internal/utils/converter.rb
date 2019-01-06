@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Jiji::Model::Securities::Internal::Oanda
+module Jiji::Model::Securities::Internal::Utils
   module Converter
     include Jiji::Model::Trading
 
@@ -37,11 +37,14 @@ module Jiji::Model::Securities::Internal::Oanda
     end
 
     def self.convert_option_value_from_oanda(key, value)
-      if value.is_a? Hash
+      key = key.to_s
+      if  value.nil?
+        nil
+      elsif value.is_a? Hash
         convert_option_from_oanda(value)
-      elsif key === "gtdTime"
+      elsif key == "gtdTime" && value.is_a?(String)
         Time.parse(value)
-      elsif key === "price" || key === "distance"
+      elsif key == "price" || key == "distance" || key ==  "priceBound"
         BigDecimal(value, 10)
       else
         value

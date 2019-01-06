@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module Jiji::Model::Securities::Internal::Virtual
+module Jiji::Model::Securities::Internal::Utils
   class OrderValidator
 
     def validate(pair_name, sell_or_buy, units, type, options)

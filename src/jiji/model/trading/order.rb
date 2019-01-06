@@ -69,8 +69,9 @@ module Jiji::Model::Trading
       @sell_or_buy   = sell_or_buy
       @type          = type
       @last_modified = last_modified
-      @units = @price = @expiry = @lower_bound = @upper_bound = nil
-      @stop_loss = @take_profit = @trailing_stop = nil
+      @units = @price = @time_in_force = @gtd_time = nil
+      @take_profit_on_fill = @stop_loss_on_fill = @trailing_stop_loss_on_fill = nil
+      @client_extensions = @trade_client_extensions = nil
     end
 
     def attach_broker(broker) #:nodoc:
@@ -104,6 +105,10 @@ module Jiji::Model::Trading
       }
     end
 
+    def expired?(timestamp) #:nodoc:
+      time_in_force == "GTD" && gtd_time && gtd_time <= timestamp
+    end
+
     def carried_out?(tick) #:nodoc:
       current = Utils::PricingUtils
         .calculate_entry_price(tick, pair_name, sell_or_buy)
@@ -118,9 +123,10 @@ module Jiji::Model::Trading
     def values #:nodoc:
       [
         @pair_name, @internal_id, @sell_or_buy, @type,
-        @last_modified, @units, @price, @expiry,
-        @lower_bound, @upper_bound,
-        @stop_loss, @take_profit, @trailing_stop
+        @last_modified, @units, @price, @time_in_force, @gtd_time,
+        @price_bound, @position_fill, @trigger_condition,
+        @take_profit_on_fill, @stop_loss_on_fill, @trailing_stop_loss_on_fill,
+        @client_extensions, @trade_client_extensions
       ]
     end
 

@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
-require 'jiji/model/securities/internal/oanda/converter'
+require 'jiji/model/securities/internal/utils/converter'
 
 module Jiji::Model::Securities::Internal::Oanda
   module RateRetriever
     include Jiji::Errors
     include Jiji::Model::Trading
+    include Jiji::Model::Securities::Internal::Utils
 
     def retrieve_pairs
       @client.account(@account["id"]).instruments
@@ -59,6 +60,7 @@ module Jiji::Model::Securities::Internal::Oanda
   class RateFetcher
 
     include Jiji::Model::Trading
+    include Jiji::Model::Securities::Internal::Utils
 
     def initialize(client, converter)
       @client       = client
@@ -202,7 +204,6 @@ module Jiji::Model::Securities::Internal::Oanda
     end
 
     def convert_value(value, time = value.time, using_close_value = false)
-      p value
       values = {}
       values[@pair_name] = create_tick_value(value, using_close_value)
       Tick.new(values, time)

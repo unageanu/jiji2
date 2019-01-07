@@ -98,12 +98,13 @@ module Jiji::Model::Trading
     end
 
     def extract_options #:nodoc:
-      {
-        units:         units,
-        stop_loss:     stop_loss,
-        take_profit:   take_profit,
-        trailing_stop: trailing_stop
-      }
+      %i[
+        units time_in_force position_fill
+        take_profit_on_fill stop_loss_on_fill trailing_stop_loss_on_fill
+        client_extensions trade_client_extensions
+      ].each_with_object({}) do |key, r|
+        r[key] = self.method(key).call
+      end
     end
 
     def expired?(timestamp) #:nodoc:
@@ -160,9 +161,8 @@ module Jiji::Model::Trading
 
     def insert_reservation_order_options(options)
       options[:price] = price
-      options[:expiry] = expiry
-      options[:lower_bound] = lower_bound
-      options[:upper_bound] = upper_bound
+      options[:gtd_time] = gtd_time
+      options[:price_bound] = price_bound
     end
 
   end

@@ -67,24 +67,25 @@ module Jiji::Model::Securities::Internal::Oanda
     private
 
     def convert_response_to_order_result(res, type)
-      order_opened = convert_response_to_order(res["orderCreateTransaction"], type)
+      order_opened = res["orderFillTransaction"] ? nil : convert_response_to_order(res["orderCreateTransaction"], type)
       trade_opened = nil
-      if res["orderFillTransaction"]
-        if res["orderFillTransaction"]["tradeOpened"]
-          trade_opened = retrieve_trade_by_id(res["orderFillTransaction"]["tradeOpened"]["tradeID"])
-        end
-      end
       trade_reduced = nil
       trades_closed = []
-      # args = %i[order_opened trade_opened].map do |m|
-      #   value = res.method(m).call
-      #   value.id ? convert_response_to_order(res, value, type) : nil
-      # end
-      # args << convert_response_to_reduced_position(res, res.trade_reduced)
-      # args << res.trades_closed.map do |r|
-      #   convert_response_to_closed_position(res, r)
-      # end
-      # OrderResult.new(*args)
+      tx = res["orderFillTransaction"]
+      if tx
+        if tx["tradeOpened"]
+          trade_opened = retrieve_trade_by_id(tx["tradeOpened"]["tradeID"])
+          trade_opened.update_price(retrieve_current_tick, account_currency)
+        end
+        if tx["tradeReduced"]
+          trade_reduced = convert_response_to_reduced_position(tx["tradeReduced"], tx['time'])
+        end
+        if tx["tradesClosed"]
+          trades_closed = tx["tradesClosed"].map do |r|
+            convert_response_to_closed_position(r, tx['time'])
+          end
+        end
+      end
       OrderResult.new(order_opened, trade_opened, trade_reduced, trades_closed)
     end
 
@@ -106,18 +107,16 @@ module Jiji::Model::Securities::Internal::Oanda
       order
     end
 
-    def convert_response_to_reduced_position(item, detail)
-      if detail.id
-        # trade_reducedからは損益は取得できない。ローカルで計算した近似値を使う
-        ReducedPosition.new(detail.id.to_s,
-          detail.units, item.price, item.time, nil)
-      end
+    def convert_response_to_reduced_position(detail, time)
+      # trade_reducedからは損益は取得できない。ローカルで計算した近似値を使う
+      ReducedPosition.new(detail["tradeID"],
+        detail["units"].to_i.abs, BigDecimal(detail["price"], 10), Time.parse(time), nil)
     end
 
-    def convert_response_to_closed_position(item, detail)
+    def convert_response_to_closed_position(detail, time)
       # trade_closedからは損益は取得できない。ローカルで計算した近似値を使う
-      ClosedPosition.new(detail[:id].to_s,
-        detail[:units].to_i, item.price, item.time, nil)
+      ClosedPosition.new(detail["tradeID"],
+        detail["units"].to_i.abs, BigDecimal(detail["price"], 10), Time.parse(time), nil)
     end
 
     def copy_options(order, detail, type)

@@ -51,8 +51,6 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       expect(position.status).to eq :live
       expect(position.entry_price).to eq rates1[:EURJPY].bid
       expect(position.entered_at).not_to be rates1.timestamp
-      expect(position.current_price).to eq rates1[:EURJPY].ask
-      expect(position.updated_at).not_to be rates1.timestamp
       expect(position.closing_policy.stop_loss).to eq(128.9)
       expect(position.closing_policy.take_profit).to eq(0)
       expect(position.closing_policy.trailing_stop).to eq(0)
@@ -65,8 +63,6 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       expect(position.status).to eq :live
       expect(position.entry_price).to eq rates1[:USDJPY].ask
       expect(position.entered_at).not_to be rates1.timestamp
-      expect(position.current_price).to eq rates1[:USDJPY].bid
-      expect(position.updated_at).not_to be rates1.timestamp
       expect(position.closing_policy.stop_loss).to eq(0)
       expect(position.closing_policy.take_profit).to eq(119.97)
       expect(position.closing_policy.trailing_stop).to eq(0)
@@ -79,8 +75,6 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       expect(position.status).to eq :live
       expect(position.entry_price).to eq rates1[:EURJPY].bid
       expect(position.entered_at).not_to be rates1.timestamp
-      expect(position.current_price).to eq rates1[:EURJPY].ask
-      expect(position.updated_at).not_to be rates1.timestamp
       expect(position.closing_policy.stop_loss).to eq(0)
       expect(position.closing_policy.take_profit).to eq(0)
       expect(position.closing_policy.trailing_stop).to eq(10)

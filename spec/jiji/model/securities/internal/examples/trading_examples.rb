@@ -126,13 +126,13 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       trade = client.modify_trade(trades[1].internal_id, {
-        stop_loss_on_fill: {
+        stop_loss: {
           price: bid + 3
         },
-        take_profit_on_fill: {
+        take_profit: {
           price: bid - 3
         },
-        trailing_stop_loss_on_fill: {
+        trailing_stop_loss: {
           distance: 6
         }
       })
@@ -150,13 +150,13 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       trade = client.modify_trade(trades[0].internal_id, {
-        stop_loss_on_fill: {
+        stop_loss: {
           price: ask - 3
         },
-        take_profit_on_fill: {
+        take_profit: {
           price: ask + 3
         },
-        trailing_stop_loss_on_fill: {
+        trailing_stop_loss: {
           distance: 7
         }
       })
@@ -227,6 +227,7 @@ RSpec.shared_examples '建玉関連の操作' do
       })
 
       sleep wait
+      client.retrieve_current_tick
       trades = client.retrieve_trades
       expect(trades.length).to be 2
 
@@ -271,11 +272,12 @@ RSpec.shared_examples '建玉関連の操作' do
           price: ask + 0.02
         },
         trailing_stop_loss_on_fill: {
-          distance: 5
+          distance: 0.5
         }
       })
 
       sleep wait
+      client.retrieve_current_tick
       trades = client.retrieve_trades
       expect(trades.length).to be 2
 

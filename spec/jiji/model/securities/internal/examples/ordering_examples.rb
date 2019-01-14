@@ -28,20 +28,7 @@ RSpec.shared_examples '注文関連の操作' do
 
         result = client.order(:EURJPY, :buy, 1)
         order = result.order_opened
-        expect(order.internal_id).not_to be nil
-        expect(order.pair_name).to be :EURJPY
-        expect(order.sell_or_buy).to be :buy
-        expect(order.units).to be 1
-        expect(order.type).to be :market
-        expect(order.price).to be nil
-        expect(order.time_in_force).to eq "FOK"
-        expect(order.gtd_time).to be nil
-        expect(order.price_bound).to be nil
-        expect(order.position_fill).to eq "DEFAULT"
-        expect(order.trigger_condition).to be nil
-        expect(order.client_extensions).to be nil
-        expect(order.take_profit_on_fill).to be nil
-        expect(order.stop_loss_on_fill).to be nil
+        expect(order).to be nil
 
         trade = result.trade_opened
         expect(trade.internal_id).not_to be nil
@@ -49,14 +36,14 @@ RSpec.shared_examples '注文関連の操作' do
         expect(trade.sell_or_buy).to be :buy
         expect(trade.units).to be 1
         expect(trade.status).to be :live
-        expect(trade.profit_or_loss).to be nil
-        expect(trade.max_drow_down).to be nil
+        expect(trade.profit_or_loss).not_to be nil
+        expect(trade.max_drow_down).not_to be nil
         expect(trade.entry_price).not_to be nil
-        expect(trade.current_price).to be nil
+        expect(trade.current_price).not_to be nil
         expect(trade.exit_price).to be nil
         expect(trade.entered_at.class).to eq Time
         expect(trade.exited_at).to be nil
-        expect(trade.updated_at).to be nil
+        expect(trade.updated_at.class).to eq Time
         expect(trade.closing_policy.take_profit).to eq 0
         expect(trade.closing_policy.stop_loss).to eq 0
         expect(trade.closing_policy.trailing_stop).to eq 0
@@ -72,14 +59,14 @@ RSpec.shared_examples '注文関連の操作' do
         expect(trade.sell_or_buy).to be :buy
         expect(trade.units).to be 1
         expect(trade.status).to be :live
-        expect(trade.profit_or_loss).to be nil
-        expect(trade.max_drow_down).to be nil
+        expect(trade.profit_or_loss).not_to be nil
+        expect(trade.max_drow_down).not_to be nil
         expect(trade.entry_price).not_to be nil
-        expect(trade.current_price).to be nil
+        expect(trade.current_price).not_to be nil
         expect(trade.exit_price).to be nil
         expect(trade.entered_at.class).to eq Time
         expect(trade.exited_at).to be nil
-        expect(trade.updated_at).to be nil
+        expect(trade.updated_at.class).to eq Time
         expect(trade.closing_policy.take_profit).to eq 0
         expect(trade.closing_policy.stop_loss).to eq 0
         expect(trade.closing_policy.trailing_stop).to eq 0
@@ -125,50 +112,7 @@ RSpec.shared_examples '注文関連の操作' do
           }
         })
         order = result.order_opened
-        expect(order.internal_id).not_to be nil
-        expect(order.pair_name).to be :USDJPY
-        expect(order.sell_or_buy).to be :sell
-        expect(order.units).to be 2
-        expect(order.type).to be :market
-        expect(order.price).to be nil
-        expect(order.time_in_force).to eq "IOC"
-        expect(order.gtd_time).to be nil
-        expect(order.price_bound).to eq(bid - 0.1)
-        expect(order.position_fill).to eq "OPEN_ONLY"
-        expect(order.trigger_condition).to be nil
-        expect(order.client_extensions).to eq({
-          id: "clientId",
-          tag: "clientTag",
-          comment: "clientComment"
-        })
-        expect(order.take_profit_on_fill).to eq({
-          price: bid - 2,
-          time_in_force: "GTD",
-          gtd_time: now + (60 * 60 * 24)
-        })
-        expect(order.stop_loss_on_fill).to eq({
-          distance: 100,
-          time_in_force: "GTC",
-          client_extensions: {
-            id: "clientId2",
-            tag: "clientTag",
-            comment: "clientComment"
-          }
-        })
-        expect(order.trailing_stop_loss_on_fill).to eq({
-          distance: 20,
-          time_in_force: "GTC",
-          client_extensions: {
-            id: "clientId3",
-            tag: "clientTag",
-            comment: "clientComment"
-          }
-        })
-        expect(order.trade_client_extensions).to eq({
-          id: "tradeClientId",
-          tag: "tradeClientTag",
-          comment: "tradeClientComment"
-        })
+        expect(order).to be nil
 
         trade = result.trade_opened
         expect(trade.internal_id).not_to be nil
@@ -176,14 +120,14 @@ RSpec.shared_examples '注文関連の操作' do
         expect(trade.sell_or_buy).to be :sell
         expect(trade.units).to be 2
         expect(trade.status).to be :live
-        expect(trade.profit_or_loss).to be nil
-        expect(trade.max_drow_down).to be nil
+        expect(trade.profit_or_loss).not_to be nil
+        expect(trade.max_drow_down).not_to be nil
         expect(trade.entry_price).not_to be nil
-        expect(trade.current_price).to be nil
+        expect(trade.current_price).not_to be nil
         expect(trade.exit_price).to be nil
         expect(trade.entered_at.class).to eq Time
         expect(trade.exited_at).to be nil
-        expect(trade.updated_at).to be nil
+        expect(trade.updated_at.class).to eq Time
         expect(trade.closing_policy.take_profit).to eq(bid - 2)
         expect(trade.closing_policy.stop_loss).to eq(BigDecimal(trade.entry_price, 10) + 100)
         expect(trade.closing_policy.trailing_stop).to eq(20)
@@ -199,14 +143,14 @@ RSpec.shared_examples '注文関連の操作' do
         expect(trade.sell_or_buy).to be :sell
         expect(trade.units).to be 2
         expect(trade.status).to be :live
-        expect(trade.profit_or_loss).to be nil
-        expect(trade.max_drow_down).to be nil
+        expect(trade.profit_or_loss).not_to be nil
+        expect(trade.max_drow_down).not_to be nil
         expect(trade.entry_price).not_to be nil
-        expect(trade.current_price).to be nil
+        expect(trade.current_price).not_to be nil
         expect(trade.exit_price).to be nil
         expect(trade.entered_at.class).to eq Time
         expect(trade.exited_at).to be nil
-        expect(trade.updated_at).to be nil
+        expect(trade.updated_at.class).to eq Time
         expect(trade.closing_policy.take_profit).to eq(bid - 2)
         expect(trade.closing_policy.stop_loss).to eq(BigDecimal(trade.entry_price, 10) + 100)
         expect(trade.closing_policy.trailing_stop).to eq(20)

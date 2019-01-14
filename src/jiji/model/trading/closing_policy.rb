@@ -109,26 +109,32 @@ module Jiji::Model::Trading
     # for internal use.
     def extract_options_for_modify #:nodoc:
       {
-        stop_loss:     stop_loss,
-        take_profit:   take_profit,
-        trailing_stop: trailing_stop
+        stop_loss:     {
+          price: stop_loss
+        },
+        take_profit:   {
+          price: take_profit
+        },
+        trailing_stop: {
+          distance: trailing_stop
+        }
       }
     end
 
     def update_from_order_options(options, price) #:nodoc:
-      if options.include?(:stopLossOnFill)
-        self.stop_loss = !options[:stopLossOnFill].nil? ? \
-          ClosingPolicy.extract_stop_loss_from_order(options[:stopLossOnFill], price) : 0
+      if options.include?(:stopLoss)
+        self.stop_loss = !options[:stopLoss].nil? ? \
+          ClosingPolicy.extract_stop_loss_from_order(options[:stopLoss], price) : 0
       end
-      if options.include?(:takeProfitOnFill)
-        self.take_profit = !options[:takeProfitOnFill].nil? ? \
-          ClosingPolicy.extract_take_profit_from_order(options[:takeProfitOnFill]) : 0
+      if options.include?(:takeProfit)
+        self.take_profit = !options[:takeProfit].nil? ? \
+          ClosingPolicy.extract_take_profit_from_order(options[:takeProfit]) : 0
       end
-      if options.include?(:trailingStopLossOnFill)
-        self.trailing_stop = !options[:trailingStopLossOnFill].nil? ? \
-          ClosingPolicy.extract_trailing_stop_from_order(options[:trailingStopLossOnFill]) : 0
-        self.trailing_amount = !options[:trailingStopLossOnFill].nil? ? \
-          ClosingPolicy.extract_trailing_amount_from_order(options[:trailingStopLossOnFill]) : 0
+      if options.include?(:trailingStopLoss)
+        self.trailing_stop = !options[:trailingStopLoss].nil? ? \
+          ClosingPolicy.extract_trailing_stop_from_order(options[:trailingStopLoss]) : 0
+        self.trailing_amount = !options[:trailingStopLoss].nil? ? \
+          ClosingPolicy.extract_trailing_amount_from_order(options[:trailingStopLoss]) : 0
       end
     end
 

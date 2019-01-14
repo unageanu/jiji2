@@ -77,14 +77,10 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def create_order_result(order, position, result)
-      if order.type == :market
-        if position.units > 0
-          OrderResult.new(order, position, nil, result[:closed])
-        else
-          OrderResult.new(order, nil, result[:reduced], result[:closed])
-        end
+      if position.units > 0
+        OrderResult.new(nil, position, nil, result[:closed])
       else
-        OrderResult.new(order, nil, nil, [])
+        OrderResult.new(nil, nil, result[:reduced], result[:closed])
       end
     end
 
@@ -116,7 +112,7 @@ module Jiji::Model::Securities::Internal::Virtual
       else
         reverse_position.units -= units
         position.units = 0
-        result[:reduced] = convert_to_reduced_position(reverse_position)
+        result[:reduced] = convert_to_reduced_position(reverse_position, units)
       end
     end
 
@@ -150,7 +146,7 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def validate_modify_order_request(order, options)
-      options = order.to_h.merge(options)
+      options = order.to_h.merge(options).with_indifferent_access
       @order_validator.validate(order.pair_name, order.sell_or_buy,
         options[:units] || order.units, order.type, options)
     end
@@ -199,10 +195,10 @@ module Jiji::Model::Securities::Internal::Virtual
         units || position.units, price, @current_tick.timestamp, profit)
     end
 
-    def convert_to_reduced_position(position)
+    def convert_to_reduced_position(position, units)
       price = PricingUtils.calculate_current_price(
         @current_tick, position.pair_name, position.sell_or_buy)
-      ReducedPosition.new(position.internal_id, position.units,
+      ReducedPosition.new(position.internal_id, units,
         price, @current_tick.timestamp, nil)
     end
   end

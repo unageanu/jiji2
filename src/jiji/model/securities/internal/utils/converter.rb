@@ -16,7 +16,7 @@ module Jiji::Model::Securities::Internal::Utils
       option.each_with_object({}) do |entry, r|
         r[entry[0].to_s.camelize(:lower).to_sym] =
           convert_option_value_to_oanda(entry[0], entry[1])
-      end
+      end.with_indifferent_access
     end
 
     def self.convert_option_value_to_oanda(key, value)

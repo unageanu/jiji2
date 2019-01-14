@@ -24,7 +24,7 @@ if ENV['OANDA_API_ACCESS_TOKEN']
     today = Date.today
     if today.wday >= 1 && today.wday < 6
       it_behaves_like '注文関連の操作'
-      #it_behaves_like '注文関連の操作(建玉がある場合のバリエーションパターン)'
+      it_behaves_like '注文関連の操作(建玉がある場合のバリエーションパターン)'
     end
   end
 end

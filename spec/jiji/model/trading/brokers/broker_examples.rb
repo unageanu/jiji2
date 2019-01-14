@@ -298,7 +298,7 @@ shared_examples 'brokerの基本操作ができる' do
       :EURJPY, r1.internal_id, :sell, :limit, Time.utc(2015, 5, 1))
     expected_order1.units = 10_000
     expected_order1.price = 135.6
-    expected_order1.time_in_force = "GTD",
+    expected_order1.time_in_force = "GTD"
     expected_order1.gtd_time = Time.utc(2015, 5, 2)
     expected_order1.price_bound = 135.59
     expected_order1.stop_loss_on_fill = {

@@ -108,7 +108,7 @@ module Jiji::Model::Trading::Internal
     end
 
     def initialize_trading_information_from_trade_opend_of_order_result(position, trade)
-      pair_name = Jiji::Model::Securities::Internal::Oanda::Converter\
+      pair_name = Jiji::Model::Securities::Internal::Utils::Converter\
         .convert_instrument_to_pair_name(trade["instrument"])
       initialize_trading_information(position, @backtest,
         trade["tradeID"], pair_name, trade["units"].to_i.abs,
@@ -116,7 +116,7 @@ module Jiji::Model::Trading::Internal
     end
 
     def initialize_trading_information_from_trade(position, trade)
-      pair_name = Jiji::Model::Securities::Internal::Oanda::Converter\
+      pair_name = Jiji::Model::Securities::Internal::Utils::Converter\
         .convert_instrument_to_pair_name(trade["instrument"])
       initialize_trading_information(position, @backtest,
         trade["id"], pair_name, trade["currentUnits"].to_i.abs,

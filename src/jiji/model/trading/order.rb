@@ -70,7 +70,7 @@ module Jiji::Model::Trading
       @type          = type
       @last_modified = last_modified
       @units = @price = @time_in_force = @gtd_time = nil
-      @price_bound = @position_fill = nil
+      @price_bound = @position_fill = @trigger_condition = nil
       @take_profit_on_fill = @stop_loss_on_fill = @trailing_stop_loss_on_fill = nil
       @client_extensions = @trade_client_extensions = nil
     end
@@ -99,7 +99,7 @@ module Jiji::Model::Trading
 
     def extract_options #:nodoc:
       %i[
-        units time_in_force position_fill
+        units time_in_force position_fill trigger_condition
         take_profit_on_fill stop_loss_on_fill trailing_stop_loss_on_fill
         client_extensions trade_client_extensions
       ].each_with_object({}) do |key, r|
@@ -130,6 +130,22 @@ module Jiji::Model::Trading
         @take_profit_on_fill, @stop_loss_on_fill, @trailing_stop_loss_on_fill,
         @client_extensions, @trade_client_extensions
       ]
+    end
+
+    def from_h(hash)
+      hash.each do |k, v|
+        if !v.nil?
+          if k == 'price' || k == 'price_bound'
+            v = BigDecimal(v, 10)
+          end
+          if k == 'take_profit_on_fill' || k == 'stop_loss_on_fill'  || k == 'trailing_stop_loss_on_fill'
+            v['price'] = BigDecimal(['price'], 10) if v['price']
+          end
+        end
+
+        key = '@' + k.to_s
+        instance_variable_set(key, v) if instance_variable_defined?(key)
+      end
     end
 
     def collect_properties(keys = instance_variables.map { |n| n[1..-1] })
@@ -173,12 +189,14 @@ module Jiji::Model::Trading
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
-    # 注文( Jiji::Model::Trading::Order )
+    # 新規作成された注文( Jiji::Model::Trading::Order )
+    # * 注文が約定しなかった場合に返されます
+    # * 約定した場合、nil が返されます。
     attr_reader :order_opened
 
     # 注文によって作成された建玉 ( Jiji::Model::Trading::Position )
     # * 注文が約定し、新しい建玉が生成された場合に返されます
-    # * 約定しな買った場合、nil が返されます。
+    # * 約定しなかった場合、nil が返されます。
     attr_reader :trade_opened
 
     # 注文が約定した結果、既存の建玉の一部が決済された場合の建玉の情報
@@ -205,7 +223,7 @@ module Jiji::Model::Trading
 
     # 決済された建玉の内部ID
     attr_reader :internal_id
-    # 取引数/部分決済の場合は、部分決済後の取引数
+    # 取引数/部分決済の場合は、部分決済された取引数
     attr_reader :units
     # 決済価格
     attr_reader :price

@@ -139,7 +139,8 @@ module Jiji::Model::Trading
             v = BigDecimal(v, 10)
           end
           if k == 'take_profit_on_fill' || k == 'stop_loss_on_fill'  || k == 'trailing_stop_loss_on_fill'
-            v['price'] = BigDecimal(['price'], 10) if v['price']
+            v = v.clone
+            v['price'] = BigDecimal(v['price'], 10) if v['price']
           end
         end
 
@@ -152,7 +153,20 @@ module Jiji::Model::Trading
       keys.each_with_object({}) do |name, obj|
         next if name == 'broker'
 
-        obj[name.to_sym] = instance_variable_get('@' + name.to_s)
+        k = name.to_s
+        v = instance_variable_get('@' + k)
+
+        if !v.nil?
+          if k == 'price' || k == 'price_bound' || k == 'initial_price'
+            v = v.to_s
+          end
+          if k == 'take_profit_on_fill' || k == 'stop_loss_on_fill'  || k == 'trailing_stop_loss_on_fill'
+            v = v.clone.with_indifferent_access
+            v['price'] = v['price'].to_s if v['price']
+          end
+        end
+
+        obj[name.to_sym] = v
       end
     end
 

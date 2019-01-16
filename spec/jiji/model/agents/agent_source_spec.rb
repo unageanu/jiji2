@@ -459,7 +459,6 @@ BODY
       'test', :agent, Time.at(100), 'memo', 'class Foo; ')
 
     hash = agent_source.to_h
-    p hash
     expect(hash[:id]).not_to be nil
     expect(hash[:name]).to eq 'test'
     expect(hash[:type]).to eq :agent

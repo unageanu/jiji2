@@ -29,7 +29,6 @@ jobs:
       - run:
           name: Test
           command: bundle exec rake
-          no_output_timeout: 2h
 
 workflows:
   version: 2

@@ -81,12 +81,12 @@ describe Jiji::Model::Trading::Order do
       id: "clientId",
       tag: "clientTag",
       comment: "clientComment"
-    },
+    }
     order.take_profit_on_fill = {
       price: 122.2,
       time_in_force: "GTD",
       gtd_time: Time.new(3000)
-    },
+    }
     order.stop_loss_on_fill = {
       price: 125.5,
       time_in_force: "GTC",
@@ -95,7 +95,7 @@ describe Jiji::Model::Trading::Order do
         tag: "clientTag",
         comment: "clientComment"
       },
-    },
+    }
     order.trailing_stop_loss_on_fill = {
       distance: 10,
       time_in_force: "GTC",
@@ -104,7 +104,7 @@ describe Jiji::Model::Trading::Order do
         tag: "clientTag",
         comment: "clientComment"
       }
-    },
+    }
     order.trade_client_extensions = {
       id: "tradeClientId",
       tag: "tradeClientTag",

@@ -146,7 +146,7 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def validate_modify_order_request(order, options)
-      options = order.to_h.merge(options).with_indifferent_access
+      options = order.collect_properties_for_modify.merge(options).with_indifferent_access
       @order_validator.validate(order.pair_name, order.sell_or_buy,
         options[:units] || order.units, order.type, options)
     end

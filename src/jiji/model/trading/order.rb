@@ -28,7 +28,7 @@ module Jiji::Model::Trading
     attr_accessor :last_modified
     # 注文数
     attr_accessor :units
-    # 執行価格(type)
+    # 執行価格
     attr_accessor :price
 
     attr_accessor :time_in_force
@@ -44,23 +44,6 @@ module Jiji::Model::Trading
 
     attr_accessor :client_extensions
     attr_accessor :trade_client_extensions
-
-    # # 許容するスリッページの下限価格
-    # attr_accessor :lower_bound
-    # # 許容するスリッページの上限価格
-    # attr_accessor :upper_bound
-
-    # # 約定後のポジションを損切りする価格
-    # # * 約定後、ポジションがこの価格になると(買いの場合は下回る、売りの場合は上回ると)
-    # #   ポジションが決済されます
-    # attr_accessor :stop_loss
-    # # 約定後のポジションを利益確定する価格
-    # # * 約定後、ポジションがこの価格になると(買いの場合は上回る、売りの場合は下回ると)
-    # #   ポジションが決済されます
-    # attr_accessor :take_profit
-
-    # # トレーリングストップのディスタンス（pipsで小数第一位まで）
-    # attr_accessor :trailing_stop
 
     def initialize(pair_name, internal_id,
       sell_or_buy, type, last_modified) #:nodoc:
@@ -134,13 +117,14 @@ module Jiji::Model::Trading
 
     def from_h(hash)
       hash.each do |k, v|
+        k = k.to_sym
         if !v.nil?
-          if k == 'price' || k == 'price_bound'
+          if k == :price || k == :price_bound || k == :initial_price
             v = BigDecimal(v, 10)
           end
-          if k == 'take_profit_on_fill' || k == 'stop_loss_on_fill'  || k == 'trailing_stop_loss_on_fill'
-            v = v.clone
-            v['price'] = BigDecimal(v['price'], 10) if v['price']
+          if k == :take_profit_on_fill || k == :stop_loss_on_fill  || k == :trailing_stop_loss_on_fill
+            v = v.clone.symbolize_keys
+            v[:price] = BigDecimal(v[:price], 10) if v[:price]
           end
         end
 
@@ -149,24 +133,30 @@ module Jiji::Model::Trading
       end
     end
 
-    def collect_properties(keys = instance_variables.map { |n| n[1..-1] })
+    def collect_properties(keys = instance_variables.map { |n| n[1..-1].to_sym })
       keys.each_with_object({}) do |name, obj|
-        next if name == 'broker'
+        next if name == :broker
 
-        k = name.to_s
-        v = instance_variable_get('@' + k)
+        v = instance_variable_get("@#{name}")
 
         if !v.nil?
-          if k == 'price' || k == 'price_bound' || k == 'initial_price'
+          if name == :price || name == :price_bound || name == :initial_price
             v = v.to_s
           end
-          if k == 'take_profit_on_fill' || k == 'stop_loss_on_fill'  || k == 'trailing_stop_loss_on_fill'
-            v = v.clone.with_indifferent_access
-            v['price'] = v['price'].to_s if v['price']
+          if name == :take_profit_on_fill || name == :stop_loss_on_fill  || name == :trailing_stop_loss_on_fill
+            v = v.clone
+            v[:price] = v[:price].to_s if v[:price]
           end
         end
 
-        obj[name.to_sym] = v
+        obj[name] = v
+      end
+    end
+
+    def collect_properties_for_modify
+      instance_variables.map { |n| n[1..-1].to_sym }.each_with_object({}) do |name, obj|
+        next if name == :broker
+        obj[name] = instance_variable_get("@#{name}").clone
       end
     end
 

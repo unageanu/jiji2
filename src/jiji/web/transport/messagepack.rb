@@ -27,6 +27,14 @@ class BigDecimal
 
 end
 
+class Rational
+
+  def to_msgpack(*a)
+    to_f.to_msgpack(*a)
+  end
+
+end
+
 class BSON::ObjectId
 
   def to_msgpack(*a)

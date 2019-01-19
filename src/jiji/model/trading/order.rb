@@ -157,7 +157,8 @@ module Jiji::Model::Trading
       instance_variables.map { |n| n[1..-1].to_sym }.each_with_object({}) do |name, obj|
         next if name == :broker
 
-        obj[name] = instance_variable_get("@#{name}").clone
+        v = instance_variable_get("@#{name}")
+        obj[name] = v.is_a?(Hash) ? v.dup : v
       end
     end
 

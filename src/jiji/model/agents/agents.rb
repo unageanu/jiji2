@@ -31,9 +31,11 @@ module Jiji::Model::Agents
 
     def next_tick(tick)
       @agents.values.each do |a|
-        a.next_tick(tick)
-      rescue Exception => e # rubocop:disable Lint/RescueException
-        process_error(e)
+        begin
+          a.next_tick(tick)
+        rescue Exception => e
+          process_error(e)
+        end
       end
     end
 

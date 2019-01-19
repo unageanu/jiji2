@@ -21,6 +21,7 @@ module Jiji::Model::Securities::Internal::Oanda
     def retrieve_tick_history(pair_name, start_time,
       end_time, interval_id = :fifteen_seconds)
       interval = Intervals.instance.get(interval_id)
+      end_time = Time.now - [interval.ms / 1000, 60].min if end_time >= Time.now
       converter = TickConverter.new(pair_name)
       RateFetcher.new(@client, converter)
         .fetch_and_fill(start_time, end_time, interval, pair_name)
@@ -28,6 +29,7 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def retrieve_rate_history(pair_name, interval_id, start_time, end_time)
       interval = Intervals.instance.get(interval_id)
+      end_time = Time.now - [interval.ms / 1000, 60].min if end_time >= Time.now
       converter = RateConverter.new(pair_name, interval)
       RateFetcher.new(@client, converter)
         .fetch_and_fill(start_time, end_time, interval, pair_name)

@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.6.0'
+ruby '2.3.8'
 
 gem 'encase'
 
@@ -12,7 +12,7 @@ gem 'figaro'
 gem 'validates_email_format_of'
 gem 'mini_magick'
 
-gem 'msgpack'
+gem 'msgpack', '0.5.12'
 gem 'rack'
 gem 'sinatra'
 gem 'puma'

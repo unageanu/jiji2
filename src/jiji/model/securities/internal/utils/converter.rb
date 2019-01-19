@@ -42,9 +42,9 @@ module Jiji::Model::Securities::Internal::Utils
         nil
       elsif value.is_a? Hash
         convert_option_from_oanda(value)
-      elsif key == "gtdTime" && value.is_a?(String)
+      elsif key == 'gtdTime' && value.is_a?(String)
         Time.parse(value)
-      elsif key == "price" || key == "distance" || key ==  "priceBound"
+      elsif key == 'price' || key == 'distance' || key == 'priceBound'
         BigDecimal(value, 10)
       else
         value

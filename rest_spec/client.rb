@@ -30,11 +30,13 @@ module Jiji
     def wait_for_server_start_up
       puts 'wait for server start up.'
       loop do
-        get('/version')
-        return
-      rescue Errno::ECONNREFUSED
-        puts ' sleep 5 seconds...'
-        sleep 5
+        begin
+          get('/version')
+          return
+        rescue Errno::ECONNREFUSED
+          puts ' sleep 5 seconds...'
+          sleep 5
+        end
       end
     end
 

@@ -29,10 +29,12 @@ module Jiji::Model::Trading
 
     def collect_backtests_by_id(ids)
       tests = ids.map do |id|
-        get(id)
-      rescue Jiji::Errors::NotFoundException
-        # ignore
-        nil
+        begin
+          get(id)
+        rescue Jiji::Errors::NotFoundException
+          # ignore
+          nil
+        end
       end
       tests.reject { |test| test.nil? }
     end

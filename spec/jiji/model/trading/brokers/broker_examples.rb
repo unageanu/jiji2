@@ -255,39 +255,39 @@ shared_examples 'brokerの基本操作ができる' do
     broker.tick
 
     r1 = broker.sell(:EURJPY, 10_000, :limit, {
-      price:         135.6,
-      price_bound:   135.59,
-      time_in_force: "GTD",
-      gtd_time:      Time.utc(2015, 5, 2),
+      price:             135.6,
+      price_bound:       135.59,
+      time_in_force:     'GTD',
+      gtd_time:          Time.utc(2015, 5, 2),
       stop_loss_on_fill: {
         price: 135.73
       }
     }, agent_setting.id).order_opened
     r2 = broker.buy(:USDJPY, 10_000, :stop, {
-      price:         112.404,
-      time_in_force: "GTD",
-      gtd_time:      Time.utc(2015, 5, 2),
+      price:               112.404,
+      time_in_force:       'GTD',
+      gtd_time:            Time.utc(2015, 5, 2),
       take_profit_on_fill: {
          price: 112.6
       }
     }, agent_setting.id).order_opened
     r3 = broker.buy(:EURUSD, 10_000, :marketIfTouched, {
-      price:         1.4325,
-      time_in_force: "GTD",
-      gtd_time:       Time.utc(2015, 5, 2),
+      price:                      1.4325,
+      time_in_force:              'GTD',
+      gtd_time:                   Time.utc(2015, 5, 2),
       trailing_stop_loss_on_fill: {
          distance: 5
       }
     }, agent_setting.id).order_opened
     r4 = broker.sell(:EURJPY, 1000, :limit, {
-      price:          136.6,
-      time_in_force: "GTD",
-      gtd_time:       Time.utc(2015, 5, 1, 0, 0, 45),
-      take_profit_on_fill: {
-         price: 134,
+      price:                      136.6,
+      time_in_force:              'GTD',
+      gtd_time:                   Time.utc(2015, 5, 1, 0, 0, 45),
+      take_profit_on_fill:        {
+         price: 134
       },
-      stop_loss_on_fill: {
-        price: 140,
+      stop_loss_on_fill:          {
+        price: 140
       },
       trailing_stop_loss_on_fill: {
          distance: 10
@@ -298,56 +298,56 @@ shared_examples 'brokerの基本操作ができる' do
       :EURJPY, r1.internal_id, :sell, :limit, Time.utc(2015, 5, 1))
     expected_order1.units = 10_000
     expected_order1.price = 135.6
-    expected_order1.time_in_force = "GTD"
+    expected_order1.time_in_force = 'GTD'
     expected_order1.gtd_time = Time.utc(2015, 5, 2)
     expected_order1.price_bound = 135.59
     expected_order1.stop_loss_on_fill = {
       price: 135.73
     }
-    expected_order1.position_fill = "DEFAULT"
-    expected_order1.trigger_condition = "DEFAULT"
+    expected_order1.position_fill = 'DEFAULT'
+    expected_order1.trigger_condition = 'DEFAULT'
 
     expected_order2 = Jiji::Model::Trading::Order.new(
       :USDJPY, r2.internal_id, :buy, :stop, Time.utc(2015, 5, 1))
     expected_order2.units = 10_000
     expected_order2.price = 112.404
-    expected_order2.time_in_force = "GTD"
+    expected_order2.time_in_force = 'GTD'
     expected_order2.gtd_time = Time.utc(2015, 5, 2)
     expected_order2.take_profit_on_fill = {
       price: 112.6
     }
-    expected_order2.position_fill = "DEFAULT"
-    expected_order2.trigger_condition = "DEFAULT"
+    expected_order2.position_fill = 'DEFAULT'
+    expected_order2.trigger_condition = 'DEFAULT'
 
     expected_order3 = Jiji::Model::Trading::Order.new(
       :EURUSD, r3.internal_id, :buy, :marketIfTouched, Time.utc(2015, 5, 1))
     expected_order3.units = 10_000
     expected_order3.price = 1.4325
-    expected_order3.time_in_force = "GTD"
+    expected_order3.time_in_force = 'GTD'
     expected_order3.gtd_time = Time.utc(2015, 5, 2)
     expected_order3.trailing_stop_loss_on_fill = {
       distance: 5
    }
-   expected_order3.position_fill = "DEFAULT"
-   expected_order3.trigger_condition = "DEFAULT"
+    expected_order3.position_fill = 'DEFAULT'
+    expected_order3.trigger_condition = 'DEFAULT'
 
     expected_order4 = Jiji::Model::Trading::Order.new(
       :EURJPY, r4.internal_id, :sell, :limit, Time.utc(2015, 5, 1))
     expected_order4.units = 1000
     expected_order4.price = 136.6
-    expected_order4.time_in_force = "GTD"
+    expected_order4.time_in_force = 'GTD'
     expected_order4.gtd_time = Time.utc(2015, 5, 1, 0, 0, 45)
     expected_order4.take_profit_on_fill = {
-      price: 134,
+      price: 134
     }
     expected_order4.stop_loss_on_fill = {
-     price: 140,
+     price: 140
     }
     expected_order4.trailing_stop_loss_on_fill = {
       distance: 10
     }
-    expected_order4.position_fill = "DEFAULT"
-    expected_order4.trigger_condition = "DEFAULT"
+    expected_order4.position_fill = 'DEFAULT'
+    expected_order4.trigger_condition = 'DEFAULT'
 
     expect(broker.account.balance).to eq 100_000
     expect(broker.account.profit_or_loss).to eq 0
@@ -627,12 +627,12 @@ shared_examples 'brokerの基本操作ができる' do
 
     result = broker.buy(:EURJPY, 10_000, :market, {
       stop_loss_on_fill: {
-         price: 130,
-         time_in_force: "GTC",
+         price:             130,
+         time_in_force:     'GTC',
          client_extensions: {
-           id: "clientId2",
-           tag: "clientTag",
-           comment: "clientComment"
+           id:      'clientId2',
+           tag:     'clientTag',
+           comment: 'clientComment'
          }
        }
     }, agent_setting.id)
@@ -713,18 +713,18 @@ shared_examples 'brokerの基本操作ができる' do
     expect(broker.account.margin_used).to eq 0
 
     result = broker.sell(:EURJPY, 10_000, :limit, {
-      price:         135.6,
-      time_in_force: "GTD",
-      gtd_time:      Time.utc(2015, 5, 2),
-      price_bound:   135.59,
+      price:             135.6,
+      time_in_force:     'GTD',
+      gtd_time:          Time.utc(2015, 5, 2),
+      price_bound:       135.59,
       stop_loss_on_fill: {
-         price: BigDecimal(135.73, 10),
-         time_in_force: "GTC",
+         price:             BigDecimal(135.73, 10),
+         time_in_force:     'GTC',
          client_extensions: {
-           id: "clientId2",
-           tag: "clientTag",
-           comment: "clientComment"
-         },
+           id:      'clientId2',
+           tag:     'clientTag',
+           comment: 'clientComment'
+         }
        }
     }).order_opened
 
@@ -732,20 +732,20 @@ shared_examples 'brokerの基本操作ができる' do
       :EURJPY, result.internal_id, :sell, :limit, Time.utc(2015, 5, 1))
     expected_order.units = 10_000
     expected_order.price = 135.6
-    expected_order.time_in_force = "GTD"
+    expected_order.time_in_force = 'GTD'
     expected_order.gtd_time = Time.utc(2015, 5, 2)
     expected_order.price_bound = 135.59
     expected_order.stop_loss_on_fill = {
-      price: 135.73,
-      time_in_force: "GTC",
+      price:             135.73,
+      time_in_force:     'GTC',
       client_extensions: {
-        id: "clientId2",
-        tag: "clientTag",
-        comment: "clientComment"
+        id:      'clientId2',
+        tag:     'clientTag',
+        comment: 'clientComment'
       }
     }
-    expected_order.position_fill = "DEFAULT"
-    expected_order.trigger_condition = "DEFAULT"
+    expected_order.position_fill = 'DEFAULT'
+    expected_order.trigger_condition = 'DEFAULT'
 
     order = find_by_internal_id(broker.orders, result.internal_id)
     expect(order).to eq(expected_order)
@@ -754,10 +754,10 @@ shared_examples 'brokerの基本操作ができる' do
     order.gtd_time = Time.utc(2015, 5, 3)
     order.price_bound = 135.69
     order.take_profit_on_fill = {
-      price: 135.63,
+      price: 135.63
     }
     order.stop_loss_on_fill = {
-     price: 135.83,
+     price: 135.83
     }
     order.trailing_stop_loss_on_fill = {
       distance: 10
@@ -769,10 +769,10 @@ shared_examples 'brokerの基本操作ができる' do
     expected_order.gtd_time = Time.utc(2015, 5, 3)
     expected_order.price_bound = 135.69
     expected_order.take_profit_on_fill = {
-      price: 135.63,
+      price: 135.63
     }
     expected_order.stop_loss_on_fill = {
-     price: 135.83,
+     price: 135.83
     }
     expected_order.trailing_stop_loss_on_fill = {
       distance: 10
@@ -802,15 +802,15 @@ shared_examples 'brokerの基本操作ができる' do
     expect(broker.account.margin_used).to eq 0
 
     result1 = broker.sell(:EURJPY, 10_000, :limit, {
-      price:  135.6,
-      time_in_force: "GTD",
-      gtd_time:       Time.utc(2015, 5, 2)
+      price:         135.6,
+      time_in_force: 'GTD',
+      gtd_time:      Time.utc(2015, 5, 2)
     }).order_opened
 
     result2 = broker.buy(:EURJPY, 10_000, :limit, {
-      price:  134.6,
-      time_in_force: "GTD",
-      gtd_time:       Time.utc(2015, 5, 2)
+      price:         134.6,
+      time_in_force: 'GTD',
+      gtd_time:      Time.utc(2015, 5, 2)
     }).order_opened
 
     expect(broker.orders.length).to be 2

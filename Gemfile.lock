@@ -747,7 +747,7 @@ GEM
     mongoid (7.0.2)
       activemodel (>= 5.1, < 6.0.0)
       mongo (>= 2.5.1, < 3.0.0)
-    msgpack (1.2.4)
+    msgpack (0.5.12)
     multi_xml (0.6.0)
     mustermann (1.0.3)
     netrc (0.11.0)
@@ -860,7 +860,7 @@ DEPENDENCIES
   mail
   mini_magick
   mongoid
-  msgpack
+  msgpack (= 0.5.12)
   newrelic_rpm
   oanda_api_v20
   puma
@@ -877,7 +877,7 @@ DEPENDENCIES
   validates_email_format_of
 
 RUBY VERSION
-   ruby 2.6.0p0
+   ruby 2.3.8p459
 
 BUNDLED WITH
    1.17.2

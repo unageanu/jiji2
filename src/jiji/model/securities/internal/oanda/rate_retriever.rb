@@ -9,18 +9,19 @@ module Jiji::Model::Securities::Internal::Oanda
     include Jiji::Model::Securities::Internal::Utils
 
     def retrieve_pairs
-      @client.account(@account["id"]).instruments
-        .show["instruments"].map { |item| convert_response_to_pair(item) }
+      @client.account(@account['id']).instruments
+        .show['instruments'].map { |item| convert_response_to_pair(item) }
     end
 
     def retrieve_current_tick
-      prices = @client.account(@account["id"]).pricing(instruments: retrieve_all_pairs.join(",")).show
-      convert_response_to_ticks(prices["prices"])
+      prices = @client.account(@account['id']).pricing(instruments: retrieve_all_pairs.join(',')).show
+      convert_response_to_ticks(prices['prices'])
     end
 
     def retrieve_tick_history(pair_name, start_time,
       end_time, interval_id = :fifteen_seconds)
       interval = Intervals.instance.get(interval_id)
+      end_time = Time.now - [interval.ms / 1000, 60].min if end_time >= Time.now
       converter = TickConverter.new(pair_name)
       RateFetcher.new(@client, converter)
         .fetch_and_fill(start_time, end_time, interval, pair_name)
@@ -28,6 +29,7 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def retrieve_rate_history(pair_name, interval_id, start_time, end_time)
       interval = Intervals.instance.get(interval_id)
+      end_time = Time.now - [interval.ms / 1000, 60].min if end_time >= Time.now
       converter = RateConverter.new(pair_name, interval)
       RateFetcher.new(@client, converter)
         .fetch_and_fill(start_time, end_time, interval, pair_name)
@@ -41,17 +43,17 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def convert_response_to_pair(item)
       Pair.new(
-        Converter.convert_instrument_to_pair_name(item["name"]),
-        item["name"], 10 ** item["pipLocation"].to_i, item["maximumOrderUnits"].to_i,
-        10 ** (item["displayPrecision"].to_i * -1), item["marginRate"].to_f)
+        Converter.convert_instrument_to_pair_name(item['name']),
+        item['name'], 10**item['pipLocation'].to_i, item['maximumOrderUnits'].to_i,
+        10**(item['displayPrecision'].to_i * -1), item['marginRate'].to_f)
     end
 
     def convert_response_to_ticks(prices)
       values = prices.each_with_object({}) do |p, r|
-        pair_name = Converter.convert_instrument_to_pair_name(p["instrument"])
+        pair_name = Converter.convert_instrument_to_pair_name(p['instrument'])
         r[pair_name] = Tick::Value.new(
-          p["bids"].map {|h| h["price"].to_f }.max,
-          p["asks"].map {|h| h["price"].to_f }.min)
+          p['bids'].map { |h| h['price'].to_f }.max,
+          p['asks'].map { |h| h['price'].to_f }.min)
       end
       Tick.new(values, Time.now)
     end
@@ -80,12 +82,12 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def fetch(interval, start_time, end_time, candle_format = 'BA')
       @client.instrument(to_instrument).candles({
-        granularity:        to_granularity(interval),
-        price:              candle_format,
-        from:               start_time.getutc.to_datetime.rfc3339,
-        to:                 end_time.getutc.to_datetime.rfc3339,
-        alignmentTimezone:  Jiji::Utils::Times.iana_name(start_time),
-        dailyAlignment:     0
+        granularity:       to_granularity(interval),
+        price:             candle_format,
+        from:              start_time.getutc.to_datetime.rfc3339,
+        to:                end_time.getutc.to_datetime.rfc3339,
+        alignmentTimezone: Jiji::Utils::Times.iana_name(start_time),
+        dailyAlignment:    0
       }).show
     end
 
@@ -101,14 +103,14 @@ module Jiji::Model::Securities::Internal::Oanda
       array = []
       current_time = @start_time
       while current_time < @end_time
-        array << retrieve_rate_at(rates["candles"], current_time, array)
+        array << retrieve_rate_at(rates['candles'], current_time, array)
         current_time += @interval.ms / 1000
       end
       array
     end
 
     def retrieve_rate_at(rates, current_time, array)
-      if !rates.empty? && Time.parse(rates.first["time"]) == current_time
+      if !rates.empty? && Time.parse(rates.first['time']) == current_time
         @converter.convert_value(rates.shift, current_time)
       else
         resolve_latest_rate(array, current_time)
@@ -131,7 +133,7 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def try_to_retrieve_latest_rate_with_same_interval(time)
       rates = fetch(@interval, time - @interval.ms / 1000 * 20, time)
-      rates["candles"].empty? ? nil : rates["candles"].last
+      rates['candles'].empty? ? nil : rates['candles'].last
     end
 
     def retrieve_latest_rate_with_long_interval(time)
@@ -139,7 +141,8 @@ module Jiji::Model::Securities::Internal::Oanda
       interval = Intervals.instance.get(:six_hours)
       4.times do
         rates = fetch(interval, time - step, time)
-        return rates["candles"].last unless rates["candles"].empty?
+        return rates['candles'].last unless rates['candles'].empty?
+
         time -= step
       end
       illegal_argument('failed to load rate.')
@@ -175,18 +178,18 @@ module Jiji::Model::Securities::Internal::Oanda
         convert_response_to_tick_value('c', value),
         convert_response_to_tick_value('h', value),
         convert_response_to_tick_value('l', value),
-        value["volume"])
+        value['volume'])
     end
 
     def create_rate_using_close_value(value, time)
       close = convert_response_to_tick_value('c', value)
-      Rate.new(@pair_name, time, close, close, close, close, value["volume"])
+      Rate.new(@pair_name, time, close, close, close, close, value['volume'])
     end
 
     def convert_response_to_tick_value(id, item)
       Tick::Value.new(
-        item["bid"][id].to_f,
-        item["ask"][id].to_f)
+        item['bid'][id].to_f,
+        item['ask'][id].to_f)
     end
 
   end
@@ -211,9 +214,9 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def create_tick_value(value, using_close_value)
       if using_close_value
-        Tick::Value.new(value["bid"]["c"].to_f, value["ask"]["c"].to_f)
+        Tick::Value.new(value['bid']['c'].to_f, value['ask']['c'].to_f)
       else
-        Tick::Value.new(value["bid"]["o"].to_f, value["ask"]["o"].to_f)
+        Tick::Value.new(value['bid']['o'].to_f, value['ask']['o'].to_f)
       end
     end
 

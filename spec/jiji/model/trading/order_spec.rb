@@ -73,42 +73,42 @@ describe Jiji::Model::Trading::Order do
     order.last_modified = Time.new(1000)
     order.units = 10_000
     order.price = 123
-    order.time_in_force = "GTD"
+    order.time_in_force = 'GTD'
     order.gtd_time = Time.new(2000)
     order.price_bound = 123.1
-    order.position_fill = "OPEN_ONLY"
+    order.position_fill = 'OPEN_ONLY'
     order.client_extensions = {
-      id: "clientId",
-      tag: "clientTag",
-      comment: "clientComment"
+      id:      'clientId',
+      tag:     'clientTag',
+      comment: 'clientComment'
     }
     order.take_profit_on_fill = {
-      price: 122.2,
-      time_in_force: "GTD",
-      gtd_time: Time.new(3000)
+      price:         122.2,
+      time_in_force: 'GTD',
+      gtd_time:      Time.new(3000)
     }
     order.stop_loss_on_fill = {
-      price: 125.5,
-      time_in_force: "GTC",
+      price:             125.5,
+      time_in_force:     'GTC',
       client_extensions: {
-        id: "clientId2",
-        tag: "clientTag",
-        comment: "clientComment"
-      },
+        id:      'clientId2',
+        tag:     'clientTag',
+        comment: 'clientComment'
+      }
     }
     order.trailing_stop_loss_on_fill = {
-      distance: 10,
-      time_in_force: "GTC",
+      distance:          10,
+      time_in_force:     'GTC',
       client_extensions: {
-        id: "clientId3",
-        tag: "clientTag",
-        comment: "clientComment"
+        id:      'clientId3',
+        tag:     'clientTag',
+        comment: 'clientComment'
       }
     }
     order.trade_client_extensions = {
-      id: "tradeClientId",
-      tag: "tradeClientTag",
-      comment: "tradeClientComment"
+      id:      'tradeClientId',
+      tag:     'tradeClientTag',
+      comment: 'tradeClientComment'
     }
 
     order2 = Jiji::Model::Trading::Order.new(:USDJPY, 2, :buy, :limit, nil)

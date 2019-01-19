@@ -16,31 +16,31 @@ module Jiji::Model::Securities::Internal::Oanda
       end
       param[:max_id] = max_id if max_id
       tick = retrieve_current_tick
-      @client.account(@account["id"])
-        .trades(param).show["trades"].map do |item|
+      @client.account(@account['id'])
+        .trades(param).show['trades'].map do |item|
         convert_response_to_position(item, tick)
       end
     end
 
     def retrieve_trade_by_id(internal_id)
       tick = retrieve_current_tick
-      response = @client.account(@account["id"])
-        .trade(internal_id).show["trade"]
+      response = @client.account(@account['id'])
+        .trade(internal_id).show['trade']
       convert_response_to_position(response, tick)
     end
 
     def modify_trade(internal_id, options = {})
       options = Converter.convert_option_to_oanda(options)
-      @client.account(@account["id"])
+      @client.account(@account['id'])
         .trade(internal_id, options).update
       retrieve_trade_by_id(internal_id)
     end
 
     def close_trade(internal_id)
-      response = @client.account(@account["id"])
-        .trade(internal_id).close["orderFillTransaction"]
-      ClosedPosition.new(internal_id, -1, BigDecimal(response["price"], 10),
-        Time.parse(response["time"]), BigDecimal(response["pl"], 10))
+      response = @client.account(@account['id'])
+        .trade(internal_id).close['orderFillTransaction']
+      ClosedPosition.new(internal_id, -1, BigDecimal(response['price'], 10),
+        Time.parse(response['time']), BigDecimal(response['pl'], 10))
     end
 
     private

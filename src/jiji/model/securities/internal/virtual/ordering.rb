@@ -177,9 +177,9 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def insert_default_options(type, options)
-      options[:timeInForce] ||= type == :market ? "FOK" : "GTC"
-      options[:positionFill] ||=  "DEFAULT"
-      options[:triggerCondition] ||=  "DEFAULT" if type != :market
+      options[:timeInForce] ||= type == :market ? 'FOK' : 'GTC'
+      options[:positionFill] ||= 'DEFAULT'
+      options[:triggerCondition] ||= 'DEFAULT' if type != :market
     end
 
     def resolve_price(type, pair_name, sell_or_buy, options, tick)

@@ -8,7 +8,6 @@ require 'jiji/model/securities/internal/oanda/trading'
 require 'jiji/model/securities/internal/oanda/transaction_retriever'
 
 module Jiji::Model::Securities
-
   class OandaSecurities
 
     include Jiji::Errors
@@ -36,24 +35,24 @@ module Jiji::Model::Securities
     def destroy; end
 
     def retrieve_account
-      response = @client.account(@account["id"]).show["account"]
-      Account.new(response["id"], response["currency"],
-        BigDecimal(response["balance"], 10), BigDecimal(response["marginRate"], 10)) do |a|
-        a.profit_or_loss = BigDecimal(response["unrealizedPL"], 10)
-        a.margin_used    = BigDecimal(response["marginUsed"], 10)
+      response = @client.account(@account['id']).show['account']
+      Account.new(response['id'], response['currency'],
+        BigDecimal(response['balance'], 10), BigDecimal(response['marginRate'], 10)) do |a|
+        a.profit_or_loss = BigDecimal(response['unrealizedPL'], 10)
+        a.margin_used    = BigDecimal(response['marginUsed'], 10)
       end
     end
 
     def account_currency
       @account_currency ||=
-        @client.account(@account["id"]).show["account"]["currency"]
+        @client.account(@account['id']).show['account']['currency']
     end
 
     def find_account(account_name)
       accounts = @client.accounts.show
-      accounts["accounts"]
-        .map { |a| @client.account(a["id"]).summary.show["account"] }
-        .find { |a| a["alias"] == account_name } \
+      accounts['accounts']
+        .map { |a| @client.account(a['id']).summary.show['account'] }
+        .find { |a| a['alias'] == account_name } \
         || not_found(Account, account_name: account_name)
     end
 

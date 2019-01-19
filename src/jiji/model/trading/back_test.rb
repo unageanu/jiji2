@@ -38,7 +38,7 @@ module Jiji::Model::Trading
 
     field :start_time,       type: Time
     field :end_time,         type: Time
-    field :tick_interval_id, type: Symbol,  default: :fifteen_seconds
+    field :tick_interval_id, type: Symbol, default: :fifteen_seconds
     field :pair_names,       type: Array
     field :balance,          type: Integer, default: 0
     field :status,           type: Symbol,  default: :wait_for_start

@@ -130,37 +130,37 @@ module Jiji::Test
       order.price         = 100 + seed
       order.gtd_time      = timestamp + 10
       order.price_bound   = 101 + seed
-      order.position_fill = "DEFAULT"
+      order.position_fill = 'DEFAULT'
       order.client_extensions = {
-        id: "clientId",
-        tag: "clientTag",
-        comment: "clientComment"
+        id:      'clientId',
+        tag:     'clientTag',
+        comment: 'clientComment'
       }
       order.take_profit_on_fill = {
         price: (seed.even? ? 102 : 98) + seed
       }
       order.stop_loss_on_fill = {
-        price: (seed.even? ? 98 : 102) + seed,
-        time_in_force: "GTC",
+        price:             (seed.even? ? 98 : 102) + seed,
+        time_in_force:     'GTC',
         client_extensions: {
-          id: "clientId2",
-          tag: "clientTag",
-          comment: "clientComment"
+          id:      'clientId2',
+          tag:     'clientTag',
+          comment: 'clientComment'
         }
       }
       order.trailing_stop_loss_on_fill = {
-        distance: seed,
-        time_in_force: "GTC",
+        distance:          seed,
+        time_in_force:     'GTC',
         client_extensions: {
-          id: "clientId3",
-          tag: "clientTag",
-          comment: "clientComment"
+          id:      'clientId3',
+          tag:     'clientTag',
+          comment: 'clientComment'
         }
       }
       order.trade_client_extensions = {
-        id: "tradeClientId",
-        tag: "tradeClientTag",
-        comment: "tradeClientComment"
+        id:      'tradeClientId',
+        tag:     'tradeClientTag',
+        comment: 'tradeClientComment'
       }
       order
     end

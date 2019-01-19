@@ -15,12 +15,12 @@ module Jiji::Model::Securities::Internal::Oanda
           Converter.convert_pair_name_to_instrument(pair_name)
       end
       if max_id.nil? || min_id.nil?
-        max_id = @client.account(@account["id"]).transactions(param).show["lastTransactionID"]
+        max_id = @client.account(@account['id']).transactions(param).show['lastTransactionID']
         min_id = (max_id.to_i - count + 1).to_s
       end
       param[:to] = max_id if max_id
       param[:from] = min_id if min_id
-      @client.account(@account["id"]).transactions_id_range(param).show["transactions"]
+      @client.account(@account['id']).transactions_id_range(param).show['transactions']
     end
   end
 end

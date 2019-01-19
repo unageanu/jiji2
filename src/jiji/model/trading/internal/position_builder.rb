@@ -44,7 +44,7 @@ module Jiji::Model::Trading::Internal
     def build_from_trade(trade)
       Position.new do |p|
         initialize_trading_information_from_trade(p, trade)
-        initialize_price_and_time(p, trade["price"].to_f, Time.parse(trade["openTime"]), nil)
+        initialize_price_and_time(p, trade['price'].to_f, Time.parse(trade['openTime']), nil)
         p.closing_policy = ClosingPolicy.create_from_trade(trade)
       end
     end
@@ -52,7 +52,7 @@ module Jiji::Model::Trading::Internal
     def build_from_trade_opend_of_order_result(trade)
       Position.new do |p|
         initialize_trading_information_from_trade_opend_of_order_result(p, trade)
-        initialize_price_and_time(p, trade["price"].to_f, Time.parse(trade["time"]), nil)
+        initialize_price_and_time(p, trade['price'].to_f, Time.parse(trade['time']), nil)
         p.closing_policy = ClosingPolicy.create_from_trade(trade)
       end
     end
@@ -109,18 +109,18 @@ module Jiji::Model::Trading::Internal
 
     def initialize_trading_information_from_trade_opend_of_order_result(position, trade)
       pair_name = Jiji::Model::Securities::Internal::Utils::Converter\
-        .convert_instrument_to_pair_name(trade["instrument"])
+        .convert_instrument_to_pair_name(trade['instrument'])
       initialize_trading_information(position, @backtest,
-        trade["tradeID"], pair_name, trade["units"].to_i.abs,
-        PricingUtils.detect_sell_or_buy(trade["units"]))
+        trade['tradeID'], pair_name, trade['units'].to_i.abs,
+        PricingUtils.detect_sell_or_buy(trade['units']))
     end
 
     def initialize_trading_information_from_trade(position, trade)
       pair_name = Jiji::Model::Securities::Internal::Utils::Converter\
-        .convert_instrument_to_pair_name(trade["instrument"])
+        .convert_instrument_to_pair_name(trade['instrument'])
       initialize_trading_information(position, @backtest,
-        trade["id"], pair_name, trade["currentUnits"].to_i.abs,
-        PricingUtils.detect_sell_or_buy(trade["currentUnits"]))
+        trade['id'], pair_name, trade['currentUnits'].to_i.abs,
+        PricingUtils.detect_sell_or_buy(trade['currentUnits']))
     end
 
     def initialize_trading_information(position,

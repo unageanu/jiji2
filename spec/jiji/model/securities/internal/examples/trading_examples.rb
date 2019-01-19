@@ -27,10 +27,10 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       client.order(:USDJPY, :buy, 2, :market, {
-        stop_loss_on_fill: {
+        stop_loss_on_fill:          {
           price: ask - 2
         },
-        take_profit_on_fill: {
+        take_profit_on_fill:        {
           price: ask + 2
         },
         trailing_stop_loss_on_fill: {
@@ -109,10 +109,10 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       client.order(:USDJPY, :buy, 2, :market, {
-        stop_loss_on_fill: {
+        stop_loss_on_fill:          {
           price: ask - 2
         },
-        take_profit_on_fill: {
+        take_profit_on_fill:        {
           price: ask + 2
         },
         trailing_stop_loss_on_fill: {
@@ -126,10 +126,10 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       trade = client.modify_trade(trades[1].internal_id, {
-        stop_loss: {
+        stop_loss:          {
           price: bid + 3
         },
-        take_profit: {
+        take_profit:        {
           price: bid - 3
         },
         trailing_stop_loss: {
@@ -150,10 +150,10 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       trade = client.modify_trade(trades[0].internal_id, {
-        stop_loss: {
+        stop_loss:          {
           price: ask - 3
         },
-        take_profit: {
+        take_profit:        {
           price: ask + 3
         },
         trailing_stop_loss: {
@@ -215,10 +215,10 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       client.order(:USDJPY, :buy, 2, :market, {
-        stop_loss_on_fill: {
+        stop_loss_on_fill:          {
           price: ask - 2
         },
-        take_profit_on_fill: {
+        take_profit_on_fill:        {
           price: ask + 2
         },
         trailing_stop_loss_on_fill: {
@@ -265,10 +265,10 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       client.order(:EURDKK, :buy, 2, :market, {
-        stop_loss_on_fill: {
+        stop_loss_on_fill:          {
           price: ask - 0.02
         },
-        take_profit_on_fill: {
+        take_profit_on_fill:        {
           price: ask + 0.02
         },
         trailing_stop_loss_on_fill: {

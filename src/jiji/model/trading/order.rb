@@ -86,12 +86,12 @@ module Jiji::Model::Trading
         take_profit_on_fill stop_loss_on_fill trailing_stop_loss_on_fill
         client_extensions trade_client_extensions
       ].each_with_object({}) do |key, r|
-        r[key] = self.method(key).call
+        r[key] = method(key).call
       end
     end
 
     def expired?(timestamp) #:nodoc:
-      time_in_force == "GTD" && gtd_time && gtd_time <= timestamp
+      time_in_force == 'GTD' && gtd_time && gtd_time <= timestamp
     end
 
     def carried_out?(tick) #:nodoc:
@@ -118,11 +118,11 @@ module Jiji::Model::Trading
     def from_h(hash)
       hash.each do |k, v|
         k = k.to_sym
-        if !v.nil?
+        unless v.nil?
           if k == :price || k == :price_bound || k == :initial_price
             v = BigDecimal(v, 10)
           end
-          if k == :take_profit_on_fill || k == :stop_loss_on_fill  || k == :trailing_stop_loss_on_fill
+          if k == :take_profit_on_fill || k == :stop_loss_on_fill || k == :trailing_stop_loss_on_fill
             v = v.clone.symbolize_keys
             v[:price] = BigDecimal(v[:price], 10) if v[:price]
           end
@@ -139,11 +139,11 @@ module Jiji::Model::Trading
 
         v = instance_variable_get("@#{name}")
 
-        if !v.nil?
+        unless v.nil?
           if name == :price || name == :price_bound || name == :initial_price
             v = v.to_s
           end
-          if name == :take_profit_on_fill || name == :stop_loss_on_fill  || name == :trailing_stop_loss_on_fill
+          if name == :take_profit_on_fill || name == :stop_loss_on_fill || name == :trailing_stop_loss_on_fill
             v = v.clone
             v[:price] = v[:price].to_s if v[:price]
           end
@@ -156,6 +156,7 @@ module Jiji::Model::Trading
     def collect_properties_for_modify
       instance_variables.map { |n| n[1..-1].to_sym }.each_with_object({}) do |name, obj|
         next if name == :broker
+
         obj[name] = instance_variable_get("@#{name}").clone
       end
     end

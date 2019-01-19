@@ -87,22 +87,22 @@ module Jiji::Model::Trading
     end
 
     def self.extract_stop_loss_from_trade(trade)
-      price = trade["stopLossOrder"] && trade["stopLossOrder"]["price"]
+      price = trade['stopLossOrder'] && trade['stopLossOrder']['price']
       price ? BigDecimal(price, 10) : 0
     end
 
     def self.extract_take_profit_from_trade(trade)
-      price = trade["takeProfitOrder"] && trade["takeProfitOrder"]["price"]
+      price = trade['takeProfitOrder'] && trade['takeProfitOrder']['price']
       price ? BigDecimal(price, 10) : 0
     end
 
     def self.extract_trailing_stop_from_trade(trade)
-      price = trade["trailingStopLossOrder"] && trade["trailingStopLossOrder"]["distance"]
+      price = trade['trailingStopLossOrder'] && trade['trailingStopLossOrder']['distance']
       price ? BigDecimal(price, 10) : 0
     end
 
     def self.extract_trailing_amount_from_trade(trade)
-      price = trade["trailingStopLossOrder"] && trade["trailingStopLossOrder"]["trailingStopValue"]
+      price = trade['trailingStopLossOrder'] && trade['trailingStopLossOrder']['trailingStopValue']
       price ? BigDecimal(price, 10) : 0
     end
 

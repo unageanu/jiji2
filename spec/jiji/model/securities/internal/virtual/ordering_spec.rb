@@ -30,18 +30,18 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       now  = tick.timestamp
 
       order1 = client.order(:EURJPY, :sell, 1, :limit, {
-        price:         128.9,
-        time_in_force: "GTD",
-        gtd_time:      now + (60 * 60 * 24),
+        price:                      128.9,
+        time_in_force:              'GTD',
+        gtd_time:                   now + (60 * 60 * 24),
         trailing_stop_loss_on_fill: {
           distance: 10
         }
       }).order_opened
       order2 = client.order(:USDJPY, :buy, 10, :stop, {
-        price:         120,
-        time_in_force: "GTD",
-        gtd_time:      now + (60 * 60 * 24),
-        stop_loss_on_fill: {
+        price:               120,
+        time_in_force:       'GTD',
+        gtd_time:            now + (60 * 60 * 24),
+        stop_loss_on_fill:   {
           price: 119
         },
         take_profit_on_fill: {
@@ -50,13 +50,13 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       }).order_opened
       order3 = client.order(:EURJPY, :sell, 2, :marketIfTouched, {
         price:         128.9,
-        time_in_force: "GTD",
-        gtd_time:      now + (60 * 60 * 24),
+        time_in_force: 'GTD',
+        gtd_time:      now + (60 * 60 * 24)
       }).order_opened
       order4 = client.order(:EURJPY, :sell, 3, :limit, {
         price:         128.9,
-        time_in_force: "GTD",
-        gtd_time:      now + 45,
+        time_in_force: 'GTD',
+        gtd_time:      now + 45
       }).order_opened
 
       orders = client.retrieve_orders

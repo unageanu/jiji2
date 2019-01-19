@@ -24,10 +24,10 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       it '名前に対応するアカウントを取得できる。' do
         account = @client.find_account('Primary')
         # p account
-        expect(account["alias"]).to eq 'Primary'
-        expect(account["id"]).not_to be nil
-        expect(account["currency"]).to eq 'JPY'
-        expect(account["marginRate"]).not_to be nil
+        expect(account['alias']).to eq 'Primary'
+        expect(account['id']).not_to be nil
+        expect(account['currency']).to eq 'JPY'
+        expect(account['marginRate']).not_to be nil
       end
 
       it '名前に対応するアカウントが見つからない場合、エラー' do

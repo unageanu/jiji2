@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
-require 'oanda_api'
-require 'jiji/model/securities/internal/oanda/converter'
+require 'jiji/model/securities/internal/utils/converter'
 
 module Jiji::Model::Securities::Internal::Oanda
   module CalendarRetriever
+    include Jiji::Model::Securities::Internal::Utils
+
     def retrieve_calendar(period, pair_name = nil)
       parameter = { period: period }
       if pair_name

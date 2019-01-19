@@ -16,9 +16,9 @@ if ENV['OANDA_API_ACCESS_TOKEN']
     describe 'pairs' do
       it '通貨ペアの一覧を取得できる。' do
         pairs = client.retrieve_pairs
-        # p pairs
         expect(pairs.length).to be > 0
         pairs.each do |pair|
+          # p pair
           expect(pair.name).not_to be nil
           expect(pair.internal_id).not_to be nil
           expect(pair.pip).to be > 0
@@ -32,11 +32,11 @@ if ENV['OANDA_API_ACCESS_TOKEN']
     describe 'retrieve_current_tick' do
       it '通貨ペアごとの現在価格を取得できる。' do
         tick = client.retrieve_current_tick
-        # p tick
         expect(tick.length).to be > 0
         expect(tick.timestamp).not_to be nil
         expect(tick.timestamp.class).to be Time
         tick.each do |_k, v|
+          # p v
           expect(v.bid).to be > 0
           expect(v.ask).to be > 0
         end
@@ -47,10 +47,10 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       it 'should return ticks for a currency pair.' do
         ticks = client.retrieve_tick_history(:EURJPY,
           Time.utc(2015, 5, 22, 12, 0o0, 0o0), Time.utc(2015, 5, 22, 12, 15, 0o0))
-        # p ticks
         expect(ticks.length).to be 15 * 4
         time = Time.utc(2015, 5, 22, 12, 0o0, 0o0)
         ticks.each do |tick|
+          # p tick
           expect(tick.timestamp).to eq time
           expect(tick.length).to be 1
           v = tick[:EURJPY]
@@ -64,10 +64,10 @@ if ENV['OANDA_API_ACCESS_TOKEN']
         ticks = client.retrieve_tick_history(:EURJPY,
           Time.utc(2015, 5, 22, 12, 0o0, 0o0),
           Time.utc(2015, 5, 23, 12, 0o0, 0o0), :one_hour)
-        # p ticks
         expect(ticks.length).to be 24
         time = Time.utc(2015, 5, 22, 12, 0o0, 0o0)
         ticks.each do |tick|
+          # p tick
           expect(tick.timestamp).to eq time
           expect(tick.length).to be 1
           v = tick[:EURJPY]

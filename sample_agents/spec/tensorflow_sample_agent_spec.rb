@@ -35,6 +35,6 @@ describe TensorFlowSampleAgent do
     runner.restart
     backtest = runner.tests[0]
 
-    sleep 0.2 until backtest.process.finished?
+    sleep 0.2 while backtest.process.running?
   end
 end

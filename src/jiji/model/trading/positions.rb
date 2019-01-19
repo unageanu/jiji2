@@ -100,9 +100,8 @@ module Jiji::Model::Trading
       end
     end
 
-    def add(order, tick, agent)
-      position = @position_builder.build_from_order(order,
-        tick, account.account_currency, agent)
+    def add(position, tick, agent)
+      position.agent = agent
       position.save
       @positions << position
       @map[position.internal_id] = position

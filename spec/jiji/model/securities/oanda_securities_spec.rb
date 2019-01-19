@@ -17,17 +17,17 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       expect do
         Jiji::Model::Securities::OandaDemoSecurities.new(
           access_token: 'illegal_token')
-      end.to raise_exception(OandaAPI::RequestError)
+      end.to raise_exception(OandaApiV20::RequestError)
     end
 
     describe 'find_account' do
       it '名前に対応するアカウントを取得できる。' do
         account = @client.find_account('Primary')
         # p account
-        expect(account.account_name).to eq 'Primary'
-        expect(account.account_id).to be > 0
-        expect(account.account_currency).to eq 'JPY'
-        expect(account.margin_rate).not_to be nil
+        expect(account["alias"]).to eq 'Primary'
+        expect(account["id"]).not_to be nil
+        expect(account["currency"]).to eq 'JPY'
+        expect(account["marginRate"]).not_to be nil
       end
 
       it '名前に対応するアカウントが見つからない場合、エラー' do
@@ -40,7 +40,7 @@ if ENV['OANDA_API_ACCESS_TOKEN']
     describe 'retrieve_account' do
       it '名前に対応するアカウントを取得できる。' do
         account = @client.retrieve_account
-        expect(account.account_id).to be > 0
+        expect(account.account_id).not_to be nil
         expect(account.margin_rate).not_to be nil
         expect(account.balance).to be >= 0
         expect(account.margin_used).to be >= 0

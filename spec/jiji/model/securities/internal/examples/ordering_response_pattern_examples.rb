@@ -48,7 +48,7 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         expect(result.trade_opened).to be nil
         expect(result.trade_reduced.internal_id).to eq(positions[0].internal_id)
         expect(result.trade_reduced.price).to be > 0
-        expect(result.trade_reduced.units).to be 4
+        expect(result.trade_reduced.units).to be 1
         expect(result.trade_reduced.profit_or_loss).to be nil
         expect(result.trade_reduced.timestamp).not_to be nil
         expect(result.trades_closed).to eq []
@@ -70,9 +70,8 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         expect(result.trade_opened.internal_id).not_to be nil
         expect(result.trade_opened.pair_name).to be :EURJPY
         expect(result.trade_opened.sell_or_buy).to be :sell
-        expect(result.trade_opened.price).to be > 0
+        expect(result.trade_opened.entry_price).to be > 0
         expect(result.trade_opened.units).to be 1
-        expect(result.trade_opened.type).to be :market
         expect(result.trade_reduced).to be nil
         expect(result.trades_closed.length).to eq 1
         expect(result.trades_closed[0].internal_id).to eq(
@@ -87,7 +86,7 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         expect(positions.length).to be 1
         expect(positions[0].internal_id).to eq result.trade_opened.internal_id
         expect(positions[0].units).to eq 1
-        expect(positions[0].entry_price).to eq result.trade_opened.price
+        expect(positions[0].entry_price).to eq result.trade_opened.entry_price
 
         sleep wait
 
@@ -124,11 +123,10 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         result = client.order(:EURJPY, :buy, 1)
         expect(result.order_opened).to be nil
         expect(result.trade_opened.internal_id).not_to be nil
-        expect(result.trade_opened.price).to be > 0
+        expect(result.trade_opened.entry_price).to be > 0
         expect(result.trade_opened.pair_name).to be :EURJPY
         expect(result.trade_opened.sell_or_buy).to be :buy
         expect(result.trade_opened.units).to be 1
-        expect(result.trade_opened.type).to be :market
         expect(result.trade_reduced).to be nil
         expect(result.trades_closed).to eq []
 
@@ -137,7 +135,7 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
         expect(positions.length).to be 2
         expect(positions[0].internal_id).to eq result.trade_opened.internal_id
         expect(positions[0].units).to eq 1
-        expect(positions[0].entry_price).to eq result.trade_opened.price
+        expect(positions[0].entry_price).to eq result.trade_opened.entry_price
         expect(positions[1].internal_id).not_to be nil
         expect(positions[1].units).to eq 5
         expect(positions[1].entry_price).to eq positions0[0].entry_price
@@ -191,18 +189,15 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
 
         sleep wait
         result = client.order(:EURJPY, :sell, 1, :limit, {
-          price:  (bid - 1).to_f,
-          expiry: now + (60 * 60 * 24)
+          price:  bid - 1
         })
-        expect(result.order_opened.internal_id).not_to be nil
-        expect(result.order_opened.pair_name).to be :EURJPY
-        expect(result.order_opened.sell_or_buy).to be :sell
-        expect(result.order_opened.units).to be 1
-        expect(result.order_opened.type).to be :limit
-        expect(result.order_opened.price).to eq((bid - 1).to_f)
-        expect(result.order_opened.expiry).to eq((now + (60 * 60 * 24)).utc)
+        expect(result.order_opened).to be nil
         expect(result.trade_opened).to be nil
-        expect(result.trade_reduced).to be nil
+        expect(result.trade_reduced.internal_id).not_to be nil
+        expect(result.trade_reduced.price).to be > 0
+        expect(result.trade_reduced.units).to be 1
+        expect(result.trade_reduced.profit_or_loss).to be nil
+        expect(result.trade_reduced.timestamp).not_to be nil
         expect(result.trades_closed).to eq []
 
         sleep wait
@@ -217,18 +212,15 @@ RSpec.shared_examples '注文関連の操作(建玉がある場合のバリエ�
 
         sleep wait
         result = client.order(:EURJPY, :sell, 1, :stop, {
-          price:  (bid + 1).to_f,
-          expiry: now + (60 * 60 * 24)
+          price:  bid + 1
         })
-        expect(result.order_opened.internal_id).not_to be nil
-        expect(result.order_opened.pair_name).to be :EURJPY
-        expect(result.order_opened.sell_or_buy).to be :sell
-        expect(result.order_opened.units).to be 1
-        expect(result.order_opened.type).to be :stop
-        expect(result.order_opened.price).to eq((bid + 1).to_f)
-        expect(result.order_opened.expiry).to eq((now + (60 * 60 * 24)).utc)
+        expect(result.order_opened).to be nil
         expect(result.trade_opened).to be nil
-        expect(result.trade_reduced).to be nil
+        expect(result.trade_reduced.internal_id).not_to be nil
+        expect(result.trade_reduced.price).to be > 0
+        expect(result.trade_reduced.units).to be 1
+        expect(result.trade_reduced.profit_or_loss).to be nil
+        expect(result.trade_reduced.timestamp).not_to be nil
         expect(result.trades_closed).to eq []
 
         sleep wait

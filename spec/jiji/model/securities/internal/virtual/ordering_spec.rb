@@ -31,22 +31,32 @@ if ENV['OANDA_API_ACCESS_TOKEN']
 
       order1 = client.order(:EURJPY, :sell, 1, :limit, {
         price:         128.9,
-        expiry:        now + (60 * 60 * 24),
-        trailing_stop: 10
+        time_in_force: "GTD",
+        gtd_time:      now + (60 * 60 * 24),
+        trailing_stop_loss_on_fill: {
+          distance: 10
+        }
       }).order_opened
       order2 = client.order(:USDJPY, :buy, 10, :stop, {
-        price:       120,
-        expiry:      now + (60 * 60 * 24),
-        stop_loss:   119,
-        take_profit: 121
+        price:         120,
+        time_in_force: "GTD",
+        gtd_time:      now + (60 * 60 * 24),
+        stop_loss_on_fill: {
+          price: 119
+        },
+        take_profit_on_fill: {
+          price: 121
+        }
       }).order_opened
       order3 = client.order(:EURJPY, :sell, 2, :marketIfTouched, {
-        price:  128.9,
-        expiry: now + (60 * 60 * 24)
+        price:         128.9,
+        time_in_force: "GTD",
+        gtd_time:      now + (60 * 60 * 24),
       }).order_opened
       order4 = client.order(:EURJPY, :sell, 3, :limit, {
-        price:  128.9,
-        expiry: now + 45
+        price:         128.9,
+        time_in_force: "GTD",
+        gtd_time:      now + 45,
       }).order_opened
 
       orders = client.retrieve_orders
@@ -58,7 +68,6 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       expect(order.units).to be 1
       expect(order.type).to be :limit
       expect(order.price).to eq(128.9)
-      expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
 
       order = orders.find { |o| o.internal_id == order2.internal_id }
       expect(order.pair_name).to be :USDJPY
@@ -66,7 +75,6 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       expect(order.units).to be 10
       expect(order.type).to be :stop
       expect(order.price).to eq(120)
-      expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
 
       order = orders.find { |o| o.internal_id == order3.internal_id }
       expect(order.pair_name).to be :EURJPY
@@ -74,7 +82,6 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       expect(order.units).to be 2
       expect(order.type).to be :marketIfTouched
       expect(order.price).to eq(128.9)
-      expect(order.expiry).to eq((now + (60 * 60 * 24)).utc)
 
       order = orders.find { |o| o.internal_id == order4.internal_id }
       expect(order.pair_name).to be :EURJPY
@@ -82,7 +89,6 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       expect(order.units).to be 3
       expect(order.type).to be :limit
       expect(order.price).to eq(128.9)
-      expect(order.expiry).to eq((now + 45).utc)
 
       2.times do
         client.retrieve_current_tick

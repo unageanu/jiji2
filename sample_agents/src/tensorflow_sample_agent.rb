@@ -222,14 +222,14 @@ class SignalCalculator
     ma25 = @ma25.next_data(price)
     ma50 = @ma50.next_data(price)
 
-    signals = calculate_base_signals(ma5, ma10)
+    signals = calculate_base_signals(price, ma5, ma10)
     calculate_slope_signals(signals, ma10, ma25, ma50)
     calculate_ma_signals(signals, price, ma10, ma25, ma50)
 
     signals
   end
 
-  def calculate_base_signals(ma5, ma10)
+  def calculate_base_signals(price, ma5, ma10)
     macd = @macd.next_data(price)
     {
       ma5:             ma5,

@@ -1,12 +1,10 @@
 # frozen_string_literal: true
 
-require 'oanda_api'
-require 'jiji/model/securities/internal/oanda/converter'
-
 module Jiji::Model::Securities::Internal::Virtual
   module Trading
     include Jiji::Errors
     include Jiji::Model::Trading
+    include Jiji::Model::Securities::Internal::Utils
 
     def init_trading_state(positions = [])
       @positions = positions
@@ -21,11 +19,10 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def modify_trade(internal_id, options = {})
+      options = Converter.convert_option_to_oanda(options)
       position = find_position_by_internal_id(internal_id)
       policy = position.closing_policy
-      %i[take_profit stop_loss trailing_stop].each do |key|
-        policy.method("#{key}=").call(options[key]) if options.include?(key)
-      end
+      policy.update_from_order_options(options, position.current_price || position.entry_price)
       position.clone
     end
 

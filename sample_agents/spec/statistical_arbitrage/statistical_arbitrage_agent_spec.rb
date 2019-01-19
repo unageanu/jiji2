@@ -39,6 +39,6 @@ describe StatisticalArbitrageAgent do
     runner.restart
     test = runner.tests[0]
 
-    sleep 0.2 until test.process.finished?
+    sleep 0.2 while test.process.running?
   end
 end

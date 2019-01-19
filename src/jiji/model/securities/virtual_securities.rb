@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'oanda_api'
 require 'jiji/model/securities/internal/virtual/ordering'
 require 'jiji/model/securities/internal/virtual/rate_retriever'
 require 'jiji/model/securities/internal/virtual/trading'
@@ -16,12 +15,14 @@ module Jiji::Model::Securities
     include Internal::Virtual::Trading
     include Internal::Virtual::CalendarRetriever
 
+    include Jiji::Model::Securities::Internal::Utils
+
     def initialize(tick_repository, securities_provider, config)
       @tick_repository = tick_repository
       @securities_provider = securities_provider
       @position_builder =
         Trading::Internal::PositionBuilder.new(config[:backtest])
-      @order_validator = Internal::Virtual::OrderValidator.new
+      @order_validator = OrderValidator.new
 
       init_rate_retriever_state(config[:start_time],
         config[:end_time], config[:pairs], config[:interval_id])

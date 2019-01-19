@@ -17,9 +17,18 @@ if ENV['OANDA_API_ACCESS_TOKEN']
       transactions = @client.retrieve_transactions(10)
       expect(transactions.length).to be 10
       transactions.each do |t|
-        expect(t.id).not_to be nil
-        expect(t.type).not_to be nil
-        expect(t.time).not_to be nil
+        expect(t["id"]).not_to be nil
+        expect(t["type"]).not_to be nil
+        expect(t["time"]).not_to be nil
+      end
+
+      transactions = @client.retrieve_transactions(
+        10, :USDJPY, transactions[5]["id"], transactions[9]["id"])
+      expect(transactions.length).to be 5
+      transactions.each do |t|
+        expect(t["id"]).not_to be nil
+        expect(t["type"]).not_to be nil
+        expect(t["time"]).not_to be nil
       end
     end
   end

@@ -2,7 +2,7 @@
 [![Code Climate](https://codeclimate.com/github/unageanu/jiji2/badges/gpa.svg)](https://codeclimate.com/github/unageanu/jiji2)
 [![Test Coverage](https://codeclimate.com/github/unageanu/jiji2/badges/coverage.svg)](https://codeclimate.com/github/unageanu/jiji2)
 
-# Jiji (Beta)<br/>
+# Jiji<br/>
 
 <b>Start the Forex system trading, using your own trading strategies.</b>
 <br/><br/>
@@ -37,7 +37,7 @@ We'd love for you to contribute to our source code and to make Jiji even better 
     $ bundle exec rake
     $ cd sites
     $ npm install
-    $ gulp  
+    $ gulp
     ```
 
 5. Create a new pull request for `develop` branch and submit it to me.

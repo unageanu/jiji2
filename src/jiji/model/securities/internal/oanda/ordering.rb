@@ -30,8 +30,8 @@ module Jiji::Model::Securities::Internal::Oanda
       end
       param[:max_id] = max_id if max_id
       @client.account(@account['id'])
-        .orders(param).show['orders'].filter do |item|
-        !%w[TRAILING_STOP_LOSS TAKE_PROFIT STOP_LOSS].include?(item['type'])
+        .orders(param).show['orders'].reject do |item|
+        %w[TRAILING_STOP_LOSS TAKE_PROFIT STOP_LOSS].include?(item['type'])
       end.map do |item|
         convert_response_to_order(item)
       end

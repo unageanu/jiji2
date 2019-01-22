@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/utils/requires'
@@ -18,19 +19,22 @@ module Utils
 
     def start_backtest(agent_setting,
       start_time = Time.new(2015, 12, 8, 0, 0, 0),
-      end_time = Time.new(2015, 12, 9, 0, 0, 0))
+      end_time = Time.new(2015, 12, 9, 0, 0, 0),
+      tick_interval_id = :fifteen_seconds,
+      pair_names = %i[USDJPY EURUSD])
       @backtest_repository.register({
-        'name'          => 'テスト',
-        'start_time'    => start_time,
-        'end_time'      => end_time,
-        'memo'          => 'メモ',
-        'pair_names'    => [:USDJPY, :EURUSD],
+        'name' => 'テスト',
+        'start_time' => start_time,
+        'end_time' => end_time,
+        'tick_interval_id' => tick_interval_id,
+        'memo' => 'メモ',
+        'pair_names' => pair_names,
         'agent_setting' => agent_setting
       })
     end
 
     def shutdown
-      @backtest_repository.stop if @backtest_repository
+      @backtest_repository&.stop
     end
 
     def restart

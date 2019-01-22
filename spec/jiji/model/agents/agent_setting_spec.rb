@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 
@@ -16,13 +16,13 @@ describe Jiji::Model::Agents::AgentSetting do
       expect(loaded.agent_class).to eq 'testClass1'
       expect(loaded.icon_id).to eq setting.icon_id
       expect(loaded.state).to eq({
-        'string'  => '文字列',
-        'number'  => 1.0,
+        'string' => '文字列',
+        'number' => 1.0,
         'boolean' => false
       })
       expect(loaded.properties).to eq({
-        'string'  => '文字列',
-        'number'  => 2.0,
+        'string' => '文字列',
+        'number' => 2.0,
         'boolean' => true
       })
       expect(loaded.active).to eq false
@@ -61,8 +61,8 @@ describe Jiji::Model::Agents::AgentSetting do
           agent_name:  'test2',
           icon_id:     icon_id.to_s,
           properties:  {
-            'string'  => '文字列',
-            'number'  => 1.0,
+            'string' => '文字列',
+            'number' => 1.0,
             'boolean' => true
           }
         }, backtests[0].id)
@@ -73,8 +73,8 @@ describe Jiji::Model::Agents::AgentSetting do
       expect(loaded.icon_id).to eq icon_id
       expect(loaded.state).to eq(nil)
       expect(loaded.properties).to eq({
-        'string'  => '文字列',
-        'number'  => 1.0,
+        'string' => '文字列',
+        'number' => 1.0,
         'boolean' => true
       })
       expect(loaded.active).to eq true
@@ -89,8 +89,8 @@ describe Jiji::Model::Agents::AgentSetting do
           agent_name:  'test2',
           icon_id:     icon_id.to_s,
           properties:  {
-            'string'  => '文字列',
-            'number'  => 1.0,
+            'string' => '文字列',
+            'number' => 1.0,
             'boolean' => true
           }
         }, backtests[1].id)
@@ -100,13 +100,13 @@ describe Jiji::Model::Agents::AgentSetting do
       expect(loaded.agent_class).to eq 'testClass2'
       expect(loaded.icon_id).to eq icon_id
       expect(loaded.state).to eq({
-        'string'  => '文字列',
-        'number'  => 1.0,
+        'string' => '文字列',
+        'number' => 1.0,
         'boolean' => false
       })
       expect(loaded.properties).to eq({
-        'string'  => '文字列',
-        'number'  => 1.0,
+        'string' => '文字列',
+        'number' => 1.0,
         'boolean' => true
       })
       expect(loaded.active).to eq false
@@ -160,8 +160,8 @@ describe Jiji::Model::Agents::AgentSetting do
       icon_id:     setting.icon_id,
       agent_class: 'testClass1',
       properties:  {
-        'string'  => '文字列',
-        'number'  => 2.0,
+        'string' => '文字列',
+        'number' => 2.0,
         'boolean' => true
       }
     })
@@ -183,13 +183,13 @@ describe Jiji::Model::Agents::AgentSetting do
     setting.agent_class = 'testClass1'
     setting.icon_id     = BSON::ObjectId.from_time(Time.new)
     setting.state = {
-      'string'  => '文字列',
-      'number'  => 1.0,
+      'string' => '文字列',
+      'number' => 1.0,
       'boolean' => false
     }
     setting.properties = {
-      'string'  => '文字列',
-      'number'  => 2.0,
+      'string' => '文字列',
+      'number' => 2.0,
       'boolean' => true
     }
     setting.active = active

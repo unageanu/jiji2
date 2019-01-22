@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 
@@ -459,7 +459,6 @@ BODY
       'test', :agent, Time.at(100), 'memo', 'class Foo; ')
 
     hash = agent_source.to_h
-    p hash
     expect(hash[:id]).not_to be nil
     expect(hash[:name]).to eq 'test'
     expect(hash[:type]).to eq :agent

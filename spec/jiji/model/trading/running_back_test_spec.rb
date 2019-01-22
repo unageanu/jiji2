@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/utils/requires'
@@ -17,12 +17,12 @@ describe Jiji::Model::Trading::BackTest do
     backtest_repository.load
 
     root = Jiji::Utils::Requires.root
-    %w(signals moving_average_agent cross).each do |file|
+    %w[signals moving_average_agent cross].each do |file|
       source = agent_registory.add_source("#{file}.rb", '', :agent,
         IO.read("#{root}/src/jiji/model/agents/builtin_files/#{file}.rb"))
       raise source.error unless source.error.nil?
     end
-    %w(error_agent).each do |file|
+    %w[error_agent].each do |file|
       f = File.expand_path("../../agents/builtin_files/#{file}.rb", __FILE__)
       source = agent_registory.add_source("#{file}.rb", '', :agent, IO.read(f))
       raise source.error unless source.error.nil?
@@ -36,11 +36,11 @@ describe Jiji::Model::Trading::BackTest do
 
   it 'バックテストを実行できる' do
     test = backtest_repository.register({
-      'name'          => 'テスト',
-      'start_time'    => Time.new(2015, 6, 20, 0,  0, 0),
-      'end_time'      => Time.new(2015, 6, 20, 1,  0, 0),
-      'memo'          => 'メモ',
-      'pair_names'    => [:USDJPY, :EURUSD],
+      'name' => 'テスト',
+      'start_time' => Time.new(2015, 6, 20, 0, 0, 0),
+      'end_time' => Time.new(2015, 6, 20, 1, 0, 0),
+      'memo' => 'メモ',
+      'pair_names' => %i[USDJPY EURUSD],
       'agent_setting' => [
         {
           agent_class: 'MovingAverageAgent@moving_average_agent.rb',
@@ -74,7 +74,7 @@ describe Jiji::Model::Trading::BackTest do
 
     positions = position_repository.retrieve_positions(
       test._id, { entered_at: :asc }, 0, 10)
-      .reject { |p| p.agent.name != 'テスト1' }
+      .select { |p| p.agent.name == 'テスト1' }
     expect(positions.length).to be > 0
     positions.each do |position|
       expect(position.agent.name).to eq 'テスト1'
@@ -83,7 +83,7 @@ describe Jiji::Model::Trading::BackTest do
 
     positions = position_repository.retrieve_positions(
       test._id, { entered_at: :asc }, 0, 10)
-      .reject { |p| p.agent.name != 'テスト2' }
+      .select { |p| p.agent.name == 'テスト2' }
     expect(positions.length).to be > 0
     positions.each do |position|
       expect(position.agent.name).to eq 'テスト2'
@@ -94,11 +94,11 @@ describe Jiji::Model::Trading::BackTest do
   it 'メール、push通知を送信できる' do
     icon_id = BSON::ObjectId.from_time(Time.new)
     test = backtest_repository.register({
-      'name'          => 'テスト',
-      'start_time'    => Time.new(2015, 6, 20, 0, 0, 0),
-      'end_time'      => Time.new(2015, 6, 20, 0, 1, 0),
-      'memo'          => 'メモ',
-      'pair_names'    => [:USDJPY, :EURUSD],
+      'name' => 'テスト',
+      'start_time' => Time.new(2015, 6, 20, 0, 0, 0),
+      'end_time' => Time.new(2015, 6, 20, 0, 1, 0),
+      'memo' => 'メモ',
+      'pair_names' => %i[USDJPY EURUSD],
       'agent_setting' => [
         {
           agent_class: 'SendNotificationAgent@error_agent.rb',
@@ -143,11 +143,11 @@ describe Jiji::Model::Trading::BackTest do
 
   it 'エラーが発生すると実行がキャンセルされる' do
     test = backtest_repository.register({
-      'name'          => 'テスト',
-      'start_time'    => Time.new(2015, 6, 20, 0,  0, 0),
-      'end_time'      => Time.new(2015, 6, 20, 1,  0, 0),
-      'memo'          => 'メモ',
-      'pair_names'    => [:USDJPY, :EURUSD],
+      'name' => 'テスト',
+      'start_time' => Time.new(2015, 6, 20, 0, 0, 0),
+      'end_time' => Time.new(2015, 6, 20, 1, 0, 0),
+      'memo' => 'メモ',
+      'pair_names' => %i[USDJPY EURUSD],
       'agent_setting' => [
         {
           agent_class: 'ErrorAgent@error_agent.rb',
@@ -161,11 +161,11 @@ describe Jiji::Model::Trading::BackTest do
     expect(test.retrieve_process_status).to be :error
 
     backtest_repository.register({
-      'name'          => 'テスト',
-      'start_time'    => Time.new(2015, 6, 20, 0,  0, 0),
-      'end_time'      => Time.new(2015, 6, 20, 1,  0, 0),
-      'memo'          => 'メモ',
-      'pair_names'    => [:USDJPY, :EURUSD],
+      'name' => 'テスト',
+      'start_time' => Time.new(2015, 6, 20, 0, 0, 0),
+      'end_time' => Time.new(2015, 6, 20, 1, 0, 0),
+      'memo' => 'メモ',
+      'pair_names' => %i[USDJPY EURUSD],
       'agent_setting' => [
         {
           agent_class: 'ErrorOnCreateAgent@error_agent.rb'
@@ -178,11 +178,11 @@ describe Jiji::Model::Trading::BackTest do
     expect(test.retrieve_process_status).to be :error
 
     backtest_repository.register({
-      'name'          => 'テスト',
-      'start_time'    => Time.new(2015, 6, 20, 0,  0, 0),
-      'end_time'      => Time.new(2015, 6, 20, 1,  0, 0),
-      'memo'          => 'メモ',
-      'pair_names'    => [:USDJPY, :EURUSD],
+      'name' => 'テスト',
+      'start_time' => Time.new(2015, 6, 20, 0, 0, 0),
+      'end_time' => Time.new(2015, 6, 20, 1, 0, 0),
+      'memo' => 'メモ',
+      'pair_names' => %i[USDJPY EURUSD],
       'agent_setting' => [
         {
           agent_class: 'ErrorOnPostCreateAgent@error_agent.rb'

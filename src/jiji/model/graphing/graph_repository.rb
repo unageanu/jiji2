@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 module Jiji::Model::Graphing
   class GraphRepository
@@ -17,7 +17,7 @@ module Jiji::Model::Graphing
     def delete_rmt_graphs(time)
       Graph.where(backtest_id: nil).each do |g|
         GraphData.where({
-          :graph_id      => g.id,
+          :graph_id => g.id,
           :timestamp.lte => time
         }).destroy
       end

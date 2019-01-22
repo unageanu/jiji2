@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 
@@ -7,8 +7,7 @@ module Jiji::Db
 
     include Encase
 
-    def call(status, logger)
-    end
+    def call(status, logger); end
 
     def create_id(file)
       dir = File.dirname(file)

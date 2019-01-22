@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 
@@ -35,7 +35,7 @@ describe Jiji::Model::Notification::Notification do
     notification = Jiji::Model::Notification::Notification.create(
       agent_setting, Time.at(200), backtests[0], 'message2', actions)
 
-    expect(notification.backtest).to be backtests[0]
+    expect(notification.backtest).to eq backtests[0]
     expect(notification.agent_id).to eq agent_setting.id
     expect(notification.agent.name).to eq 'test1'
     expect(notification.agent.icon_id).to eq agent_setting.icon_id

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
@@ -16,7 +16,8 @@ module Jiji::Model::Logging
 
     store_in collection: 'log_data'
     belongs_to :backtest, {
-      class_name: 'Jiji::Model::Trading::BackTestProperties'
+      class_name: 'Jiji::Model::Trading::BackTestProperties',
+      optional:   true
     }
 
     field :body,          type: Array, default: []

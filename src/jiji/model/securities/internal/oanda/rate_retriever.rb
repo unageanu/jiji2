@@ -1,28 +1,27 @@
-# coding: utf-8
+# frozen_string_literal: true
 
-require 'oanda_api'
-require 'jiji/model/securities/internal/oanda/converter'
+require 'jiji/model/securities/internal/utils/converter'
 
 module Jiji::Model::Securities::Internal::Oanda
   module RateRetriever
     include Jiji::Errors
     include Jiji::Model::Trading
+    include Jiji::Model::Securities::Internal::Utils
 
     def retrieve_pairs
-      @client.instruments({
-        account_id: @account.account_id,
-        fields:     %w(displayName pip maxTradeUnits precision marginRate)
-      }).get.map { |item| convert_response_to_pair(item) }
+      @client.account(@account['id']).instruments
+        .show['instruments'].map { |item| convert_response_to_pair(item) }
     end
 
     def retrieve_current_tick
-      prices = @client.prices(instruments: retrieve_all_pairs).get
-      convert_response_to_ticks(prices)
+      prices = @client.account(@account['id']).pricing(instruments: retrieve_all_pairs.join(',')).show
+      convert_response_to_ticks(prices['prices'])
     end
 
     def retrieve_tick_history(pair_name, start_time,
       end_time, interval_id = :fifteen_seconds)
       interval = Intervals.instance.get(interval_id)
+      end_time = Time.now - [interval.ms / 1000, 60].min if end_time >= Time.now
       converter = TickConverter.new(pair_name)
       RateFetcher.new(@client, converter)
         .fetch_and_fill(start_time, end_time, interval, pair_name)
@@ -30,6 +29,7 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def retrieve_rate_history(pair_name, interval_id, start_time, end_time)
       interval = Intervals.instance.get(interval_id)
+      end_time = Time.now - [interval.ms / 1000, 60].min if end_time >= Time.now
       converter = RateConverter.new(pair_name, interval)
       RateFetcher.new(@client, converter)
         .fetch_and_fill(start_time, end_time, interval, pair_name)
@@ -43,15 +43,17 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def convert_response_to_pair(item)
       Pair.new(
-        Converter.convert_instrument_to_pair_name(item.instrument),
-        item.instrument, item.pip.to_f, item.max_trade_units.to_i,
-        item.precision.to_f, item.margin_rate.to_f)
+        Converter.convert_instrument_to_pair_name(item['name']),
+        item['name'], 10**item['pipLocation'].to_i, item['maximumOrderUnits'].to_i,
+        10**(item['displayPrecision'].to_i * -1), item['marginRate'].to_f)
     end
 
     def convert_response_to_ticks(prices)
       values = prices.each_with_object({}) do |p, r|
-        pair_name = Converter.convert_instrument_to_pair_name(p.instrument)
-        r[pair_name] = Tick::Value.new(p.bid.to_f, p.ask.to_f)
+        pair_name = Converter.convert_instrument_to_pair_name(p['instrument'])
+        r[pair_name] = Tick::Value.new(
+          p['bids'].map { |h| h['price'].to_f }.max,
+          p['asks'].map { |h| h['price'].to_f }.min)
       end
       Tick.new(values, Time.now)
     end
@@ -60,6 +62,7 @@ module Jiji::Model::Securities::Internal::Oanda
   class RateFetcher
 
     include Jiji::Model::Trading
+    include Jiji::Model::Securities::Internal::Utils
 
     def initialize(client, converter)
       @client       = client
@@ -77,16 +80,15 @@ module Jiji::Model::Securities::Internal::Oanda
 
     private
 
-    def fetch(interval, start_time, end_time, candle_format = 'bidask')
-      @client.candles({
-        granularity:        to_granularity(interval),
-        candle_format:      candle_format,
-        start:              start_time.getutc.to_datetime.rfc3339,
-        end:                end_time.getutc.to_datetime.rfc3339,
-        alignment_timezone: Jiji::Utils::Times.iana_name(start_time),
-        dailyAlignment:     0,
-        instrument:         to_instrument
-      }).get
+    def fetch(interval, start_time, end_time, candle_format = 'BA')
+      @client.instrument(to_instrument).candles({
+        granularity:       to_granularity(interval),
+        price:             candle_format,
+        from:              start_time.getutc.to_datetime.rfc3339,
+        to:                end_time.getutc.to_datetime.rfc3339,
+        alignmentTimezone: Jiji::Utils::Times.iana_name(start_time),
+        dailyAlignment:    0
+      }).show
     end
 
     def to_granularity(interval)
@@ -101,14 +103,14 @@ module Jiji::Model::Securities::Internal::Oanda
       array = []
       current_time = @start_time
       while current_time < @end_time
-        array << retrieve_rate_at(rates, current_time, array)
+        array << retrieve_rate_at(rates['candles'], current_time, array)
         current_time += @interval.ms / 1000
       end
       array
     end
 
     def retrieve_rate_at(rates, current_time, array)
-      if !rates.empty? && rates.first.time == current_time
+      if !rates.empty? && Time.parse(rates.first['time']) == current_time
         @converter.convert_value(rates.shift, current_time)
       else
         resolve_latest_rate(array, current_time)
@@ -125,13 +127,13 @@ module Jiji::Model::Securities::Internal::Oanda
     end
 
     def retrieve_latest_rate(start_time)
-      try_to_retrieve_latest_rate_with_some_interval(start_time) \
+      try_to_retrieve_latest_rate_with_same_interval(start_time) \
       || retrieve_latest_rate_with_long_interval(start_time)
     end
 
-    def try_to_retrieve_latest_rate_with_some_interval(time)
+    def try_to_retrieve_latest_rate_with_same_interval(time)
       rates = fetch(@interval, time - @interval.ms / 1000 * 20, time)
-      rates.empty? ? nil : rates.last
+      rates['candles'].empty? ? nil : rates['candles'].last
     end
 
     def retrieve_latest_rate_with_long_interval(time)
@@ -139,7 +141,8 @@ module Jiji::Model::Securities::Internal::Oanda
       interval = Intervals.instance.get(:six_hours)
       4.times do
         rates = fetch(interval, time - step, time)
-        return rates.last unless rates.empty?
+        return rates['candles'].last unless rates['candles'].empty?
+
         time -= step
       end
       illegal_argument('failed to load rate.')
@@ -161,7 +164,7 @@ module Jiji::Model::Securities::Internal::Oanda
         value.close, value.close, value.close, 0, time + @interval.ms / 1000)
     end
 
-    def convert_value(value, time = value.time, using_close_value = false)
+    def convert_value(value, time = Time.parse(value.time), using_close_value = false)
       if using_close_value
         create_rate_using_close_value(value, time)
       else
@@ -171,22 +174,22 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def create_rate(value, time)
       Rate.new(@pair_name, time,
-        convert_response_to_tick_value('open',  value),
-        convert_response_to_tick_value('close', value),
-        convert_response_to_tick_value('high',  value),
-        convert_response_to_tick_value('low',   value),
-        value.volume)
+        convert_response_to_tick_value('o', value),
+        convert_response_to_tick_value('c', value),
+        convert_response_to_tick_value('h', value),
+        convert_response_to_tick_value('l', value),
+        value['volume'])
     end
 
     def create_rate_using_close_value(value, time)
-      close = convert_response_to_tick_value('close', value)
-      Rate.new(@pair_name, time, close, close, close, close, value.volume)
+      close = convert_response_to_tick_value('c', value)
+      Rate.new(@pair_name, time, close, close, close, close, value['volume'])
     end
 
     def convert_response_to_tick_value(id, item)
       Tick::Value.new(
-        item.method("#{id}_bid").call.to_f,
-        item.method("#{id}_ask").call.to_f)
+        item['bid'][id].to_f,
+        item['ask'][id].to_f)
     end
 
   end
@@ -211,9 +214,9 @@ module Jiji::Model::Securities::Internal::Oanda
 
     def create_tick_value(value, using_close_value)
       if using_close_value
-        Tick::Value.new(value.close_bid.to_f, value.close_ask.to_f)
+        Tick::Value.new(value['bid']['c'].to_f, value['ask']['c'].to_f)
       else
-        Tick::Value.new(value.open_bid.to_f, value.open_ask.to_f)
+        Tick::Value.new(value['bid']['o'].to_f, value['ask']['o'].to_f)
       end
     end
 

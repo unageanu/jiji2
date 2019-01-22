@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
@@ -11,14 +11,14 @@ describe Jiji::Web::Helpers::RequestParameterReader do
   let(:object_id) { BSON::ObjectId.from_string('56dd6836e138234d25f0c318') }
   let(:source) do
     {
-      'number'       => '10',
-      'id'           => object_id.to_s,
+      'number' => '10',
+      'id' => object_id.to_s,
       'backtest_id1' => object_id.to_s,
       'backtest_id2' => 'rmt',
-      'time'         => '2016-02-07T02:28:50.225Z',
-      'order'        => 'order',
-      'asc'          => 'asc',
-      'desc'         => 'desc'
+      'time' => '2016-02-07T02:28:50.225Z',
+      'order' => 'order',
+      'asc' => 'asc',
+      'desc' => 'desc'
     }
   end
 

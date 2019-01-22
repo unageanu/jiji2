@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
@@ -13,7 +13,8 @@ module Jiji::Model::Agents
     store_in collection: 'agent_settings'
 
     belongs_to :backtest, {
-      class_name: 'Jiji::Model::Trading::BackTestProperties'
+      class_name: 'Jiji::Model::Trading::BackTestProperties',
+      optional:   true
     }
     has_many :positions, {
       class_name: 'Jiji::Model::Trading::Position',
@@ -59,6 +60,7 @@ module Jiji::Model::Agents
 
     def state_with_indifferent_access
       return nil if state.nil?
+
       state.with_indifferent_access
     end
 

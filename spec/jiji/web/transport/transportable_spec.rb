@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
@@ -27,7 +27,7 @@ describe Jiji::Web::Transport::Transportable do
 
   describe 'json' do
     before(:example) do
-      @converter = proc { |v| JSON.load(JSON.generate([v]))[0] }
+      @converter = proc { |v| JSON.parse(JSON.generate([v]))[0] }
     end
 
     it_behaves_like '各種オブジェクトをシリアライズ/デシリアライズできる'

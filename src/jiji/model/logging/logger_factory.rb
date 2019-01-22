@@ -1,8 +1,7 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'encase'
-require 'thread'
 require 'jiji/utils/composite_logger'
 
 module Jiji::Model::Logging
@@ -47,12 +46,13 @@ module Jiji::Model::Logging
       @loggers = {}
       @logs.values.each { |log| log.close }
       @logs = {}
-      @system_logger.close if @system_logger
+      @system_logger&.close
       @mutex.unlock if locked
     end
 
     def self.composite_file_logger_if_logdir_setted(logger)
       return logger unless ENV['LOG_DIR']
+
       Jiji::Utils::CompositeLogger.new(logger, file_logger)
     end
     @@mutext = Mutex.new
@@ -60,6 +60,7 @@ module Jiji::Model::Logging
     def self.file_logger
       @@mutext.synchronize do
         return @@file_logger unless @@file_logger.nil?
+
         @@file_logger =
           Logger.new(ENV['LOG_DIR'] + '/jiji.log', 10, ENV['LOG_SIZE'].to_i)
         @@file_logger

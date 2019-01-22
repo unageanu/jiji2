@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
@@ -44,7 +44,7 @@ describe Jiji::Web::Helpers::BatchDownloadSupport do
       string2:     'a,b"c"d',
       string3:     'a"b"c',
       number:      '10',
-      big_decimal: BigDecimal.new(10.234, 10) - BigDecimal.new(8.133, 10),
+      big_decimal: BigDecimal(10.234, 10) - BigDecimal(8.133, 10),
       date:        Time.utc(2016, 0o3, 14, 16, 45, 23),
       nil:         nil,
       object:      {
@@ -57,8 +57,8 @@ describe Jiji::Web::Helpers::BatchDownloadSupport do
   let(:keys) do
     [
       :string1, :string2, :string3, :number, :big_decimal, :date, :nil,
-      [:object, :name], [:object, :object], [:object, :nil],
-      :unknown, [:unknown, :unknown]
+      %i[object name], %i[object object], %i[object nil],
+      :unknown, %i[unknown unknown]
     ]
   end
 

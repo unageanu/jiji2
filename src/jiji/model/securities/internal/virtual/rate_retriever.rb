@@ -1,6 +1,4 @@
-# coding: utf-8
-
-require 'oanda_api'
+# frozen_string_literal: true
 
 module Jiji::Model::Securities::Internal::Virtual
   module RateRetriever
@@ -53,7 +51,7 @@ module Jiji::Model::Securities::Internal::Virtual
     def load_next_ticks
       interval = Intervals.instance.get(@interval_id)
       start_time  = @current_time
-      next_period = @current_time + (interval.ms / 1000) * 1000
+      next_period = @current_time + (interval.ms / 1000) * 500
       end_time    = @end_time > next_period ? next_period : @end_time
       pair_names  = @pairs.map { |p| p.name }
       @buffer += @tick_repository.fetch(pair_names,

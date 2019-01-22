@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
@@ -53,10 +53,12 @@ module Jiji::Model::Trading
 
     store_in collection: 'positions'
     belongs_to :agent, {
-      class_name: 'Jiji::Model::Agents::AgentSetting'
+      class_name: 'Jiji::Model::Agents::AgentSetting',
+      optional:   true
     }
     belongs_to :backtest, {
-      class_name: 'Jiji::Model::Trading::BackTestProperties'
+      class_name: 'Jiji::Model::Trading::BackTestProperties',
+      optional:   true
     }
 
     field :internal_id,           type: String
@@ -111,7 +113,7 @@ module Jiji::Model::Trading
 
     # 建玉の変更を反映します。
     def modify
-      @broker.modify_position(self) if @broker
+      @broker&.modify_position(self)
     end
 
     # 建玉を決済します。

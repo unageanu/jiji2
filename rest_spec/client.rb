@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'httpclient'
 require 'singleton'
@@ -13,7 +13,7 @@ module Jiji
     attr_accessor :transport
 
     def initialize(transport = MessagePackTransport.new)
-      @api_url          = 'http://localhost:3000/api'
+      @api_url          = 'http://127.0.0.1:3000/api'
       @client           = HTTPClient.new
       @transport        = transport
       @client.debug_dev = debug_device
@@ -23,7 +23,7 @@ module Jiji
     def transport=(transport)
       @transport        = transport
 
-      @client.debug_dev.close if @client.debug_dev
+      @client.debug_dev&.close
       @client.debug_dev = debug_device
     end
 
@@ -40,13 +40,13 @@ module Jiji
       end
     end
 
-    [:get, :delete, :options].each do |m|
+    %i[get delete options].each do |m|
       define_method(m) do |path, query = nil, header = {}|
         do_request(m, path, nil, query,  header)
       end
     end
 
-    [:post, :put].each do |m|
+    %i[post put].each do |m|
       define_method(m) do |path, body, header = {}|
         do_request(m, path, body, nil, header)
       end

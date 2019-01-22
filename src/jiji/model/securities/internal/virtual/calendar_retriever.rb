@@ -1,7 +1,4 @@
-# coding: utf-8
-
-require 'oanda_api'
-require 'jiji/model/securities/internal/oanda/converter'
+# frozen_string_literal: true
 
 module Jiji::Model::Securities::Internal::Virtual
   module CalendarRetriever

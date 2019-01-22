@@ -1,6 +1,5 @@
-# coding: utf-8
+# frozen_string_literal: true
 
-require 'thread'
 require 'jiji/test/test_configuration'
 
 describe Jiji::Model::Trading::Jobs::NotifyNextTickJob do

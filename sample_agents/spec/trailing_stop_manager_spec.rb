@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sample_agent_test_configuration'
 
@@ -322,7 +322,7 @@ describe TrailingStopManager do
     args.each do |arg|
       expect(notificator).to receive(:push_notification)
         .with(arg[:message], [{
-            'label'  => '決済する',
+            'label' => '決済する',
             'action' => 'trailing_stop__close_' + arg[:position].id.to_s
         }])
     end
@@ -337,7 +337,7 @@ describe TrailingStopManager do
 
   def new_tick_value(bid, spread)
     Jiji::Model::Trading::Tick::Value.new(
-      bid, BigDecimal.new(bid, 10) + spread)
+      bid, BigDecimal(bid, 10) + spread)
   end
 
   def restart(manager, notificator)

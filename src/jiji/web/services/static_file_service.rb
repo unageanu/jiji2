@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sinatra/base'
 require 'jiji/web/services/abstract_service'
@@ -8,7 +8,7 @@ module Jiji::Web
   class StaticFileService < Jiji::Web::AbstractService
 
     def self.static_file_dir
-      dir = (ENV['RACK_ENV'] == 'production') ? '/minified' : '/apps'
+      dir = ENV['RACK_ENV'] == 'production' ? '/minified' : '/apps'
       Jiji::Utils::Requires.root + '/sites/build' + dir
     end
 

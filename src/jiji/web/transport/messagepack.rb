@@ -1,4 +1,5 @@
-# coding: utf-8
+# frozen_string_literal: true
+
 require 'time'
 require 'mongoid'
 
@@ -19,6 +20,14 @@ class Struct
 end
 
 class BigDecimal
+
+  def to_msgpack(*a)
+    to_f.to_msgpack(*a)
+  end
+
+end
+
+class Rational
 
   def to_msgpack(*a)
     to_f.to_msgpack(*a)

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 module Jiji::Model::Graphing::Internal
   module AggregationStrategies
@@ -36,7 +36,7 @@ module Jiji::Model::Graphing::Internal
     class Average < AbstractStrategy
 
       def initial_context
-        { count: 0, sum: BigDecimal.new(0, 10) }
+        { count: 0, sum: BigDecimal(0, 10) }
       end
 
       def update_context(value, context)
@@ -46,6 +46,7 @@ module Jiji::Model::Graphing::Internal
 
       def calculate_value(context)
         return 0 unless context && context[:count] > 0
+
         (context[:sum] / context[:count]).to_f
       end
 

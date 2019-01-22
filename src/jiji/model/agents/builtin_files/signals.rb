@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Signals
   # 一定期間のレートデータを元に値を算出するシグナルの基底クラス
   class RangeSignal
@@ -126,6 +128,7 @@ module Signals
     def initialize(short_range = 12, long_range = 26,
       signal_range = 9, smoothing_coefficient = 0.1)
       raise 'illegal arguments.' if short_range > long_range
+
       super(long_range)
       @short_range = short_range
       @smoothing_coefficient = smoothing_coefficient
@@ -136,8 +139,10 @@ module Signals
     def next_data(data) #:nodoc:
       macd = super
       return nil unless macd
+
       signal = @signal.next_data(macd)
       return nil unless signal
+
       { macd: macd, signal: signal }
     end
 
@@ -186,9 +191,11 @@ module Signals
     def calculate(data) #:nodoc:
       dmi = dmi(data)
       return nil unless dmi
+
       @dxs.push dmi[:dx]
       @dxs.shift if @dxs.length > range
       return nil if @dxs.length != range
+
       dmi[:adx] = ma(@dxs)
       dmi
     end
@@ -272,7 +279,7 @@ module Signals
     sd = standard_division(data) { |s| s - ma }
     pivot.each_with_object([]) do |r, res|
       res.unshift(ma + sd * r)
-      res.push(ma + sd * r * -1) if r != 0
+      res.push(ma + sd * r * -1) if r.nonzero?
     end
   end
 
@@ -389,7 +396,7 @@ module Signals
   end
 
   def calculate_rsi(data)
-    (data[0] + data[1]) == 0 ? 0.0 : data[0] / (data[0] + data[1]) * 100
+    (data[0] + data[1]).zero? ? 0.0 : data[0] / (data[0] + data[1]) * 100
   end
 
   def calculate_dmi_from_data(data)

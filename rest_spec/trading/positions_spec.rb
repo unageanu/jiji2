@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'client'
 
@@ -19,7 +19,7 @@ describe '建玉取得' do
   it 'GET /positions?backtest_id=rmt でリアルトレードの建玉を取得できる' do
     r = @client.get('positions', {
       'start' => Time.new(2015, 5, 1).iso8601,
-      'end'   => Time.new(2015, 5, 9).iso8601
+      'end' => Time.new(2015, 5, 9).iso8601
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 2
@@ -32,8 +32,8 @@ describe '建玉取得' do
 
     r = @client.get('positions', {
       'backtest_id' => nil,
-      'start'       => Time.new(2015, 4, 1).iso8601,
-      'end'         => Time.new(2015, 4, 3).iso8601
+      'start' => Time.new(2015, 4, 1).iso8601,
+      'end' => Time.new(2015, 4, 3).iso8601
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 0
@@ -41,10 +41,10 @@ describe '建玉取得' do
 
   it 'GET /positions/rmt で取得数を指定してリアルトレードの建玉を取得できる' do
     r = @client.get('positions', {
-      'order'     => 'entered_at',
+      'order' => 'entered_at',
       'direction' => 'desc',
-      'offset'    => 1,
-      'limit'     => 10
+      'offset' => 1,
+      'limit' => 10
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
@@ -57,10 +57,10 @@ describe '建玉取得' do
 
     r = @client.get('positions', {
       'backtest_id' => nil,
-      'order'       => 'entered_at',
-      'direction'   => 'asc',
-      'offset'      => 1,
-      'limit'       => 10
+      'order' => 'entered_at',
+      'direction' => 'asc',
+      'offset' => 1,
+      'limit' => 10
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
@@ -73,10 +73,10 @@ describe '建玉取得' do
 
     r = @client.get('positions', {
       'backtest_id' => nil,
-      'order'       => 'entered_at',
-      'direction'   => 'desc',
-      'offset'      => 0,
-      'limit'       => 1
+      'order' => 'entered_at',
+      'direction' => 'desc',
+      'offset' => 0,
+      'limit' => 1
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
@@ -88,11 +88,11 @@ describe '建玉取得' do
     expect(entered_at).to eq Time.new(2015, 5, 3).to_i
 
     r = @client.get('positions', {
-      'order'     => 'entered_at',
+      'order' => 'entered_at',
       'direction' => 'desc',
-      'status'    => 'live',
-      'offset'    => 0,
-      'limit'     => 2
+      'status' => 'live',
+      'offset' => 0,
+      'limit' => 2
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
@@ -111,7 +111,7 @@ describe '建玉取得' do
     expect(r.body['not_exited']).to be 1
 
     r = @client.get('positions/count', {
-      'status'      => 'live',
+      'status' => 'live',
       'backtest_id' => nil
     })
     expect(r.status).to eq 200
@@ -122,8 +122,8 @@ describe '建玉取得' do
   it 'GET /positions?backtest_id=:backtest_id でバックテストの建玉を取得できる' do
     r = @client.get('positions', {
       'backtest_id' => @test.id,
-      'start'       => Time.new(2015, 5, 1).iso8601,
-      'end'         => Time.new(2015, 5, 9).iso8601
+      'start' => Time.new(2015, 5, 1).iso8601,
+      'end' => Time.new(2015, 5, 9).iso8601
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 2
@@ -136,8 +136,8 @@ describe '建玉取得' do
 
     r = @client.get('positions', {
       'backtest_id' => @test.id,
-      'start'       => Time.new(2015, 4, 1).iso8601,
-      'end'         => Time.new(2015, 4, 3).iso8601
+      'start' => Time.new(2015, 4, 1).iso8601,
+      'end' => Time.new(2015, 4, 3).iso8601
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 0
@@ -146,10 +146,10 @@ describe '建玉取得' do
   it 'GET /positions/?backtest_id=:backtest_id で取得数を指定してバックテストの建玉を取得できる' do
     r = @client.get('positions', {
       'backtest_id' => @test.id,
-      'order'       => 'entered_at',
-      'direction'   => 'desc',
-      'offset'      => 1,
-      'limit'       => 10
+      'order' => 'entered_at',
+      'direction' => 'desc',
+      'offset' => 1,
+      'limit' => 10
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
@@ -162,10 +162,10 @@ describe '建玉取得' do
 
     r = @client.get('positions', {
       'backtest_id' => @test.id,
-      'order'       => 'entered_at',
-      'direction'   => 'asc',
-      'offset'      => 1,
-      'limit'       => 10
+      'order' => 'entered_at',
+      'direction' => 'asc',
+      'offset' => 1,
+      'limit' => 10
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
@@ -178,10 +178,10 @@ describe '建玉取得' do
 
     r = @client.get('positions', {
       'backtest_id' => @test.id,
-      'order'       => 'entered_at',
-      'direction'   => 'desc',
-      'offset'      => 0,
-      'limit'       => 1
+      'order' => 'entered_at',
+      'direction' => 'desc',
+      'offset' => 0,
+      'limit' => 1
     })
     expect(r.status).to eq 200
     expect(r.body.length).to be 1
@@ -232,10 +232,10 @@ describe '建玉取得' do
 
     r = @client.download_csv("positions/download/#{token}", {
       'backtest_id' => @test.id,
-      'order'       => 'entered_at',
-      'direction'   => 'asc',
-      'start'       => Time.new(2015, 4, 1).iso8601,
-      'end'         => Time.new(2015, 5, 3).iso8601
+      'order' => 'entered_at',
+      'direction' => 'asc',
+      'start' => Time.new(2015, 4, 1).iso8601,
+      'end' => Time.new(2015, 5, 3).iso8601
     })
     expect(r.status).to eq 200
     expect(r.body.lines.size).to eq 2

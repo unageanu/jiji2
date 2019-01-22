@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sinatra/base'
 require 'jiji/web/middlewares/base'
@@ -10,6 +10,7 @@ module Jiji::Web
 
     before do
       return if request.request_method == 'OPTIONS'
+
       unauthorized unless auth_success?
     end
 

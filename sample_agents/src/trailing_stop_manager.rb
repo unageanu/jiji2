@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 # === トレーリングストップで建玉を決済するエージェント
 class TrailingStopAgent
@@ -5,11 +6,11 @@ class TrailingStopAgent
   include Jiji::Model::Agents::Agent
 
   def self.description
-    <<-STR
-トレーリングストップで建玉を決済するエージェント。
- - 損益が警告を送る閾値を下回ったら、1度だけ警告をPush通知で送信。
- - さらに決済する閾値も下回ったら、建玉を決済します。
-      STR
+    <<~STR
+      トレーリングストップで建玉を決済するエージェント。
+       - 損益が警告を送る閾値を下回ったら、1度だけ警告をPush通知で送信。
+       - さらに決済する閾値も下回ったら、建玉を決済します。
+    STR
   end
 
   # UIから設定可能なプロパティの一覧
@@ -83,10 +84,12 @@ class TrailingStopManager
   #         TrailingStopManagerが管轄するアクションでない場合、nil
   def process_action(action, positions)
     return nil unless action =~ /trailing\_stop\_\_([a-z]+)_(.*)$/
+
     case Regexp.last_match(1)
     when 'close' then
       position = positions.find { |p| p.id.to_s == Regexp.last_match(2) }
       return nil unless position
+
       position.close
       return '建玉を決済しました。'
     end
@@ -132,6 +135,7 @@ class TrailingStopManager
   def create_or_get_state(position, pairs)
     key = position.id.to_s
     return @states[key] if @states.include? key
+
     PositionState.new(
       retrieve_pip_for(position.pair_name, pairs),
       @warning_limit, @closing_limit)
@@ -145,7 +149,7 @@ class TrailingStopManager
     message = create_position_description(position).to_s \
       + ' がトレールストップの閾値を下回りました。決済しますか?'
     @notifier.push_notification(message, [{
-        'label'  => '決済する',
+        'label' => '決済する',
         'action' => 'trailing_stop__close_' + position.id.to_s
     }])
   end
@@ -184,20 +188,22 @@ class PositionState
 
   def under_warning_limit?
     return false if @max_profit.nil?
+
     difference >= @warning_limit * @units * @pip
   end
 
   def under_closing_limit?
     return false if @max_profit.nil?
+
     difference >= @closing_limit * @units * @pip
   end
 
   def state
     {
-      'max_profit'      => @max_profit,
+      'max_profit' => @max_profit,
       'max_profit_time' => @max_profit_time,
-      'pip'             => @pip,
-      'sent_warning'    => @sent_warning
+      'pip' => @pip,
+      'sent_warning' => @sent_warning
     }
   end
 

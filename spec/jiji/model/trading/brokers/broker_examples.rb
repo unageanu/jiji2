@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 shared_examples 'brokerの基本操作ができる' do
   it 'rate,pairが取得できる' do
@@ -58,11 +59,11 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.positions.length).to be 1
     expect(broker.positions[result.trade_opened.internal_id]) \
-      .to some_position(expected_position1)
+      .to same_position(expected_position1)
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be 1
     expect(find_by_internal_id(positions, expected_position1.internal_id)) \
-      .to some_position(expected_position1)
+      .to same_position(expected_position1)
 
     broker.refresh
     expect(broker.next?).to eq true
@@ -77,7 +78,7 @@ shared_examples 'brokerの基本操作ができる' do
     expected_position1.update_profit_or_loss
     expect(broker.positions.length).to be 1
     expect(broker.positions[result.trade_opened.internal_id]) \
-      .to some_position(expected_position1)
+      .to same_position(expected_position1)
 
     result = broker.sell(:EURUSD, 10_000, :market, {}, agent_setting.id)
     expected_position2 = Jiji::Model::Trading::Position.new do |p|
@@ -105,16 +106,16 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.positions.length).to be 2
     expect(broker.positions[expected_position1.internal_id]) \
-      .to some_position(expected_position1)
+      .to same_position(expected_position1)
     expect(broker.positions[expected_position2.internal_id]) \
-      .to some_position(expected_position2)
+      .to same_position(expected_position2)
 
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be 2
     expect(find_by_internal_id(positions, expected_position1.internal_id)) \
-      .to some_position(expected_position1)
+      .to same_position(expected_position1)
     expect(find_by_internal_id(positions, expected_position2.internal_id)) \
-      .to some_position(expected_position2)
+      .to same_position(expected_position2)
 
     buy_position = broker.positions[expected_position1.internal_id]
     broker.close_position(buy_position)
@@ -128,16 +129,16 @@ shared_examples 'brokerの基本操作ができる' do
     expected_position1.exited_at  = Time.utc(2015, 5, 1, 0, 0, 15)
     expected_position1.update_profit_or_loss
 
-    expect(buy_position).to some_position(expected_position1)
+    expect(buy_position).to same_position(expected_position1)
     expect(broker.positions.length).to be 1
     expect(broker.positions[expected_position2.internal_id]) \
-      .to some_position(expected_position2)
+      .to same_position(expected_position2)
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be 2
     expect(find_by_internal_id(positions, expected_position1.internal_id)) \
-      .to some_position(expected_position1)
+      .to same_position(expected_position1)
     expect(find_by_internal_id(positions, expected_position2.internal_id)) \
-      .to some_position(expected_position2)
+      .to same_position(expected_position2)
 
     broker.refresh
     expect(broker.next?).to eq true
@@ -153,13 +154,13 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.positions.length).to be 1
     expect(broker.positions[expected_position2.internal_id]) \
-      .to some_position(expected_position2)
+      .to same_position(expected_position2)
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be 2
     expect(find_by_internal_id(positions, expected_position1.internal_id)) \
-      .to some_position(expected_position1)
+      .to same_position(expected_position1)
     expect(find_by_internal_id(positions, expected_position2.internal_id)) \
-      .to some_position(expected_position2)
+      .to same_position(expected_position2)
 
     broker.refresh
 
@@ -174,13 +175,13 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.positions.length).to be 1
     expect(broker.positions[expected_position2.internal_id]) \
-      .to some_position(expected_position2)
+      .to same_position(expected_position2)
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be 2
     expect(find_by_internal_id(positions, expected_position1.internal_id)) \
-      .to some_position(expected_position1)
+      .to same_position(expected_position1)
     expect(find_by_internal_id(positions, expected_position2.internal_id)) \
-      .to some_position(expected_position2)
+      .to same_position(expected_position2)
 
     broker.refresh
 
@@ -195,13 +196,13 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.positions.length).to be 1
     expect(broker.positions[expected_position2.internal_id]) \
-      .to some_position(expected_position2)
+      .to same_position(expected_position2)
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be 2
     expect(find_by_internal_id(positions, expected_position1.internal_id)) \
-      .to some_position(expected_position1)
+      .to same_position(expected_position1)
     expect(find_by_internal_id(positions, expected_position2.internal_id)) \
-      .to some_position(expected_position2)
+      .to same_position(expected_position2)
 
     broker.positions[expected_position2.internal_id].close
 
@@ -224,9 +225,9 @@ shared_examples 'brokerの基本操作ができる' do
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be 2
     expect(find_by_internal_id(positions, expected_position1.internal_id)) \
-      .to some_position(expected_position1)
+      .to same_position(expected_position1)
     expect(find_by_internal_id(positions, expected_position2.internal_id)) \
-      .to some_position(expected_position2)
+      .to same_position(expected_position2)
 
     broker.refresh
 
@@ -238,9 +239,9 @@ shared_examples 'brokerの基本操作ができる' do
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be 2
     expect(find_by_internal_id(positions, expected_position1.internal_id)) \
-      .to some_position(expected_position1)
+      .to same_position(expected_position1)
     expect(find_by_internal_id(positions, expected_position2.internal_id)) \
-      .to some_position(expected_position2)
+      .to same_position(expected_position2)
   end
 
   it '指値、逆指値、marketIfTouchedで売り買いができる' do
@@ -254,77 +255,105 @@ shared_examples 'brokerの基本操作ができる' do
     broker.tick
 
     r1 = broker.sell(:EURJPY, 10_000, :limit, {
-      price:       135.6,
-      expiry:      Time.utc(2015, 5, 2),
-      lower_bound: 135.59,
-      upper_bound: 135.61,
-      stop_loss:   135.73
+      price:             135.6,
+      price_bound:       135.59,
+      time_in_force:     'GTD',
+      gtd_time:          Time.utc(2015, 5, 2),
+      stop_loss_on_fill: {
+        price: 135.73
+      }
     }, agent_setting.id).order_opened
     r2 = broker.buy(:USDJPY, 10_000, :stop, {
-      price:       112.404,
-      expiry:      Time.utc(2015, 5, 2),
-      take_profit: 112.6
+      price:               112.404,
+      time_in_force:       'GTD',
+      gtd_time:            Time.utc(2015, 5, 2),
+      take_profit_on_fill: {
+         price: 112.6
+      }
     }, agent_setting.id).order_opened
     r3 = broker.buy(:EURUSD, 10_000, :marketIfTouched, {
-      price:         1.4325,
-      expiry:        Time.utc(2015, 5, 2),
-      trailing_stop: 5
+      price:                      1.4325,
+      time_in_force:              'GTD',
+      gtd_time:                   Time.utc(2015, 5, 2),
+      trailing_stop_loss_on_fill: {
+         distance: 5
+      }
     }, agent_setting.id).order_opened
     r4 = broker.sell(:EURJPY, 1000, :limit, {
-      price:         136.6,
-      expiry:        Time.utc(2015, 5, 1, 0, 0, 45),
-      take_profit:   134,
-      stop_loss:     140,
-      trailing_stop: 10
+      price:                      136.6,
+      time_in_force:              'GTD',
+      gtd_time:                   Time.utc(2015, 5, 1, 0, 0, 45),
+      take_profit_on_fill:        {
+         price: 134
+      },
+      stop_loss_on_fill:          {
+        price: 140
+      },
+      trailing_stop_loss_on_fill: {
+         distance: 10
+      }
     }, agent_setting.id).order_opened
 
     expected_order1 = Jiji::Model::Trading::Order.new(
       :EURJPY, r1.internal_id, :sell, :limit, Time.utc(2015, 5, 1))
     expected_order1.units = 10_000
     expected_order1.price = 135.6
-    expected_order1.expiry = Time.utc(2015, 5, 2)
-    expected_order1.lower_bound = 135.59
-    expected_order1.upper_bound = 135.61
-    expected_order1.stop_loss = 135.73
-    expected_order1.take_profit = 0
-    expected_order1.trailing_stop = 0
+    expected_order1.time_in_force = 'GTD'
+    expected_order1.gtd_time = Time.utc(2015, 5, 2)
+    expected_order1.price_bound = 135.59
+    expected_order1.stop_loss_on_fill = {
+      price: 135.73
+    }
+    expected_order1.position_fill = 'DEFAULT'
+    expected_order1.trigger_condition = 'DEFAULT'
 
     expected_order2 = Jiji::Model::Trading::Order.new(
       :USDJPY, r2.internal_id, :buy, :stop, Time.utc(2015, 5, 1))
     expected_order2.units = 10_000
     expected_order2.price = 112.404
-    expected_order2.expiry = Time.utc(2015, 5, 2)
-    expected_order2.lower_bound = 0
-    expected_order2.upper_bound = 0
-    expected_order2.stop_loss = 0
-    expected_order2.take_profit = 112.6
-    expected_order2.trailing_stop = 0
+    expected_order2.time_in_force = 'GTD'
+    expected_order2.gtd_time = Time.utc(2015, 5, 2)
+    expected_order2.take_profit_on_fill = {
+      price: 112.6
+    }
+    expected_order2.position_fill = 'DEFAULT'
+    expected_order2.trigger_condition = 'DEFAULT'
 
     expected_order3 = Jiji::Model::Trading::Order.new(
       :EURUSD, r3.internal_id, :buy, :marketIfTouched, Time.utc(2015, 5, 1))
     expected_order3.units = 10_000
     expected_order3.price = 1.4325
-    expected_order3.expiry = Time.utc(2015, 5, 2)
-    expected_order3.lower_bound = 0
-    expected_order3.upper_bound = 0
-    expected_order3.stop_loss = 0
-    expected_order3.take_profit = 0
-    expected_order3.trailing_stop = 5
+    expected_order3.time_in_force = 'GTD'
+    expected_order3.gtd_time = Time.utc(2015, 5, 2)
+    expected_order3.trailing_stop_loss_on_fill = {
+      distance: 5
+   }
+    expected_order3.position_fill = 'DEFAULT'
+    expected_order3.trigger_condition = 'DEFAULT'
 
     expected_order4 = Jiji::Model::Trading::Order.new(
       :EURJPY, r4.internal_id, :sell, :limit, Time.utc(2015, 5, 1))
     expected_order4.units = 1000
     expected_order4.price = 136.6
-    expected_order4.expiry = Time.utc(2015, 5, 1, 0, 0, 45)
-    expected_order4.lower_bound = 0
-    expected_order4.upper_bound = 0
-    expected_order4.stop_loss = 140
-    expected_order4.take_profit = 134
-    expected_order4.trailing_stop = 10
+    expected_order4.time_in_force = 'GTD'
+    expected_order4.gtd_time = Time.utc(2015, 5, 1, 0, 0, 45)
+    expected_order4.take_profit_on_fill = {
+      price: 134
+    }
+    expected_order4.stop_loss_on_fill = {
+     price: 140
+    }
+    expected_order4.trailing_stop_loss_on_fill = {
+      distance: 10
+    }
+    expected_order4.position_fill = 'DEFAULT'
+    expected_order4.trigger_condition = 'DEFAULT'
 
     expect(broker.account.balance).to eq 100_000
     expect(broker.account.profit_or_loss).to eq 0
     expect(broker.account.margin_used).to eq 0
+
+    expect(sort_by_internal_id(broker.orders)[0]).to eq(expected_order1)
 
     expect(sort_by_internal_id(broker.orders)).to eq([
       expected_order1, expected_order2, expected_order3, expected_order4
@@ -408,16 +437,16 @@ shared_examples 'brokerの基本操作ができる' do
     positions = broker.positions
     expect(positions.length).to be 2
     position = find_by_internal_id(positions, r1.internal_id)
-    expect(position).to some_position(expected_position1)
+    expect(position).to same_position(expected_position1)
     position = find_by_internal_id(positions, r2.internal_id)
-    expect(position).to some_position(expected_position2)
+    expect(position).to same_position(expected_position2)
 
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be 2
     position = find_by_internal_id(positions, r1.internal_id)
-    expect(position).to some_position(expected_position1)
+    expect(position).to same_position(expected_position1)
     position = find_by_internal_id(positions, r2.internal_id)
-    expect(position).to some_position(expected_position2)
+    expect(position).to same_position(expected_position2)
 
     expect(broker.account.balance).to eq 100_000
     expect(broker.account.profit_or_loss).to eq(-340)
@@ -446,16 +475,16 @@ shared_examples 'brokerの基本操作ができる' do
       positions = broker.positions
       expect(positions.length).to be 2
       position = find_by_internal_id(positions, r1.internal_id)
-      expect(position).to some_position(expected_position1)
+      expect(position).to same_position(expected_position1)
       position = find_by_internal_id(positions, r2.internal_id)
-      expect(position).to some_position(expected_position2)
+      expect(position).to same_position(expected_position2)
 
       positions = position_repository.retrieve_positions(backtest_id)
       expect(positions.length).to be 2
       position = find_by_internal_id(positions, r1.internal_id)
-      expect(position).to some_position(expected_position1)
+      expect(position).to same_position(expected_position1)
       position = find_by_internal_id(positions, r2.internal_id)
-      expect(position).to some_position(expected_position2)
+      expect(position).to same_position(expected_position2)
     end
 
     broker.refresh_positions
@@ -505,18 +534,18 @@ shared_examples 'brokerの基本操作ができる' do
     positions = broker.positions
     expect(positions.length).to be 2
     position = find_by_internal_id(positions, r2.internal_id)
-    expect(position).to some_position(expected_position2)
+    expect(position).to same_position(expected_position2)
     position = find_by_internal_id(positions, r3.internal_id)
-    expect(position).to some_position(expected_position3)
+    expect(position).to same_position(expected_position3)
 
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be
     position = find_by_internal_id(positions, r1.internal_id)
-    expect(position).to some_position(expected_position1)
+    expect(position).to same_position(expected_position1)
     position = find_by_internal_id(positions, r2.internal_id)
-    expect(position).to some_position(expected_position2)
+    expect(position).to same_position(expected_position2)
     position = find_by_internal_id(positions, r3.internal_id)
-    expect(position).to some_position(expected_position3)
+    expect(position).to same_position(expected_position3)
 
     expect(broker.account.balance).to eq 98_700
     expect(broker.account.profit_or_loss).to eq(103_231.59)
@@ -538,16 +567,16 @@ shared_examples 'brokerの基本操作ができる' do
     positions = broker.positions
     expect(positions.length).to be 1
     position = find_by_internal_id(positions, r3.internal_id)
-    expect(position).to some_position(expected_position3)
+    expect(position).to same_position(expected_position3)
 
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be
     position = find_by_internal_id(positions, r1.internal_id)
-    expect(position).to some_position(expected_position1)
+    expect(position).to same_position(expected_position1)
     position = find_by_internal_id(positions, r2.internal_id)
-    expect(position).to some_position(expected_position2)
+    expect(position).to same_position(expected_position2)
     position = find_by_internal_id(positions, r3.internal_id)
-    expect(position).to some_position(expected_position3)
+    expect(position).to same_position(expected_position3)
 
     broker.refresh_positions
     broker.refresh
@@ -570,16 +599,16 @@ shared_examples 'brokerの基本操作ができる' do
     positions = broker.positions
     expect(positions.length).to be 1
     position = find_by_internal_id(positions, r3.internal_id)
-    expect(position).to some_position(expected_position3)
+    expect(position).to same_position(expected_position3)
 
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be
     position = find_by_internal_id(positions, r1.internal_id)
-    expect(position).to some_position(expected_position1)
+    expect(position).to same_position(expected_position1)
     position = find_by_internal_id(positions, r2.internal_id)
-    expect(position).to some_position(expected_position2)
+    expect(position).to same_position(expected_position2)
     position = find_by_internal_id(positions, r3.internal_id)
-    expect(position).to some_position(expected_position3)
+    expect(position).to same_position(expected_position3)
 
     expect(broker.account.balance).to eq 99_660
     expect(broker.account.profit_or_loss).to eq(103_397.609)
@@ -597,7 +626,15 @@ shared_examples 'brokerの基本操作ができる' do
     broker.tick
 
     result = broker.buy(:EURJPY, 10_000, :market, {
-      stop_loss: 130
+      stop_loss_on_fill: {
+         price:             130,
+         time_in_force:     'GTC',
+         client_extensions: {
+           id:      'clientId2',
+           tag:     'clientTag',
+           comment: 'clientComment'
+         }
+       }
     }, agent_setting.id)
     expected_position = Jiji::Model::Trading::Position.new do |p|
       p.backtest      = backtest
@@ -625,11 +662,11 @@ shared_examples 'brokerの基本操作ができる' do
 
     expect(broker.positions.length).to be 1
     expect(broker.positions[result.trade_opened.internal_id]) \
-      .to some_position(expected_position)
+      .to same_position(expected_position)
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be 1
     expect(find_by_internal_id(positions, expected_position.internal_id)) \
-      .to some_position(expected_position)
+      .to same_position(expected_position)
 
     position = broker.positions[result.trade_opened.internal_id]
     position.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
@@ -641,11 +678,11 @@ shared_examples 'brokerの基本操作ができる' do
 
     expected_position.closing_policy = position.closing_policy
     expect(broker.positions[result.trade_opened.internal_id]) \
-      .to some_position(expected_position)
+      .to same_position(expected_position)
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be 1
     expect(find_by_internal_id(positions, expected_position.internal_id)) \
-      .to some_position(expected_position)
+      .to same_position(expected_position)
 
     position = broker.positions[result.trade_opened.internal_id]
     position.closing_policy = Jiji::Model::Trading::ClosingPolicy.create({
@@ -661,11 +698,11 @@ shared_examples 'brokerの基本操作ができる' do
 
     expected_position.closing_policy = position.closing_policy
     expect(broker.positions[result.trade_opened.internal_id]) \
-      .to some_position(expected_position)
+      .to same_position(expected_position)
     positions = position_repository.retrieve_positions(backtest_id)
     expect(positions.length).to be 1
     expect(find_by_internal_id(positions, expected_position.internal_id)) \
-      .to some_position(expected_position)
+      .to same_position(expected_position)
   end
 
   it '注文の変更ができる' do
@@ -676,52 +713,78 @@ shared_examples 'brokerの基本操作ができる' do
     expect(broker.account.margin_used).to eq 0
 
     result = broker.sell(:EURJPY, 10_000, :limit, {
-      price:       135.6,
-      expiry:      Time.utc(2015, 5, 2),
-      lower_bound: 135.59,
-      upper_bound: 135.61,
-      stop_loss:   135.73
+      price:             135.6,
+      time_in_force:     'GTD',
+      gtd_time:          Time.utc(2015, 5, 2),
+      price_bound:       135.59,
+      stop_loss_on_fill: {
+         price:             BigDecimal(135.73, 10),
+         time_in_force:     'GTC',
+         client_extensions: {
+           id:      'clientId2',
+           tag:     'clientTag',
+           comment: 'clientComment'
+         }
+       }
     }).order_opened
 
     expected_order = Jiji::Model::Trading::Order.new(
       :EURJPY, result.internal_id, :sell, :limit, Time.utc(2015, 5, 1))
     expected_order.units = 10_000
     expected_order.price = 135.6
-    expected_order.expiry = Time.utc(2015, 5, 2)
-    expected_order.lower_bound = 135.59
-    expected_order.upper_bound = 135.61
-    expected_order.stop_loss = 135.73
-    expected_order.take_profit = 0
-    expected_order.trailing_stop = 0
+    expected_order.time_in_force = 'GTD'
+    expected_order.gtd_time = Time.utc(2015, 5, 2)
+    expected_order.price_bound = 135.59
+    expected_order.stop_loss_on_fill = {
+      price:             135.73,
+      time_in_force:     'GTC',
+      client_extensions: {
+        id:      'clientId2',
+        tag:     'clientTag',
+        comment: 'clientComment'
+      }
+    }
+    expected_order.position_fill = 'DEFAULT'
+    expected_order.trigger_condition = 'DEFAULT'
 
     order = find_by_internal_id(broker.orders, result.internal_id)
     expect(order).to eq(expected_order)
 
     order.price = 135.7
-    order.expiry = Time.utc(2015, 5, 3)
-    order.lower_bound = 135.69
-    order.upper_bound = 135.71
-    order.stop_loss = 135.83
-    order.take_profit = 135.63
-    order.trailing_stop = 10
+    order.gtd_time = Time.utc(2015, 5, 3)
+    order.price_bound = 135.69
+    order.take_profit_on_fill = {
+      price: 135.63
+    }
+    order.stop_loss_on_fill = {
+     price: 135.83
+    }
+    order.trailing_stop_loss_on_fill = {
+      distance: 10
+    }
 
     broker.modify_order(order)
 
     expected_order.price = 135.7
-    expected_order.expiry = Time.utc(2015, 5, 3)
-    expected_order.lower_bound = 135.69
-    expected_order.upper_bound = 135.71
-    expected_order.stop_loss = 135.83
-    expected_order.take_profit = 135.63
-    expected_order.trailing_stop = 10
+    expected_order.gtd_time = Time.utc(2015, 5, 3)
+    expected_order.price_bound = 135.69
+    expected_order.take_profit_on_fill = {
+      price: 135.63
+    }
+    expected_order.stop_loss_on_fill = {
+     price: 135.83
+    }
+    expected_order.trailing_stop_loss_on_fill = {
+      distance: 10
+    }
 
     order = find_by_internal_id(broker.orders, result.internal_id)
     expect(order).to eq(expected_order)
 
-    order.expiry = Time.utc(2015, 5, 4)
+    order.gtd_time = Time.utc(2015, 5, 4)
     order.modify
 
-    expected_order.expiry = Time.utc(2015, 5, 4)
+    expected_order.gtd_time = Time.utc(2015, 5, 4)
 
     order = find_by_internal_id(broker.orders, result.internal_id)
     expect(order).to eq(expected_order)
@@ -739,13 +802,15 @@ shared_examples 'brokerの基本操作ができる' do
     expect(broker.account.margin_used).to eq 0
 
     result1 = broker.sell(:EURJPY, 10_000, :limit, {
-      price:  135.6,
-      expiry: Time.utc(2015, 5, 2)
+      price:         135.6,
+      time_in_force: 'GTD',
+      gtd_time:      Time.utc(2015, 5, 2)
     }).order_opened
 
     result2 = broker.buy(:EURJPY, 10_000, :limit, {
-      price:  134.6,
-      expiry: Time.utc(2015, 5, 2)
+      price:         134.6,
+      time_in_force: 'GTD',
+      gtd_time:      Time.utc(2015, 5, 2)
     }).order_opened
 
     expect(broker.orders.length).to be 2

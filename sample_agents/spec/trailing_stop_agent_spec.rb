@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sample_agent_test_configuration'
 require 'utils/agent_runner'
@@ -11,7 +11,7 @@ describe TrailingStopAgent do
   before(:example) do
     runner.register_agent_file(
       'sample_agents/src/trailing_stop_manager.rb')
-    %w(signals moving_average_agent cross).each do |file|
+    %w[signals moving_average_agent cross].each do |file|
       runner.register_agent_file(
         "/src/jiji/model/agents/builtin_files/#{file}.rb")
     end
@@ -37,6 +37,6 @@ describe TrailingStopAgent do
     runner.restart
     test = runner.tests[0]
 
-    sleep 0.2 until test.process.finished?
+    sleep 0.2 while test.process.running?
   end
 end

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'thread/pool'
@@ -22,8 +22,8 @@ module Jiji::Model::Trading
     end
 
     def runnings
-      @backtests.values.reject do |b|
-        b.retrieve_process_status != :running
+      @backtests.values.select do |b|
+        b.retrieve_process_status == :running
       end
     end
 

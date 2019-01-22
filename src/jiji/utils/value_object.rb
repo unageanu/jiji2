@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module Jiji::Utils::ValueObject
   def ==(other)
@@ -48,9 +49,11 @@ module Jiji::Utils::ValueObject
     return false if other.nil?
     return true if equal? other
     return false unless other.is_a?(Jiji::Utils::ValueObject)
+
     a = values
     b = other.values
     return false if a.length != b.length
+
     a.length.times do |i|
       return false unless yield(a[i], b[i])
     end

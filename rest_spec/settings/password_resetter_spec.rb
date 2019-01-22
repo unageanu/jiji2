@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'client'
 
@@ -24,7 +24,7 @@ describe 'パスワードの再設定' do
 
     do_request_using(nil) do
       r = @client.put('settings/password-resetter', {
-        'token'    => token,
+        'token' => token,
         'password' => 'foo'
       })
       expect(r.status).to eq 200
@@ -46,7 +46,7 @@ describe 'パスワードの再設定' do
   it '存在しないトークンを指定した場合、エラーになる' do
     do_request_using(nil) do
       r = @client.put('settings/password-resetter', {
-        'token'    => 'unknown',
+        'token' => 'unknown',
         'password' => 'foo'
       })
       expect(r.status).to eq 400

@@ -1,8 +1,6 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
-require 'thread'
-
 module Jiji::Model::Trading::TradingSummaries
   class CompositeSummary
 
@@ -64,8 +62,7 @@ module Jiji::Model::Trading::TradingSummaries
       @name = name
     end
 
-    def process(position)
-    end
+    def process(position); end
 
     def calculate_avg(sum, count)
       count > 0 ? (sum / count) : 0
@@ -81,8 +78,8 @@ module Jiji::Model::Trading::TradingSummaries
     end
 
     def process(position)
-      agent_id   = (position.agent && position.agent.id) || ''
-      agent_name = (position.agent && position.agent.name) || ''
+      agent_id   = (position.agent&.id) || ''
+      agent_name = (position.agent&.name) || ''
       unless @agent_summary.include?(agent_id)
         @agent_summary[agent_id] = CompositeSummary.new(agent_name)
       end
@@ -201,14 +198,14 @@ module Jiji::Model::Trading::TradingSummaries
       super(:profit_or_loss)
       @max_profit   = nil
       @max_loss     = nil
-      @total_profit = BigDecimal.new(0, 10)
-      @total_loss   = BigDecimal.new(0, 10)
+      @total_profit = BigDecimal(0, 10)
+      @total_loss   = BigDecimal(0, 10)
       @win_count    = 0
       @lose_count   = 0
     end
 
     def process(position)
-      profit_or_loss = BigDecimal.new(position.profit_or_loss, 10)
+      profit_or_loss = BigDecimal(position.profit_or_loss, 10)
       update_max_profit_and_max_loss(profit_or_loss)
       update_total_profit_and_total_loss(profit_or_loss)
     end
@@ -242,7 +239,8 @@ module Jiji::Model::Trading::TradingSummaries
     end
 
     def calculate_profit_factor
-      return 0 if @total_loss == 0
+      return 0 if @total_loss.zero?
+
       @total_profit / (@total_loss * -1)
     end
 
@@ -252,7 +250,7 @@ module Jiji::Model::Trading::TradingSummaries
 
     def initialize
       super(:holding_period)
-      @total_period = BigDecimal.new(0, 10)
+      @total_period = BigDecimal(0, 10)
       @max_period   = nil
       @min_period   = nil
       @count = 0
@@ -260,6 +258,7 @@ module Jiji::Model::Trading::TradingSummaries
 
     def process(position)
       return unless position.exited_at
+
       period = position.exited_at.to_i - position.entered_at.to_i
       update_max_and_min(period)
       update_total_period(period)
@@ -289,7 +288,7 @@ module Jiji::Model::Trading::TradingSummaries
 
     def initialize
       super(:units)
-      @total_units = BigDecimal.new(0, 10)
+      @total_units = BigDecimal(0, 10)
       @max_units   = nil
       @min_units   = nil
       @count = 0

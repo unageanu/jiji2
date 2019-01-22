@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'jiji/configurations/mongoid_configuration'
@@ -53,7 +53,7 @@ module Jiji::Model::Trading
     end
 
     def stop_rmt_process
-      @process.pause if @process
+      @process&.pause
       @agents.save_state
     end
 

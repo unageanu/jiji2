@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Jiji::Utils
   module BulkWriteOperationSupport
     KEY = BulkWriteOperationSupport.name
@@ -20,6 +22,7 @@ module Jiji::Utils
 
     def self.end_transaction
       return unless in_transaction?
+
       transaction.execute
       Thread.current[KEY] = nil
     end
@@ -46,6 +49,7 @@ module Jiji::Utils
     def collect_changed_values
       changes.each_with_object({}) do |change, r|
         next if change[0] == '_id'
+
         r[change[0].to_sym] = change[1][1]
       end
     end
@@ -79,6 +83,7 @@ module Jiji::Utils
 
       def execute_bulk_write_operations(model_class)
         return unless @targets.include?(model_class)
+
         execute_parent_object_bulk_write_operations_if_exists(model_class)
 
         client = model_class.mongo_client[model_class.collection_name]

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 module Jiji::Model::Agents
   module Context
@@ -18,24 +18,25 @@ module Jiji::Model::Agents
 
     def const_missing(id)
       target = Delegate.instance.delegates.values.find do |v|
-        v.const_defined?(id) unless v.nil?
+        v&.const_defined?(id)
       end
       target ? target.const_get(id) : super
     end
 
     def method_missing(name, *args, &block)
       target = Delegate.instance.delegates.values.find do |v|
-        v.respond_to?(name) unless v.nil?
+        v&.respond_to?(name)
       end
       target ? target.send(name, *args, &block) : super
     end
 
     def respond_to_missing?(symbol, include_private)
       return false if Thread.current['__prevent__respond_to_missing']
+
       begin
         Thread.current['__prevent__respond_to_missing'] = true
         Delegate.instance.delegates.values.any? do |v|
-          v.respond_to?(symbol, include_private) unless v.nil?
+          v&.respond_to?(symbol, include_private)
         end
       ensure
         Thread.current['__prevent__respond_to_missing'] = false

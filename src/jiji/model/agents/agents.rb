@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
@@ -33,7 +33,7 @@ module Jiji::Model::Agents
       @agents.values.each do |a|
         begin
           a.next_tick(tick)
-        rescue Exception => e # rubocop:disable Lint/RescueException
+        rescue Exception => e
           process_error(e)
         end
       end
@@ -49,7 +49,7 @@ module Jiji::Model::Agents
       if @fail_on_error
         raise error
       else
-        @logger.error(error) if @logger
+        @logger&.error(error)
       end
     end
 

@@ -1,12 +1,11 @@
-# coding: utf-8
-
-require 'oanda_api'
+# frozen_string_literal: true
 
 module Jiji::Model::Securities::Internal::Virtual
   module Ordering
     include Jiji::Errors
     include Jiji::Model::Trading
     include Jiji::Model::Trading::Utils
+    include Jiji::Model::Securities::Internal::Utils
 
     def init_ordering_state(orders = [])
       @orders   = orders
@@ -14,6 +13,8 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def order(pair_name, sell_or_buy, units, type = :market, options = {})
+      options = Converter.convert_option_to_oanda(options)
+      insert_default_options(type, options)
       @order_validator.validate(pair_name, sell_or_buy, units, type, options)
       order = create_order(pair_name, sell_or_buy, units, type, options)
       if order.carried_out?(@current_tick)
@@ -33,10 +34,14 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def modify_order(internal_id, options = {})
+      options = Converter.convert_option_to_oanda(options)
       order = find_order_by_internal_id(internal_id)
       validate_modify_order_request(order, options)
       MODIFIABLE_PROPERTIES.each do |key|
-        order.method("#{key}=").call(options[key]) if options.include?(key)
+        snaked = key.to_s.underscore.downcase.to_sym
+        new_value = options[key]
+        new_value = (order.method(snaked).call || {}).merge(new_value) if new_value.is_a? Hash
+        order.method("#{snaked}=").call(Converter.convert_option_value_from_oanda(key, new_value)) if new_value
       end
       order.clone
     end
@@ -49,11 +54,16 @@ module Jiji::Model::Securities::Internal::Virtual
 
     private
 
-    MODIFIABLE_PROPERTIES = [
-      :units, :price, :expiry, :lower_bound,
-      :upper_bound, :stop_loss, :take_profit,
-      :trailing_stop
+    PROPERTIES = %i[
+      timeInForce positionFill triggerCondition
+      clientExtensions takeProfitOnFill stopLossOnFill
+      trailingStopLossOnFill tradeClientExtensions gtdTime
+      priceBound price
     ].freeze
+
+    MODIFIABLE_PROPERTIES = (%i[
+      units price
+    ] + PROPERTIES).freeze
 
     def register_position(order)
       position = @position_builder.build_from_order(order,
@@ -67,14 +77,10 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def create_order_result(order, position, result)
-      if order.type == :market
-        if position.units > 0
-          return OrderResult.new(nil, order, nil, result[:closed])
-        else
-          return OrderResult.new(nil, nil, result[:reduced], result[:closed])
-        end
+      if position.units > 0
+        OrderResult.new(nil, position, nil, result[:closed])
       else
-        return OrderResult.new(order, nil, nil, [])
+        OrderResult.new(nil, nil, result[:reduced], result[:closed])
       end
     end
 
@@ -89,8 +95,8 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def remove_closed_positions(closed)
-      @positions = @positions.reject do |p|
-        !closed.find do |item|
+      @positions = @positions.select do |p|
+        closed.find do |item|
           p.internal_id == item.internal_id
         end.nil?
       end
@@ -99,13 +105,14 @@ module Jiji::Model::Securities::Internal::Virtual
     def close_or_reduce_reverse_position(result, reverse_position, position)
       units = position.units
       return unless units > 0
+
       if reverse_position.units <= units
         result[:closed] << convert_to_closed_position(reverse_position)
         position.units -= reverse_position.units
       else
         reverse_position.units -= units
         position.units = 0
-        result[:reduced] = convert_to_reduced_position(reverse_position)
+        result[:reduced] = convert_to_reduced_position(reverse_position, units)
       end
     end
 
@@ -128,7 +135,8 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def process_order(tick, order)
-      return true if !order.expiry.nil? && order.expiry <= tick.timestamp
+      return true if order.expired?(tick.timestamp)
+
       if order.carried_out?(tick)
         register_position(order)
         true
@@ -138,13 +146,13 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def validate_modify_order_request(order, options)
-      options = order.to_h.merge(options)
+      options = order.collect_properties_for_modify.merge(options).with_indifferent_access
       @order_validator.validate(order.pair_name, order.sell_or_buy,
         options[:units] || order.units, order.type, options)
     end
 
     def error(message)
-      raise OandaAPI::RequestError, message
+      raise OandaApiV20::RequestError, message
     end
 
     def create_order(pair_name, sell_or_buy, units, type, options)
@@ -162,15 +170,21 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def init_optional_properties(order, options)
-      order.expiry = options[:expiry] || nil
-      [:lower_bound, :upper_bound,
-       :stop_loss, :take_profit, :trailing_stop].each do |key|
-        order.method("#{key}=").call(options[key] || 0)
+      PROPERTIES.each do |key|
+        order.send("#{key.to_s.underscore.downcase.to_sym}=",
+          Converter.convert_option_value_from_oanda(key, options[key]))
       end
+    end
+
+    def insert_default_options(type, options)
+      options[:timeInForce] ||= type == :market ? 'FOK' : 'GTC'
+      options[:positionFill] ||= 'DEFAULT'
+      options[:triggerCondition] ||= 'DEFAULT' if type != :market
     end
 
     def resolve_price(type, pair_name, sell_or_buy, options, tick)
       return options[:price] || nil if type != :market
+
       PricingUtils.calculate_entry_price(tick, pair_name, sell_or_buy)
     end
 
@@ -181,10 +195,10 @@ module Jiji::Model::Securities::Internal::Virtual
         units || position.units, price, @current_tick.timestamp, profit)
     end
 
-    def convert_to_reduced_position(position)
+    def convert_to_reduced_position(position, units)
       price = PricingUtils.calculate_current_price(
         @current_tick, position.pair_name, position.sell_or_buy)
-      ReducedPosition.new(position.internal_id, position.units,
+      ReducedPosition.new(position.internal_id, units,
         price, @current_tick.timestamp, nil)
     end
   end

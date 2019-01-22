@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/model/securities/oanda_securities'
@@ -21,15 +21,21 @@ RSpec.shared_examples '建玉関連の操作' do
       saved_positions = position_repository.retrieve_positions(backtest_id)
       expect(saved_positions.length).to be 0
 
-      ask = BigDecimal.new(tick[:USDJPY].ask, 4)
+      ask = BigDecimal(tick[:USDJPY].ask, 4)
 
       client.order(:EURJPY, :sell, 1)
 
       sleep wait
       client.order(:USDJPY, :buy, 2, :market, {
-        stop_loss:     (ask - 2).to_f,
-        take_profit:   (ask + 2).to_f,
-        trailing_stop: 5
+        stop_loss_on_fill:          {
+          price: ask - 2
+        },
+        take_profit_on_fill:        {
+          price: ask + 2
+        },
+        trailing_stop_loss_on_fill: {
+          distance: 5
+        }
       })
 
       sleep wait
@@ -57,8 +63,8 @@ RSpec.shared_examples '建玉関連の操作' do
       expect(trade.status).to eq :live
       expect(trade.entry_price).not_to be nil
       expect(trade.entered_at).not_to be nil
-      expect(trade.closing_policy.stop_loss).to eq((ask - 2).to_f)
-      expect(trade.closing_policy.take_profit).to eq((ask + 2).to_f)
+      expect(trade.closing_policy.stop_loss).to eq(ask - 2)
+      expect(trade.closing_policy.take_profit).to eq(ask + 2)
       expect(trade.closing_policy.trailing_stop).to eq(5)
       expect(trade.closing_policy.trailing_amount).not_to be nil
 
@@ -83,8 +89,8 @@ RSpec.shared_examples '建玉関連の操作' do
       expect(trade.status).to eq :live
       expect(trade.entry_price).not_to be nil
       expect(trade.entered_at).not_to be nil
-      expect(trade.closing_policy.stop_loss).to eq((ask - 2).to_f)
-      expect(trade.closing_policy.take_profit).to eq((ask + 2).to_f)
+      expect(trade.closing_policy.stop_loss).to eq(ask - 2)
+      expect(trade.closing_policy.take_profit).to eq(ask + 2)
       expect(trade.closing_policy.trailing_stop).to eq(5)
       expect(trade.closing_policy.trailing_amount).not_to be nil
 
@@ -96,16 +102,22 @@ RSpec.shared_examples '建玉関連の操作' do
       saved_positions = position_repository.retrieve_positions(backtest_id)
       expect(saved_positions.length).to be 0
 
-      bid = BigDecimal.new(tick[:EURJPY].bid, 4)
-      ask = BigDecimal.new(tick[:USDJPY].ask, 4)
+      bid = BigDecimal(tick[:EURJPY].bid, 4)
+      ask = BigDecimal(tick[:USDJPY].ask, 4)
 
       client.order(:EURJPY, :sell, 1)
 
       sleep wait
       client.order(:USDJPY, :buy, 2, :market, {
-        stop_loss:     (ask - 2).to_f,
-        take_profit:   (ask + 2).to_f,
-        trailing_stop: 5
+        stop_loss_on_fill:          {
+          price: ask - 2
+        },
+        take_profit_on_fill:        {
+          price: ask + 2
+        },
+        trailing_stop_loss_on_fill: {
+          distance: 5
+        }
       })
 
       sleep wait
@@ -114,9 +126,15 @@ RSpec.shared_examples '建玉関連の操作' do
 
       sleep wait
       trade = client.modify_trade(trades[1].internal_id, {
-        stop_loss:     (bid + 3).to_f,
-        take_profit:   (bid - 3).to_f,
-        trailing_stop: 6
+        stop_loss:          {
+          price: bid + 3
+        },
+        take_profit:        {
+          price: bid - 3
+        },
+        trailing_stop_loss: {
+          distance: 6
+        }
       })
       expect(trade.internal_id).not_to be nil
       expect(trade.pair_name).to eq :EURJPY
@@ -125,16 +143,22 @@ RSpec.shared_examples '建玉関連の操作' do
       expect(trade.status).to eq :live
       expect(trade.entry_price).not_to be nil
       expect(trade.entered_at).not_to be nil
-      expect(trade.closing_policy.stop_loss).to eq((bid + 3).to_f)
-      expect(trade.closing_policy.take_profit).to eq((bid - 3).to_f)
+      expect(trade.closing_policy.stop_loss).to eq(bid + 3)
+      expect(trade.closing_policy.take_profit).to eq(bid - 3)
       expect(trade.closing_policy.trailing_stop).to eq(6)
       expect(trade.closing_policy.trailing_amount).not_to be nil
 
       sleep wait
       trade = client.modify_trade(trades[0].internal_id, {
-        stop_loss:     (ask - 3).to_f,
-        take_profit:   (ask + 3).to_f,
-        trailing_stop: 7
+        stop_loss:          {
+          price: ask - 3
+        },
+        take_profit:        {
+          price: ask + 3
+        },
+        trailing_stop_loss: {
+          distance: 7
+        }
       })
       expect(trade.internal_id).not_to be nil
       expect(trade.pair_name).to eq :USDJPY
@@ -143,8 +167,8 @@ RSpec.shared_examples '建玉関連の操作' do
       expect(trade.status).to eq :live
       expect(trade.entry_price).not_to be nil
       expect(trade.entered_at).not_to be nil
-      expect(trade.closing_policy.stop_loss).to eq((ask - 3).to_f)
-      expect(trade.closing_policy.take_profit).to eq((ask + 3).to_f)
+      expect(trade.closing_policy.stop_loss).to eq(ask - 3)
+      expect(trade.closing_policy.take_profit).to eq(ask + 3)
       expect(trade.closing_policy.trailing_stop).to eq(7)
       expect(trade.closing_policy.trailing_amount).not_to be nil
 
@@ -159,8 +183,8 @@ RSpec.shared_examples '建玉関連の操作' do
       expect(trade.status).to eq :live
       expect(trade.entry_price).not_to be nil
       expect(trade.entered_at).not_to be nil
-      expect(trade.closing_policy.stop_loss).to eq((bid + 3).to_f)
-      expect(trade.closing_policy.take_profit).to eq((bid - 3).to_f)
+      expect(trade.closing_policy.stop_loss).to eq(bid + 3)
+      expect(trade.closing_policy.take_profit).to eq(bid - 3)
       expect(trade.closing_policy.trailing_stop).to eq(6)
       expect(trade.closing_policy.trailing_amount).not_to be nil
 
@@ -172,8 +196,8 @@ RSpec.shared_examples '建玉関連の操作' do
       expect(trade.status).to eq :live
       expect(trade.entry_price).not_to be nil
       expect(trade.entered_at).not_to be nil
-      expect(trade.closing_policy.stop_loss).to eq((ask - 3).to_f)
-      expect(trade.closing_policy.take_profit).to eq((ask + 3).to_f)
+      expect(trade.closing_policy.stop_loss).to eq(ask - 3)
+      expect(trade.closing_policy.take_profit).to eq(ask + 3)
       expect(trade.closing_policy.trailing_stop).to eq(7)
       expect(trade.closing_policy.trailing_amount).not_to be nil
 
@@ -185,18 +209,25 @@ RSpec.shared_examples '建玉関連の操作' do
       saved_positions = position_repository.retrieve_positions(backtest_id)
       expect(saved_positions.length).to be 0
 
-      ask = BigDecimal.new(tick[:USDJPY].ask, 4)
+      ask = BigDecimal(tick[:USDJPY].ask, 4)
 
       client.order(:EURJPY, :sell, 1)
 
       sleep wait
       client.order(:USDJPY, :buy, 2, :market, {
-        stop_loss:     (ask - 2).to_f,
-        take_profit:   (ask + 2).to_f,
-        trailing_stop: 5
+        stop_loss_on_fill:          {
+          price: ask - 2
+        },
+        take_profit_on_fill:        {
+          price: ask + 2
+        },
+        trailing_stop_loss_on_fill: {
+          distance: 5
+        }
       })
 
       sleep wait
+      client.retrieve_current_tick
       trades = client.retrieve_trades
       expect(trades.length).to be 2
 
@@ -228,18 +259,25 @@ RSpec.shared_examples '建玉関連の操作' do
       saved_positions = position_repository.retrieve_positions(backtest_id)
       expect(saved_positions.length).to be 0
 
-      ask = BigDecimal.new(tick[:EURDKK].ask, 4)
+      ask = BigDecimal(tick[:EURDKK].ask, 4)
 
       client.order(:AUDCAD, :sell, 1)
 
       sleep wait
       client.order(:EURDKK, :buy, 2, :market, {
-        stop_loss:     (ask - 0.02).to_f,
-        take_profit:   (ask + 0.02).to_f,
-        trailing_stop: 5
+        stop_loss_on_fill:          {
+          price: ask - 0.02
+        },
+        take_profit_on_fill:        {
+          price: ask + 0.02
+        },
+        trailing_stop_loss_on_fill: {
+          distance: 0.5
+        }
       })
 
       sleep wait
+      client.retrieve_current_tick
       trades = client.retrieve_trades
       expect(trades.length).to be 2
 

@@ -1,4 +1,5 @@
-# coding: utf-8
+# frozen_string_literal: true
+
 require 'forwardable'
 
 module Jiji::Model::Trading
@@ -83,10 +84,10 @@ module Jiji::Model::Trading
         unless PositionSynchronizer.are_equals?(original, new_position)
           PositionSynchronizer.sync_position(original, new_position)
         end
-        return original
+        original
       else
         new_position.save
-        return new_position
+        new_position
       end
     end
 
@@ -99,9 +100,8 @@ module Jiji::Model::Trading
       end
     end
 
-    def add(order, tick, agent)
-      position = @position_builder.build_from_order(order,
-        tick, account.account_currency, agent)
+    def add(position, tick, agent)
+      position.agent = agent
       position.save
       @positions << position
       @map[position.internal_id] = position
@@ -109,6 +109,7 @@ module Jiji::Model::Trading
 
     def split(result, agent)
       return unless @map.include?(result.internal_id)
+
       position = @map[result.internal_id]
 
       new_position = @position_builder.split_and_close(position,
@@ -121,6 +122,7 @@ module Jiji::Model::Trading
 
     def close(internal_id, price, timestamp, profit)
       return unless @map.include?(internal_id)
+
       position = @map[internal_id]
       position.update_state_to_closed(price, timestamp, profit)
       position.save
@@ -150,9 +152,9 @@ module Jiji::Model::Trading
         position.save
       end
 
-      SYNCHRONIZE_PROPERTIES = [
-        :pair_name, :units, :sell_or_buy,
-        :entry_price, :entered_at, :closing_policy
+      SYNCHRONIZE_PROPERTIES = %i[
+        pair_name units sell_or_buy
+        entry_price entered_at closing_policy
       ].freeze
 
     end

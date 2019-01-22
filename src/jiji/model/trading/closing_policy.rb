@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
@@ -31,16 +31,7 @@ module Jiji::Model::Trading
       }
     end
 
-    # Hashの値から、新しい ClosingPolicy を作成します。
-    #
-    #  Jiji::Model::Trading::ClosingPolicy.create({
-    #    stop_loss:     130,
-    #    take_profit:   140.5,
-    #    trailing_stop: 10
-    #  })
-    #
-    # options:: 値
-    # 戻り値:: 新しい ClosingPolicy
+    # for internal use.
     def self.create(options)
       ClosingPolicy.new do |c|
         c.take_profit     = options[:take_profit]     || 0
@@ -50,22 +41,101 @@ module Jiji::Model::Trading
       end
     end
 
+    def self.create_from_order(order, price) #:nodoc:
+      create({
+        stop_loss:       extract_stop_loss_from_order(order.stop_loss_on_fill, price),
+        take_profit:     extract_take_profit_from_order(order.take_profit_on_fill),
+        trailing_stop:   extract_trailing_stop_from_order(order.trailing_stop_loss_on_fill),
+        trailing_amount: extract_trailing_amount_from_order(order.trailing_stop_loss_on_fill)
+      })
+    end
+
+    def self.extract_stop_loss_from_order(stop_loss_on_fill, price)
+      if stop_loss_on_fill
+        if stop_loss_on_fill[:price]
+          BigDecimal(stop_loss_on_fill[:price], 10)
+        elsif stop_loss_on_fill[:distance]
+          BigDecimal(price, 10) + stop_loss_on_fill[:distance]
+        end
+      else
+        0
+      end
+    end
+
+    def self.extract_take_profit_from_order(take_profit_on_fill)
+      price = take_profit_on_fill && take_profit_on_fill[:price]
+      price ? BigDecimal(price, 10) : 0
+    end
+
+    def self.extract_trailing_stop_from_order(trailing_stop_loss_on_fill)
+      price = trailing_stop_loss_on_fill && trailing_stop_loss_on_fill[:distance]
+      price ? BigDecimal(price, 10) : 0
+    end
+
+    def self.extract_trailing_amount_from_order(trailing_stop_loss_on_fill)
+      price = trailing_stop_loss_on_fill && trailing_stop_loss_on_fill[:trailing_stop_value]
+      price ? BigDecimal(price, 10) : 0
+    end
+
     def self.create_from_trade(trade) #:nodoc:
       create({
-        stop_loss:       trade.stop_loss,
-        take_profit:     trade.take_profit,
-        trailing_stop:   trade.trailing_stop,
-        trailing_amount: trade.trailing_amount
+        stop_loss:       extract_stop_loss_from_trade(trade),
+        take_profit:     extract_take_profit_from_trade(trade),
+        trailing_stop:   extract_trailing_stop_from_trade(trade),
+        trailing_amount: extract_trailing_amount_from_trade(trade)
       })
+    end
+
+    def self.extract_stop_loss_from_trade(trade)
+      price = trade['stopLossOrder'] && trade['stopLossOrder']['price']
+      price ? BigDecimal(price, 10) : 0
+    end
+
+    def self.extract_take_profit_from_trade(trade)
+      price = trade['takeProfitOrder'] && trade['takeProfitOrder']['price']
+      price ? BigDecimal(price, 10) : 0
+    end
+
+    def self.extract_trailing_stop_from_trade(trade)
+      price = trade['trailingStopLossOrder'] && trade['trailingStopLossOrder']['distance']
+      price ? BigDecimal(price, 10) : 0
+    end
+
+    def self.extract_trailing_amount_from_trade(trade)
+      price = trade['trailingStopLossOrder'] && trade['trailingStopLossOrder']['trailingStopValue']
+      price ? BigDecimal(price, 10) : 0
     end
 
     # for internal use.
     def extract_options_for_modify #:nodoc:
       {
-        stop_loss:     stop_loss,
-        take_profit:   take_profit,
-        trailing_stop: trailing_stop
+        stop_loss:     {
+          price: stop_loss
+        },
+        take_profit:   {
+          price: take_profit
+        },
+        trailing_stop: {
+          distance: trailing_stop
+        }
       }
+    end
+
+    def update_from_order_options(options, price) #:nodoc:
+      if options.include?(:stopLoss)
+        self.stop_loss = !options[:stopLoss].nil? ? \
+          ClosingPolicy.extract_stop_loss_from_order(options[:stopLoss], price) : 0
+      end
+      if options.include?(:takeProfit)
+        self.take_profit = !options[:takeProfit].nil? ? \
+          ClosingPolicy.extract_take_profit_from_order(options[:takeProfit]) : 0
+      end
+      if options.include?(:trailingStopLoss)
+        self.trailing_stop = !options[:trailingStopLoss].nil? ? \
+          ClosingPolicy.extract_trailing_stop_from_order(options[:trailingStopLoss]) : 0
+        self.trailing_amount = !options[:trailingStopLoss].nil? ? \
+          ClosingPolicy.extract_trailing_amount_from_order(options[:trailingStopLoss]) : 0
+      end
     end
 
     # for internal use.
@@ -77,8 +147,9 @@ module Jiji::Model::Trading
 
     # for internal use.
     def update_price(position, pair) #:nodoc:
-      return if trailing_stop == 0
-      price = BigDecimal.new(position.current_price, 10)
+      return if trailing_stop&.zero?
+
+      price = BigDecimal(position.current_price, 10)
       amount = (trailing_stop * pair.pip)
       self.trailing_amount = calculate_trailing_amount(position, price, amount)
     end
@@ -88,15 +159,17 @@ module Jiji::Model::Trading
     def calculate_trailing_amount(position, price, amount)
       if position.sell_or_buy == :buy
         new_price = (price - amount).to_f
-        trailing_amount == 0 ? new_price : [new_price, trailing_amount].max
+        trailing_amount&.zero? ?
+          new_price : [new_price, trailing_amount].max
       else
         new_price = (price + amount).to_f
-        trailing_amount == 0 ? new_price : [new_price, trailing_amount].min
+        trailing_amount&.zero? ?
+          new_price : [new_price, trailing_amount].min
       end
     end
 
     def should_take_profit?(position)
-      return false if take_profit == 0
+      return false if take_profit&.zero?
       if position.sell_or_buy == :buy
         return position.current_price >= take_profit
       else
@@ -105,7 +178,7 @@ module Jiji::Model::Trading
     end
 
     def should_stop_loss?(position)
-      return false if stop_loss == 0
+      return false if stop_loss&.zero?
       if position.sell_or_buy == :buy
         return position.current_price <= stop_loss
       else
@@ -114,7 +187,7 @@ module Jiji::Model::Trading
     end
 
     def should_trailing_stop?(position)
-      return false if trailing_amount == 0
+      return false if trailing_amount&.zero?
       if position.sell_or_buy == :buy
         return position.current_price <= trailing_amount
       else

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
@@ -396,9 +396,10 @@ describe Jiji::Model::Trading::Positions do
 
   describe '#apply_order_result' do
     it '新規に作成された取引がある場合、新しい建玉が作成され追加される' do
-      order_result = data_builder.new_order_result(
-        nil, data_builder.new_order(10))
       tick = data_builder.new_tick(4, Time.at(100))
+      position_builder = Jiji::Model::Trading::Internal::PositionBuilder.new
+      order_result = data_builder.new_order_result(
+        nil, position_builder.build_from_order(data_builder.new_order(10, 10, :EURJPY, :limit), tick, 'JPY'))
 
       positions.apply_order_result(
         order_result, tick, agent_setting)

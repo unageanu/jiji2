@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 require 'jiji/utils/value_object'
@@ -43,12 +43,12 @@ module Jiji::Model::Trading
     end
 
     def +(other) #:nodoc:
-      self.balance = (BigDecimal.new(balance, 10) + other).to_f
+      self.balance = (BigDecimal(balance, 10) + other).to_f
       self
     end
 
     def -(other) #:nodoc:
-      self.balance = (BigDecimal.new(balance, 10) - other).to_f
+      self.balance = (BigDecimal(balance, 10) - other).to_f
       self
     end
 
@@ -63,16 +63,17 @@ module Jiji::Model::Trading
     class Aggregator #:nodoc:
 
       def initialize(margin_rate)
-        @total_price    = BigDecimal.new(0, 10)
-        @profit_or_loss = BigDecimal.new(0, 10)
+        @total_price    = BigDecimal(0, 10)
+        @profit_or_loss = BigDecimal(0, 10)
         @margin_rate    = margin_rate
       end
 
       def process(position)
         return if position.status != :live
+
         @profit_or_loss += position.profit_or_loss || 0
         @total_price    +=
-          BigDecimal.new(position.current_price || position.entry_price, 10) \
+          BigDecimal(position.current_price || position.entry_price, 10) \
           * position.units
       end
 

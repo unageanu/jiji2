@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'bundler/setup'
 require 'sigdump/setup' if ENV['RACK_ENV'] != 'production'

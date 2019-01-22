@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'jiji/configurations/mongoid_configuration'
@@ -27,13 +27,13 @@ module Jiji::Model::Settings
     def setup
       @logger = logger_factory.create
       return unless active_securities_id
+
       begin
         securities = find_and_configure_securities(
           active_securities_id, get_configurations(active_securities_id))
         securities_provider.set(securities)
-
       rescue Jiji::Errors::NotFoundException => e
-        @logger.error(e) if @logger
+        @logger&.error(e)
       end
     end
 
@@ -65,7 +65,7 @@ module Jiji::Model::Settings
     rescue Jiji::Errors::NotFoundException
       raise
     rescue Exception => e # rubocop:disable Lint/RescueException
-      @logger.error(e) if @logger
+      @logger&.error(e)
       illegal_argument('failed to connect securities.')
     end
 

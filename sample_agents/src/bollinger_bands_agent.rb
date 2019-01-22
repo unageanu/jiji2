@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'quandl'
 require 'lru_redux'
 
@@ -50,7 +52,7 @@ end
 module BollingerBands
   module Utils
     def bd(v)
-      BigDecimal.new(v.to_f, 10)
+      BigDecimal(v.to_f, 10)
     end
 
     def sum(array)
@@ -152,7 +154,7 @@ module BollingerBands
       register_graph_data(bands, index)
       log(tick, bands, index)
 
-      if index != 0 && index != -1 && !@positions.include?(index.to_s)
+      if index.nonzero? && index != -1 && !@positions.include?(index.to_s)
         @positions[index.to_s] = create_position(index)
       end
     end
@@ -170,6 +172,7 @@ module BollingerBands
 
     def log(tick, bands, index)
       return unless @logger
+
       @logger.info(
         "#{tick.timestamp} #{tick[@pair].bid}" \
       + " #{bands[:sd]} #{bands[:mean]} #{index}")
@@ -206,6 +209,7 @@ module BollingerBands
     def restore_state
       @broker.positions.each do |p|
         next unless p.pair_name == @pair
+
         register_position(p)
       end
     end

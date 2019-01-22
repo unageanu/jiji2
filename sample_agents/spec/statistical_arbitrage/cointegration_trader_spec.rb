@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sample_agent_test_configuration'
 require 'statistical_arbitrage/shared_context'
@@ -12,20 +12,17 @@ describe StatisticalArbitrage::CointegrationTrader do
       expect(broker).to receive(:buy)
         .with(:AUDJPY, 100)
         .exactly(3).times
-        .and_return(create_order_result)
       expect(broker).to receive(:sell)
         .with(:NZDJPY, 50)
         .exactly(3).times
-        .and_return(create_order_result('y'))
       positions = create_mock_positions(
-        create_mock_position(false, :AUDJPY),
-        create_mock_position(false, :NZDJPY)
+        create_mock_position(:AUDJPY),
+        create_mock_position(:NZDJPY)
       )
       allow(broker).to receive(:positions).and_return(positions)
 
       trader = StatisticalArbitrage::CointegrationTrader.new(
         :AUDJPY, :NZDJPY, 100, 1, broker)
-      trader.init
 
       trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq([])
@@ -58,20 +55,23 @@ describe StatisticalArbitrage::CointegrationTrader do
       expect(broker).to receive(:buy)
         .with(:AUDJPY, 100)
         .exactly(3).times
-        .and_return(create_order_result)
       expect(broker).to receive(:sell)
         .with(:NZDJPY, 50)
         .exactly(3).times
-        .and_return(create_order_result('y'))
+      expect(broker).to receive(:sell)
+        .with(:AUDJPY, 100)
+        .exactly(3).times
+      expect(broker).to receive(:buy)
+        .with(:NZDJPY, 50)
+        .exactly(3).times
       positions = create_mock_positions(
-        create_mock_position(true, :AUDJPY),
-        create_mock_position(true, :NZDJPY)
+        create_mock_position(:AUDJPY),
+        create_mock_position(:NZDJPY)
       )
       allow(broker).to receive(:positions).and_return(positions)
 
       trader = StatisticalArbitrage::CointegrationTrader.new(
         :AUDJPY, :NZDJPY, 100, 1, broker)
-      trader.init
 
       trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq([])
@@ -97,20 +97,17 @@ describe StatisticalArbitrage::CointegrationTrader do
       expect(broker).to receive(:sell)
         .with(:AUDJPY, 100)
         .exactly(3).times
-        .and_return(create_order_result)
       expect(broker).to receive(:buy)
         .with(:NZDJPY, 50)
         .exactly(3).times
-        .and_return(create_order_result('y'))
       positions = create_mock_positions(
-        create_mock_position(false, :AUDJPY),
-        create_mock_position(false, :NZDJPY)
+        create_mock_position(:AUDJPY),
+        create_mock_position(:NZDJPY)
       )
       allow(broker).to receive(:positions).and_return(positions)
 
       trader = StatisticalArbitrage::CointegrationTrader.new(
         :AUDJPY, :NZDJPY, 100, 1, broker)
-      trader.init
 
       trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq([])
@@ -128,13 +125,13 @@ describe StatisticalArbitrage::CointegrationTrader do
       expect(trader.positions.keys).to eq(['1'])
 
       trader.process_tick(create_tick(92, 74, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
 
       trader.process_tick(create_tick(92, 71, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
 
       trader.process_tick(create_tick(93, 71, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2 3))
+      expect(trader.positions.keys).to eq(%w[1 2 3])
     end
 
     it 'open :sell_aud position if the spread is higher than sd,' \
@@ -143,29 +140,32 @@ describe StatisticalArbitrage::CointegrationTrader do
       expect(broker).to receive(:sell)
         .with(:AUDJPY, 100)
         .exactly(3).times
-        .and_return(create_order_result)
       expect(broker).to receive(:buy)
         .with(:NZDJPY, 50)
         .exactly(3).times
-        .and_return(create_order_result('y'))
+      expect(broker).to receive(:buy)
+        .with(:AUDJPY, 100)
+        .exactly(3).times
+      expect(broker).to receive(:sell)
+        .with(:NZDJPY, 50)
+        .exactly(3).times
       positions = create_mock_positions(
-        create_mock_position(true, :AUDJPY),
-        create_mock_position(true, :NZDJPY)
+        create_mock_position(:AUDJPY),
+        create_mock_position(:NZDJPY)
       )
       allow(broker).to receive(:positions).and_return(positions)
 
       trader = StatisticalArbitrage::CointegrationTrader.new(
         :AUDJPY, :NZDJPY, 100, 1, broker)
-      trader.init
 
       trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq([])
       trader.process_tick(create_tick(90, 74, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
       trader.process_tick(create_tick(92, 71, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
       trader.process_tick(create_tick(93, 71, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2 3))
+      expect(trader.positions.keys).to eq(%w[1 2 3])
 
       trader.process_tick(create_tick(90, 75, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
@@ -178,33 +178,38 @@ describe StatisticalArbitrage::CointegrationTrader do
       expect(broker).to receive(:sell)
         .with(:AUDJPY, 100)
         .exactly(2).times
-        .and_return(create_order_result)
       expect(broker).to receive(:buy)
         .with(:NZDJPY, 50)
         .exactly(1).times
-        .and_return(create_order_result('y'))
       expect(broker).to receive(:buy)
         .with(:NZDJPY, 63)
         .exactly(1).times
-        .and_return(create_order_result('y'))
+      expect(broker).to receive(:buy)
+        .with(:AUDJPY, 100)
+        .exactly(2).times
+      expect(broker).to receive(:sell)
+        .with(:NZDJPY, 50)
+        .exactly(1).times
+      expect(broker).to receive(:sell)
+        .with(:NZDJPY, 63)
+        .exactly(1).times
       positions = create_mock_positions(
-        create_mock_position(true, :AUDJPY),
-        create_mock_position(true, :NZDJPY)
+        create_mock_position(:AUDJPY),
+        create_mock_position(:NZDJPY)
       )
       allow(broker).to receive(:positions).and_return(positions)
 
       trader = StatisticalArbitrage::CointegrationTrader.new(
         :AUDJPY, :NZDJPY, 100, 1, broker)
-      trader.init
 
       trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq([])
       trader.process_tick(create_tick(90, 74, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
       trader.process_tick(create_tick(90, 73, Time.local(2015, 10, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
       trader.process_tick(create_tick(90, 76, Time.local(2016, 2, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
       trader.process_tick(create_tick(90, 80, Time.local(2016, 2, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
       trader.process_tick(create_tick(90, 84, Time.local(2016, 2, 1, 12)))
@@ -216,20 +221,23 @@ describe StatisticalArbitrage::CointegrationTrader do
       expect(broker).to receive(:sell)
         .with(:AUDJPY, 100)
         .exactly(2).times
-        .and_return(create_order_result)
       expect(broker).to receive(:buy)
         .with(:NZDJPY, 50)
         .exactly(2).times
-        .and_return(create_order_result('y'))
+      expect(broker).to receive(:buy)
+        .with(:AUDJPY, 100)
+        .exactly(2).times
+      expect(broker).to receive(:sell)
+        .with(:NZDJPY, 50)
+        .exactly(2).times
       positions = create_mock_positions(
-        create_mock_position(true, :AUDJPY),
-        create_mock_position(true, :NZDJPY)
+        create_mock_position(:AUDJPY),
+        create_mock_position(:NZDJPY)
       )
       allow(broker).to receive(:positions).and_return(positions)
 
       trader = StatisticalArbitrage::CointegrationTrader.new(
         :AUDJPY, :NZDJPY, 100, 0.5, broker)
-      trader.init
 
       trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq([])
@@ -238,9 +246,9 @@ describe StatisticalArbitrage::CointegrationTrader do
       trader.process_tick(create_tick(90, 75, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
       trader.process_tick(create_tick(90, 74, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
       trader.process_tick(create_tick(90, 75, Time.local(2015, 5, 1, 12)))
-      expect(trader.positions.keys).to eq(%w(1 2))
+      expect(trader.positions.keys).to eq(%w[1 2])
       trader.process_tick(create_tick(90, 77, Time.local(2015, 5, 1, 12)))
       expect(trader.positions.keys).to eq(['1'])
       trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))
@@ -248,89 +256,94 @@ describe StatisticalArbitrage::CointegrationTrader do
     end
   end
 
+  describe '#save_state' do
+    it 'can extract states of positions' do
+      broker = double('mock broker')
+      expect(broker).to receive(:sell)
+        .with(:AUDJPY, 100)
+        .exactly(2).times
+      expect(broker).to receive(:buy)
+        .with(:NZDJPY, 50)
+        .exactly(2).times
+
+      trader = StatisticalArbitrage::CointegrationTrader.new(
+        :AUDJPY, :NZDJPY, 100, 0.5, broker)
+      expect(trader.save_state).to eq([])
+
+      trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))
+      expect(trader.positions.keys).to eq([])
+      trader.process_tick(create_tick(90, 76, Time.local(2015, 5, 1, 12)))
+      expect(trader.positions.keys).to eq(['1'])
+      trader.process_tick(create_tick(90, 75, Time.local(2015, 5, 1, 12)))
+      expect(trader.positions.keys).to eq(['1'])
+      trader.process_tick(create_tick(90, 74, Time.local(2015, 5, 1, 12)))
+      expect(trader.positions.keys).to eq(%w[1 2])
+
+      expect(trader.save_state).to eq([{
+        'trade_type' => :sell_a,
+        'index' => 1,
+        'positions' => [
+          { 'pair' => :AUDJPY, 'units' => 100, 'sell_or_buy' => :sell },
+          { 'pair' => :NZDJPY, 'units' => 50, 'sell_or_buy' => :buy }
+        ]
+      }, {
+        'trade_type' => :sell_a,
+        'index' => 2,
+        'positions' => [
+          { 'pair' => :AUDJPY, 'units' => 100, 'sell_or_buy' => :sell },
+          { 'pair' => :NZDJPY, 'units' => 50, 'sell_or_buy' => :buy }
+        ]
+      }])
+    end
+  end
+
   describe '#restore_state' do
     it 'can restore state from positions' do
-      array = [
-        create_mock_position(
-          false, :AUDJPY, Time.utc(2015, 8, 2), :sell, 80),
-        create_mock_position(
-          false, :NZDJPY, Time.utc(2015, 8, 2, 0, 0, 10), :buy, 54),
-
-        # index -1
-        create_mock_position(
-          false, :AUDJPY, Time.utc(2016, 5, 2), :buy, 90),
-        create_mock_position(
-          false, :NZDJPY, Time.utc(2016, 5, 2, 0, 0, 31), :sell, 80),
-        # ignore
-        create_mock_position(
-          false, :NZDJPY, Time.utc(2016, 5, 2), :buy, 80), # ignore
-        create_mock_position(
-          false, :EURJPY, Time.utc(2016, 5, 2), :sell, 80), # ignore
-        create_mock_position(
-          false, :NZDJPY, Time.utc(2016, 5, 1, 23, 59, 55), :sell, 86),
-
-        # index -1 (duplication, ignore)
-        create_mock_position(
-          false, :AUDJPY, Time.utc(2016, 5, 3), :sell, 80),
-        create_mock_position(
-          false, :NZDJPY, Time.utc(2016, 5, 3, 0, 0, 10), :buy, 74),
-
-        # no pair, ignore
-        create_mock_position(
-          false, :AUDJPY, Time.utc(2016, 5, 4), :buy, 90),
-        create_mock_position(
-          false, :NZDJPY, Time.utc(2016, 5, 5), :buy, 90)
-      ]
-
-      positions = double('mock positions')
-      allow(positions).to receive(:each) do |&block|
-        array.each(&block)
-      end
-      allow(positions).to receive(:find) do |&block|
-        array.find(&block)
-      end
       broker = double('mock broker')
+      expect(broker).to receive(:sell)
+        .with(:AUDJPY, 100)
+        .exactly(2).times
+      expect(broker).to receive(:buy)
+        .with(:NZDJPY, 50)
+        .exactly(2).times
+      expect(broker).to receive(:buy)
+        .with(:AUDJPY, 100)
+        .exactly(2).times
+      expect(broker).to receive(:sell)
+        .with(:NZDJPY, 50)
+        .exactly(2).times
+      positions = create_mock_positions(
+        create_mock_position(:AUDJPY),
+        create_mock_position(:NZDJPY)
+      )
       allow(broker).to receive(:positions).and_return(positions)
 
       trader = StatisticalArbitrage::CointegrationTrader.new(
-        :AUDJPY, :NZDJPY, 100, 1, broker)
-      trader.init
+        :AUDJPY, :NZDJPY, 100, 0.5, broker)
+      trader.restore_state([])
+      expect(trader.positions.keys).to eq([])
 
-      expect(trader.positions.keys).to eq(['1', '-2'])
+      trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))
+      expect(trader.positions.keys).to eq([])
+      trader.process_tick(create_tick(90, 76, Time.local(2015, 5, 1, 12)))
+      expect(trader.positions.keys).to eq(['1'])
+      trader.process_tick(create_tick(90, 75, Time.local(2015, 5, 1, 12)))
+      expect(trader.positions.keys).to eq(['1'])
+      trader.process_tick(create_tick(90, 74, Time.local(2015, 5, 1, 12)))
+      expect(trader.positions.keys).to eq(%w[1 2])
 
-      position = trader.positions['1']
-      expect(position.trade_type).to eq(:sell_a)
-      expect(position.spread.round(3)).to eq(52.803)
-      expect(position.coint).to eq({
-        slope: 0.503640515,
-        mean:  50.550317504,
-        sd:    1.923043502
-      })
-      expect(position.distance).to eq(1)
-      expect(position.positions[0].pair_name).to eq(:AUDJPY)
-      expect(position.positions[0].entered_at).to eq(Time.utc(2015, 8, 2))
-      expect(position.positions[0].entry_price).to eq(80)
-      expect(position.positions[1].pair_name).to eq(:NZDJPY)
-      expect(position.positions[1].entered_at).to eq(
-        Time.utc(2015, 8, 2, 0, 0, 10))
-      expect(position.positions[1].entry_price).to eq(54)
+      states = trader.save_state
+      trader = StatisticalArbitrage::CointegrationTrader.new(
+        :AUDJPY, :NZDJPY, 100, 0.5, broker)
+      trader.restore_state(states)
+      expect(trader.positions.keys).to eq(%w[1 2])
 
-      position = trader.positions['-2']
-      expect(position.trade_type).to eq(:buy_a)
-      expect(position.spread.round(3)).to eq(15.104)
-      expect(position.coint).to eq({
-        slope: 0.870884249,
-        mean:  17.985573263,
-        sd:    2.223409486
-      })
-      expect(position.distance).to eq(1)
-      expect(position.positions[0].pair_name).to eq(:AUDJPY)
-      expect(position.positions[0].entered_at).to eq(Time.utc(2016, 5, 2))
-      expect(position.positions[0].entry_price).to eq(90)
-      expect(position.positions[1].pair_name).to eq(:NZDJPY)
-      expect(position.positions[1].entered_at).to eq(
-        Time.utc(2016, 5, 1, 23, 59, 55))
-      expect(position.positions[1].entry_price).to eq(86)
+      trader.process_tick(create_tick(90, 75, Time.local(2015, 5, 1, 12)))
+      expect(trader.positions.keys).to eq(%w[1 2])
+      trader.process_tick(create_tick(90, 77, Time.local(2015, 5, 1, 12)))
+      expect(trader.positions.keys).to eq(['1'])
+      trader.process_tick(create_tick(90, 80, Time.local(2015, 5, 1, 12)))
+      expect(trader.positions.keys).to eq([])
     end
 
     it 'do nothing if positions are not exists' do
@@ -342,7 +355,6 @@ describe StatisticalArbitrage::CointegrationTrader do
 
       trader = StatisticalArbitrage::CointegrationTrader.new(
         :AUDJPY, :NZDJPY, 100, 1, broker)
-      trader.init
 
       expect(trader.positions).to eq({})
     end

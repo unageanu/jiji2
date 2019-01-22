@@ -1,6 +1,4 @@
-# coding: utf-8
-
-require 'thread'
+# frozen_string_literal: true
 
 module Jiji::Model::Trading
   class Process
@@ -42,6 +40,7 @@ module Jiji::Model::Trading
 
     def cancel
       return if finished?
+
       if running?
         post_exec { |c| c.request_cancel }.value
         sleep 0.1 until finished?
@@ -53,6 +52,7 @@ module Jiji::Model::Trading
 
     def pause
       return if finished?
+
       if running?
         post_exec { |c| c.request_pause }.value
         sleep 0.1 until finished?

@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'sinatra/base'
 require 'jiji/web/services/abstract_service'
@@ -81,12 +81,12 @@ module Jiji::Web
     end
 
     def read_period_filter_condition
-      return {
+      {
         start_time: read_time_from(request, 'start'),
         end_time:   read_time_from(request, 'end')
       }
     rescue ArgumentError
-      return nil
+      nil
     end
 
   end

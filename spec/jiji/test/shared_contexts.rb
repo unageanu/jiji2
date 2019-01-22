@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'jiji/test/test_configuration'
 require 'jiji/test/data_builder'
 

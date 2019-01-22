@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'jiji/configurations/mongoid_configuration'
@@ -7,6 +7,7 @@ require 'jiji/web/transport/transportable'
 
 module Jiji::Model::Trading
   # 注文
+  # ※各フィールドについて、詳しくは <a href="http://developer.oanda.com/rest-live-v20/order-df/">公式リファレンス</a> を参照ください。
   class Order
 
     include Jiji::Errors
@@ -27,26 +28,22 @@ module Jiji::Model::Trading
     attr_accessor :last_modified
     # 注文数
     attr_accessor :units
-    # 執行価格(type)
+    # 執行価格
     attr_accessor :price
-    # 有効期限
-    attr_accessor :expiry
-    # 許容するスリッページの下限価格
-    attr_accessor :lower_bound
-    # 許容するスリッページの上限価格
-    attr_accessor :upper_bound
 
-    # 約定後のポジションを損切りする価格
-    # * 約定後、ポジションがこの価格になると(買いの場合は下回る、売りの場合は上回ると)
-    #   ポジションが決済されます
-    attr_accessor :stop_loss
-    # 約定後のポジションを利益確定する価格
-    # * 約定後、ポジションがこの価格になると(買いの場合は上回る、売りの場合は下回ると)
-    #   ポジションが決済されます
-    attr_accessor :take_profit
+    attr_accessor :time_in_force
+    attr_accessor :gtd_time
 
-    # トレーリングストップのディスタンス（pipsで小数第一位まで）
-    attr_accessor :trailing_stop
+    attr_accessor :price_bound
+    attr_accessor :position_fill
+    attr_accessor :trigger_condition
+
+    attr_accessor :take_profit_on_fill
+    attr_accessor :stop_loss_on_fill
+    attr_accessor :trailing_stop_loss_on_fill
+
+    attr_accessor :client_extensions
+    attr_accessor :trade_client_extensions
 
     def initialize(pair_name, internal_id,
       sell_or_buy, type, last_modified) #:nodoc:
@@ -55,8 +52,10 @@ module Jiji::Model::Trading
       @sell_or_buy   = sell_or_buy
       @type          = type
       @last_modified = last_modified
-      @units = @price = @expiry = @lower_bound = @upper_bound = nil
-      @stop_loss = @take_profit = @trailing_stop = nil
+      @units = @price = @time_in_force = @gtd_time = nil
+      @price_bound = @position_fill = @trigger_condition = nil
+      @take_profit_on_fill = @stop_loss_on_fill = @trailing_stop_loss_on_fill = nil
+      @client_extensions = @trade_client_extensions = nil
     end
 
     def attach_broker(broker) #:nodoc:
@@ -82,12 +81,17 @@ module Jiji::Model::Trading
     end
 
     def extract_options #:nodoc:
-      {
-        units:         units,
-        stop_loss:     stop_loss,
-        take_profit:   take_profit,
-        trailing_stop: trailing_stop
-      }
+      %i[
+        units time_in_force position_fill trigger_condition
+        take_profit_on_fill stop_loss_on_fill trailing_stop_loss_on_fill
+        client_extensions trade_client_extensions
+      ].each_with_object({}) do |key, r|
+        r[key] = method(key).call
+      end
+    end
+
+    def expired?(timestamp) #:nodoc:
+      time_in_force == 'GTD' && gtd_time && gtd_time <= timestamp
     end
 
     def carried_out?(tick) #:nodoc:
@@ -104,16 +108,57 @@ module Jiji::Model::Trading
     def values #:nodoc:
       [
         @pair_name, @internal_id, @sell_or_buy, @type,
-        @last_modified, @units, @price, @expiry,
-        @lower_bound, @upper_bound,
-        @stop_loss, @take_profit, @trailing_stop
+        @last_modified, @units, @price, @time_in_force, @gtd_time,
+        @price_bound, @position_fill, @trigger_condition,
+        @take_profit_on_fill, @stop_loss_on_fill, @trailing_stop_loss_on_fill,
+        @client_extensions, @trade_client_extensions
       ]
     end
 
-    def collect_properties(keys = instance_variables.map { |n| n[1..-1] })
+    def from_h(hash)
+      hash.each do |k, v|
+        k = k.to_sym
+        unless v.nil?
+          if k == :price || k == :price_bound || k == :initial_price
+            v = BigDecimal(v, 10)
+          end
+          if k == :take_profit_on_fill || k == :stop_loss_on_fill || k == :trailing_stop_loss_on_fill
+            v = v.clone.symbolize_keys
+            v[:price] = BigDecimal(v[:price], 10) if v[:price]
+          end
+        end
+
+        key = '@' + k.to_s
+        instance_variable_set(key, v) if instance_variable_defined?(key)
+      end
+    end
+
+    def collect_properties(keys = instance_variables.map { |n| n[1..-1].to_sym })
       keys.each_with_object({}) do |name, obj|
-        next if name == 'broker'
-        obj[name.to_sym] = instance_variable_get('@' + name.to_s)
+        next if name == :broker
+
+        v = instance_variable_get("@#{name}")
+
+        unless v.nil?
+          if name == :price || name == :price_bound || name == :initial_price
+            v = v.to_s
+          end
+          if name == :take_profit_on_fill || name == :stop_loss_on_fill || name == :trailing_stop_loss_on_fill
+            v = v.clone
+            v[:price] = v[:price].to_s if v[:price]
+          end
+        end
+
+        obj[name] = v
+      end
+    end
+
+    def collect_properties_for_modify
+      instance_variables.map { |n| n[1..-1].to_sym }.each_with_object({}) do |name, obj|
+        next if name == :broker
+
+        v = instance_variable_get("@#{name}")
+        obj[name] = v.is_a?(Hash) ? v.dup : v
       end
     end
 
@@ -132,15 +177,14 @@ module Jiji::Model::Trading
     end
 
     def market_if_touched?(current_price)
-      @initial_price = current_price unless @initial_price
+      @initial_price ||= current_price
       @initial_price < price ? upper?(current_price) : lower?(current_price)
     end
 
     def insert_reservation_order_options(options)
       options[:price] = price
-      options[:expiry] = expiry
-      options[:lower_bound] = lower_bound
-      options[:upper_bound] = upper_bound
+      options[:gtd_time] = gtd_time
+      options[:price_bound] = price_bound
     end
 
   end
@@ -151,12 +195,14 @@ module Jiji::Model::Trading
     include Jiji::Utils::ValueObject
     include Jiji::Web::Transport::Transportable
 
-    # 新規作成された注文
+    # 新規作成された注文( Jiji::Model::Trading::Order )
     # * 注文が約定しなかった場合に返されます
+    # * 約定した場合、nil が返されます。
     attr_reader :order_opened
 
-    # 新規建玉となった注文
+    # 注文によって作成された建玉 ( Jiji::Model::Trading::Position )
     # * 注文が約定し、新しい建玉が生成された場合に返されます
+    # * 約定しなかった場合、nil が返されます。
     attr_reader :trade_opened
 
     # 注文が約定した結果、既存の建玉の一部が決済された場合の建玉の情報
@@ -183,7 +229,7 @@ module Jiji::Model::Trading
 
     # 決済された建玉の内部ID
     attr_reader :internal_id
-    # 取引数/部分決済の場合は、部分決済後の取引数
+    # 取引数/部分決済の場合は、部分決済された取引数
     attr_reader :units
     # 決済価格
     attr_reader :price

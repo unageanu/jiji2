@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 RSpec.shared_examples 'rate_retriever' do
   describe 'retrieve_rate_history' do

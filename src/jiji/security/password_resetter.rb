@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'encase'
 require 'jiji/errors/errors'
@@ -10,7 +10,7 @@ module Jiji::Security
     include Encase
     include Jiji::Errors
 
-    MAIL_TITLE = '[Jiji] パスワードの再設定'.freeze
+    MAIL_TITLE = '[Jiji] パスワードの再設定'
 
     needs :setting_repository
     needs :session_store
@@ -37,8 +37,8 @@ module Jiji::Security
 
     def send_mail(mail_address, token)
       mail_body = create_mail_body(token)
-      mail_composer.compose(mail_address, MAIL_TITLE) do |_mail|
-        text_part do
+      mail_composer.compose(mail_address, MAIL_TITLE) do |mail|
+        mail.text_part do
           content_type 'text/plain; charset=UTF-8'
           body mail_body
         end

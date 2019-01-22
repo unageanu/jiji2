@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/configurations/mongoid_configuration'
 
@@ -57,6 +57,7 @@ module Jiji::Model::Trading::Brokers
     # 戻り値:: Positions
     def positions
       return @positions unless @positions_is_dirty
+
       load_positions
     end
 
@@ -65,6 +66,7 @@ module Jiji::Model::Trading::Brokers
     # 戻り値:: Order の配列
     def orders
       return @orders if !@orders_is_dirty && @orders
+
       load_orders
     end
 
@@ -142,7 +144,7 @@ module Jiji::Model::Trading::Brokers
     end
 
     def destroy #:nodoc:
-      securities.destroy if securities
+      securities&.destroy
     end
 
     # for internal use.
@@ -158,8 +160,7 @@ module Jiji::Model::Trading::Brokers
     end
 
     # for internal use.
-    def refresh_account #:nodoc:
-    end
+    def refresh_account; end
 
     # 建玉情報を更新します。
     #

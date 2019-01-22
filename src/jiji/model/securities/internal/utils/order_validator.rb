@@ -1,6 +1,6 @@
-require 'oanda_api'
+# frozen_string_literal: true
 
-module Jiji::Model::Securities::Internal::Virtual
+module Jiji::Model::Securities::Internal::Utils
   class OrderValidator
 
     def validate(pair_name, sell_or_buy, units, type, options)
@@ -52,35 +52,37 @@ module Jiji::Model::Securities::Internal::Virtual
       price = options[:price]
       should_be_not_null('price', price)
       should_be_positive_numeric('price', price)
-
-      expiry = options[:expiry]
-      should_be_not_null('expiry', expiry)
-      should_be_time('expiry', expiry)
     end
 
     def validate_take_profit(options, sell_or_buy)
       price = options[:price]
-      take_profit = options[:take_profit]
-      take_profit = nil if take_profit == 0
+      take_profit = options[:takeProfitOnFill]
       return if take_profit.nil?
-      should_be_positive_numeric('take_profit', take_profit)
+
+      should_be_positive_numeric('take_profit_on_fill.price', take_profit[:price])
       return if price.nil?
-      if sell_or_buy == :buy ? price > take_profit : price < take_profit
-        raise_request_error('Invalid takeProfit error: take_profit is ' \
-          "below price. price=#{price} take_profit=#{take_profit}")
+
+      if sell_or_buy == :buy ? price > take_profit[:price] : price < take_profit[:price]
+        raise_request_error('Invalid take_profit_on_fill error: take_profit_on_fill.price is ' \
+          "below price. price=#{price} take_profit_on_fill.price=#{take_profit[:price]}")
       end
     end
 
     def validate_stop_loss(options, sell_or_buy)
       price = options[:price]
-      stop_loss = options[:stop_loss]
-      stop_loss = nil if stop_loss == 0
+      stop_loss = options[:stopLossOnFill]
       return if stop_loss.nil?
-      should_be_positive_numeric('stop_loss', stop_loss)
-      return if price.nil?
-      if sell_or_buy == :buy ? price < stop_loss : price > stop_loss
-        raise_request_error('Invalid stop_loss error: ' \
-          "stop_loss is below price. price=#{price} stop_loss=#{stop_loss}")
+
+      if !stop_loss[:price].nil?
+        should_be_positive_numeric('stop_loss_on_fill.price', stop_loss[:price])
+        return if price.nil?
+
+        if sell_or_buy == :buy ? price < stop_loss[:price] : price > stop_loss[:price]
+          raise_request_error('Invalid stop_loss_on_fill error: ' \
+            "stop_loss_on_fill.price is below price. price=#{price} stop_loss_on_fill.price=#{stop_loss[:price]}")
+        end
+      elsif !stop_loss[:distance].nil?
+        should_be_positive_numeric('stop_loss_on_fill.distance', stop_loss[:distance])
       end
     end
 
@@ -106,7 +108,7 @@ module Jiji::Model::Securities::Internal::Virtual
     end
 
     def raise_request_error(message)
-      raise OandaAPI::RequestError, message
+      raise OandaApiV20::RequestError, message
     end
 
   end

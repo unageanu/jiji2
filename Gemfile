@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.2.3'
+ruby '2.3.8'
 
 gem 'encase'
 
@@ -19,10 +19,9 @@ gem 'puma'
 
 gem 'mongoid'
 
-gem 'oanda_api'
-gem 'httparty', '0.13.7'
-gem 'persistent_http', '2.0.1'
+gem 'oanda_api_v20'
 gem 'quandl'
+gem 'httpclient'
 
 gem 'mail'
 gem 'aws-sdk'
@@ -37,8 +36,6 @@ group :test do
   gem 'rspec-parameterized'
   gem 'simplecov'
   gem 'codeclimate-test-reporter'
-
-  gem 'httpclient'
 end
 
 group :development do

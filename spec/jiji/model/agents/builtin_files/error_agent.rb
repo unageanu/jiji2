@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 class SendNotificationAgent
 
@@ -43,8 +44,7 @@ class ErrorAgent
     []
   end
 
-  def post_create
-  end
+  def post_create; end
 
   def next_tick(tick)
     raise 'test.'
@@ -68,11 +68,9 @@ class ErrorOnCreateAgent
     raise 'test.'
   end
 
-  def post_create
-  end
+  def post_create; end
 
-  def next_tick(tick)
-  end
+  def next_tick(tick); end
 
 end
 
@@ -92,7 +90,6 @@ class ErrorOnPostCreateAgent
     raise 'test.'
   end
 
-  def next_tick(tick)
-  end
+  def next_tick(tick); end
 
 end

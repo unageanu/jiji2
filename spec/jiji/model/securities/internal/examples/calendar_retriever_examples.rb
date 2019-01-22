@@ -1,11 +1,11 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 require 'jiji/model/securities/oanda_securities'
 
 RSpec.shared_examples 'CalendarRetriever examples' do
   describe '#retirieve_calendar' do
-    it 'can retirieve economic calendar informations.' do
+    xit 'can retirieve economic calendar informations.' do
       check_event_information(client.retrieve_calendar(2_592_000, :USDJPY))
       check_event_information(client.retrieve_calendar(604_800))
     end

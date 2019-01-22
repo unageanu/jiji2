@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 
@@ -7,8 +7,8 @@ describe Jiji::Db::CreateCappedCollections do
 
   let(:script) do
     Jiji::Db::CreateCappedCollections.new({
-      notifications: { size:  22_240,  max: 3 },
-      log_data:      { size: 400_000,  max: 2 }
+      notifications: { size: 22_240, max: 3 },
+      log_data:      { size: 400_000, max: 2 }
     })
   end
   let(:client) { Jiji::Db::SchemeStatus.mongo_client }
@@ -38,7 +38,7 @@ describe Jiji::Db::CreateCappedCollections do
   def check_notification_collection
     5.times do |i|
       Jiji::Model::Notification::Notification.create(
-        agent_setting, Time.at(i * 1000), nil, 'a' * 5120).save
+        agent_setting, Time.at(i * 1000), nil, 'a' * 512).save!
     end
     expect(Jiji::Model::Notification::Notification.count).to eq 3
     timestamps = Jiji::Model::Notification::Notification

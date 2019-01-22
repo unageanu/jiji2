@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 # ===交差状態を判定するユーティリティ
 # 先行指標と遅行指標を受け取って、クロスアップ/クロスダウンを判定するユーティリティです。
@@ -37,6 +38,7 @@ class Cross
   # lazy:: 遅行指標
   def next_data(fast, lazy)
     return unless fast && lazy
+
     # 交差状態を算出
     calculate_state(fast, lazy)
     { cross: @cross, trend: @trend }
@@ -75,7 +77,7 @@ class Cross
 
   def calculate_state(fast, lazy)
     @trend = fast <=> lazy
-    @cross = if @cross_prev && @trend != @cross_prev && @trend != 0
+    @cross = if @cross_prev && @trend != @cross_prev && @trend.nonzero?
                @trend > @cross_prev ? :up : :down
              else
                :none

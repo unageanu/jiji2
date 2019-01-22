@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 require 'jiji/test/test_configuration'
 
@@ -356,7 +356,7 @@ describe Jiji::Model::Agents::AgentRegistry do
       end
     end
 BODY
-    )
+  )
     @registory.add_source('bbb', '', :agent, <<BODY
     module TestModule2
       class TestAgent2
@@ -375,7 +375,7 @@ BODY
       end
     end
 BODY
-    )
+  )
     names = @registory.map { |x| x }
     expect(names.length).to be 2
     expect(names.include?('TestModule2::TestAgent2@bbb')).to be true

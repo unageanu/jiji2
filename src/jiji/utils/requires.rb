@@ -1,9 +1,10 @@
+# frozen_string_literal: true
 
 module Jiji::Utils
   class Requires
 
     def self.root
-      File.expand_path('../../../../', __FILE__)
+      File.expand_path('../../..', __dir__)
     end
 
     def self.require_all(path, base = 'src')

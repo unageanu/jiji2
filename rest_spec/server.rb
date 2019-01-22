@@ -1,4 +1,4 @@
-# coding: utf-8
+# frozen_string_literal: true
 
 ENV['ENABLE_COVERADGE_REPORT'] = 'false'
 
@@ -36,7 +36,7 @@ module Jiji
       log_dir = File.join(BUILD_DIR, 'rest_spec')
       FileUtils.mkdir_p log_dir
       pid = spawn(
-        { 'RACK_ENV' => 'test', 'PORT' => '3000' },
+        { 'RACK_ENV' => 'test', 'HOST' => '127.0.0.1', 'PORT' => '3000' },
         'bundle exec puma -C config/puma.rb',
         out: File.join(log_dir, "test_server_#{id}.log"), err: :out)
       puts "start server pid=#{pid}"
@@ -46,6 +46,7 @@ module Jiji
     def register_shutdown_fook(pid)
       at_exit do
         raise "failed to kill server. pid=#{pid}" unless system("kill #{pid}")
+
         puts "stop server pid=#{pid}"
       end
     end

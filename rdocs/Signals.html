@@ -96,6 +96,8 @@
 
   <section class="description">
     
+<p>frozen_string_literal: true</p>
+
   </section>
 
   
@@ -156,13 +158,13 @@
 
           
           <div class="method-source-code" id="bollinger_bands-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 270</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 277</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">bollinger_bands</span>(<span class="ruby-identifier">data</span>, <span class="ruby-identifier">pivot</span> = [<span class="ruby-value">0</span>, <span class="ruby-value">1</span>, <span class="ruby-value">2</span>], <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)
   <span class="ruby-identifier">ma</span> = <span class="ruby-identifier">block_given?</span> <span class="ruby-operator">?</span> <span class="ruby-keyword">yield</span>(<span class="ruby-identifier">data</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">ma</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">sd</span> = <span class="ruby-identifier">standard_division</span>(<span class="ruby-identifier">data</span>) { <span class="ruby-operator">|</span><span class="ruby-identifier">s</span><span class="ruby-operator">|</span> <span class="ruby-identifier">s</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">ma</span> }
   <span class="ruby-identifier">pivot</span>.<span class="ruby-identifier">each_with_object</span>([]) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">r</span>, <span class="ruby-identifier">res</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">res</span>.<span class="ruby-identifier">unshift</span>(<span class="ruby-identifier">ma</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sd</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">r</span>)
-    <span class="ruby-identifier">res</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">ma</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sd</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">r</span> <span class="ruby-operator">*</span> <span class="ruby-value">-1</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">r</span> <span class="ruby-operator">!=</span> <span class="ruby-value">0</span>
+    <span class="ruby-identifier">res</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">ma</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">sd</span> <span class="ruby-operator">*</span> <span class="ruby-identifier">r</span> <span class="ruby-operator">*</span> <span class="ruby-value">-1</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">r</span>.<span class="ruby-identifier">nonzero?</span>
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -218,7 +220,7 @@
 
           
           <div class="method-source-code" id="dmi-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 355</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 362</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">dmi</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">tmp</span> = <span class="ruby-identifier">calculate_dmi_from_data</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">atr</span> = <span class="ruby-identifier">ma</span>(<span class="ruby-identifier">tmp</span>[<span class="ruby-value">0</span>])
@@ -265,7 +267,7 @@
 
           
           <div class="method-source-code" id="ema-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 251</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 258</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">ema</span>(<span class="ruby-identifier">data</span>, <span class="ruby-identifier">smoothing_coefficient</span> = <span class="ruby-value">0.1</span>)
   <span class="ruby-identifier">data</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">reduce</span>(<span class="ruby-identifier">data</span>[<span class="ruby-value">0</span>]) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span>, <span class="ruby-identifier">s</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">t</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">smoothing_coefficient</span> <span class="ruby-operator">*</span> (<span class="ruby-identifier">s</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">t</span>)
@@ -307,7 +309,7 @@
 
           
           <div class="method-source-code" id="ma-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 229</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 236</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">ma</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">total</span> = <span class="ruby-identifier">data</span>.<span class="ruby-identifier">reduce</span>(<span class="ruby-value">:+</span>)
   <span class="ruby-identifier">total</span> <span class="ruby-operator">/</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">length</span>
@@ -353,7 +355,7 @@
 
           
           <div class="method-source-code" id="macd-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 312</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 319</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">macd</span>(<span class="ruby-identifier">data</span>, <span class="ruby-identifier">short_range</span>, <span class="ruby-identifier">long_range</span>, <span class="ruby-identifier">smoothing_coefficient</span>)
   <span class="ruby-identifier">ema</span>(<span class="ruby-identifier">data</span>[<span class="ruby-identifier">short_range</span> <span class="ruby-operator">*</span> <span class="ruby-value">-1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>], <span class="ruby-identifier">smoothing_coefficient</span>)        <span class="ruby-operator">-</span> <span class="ruby-identifier">ema</span>(<span class="ruby-identifier">data</span>[<span class="ruby-identifier">long_range</span> <span class="ruby-operator">*</span> <span class="ruby-value">-1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>], <span class="ruby-identifier">smoothing_coefficient</span>)
 <span class="ruby-keyword">end</span></pre>
@@ -393,7 +395,7 @@
 
           
           <div class="method-source-code" id="momentum-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 283</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 290</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">momentum</span>(<span class="ruby-identifier">data</span>)
   (<span class="ruby-identifier">data</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">first</span>) <span class="ruby-operator">/</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">length</span>
 <span class="ruby-keyword">end</span></pre>
@@ -436,7 +438,7 @@
 
           
           <div class="method-source-code" id="roc-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 369</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 376</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">roc</span>(<span class="ruby-identifier">data</span>)
   (<span class="ruby-identifier">data</span>.<span class="ruby-identifier">first</span> <span class="ruby-operator">-</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">last</span>) <span class="ruby-operator">/</span> <span class="ruby-identifier">data</span>.<span class="ruby-identifier">last</span> <span class="ruby-operator">*</span> <span class="ruby-value">100</span>
 <span class="ruby-keyword">end</span></pre>
@@ -481,7 +483,7 @@
 
           
           <div class="method-source-code" id="rsi-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 325</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 332</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">rsi</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">prev</span> = <span class="ruby-keyword">nil</span>
   <span class="ruby-identifier">tmp</span> = <span class="ruby-identifier">data</span>.<span class="ruby-identifier">each_with_object</span>([<span class="ruby-value">0.0</span>, <span class="ruby-value">0.0</span>]) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">i</span>, <span class="ruby-identifier">r</span><span class="ruby-operator">|</span>
@@ -526,7 +528,7 @@
 
           
           <div class="method-source-code" id="vector-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 291</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 298</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">vector</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-comment"># 最小二乗法を使う。</span>
   <span class="ruby-identifier">total</span> = { <span class="ruby-identifier">x</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span>, <span class="ruby-identifier">y</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span>, <span class="ruby-identifier">xx</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span>, <span class="ruby-identifier">xy</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span>, <span class="ruby-identifier">yy</span><span class="ruby-operator">:</span> <span class="ruby-value">0.0</span> }
@@ -576,7 +578,7 @@
 
           
           <div class="method-source-code" id="wma-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 238</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/agents/builtin_files/signals.rb, line 245</span>
 <span class="ruby-keyword">def</span> <span class="ruby-identifier">wma</span>(<span class="ruby-identifier">data</span>)
   <span class="ruby-identifier">weight</span> = <span class="ruby-value">0</span>
   <span class="ruby-identifier">total</span> = <span class="ruby-identifier">data</span>.<span class="ruby-identifier">reduce</span>(<span class="ruby-value">0.0</span>) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span>, <span class="ruby-identifier">s</span><span class="ruby-operator">|</span>
@@ -602,7 +604,7 @@
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

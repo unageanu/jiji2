@@ -99,6 +99,22 @@
     
     <li ><a href="#method-c-create">::create</a>
     
+    <li ><a href="#method-c-extract_stop_loss_from_order">::extract_stop_loss_from_order</a>
+    
+    <li ><a href="#method-c-extract_stop_loss_from_trade">::extract_stop_loss_from_trade</a>
+    
+    <li ><a href="#method-c-extract_take_profit_from_order">::extract_take_profit_from_order</a>
+    
+    <li ><a href="#method-c-extract_take_profit_from_trade">::extract_take_profit_from_trade</a>
+    
+    <li ><a href="#method-c-extract_trailing_amount_from_order">::extract_trailing_amount_from_order</a>
+    
+    <li ><a href="#method-c-extract_trailing_amount_from_trade">::extract_trailing_amount_from_trade</a>
+    
+    <li ><a href="#method-c-extract_trailing_stop_from_order">::extract_trailing_stop_from_order</a>
+    
+    <li ><a href="#method-c-extract_trailing_stop_from_trade">::extract_trailing_stop_from_trade</a>
+    
   </ul>
 </div>
 
@@ -148,27 +164,13 @@
 
         <div class="method-description">
           
-          <p>Hashの値から、新しい <a href="ClosingPolicy.html">ClosingPolicy</a> を作成します。</p>
-
-<pre class="ruby"><span class="ruby-constant">Jiji</span><span class="ruby-operator">::</span><span class="ruby-constant">Model</span><span class="ruby-operator">::</span><span class="ruby-constant">Trading</span><span class="ruby-operator">::</span><span class="ruby-constant">ClosingPolicy</span>.<span class="ruby-identifier">create</span>({
-  <span class="ruby-identifier">stop_loss</span><span class="ruby-operator">:</span>     <span class="ruby-value">130</span>,
-  <span class="ruby-identifier">take_profit</span><span class="ruby-operator">:</span>   <span class="ruby-value">140.5</span>,
-  <span class="ruby-identifier">trailing_stop</span><span class="ruby-operator">:</span> <span class="ruby-value">10</span>
-})
-</pre>
-<dl class="rdoc-list note-list"><dt>options
-<dd>
-<p>値</p>
-</dd><dt>戻り値
-<dd>
-<p>新しい <a href="ClosingPolicy.html">ClosingPolicy</a></p>
-</dd></dl>
+          <p>for internal use.</p>
           
           
 
           
           <div class="method-source-code" id="create-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/trading/closing_policy.rb, line 43</span>
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/closing_policy.rb, line 35</span>
 <span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">create</span>(<span class="ruby-identifier">options</span>)
   <span class="ruby-constant">ClosingPolicy</span>.<span class="ruby-identifier">new</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span>
     <span class="ruby-identifier">c</span>.<span class="ruby-identifier">take_profit</span>     = <span class="ruby-identifier">options</span>[<span class="ruby-value">:take_profit</span>]     <span class="ruby-operator">||</span> <span class="ruby-value">0</span>
@@ -176,6 +178,285 @@
     <span class="ruby-identifier">c</span>.<span class="ruby-identifier">trailing_stop</span>   = <span class="ruby-identifier">options</span>[<span class="ruby-value">:trailing_stop</span>]   <span class="ruby-operator">||</span> <span class="ruby-value">0</span>
     <span class="ruby-identifier">c</span>.<span class="ruby-identifier">trailing_amount</span> = <span class="ruby-identifier">options</span>[<span class="ruby-value">:trailing_amount</span>] <span class="ruby-operator">||</span> <span class="ruby-value">0</span>
   <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-extract_stop_loss_from_order" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_stop_loss_from_order</span><span
+            class="method-args">(stop_loss_on_fill, price)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_stop_loss_from_order-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/closing_policy.rb, line 53</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">extract_stop_loss_from_order</span>(<span class="ruby-identifier">stop_loss_on_fill</span>, <span class="ruby-identifier">price</span>)
+  <span class="ruby-keyword">if</span> <span class="ruby-identifier">stop_loss_on_fill</span>
+    <span class="ruby-keyword">if</span> <span class="ruby-identifier">stop_loss_on_fill</span>[<span class="ruby-value">:price</span>]
+      <span class="ruby-constant">BigDecimal</span>(<span class="ruby-identifier">stop_loss_on_fill</span>[<span class="ruby-value">:price</span>], <span class="ruby-value">10</span>)
+    <span class="ruby-keyword">elsif</span> <span class="ruby-identifier">stop_loss_on_fill</span>[<span class="ruby-value">:distance</span>]
+      <span class="ruby-constant">BigDecimal</span>(<span class="ruby-identifier">price</span>, <span class="ruby-value">10</span>) <span class="ruby-operator">+</span> <span class="ruby-identifier">stop_loss_on_fill</span>[<span class="ruby-value">:distance</span>]
+    <span class="ruby-keyword">end</span>
+  <span class="ruby-keyword">else</span>
+    <span class="ruby-value">0</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-extract_stop_loss_from_trade" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_stop_loss_from_trade</span><span
+            class="method-args">(trade)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_stop_loss_from_trade-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/closing_policy.rb, line 89</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">extract_stop_loss_from_trade</span>(<span class="ruby-identifier">trade</span>)
+  <span class="ruby-identifier">price</span> = <span class="ruby-identifier">trade</span>[<span class="ruby-string">&#39;stopLossOrder&#39;</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">trade</span>[<span class="ruby-string">&#39;stopLossOrder&#39;</span>][<span class="ruby-string">&#39;price&#39;</span>]
+  <span class="ruby-identifier">price</span> <span class="ruby-operator">?</span> <span class="ruby-constant">BigDecimal</span>(<span class="ruby-identifier">price</span>, <span class="ruby-value">10</span>) <span class="ruby-operator">:</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-extract_take_profit_from_order" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_take_profit_from_order</span><span
+            class="method-args">(take_profit_on_fill)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_take_profit_from_order-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/closing_policy.rb, line 65</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">extract_take_profit_from_order</span>(<span class="ruby-identifier">take_profit_on_fill</span>)
+  <span class="ruby-identifier">price</span> = <span class="ruby-identifier">take_profit_on_fill</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">take_profit_on_fill</span>[<span class="ruby-value">:price</span>]
+  <span class="ruby-identifier">price</span> <span class="ruby-operator">?</span> <span class="ruby-constant">BigDecimal</span>(<span class="ruby-identifier">price</span>, <span class="ruby-value">10</span>) <span class="ruby-operator">:</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-extract_take_profit_from_trade" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_take_profit_from_trade</span><span
+            class="method-args">(trade)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_take_profit_from_trade-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/closing_policy.rb, line 94</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">extract_take_profit_from_trade</span>(<span class="ruby-identifier">trade</span>)
+  <span class="ruby-identifier">price</span> = <span class="ruby-identifier">trade</span>[<span class="ruby-string">&#39;takeProfitOrder&#39;</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">trade</span>[<span class="ruby-string">&#39;takeProfitOrder&#39;</span>][<span class="ruby-string">&#39;price&#39;</span>]
+  <span class="ruby-identifier">price</span> <span class="ruby-operator">?</span> <span class="ruby-constant">BigDecimal</span>(<span class="ruby-identifier">price</span>, <span class="ruby-value">10</span>) <span class="ruby-operator">:</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-extract_trailing_amount_from_order" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_trailing_amount_from_order</span><span
+            class="method-args">(trailing_stop_loss_on_fill)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_trailing_amount_from_order-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/closing_policy.rb, line 75</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">extract_trailing_amount_from_order</span>(<span class="ruby-identifier">trailing_stop_loss_on_fill</span>)
+  <span class="ruby-identifier">price</span> = <span class="ruby-identifier">trailing_stop_loss_on_fill</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">trailing_stop_loss_on_fill</span>[<span class="ruby-value">:trailing_stop_value</span>]
+  <span class="ruby-identifier">price</span> <span class="ruby-operator">?</span> <span class="ruby-constant">BigDecimal</span>(<span class="ruby-identifier">price</span>, <span class="ruby-value">10</span>) <span class="ruby-operator">:</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-extract_trailing_amount_from_trade" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_trailing_amount_from_trade</span><span
+            class="method-args">(trade)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_trailing_amount_from_trade-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/closing_policy.rb, line 104</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">extract_trailing_amount_from_trade</span>(<span class="ruby-identifier">trade</span>)
+  <span class="ruby-identifier">price</span> = <span class="ruby-identifier">trade</span>[<span class="ruby-string">&#39;trailingStopLossOrder&#39;</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">trade</span>[<span class="ruby-string">&#39;trailingStopLossOrder&#39;</span>][<span class="ruby-string">&#39;trailingStopValue&#39;</span>]
+  <span class="ruby-identifier">price</span> <span class="ruby-operator">?</span> <span class="ruby-constant">BigDecimal</span>(<span class="ruby-identifier">price</span>, <span class="ruby-value">10</span>) <span class="ruby-operator">:</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-extract_trailing_stop_from_order" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_trailing_stop_from_order</span><span
+            class="method-args">(trailing_stop_loss_on_fill)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_trailing_stop_from_order-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/closing_policy.rb, line 70</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">extract_trailing_stop_from_order</span>(<span class="ruby-identifier">trailing_stop_loss_on_fill</span>)
+  <span class="ruby-identifier">price</span> = <span class="ruby-identifier">trailing_stop_loss_on_fill</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">trailing_stop_loss_on_fill</span>[<span class="ruby-value">:distance</span>]
+  <span class="ruby-identifier">price</span> <span class="ruby-operator">?</span> <span class="ruby-constant">BigDecimal</span>(<span class="ruby-identifier">price</span>, <span class="ruby-value">10</span>) <span class="ruby-operator">:</span> <span class="ruby-value">0</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-c-extract_trailing_stop_from_trade" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">extract_trailing_stop_from_trade</span><span
+            class="method-args">(trade)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="extract_trailing_stop_from_trade-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/closing_policy.rb, line 99</span>
+<span class="ruby-keyword">def</span> <span class="ruby-keyword">self</span>.<span class="ruby-identifier">extract_trailing_stop_from_trade</span>(<span class="ruby-identifier">trade</span>)
+  <span class="ruby-identifier">price</span> = <span class="ruby-identifier">trade</span>[<span class="ruby-string">&#39;trailingStopLossOrder&#39;</span>] <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">trade</span>[<span class="ruby-string">&#39;trailingStopLossOrder&#39;</span>][<span class="ruby-string">&#39;distance&#39;</span>]
+  <span class="ruby-identifier">price</span> <span class="ruby-operator">?</span> <span class="ruby-constant">BigDecimal</span>(<span class="ruby-identifier">price</span>, <span class="ruby-value">10</span>) <span class="ruby-operator">:</span> <span class="ruby-value">0</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
           
@@ -195,7 +476,7 @@
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

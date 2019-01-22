@@ -93,6 +93,10 @@
     
     <li ><a href="#method-i-collect_properties">#collect_properties</a>
     
+    <li ><a href="#method-i-collect_properties_for_modify">#collect_properties_for_modify</a>
+    
+    <li ><a href="#method-i-from_h">#from_h</a>
+    
     <li ><a href="#method-i-modify">#modify</a>
     
   </ul>
@@ -108,7 +112,9 @@
 
   <section class="description">
     
-<p>注文</p>
+<p>注文 ※各フィールドについて、詳しくは &lt;a href=“<a
+href="http://developer.oanda.com/rest-live-v20/order-df/">公式リファレンス</a">developer.oanda.com/rest-live-v20/order-df/”>公式リファレンス</a</a>&gt;
+を参照ください。</p>
 
   </section>
 
@@ -129,15 +135,28 @@
       </header>
 
       
-      <div id="attribute-i-expiry" class="method-detail">
+      <div id="attribute-i-client_extensions" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">expiry</span><span
+          <span class="method-name">client_extensions</span><span
             class="attribute-access-type">[RW]</span>
         </div>
 
         <div class="method-description">
         
-        <p>有効期限</p>
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-gtd_time" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">gtd_time</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
         
         </div>
       </div>
@@ -168,19 +187,6 @@
         </div>
       </div>
       
-      <div id="attribute-i-lower_bound" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">lower_bound</span><span
-            class="attribute-access-type">[RW]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>許容するスリッページの下限価格</p>
-        
-        </div>
-      </div>
-      
       <div id="attribute-i-pair_name" class="method-detail">
         <div class="method-heading attribute-method-heading">
           <span class="method-name">pair_name</span><span
@@ -194,6 +200,19 @@
         </div>
       </div>
       
+      <div id="attribute-i-position_fill" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">position_fill</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
       <div id="attribute-i-price" class="method-detail">
         <div class="method-heading attribute-method-heading">
           <span class="method-name">price</span><span
@@ -202,7 +221,20 @@
 
         <div class="method-description">
         
-        <p>執行価格(type)</p>
+        <p>執行価格</p>
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-price_bound" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">price_bound</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
         
         </div>
       </div>
@@ -220,47 +252,80 @@
         </div>
       </div>
       
-      <div id="attribute-i-stop_loss" class="method-detail">
+      <div id="attribute-i-stop_loss_on_fill" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">stop_loss</span><span
+          <span class="method-name">stop_loss_on_fill</span><span
             class="attribute-access-type">[RW]</span>
         </div>
 
         <div class="method-description">
         
-        <p>約定後のポジションを損切りする価格</p>
-<ul><li>
-<p>約定後、ポジションがこの価格になると(買いの場合は下回る、売りの場合は上回ると) ポジションが決済されます</p>
-</li></ul>
+        
         
         </div>
       </div>
       
-      <div id="attribute-i-take_profit" class="method-detail">
+      <div id="attribute-i-take_profit_on_fill" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">take_profit</span><span
+          <span class="method-name">take_profit_on_fill</span><span
             class="attribute-access-type">[RW]</span>
         </div>
 
         <div class="method-description">
         
-        <p>約定後のポジションを利益確定する価格</p>
-<ul><li>
-<p>約定後、ポジションがこの価格になると(買いの場合は上回る、売りの場合は下回ると) ポジションが決済されます</p>
-</li></ul>
+        
         
         </div>
       </div>
       
-      <div id="attribute-i-trailing_stop" class="method-detail">
+      <div id="attribute-i-time_in_force" class="method-detail">
         <div class="method-heading attribute-method-heading">
-          <span class="method-name">trailing_stop</span><span
+          <span class="method-name">time_in_force</span><span
             class="attribute-access-type">[RW]</span>
         </div>
 
         <div class="method-description">
         
-        <p>トレーリングストップのディスタンス（pipsで小数第一位まで）</p>
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-trade_client_extensions" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">trade_client_extensions</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-trailing_stop_loss_on_fill" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">trailing_stop_loss_on_fill</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
+        
+        </div>
+      </div>
+      
+      <div id="attribute-i-trigger_condition" class="method-detail">
+        <div class="method-heading attribute-method-heading">
+          <span class="method-name">trigger_condition</span><span
+            class="attribute-access-type">[RW]</span>
+        </div>
+
+        <div class="method-description">
+        
+        
         
         </div>
       </div>
@@ -287,19 +352,6 @@
         <div class="method-description">
         
         <p>注文数</p>
-        
-        </div>
-      </div>
-      
-      <div id="attribute-i-upper_bound" class="method-detail">
-        <div class="method-heading attribute-method-heading">
-          <span class="method-name">upper_bound</span><span
-            class="attribute-access-type">[RW]</span>
-        </div>
-
-        <div class="method-description">
-        
-        <p>許容するスリッページの上限価格</p>
         
         </div>
       </div>
@@ -352,7 +404,7 @@
         
         <div class="method-heading">
           <span class="method-name">collect_properties</span><span
-            class="method-args">(keys = instance_variables.map { |n| n[1..-1] })</span>
+            class="method-args">(keys = instance_variables.map { |n| n[1..-1].to_sym })</span>
           
           <span class="method-click-advice">click to toggle source</span>
           
@@ -367,11 +419,109 @@
 
           
           <div class="method-source-code" id="collect_properties-source">
-            <pre><span class="ruby-comment"># File src/jiji/model/trading/order.rb, line 112</span>
-<span class="ruby-keyword">def</span> <span class="ruby-identifier">collect_properties</span>(<span class="ruby-identifier">keys</span> = <span class="ruby-identifier">instance_variables</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-identifier">n</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>] })
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/order.rb, line 136</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">collect_properties</span>(<span class="ruby-identifier">keys</span> = <span class="ruby-identifier">instance_variables</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-identifier">n</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">to_sym</span> })
   <span class="ruby-identifier">keys</span>.<span class="ruby-identifier">each_with_object</span>({}) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">obj</span><span class="ruby-operator">|</span>
-    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-string">&#39;broker&#39;</span>
-    <span class="ruby-identifier">obj</span>[<span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_sym</span>] = <span class="ruby-identifier">instance_variable_get</span>(<span class="ruby-string">&#39;@&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">name</span>.<span class="ruby-identifier">to_s</span>)
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value">:broker</span>
+
+    <span class="ruby-identifier">v</span> = <span class="ruby-identifier">instance_variable_get</span>(<span class="ruby-node">&quot;@#{name}&quot;</span>)
+
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value">:price</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value">:price_bound</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value">:initial_price</span>
+        <span class="ruby-identifier">v</span> = <span class="ruby-identifier">v</span>.<span class="ruby-identifier">to_s</span>
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value">:take_profit_on_fill</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value">:stop_loss_on_fill</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value">:trailing_stop_loss_on_fill</span>
+        <span class="ruby-identifier">v</span> = <span class="ruby-identifier">v</span>.<span class="ruby-identifier">clone</span>
+        <span class="ruby-identifier">v</span>[<span class="ruby-value">:price</span>] = <span class="ruby-identifier">v</span>[<span class="ruby-value">:price</span>].<span class="ruby-identifier">to_s</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">v</span>[<span class="ruby-value">:price</span>]
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">obj</span>[<span class="ruby-identifier">name</span>] = <span class="ruby-identifier">v</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-collect_properties_for_modify" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">collect_properties_for_modify</span><span
+            class="method-args">()</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="collect_properties_for_modify-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/order.rb, line 156</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">collect_properties_for_modify</span>
+  <span class="ruby-identifier">instance_variables</span>.<span class="ruby-identifier">map</span> { <span class="ruby-operator">|</span><span class="ruby-identifier">n</span><span class="ruby-operator">|</span> <span class="ruby-identifier">n</span>[<span class="ruby-value">1</span><span class="ruby-operator">..</span><span class="ruby-value">-1</span>].<span class="ruby-identifier">to_sym</span> }.<span class="ruby-identifier">each_with_object</span>({}) <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">name</span>, <span class="ruby-identifier">obj</span><span class="ruby-operator">|</span>
+    <span class="ruby-keyword">next</span> <span class="ruby-keyword">if</span> <span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-value">:broker</span>
+
+    <span class="ruby-identifier">v</span> = <span class="ruby-identifier">instance_variable_get</span>(<span class="ruby-node">&quot;@#{name}&quot;</span>)
+    <span class="ruby-identifier">obj</span>[<span class="ruby-identifier">name</span>] = <span class="ruby-identifier">v</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Hash</span>) <span class="ruby-operator">?</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">dup</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">v</span>
+  <span class="ruby-keyword">end</span>
+<span class="ruby-keyword">end</span></pre>
+          </div>
+          
+        </div>
+
+        
+
+        
+      </div>
+
+    
+      <div id="method-i-from_h" class="method-detail ">
+        
+        <div class="method-heading">
+          <span class="method-name">from_h</span><span
+            class="method-args">(hash)</span>
+          
+          <span class="method-click-advice">click to toggle source</span>
+          
+        </div>
+        
+
+        <div class="method-description">
+          
+          
+          
+          
+
+          
+          <div class="method-source-code" id="from_h-source">
+            <pre><span class="ruby-comment"># File src/jiji/model/trading/order.rb, line 118</span>
+<span class="ruby-keyword">def</span> <span class="ruby-identifier">from_h</span>(<span class="ruby-identifier">hash</span>)
+  <span class="ruby-identifier">hash</span>.<span class="ruby-identifier">each</span> <span class="ruby-keyword">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">k</span>, <span class="ruby-identifier">v</span><span class="ruby-operator">|</span>
+    <span class="ruby-identifier">k</span> = <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_sym</span>
+    <span class="ruby-keyword">unless</span> <span class="ruby-identifier">v</span>.<span class="ruby-identifier">nil?</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-value">:price</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-value">:price_bound</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-value">:initial_price</span>
+        <span class="ruby-identifier">v</span> = <span class="ruby-constant">BigDecimal</span>(<span class="ruby-identifier">v</span>, <span class="ruby-value">10</span>)
+      <span class="ruby-keyword">end</span>
+      <span class="ruby-keyword">if</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-value">:take_profit_on_fill</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-value">:stop_loss_on_fill</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">k</span> <span class="ruby-operator">==</span> <span class="ruby-value">:trailing_stop_loss_on_fill</span>
+        <span class="ruby-identifier">v</span> = <span class="ruby-identifier">v</span>.<span class="ruby-identifier">clone</span>.<span class="ruby-identifier">symbolize_keys</span>
+        <span class="ruby-identifier">v</span>[<span class="ruby-value">:price</span>] = <span class="ruby-constant">BigDecimal</span>(<span class="ruby-identifier">v</span>[<span class="ruby-value">:price</span>], <span class="ruby-value">10</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">v</span>[<span class="ruby-value">:price</span>]
+      <span class="ruby-keyword">end</span>
+    <span class="ruby-keyword">end</span>
+
+    <span class="ruby-identifier">key</span> = <span class="ruby-string">&#39;@&#39;</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">k</span>.<span class="ruby-identifier">to_s</span>
+    <span class="ruby-identifier">instance_variable_set</span>(<span class="ruby-identifier">key</span>, <span class="ruby-identifier">v</span>) <span class="ruby-keyword">if</span> <span class="ruby-identifier">instance_variable_defined?</span>(<span class="ruby-identifier">key</span>)
   <span class="ruby-keyword">end</span>
 <span class="ruby-keyword">end</span></pre>
           </div>
@@ -426,7 +576,7 @@
 
 <footer id="validator-badges" role="contentinfo">
   <p><a href="http://validator.w3.org/check/referer">Validate</a>
-  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.0.
+  <p>Generated by <a href="http://docs.seattlerb.org/rdoc/">RDoc</a> 4.2.1.
   <p>Based on <a href="http://deveiate.org/projects/Darkfish-RDoc/">Darkfish</a> by <a href="http://deveiate.org">Michael Granger</a>.
 </footer>
 

@@ -1,18 +1,18 @@
-Tue, 26 Jul 2016 17:12:59 +0900
-src/jiji/model/agents/agent.rb	Wed, 18 Nov 2015 08:03:42 +0900
-src/jiji/model/agents/builtin_files/signals.rb	Mon, 16 May 2016 16:52:44 +0900
-src/jiji/model/agents/builtin_files/cross.rb	Fri, 04 Mar 2016 15:20:52 +0900
-src/jiji/model/graphing/graph_factory.rb	Fri, 04 Mar 2016 15:20:52 +0900
-src/jiji/model/graphing/graph.rb	Mon, 25 Jul 2016 19:11:15 +0900
-src/jiji/model/notification/notificator.rb	Mon, 16 May 2016 16:52:44 +0900
-src/jiji/model/trading/account.rb	Tue, 26 Jul 2016 08:44:52 +0900
-src/jiji/model/trading/closing_policy.rb	Mon, 20 Jun 2016 11:21:24 +0900
-src/jiji/model/trading/economic_calendar_information.rb	Tue, 26 Jul 2016 11:07:08 +0900
-src/jiji/model/trading/order.rb	Mon, 20 Jun 2016 11:21:24 +0900
-src/jiji/model/trading/pair.rb	Fri, 04 Mar 2016 15:20:52 +0900
-src/jiji/model/trading/position.rb	Mon, 20 Jun 2016 11:21:24 +0900
-src/jiji/model/trading/positions.rb	Mon, 20 Jun 2016 11:21:24 +0900
-src/jiji/model/trading/tick.rb	Mon, 20 Jun 2016 11:21:24 +0900
-src/jiji/model/trading/brokers/broker_proxy.rb	Tue, 26 Jul 2016 16:08:45 +0900
-src/jiji/model/trading/brokers/abstract_broker.rb	Tue, 26 Jul 2016 17:12:55 +0900
-src/jiji/model/trading/rate.rb	Mon, 25 Jul 2016 19:11:22 +0900
+Tue, 22 Jan 2019 19:41:06 +0900
+src/jiji/model/agents/agent.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/agents/builtin_files/signals.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/agents/builtin_files/cross.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/graphing/graph_factory.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/graphing/graph.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/notification/notificator.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/trading/account.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/trading/closing_policy.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/trading/economic_calendar_information.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/trading/order.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/trading/pair.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/trading/position.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/trading/positions.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/trading/tick.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/trading/brokers/broker_proxy.rb	Tue, 22 Jan 2019 18:24:39 +0900
+src/jiji/model/trading/brokers/abstract_broker.rb	Tue, 22 Jan 2019 19:40:55 +0900
+src/jiji/model/trading/rate.rb	Tue, 22 Jan 2019 18:24:39 +0900

@@ -18,13 +18,10 @@ nav_class_name: "lv2"
 broker.sell(:EURJPY, 10000)
 # 各種オプションを指定して、EURJPYを10000単位、成行で買い
 order_result = broker.buy(:EURJPY,  10000, :market, {
-  lower_bound:   135.59,  #成立下限価格
-  upper_bound:   135.61,  #成立上限価格
-
   # 建玉の約定条件
-  stop_loss:     135.23,  #ストップロス価格
-  take_profit:   135.73,  #テイクプロフィット価格
-  trailing_stop: 10       #トレーリングストップのディスタンスをpipsで指定します。  
+  stop_loss:     { price: 135.23 },  #ストップロス価格
+  take_profit:   { price: 135.73 },  #テイクプロフィット価格
+  trailing_stop: { distance: 10 }    #トレーリングストップのディスタンスをpipsで指定します。
 })
 # 成行注文の場合、通常、即約定するため、以下のようなコードで注文によって作成された建玉を取得できます
 position = broker.positions[order_result.trade_opened.internal_id]
@@ -32,26 +29,27 @@ position = broker.positions[order_result.trade_opened.internal_id]
 # 指値135.6で売り注文
 broker.sell(:USDJPY, 10000, :limit, {
   price:         122.6,
-  expiry:        Time.utc(2015, 5, 2)  #注文の有効期限
+  time_in_force: 'GTD',
+  gtd_time:      Time.utc(2015, 5, 2)  #注文の有効期限
 })
 
 # 逆指値112.404で買い注文
 broker.buy(:USDJPY, 10000, :stop, {
   price:       112.404,
-  expiry:      Time.utc(2015, 5, 2),
+  time_in_force: 'GTD',
+  gtd_time:      Time.utc(2015, 5, 2)
 
-  # lower_bound等のオプションは、注文方法によらず指定可能です。
-  lower_bound:   112.401,
-  upper_bound:   112.407,
-  stop_loss:     111.404,
-  take_profit:   113.404,
-  trailing_stop: 10
+  # stop_loss等のオプションは、注文方法によらず指定可能です。
+  stop_loss:     { price: 111.404 },
+  take_profit:   { price: 113.404 },
+  trailing_stop: { distance: 10 }
 })
 
 # Market If Touched で買い
 broker.buy(:EURUSD, 10000, :marketIfTouched, {
   price:         1.4325,
-  expiry:        Time.utc(2015, 5, 2)
+  time_in_force: 'GTD',
+  gtd_time:      Time.utc(2015, 5, 2)
 })
 {% endhighlight %}
 
@@ -91,7 +89,7 @@ broker.buy(:EURUSD, 10000, :marketIfTouched, {
     <td>options</td>
     <td>
       指値注文の指値価格や、有効期限などを指定します。<br/>
-      指定可能なパラメータについては、<a href="http://developer.oanda.com/docs/jp/v1/orders/#create-a-new-order">こちら</a>を参照ください。
+      指定可能なパラメータについては、<a href="https://developer.oanda.com/rest-live-v20/order-ep/">こちら</a>を参照ください。
     </td>
   </tr>
 </table>
@@ -131,7 +129,7 @@ broker.modify_order(order)
 order.modify
 {% endhighlight %}
 
-変更可能なプロパティについては、<a href="http://developer.oanda.com/docs/jp/v1/orders/#modify-an-existing-order">こちら</a>を参照ください。
+変更可能なプロパティについては、<a href="https://developer.oanda.com/rest-live-v20/order-ep/">こちら</a>を参照ください。
 
 
 <h3>注文をキャンセルする</h3>

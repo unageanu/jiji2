@@ -282,5 +282,5 @@ logger.info data.first # => {"date"=>Tue, 01 Mar 2016, "open"=>5574.0, "high"=>5
 
 
 <div class="next">
-  <a href="020401_getting_economic_calendar_informations.html">次のページへ: 日銀短観など、経済指標などの開示情報を取得する</a>
+  <a href="020500_graphing.html">次のページへ: グラフを描く</a>
 </div>

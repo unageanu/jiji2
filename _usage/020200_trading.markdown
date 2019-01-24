@@ -116,12 +116,16 @@ order = broker.orders[0]
 
 # 変更
 order.price = 135.7
-order.expiry = Time.utc(2015, 5, 3)
-order.lower_bound = 135.69
-order.upper_bound = 135.71
-order.stop_loss = 135.83
-order.take_profit = 135.63
-order.trailing_stop = 10
+order.gtd_time = Time.utc(2015, 5, 2)
+order.take_profit_on_fill = {
+  price: 135.63
+}
+order.stop_loss_on_fill = {
+  price: 135.83
+}
+order.trailing_stop_loss_on_fill = {
+  distance: 10
+}
 
 # 変更を反映
 broker.modify_order(order)

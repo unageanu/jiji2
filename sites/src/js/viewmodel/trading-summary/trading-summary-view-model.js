@@ -30,10 +30,10 @@ export default class TradingSummaryViewModel extends Observable {
     const now = this.timeSource.now;
     const day = 1000*60*60*24;
     this.availableAggregationPeriods = [
-      { id: "week",         text: "直近の1週間", time: new Date(now-7*day)},
-      { id: "one_month",    text: "直近の30日",  time: new Date(now-30*day)},
-      { id: "three_months", text: "直近の90日",  time: new Date(now-90*day)},
-      { id: "one_year",     text: "直近の1年",   time: new Date(now-365*day)}
+      { id: "week",         labelId:'viewmodel.TradingSummaryViewModel.week', time: new Date(now-7*day)},
+      { id: "one_month",    labelId:'viewmodel.TradingSummaryViewModel.oneMonth',  time: new Date(now-30*day)},
+      { id: "three_months", labelId:'viewmodel.TradingSummaryViewModel.threeMonths',  time: new Date(now-90*day)},
+      { id: "one_year",     labelId:'viewmodel.TradingSummaryViewModel.oneYear',   time: new Date(now-365*day)}
     ];
   }
 

@@ -1,5 +1,6 @@
-import React             from "react"
-import { Router } from 'react-router'
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { Router }                       from 'react-router'
 
 import ReactChart        from "react-chartjs"
 import AbstractComponent from "../widgets/abstract-component"
@@ -15,7 +16,7 @@ const keys = new Set([
   "summary", "enablePeriodSelector", "availableAggregationPeriods"
 ]);
 
-export default class TradingSummaryView extends AbstractComponent {
+class TradingSummaryView extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -52,96 +53,97 @@ export default class TradingSummaryView extends AbstractComponent {
         <LoadingImage left={-20}/>
       </div>;
     }
+    const { formatMessage } = this.props.intl;
     return (
       <div className="content">
         <div className="summaries">
           <SummaryItem
-            label="損益合計"
+            label={formatMessage({ id: 'tradingSummary.TradingSummaryView.totalProfitOrLoss' })}
             value={
-              <PriceView price={summary.formatedProfitOrLoss} showIcon={true} />
+              <PriceView price={summary.formattedProfitOrLoss} showIcon={true} />
             }
             subContents={[
-              {label: "総利益", value: <PriceView price={summary.formatedTotalProfit} />},
-              {label: "総損失", value: <PriceView price={summary.formatedTotalLoss} /> }
+              {label: formatMessage({ id: 'tradingSummary.TradingSummaryView.totalProfit' }), value: <PriceView price={summary.formattedTotalProfit} />},
+              {label: formatMessage({ id: 'tradingSummary.TradingSummaryView.totalLoss' }),   value: <PriceView price={summary.formattedTotalLoss} /> }
             ]} />
           <SummaryItem
-            label="勝率"
-            value={summary.formatedWinPercentage}
+            label={formatMessage({ id: 'tradingSummary.TradingSummaryView.winPercentage' })}
+            value={summary.formattedWinPercentage}
             subContents={[
-              {label: "勝", value: summary.winsAndLosses.win },
-              {label: "負",   value: summary.winsAndLosses.lose }
+              {label: formatMessage({ id: 'tradingSummary.TradingSummaryView.win' }),  value: summary.winsAndLosses.win },
+              {label: formatMessage({ id: 'tradingSummary.TradingSummaryView.lose' }), value: summary.winsAndLosses.lose }
             ]} />
           <SummaryItem
-            label="取引回数"
-            value={summary.formatedPositionCount}
+            label={formatMessage({ id: 'tradingSummary.TradingSummaryView.positionCount' })}
+            value={summary.formattedPositionCount}
             subContents={[
-              {label: "決済済",   value: summary.formatedExitedPositionCount }
+              {label: formatMessage({ id: 'tradingSummary.TradingSummaryView.closedPositionCount' }),   value: summary.formattedExitedPositionCount }
             ]} />
           <SummaryItem
-            label="Profit Factor"
-            value={summary.formatedProfitFactor}
+            label={formatMessage({ id: 'tradingSummary.TradingSummaryView.profitFactor' })}
+            value={summary.formattedProfitFactor}
             subContents={[
-              {label: "最大損失", value: <PriceView price={summary.formatedMaxLoss} />  },
-              {label: "平均損失", value: <PriceView price={summary.formatedAvgLoss} />  }
+              {label: formatMessage({ id: 'tradingSummary.TradingSummaryView.maxLoss' }), value: <PriceView price={summary.formattedMaxLoss} />  },
+              {label: formatMessage({ id: 'tradingSummary.TradingSummaryView.avgLoss' }), value: <PriceView price={summary.formattedAvgLoss} />  }
             ]} />
         </div>
         <div className="charts">
           <CircleGraph
-            title="通貨ペア"
+            title={formatMessage({ id: 'tradingSummary.TradingSummaryView.pair' })}
             data={summary.pairData}
             size={this.props.graphSize} />
           <CircleGraph
-            title="売/買"
+            title={formatMessage({ id: 'tradingSummary.TradingSummaryView.sellOrBuy' })}
             data={summary.sellOrBuyData}
             size={this.props.graphSize} />
           <CircleGraph
-            title="エージェント"
+            title={formatMessage({ id: 'tradingSummary.TradingSummaryView.agent' })}
             data={summary.agentsData}
             size={this.props.graphSize} />
         </div>
         <div className="data">
           <div className="item">
-            <div className="title">建玉の保有期間</div>
+            <div className="title"><FormattedMessage id='tradingSummary.TradingSummaryView.holdTime'/></div>
             <div className="details">
               <div className="item">
-                <div className="label">最長</div>
+                <div className="label"><FormattedMessage id='tradingSummary.TradingSummaryView.longest'/></div>
                 <div className="value">
-                  {summary.formatedMaxPeriod}
+                  {summary.formattedMaxPeriod}
                 </div>
               </div>
               <div className="item">
-                <div className="label">最短</div>
+                <div className="label"><FormattedMessage id='tradingSummary.TradingSummaryView.shortest'/></div>
                 <div className="value">
-                  {summary.formatedMinPeriod}
+                  {summary.formattedMinPeriod}
                 </div>
               </div>
               <div className="item">
-                <div className="label">平均</div>
+                <div className="label"><FormattedMessage id='tradingSummary.TradingSummaryView.avg'/></div>
                 <div className="value">
-                  {summary.formatedAvgPeriod}
+                  {summary.formattedAvgPeriod}
                 </div>
               </div>
             </div>
           </div>
           <div className="item">
-            <div className="title">取引数量</div>
+            <div className="title">><FormattedMessage id='tradingSummary.TradingSummaryView.volume'/></div>
             <div className="details">
               <div className="item">
-                <div className="label">最大</div>
+                <div className="label"><FormattedMessage id='tradingSummary.TradingSummaryView.max'/></div>
                 <div className="value">
-                  {summary.formatedMaxUnits}
+                  {summary.formattedMaxUnits}
                 </div>
               </div>
               <div className="item">
-                <div className="label">最小</div>
+                <div className="label"><FormattedMessage id='tradingSummary.TradingSummaryView.min'/></div>
                 <div className="value">
-                  {summary.formatedMinUnits}
+                  {summary.formattedMinUnits}
                 </div>
               </div>
               <div className="item">
-                <div className="label">平均</div>
+                <div className="label"><FormattedMessage id='tradingSummary.TradingSummaryView.avg'/></div>
                 <div className="value">
-                  {summary.formatedAvgUnits}
+                  {summary.formattedAvgUnits}
                 </div>
               </div>
             </div>
@@ -155,7 +157,7 @@ export default class TradingSummaryView extends AbstractComponent {
     if (!this.state.enablePeriodSelector) return null;
     return (
       <div className="selector-bar">
-        <span className="label">集計期間: </span>
+        <span className="label"><FormattedMessage id='tradingSummary.TradingSummaryView.term'/>: </span>
         <span className="selector">
           <DropDownMenu
             value={this.state.selected}
@@ -168,9 +170,10 @@ export default class TradingSummaryView extends AbstractComponent {
   }
 
   createDropDownMenuItems() {
+    const { formatMessage } = this.props.intl;
     return this.state.availableAggregationPeriods.map((item) => {
       return <MenuItem key={item.id}
-        value={item.id} primaryText={item.text} />
+        value={item.id} primaryText={formatMessage({id: item.labelId})} />
     });
   }
 
@@ -188,3 +191,4 @@ TradingSummaryView.defaultProps = {
   model: null,
   graphSize: 200
 };
+export default injectIntl(TradingSummaryView)

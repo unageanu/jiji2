@@ -1,4 +1,6 @@
-import React             from "react"
+import React                from "react"
+import { FormattedMessage } from 'react-intl';
+
 import AbstractComponent from "../widgets/abstract-component"
 import PriceView         from "../widgets/price-view"
 
@@ -21,21 +23,21 @@ export default class PerformancePanel extends AbstractComponent {
     const summary = this.state.summary || {profitOrLoss:{totalProfitOrLoss:null}};
     return (
       <div className="performance panel">
-        <div className="title">直近1週間の成績</div>
+        <div className="title"><FormattedMessage id="accounts.PerformancePanel.title" /></div>
         <div className="item first">
-          <span className="label">勝率</span>
-          <span className="value winning-percentage">{summary.formatedWinPercentage}</span>
+          <span className="label"><FormattedMessage id="accounts.PerformancePanel.winningPercentage" /></span>
+          <span className="value winning-percentage">{summary.formattedWinPercentage}</span>
         </div>
         <div className="item">
-          <span className="label">損益</span>
+          <span className="label"><FormattedMessage id="accounts.PerformancePanel.profitOrLoss" /></span>
           <span className="value">
-            <PriceView price={summary.formatedProfitOrLoss}
+            <PriceView price={summary.formattedProfitOrLoss}
               showIcon={true} />
           </span>
         </div>
         <div className="item">
           <span className="label">Profit Factor</span>
-          <span className="value">{summary.formatedProfitFactor}</span>
+          <span className="value">{summary.formattedProfitFactor}</span>
         </div>
       </div>
     );

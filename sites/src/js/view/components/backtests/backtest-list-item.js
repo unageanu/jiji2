@@ -43,7 +43,7 @@ export default class BacktestListItem extends React.Component {
   createSecondaryText(backtest) {
     return <div className="secondary-text">
       <div className="createdAt">
-        {backtest.formatedCreatedAt}
+        {backtest.formattedCreatedAt}
       </div>
       <div className="status">{this.createStatusContent(backtest)}</div>
     </div>;
@@ -61,9 +61,9 @@ export default class BacktestListItem extends React.Component {
 
   createProgress(backtest) {
     const progress = backtest.progress*100;
-    const formatedProgress = NumberFormatter.formatRatio(backtest.progress, 1);
+    const formattedProgress = NumberFormatter.formatRatio(backtest.progress, 1);
     return <span className="progress">
-      <span className="number">{formatedProgress}</span>
+      <span className="number">{formattedProgress}</span>
       <LinearProgress mode="determinate" className="bar"
         min={0} max={100} value={Math.round(progress)} style={{
           display: "inline-block",

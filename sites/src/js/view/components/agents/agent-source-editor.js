@@ -1,6 +1,7 @@
-import React                 from "react"
-import ReactDOM              from "react-dom"
-import { Router } from 'react-router'
+import React                            from "react"
+import ReactDOM                         from "react-dom"
+import { injectIntl, FormattedMessage } from 'react-intl';
+import { Router }                       from 'react-router'
 
 import AbstractComponent     from "../widgets/abstract-component"
 import AceEditor             from "../widgets/ace-editor"
@@ -15,7 +16,7 @@ const keys = new Set([
   "targetBody",  "editTarget", "sources"
 ]);
 
-export default class AgentSourceEditor extends AbstractComponent {
+class AgentSourceEditor extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -61,9 +62,11 @@ export default class AgentSourceEditor extends AbstractComponent {
       <div className="agent-source-editor">
         <ul className="info">
           <li>
-            エージェントの詳しい作り方は
-            <a onClick={ () => window.open('http://jiji2.unageanu.net/usage/020000_how_to_create_agent.html', '_blank')} >こちら</a>
-            をご覧ください。
+            <FormattedMessage id="agents.AgentSourceEditor.description.part1" />
+            <a onClick={ () => window.open('http://jiji2.unageanu.net/usage/020000_how_to_create_agent.html', '_blank')} >
+              <FormattedMessage id="agents.AgentSourceEditor.description.part2" />
+            </a>
+            <FormattedMessage id="agents.AgentSourceEditor.description.part3" />
           </li>
         </ul>
         <div className="header">
@@ -107,7 +110,7 @@ export default class AgentSourceEditor extends AbstractComponent {
   save() {
     const body = this.editor.value;
     const name = this.fileName.value;
-    this.model().save(name, body);
+    this.model().save(name, body,  this.props.intl.formatMessage);
   }
 
   model() {
@@ -120,3 +123,4 @@ AgentSourceEditor.propTypes = {
 AgentSourceEditor.contextTypes = {
   windowResizeManager: React.PropTypes.object
 };
+export default injectIntl(AgentSourceEditor)

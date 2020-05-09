@@ -1,4 +1,5 @@
-import React              from "react"
+import React                from "react"
+import { FormattedMessage } from 'react-intl';
 
 import DateFormatter      from "../../../viewmodel/utils/date-formatter"
 import AbstractComponent  from "../widgets/abstract-component"
@@ -35,7 +36,7 @@ export default class RangeView extends AbstractComponent {
               + " ～ " + this.format(this.state.range.end);
     return (
       <div className="range">
-        <span className="label">表示期間:</span>
+        <span className="label"><FormattedMessage id="chart.RangeView.label" />:</span>
         {displayRange}</div>
     );
   }

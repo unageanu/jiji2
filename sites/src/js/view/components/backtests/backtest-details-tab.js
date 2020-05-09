@@ -1,8 +1,9 @@
 import React              from "react"
+import { injectIntl }     from 'react-intl';
 import AbstractComponent  from "../widgets/abstract-component"
 import {Tabs, Tab}        from "material-ui/Tabs"
 
-export default class BacktestDetailsTab extends AbstractComponent {
+class BacktestDetailsTab extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -10,14 +11,15 @@ export default class BacktestDetailsTab extends AbstractComponent {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return <Tabs
       onChange={this.onTabChanged.bind(this)}
       initialSelectedIndex={0}>
-      <Tab label="テスト情報" value=""></Tab>
-      <Tab label="レポート"   value="report"></Tab>
-      <Tab label="チャート"   value="chart"></Tab>
-      <Tab label="建玉一覧"   value="trades"></Tab>
-      <Tab label="ログ"      value="logs"></Tab>
+      <Tab label={formatMessage({ id: 'backtests.BacktestDetailsTab.info'   })} value=""></Tab>
+      <Tab label={formatMessage({ id: 'backtests.BacktestDetailsTab.report' })} value="report"></Tab>
+      <Tab label={formatMessage({ id: 'backtests.BacktestDetailsTab.chart'  })} value="chart"></Tab>
+      <Tab label={formatMessage({ id: 'backtests.BacktestDetailsTab.trades' })} value="trades"></Tab>
+      <Tab label={formatMessage({ id: 'backtests.BacktestDetailsTab.logs'   })} value="logs"></Tab>
     </Tabs>;
   }
 
@@ -29,3 +31,5 @@ export default class BacktestDetailsTab extends AbstractComponent {
 BacktestDetailsTab.propTypes = {
   model: React.PropTypes.object
 };
+
+export default injectIntl(BacktestDetailsTab);

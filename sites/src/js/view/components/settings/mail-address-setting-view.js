@@ -1,4 +1,5 @@
-import React               from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractComponent   from "../widgets/abstract-component"
 import LoadingImage        from "../widgets/loading-image"
@@ -10,7 +11,7 @@ const keys = new Set([
   "mailAddress", "error", "message", "isSaving"
 ]);
 
-export default class MailAddressSettingView extends AbstractComponent {
+class MailAddressSettingView extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -29,21 +30,21 @@ export default class MailAddressSettingView extends AbstractComponent {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return (
       <div className="mail-address-setting setting">
-        <h3>メールアドレスの設定</h3>
+        <h3><FormattedMessage id='settings.MailAddressSettingView.title'/></h3>
         <ul className="description">
-          <li>システムで使用するメールアドレスを設定します。</li>
+          <li><FormattedMessage id='settings.MailAddressSettingView.description.part1'/></li>
           <li>
-            メールアドレスは、パスワードを忘れて再設定するときに使用されます。
-            必ず、メールを受信可能なアドレスを設定してください。
+            <FormattedMessage id='settings.MailAddressSettingView.description.part2'/>
           </li>
         </ul>
         <div className="setting-body">
           <div className="mail-address">
             <TextField
               ref="mailAddress"
-              floatingLabelText="メールアドレス"
+              floatingLabelText={formatMessage({ id: 'settings.MailAddressSettingView.mailAddress' })}
               errorText={this.state.error}
               onChange={this.onMailAddressChanged.bind(this)}
               value={this.state.mailAddress || ""}
@@ -51,7 +52,7 @@ export default class MailAddressSettingView extends AbstractComponent {
           </div>
           <div className="buttons">
             <RaisedButton
-              label="設定"
+              label={formatMessage({ id: 'settings.MailAddressSettingView.save' })}
               primary={true}
               disabled={this.state.isSaving}
               onClick={this.save.bind(this)}
@@ -70,7 +71,7 @@ export default class MailAddressSettingView extends AbstractComponent {
   }
   save() {
     const mailAdress = this.state.mailAddress;
-    this.props.model.save(mailAdress);
+    this.props.model.save(mailAdress, this.props.intl.formatMessage);
   }
 }
 MailAddressSettingView.propTypes = {
@@ -79,3 +80,4 @@ MailAddressSettingView.propTypes = {
 MailAddressSettingView.defaultProps = {
   model: null
 };
+export default injectIntl(MailAddressSettingView);

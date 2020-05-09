@@ -1,4 +1,5 @@
-import React             from "react"
+import React          from "react"
+import { injectIntl } from 'react-intl';
 
 import AbstractCard      from "../widgets/abstract-card"
 import Chart             from "../chart/chart"
@@ -10,7 +11,7 @@ const keys = new Set([
   "notExited"
 ]);
 
-export default class PositionsCard extends AbstractCard {
+class PositionsCard extends AbstractCard {
 
   constructor(props) {
     super(props);
@@ -28,20 +29,23 @@ export default class PositionsCard extends AbstractCard {
     return "positions-card";
   }
   getTitle() {
-    return "建玉";
+    const { formatMessage } = this.props.intl;
+    return  formatMessage({id:'positions.PositionsCard.title'});
   }
   getIconClass() {
     return "md-list";
   }
   getSettingMenuItems() {
-    return ["更新"];
+    const { formatMessage } = this.props.intl;
+    return [formatMessage({id:'common.action.reload'})];
   }
   createTitle() {
+    const { formatMessage } = this.props.intl;
     const title = this.getTitle();
     const result = [ <span key="title" className="title">{title}</span> ];
     if (this.state.notExited && this.state.notExited > 0) {
       result.push(<TextInRadius key="icon"
-        text={"未決済:" + this.state.notExited} />);
+        text={formatMessage({id:'positions.PositionsCard.notClosed'}) + ":" + this.state.notExited} />);
     }
     return result;
   }
@@ -60,3 +64,5 @@ export default class PositionsCard extends AbstractCard {
 PositionsCard.propTypes = {
   model: React.PropTypes.object.isRequired
 };
+
+export default injectIntl(PositionsCard)

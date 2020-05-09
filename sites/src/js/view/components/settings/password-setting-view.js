@@ -1,4 +1,5 @@
-import React               from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractComponent   from "../widgets/abstract-component"
 import LoadingImage        from "../widgets/loading-image"
@@ -10,7 +11,7 @@ const keys = new Set([
   "error", "message", "isSaving"
 ]);
 
-export default class PasswordSettingView extends AbstractComponent {
+class PasswordSettingView extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -35,9 +36,9 @@ export default class PasswordSettingView extends AbstractComponent {
       : this.createEditPasswordButton();
     return (
       <div className="securities-setting setting">
-        <h3>パスワードの変更</h3>
+        <h3><FormattedMessage id='settings.PasswordSettingView.title'/></h3>
         <ul className="description">
-          <li>システムのアクセスパスワードを変更できます。</li>
+          <li><FormattedMessage id='settings.PasswordSettingView.description'/></li>
         </ul>
         <div className="setting-body">
           {body}
@@ -47,19 +48,21 @@ export default class PasswordSettingView extends AbstractComponent {
   }
 
   createEditPasswordButton() {
+    const { formatMessage } = this.props.intl;
     return <div className="buttons">
       <RaisedButton
-        label="パスワードを変更する"
+        label={formatMessage({ id: 'settings.PasswordSettingView.changePassword' })}
         onClick={this.startToEditPassword.bind(this)}
       />
     </div>;
   }
   createPasswordChanger() {
+    const { formatMessage } = this.props.intl;
     return <div>
       <div className="passwords">
         <TextField
            ref="newPassword1"
-           floatingLabelText="新しいパスワード"
+           floatingLabelText={formatMessage({ id: 'common.newPassword' })}
            onChange={this.onNewPassword1Changed.bind(this)}
            value={this.state.newPassword1}
            style={{ width: "100%" }}>
@@ -67,18 +70,18 @@ export default class PasswordSettingView extends AbstractComponent {
         </TextField><br/>
         <TextField
            ref="newPassword2"
-           floatingLabelText="新しいパスワード (確認用)"
+           floatingLabelText={formatMessage({ id: 'common.newPasswordConfirm' })}
            onChange={this.onNewPassword2Changed.bind(this)}
            value={this.state.newPassword2}
            style={{ width: "100%" }}>
            <input type="password" />
         </TextField>
         <div className="description">
-          ※確認のため、新しいパスワードを再入力してください。
+          <FormattedMessage id='common.newPasswordDescription'/>
         </div>
         <TextField
            ref="oldPassword"
-           floatingLabelText="現在のパスワード"
+           floatingLabelText={formatMessage({ id: 'settings.PasswordSettingView.oldPassword' })}
            onChange={this.onOldPasswordChanged.bind(this)}
            value={this.state.oldPassword}
            style={{ width: "100%" }}>
@@ -88,7 +91,7 @@ export default class PasswordSettingView extends AbstractComponent {
       <div className="buttons">
         {this.createErrorContent(this.state.error)}
         <RaisedButton
-          label="変更"
+          label={formatMessage({ id: 'settings.PasswordSettingView.change' })}
           primary={true}
           disabled={this.state.isSaving}
           onClick={this.save.bind(this)}
@@ -117,7 +120,7 @@ export default class PasswordSettingView extends AbstractComponent {
     const newPassword1 = this.state.newPassword1;
     const newPassword2 = this.state.newPassword2;
     const oldPassword  = this.state.oldPassword;
-    this.props.model.save(newPassword1, newPassword2, oldPassword);
+    this.props.model.save(newPassword1, newPassword2, oldPassword, this.props.intl.formatMessage);
   }
 }
 PasswordSettingView.propTypes = {
@@ -126,3 +129,4 @@ PasswordSettingView.propTypes = {
 PasswordSettingView.defaultProps = {
   model: null
 };
+export default injectIntl(PasswordSettingView);

@@ -1,4 +1,5 @@
-import React              from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AgentClassSelector from "./agent-class-selector"
 import Theme              from "../../theme"
@@ -6,7 +7,7 @@ import Theme              from "../../theme"
 import Dialog from "material-ui/Dialog"
 import FlatButton from "material-ui/FlatButton"
 
-export default class AgentSelectorDialog extends React.Component {
+class AgentSelectorDialog extends React.Component {
 
   constructor(props) {
     super(props);
@@ -16,9 +17,10 @@ export default class AgentSelectorDialog extends React.Component {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const actions = [
       <FlatButton
-        label="キャンセル"
+        label={formatMessage({ id: 'common.button.cancel' })}
         primary={false}
         onTouchTap={this.dismiss.bind(this)}
       />
@@ -32,7 +34,7 @@ export default class AgentSelectorDialog extends React.Component {
         contentStyle={Theme.dialog.contentStyle}
         onRequestClose={this.dismiss.bind(this)}>
         <div className="dialog-content">
-          <div className="dialog-description">追加するエージェントを選択してください。</div>
+          <div className="dialog-description"><FormattedMessage id="agents.AgentSelectorDialog.description" /></div>
           <AgentClassSelector
             classes={this.props.availableAgents}
             onSelect={this.props.onSelect}
@@ -57,3 +59,5 @@ AgentClassSelector.defaultProps = {
   availableAgents: [],
   onSelect: (agentClass) => {}
 };
+
+export default injectIntl(AgentSelectorDialog);

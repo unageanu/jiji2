@@ -1,14 +1,15 @@
-import React             from "react"
-import TrendIcon         from "../widgets/trend-icon"
-import AbstractComponent from "../widgets/abstract-component"
-import LoadingImage      from "../widgets/loading-image"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
+import TrendIcon                        from "../widgets/trend-icon"
+import AbstractComponent                from "../widgets/abstract-component"
+import LoadingImage                     from "../widgets/loading-image"
 
 const keys = new Set([
-  "formatedBalance", "formatedChangesFromPreviousDay",
-  "formatedChangeRatioFromPreviousDay", "changesFromPreviousDay"
+  "formattedBalance", "formattedChangesFromPreviousDay",
+  "formattedChangeRatioFromPreviousDay", "changesFromPreviousDay"
 ]);
 
-export default class BalancePanel extends AbstractComponent {
+class BalancePanel extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -28,7 +29,7 @@ export default class BalancePanel extends AbstractComponent {
       <div key="balance panel" className="balance panel" style={style}>
         <div className="title">
           <span className="icon md-account-balance"></span>
-          <span className="text">口座残高</span>
+          <span className="text"><FormattedMessage id="accounts.BalancePanel.title" /></span>
         </div>
         {this.createContent()}
       </div>
@@ -36,13 +37,13 @@ export default class BalancePanel extends AbstractComponent {
   }
 
   createContent() {
-    if (!this.state.formatedBalance) {
+    if (!this.state.formattedBalance) {
       return <div className="center-information loading">
         <LoadingImage left={-20} />
       </div>;
     }
     return [
-      <div key="balance" className="balance">¥{this.state.formatedBalance}</div>,
+      <div key="balance" className="balance">¥{this.state.formattedBalance}</div>,
       <div key="changes-from-previous-day" className="changes-from-previous-day">
         {this.createPriceAndRatio()}
         <TrendIcon value={this.state.changesFromPreviousDay} />
@@ -51,9 +52,10 @@ export default class BalancePanel extends AbstractComponent {
   }
 
   createPriceAndRatio() {
-    let result = "前日比: ¥";
-    result += this.state.formatedChangesFromPreviousDay || " - ";
-    result += " ( " + (this.state.formatedChangeRatioFromPreviousDay || "-%") + " )";
+    const { formatMessage } = this.props.intl;
+    let result = `${formatMessage({ id: 'accounts.BalancePanel.dayBeforeRatio' })}: ${formatMessage({ id: 'common.currencyUnit' })}`;
+    result += this.state.formattedChangesFromPreviousDay || " - ";
+    result += " ( " + (this.state.formattedChangeRatioFromPreviousDay || "-%") + " )";
     return result;
   }
 }
@@ -61,3 +63,5 @@ BalancePanel.propTypes = {
   model: React.PropTypes.object.isRequired,
   visibleTradingSummary: React.PropTypes.bool
 };
+
+export default injectIntl(BalancePanel);

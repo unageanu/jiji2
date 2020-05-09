@@ -5,8 +5,8 @@ import Deferred          from "../../utils/deferred"
 import NotificationModel from "./notification-model"
 
 const defaultFilterConditions = [
-  { id: "all", text:"すべて",        condition: {backtestId: null} },
-  { id: "rmt", text:"リアルトレード", condition: {backtestId: "rmt"} }
+  { id: "all", condition: {backtestId: null} },
+  { id: "rmt", condition: {backtestId: "rmt"} }
 ];
 
 class Loader {

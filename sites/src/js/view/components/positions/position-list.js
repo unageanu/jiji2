@@ -1,10 +1,11 @@
-import React                from "react"
+import React          from "react"
+import { injectIntl } from 'react-intl';
 
 import AbstractList         from "../widgets/abstract-list"
 import PositionListItem     from "./position-list-item"
 
 
-export default class PositionList extends AbstractList {
+class PositionList extends AbstractList {
 
   constructor(props) {
     super(props);
@@ -14,7 +15,10 @@ export default class PositionList extends AbstractList {
   get className() {
     return "position-list";
   }
-
+  get emptyLabel() {
+    const { formatMessage } = this.props.intl;
+    return formatMessage({ id: 'positions.PositionList.noItems' });
+  }
   createListItem(position, index) {
     return <PositionListItem
       key={index}
@@ -41,10 +45,12 @@ PositionList.propTypes = {
 };
 PositionList.defaultProps = {
   selectionModel: null,
-  emptyLabel: "建玉はありません",
+  emptyLabel: "",
   autoFill: false
 };
 PositionList.contextTypes = {
   router: React.PropTypes.object,
   windowResizeManager: React.PropTypes.object
 };
+
+export default injectIntl(PositionList);

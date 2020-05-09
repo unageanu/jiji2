@@ -1,0 +1,469 @@
+common:
+  currencyUnit: ¥
+  error: 错误
+  button:
+    cancel: 取消
+    next: 下一步
+    close: 关闭
+  action:
+    reload: 更新
+    prev: 前{size}条
+    next: 后{size}条
+  newPassword: 新的密码
+  newPasswordConfirm: 新的密码（确认用）
+  newPasswordDescription: ※为了确认，请再次输入新的密码。
+  tickInterval:
+    fifteenSeconds: 15秒
+    oneMinute: 1分
+    fifteenMinutes: 15分
+    thirtyMinutes: 30分
+    oneHour: 1小时
+    sixHours: 6小时
+    oneDay: 1天
+  realTrade: 实时交易
+  all: 全部
+  sell: 卖
+  buy: 买
+  win: 胜
+  lose: 负
+  draw: 平
+  unknown: 未知
+  period:
+    day: 天
+    hour: 小时
+    minute: 分
+    second: 秒
+  chartIntervals:
+    oneMinute: 一分钟线
+    fifteenMinutes: 15分钟线
+    thirtyMinutes: 30分钟线
+    oneHour: 1小时线
+    sixHours: 6小时线
+    oneDay: 日线
+
+Frame:
+  support: 帮助中心
+  usage: 使用方法
+
+accounts:
+  BalancePanel:
+    title: 帐户余额
+    dayBeforeRatio: 相比上一日
+  PerformancePanel:
+    title: 最近一周的成绩
+    winningPercentage: 胜率
+    profitOrLoss: 损益
+
+agents:
+  AgentFileNameField:
+    label: 文件名
+  AgentPropertyEditor:
+    classLabel: 类
+    description: 说明
+    nameLabel: 量化策略名
+  AgentSelectorDialog:
+    description: 请选择量化策略。
+  AgentSettingEditorMenu:
+    add: 追加量化策略
+    remove: 删除选择的量化策略
+    confirmRemove: 确定删除选择的量化策略吗？
+  AgentSourceEditorMenu:
+    save: 保存
+    remove: 删除...
+    confirmRemove: 确定删除吗？
+  AgentSourceEditor:
+    description:
+      part1: 量化策略的详细制作方法可参考
+      part2: 这边
+      part3: 。
+  AgentSourceListMenu:
+    newFile: 新建
+  AgentSourceList:
+    noFile: 不存在文件
+
+backtests:
+  BacktestBuilder:
+    button: 使用下面的设置进行回测计算
+    name:  回测计算名
+    nameHint: 回测计算的名称
+    range:  测试期间
+    balance: 初始资金
+    tickInterval: 间隔时间
+    tickIntervalDescription:
+      part1: 用于设置量化策略的
+      part2: 启动间隔时间。
+      part3: 需要注意的是设置为1小时或1天可以缩短测试的时间，但同时也会降低精度。
+    memo: 备注
+    pairs: 使用的货币对
+    pairsDescription:
+      part1: 请选择回测计算使用的货币对。
+      part2: 最多可选择5组货币对。
+      part3: 请注意，选择的货币对多，回测计算的时间也会相应的增加。
+    agent: 量化策略
+    agentDescription: 请设置回测计算使用的量化策略。
+  BacktestDetailsTab:
+    info: 测试信息
+    report: 报告
+    chart: 图标
+    trades: 建仓一览
+    logs: 日志
+  BacktestList:
+    noBacktests: 无回测计算
+  BacktestPropertiesView:
+    confirmRemove: 确定删除回测计算？
+    confirmCancel: 确定取消回测计算的运行？
+    confirmRestart:  确定再次执行相同设置的回测计算？
+    agent: 量化策略
+    button:
+      restart: 重新执行...
+      cancel: 取消...
+      remove: 删除...
+    columns:
+      name: 名称
+      createdAt: 创建时间
+      status: 状态
+      range: 期间
+      balance: 初始资金
+      pairs: 货币对
+      tickInterval: 间隔时间
+      memo: 备注
+    error: 错误（详细请参考日志信息）
+
+chart:
+  RangeView:
+    label: 显示期间
+  RateView:
+    open: 开盘价
+    close: 收盘价
+    high: 最高价
+    low: 最低价
+
+icons:
+  IconSelector:
+    description: 请选择使用的图标文件。
+    change: 更换...
+    addDescription:
+      part1: 如果要更换图标文件，请把图片文件拖拽到这边。
+      part2: 支持png/jpg/gif格式的图片。
+      part3: 图片支持最大支持到100KB。
+    error: 图片上传失败。请确认文件格式及大小。
+
+initialSettings:
+  MailaddressAndPasswordSettingView:
+    title: 邮箱地址和密码的设置
+    description:
+      part1: 请设置邮箱地址和系统登录用的密码。
+      part2: 使用系统的时候需要使用密码。
+      part3: 邮箱地址用于忘记密码时使用。请务必使用收信可能的邮箱地址。
+    mailAddress: 邮箱地址
+    password: 密码
+    passwordConfirm: 密码（确认用）
+    passwordConfirmDescription: ※为了确认，请再次输入新的密码。
+  SecuritiesSettingView:
+    title: 开户公司的设置
+    description:
+      part1: 请选择开户公司信息，配置AccessToken信息
+      part2: OANDA
+      part3: 的交易账户中有练习用的演示账户可使用。
+      part4: 使用的时候需要使用「AccessToenk」信息。如何获取AccessToenk信息请查看
+      part5: 这边
+      part6: 。
+  SettingFinishedView:
+    title: 完成
+    description:
+      part1: 全部的设置已完成。
+      part2: 系统详细的使用方法请查看
+      part3: 这边
+      part4: 。
+      part5: 手机APP端也可进行操作！
+    app:
+      title: 手机APP端的功能
+      p:
+        catch: 推送消息让您不错过绝佳的交易时机！
+        detail: 使用手机App的话，可以收到交易算法的推送通知。实时的推送通知，让您不错过任何绝佳的交易时机。
+      p2:
+        catch: 可以随时随地的进行交易状态的确认，系统的管理
+        detail: 简洁的操作界面，交易状况一目了然。<br/>可进行系统的管理，随时随地都可进行操作。
+      description: 会员期内免费使用手机App
+      iOS: ※iOS版即将上线。
+      start: 开始使用
+  SMTPServerSettingView:
+    title: SMTP服务器的设置
+    description: 设置发送邮箱时使用的SMTP服务器信息。<br/>※稍后也可进行设置
+    composeTestMail: 发送测试邮件
+    next: 保存设置，下一步
+    skip: 跳过设置
+  WelcomeView:
+    description:
+      part1: 欢迎使用
+      part2: 请确认使用协议并开始初始设置。
+    license: 使用协议
+    accept: 同意使用协议
+    start: 开始设置
+  ServerUrlSettingView:
+    title: 服务器设置
+    description: 请设置连接用的服务器URL
+    server: 服务器URL
+
+logs:
+  LogViewer:
+    noLogs: 没有日志
+    scrollToTop: 回到顶部
+    scrollToBottom: 回到底部
+
+notifications:
+  NotificationListItem:
+    unread: 未读
+  NotificationListMenuBar:
+    prev: 前{size}条
+    next: 后{size}条
+  NotificationList:
+    noUnread: 不存在未读的通知
+  NotificationsCard:
+    title: 未读的通知
+    unread: 未读
+
+pages:
+  LoginPage:
+    title: 登 录
+    password: 密码
+    button: 登 录
+    resetPassword: 忘记密码的场合...
+    backToLogin: 返回登录页面
+    resetPasswordFlow:
+      part1: 忘记密码的场合，请按照以下步骤来重新设置密码。
+      part2: 录入系统中配置的邮箱地址，点击[发送重置密码邮件]按钮。
+      part3: 系统会发送密码重置邮件到配置的邮箱地址中。打开邮件，录入邮件中的[令牌]信息和新密码来重置密码。
+    registeredEmail: 配置的邮箱地址
+    sendPasswordResetMail: 发送重置密码邮件
+    token: 令牌
+    setNewPassword: 设置新密码
+    autoLogin: 自动登录
+  NotificationsPage:
+    noItems: 暂无通知
+  RMTAgentSettingPage:
+    description: 设置用于实时交易的量化策略
+    apply: 更 新
+    remove: 删除策略
+    confirmRemove: 确定删除选中的量化测率？
+
+positions:
+  DownloadPositionsDialog:
+    label:  下载所有的建仓信息<br/><span className="info">※请注意建仓信息多的场合下载会比较费时。</span>
+    description: 建仓数据以CSV形式提供下载。<br/>选择下载的范围后点击[下载]按钮。
+    filter: 建仓日期筛选
+    download: 下 载
+  PositionDetailsView:
+    status: 状态
+    type: 类型
+    volume: 数量
+    pair: 货币对
+    price: 买入价格
+    closePrice: 结算价格
+    enteredAt: 买入时间
+    exitedAt: 结算时间
+    agent: 量化策略
+    trailStop: 追踪止损
+    takeProfit: 盈利
+    lossCut: 自动止损
+  PositionListItem:
+    unit: 单位
+  PositionList:
+    noItems: 暂无建仓
+  PositionsCard:
+    title: 建仓
+    notClosed: 未结算
+  PositionsTable:
+    downloadCsv: 下载CSV文件...
+    noItems: 暂无建仓
+
+settings:
+  MailAddressSettingView:
+    title: 设置邮箱地址
+    description:
+      part1: 设置系统使用的邮箱地址
+      part2: 邮箱地址用于忘记密码时使用。请务必使用收信可能的邮箱地址。
+    mailAddress: 邮箱地址
+    save: 设置
+  PairSettingView:
+    title: 设置货币对
+    description:
+      part1: 设置系统使用的货币对信息。
+      part2: 货币对最多可选择20组。
+    save: 设置
+  PasswordSettingView:
+    title: 修改密码
+    description: 修改登录用密码信息。
+    changePassword: 新登录密码
+    oldPassword: 现在的密码
+    change: 更 新
+  SecuritiesSettingView:
+    title: 开户公司的设置
+    description:
+      part1: 设置开户公司信息。
+      part2: AccessToken的获取方式查看
+      part3: 这边
+      part4: 。
+    save: 设 置
+  SMTPServerSettingView:
+    title: SMTP服务器的设置
+    description: 设置发送邮箱时使用的SMTP服务器信息。
+    composeTestMail: 发送测试邮件
+    save: 设 置
+    smtpServer: SMTP服务器
+    port: SMTP端口号
+    user: 用户名
+    password: 密码
+
+tradingSummary:
+  TradingSummaryView:
+    totalProfitOrLoss: 损益合计
+    totalProfit: 总盈利
+    totalLoss: 总损失
+    winPercentage: 胜率
+    positionCount: 交易次数
+    closedPositionCount: 结算完成
+    profitFactor: 获利系数
+    maxLoss: 最大损失
+    avgLoss: 平均损失
+    pair: 货币对
+    sellOrBuy: 卖/买
+    agent: 量化策略
+    holdTime: 持仓时长
+    longest: 最长
+    shortest: 最短
+    avg: 平均
+    volume: 交易数量
+    max: 最大
+    min: 最小
+    term: 统计周期
+
+widgets:
+  RangeSelector:
+    start: 开始
+    end: 结束
+  UIEventHandler:
+    close: 关闭
+    open: 打开
+
+viewmodel:
+  AgentSourceEditor:
+    saved: ※已保存。
+  BacktestModel:
+    running: 运行中
+    waitForStart: 待机中
+    cancelled: 取消
+    error: 错误
+    finished: 完成
+  NotificationSelectionModel:
+    doAction: 执行了 {action} 操作
+    error: 操作运行时发生了错误。请查看日志获取详细信息。
+  NotificationTableModel:
+    rmt: 实时交易
+    all: 全部
+  BacktestsPageModel:
+    failedToRestart: 再执行失败。请确认回测计算的状态。
+    failedToCancel: 取消操作失败。请确认回测计算的状态。
+  PositionModel:
+    status:
+      live: 持仓中
+      closed: 已交易
+      lost: 损失
+  SecuritiesSettingModel:
+    finishToChangeSetting: 开户公司的设置信息更新了。
+    failedToChangeSetting: 无法连接开户公司。请确认AccessToken信息。
+  TradingSummaryViewModel:
+    week: 最近的1周
+    oneMonth: 最近30天
+    threeMonths: 最近90天
+    oneYear:  最近1年
+  Navigation:
+    home: 首页
+    realtrade: 实时交易
+    tradingSummary: 交易摘要
+    chart: 图表
+    positions: 建仓一览
+    agentSetting: 设置量化策略
+    logs: 日志
+    backtest: 回测计算
+    newBackTest: 生成回测计算
+    backtestList: 回测计算一览
+    notifications: 通知一览
+    agents: 量化策略
+    settings: 设置
+    login: 登录
+    initialSettings: 初期设置
+    welcome: 欢迎
+  AgentsPageModel:
+    edit: 编辑量化策略
+  RmtAgentSettingPageModel:
+    detail: 量化策略详情
+  RmtPositionDetailPageModel:
+    detail: 建仓详情
+  RmtTradingSummaryPageModel:
+    summary: "{item}的概要"
+
+validation:
+  fields:
+    startTime: 开始时间
+    endTime: 结束时间
+    testName: 测试名
+    memo: 备注
+    balance: 初始资金
+    agent: 量化策略
+    fileName: 文件名
+    password: 密码
+    mailAddress: 邮箱
+    token: 令牌
+    smtpServer: SMTP服务器
+    smtpPort: SMTP端口号
+    userName: 用户名
+    pair: 货币对
+    value: 数值
+    data: 数据
+    serverURL: 服务器URL
+
+  messages:
+    illegalStartTime: 开始时间不正确
+    acceptLicense: 请同意使用协议
+    mismatchPassword: 密码不一致
+    failedToResetPassword: 重置密码失败。请确认令牌的正确性。
+    finishToResetPassword: 密码已重置。请使用新密码登录系统。
+    sentResetMail: 已向系统登录的邮箱地址发送了记载了令牌信息的邮件。
+    mismatchMailAddress: 输入的邮箱地址和系统登录的邮箱地址不一致。请确认邮箱地址。
+    failedToSendEmail: 发送邮箱失败。
+    finishToChangeMailAddress: 邮箱地址已更新。
+    finishToChangeSetting: 设置已更新。
+    mismatch: 不一致
+    mismatchCurrentPassword: 密码不一致。请确认。
+    finishToChangePassword: 密码已更新。
+    sentTestMail: 已向登录的邮箱地址发送了测试邮件。请确认。
+    failedToSentMail: 邮件发送失败。请确认SMTP服务器的配置信息是否正确。
+    failedToConnectServer: 服务器无法连接。请确认URL信息是否正确。
+    networkErrorAndretry: 发生了通信错误。请在确认网络连接后再执行。
+    networkError: 无法连接到服务器。请确认网络连接
+    serverError: 服务器发生错误
+    operationNotAllowed: 无操作权限
+    serverBusy : 服务器忙。请稍后再试
+    notFound: 无法找到{entity}。请重新刷新页面后来获取最新信息
+    isEmpty :  请输入{field}
+    loginFailed : 邮箱和密码不一致
+    expired: 输入的{field}已失效,无法使用。
+    notNull: 请输入{field}
+    notEmpty: "{field}未设置。"
+    maxLength: "{field}的输入值太长"
+    minLength: "{field}的输入值太短"
+    pattern :    "{field}的格式正确"
+    prohibitedCharacter: "{field}中存在无法使用的字符「{character}」"
+    controlCode: "{field}中存在无法使用的字符"
+    notNumber: "{field}请输入半角数字"
+    notNumberOrHyphen: "{field}请输入半角数字或中横线(-)"
+    notAlphabet: "{field}请输入半角应数字或符号"
+    notKatakana: "{field}中存在无法使用的字符"
+    notHiragana: "{field}中存在无法使用的字符"
+    max: "{field}的输入值大于最大可输入的值"
+    min: "{field}的输入值小于最小可输入的值"
+    range: "{field}的输入值超范围"
+    size: "{field}最大可选择到{size}"
+    invalidValue : "{field}项目未正确输入"
+

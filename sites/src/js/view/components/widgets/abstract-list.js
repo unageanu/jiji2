@@ -50,7 +50,7 @@ export default class AbstractList extends AbstractComponent {
       return <div className="center-information loading"><LoadingImage left={-20}/></div>;
     }
     if (this.state.items.length <= 0) {
-      return <div className="center-information">{this.props.emptyLabel}</div>;
+      return <div className="center-information">{this.emptyLabel}</div>;
     }
     return <List
         key="list"
@@ -63,6 +63,10 @@ export default class AbstractList extends AbstractComponent {
 
   get className() {
     return "";
+  }
+
+  get emptyLabel() {
+    return this.props.emptyLabel;
   }
 
   createListItems() {

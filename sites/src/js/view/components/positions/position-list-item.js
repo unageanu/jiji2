@@ -1,4 +1,5 @@
-import React               from "react"
+import React                from "react"
+import { FormattedMessage } from 'react-intl';
 
 import AbstractComponent   from "../widgets/abstract-component"
 import PositionStatus      from "./position-status"
@@ -45,24 +46,24 @@ export default class PositionListItem extends React.Component {
   createProfitOrLossElement(position) {
     const type = PriceUtils.resolvePriceClass(position.profitOrLoss);
     return <span key="profitOrLoss" className={"profit-or-loss " + type}>
-      ¥{type == "up" ? "+" : ""}{position.formatedProfitOrLoss}
+      ¥{type == "up" ? "+" : ""}{position.formattedProfitOrLoss}
     </span>;
   }
   createSecondaryText(position) {
     let time = "";
-    if ( position.formatedEnteredAt != null ) {
-      time += position.formatedEnteredAt + " - ";
+    if ( position.formattedEnteredAt != null ) {
+      time += position.formattedEnteredAt + " - ";
     }
-    if ( position.formatedExitedAt != null ) {
-      time += position.formatedExitedAtShort;
+    if ( position.formattedExitedAt != null ) {
+      time += position.formattedExitedAtShort;
     }
     return [
       <span key="pair" className="pair">{position.pairName}</span>,
       <span key="separator" className="separator">/</span>,
-      <span key="sell-or-buy" className="sell-or-buy">{position.formatedSellOrBuy}</span>,
+      <span key="sell-or-buy" className="sell-or-buy">{position.formattedSellOrBuy}</span>,
       <span key="separator2" className="separator">/</span>,
       <span key="units" className="units">{position.units}</span>,
-      <span key="units-suffix" className="suffix">単位</span>,
+      <span key="units-suffix" className="suffix"><FormattedMessage id='positions.PositionListItem.unit'/></span>,
       <br key="br" />,
       <span key="time" className="time">{time}</span>
     ];
@@ -70,7 +71,7 @@ export default class PositionListItem extends React.Component {
   createRightIcon(position) {
       if (position.status != "live") return null;
       return <span className="right-icon" style={{width:"auto"}}>
-        <PositionStatus status={position.formatedStatus} />
+        <PositionStatus formattedStatus={position.formattedStatus} status={position.status} />
       </span>;
   }
   createAvatar(position) {

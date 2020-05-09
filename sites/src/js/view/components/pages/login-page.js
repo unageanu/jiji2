@@ -1,4 +1,5 @@
-import React        from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractPage from "./abstract-page"
 import LoadingImage from "../widgets/loading-image"
@@ -19,7 +20,7 @@ const keys = new Set([
   "isResettingPassword"
 ]);
 
-export default class LoginPage extends AbstractPage {
+class LoginPage extends AbstractPage {
 
   constructor(props) {
     super(props);
@@ -44,19 +45,20 @@ export default class LoginPage extends AbstractPage {
         {
           !this.state.showPasswordResetter
             ? this.createLoginPanel()
-            :  this.createPasswordResetterPanel()
+            : this.createPasswordResetterPanel()
         }
       </Card>
     </div>;
   }
 
   createLoginPanel() {
+    const { formatMessage } = this.props.intl;
     return <div className="login-panel">
-      <h3>ログイン</h3>
+      <h3><FormattedMessage id='pages.LoginPage.title' /></h3>
       <div className="inputs">
         <TextField
            ref="password"
-           floatingLabelText="パスワード"
+           floatingLabelText={formatMessage({ id: 'pages.LoginPage.password' })}
            onChange={(ev) => this.setState({password: ev.target.value}) }
            value={this.state.password}
            errorText={this.state.error}
@@ -66,7 +68,7 @@ export default class LoginPage extends AbstractPage {
       </div>
       <div className="buttons">
         <RaisedButton
-          label="ログイン"
+          label={formatMessage({ id: 'pages.LoginPage.button' })}
           primary={true}
           disabled={this.state.isAuthenticating}
           onClick={this.login.bind(this)}
@@ -82,29 +84,30 @@ export default class LoginPage extends AbstractPage {
       {this.createLoginPanelBottomContent()}
       <div className="resetter-link">
         <a onClick={() => this.setState({showPasswordResetter:true})}>
-          パスワードを忘れた場合...
+          <FormattedMessage id='pages.LoginPage.resetPassword' />
         </a>
       </div>
     </div>;
   }
 
   createPasswordResetterPanel() {
+    const { formatMessage } = this.props.intl;
     return <div className="password-resetter">
       <div className="login-link">
         <a onClick={() => this.setState({showPasswordResetter:false})}>
-          ← ログイン画面に戻る
+          ← <FormattedMessage id='pages.LoginPage.backToLogin' />
         </a>
       </div>
       <div className="description">
-        パスワードを忘れた方は、以下の手順に従ってパスワードを再設定してください。
+        <FormattedMessage id='pages.LoginPage.resetPasswordFlow.part1' />
       </div>
       <div className="section">
         <div className="info">
-          <span className="number">1.</span> システムに登録しているメールアドレスを入力して、 [パスワード再設定メールを送る] ボタンを押してください。
+          <span className="number">1.</span> <FormattedMessage id='pages.LoginPage.resetPasswordFlow.part2' />
         </div>
         <div className="input">
           <TextField
-             floatingLabelText="登録済みメールアドレス"
+             floatingLabelText={formatMessage({ id: 'pages.LoginPage.registeredEmail' })}
              onChange={(ev) => this.setState({mailAddress: ev.target.value}) }
              value={this.state.mailAddress}
              style={{ width: "100%" }}
@@ -113,7 +116,7 @@ export default class LoginPage extends AbstractPage {
         </div>
         <div className="buttons">
           <RaisedButton
-            label="パスワード再設定メールを送る"
+            label={formatMessage({ id: 'pages.LoginPage.sendPasswordResetMail' })}
             primary={true}
             disabled={this.state.isSendingMail}
             onClick={this.sendPasswordResettingMail.bind(this)}
@@ -126,18 +129,18 @@ export default class LoginPage extends AbstractPage {
       </div>
       <div className="section">
         <div className="info">
-         <span className="number">2.</span> 登録されているメールアドレスに [パスワード再設定メール] が送信されます。メールを開封し、記載されている [トークン] と新しいパスワードを入力して、パスワードを再設定してください。
+         <span className="number">2.</span> <FormattedMessage id='pages.LoginPage.resetPasswordFlow.part3' />
         </div>
         <div className="input">
           <TextField
-             floatingLabelText="トークン"
+             floatingLabelText={formatMessage({ id: 'pages.LoginPage.token' })}
              onChange={(ev) => this.setState({token: ev.target.value}) }
              errorText={this.state.tokenError}
              value={this.state.token}
              style={{ width: "100%" }}>
           </TextField>
           <TextField
-             floatingLabelText="新しいパスワード"
+             floatingLabelText={formatMessage({ id: 'common.newPassword' })}
              onChange={(ev) => this.setState({newPassword1: ev.target.value}) }
              value={this.state.newPassword1}
              errorText={this.state.newPasswordError}
@@ -145,20 +148,20 @@ export default class LoginPage extends AbstractPage {
              <input type="password" />
           </TextField><br/>
           <TextField
-             floatingLabelText="新しいパスワード (確認用)"
+             floatingLabelText={formatMessage({ id: 'common.newPasswordConfirm' })}
              onChange={(ev) => this.setState({newPassword2: ev.target.value}) }
              value={this.state.newPassword2}
              style={{ width: "100%" }}>
              <input type="password" />
           </TextField>
           <div className="description">
-            ※確認のため、新しいパスワードを再入力してください。
+            <FormattedMessage id='common.newPasswordDescription' />
           </div>
         </div>
         {this.createErrorContent(this.state.passwordResettingError)}
         <div className="buttons">
           <RaisedButton
-            label="パスワードを再設定する"
+            label={formatMessage({ id: 'pages.LoginPage.setNewPassword' })}
             primary={true}
             disabled={this.state.isResettingPassword}
             onClick={this.resetPassword.bind(this)}
@@ -177,7 +180,7 @@ export default class LoginPage extends AbstractPage {
       return <div className="message">
         {this.state.passwordResettingMessage}
         <a onClick={() => this.setState({showPasswordResetter:false})}>
-          → ログイン画面に戻る
+          → <FormattedMessage id='pages.LoginPage.backToLogin' />
         </a>
       </div>;
     } else {
@@ -186,14 +189,14 @@ export default class LoginPage extends AbstractPage {
   }
 
   login(event) {
-    this.model().login(this.state.password);
+    this.model().login(this.state.password, this.props.intl.formatMessage);
   }
   sendPasswordResettingMail() {
-    this.model().sendPasswordResettingMail(this.state.mailAddress);
+    this.model().sendPasswordResettingMail(this.state.mailAddress, this.props.intl.formatMessage);
   }
   resetPassword(){
     this.model().resetPassword(this.state.token,
-      this.state.newPassword1, this.state.newPassword2);
+      this.state.newPassword1, this.state.newPassword2, this.props.intl.formatMessage);
   }
 
   createLoginPanelBottomContent() {
@@ -212,3 +215,5 @@ export default class LoginPage extends AbstractPage {
 LoginPage.contextTypes = {
   application: React.PropTypes.object.isRequired
 };
+
+export default injectIntl(LoginPage);

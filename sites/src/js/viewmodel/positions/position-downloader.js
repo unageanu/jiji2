@@ -41,9 +41,9 @@ export default class PositionDownloader extends Observable {
     this.rangeSelectorModel.endTimeError = null;
   }
 
-  createCSVDownloadUrl() {
+  createCSVDownloadUrl(formatMessage) {
     const type = this.downloadType;
-    if ( type !== "all" && !this.rangeSelectorModel.validate()) {
+    if ( type !== "all" && !this.rangeSelectorModel.validate(formatMessage)) {
       return Deferred.valueOf(null);
     }
     const startTime = type === "all" ? null : this.rangeSelectorModel.startTime;

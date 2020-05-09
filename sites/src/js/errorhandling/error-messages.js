@@ -1,49 +1,44 @@
-import ContainerJS   from "container-js"
 import _             from "underscore"
-import Error         from "../model/error"
-
 
 const messages = {
-  NETWORK_ERROR: "サーバーに接続できませんでした。ネットワーク接続を確認してください",
-  SERVER_ERROR: "サーバーでエラーが発生しました",
+  NETWORK_ERROR: "validation.messages.networkError",
+  SERVER_ERROR: "validation.messages.serverError",
 
-  OPERATION_NOT_ALLOWED: "操作が許可されていません",
-  SERVER_BUSY : "サーバーが混雑しています。しばらく待ってからやり直してください",
+  OPERATION_NOT_ALLOWED: "validation.messages.operationNotAllowed",
+  SERVER_BUSY : "validation.messages.serverBusy",
 
 
-  NOT_FOUND : "<%- entity %>が見つかりません。"
-              + "画面を再読み込みして最新の情報に更新してください",
-  IS_EMPTY :  "<%- field %>を入力してください",
-  LOGIN_FAILED : "メールアドレスとパスワードが一致しません",
-  PASSWORDS_ARE_NOT_EQUAL : "パスワードが一致していません",
+  NOT_FOUND : "validation.messages.notFound",
+  IS_EMPTY :  "validation.messages.isEmpty",
+  LOGIN_FAILED : "validation.messages.loginFailed",
+  PASSWORDS_ARE_NOT_EQUAL : "validation.messages.mismatchPassword",
 
-  EXPIRED : "入力された<%- field %>は有効期限が切れているため、ご利用頂けません",
+  EXPIRED : "validation.messages.expired",
 
-  NOT_NULL : "<%- field %>を入力してください",
-  NOT_EMPTY : "<%- field %>が設定されていません",
-  MAX_LENGTH : "<%- field %>が長すぎます",
-  MIN_LENGTH : "<%- field %>が短すぎます",
-  PATTERN :    "<%- field %>の形式が不正です",
-  PROHIBITED_CHARACTER : "<%- field %>に使用できない文字"
-                         + "「<%- character %>」が含まれています",
-  CONTROL_CODE : "<%- field %>に不正な文字が含まれています",
-  NOT_NUMBER : "<%- field %>は半角数字で入力してください",
-  NOT_NUMBER_OR_HYPHEN : "<%- field %>は半角数字またはハイフン(-)で入力してください",
-  NOT_ALPHABET : "<%- field %>は半角英数字、または記号で入力してください",
-  NOT_KATAKANA : "<%- field %>は全角カタカナで入力してください",
-  NOT_HIRAGANA : "<%- field %>は全角ひらがなで入力してください",
-  MAX : "<%- field %>に最大値より大きい値が設定されています",
-  MIN : "<%- field %>に最小値より小さい値が設定されています",
-  RANGE : "<%- field %>の値が範囲外です",
-  SIZE : "<%- field %>は<%- size%>つまで選択できます",
-  INVALID_VALUE : "<%- field %>が正しく入力されていません"
+  NOT_NULL : "validation.messages.notNull",
+  NOT_EMPTY : "validation.messages.notEmpty",
+  MAX_LENGTH : "validation.messages.maxLength",
+  MIN_LENGTH : "validation.messages.minLength",
+  PATTERN :    "validation.messages.pattern",
+  PROHIBITED_CHARACTER : "validation.messages.prohibitedCharacter",
+  CONTROL_CODE : "validation.messages.controlCode",
+  NOT_NUMBER : "validation.messages.notNumber",
+  NOT_NUMBER_OR_HYPHEN : "validation.messages.notNumberOrHyphen",
+  NOT_ALPHABET : "validation.messages.notAlphabet",
+  NOT_KATAKANA : "validation.messages.notKatakana",
+  NOT_HIRAGANA : "validation.messages.notHiragana",
+  MAX : "validation.messages.max",
+  MIN : "validation.messages.min",
+  RANGE : "validation.messages.range",
+  SIZE : "validation.messages.size",
+  INVALID_VALUE : "validation.messages.invalidValue"
 };
 
 export default class ErrorMessages {
 
-  static getMessageFor(error, param={}) {
-    const template = _.template(this.getMessageTemplateFor(error));
-    return template(this.getMessageParams(error, param));
+  static getMessageFor(formatMessage, error, param={}) {
+    return formatMessage({id: this.getMessageTemplateFor(error)},
+      this.getMessageParams(error, param, formatMessage));
   }
 
   static getMessageTemplateFor(error) {
@@ -53,10 +48,10 @@ export default class ErrorMessages {
         || messages.SERVER_ERROR;
   }
 
-  static getMessageParams(error, param) {
+  static getMessageParams(error, param, formatMessage) {
     return this.defaults(param, error, error.detail || {}, {
-      field: "値",
-      entity: "データ"
+      field: formatMessage({id: 'validation.fields.value'}),
+      entity: formatMessage({id: 'validation.fields.data'})
     });
   }
   static defaults(...args) {

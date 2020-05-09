@@ -1,4 +1,5 @@
-import React                from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractComponent    from "../widgets/abstract-component"
 import PriceUtils           from "../../../viewmodel/utils/price-utils"
@@ -9,17 +10,17 @@ import Avatar from "material-ui/Avatar"
 
 const nullPosition = {
   profitOrLoss : 0,
-  formatedProfitOrLoss : "-",
-  formatedSellOrBuy: "-",
-  formatedUnits: "-",
-  formatedEntryPrice: "-",
-  formatedExitPrice: "-",
-  formatedEnteredAt: "-",
-  formatedExitedAt: "-",
+  formattedProfitOrLoss : "-",
+  formattedSellOrBuy: "-",
+  formattedUnits: "-",
+  formattedEntryPrice: "-",
+  formattedExitPrice: "-",
+  formattedEnteredAt: "-",
+  formattedExitedAt: "-",
   closingPolicy : {
     trailingStop: "-",
-    formatedTakeProfit: "-",
-    formatedLossCut: "-"
+    formattedTakeProfit: "-",
+    formattedLossCut: "-"
   }
 };
 
@@ -27,7 +28,7 @@ const keys = new Set([
   "selectedId", "selected"
 ]);
 
-export default class PositionDetailsView extends AbstractComponent {
+class PositionDetailsView extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -58,6 +59,7 @@ export default class PositionDetailsView extends AbstractComponent {
     return <div className="center-information"><LoadingImage /></div>;
   }
   createDetailsView( position ) {
+    const { formatMessage } = this.props.intl;
     const closingPolicy = position.closingPolicy || nullPosition.closingPolicy;
     return (
       <div className="position-details">
@@ -65,53 +67,55 @@ export default class PositionDetailsView extends AbstractComponent {
           {this.createAvatar(position)}
           <span
             className={"price " + PriceUtils.resolvePriceClass(position.profitOrLoss)}>
-            ¥ {(position.profitOrLoss > 0 ? "+" : "") + position.formatedProfitOrLoss}
+            ¥ {(position.profitOrLoss > 0 ? "+" : "") + position.formattedProfitOrLoss}
           </span>
         </div>
         <div className="informations">
           <div className="category first">
             <span className="item">
-              <span className="label">状態:</span>
+              <span className="label"><FormattedMessage id='positions.PositionDetailsView.status'/>:</span>
               <span className="value">
-                <PositionStatus status={position.formatedStatus}/>
+                <PositionStatus
+                  formattedStatus={formatMessage({id: position.formattedStatus})}
+                  status={position.status} />
               </span>
             </span>
             <span className="item">
-              <span className="label">種別:</span>
-              <span className="value">{position.formatedSellOrBuy}</span>
+              <span className="label"><FormattedMessage id='positions.PositionDetailsView.type'/>:</span>
+              <span className="value"><FormattedMessage id={position.formattedSellOrBuy} /></span>
             </span>
             <span className="item">
-              <span className="label">数量:</span>
-              <span className="value">{position.formatedUnits}</span>
+              <span className="label"><FormattedMessage id='positions.PositionDetailsView.volume'/>:</span>
+              <span className="value">{position.formattedUnits}</span>
             </span>
             <span className="item">
-              <span className="label">通貨ペア:</span>
+              <span className="label"><FormattedMessage id='positions.PositionDetailsView.pair'/>:</span>
               <span className="value">{position.pairName}</span>
             </span>
           </div>
           <div className="category">
             <span className="item">
-              <span className="label">購入価格:</span>
-              <span className="value">{position.formatedEntryPrice}</span>
+              <span className="label"><FormattedMessage id='positions.PositionDetailsView.price'/>:</span>
+              <span className="value">{position.formattedEntryPrice}</span>
             </span>
             <span className="item">
-              <span className="label">決済価格:</span>
-              <span className="value">{position.formatedExitPrice}</span>
+              <span className="label"><FormattedMessage id='positions.PositionDetailsView.closePrice'/>:</span>
+              <span className="value">{position.formattedExitPrice}</span>
             </span>
             <span className="item">
-              <span className="label">購入日時:</span>
+              <span className="label"><FormattedMessage id='positions.PositionDetailsView.enteredAt'/>:</span>
               <span className="value">
-                {position.formatedEnteredAt || "-"}
+                {position.formattedEnteredAt || "-"}
               </span>
             </span>
             <span className="item">
-              <span className="label">決済日時:</span>
+              <span className="label"><FormattedMessage id='positions.PositionDetailsView.exitedAt'/>:</span>
               <span className="value">
-                {position.formatedExitedAt || "-"}
+                {position.formattedExitedAt || "-"}
               </span>
             </span>
             <span className="item">
-              <span className="label">エージェント:</span>
+              <span className="label"><FormattedMessage id='positions.PositionDetailsView.agent'/>:</span>
               <span className="value">
                 {position.agentName}
               </span>
@@ -119,21 +123,21 @@ export default class PositionDetailsView extends AbstractComponent {
           </div>
           <div className="closing-policy category">
             <span className="item">
-              <span className="label">トレールストップ:</span>
+              <span className="label"><FormattedMessage id='positions.PositionDetailsView.trailStop'/>:</span>
               <span className="value">
                 {closingPolicy.trailingStop}pips
               </span>
             </span>
             <span className="item">
-              <span className="label">利益確定:</span>
+              <span className="label"><FormattedMessage id='positions.PositionDetailsView.takeProfit'/>:</span>
               <span className="value">
-                {closingPolicy.formatedTakeProfit}
+                {closingPolicy.formattedTakeProfit}
               </span>
             </span>
             <span className="item">
-              <span className="label">ロスカット:</span>
+              <span className="label"><FormattedMessage id='positions.PositionDetailsView.lossCut'/>:</span>
               <span className="value">
-                {closingPolicy.formatedLossCut}
+                {closingPolicy.formattedLossCut}
               </span>
             </span>
           </div>
@@ -151,3 +155,4 @@ PositionDetailsView.propTypes = {
 PositionDetailsView.defaultProps = {
   position: null
 };
+export default  injectIntl(PositionDetailsView);

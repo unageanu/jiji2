@@ -1,12 +1,13 @@
-import React  from "react"
-import { Router } from 'react-router'
+import React          from "react"
+import { injectIntl } from 'react-intl';
+import { Router }     from 'react-router'
 
 import {List, ListItem} from "material-ui/List"
 import Divider          from "material-ui/Divider"
 import Subheader        from 'material-ui/Subheader'
 import Environment      from "../environment"
 
-export default class LeftNavi extends React.Component {
+class LeftNavi extends React.Component {
 
   constructor(props) {
     super(props);
@@ -36,12 +37,14 @@ export default class LeftNavi extends React.Component {
     let lists  = [];
     let buffer = [];
     let label  = "";
+    const { formatMessage } = this.props.intl;
     this.navigator().menuItems().forEach((item)=> {
       if (item.type === "header") {
         lists.push(this.createList( label, buffer, lists.length));
         lists.push(<Divider key={lists.length+"_divider"}/>);
         buffer = [];
-        label  = item.text;
+        label  = item.labelId != null && item.labelId != ""
+          ? formatMessage({id: 'viewmodel.Navigation.' + item.labelId }) : "";
       } else{
         if (item.hidden !== true) buffer.push( this.createListItem(item) );
       }
@@ -62,6 +65,7 @@ export default class LeftNavi extends React.Component {
   }
 
   createListItem(item, index) {
+    const { formatMessage } = this.props.intl;
     const selected = this.isActive(item.route);
     const action   = (e) => this.onLeftNavChange(e, null, item);
     const icon     = <div className={ "menu-icon " + item.iconClassName} />;
@@ -69,7 +73,7 @@ export default class LeftNavi extends React.Component {
       key: item.route,
       className: "mui-menu-item" + (selected ? " mui-is-selected" : ""),
       leftIcon: icon,
-      primaryText: item.text,
+      primaryText: item.labelId ? formatMessage({id: 'viewmodel.Navigation.' + item.labelId }) : '',
       onTouchTap: action
     });
   }
@@ -100,3 +104,4 @@ LeftNavi.contextTypes = {
   router: React.PropTypes.object.isRequired,
   muiTheme: React.PropTypes.object.isRequired
 };
+export default injectIntl(LeftNavi)

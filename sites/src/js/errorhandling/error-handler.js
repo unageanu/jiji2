@@ -1,5 +1,4 @@
 import ContainerJS   from "container-js"
-import ErrorMessages from "./error-messages"
 
 export default class ErrorHandler {
 
@@ -10,8 +9,7 @@ export default class ErrorHandler {
 
   handle(error) {
     if (error.preventDefault) return;
-    const message = ErrorMessages.getMessageFor(error);
-    if (message) this.eventQueue.push({type:"error", message:message});
+    this.eventQueue.push({type:"error", error: error});
   }
 
   registerHandlers() {

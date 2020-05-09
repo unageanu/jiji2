@@ -20,14 +20,14 @@ export default class DateFormatter {
     return DateFormat.asString(format, date);
   }
 
-  static formatPeriod(s) {
+  static formatPeriod(s, formatMessage) {
     if (s == null) return "";
     let str = "";
     [
-      {label: "日",   period: 60 * 60 * 24},
-      {label: "時間", period: 60 * 60},
-      {label: "分",   period: 60},
-      {label: "秒",   period: 0}
+      {label: formatMessage({id:'common.period.day'}),   period: 60 * 60 * 24},
+      {label: formatMessage({id:'common.period.hour'}), period: 60 * 60},
+      {label: formatMessage({id:'common.period.minute'}),   period: 60},
+      {label: formatMessage({id:'common.period.second'}),   period: 0}
     ].forEach((p)=> {
       if (s >= p.period) {
         const step = Math.floor(p.period > 0 ? s/p.period : s);
@@ -35,6 +35,6 @@ export default class DateFormatter {
         s = s % p.period;
       }
     });
-    return str || "0秒";
+    return str || ("0" + formatMessage({id:'common.period.second'}));
   }
 }

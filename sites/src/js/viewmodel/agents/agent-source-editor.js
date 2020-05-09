@@ -52,10 +52,10 @@ export default class AgentSourceEditor extends Observable {
     }
   }
 
-  save(name, body) {
+  save(name, body, formatMessage) {
     const target = this.getProperty("editTarget");
     if (target == null) return;
-    if (!this.validate(name)) return;
+    if (!this.validate(name, formatMessage)) return;
 
     this.isSaving = true;
     this.savedLabel = null;
@@ -64,7 +64,7 @@ export default class AgentSourceEditor extends Observable {
       this.setProperty("targetBody", body);
       this.setProperty("fileNameError", null);
       this.isSaving   = false;
-      this.savedLabel = "※保存しました。 ( " +
+      this.savedLabel = formatMessage({id:'viewmodel.AgentSourceEditor.saved'}) + " ( " +
         DateFormatter.format(this.timeSource.now) + " )";
     }, () => this.isSaving = false );
   }
@@ -80,9 +80,9 @@ export default class AgentSourceEditor extends Observable {
     });
   }
 
-  validate(name) {
+  validate(name, formatMessage) {
     return ValidationUtils.validate(Validators.agentFileName, name,
-      {field: "ファイル名"}, (error) => this.fileNameError = error );
+      {field: formatMessage({id:'validation.fields.fileName'})}, (error) => this.fileNameError = error, formatMessage );
   }
 
   onSourcesChanged() {

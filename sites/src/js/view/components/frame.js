@@ -1,5 +1,7 @@
 import React                            from "react"
 import { Router, Link }                 from 'react-router'
+import { injectIntl, FormattedMessage } from 'react-intl';
+
 import LeftNavi                         from "./left-navi"
 import WindowResizeManager              from "../window-resize-manager"
 import theme                            from "../theme"
@@ -8,7 +10,7 @@ import IconButton                       from "material-ui/IconButton"
 import FontIcon                         from "material-ui/FontIcon"
 import MuiThemeProvider                 from 'material-ui/styles/MuiThemeProvider'
 
-export default class Frame extends React.Component {
+class Frame extends React.Component {
 
   constructor(props) {
     super(props);
@@ -18,6 +20,7 @@ export default class Frame extends React.Component {
   }
 
   render() {
+    const { formatMessage } = this.props.intl
     return (
       <MuiThemeProvider muiTheme={theme}>
         <div className="root">
@@ -27,7 +30,7 @@ export default class Frame extends React.Component {
                 <span className="button">
                   <IconButton
                     key="help"
-                    tooltip={"サポート・フォーラム"}
+                    tooltip={formatMessage({ id: 'Frame.support' })}
                     iconStyle={{color:"#FFF"}}
                     onClick={() => window.open("https://github.com/unageanu/jiji2/issues", "forum")}>
                     <FontIcon className="md-forum" />
@@ -35,7 +38,7 @@ export default class Frame extends React.Component {
                 </span>
                 <IconButton
                   key="help"
-                  tooltip={"使い方"}
+                  tooltip={formatMessage({ id: 'Frame.usage' })}
                   iconStyle={{color:"#FFF"}}
                   onClick={() => window.open("http://jiji2.unageanu.net/usage", "usage")}>
                   <FontIcon className="md-live-help" />
@@ -65,7 +68,9 @@ export default class Frame extends React.Component {
     return this.props.application.navigator.menuItems().filter((item)=>{
       return item.type === "subheader";
     }).map((item) => {
-      return <Link key={item.route} to={item.route}>{item.text}</Link>;
+      return <Link key={item.route} to={item.route}>
+        <FormattedMessage id={`viewmodel.Navigation.${item.labelId}`} />
+      </Link>;
     });
   }
 }
@@ -79,3 +84,5 @@ Frame.childContextTypes = {
 Frame.contextTypes = {
   router: React.PropTypes.object
 };
+
+export default injectIntl(Frame);

@@ -40,7 +40,7 @@ export default class SecuritiesSettingModel extends Observable {
     return d;
   }
 
-  save(configurations) {
+  save(configurations, formatMessage) {
     this.error = null;
     this.message = null;
     this.isSaving = true;
@@ -48,21 +48,21 @@ export default class SecuritiesSettingModel extends Observable {
       this.activeSecuritiesId, configurations).then(
       (result) => {
         this.isSaving = false;
-        this.message = "証券会社の設定を変更しました。 ("
+        this.message = formatMessage({id:'viewmodel.SecuritiesSettingModel.finishToChangeSetting'}) + " ("
           + DateFormatter.format(this.timeSource.now) + ")";
       },
       (error)  => {
         this.isSaving = false;
-        this.handleError(error);
+        this.handleError(error, formatMessage);
         throw error;
       });
   }
 
-  handleError(error) {
+  handleError(error, formatMessage) {
     if (error.code === Error.Code.INVALID_VALUE ) {
-      this.error = "証券会社に接続できませんでした。アクセストークンを確認してください。";
+      this.error = formatMessage({id:'viewmodel.SecuritiesSettingModel.failedToChangeSetting'});
     } else {
-      this.error = ErrorMessages.getMessageFor(error);
+      this.error = ErrorMessages.getMessageFor(formatMessage, error);
     }
     error.preventDefault = true;
   }

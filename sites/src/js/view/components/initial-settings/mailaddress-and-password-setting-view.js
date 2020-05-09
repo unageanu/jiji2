@@ -1,4 +1,5 @@
-import React                  from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractComponent      from "../widgets/abstract-component"
 import LoadingImage           from "../widgets/loading-image"
@@ -10,7 +11,7 @@ const keys = new Set([
   "error", "isSaving"
 ]);
 
-export default class MailaddressAndPasswordSettingView
+class MailaddressAndPasswordSettingView
 extends AbstractComponent {
 
   constructor(props) {
@@ -50,24 +51,24 @@ extends AbstractComponent {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return (
       <div className="mailaddress-and-password-setting-view">
-        <h3>メールアドレスとパスワードの設定</h3>
+        <h3><FormattedMessage id='initialSettings.MailaddressAndPasswordSettingView.title'/></h3>
         <div className="description">
-          メールアドレスとシステムのログインパスワードを設定してください。
+          <FormattedMessage id='initialSettings.MailaddressAndPasswordSettingView.description.part1'/>
         </div>
         <ul className="description">
-          <li>パスワードはシステムを利用する際に必要になります。</li>
+          <li><FormattedMessage id='initialSettings.MailaddressAndPasswordSettingView.description.part2'/></li>
           <li>
-            メールアドレスは、パスワードを忘れて再設定するときに使用されます。
-            必ず、メールを受信可能なアドレスを設定してください。
+            <FormattedMessage id='initialSettings.MailaddressAndPasswordSettingView.description.part3'/>
           </li>
         </ul>
         <div className="inputs">
           <div className="mail-address">
             <TextField
                ref="mailAddress"
-               floatingLabelText="メールアドレス"
+               floatingLabelText={formatMessage({ id: 'initialSettings.MailaddressAndPasswordSettingView.mailAddress' })}
                errorText={this.state.mailError}
                onChange={(e) => this.setState({mailAddress: e.target.value}) }
                value={this.state.mailAddress}
@@ -77,7 +78,7 @@ extends AbstractComponent {
           <div className="password">
             <TextField
                 ref="newPassword1"
-                floatingLabelText="パスワード"
+                floatingLabelText={formatMessage({ id: 'initialSettings.MailaddressAndPasswordSettingView.password' })}
                 onChange={(e) => this.setState({password1: e.target.value}) }
                 errorText={this.state.passwordError}
                 value={this.state.password1}
@@ -88,7 +89,7 @@ extends AbstractComponent {
           <div className="password">
             <TextField
                 ref="newPassword2"
-                floatingLabelText="パスワード (確認用)"
+                floatingLabelText={formatMessage({ id: 'initialSettings.MailaddressAndPasswordSettingView.passwordConfirm' })}
                 onChange={(e) => this.setState({password2: e.target.value}) }
                 errorText={this.state.passwordError}
                 value={this.state.password2}
@@ -96,7 +97,7 @@ extends AbstractComponent {
                 <input type="password" />
             </TextField>
             <div className="description">
-              ※確認のため、パスワードを再入力してください。
+              <FormattedMessage id='initialSettings.MailaddressAndPasswordSettingView.passwordConfirmDescription'/>
             </div>
           </div>
         </div>
@@ -104,7 +105,7 @@ extends AbstractComponent {
         <div className="buttons">
           <span className="button">
             <RaisedButton
-              label="次へ"
+              label={formatMessage({ id: 'common.button.next' })}
               onClick={this.next.bind(this)}
               disabled={this.state.isSaving}
               primary={true}
@@ -122,7 +123,8 @@ extends AbstractComponent {
 
   next() {
     this.props.model.setMailAddressAndPassword(
-      this.state.mailAddress, this.state.password1, this.state.password2);
+      this.state.mailAddress, this.state.password1,
+      this.state.password2, this.props.intl.formatMessage);
   }
 }
 MailaddressAndPasswordSettingView.propTypes = {
@@ -131,3 +133,4 @@ MailaddressAndPasswordSettingView.propTypes = {
 MailaddressAndPasswordSettingView.defaultProps = {
   model: null
 };
+export default injectIntl(MailaddressAndPasswordSettingView);

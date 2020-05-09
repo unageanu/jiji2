@@ -30,7 +30,7 @@ export default class RMTAgentSettingPageModel extends AbstractPageModel {
     });
   }
 
-  saveAgentSetting() {
+  saveAgentSetting(formatMessage) {
     this.isSaving   = true;
     this.savedLabel = null;
     const agentSetting = this.agentSettingBuilder.agentSetting;
@@ -38,7 +38,7 @@ export default class RMTAgentSettingPageModel extends AbstractPageModel {
       (saved) => {
         this.agentSettingBuilder.agentSetting = saved;
         this.isSaving   = false;
-        this.savedLabel = "※設定を反映しました。 ( " +
+        this.savedLabel = `※${formatMessage({ id: 'validation.messages.finishToChangeSetting' })} ( ` +
           DateFormatter.format(this.timeSource.now) + " )";
       },
       () => this.isSaving = false );

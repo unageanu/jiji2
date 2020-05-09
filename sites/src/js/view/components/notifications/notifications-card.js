@@ -1,4 +1,5 @@
 import React             from "react"
+import { injectIntl }    from 'react-intl';
 
 import AbstractCard      from "../widgets/abstract-card"
 import Chart             from "../chart/chart"
@@ -10,7 +11,7 @@ const keys = new Set([
   "notRead"
 ]);
 
-export default class NotificationsCard extends AbstractCard {
+class NotificationsCard extends AbstractCard {
 
   constructor(props) {
     super(props);
@@ -28,20 +29,23 @@ export default class NotificationsCard extends AbstractCard {
     return "notifications-card";
   }
   getTitle() {
-    return "未読の通知";
+    const { formatMessage } = this.props.intl;
+    return formatMessage({ id: 'notifications.NotificationsCard.title' });
   }
   getIconClass() {
     return "md-notifications";
   }
   getSettingMenuItems() {
-    return ["更新"];
+    const { formatMessage } = this.props.intl;
+    return [formatMessage({ id: 'common.action.reload' })];
   }
   createTitle() {
+    const { formatMessage } = this.props.intl;
     const title = this.getTitle();
     const result = [ <span key="title" className="title">{title}</span> ];
     if (this.state.notRead && this.state.notRead > 0) {
       result.push(<TextInRadius key="icon"
-        text={"未読:" + this.state.notRead} />);
+        text={formatMessage({ id: 'notifications.NotificationsCard.unread' }) + ":" + this.state.notRead} />);
     }
     return result;
   }
@@ -64,3 +68,4 @@ NotificationsCard.propTypes = {
 NotificationsCard.defaultProps = {
   selectionModel: null,
 };
+export default injectIntl(NotificationsCard);

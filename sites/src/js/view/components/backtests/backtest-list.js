@@ -1,4 +1,5 @@
-import React               from "react"
+import React                from "react"
+import { FormattedMessage } from 'react-intl';
 import { Router } from 'react-router'
 
 import AbstractComponent   from "../widgets/abstract-component"
@@ -44,7 +45,7 @@ export default class BacktestList extends AbstractComponent {
       return <div className="center-information loading"><LoadingImage left={-20}/></div>;
     }
     if (this.state.items.length <= 0) {
-      return <div className="center-information">バックテストはありません</div>;
+      return <div className="center-information"><FormattedMessage id='backtests.BacktestList.noBacktests' /></div>;
     }
     const items = this.state.items.map(
       (item) => this.createItemComponent(item));

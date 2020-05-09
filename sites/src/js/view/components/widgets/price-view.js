@@ -1,4 +1,5 @@
-import React      from "react"
+import React                from "react"
+import { FormattedMessage } from 'react-intl';
 
 import PriceUtils from "../../../viewmodel/utils/price-utils"
 import TrendIcon  from "./trend-icon"
@@ -24,7 +25,7 @@ export default class PriceView extends React.Component {
     </span>;
   }
   createMark() {
-    return this.props.showMark ? <span className="mark">￥</span> : null;
+    return this.props.showMark ? <span className="mark"><FormattedMessage id='common.currencyUnit'/></span> : null;
   }
   createUnit(price) {
     return price.unit

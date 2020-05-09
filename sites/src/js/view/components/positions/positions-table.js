@@ -1,4 +1,5 @@
-import React                   from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractComponent       from "../widgets/abstract-component"
 import LoadingImage            from "../widgets/loading-image"
@@ -23,7 +24,7 @@ const selectionKeys = new Set([
   "selectedId"
 ]);
 
-export default class PositionsTable extends AbstractComponent {
+class PositionsTable extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -64,13 +65,14 @@ export default class PositionsTable extends AbstractComponent {
   }
 
   createActionContent() {
+    const { formatMessage } = this.props.intl;
     const prev = () => this.props.model.prev();
     const next = () => this.props.model.next();
     return <div className="actions">
       <div className="left">
         <FlatButton
           className="button"
-          label="CSV形式でダウンロード..."
+          label={formatMessage({ id: 'positions.PositionsTable.downloadCsv' })}
           labelStyle={{padding:"0px 16px 0px 8px"}}
           onClick={()=> this.refs.downloadDialog.show()}>
           <ButtonIcon className="md-file-download"/>
@@ -79,14 +81,14 @@ export default class PositionsTable extends AbstractComponent {
       <div className="right">
         <IconButton
           key="prev"
-          tooltip={"前の" + this.props.model.pageSize +  "件"}
+          tooltip={formatMessage({ id: 'common.action.prev' }, {size: this.props.model.pageSize})}
           disabled={this.state.loading || !this.state.hasPrev}
           onClick={prev}>
           <FontIcon className="md-navigate-before"/>
         </IconButton>
         <IconButton
           key="next"
-          tooltip={"次の" + this.props.model.pageSize +  "件"}
+          tooltip={formatMessage({ id: 'common.action.next' }, {size: this.props.model.pageSize})}
           disabled={this.state.loading || !this.state.hasNext}
           onClick={next}>
           <FontIcon className="md-navigate-next"/>
@@ -96,17 +98,19 @@ export default class PositionsTable extends AbstractComponent {
   }
 
   createHeaderContent() {
+    const { formatMessage } = this.props.intl;
     return PositionColumns.map((column) => {
       const isCurrentSortKey = this.state.sortOrder.order === column.sort;
       const onClick = (e) => this.onHeaderTapped(e, column);
       const orderMark = isCurrentSortKey
         ? (this.state.sortOrder.direction === "asc" ? "▲" : "▼")
         : "";
+      const name = formatMessage({ id: column.name });
       return <th
         className={column.id + (isCurrentSortKey ? " sortBy" : "")}
         key={column.id}>
-        <a alt={column.name} onClick={onClick}>
-          {column.name + " " + orderMark}
+        <a alt={name} onClick={onClick}>
+          {name + " " + orderMark}
         </a>
       </th>;
     });
@@ -140,7 +144,7 @@ export default class PositionsTable extends AbstractComponent {
       return <div className="center-information loading"><LoadingImage /></div>;
     }
     if (this.state.items.length <= 0) {
-      return <div className="center-information">建玉はありません</div>;
+      return <div className="center-information"><FormattedMessage id='positions.PositionsTable.noItems'/></div>;
     }
     return null;
   }
@@ -180,3 +184,5 @@ PositionsTable.contextTypes = {
   router: React.PropTypes.object,
   windowResizeManager: React.PropTypes.object
 };
+
+export default injectIntl(PositionsTable);

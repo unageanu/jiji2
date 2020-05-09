@@ -1,4 +1,5 @@
-import React        from "react"
+import React          from "react"
+import { injectIntl } from 'react-intl';
 
 import AbstractCard from "../widgets/abstract-card"
 import Chart        from "../chart/chart"
@@ -9,7 +10,7 @@ import RateView          from "../chart/rate-view"
 import SettingMenuButton from "../widgets/setting-menu-button"
 import LoadingView       from "../widgets/loading-view"
 
-export default class MiniChartView extends AbstractCard {
+class MiniChartView extends AbstractCard {
 
   constructor(props) {
     super(props);
@@ -24,7 +25,8 @@ export default class MiniChartView extends AbstractCard {
     return "";
   }
   getSettingMenuItems() {
-    return ["更新"];
+    const { formatMessage } = this.props.intl;
+    return [formatMessage({ id: 'common.action.reload' })];
   }
   createHeader() {
     const settingMenu = this.createSettingMenu("8px");
@@ -61,3 +63,5 @@ MiniChartView.propTypes = {
 MiniChartView.defaultProps = {
   size: {w:1280-300-16*4, h:300, profitAreaHeight:80}
 };
+
+export default injectIntl(MiniChartView);

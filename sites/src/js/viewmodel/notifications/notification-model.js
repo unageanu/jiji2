@@ -10,7 +10,7 @@ export default class NotificationModel {
     this.urlResolver = urlResolver;
   }
 
-  get formatedTimestamp() {
+  get formattedTimestamp() {
     return DateFormatter.format(this.timestamp);
   }
 
@@ -20,13 +20,13 @@ export default class NotificationModel {
       "icon-images/" + (iconId || "default"));
   }
 
-  get agentAndBacktestName() {
+  getAgentAndBacktestName(formatMessage) {
     let result = "";
     if ( this.agent && this.agent.name != null ) {
       result += this.agent.name;
     }
     result += (result ? " - " : "") +
-      (this.backtest.name || "リアルトレード");
+      (this.backtest.name || formatMessage({ id: 'common.realTrade' }));
     return result;
   }
 

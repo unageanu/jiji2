@@ -1,5 +1,6 @@
 import React             from "react"
 import { Router } from 'react-router'
+import { injectIntl }    from 'react-intl';
 
 import AbstractComponent from "../widgets/abstract-component"
 import ConfirmDialog     from "../widgets/confirm-dialog"
@@ -13,7 +14,7 @@ const keys = new Set([
   "editTarget", "isSaving"
 ]);
 
-export default class AgentSourceEditorMenu extends AbstractComponent {
+class AgentSourceEditorMenu extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -30,12 +31,13 @@ export default class AgentSourceEditorMenu extends AbstractComponent {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return (
       <span className="agent-source-editor-menu">
         <IconButton
           className="save-button"
           key="add"
-          tooltip={"保存"}
+          tooltip={formatMessage({ id: 'agents.AgentSourceEditorMenu.save' })}
           tooltipPosition="top-center"
           disabled={this.state.isSaving || !this.state.editTarget}
           onClick={this.props.onSave}>
@@ -45,7 +47,7 @@ export default class AgentSourceEditorMenu extends AbstractComponent {
           className="remove-button"
           key="remove"
           tooltipPosition="top-center"
-          tooltip={"削除..."}
+          tooltip={formatMessage({ id: 'agents.AgentSourceEditorMenu.remove' })}
           disabled={this.state.isSaving || !this.state.editTarget}
           onClick={this.confirmRemove.bind(this)}>
           <FontIcon className="md-delete"/>
@@ -57,7 +59,7 @@ export default class AgentSourceEditorMenu extends AbstractComponent {
         }</span>
         <ConfirmDialog
           ref={(ref) => this.confirmDialog = ref}
-          text="ファイルを削除します。よろしいですか?" />
+          text={formatMessage({ id: 'agents.AgentSourceEditorMenu.confirmRemove' })} />
       </span>
     );
   }
@@ -80,3 +82,5 @@ AgentSourceEditorMenu.propTypes = {
 AgentSourceEditorMenu.defaultProps = {
   onSave: () => {}
 };
+
+export default injectIntl(AgentSourceEditorMenu);

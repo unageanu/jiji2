@@ -1,4 +1,5 @@
 import React                from "react"
+import { injectIntl }       from 'react-intl';
 
 import AbstractComponent    from "../widgets/abstract-component"
 import NotificationListItem from "./notification-list-item"
@@ -17,7 +18,7 @@ const keys = new Set([
   "loading"
 ]);
 
-export default class NotificationListMenuBar extends AbstractComponent {
+class NotificationListMenuBar extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -46,26 +47,28 @@ export default class NotificationListMenuBar extends AbstractComponent {
   }
 
   createMenuItems() {
+    const { formatMessage } = this.props.intl;
     return this.state.availableFilterConditions.map((item) => {
       return <MenuItem key={item.id}
-        value={item.id} primaryText={item.text} />
+        value={item.id} primaryText={item.text || formatMessage({id:'viewmodel.NotificationTableModel.' + item.id }) } />
     });
   }
 
   createButtons() {
+    const { formatMessage } = this.props.intl;
     const prev = () => this.props.model.prev();
     const next = () => this.props.model.next();
     return [
       <IconButton
         key="prev"
-        tooltip={"前の" + this.props.model.pageSize +  "件"}
+        tooltip={formatMessage({ id: 'common.action.prev'}, {size: this.props.model.pageSize})}
         disabled={this.state.loading || !this.state.hasPrev}
         onClick={prev}>
         <FontIcon className="md-navigate-before"/>
       </IconButton>,
       <IconButton
         key="next"
-        tooltip={"次の" + this.props.model.pageSize +  "件"}
+        tooltip={formatMessage({ id: 'common.action.next'}, {size: this.props.model.pageSize})}
         disabled={this.state.loading || !this.state.hasNext}
         onClick={next}>
         <FontIcon className="md-navigate-next"/>
@@ -82,3 +85,5 @@ export default class NotificationListMenuBar extends AbstractComponent {
 NotificationListMenuBar.propTypes = {
   model: React.PropTypes.object.isRequired
 };
+
+export default  injectIntl(NotificationListMenuBar);

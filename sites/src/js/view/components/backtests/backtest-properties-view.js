@@ -1,4 +1,5 @@
-import React               from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractComponent   from "../widgets/abstract-component"
 import NumberFormatter     from "../../../viewmodel/utils/number-formatter"
@@ -15,7 +16,7 @@ const keys = new Set([
   "selectedBacktest"
 ]);
 
-export default class BacktestPropertiesView extends AbstractComponent {
+class BacktestPropertiesView extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -31,21 +32,22 @@ export default class BacktestPropertiesView extends AbstractComponent {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return <div className="backtest-properties-view">
       <ConfirmDialog
         key="confirmRemoveDialog" ref="confirmRemoveDialog"
-        text="バックテストを削除します。よろしいですか? " />
+        text={formatMessage({ id: 'backtests.BacktestPropertiesView.confirmRemove' })} />
       <ConfirmDialog
         key="confirmCancelDialog" ref="confirmCancelDialog"
-        text="バックテストの実行をキャンセルします。よろしいですか? " />
+        text={formatMessage({ id: 'backtests.BacktestPropertiesView.confirmCancel' })} />
       <ConfirmDialog
         key="confirmRestartDialog" ref="confirmRestartDialog"
-        text="同じ設定でバックテストを再実行します。よろしいですか? " />
+        text={formatMessage({ id: 'backtests.BacktestPropertiesView.confirmRestart' })} />
       {this.createButtons()}
       <div className="items">
         {this.createItems()}
         <div className="item agent-settings">
-          <div className="label">エージェント</div>
+          <div className="label"><FormattedMessage id='backtests.BacktestPropertiesView.agent' /></div>
           <div>
             <AgentSettingEditor
               model={this.props.model.agentSettingBuilder}
@@ -57,20 +59,21 @@ export default class BacktestPropertiesView extends AbstractComponent {
   }
 
   createButtons() {
+    const { formatMessage } = this.props.intl;
     const buttons = [];
     const backtest = this.state.selectedBacktest;
 
     if (backtest.enableRestart) {
       buttons.push(this.createButton("restart",
-        "再実行...", "md-replay", this.restart.bind(this)));
+        formatMessage({ id: 'backtests.BacktestPropertiesView.button.restart' }), "md-replay", this.restart.bind(this)));
     }
     if (backtest.enableCancel) {
       buttons.push(this.createButton("cancel",
-        "キャンセル...", "md-pause", this.cancel.bind(this)));
+        formatMessage({ id: 'backtests.BacktestPropertiesView.button.cancel' }), "md-pause", this.cancel.bind(this)));
     }
     if (backtest.enableDelete) {
       buttons.push(this.createButton("delete",
-        "削除...", "md-delete", this.delete.bind(this)));
+        formatMessage({ id: 'backtests.BacktestPropertiesView.button.remove' }), "md-delete", this.delete.bind(this)));
     }
     const loading = this.state.executingAction
       ? <span className="loading">
@@ -96,16 +99,17 @@ export default class BacktestPropertiesView extends AbstractComponent {
   }
 
   createItems() {
+    const { formatMessage } = this.props.intl;
     const backtest = this.state.selectedBacktest;
     return [
-      this.createItem("名前",    backtest.name, "name"),
-      this.createItem("登録日時", backtest.formatedCreatedAt, "created-at"),
-      this.createItem("状態",    this.createStatusContent(backtest), "status"),
-      this.createItem("期間",    backtest.formatedPeriod, "period"),
-      this.createItem("初期資金", "￥ " + backtest.formatedBalance, "balance"),
-      this.createItem("通貨ペア", backtest.pairNames.join(" "), "pairs"),
-      this.createItem("レート間隔", backtest.tickInterval, "tickInterval"),
-      this.createItem("メモ",    <pre>{backtest.memo}</pre>, "memo")
+      this.createItem(formatMessage({ id: 'backtests.BacktestPropertiesView.columns.name' }),    backtest.name, "name"),
+      this.createItem(formatMessage({ id: 'backtests.BacktestPropertiesView.columns.createdAt' }), backtest.formattedCreatedAt, "created-at"),
+      this.createItem(formatMessage({ id: 'backtests.BacktestPropertiesView.columns.status' }),    this.createStatusContent(backtest), "status"),
+      this.createItem(formatMessage({ id: 'backtests.BacktestPropertiesView.columns.range' }),    backtest.formattedPeriod, "period"),
+      this.createItem(formatMessage({ id: 'backtests.BacktestPropertiesView.columns.balance' }), "￥ " + backtest.formattedBalance, "balance"),
+      this.createItem(formatMessage({ id: 'backtests.BacktestPropertiesView.columns.pairs' }), backtest.pairNames.join(" "), "pairs"),
+      this.createItem(formatMessage({ id: 'backtests.BacktestPropertiesView.columns.tickInterval' }), formatMessage({ id: `common.tickInterval.${backtest.tickInterval}`}), "tickInterval"),
+      this.createItem(formatMessage({ id: 'backtests.BacktestPropertiesView.columns.memo' }),    <pre>{backtest.memo}</pre>, "memo")
     ];
   }
 
@@ -120,7 +124,7 @@ export default class BacktestPropertiesView extends AbstractComponent {
     switch(backtest.status) {
       case "error" :
         return <span className="error">
-          <span className={"icon md-warning"} /> エラー (詳細はログを確認してください)
+          <span className={"icon md-warning"} /> <FormattedMessage id='backtests.BacktestPropertiesView.error' />
         </span>;
       default :
         return Utils.createStatusContent(backtest);
@@ -162,3 +166,5 @@ BacktestPropertiesView.propTypes = {
   model: React.PropTypes.object.isRequired
 };
 BacktestPropertiesView.defaultProps = {};
+
+export default injectIntl(BacktestPropertiesView)

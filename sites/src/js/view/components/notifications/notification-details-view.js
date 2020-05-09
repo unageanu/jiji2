@@ -1,4 +1,6 @@
-import React                from "react"
+import React          from "react"
+import { injectIntl } from 'react-intl';
+
 
 import AbstractComponent    from "../widgets/abstract-component"
 import LoadingImage         from "../widgets/loading-image"
@@ -11,7 +13,7 @@ const keys = new Set([
   "selectedId", "selected"
 ]);
 
-export default class NotificationDetailsView extends AbstractComponent {
+class NotificationDetailsView extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -45,6 +47,7 @@ export default class NotificationDetailsView extends AbstractComponent {
     return <div className="center-information"><LoadingImage /></div>;
   }
   createDetailsView(notification) {
+    const { formatMessage } = this.props.intl;
     return <div className="notification-details">
       <div className="top-panel">
         <div className="avatar-panel">
@@ -55,10 +58,10 @@ export default class NotificationDetailsView extends AbstractComponent {
             {notification.message}
           </div>
           <div className="agent-name">
-            {notification.agentAndBacktestName}
+            {notification.getAgentAndBacktestName(formatMessage)}
           </div>
           <div className="timestamp">
-            {notification.formatedTimestamp}
+            {notification.formattedTimestamp}
           </div>
         </div>
       </div>
@@ -118,3 +121,4 @@ NotificationDetailsView.defaultProps = {
 NotificationDetailsView.contextTypes = {
   windowResizeManager: React.PropTypes.object.isRequired
 };
+export default injectIntl(NotificationDetailsView);

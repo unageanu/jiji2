@@ -1,12 +1,14 @@
 import React             from "react"
+import { injectIntl }    from 'react-intl';
 
 import AbstractComponent from "../widgets/abstract-component"
 import Theme             from "../../theme"
+import ErrorMessages from "../../../errorhandling/error-messages"
 
 import Snackbar from "material-ui/Snackbar"
 import Avatar from "material-ui/Avatar"
 
-export default class UIEventHandler extends AbstractComponent {
+class UIEventHandler extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -78,22 +80,33 @@ export default class UIEventHandler extends AbstractComponent {
   }
 
   createMessage(event) {
-    if (!event) return { message:"", action: ""};
+    const emptyMessage = { message:"", action: ""};
+    if (!event) return emptyMessage;
+    const { formatMessage } = this.props.intl;
     switch (event.type) {
       case "error" :
       case "info" :
+        const message = this.detectMessage(event, formatMessage);
+        if (message == null) return emptyMessage;
         return {
-          message: event.message,
-          action:  "閉じる",
+          message: message,
+          action:  formatMessage({id:'widgets.UIEventHandler.close'}),
           autoHideDuration: 3000
         };
       case "notificationReceived" :
         return {
           message: this.createNotificationContent(event.data),
-          action:  "開く",
+          action:  formatMessage({id:'widgets.UIEventHandler.open'}),
           autoHideDuration: null
         };
     }
+  }
+
+  detectMessage(event, formatMessage) {
+    if (event.message) return event.message;
+    if (event.error && event.error.message) return event.error.message
+    if (event.error) return ErrorMessages.getMessageFor(formatMessage, event.error);
+    return null;
   }
 
   createNotificationContent(data) {
@@ -114,3 +127,4 @@ UIEventHandler.contextTypes = {
   application: React.PropTypes.object.isRequired,
   router: React.PropTypes.object
 };
+export default injectIntl(UIEventHandler)

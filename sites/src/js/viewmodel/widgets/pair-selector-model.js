@@ -17,9 +17,9 @@ export default class PairSelectorModel extends Observable {
     this.pairNames = defaultSelectedPairNames;
   }
 
-  validate( ) {
+  validate(formatMessage) {
     return ValidationUtils.validate(this.validator, this.pairNames,
-      {field: "通貨ペア"}, (error) => this.pairNamesError = error );
+      {field: formatMessage({id:'validation.fields.pair'})}, (error) => this.pairNamesError = error, formatMessage );
   }
 
   update(checked, pair) {

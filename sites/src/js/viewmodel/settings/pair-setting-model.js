@@ -28,21 +28,21 @@ export default class PairSettingModel extends PairSelectorModel {
     });
   }
 
-  save() {
+  save(formatMessage) {
     this.message = null;
-    if (!this.validate()) return;
+    if (!this.validate(formatMessage)) return;
     this.isSaving = true;
     const pairs = this.pairNames.map((p) => { return { name:p } });
     this.pairSettingService.setPairs(pairs).then(
       (result) => {
         this.isSaving = false;
-        this.message = "設定を変更しました。 ("
+        this.message = formatMessage({id:'validation.messages.finishToChangeSetting'}) + " ("
           + DateFormatter.format(this.timeSource.now) + ")" ;
         this.pairs.reload();
       },
       (error) => {
         this.isSaving = false;
-        this.pairNamesError = ErrorMessages.getMessageFor(error);
+        this.pairNamesError = ErrorMessages.getMessageFor(formatMessage, error);
         error.preventDefault = true;
       });
   }

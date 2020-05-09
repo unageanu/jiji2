@@ -7,11 +7,11 @@ class ClosingPolicyModel {
       this[i] = policy[i];
     }
   }
-  get formatedTakeProfit() {
+  get formattedTakeProfit() {
     return this.takeProfit ?
       NumberFormatter.insertThousandsSeparator(this.takeProfit) : "-";
   }
-  get formatedLossCut() {
+  get formattedLossCut() {
     return this.stopLoss ?
       NumberFormatter.insertThousandsSeparator(this.stopLoss) : "-";
   }
@@ -30,42 +30,42 @@ export default class PositionModel {
     this.urlResolver = urlResolver;
   }
 
-  get formatedProfitOrLoss() {
+  get formattedProfitOrLoss() {
     return NumberFormatter.insertThousandsSeparator(this.profitOrLoss);
   }
-  get formatedSellOrBuy() {
+  get formattedSellOrBuy() {
     if (this.sellOrBuy === "sell") {
-      return "売";
+      return "common.sell";
     } else {
-      return "買";
+      return "common.buy";
     }
   }
-  get formatedStatus() {
+  get formattedStatus() {
     if (this.status === "live") {
-      return "未決済";
+      return "viewmodel.PositionModel.status.live";
     } else if (this.status === "closed"){
-      return "決済済";
+      return "viewmodel.PositionModel.status.closed";
     } else if (this.status === "lost"){
-      return "ロスト";
+      return "viewmodel.PositionModel.status.lost";
     }
   }
-  get formatedUnits() {
+  get formattedUnits() {
     return NumberFormatter.insertThousandsSeparator(this.units);
   }
-  get formatedEntryPrice() {
+  get formattedEntryPrice() {
     return NumberFormatter.insertThousandsSeparator(this.entryPrice);
   }
-  get formatedExitPrice() {
+  get formattedExitPrice() {
     return this.exitPrice ?
       NumberFormatter.insertThousandsSeparator(this.exitPrice) : "-";
   }
-  get formatedEnteredAt() {
+  get formattedEnteredAt() {
     return DateFormatter.format(this.enteredAt);
   }
-  get formatedExitedAt() {
+  get formattedExitedAt() {
     return this.exitedAt ? DateFormatter.format(this.exitedAt) : "";
   }
-  get formatedExitedAtShort() {
+  get formattedExitedAtShort() {
     return this.exitedAt
       ? DateFormatter.format(this.exitedAt, "MM-dd hh:mm:ss") : "";
   }

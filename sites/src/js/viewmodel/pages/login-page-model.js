@@ -42,8 +42,8 @@ export default class LoginPageModel extends AbstractPageModel {
     this.isResettingPassword = false;
   }
 
-  login(password) {
-    if (!this.validatePassword(password)) return Deferred.errorOf({});
+  login(password, formatMessage) {
+    if (!this.validatePassword(password, formatMessage)) return Deferred.errorOf({});
 
     this.error = null;
     this.isAuthenticating = true;
@@ -54,7 +54,7 @@ export default class LoginPageModel extends AbstractPageModel {
       return result;
     }, (error)  => {
       if (error.code == Error.Code.UNAUTHORIZED) {
-        this.error = "パスワードが一致していません";
+        this.error = formatMessage({id:'validation.messages.mismatchPassword'});
         error.preventDefault = true;
       }
       this.isAuthenticating = false;
@@ -62,8 +62,8 @@ export default class LoginPageModel extends AbstractPageModel {
     });
   }
 
-  sendPasswordResettingMail(mailaddress) {
-    if (!this.validateMailAddress(mailaddress)) return Deferred.errorOf({});
+  sendPasswordResettingMail(mailaddress, formatMessage) {
+    if (!this.validateMailAddress(mailaddress, formatMessage)) return Deferred.errorOf({});
 
     this.resettinMailSendingError = null;
     this.resettinMailSentMessage  = null;
@@ -71,25 +71,24 @@ export default class LoginPageModel extends AbstractPageModel {
     return this.passwordResettingService.sendPasswordResettingMail(
       mailaddress).then((result) => {
         this.resettinMailSentMessage =
-          "登録されているメールアドレスにトークンを記載したメールを送信しました。";
+          formatMessage({id:'validation.messages.sentResetMail'});
         this.isSendingMail = false;
       return result;
     }, (error)  => {
       if (error.code == Error.Code.INVALID_VALUE) {
         this.resettinMailSendingError =
-          "入力されたメールアドレスがシステムに登録されているものと一致しませんでした。"
-          + "メールアドレスを確認してください。";
+          formatMessage({id:'validation.messages.mismatchMailAddress'});
         error.preventDefault = true;
       } else {
-        error.message =　"メールの送信に失敗しました";
+        error.message =　formatMessage({id:'validation.messages.failedToSendEmail'});
       }
       this.isSendingMail = false;
       throw error;
     });
   }
 
-  resetPassword(token, newPasword, newPasword2) {
-    if (!this.validateNewPasswordAndToken(token, newPasword, newPasword2)) {
+  resetPassword(token, newPasword, newPasword2, formatMessage) {
+    if (!this.validateNewPasswordAndToken(token, newPasword, newPasword2, formatMessage)) {
       return Deferred.errorOf({});
     }
     this.newPasswordError = null;
@@ -101,11 +100,11 @@ export default class LoginPageModel extends AbstractPageModel {
       token, newPasword ).then((result) => {
       this.isResettingPassword = false;
       this.passwordResettingMessage =
-        "パスワードを再設定しました。新しいパスワードでログインしてご利用ください。";
+        formatMessage({id:'validation.messages.finishToResetPassword'});
     }, (error)  => {
       if (error.code == Error.Code.INVALID_VALUE) {
         this.passwordResettingError =
-          "パスワードの再設定に失敗しました。トークンを確認してください。";
+          formatMessage({id:'validation.messages.failedToResetPassword'});
         error.preventDefault = true;
       }
       this.isResettingPassword = false;
@@ -113,29 +112,29 @@ export default class LoginPageModel extends AbstractPageModel {
     });
   }
 
-  validatePassword(password) {
+  validatePassword(password, formatMessage) {
     return ValidationUtils.validate(Validators.loginPassword, password,
-      {field: "パスワード"}, (error) => this.error = error );
+      {field: formatMessage({id:'validation.fields.password'})}, (error) => this.error = error, formatMessage );
   }
-  validateMailAddress(mailAddress) {
+  validateMailAddress(mailAddress, formatMessage) {
     return ValidationUtils.validate(Validators.mailAddress, mailAddress,
-      {field: "メールアドレス"}, (error) => this.resettinMailSendingError = error );
+      {field: formatMessage({id:'validation.fields.mailAddress'})}, (error) => this.resettinMailSendingError = error, formatMessage );
   }
-  validateNewPasswordAndToken(token, password, password2) {
+  validateNewPasswordAndToken(token, password, password2, formatMessage) {
     return Validators.all(
-      this.validateNewPassword(password, password2),
+      this.validateNewPassword(password, password2, formatMessage),
       ValidationUtils.validate(Validators.token, token,
-        {field: "トークン"}, (error) => this.tokenError = error )
+        {field: formatMessage({id:'validation.fields.token'})}, (error) => this.tokenError = error, formatMessage )
     );
   }
-  validateNewPassword(password, password2) {
+  validateNewPassword(password, password2, formatMessage) {
     this.newPasswordError = null;
     if (password !== password2) {
-      this.newPasswordError = "パスワードが一致していません";
+      this.newPasswordError = formatMessage({id:'validation.messages.mismatchPassword'});
       return false;
     }
     return  ValidationUtils.validate(Validators.password, password,
-        {field: "パスワード"}, (error) => this.newPasswordError = error );
+        {field: formatMessage({id:'validation.fields.password'})}, (error) => this.newPasswordError = error, formatMessage );
   }
 
   get error() {

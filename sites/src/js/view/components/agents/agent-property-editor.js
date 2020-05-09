@@ -1,4 +1,5 @@
-import React                  from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractComponent      from "../widgets/abstract-component"
 import IconSelector           from "../icons/icon-selector"
@@ -12,7 +13,7 @@ const keys = new Set([
 
 let counter = 0;
 
-export default class AgentPropertyEditor extends AbstractComponent {
+class AgentPropertyEditor extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -47,11 +48,11 @@ export default class AgentPropertyEditor extends AbstractComponent {
       this.createAgentNameEditor(selectedAgent, agentClass);
     return <div className="agent-details" key={counter++}>
       <div className="agent-class item">
-        <span className="item-label">クラス:</span>
+        <span className="item-label"><FormattedMessage id="agents.AgentPropertyEditor.classLabel" />:</span>
         <span className="item-value">{selectedAgent ? selectedAgent.agentClass : ""}</span>
       </div>
       <div className="description item">
-        <span className="item-label">説明:</span>
+        <span className="item-label"><FormattedMessage id="agents.AgentPropertyEditor.description" />:</span>
         <div className="item-value">
           <pre>
             {agentClass ? agentClass.description : ""}
@@ -74,17 +75,18 @@ export default class AgentPropertyEditor extends AbstractComponent {
 
   createAgentNameEditor(selectedAgent, agentClass) {
     if (!selectedAgent || !agentClass) return null;
+    const { formatMessage } = this.props.intl;
     const name = selectedAgent.agentName || selectedAgent.agentClass;
     if (this.props.readOnly) {
       return <div className="agent-name item">
-        <span className="item-label">エージェントの名前:</span>
+        <span className="item-label"><FormattedMessage id="agents.AgentPropertyEditor.nameLabel" />:</span>
         <div className="item-value">{name}</div>
       </div>;
     } else {
       return <TextField
         ref={"agent_name"}
         key={"agent_name"}
-        floatingLabelText="エージェントの名前"
+        floatingLabelText={formatMessage({ id: 'agents.AgentPropertyEditor.nameLabel' })}
         defaultValue={name}
         style={{
           width: "100%"
@@ -141,3 +143,5 @@ AgentPropertyEditor.propTypes = {
 AgentPropertyEditor.defaultProps = {
   readOnly : false
 };
+
+export default injectIntl(AgentPropertyEditor);

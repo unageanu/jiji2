@@ -1,4 +1,5 @@
 import React                 from "react"
+import { injectIntl }        from 'react-intl';
 import { Router } from 'react-router'
 
 import AbstractComponent     from "../widgets/abstract-component"
@@ -9,7 +10,7 @@ const keys = new Set([
   "editTarget", "fileNameError"
 ]);
 
-export default class AgentFileNameField extends AbstractComponent {
+class AgentFileNameField extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -39,11 +40,12 @@ export default class AgentFileNameField extends AbstractComponent {
 
   render() {
     const errorElement = this.createErrorElement();
+    const { formatMessage } = this.props.intl
     return (
       <TextField
         ref="name"
         hintText="agent.rb"
-        floatingLabelText="ファイル名"
+        floatingLabelText={formatMessage({ id: 'agents.AgentFileNameField.label' })}
         errorText={this.state.fileNameError}
         disabled={!this.state.editTarget}
         onChange={this.onFileNameChanged.bind(this)}
@@ -76,3 +78,5 @@ AgentFileNameField.propTypes = {
 };
 AgentFileNameField.contextTypes = {
 };
+
+export default injectIntl(AgentFileNameField);

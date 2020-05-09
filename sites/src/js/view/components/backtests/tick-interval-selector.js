@@ -1,4 +1,5 @@
 import React              from "react"
+import { injectIntl }     from 'react-intl';
 
 import Theme              from "../../theme"
 import AbstractComponent  from "../widgets/abstract-component"
@@ -7,7 +8,7 @@ import MenuItem           from 'material-ui/MenuItem'
 
 const emptyItems   = [{text:""}];
 
-export default class TickIntervalSelector extends AbstractComponent {
+class TickIntervalSelector extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -17,6 +18,7 @@ export default class TickIntervalSelector extends AbstractComponent {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return (
       <DropDownMenu
         className="tick-interval-selector"
@@ -26,15 +28,15 @@ export default class TickIntervalSelector extends AbstractComponent {
         autoWidth={true}
         onChange={this.onChange.bind(this)}>
         <MenuItem key="fifteen_seconds"
-          value="fifteen_seconds" primaryText="15秒" />
-        <MenuItem key="one_minute" value="one_minute" primaryText="1分" />
+          value="fifteen_seconds" primaryText={formatMessage({ id: 'common.tickInterval.fifteenSeconds' })} />
+        <MenuItem key="one_minute" value="one_minute" primaryText={formatMessage({ id: 'common.tickInterval.oneMinute' })} />
         <MenuItem key="fifteen_minutes"
-          value="fifteen_minutes" primaryText="15分" />
+          value="fifteen_minutes" primaryText={formatMessage({ id: 'common.tickInterval.fifteenMinutes' })} />
         <MenuItem key="thirty_minutes"
-          value="thirty_minutes" primaryText="30分" />
-        <MenuItem key="one_hour" value="one_hour" primaryText="1時間" />
-        <MenuItem key="six_hours" value="six_hours" primaryText="6時間" />
-        <MenuItem key="one_day" value="one_day" primaryText="1日" />
+          value="thirty_minutes" primaryText={formatMessage({ id: 'common.tickInterval.thirtyMinutes' })} />
+        <MenuItem key="one_hour" value="one_hour" primaryText={formatMessage({ id: 'common.tickInterval.oneHour' })} />
+        <MenuItem key="six_hours" value="six_hours" primaryText={formatMessage({ id: 'common.tickInterval.sixHours' })} />
+        <MenuItem key="one_day" value="one_day" primaryText={formatMessage({ id: 'common.tickInterval.oneDay' })} />
       </DropDownMenu>
     );
   }
@@ -45,3 +47,5 @@ export default class TickIntervalSelector extends AbstractComponent {
   }
 
 }
+
+export default injectIntl(TickIntervalSelector);

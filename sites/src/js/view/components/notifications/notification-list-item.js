@@ -1,4 +1,5 @@
 import React               from "react"
+import { injectIntl }      from 'react-intl';
 
 import AbstractComponent   from "../widgets/abstract-component"
 import TextInRadius        from "../widgets/text-in-radius"
@@ -11,7 +12,7 @@ import {List} from "material-ui/List"
 const nullNotification = {
 };
 
-export default class NotificationListItem extends React.Component {
+class NotificationListItem extends React.Component {
 
   constructor(props) {
     super(props);
@@ -43,19 +44,21 @@ export default class NotificationListItem extends React.Component {
     </div>;
   }
   createSecondaryText(notification) {
+    const { formatMessage } = this.props.intl;
     const content = [];
-    if ( notification.formatedTimestamp != null ) {
-      content.push( <div key="time">{notification.formatedTimestamp}</div> );
+    if ( notification.formattedTimestamp != null ) {
+      content.push( <div key="time">{notification.formattedTimestamp}</div> );
     }
     if ( notification.agent && notification.agent.name != null ) {
-      content.push( <div key="agentName">{notification.agentAndBacktestName}</div> );
+      content.push( <div key="agentName">{notification.getAgentAndBacktestName(formatMessage)}</div> );
     }
     return <div>{content}</div>;
   }
   createRightIcon(notification) {
+      const { formatMessage } = this.props.intl;
       if (notification.readAt) return null;
       return <span className="right-icon" style={{width:"auto"}}>
-        <TextInRadius text="未読" />
+        <TextInRadius text={formatMessage({ id: 'notifications.NotificationListItem.unread' })} />
       </span>;
   }
   createAvatar(notification) {
@@ -72,3 +75,5 @@ NotificationListItem.defaultProps = {
   selected: false,
   onTouchTap: null
 };
+
+export default injectIntl(NotificationListItem)

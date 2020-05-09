@@ -1,4 +1,5 @@
 import React               from "react"
+import { injectIntl }      from 'react-intl';
 
 import AbstractComponent   from "../widgets/abstract-component"
 import AgentSelectorDialog from "./agent-selector-dialog"
@@ -13,7 +14,7 @@ const keys = new Set([
   "availableAgents", "selectedAgent"
 ]);
 
-export default class AgentSettingEditorMenu extends AbstractComponent {
+class AgentSettingEditorMenu extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -29,17 +30,18 @@ export default class AgentSettingEditorMenu extends AbstractComponent {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return (
       <div className="agent-setting-editor-menu">
         <IconButton
           key="add"
-          tooltip={"エージェントを追加"}
+          tooltip={formatMessage({ id: 'agents.AgentSettingEditorMenu.add' })}
           onClick={this.showAgentSelector.bind(this)}>
           <FontIcon className="md-add"/>
         </IconButton>
         <IconButton
           key="remove"
-          tooltip={"選択したエージェントを削除"}
+          tooltip={formatMessage({ id: 'agents.AgentSettingEditorMenu.remove' })}
           onClick={this.removeAgent.bind(this)}
           disabled={this.state.selectedAgent == null}>
           <FontIcon className="md-remove"/>
@@ -50,7 +52,7 @@ export default class AgentSettingEditorMenu extends AbstractComponent {
           onSelect={this.addAgent.bind(this)} />
         <ConfirmDialog
           ref={(ref) => this.confirmDialog = ref}
-          text="選択したエージェントを削除します。よろしいですか?" />
+          text={formatMessage({ id: 'agents.AgentSettingEditorMenu.confirmRemove' })} />
       </div>
     );
   }
@@ -73,3 +75,5 @@ export default class AgentSettingEditorMenu extends AbstractComponent {
 AgentSettingEditorMenu.propTypes = {
   model : React.PropTypes.object.isRequired
 };
+
+export default injectIntl(AgentSettingEditorMenu);

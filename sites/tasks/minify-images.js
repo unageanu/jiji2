@@ -8,9 +8,10 @@ gulp.task('minify-images', ['build-less'], function () {
     return "./build/apps/images/**/*." + ext;
   });
   return gulp.src(paths)
-      .pipe(imageop({
-          optimizationLevel: 5,
-          progressive: true,
-          interlaced: true
-      })).pipe(gulp.dest("./build/minified/images"));
+      // .pipe(imageop({
+      //     optimizationLevel: 5,
+      //     progressive: true,
+      //     interlaced: true
+      // }))
+      .pipe(gulp.dest("./build/minified/images"));
 });

@@ -1,5 +1,5 @@
-import React               from "react"
-
+import React                from "react"
+import { FormattedMessage } from 'react-intl';
 
 export default class Utils {
 
@@ -8,10 +8,10 @@ export default class Utils {
     switch(status) {
       case "error" :
         return <span className={status}>
-          <span className={"icon md-warning"} /> エラー
+          <span className={"icon md-warning"} /> <FormattedMessage id='common.error' />
         </span>;
       default :
-        return <span className={status}>{backtest.formatedStatus}</span>;
+        return <span className={status}><FormattedMessage id={`viewmodel.BacktestModel.${backtest.formattedStatus}`} /></span>;
     }
   }
 

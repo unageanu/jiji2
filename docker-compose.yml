@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+
+  jiji:
+    build:
+      context: ./docker/jiji
+    links:
+      - mongodb
+    environment:
+      SECRET: aaaaaaaaaaaaa
+      RACK_ENV: development
+    ports:
+      - "8085:8080"
+    working_dir: /app/jiji2
+    volumes:
+      - ./:/app/jiji2
+    command: sh -c "bundle install; puma -C /app/jiji2/config/puma.rb"
+
+  mongodb:
+    image: mongo:latest
+    ports:
+      - "27018:27017"
+    volumes:
+      - ./mongodb:/data/db
+
+  dev-ui:
+    image: node:10
+    working_dir: /app/jiji2/sites
+    volumes:
+      - ./:/app/jiji2

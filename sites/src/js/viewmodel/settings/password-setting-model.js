@@ -22,38 +22,38 @@ export default class PasswordSettingModel extends Observable {
     this.message = null;
   }
 
-  save(newPassword, newPassword2, oldPassword) {
+  save(newPassword, newPassword2, oldPassword, formatMessage) {
     this.message = null;
-    if (!this.validate(newPassword, newPassword2)) return;
+    if (!this.validate(newPassword, newPassword2, formatMessage, formatMessage)) return;
     this.isSaving = true;
     this.userSettingService.setPassword(oldPassword, newPassword).then(
         (result) => {
           this.isSaving = false;
-          this.message = "パスワードを変更しました。 ("
+          this.message = formatMessage({id:'validation.messages.finishToChangePassword'}) + " ("
             + DateFormatter.format(this.timeSource.now) + ")";
         }, (error)  => {
           this.isSaving = false;
-          this.handleError(error)
+          this.handleError(error, formatMessage)
         });
   }
 
-  handleError(error) {
+  handleError(error, formatMessage) {
     if (error.code === Error.Code.UNAUTHORIZED) {
-      this.error = "現在のパスワードが一致していません。入力した値をご確認ください";
+      this.error = formatMessage({id:'validation.messages.mismatchCurrentPassword'});
     } else {
-      this.error = ErrorMessages.getMessageFor(error);
+      this.error = ErrorMessages.getMessageFor(formatMessage, error);
     }
     error.preventDefault = true;
   }
 
-  validate(newPassword, newPassword2, field="新しいパスワード") {
+  validate(newPassword, newPassword2, field, formatMessage) {
     this.error = null;
     if (newPassword !== newPassword2) {
-      this.error = field+ "が一致していません";
+      this.error = field+ formatMessage({id:'validation.messages.mismatch'});
       return false;
     }
     return ValidationUtils.validate(Validators.password, newPassword,
-      {field: field}, (error) => this.error = error );
+      {field: field}, (error) => this.error = error, formatMessage );
   }
 
   get error() {

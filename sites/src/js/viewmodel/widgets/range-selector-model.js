@@ -21,27 +21,27 @@ export default class RangeSelectorModel extends Observable {
     this.endTimeError = null;
   }
 
-  validate( ) {
+  validate(formatMessage) {
     return Validators.all(
-      this.validateStartTime(this.startTime),
-      this.validateEndTime(this.endTime),
-      this.validateStartTimeIsBeforeEndTime(this.startTime, this.endTime)
+      this.validateStartTime(this.startTime, formatMessage),
+      this.validateEndTime(this.endTime, formatMessage),
+      this.validateStartTimeIsBeforeEndTime(this.startTime, this.endTime, formatMessage)
     );
   }
 
-  validateStartTime(startTime) {
+  validateStartTime(startTime, formatMessage) {
     return ValidationUtils.validate(this.startTimeValidator, startTime,
-      {field: "開始日時"}, (error) => this.startTimeError = error );
+      {field: formatMessage({id:'validation.fields.startTime'})}, (error) => this.startTimeError = error, formatMessage );
   }
-  validateEndTime(endTime) {
+  validateEndTime(endTime, formatMessage) {
     return ValidationUtils.validate(this.endTimeValidator, endTime,
-      {field: "終了日時"}, (error) => this.endTimeError = error );
+      {field: formatMessage({id:'validation.fields.endTime'})}, (error) => this.endTimeError = error, formatMessage );
   }
-  validateStartTimeIsBeforeEndTime(startTime, endTime) {
+  validateStartTimeIsBeforeEndTime(startTime, endTime, formatMessage) {
     if ( !startTime || !endTime ) return false;
     if ( this.startTimeError ) return false;
     if ( startTime.getTime() >= endTime.getTime() ) {
-      this.startTimeError = "開始日時が不正です"
+      this.startTimeError = formatMessage({id:'validation.messages.illegalStartTime'});
       return false;
     } else {
       return true;

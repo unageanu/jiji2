@@ -1,4 +1,5 @@
-import React             from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractComponent from "../widgets/abstract-component"
 import LoadingImage      from "../widgets/loading-image"
@@ -12,7 +13,7 @@ const keys = new Set([
   "items", "pageSelectors", "loading"
 ]);
 
-export default class LogViewer extends AbstractComponent {
+class LogViewer extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -59,23 +60,24 @@ export default class LogViewer extends AbstractComponent {
       </div>;
     } else if (!this.existLog()) {
       return <div className="center-information">
-        ログはありません
+        <FormattedHTMLMessage id='logs.LogViewer.noLogs'/>
       </div>;
     } else {
       return <pre>{this.state.items[0].body}</pre>;
     }
   }
   createScrollerElements() {
+    const { formatMessage } = this.props.intl;
     const contentSize = this.context.windowResizeManager.contentSize;
     const windowSize  = this.context.windowResizeManager.windowSize;
     return [{
       icon:"expand-less",
       action: () => window.scrollTo(0, 0),
-      tooltip: "一番上へ"
+      tooltip: formatMessage({ id: 'logs.LogViewer.scrollToTop' })
     }, {
       icon:"expand-more",
       action: () => window.scrollTo(0, contentSize.h - windowSize.h),
-      tooltip: "一番下へ"
+      tooltip: formatMessage({ id: 'logs.LogViewer.scrollToBottom' })
     }].map((info, index)=> {
       return <IconButton
           key={info.icon}
@@ -141,3 +143,5 @@ LogViewer.defaultProps = {
 LogViewer.contextTypes = {
   windowResizeManager: React.PropTypes.object.isRequired
 };
+
+export default injectIntl(LogViewer);

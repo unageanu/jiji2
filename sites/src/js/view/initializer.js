@@ -4,10 +4,12 @@ import React        from "react"
 import ReactDOM     from "react-dom"
 import { Router, hashHistory } from 'react-router'
 import ContainerJS  from "container-js"
+import { IntlProvider } from "react-intl";
 
-import modules      from "../composing/modules"
-import routes       from "./routes"
-import babelLoader  from "../composing/babel-loader"
+import modules         from "../composing/modules"
+import routes          from "./routes"
+import babelLoader     from "../composing/babel-loader"
+import { getMessages } from "../i18n/i18n"
 
 export default class Initializer {
 
@@ -31,14 +33,17 @@ export default class Initializer {
     if (initialRoute) hashHistory.replace(initialRoute);
     try {
       const element = document.getElementById("main");
-      ReactDOM.render( <Router
-        history={hashHistory}
-        createElement={(component, props) => {
-          props.application = application;
-          return React.createElement(component, props);
-        }}>
-        {this.routes()}
-      </Router>, element);
+      ReactDOM.render(
+        <IntlProvider locale={navigator.language} messages={getMessages(navigator.language)}>
+          <Router
+            history={hashHistory}
+            createElement={(component, props) => {
+              props.application = application;
+              return React.createElement(component, props);
+            }}>
+            {this.routes()}
+          </Router>
+        </IntlProvider>, element);
     } catch (e) {
       this.handleError(e, application);
     }

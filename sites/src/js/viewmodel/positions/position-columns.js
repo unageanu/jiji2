@@ -4,71 +4,71 @@ import React             from "react"
 export default [
   {
     id:"profitOrLoss",
-    name:"損益",
-    key:"formatedProfitOrLoss",
+    name:"accounts.PerformancePanel.profitOrLoss",
+    key:"formattedProfitOrLoss",
     sort: "profit_or_loss",
     formatter(value, item) {
       const className = PriceUtils.resolvePriceClass(item.profitOrLoss);
       const profitOrLoss =
-        (item.profitOrLoss > 0 ? "+" : "") + item.formatedProfitOrLoss;
+        (item.profitOrLoss > 0 ? "+" : "") + item.formattedProfitOrLoss;
       return <span className={className}>{profitOrLoss}</span>;
     }
   }, {
     id:"status",
-    name:"状態",
-    key:"formatedStatus",
+    name:"positions.PositionDetailsView.status",
+    key:"formattedStatus",
     sort: "status",
     formatter(value, item) {
       if (item.status == "live" ) {
-         return <span className="live">{item.formatedStatus}</span>;
+         return <span className="live">{item.formattedStatus}</span>;
       } else {
-        return item.formatedStatus;
+        return item.formattedStatus;
       }
     }
   },{
     id:"pairName",
-    name:"通貨ペア",
+    name:"positions.PositionDetailsView.pair",
     key:"pairName",
     sort: "pair_name"
   }, {
     id:"sellOrBuy",
-    name:"売/買",
-    key:"formatedSellOrBuy",
+    name:"tradingSummary.TradingSummaryView.sellOrBuy",
+    key:"formattedSellOrBuy",
     sort: "sell_or_buy"
   }, {
     id:"units",
-    name:"数量",
-    key:"formatedUnits",
+    name:"positions.PositionDetailsView.volume",
+    key:"formattedUnits",
     sort: "units"
   }, {
     id:"entryPrice",
-    name:"購入価格",
-    key:"formatedEntryPrice",
+    name:"positions.PositionDetailsView.price",
+    key:"formattedEntryPrice",
     sort: "entry_price"
   }, {
     id:"exitPrice",
-    name:"決済価格",
-    key:"formatedExitPrice",
+    name:"positions.PositionDetailsView.closePrice",
+    key:"formattedExitPrice",
     sort: "exit_price"
   }, {
     id:"enteredAt",
-    name:"購入日時",
-    key:"formatedEnteredAt",
+    name:"positions.PositionDetailsView.enteredAt",
+    key:"formattedEnteredAt",
     sort: "entered_at",
     formatter(value, item) {
       return value || "-";
     }
   }, {
     id:"exitedAt",
-    name:"決済日時",
-    key:"formatedExitedAt",
+    name:"positions.PositionDetailsView.exitedAt",
+    key:"formattedExitedAt",
     sort: "exited_at",
     formatter(value, item) {
       return value || "-";
     }
   }, {
     id:"agentName",
-    name:"エージェント",
+    name:"positions.PositionDetailsView.agent",
     key:"agentName",
     sort: "agent_name"
   }

@@ -1,33 +1,38 @@
-import React                  from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import Base                   from "../settings/securities-setting-view"
 import LoadingImage           from "../widgets/loading-image"
 
 import RaisedButton from "material-ui/RaisedButton"
 
-export default class SecuritiesSettingView extends Base {
+class SecuritiesSettingView extends Base {
 
   constructor(props) {
     super(props);
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const securitiesSelector = this.creattSecuritiesSelector();
     const activeSecuritiesConfigurator = this.createConfigurator();
     return (
       <div className="securities-setting-view">
-        <h3>証券会社の設定</h3>
+        <h3><FormattedMessage id='initialSettings.SecuritiesSettingView.title'/></h3>
         <div className="description">
-          利用する証券会社を選択して、アクセストークンを設定してください。
+          <FormattedMessage id='initialSettings.SecuritiesSettingView.description.part1'/>
         </div>
         <ul className="description">
           <li>
-            <a onClick={ () => window.open('http://www.oanda.jp/', '_blank') } >OANDA Japan</a>の取引口座、
-            およびデモ取引口座が利用できます。
+            <a onClick={ () => window.open('http://www.oanda.jp/', '_blank') } ><FormattedMessage id='initialSettings.SecuritiesSettingView.description.part2'/></a>
+            <FormattedMessage id='initialSettings.SecuritiesSettingView.description.part3'/>
           </li>
           <li>
-            ご利用には「パーソナルアクセストークン」の入力が必要です。
-            アクセストークンの発行手順は、<a onClick={ () => window.open('http://jiji2.unageanu.net/install/010000_prepare_account.html', '_blank') } >こちら</a>をご覧ください。
+            <FormattedMessage id='initialSettings.SecuritiesSettingView.description.part4'/>
+            <a onClick={ () => window.open('http://jiji2.unageanu.net/install/010000_prepare_account.html', '_blank') } >
+              <FormattedMessage id='initialSettings.SecuritiesSettingView.description.part5'/>
+            </a>
+            <FormattedMessage id='initialSettings.SecuritiesSettingView.description.part6'/>
           </li>
         </ul>
         <div className="inputs">
@@ -40,7 +45,7 @@ export default class SecuritiesSettingView extends Base {
         <div className="buttons">
           <span className="button">
             <RaisedButton
-              label="次へ"
+              label={formatMessage({ id: 'common.button.next' })}
               disabled={this.state.isSaving}
               onClick={this.next.bind(this)}
               primary={true}
@@ -71,3 +76,4 @@ SecuritiesSettingView.propTypes = {
 SecuritiesSettingView.defaultProps = {
   model: null
 };
+export default injectIntl(SecuritiesSettingView);

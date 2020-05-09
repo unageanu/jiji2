@@ -1,4 +1,5 @@
-import React               from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractComponent   from "../widgets/abstract-component"
 import LoadingImage        from "../widgets/loading-image"
@@ -11,7 +12,7 @@ const keys = new Set([
   "message", "isSaving"
 ]);
 
-export default class PairSettingView extends AbstractComponent {
+class PairSettingView extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -27,16 +28,16 @@ export default class PairSettingView extends AbstractComponent {
   render() {
     return (
       <div className="pair-setting setting">
-        <h3>通貨ペアの設定</h3>
+        <h3><FormattedMessage id='settings.PairSettingView.title'/></h3>
         <ul className="description">
-          <li>システムで利用する通貨ペアを設定します。</li>
-          <li>通貨ペアは、最大20個まで選択できます。</li>
+          <li><FormattedMessage id='settings.PairSettingView.description.part1'/></li>
+          <li><FormattedMessage id='settings.PairSettingView.description.part2'/></li>
         </ul>
         <div className="setting-body">
           <PairSelector ref="pairSelector" model={this.model()}/>
           <div className="buttons">
             <RaisedButton
-              label="設定"
+              label={formatMessage({ id: 'settings.PairSettingView.save' })}
               primary={true}
               disabled={this.state.isSaving}
               onClick={this.save.bind(this)}
@@ -52,7 +53,7 @@ export default class PairSettingView extends AbstractComponent {
   }
 
   save() {
-    this.model().save();
+    this.model().save(this.props.intl.formatMessage);
   }
   model() {
     return this.props.model;
@@ -64,3 +65,4 @@ PairSettingView.propTypes = {
 PairSettingView.defaultProps = {
   model: null
 };
+export default injectIntl(PairSettingView);

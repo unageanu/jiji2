@@ -92,17 +92,17 @@ export default class BacktestBuilder extends Observable {
       name, iconId, configuration);
   }
 
-  validate() {
+  validate(formatMessage) {
     return Validators.all(
       ValidationUtils.validate(Validators.backtest.name, this.name,
-        {field: "テスト名"}, (error) => this.nameError = error ),
+        {field: formatMessage({id:'validation.fields.testName'})}, (error) => this.nameError = error, formatMessage ),
       ValidationUtils.validate(Validators.backtest.memo, this.memo,
-        {field: "メモ"}, (error) => this.memoError = error ),
+        {field: formatMessage({id:'validation.fields.memo'})}, (error) => this.memoError = error, formatMessage ),
       ValidationUtils.validate(Validators.backtest.balance, this.balance,
-        {field: "初期資金"}, (error) => this.balanceError = error ),
-      this.agentSettingBuilder.validate(),
-      this.pairSelectorModel.validate(),
-      this.rangeSelectorModel.validate()
+        {field: formatMessage({id:'validation.fields.balance'})}, (error) => this.balanceError = error, formatMessage ),
+      this.agentSettingBuilder.validate(formatMessage),
+      this.pairSelectorModel.validate(formatMessage),
+      this.rangeSelectorModel.validate(formatMessage)
     );
   }
 

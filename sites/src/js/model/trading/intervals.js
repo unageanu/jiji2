@@ -1,11 +1,11 @@
 const m = 60 * 1000;
 const intervals = [
-  { id:"one_minute",      name:"分足",    ms:       1 * m },
-  { id:"fifteen_minutes", name:"15分足",  ms:      15 * m },
-  { id:"thirty_minutes",  name:"30分足",  ms:      30 * m },
-  { id:"one_hour",        name:"1時間足", ms:      60 * m },
-  { id:"six_hours",       name:"6時間足", ms:  6 * 60 * m },
-  { id:"one_day",         name:"日足",    ms: 24 * 60 * m }
+  { id:"one_minute",      labelId:"oneMinute",       ms:       1 * m },
+  { id:"fifteen_minutes", labelId:"fifteenMinutes",  ms:      15 * m },
+  { id:"thirty_minutes",  labelId:"thirtyMinutes",   ms:      30 * m },
+  { id:"one_hour",        labelId:"oneHour",         ms:      60 * m },
+  { id:"six_hours",       labelId:"sixHours",        ms:  6 * 60 * m },
+  { id:"one_day",         labelId:"oneDay",          ms: 24 * 60 * m }
 ];
 
 export default class Intervals {

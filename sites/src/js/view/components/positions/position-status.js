@@ -11,12 +11,12 @@ export default class PositionStatus extends React.Component {
 
   render() {
     return (
-      <TextInRadius color={this.color} text={this.props.status} />
+      <TextInRadius color={this.color} text={this.props.formattedStatus} />
     );
   }
 
   get color() {
-    if (this.props.status == "未決済") {
+    if (this.props.status == "live") {
       return Theme.palette.accent4Color;
     } else {
       return Theme.palette.textColor;
@@ -24,5 +24,6 @@ export default class PositionStatus extends React.Component {
   }
 }
 PositionStatus.propTypes = {
-  status:  React.PropTypes.string.isRequired
+  status:  React.PropTypes.string.isRequired,
+  formattedStatus:  React.PropTypes.string.isRequired
 };

@@ -1,4 +1,5 @@
-import React               from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl'
 
 import AbstractComponent   from "../widgets/abstract-component"
 import LoadingImage        from "../widgets/loading-image"
@@ -13,7 +14,7 @@ const keys = new Set([
   "activeSecuritiesId", "error", "message", "isSaving"
 ]);
 
-export default class SecuritiesSettingView extends AbstractComponent {
+class SecuritiesSettingView extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -34,19 +35,20 @@ export default class SecuritiesSettingView extends AbstractComponent {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const securitiesSelector = this.creattSecuritiesSelector();
     const activeSecuritiesConfigurator = this.createConfigurator();
     return (
       <div className="securities-setting setting">
-        <h3>証券会社の設定</h3>
+        <h3><FormattedMessage id='settings.SecuritiesSettingView.title'/></h3>
         <ul className="description">
-          <li>使用する証券会社を設定します。</li>
+          <li><FormattedMessage id='settings.SecuritiesSettingView.description.part1'/></li>
           <li>
-            アクセストークンの取得方法は
+            <FormattedMessage id='settings.SecuritiesSettingView.description.part2'/>
             <a onClick={ () => window.open('http://jiji2.unageanu.net/install/010000_prepare_account.html', '_blank') }>
-              こちら
+              <FormattedMessage id='settings.SecuritiesSettingView.description.part3'/>
             </a>
-            をご覧ください。
+            <FormattedMessage id='settings.SecuritiesSettingView.description.part4'/>
           </li>
         </ul>
         <div className="setting-body">
@@ -57,7 +59,7 @@ export default class SecuritiesSettingView extends AbstractComponent {
           <div className="buttons">
             {this.createErrorContent(this.state.error)}
             <RaisedButton
-              label="設定"
+              label={formatMessage({ id: 'settings.SecuritiesSettingView.save' })}
               primary={true}
               disabled={this.state.availableSecurities.length == 0 || this.state.isSaving}
               onClick={this.save.bind(this)}
@@ -99,7 +101,7 @@ export default class SecuritiesSettingView extends AbstractComponent {
   }
 
   save() {
-    this.model().save(this.collectConfigurations());
+    this.model().save(this.collectConfigurations(), this.props.intl.formatMessage);
   }
 
   onChangeSecurities(e, selectedIndex, payload) {
@@ -137,3 +139,4 @@ SecuritiesSettingView.propTypes = {
 SecuritiesSettingView.defaultProps = {
   model: null
 };
+export default injectIntl(SecuritiesSettingView)

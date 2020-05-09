@@ -1,4 +1,5 @@
-import React              from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import Dropzone           from "react-dropzone"
 import AbstractComponent  from "../widgets/abstract-component"
@@ -16,7 +17,7 @@ const modelKeys = new Set([
   "selectedId"
 ]);
 
-export default class IconSelector extends AbstractComponent  {
+class IconSelector extends AbstractComponent  {
 
   constructor(props) {
     super(props);
@@ -35,15 +36,16 @@ export default class IconSelector extends AbstractComponent  {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     const actions = [
       <FlatButton
-        label="キャンセル"
+        label={formatMessage({ id: 'common.button.cancel' })}
         primary={false}
         onTouchTap={this.dismiss.bind(this)}
       />
     ];
     const editLink = !this.props.readOnly
-      ? <a onTouchTap={this.showDialog.bind(this)}>変更...</a>
+      ? <a onTouchTap={this.showDialog.bind(this)}><FormattedMessage id='icons.IconSelector.change'/></a>
       : null;
     return (
       <div className="icon-selector">
@@ -62,7 +64,7 @@ export default class IconSelector extends AbstractComponent  {
           contentStyle={Theme.dialog.contentStyle}
           onRequestClose={this.dismiss.bind(this)}>
           <div className="dialog-content">
-            <div className="dialog-description">使用するアイコンを選択してください。</div>
+            <div className="dialog-description"><FormattedMessage id='icons.IconSelector.description'/></div>
             <div className="icons">
               {this.createIcons()}
             </div>
@@ -81,10 +83,10 @@ export default class IconSelector extends AbstractComponent  {
     } else {
       return <Dropzone onDrop={this.onDrop.bind(this)} className="drop-area">
         {this.createErrorContent(this.state.error)}
-        <div>アイコンを追加したい場合は、画像をここにドロップしてください。</div>
+        <div><FormattedMessage id='icons.IconSelector.addDescription.part1'/></div>
         <ul>
-          <li>png/jpg/gif形式の画像を登録できます。</li>
-          <li>画像のサイズは最大100KBまで。</li>
+          <li><FormattedMessage id='icons.IconSelector.addDescription.part2'/></li>
+          <li><FormattedMessage id='icons.IconSelector.addDescription.part3'/></li>
         </ul>
       </Dropzone>;
     }
@@ -129,6 +131,7 @@ export default class IconSelector extends AbstractComponent  {
   }
 
   onDrop(files) {
+    const { formatMessage } = this.props.intl;
     this.setState({
       uploading:true,
       error: null
@@ -138,7 +141,7 @@ export default class IconSelector extends AbstractComponent  {
       (error) => {
         this.setState({
           uploading:false,
-          error: "アップロードに失敗しました。画像の形式/サイズをご確認ください。"
+          error: formatMessage({ id: 'icons.IconSelector.error' })
         });
         error.preventDefault = true;
       });
@@ -154,3 +157,5 @@ IconSelector.defaultProps = {
   enableUpload: false,
   readOnly: false
 };
+
+export default injectIntl(IconSelector);

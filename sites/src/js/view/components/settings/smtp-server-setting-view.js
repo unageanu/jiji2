@@ -1,4 +1,5 @@
-import React               from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractComponent   from "../widgets/abstract-component"
 import LoadingImage        from "../widgets/loading-image"
@@ -14,7 +15,7 @@ const keys = new Set([
   "testMailMessage"
 ]);
 
-export default class SMTPServerSettingView extends AbstractComponent {
+class SMTPServerSettingView extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -47,24 +48,25 @@ export default class SMTPServerSettingView extends AbstractComponent {
 
   render() {
     if (this.state.enablePostmark !== false) return null;
+    const { formatMessage } = this.props.intl;
     return (
       <div className="smtp-server-setting setting">
-        <h3>SMTPサーバーの設定</h3>
+        <h3><FormattedMessage id='settings.SMTPServerSettingView.title'/></h3>
         <ul className="description">
-          <li>エージェントからのメール送信時に使用するSMTPサーバーを設定します。</li>
+          <li><FormattedMessage id='settings.SMTPServerSettingView.description'/></li>
         </ul>
         <div className="setting-body">
           {this.createInputFields()}
           <div className="buttons">
             {this.createErrorContent(this.state.error)}
             <RaisedButton
-              label="テストメール送信"
+              label={formatMessage({ id: 'settings.SMTPServerSettingView.composeTestMail' })}
               disabled={this.state.isSaving}
               onClick={this.composeTestMail.bind(this)}
             />
             <span className="setting-button">
               <RaisedButton
-                label="設定"
+                label={formatMessage({ id: 'settings.SMTPServerSettingView.save' })}
                 primary={true}
                 disabled={this.state.isSaving}
                 onClick={this.save.bind(this)}
@@ -81,11 +83,12 @@ export default class SMTPServerSettingView extends AbstractComponent {
   }
 
   createInputFields() {
+    const { formatMessage } = this.props.intl;
     return <div className="inputs">
       <div className="host-and-port">
         <div className="host">
           <TextField
-             floatingLabelText="SMTPサーバー"
+             floatingLabelText={formatMessage({ id: 'settings.SMTPServerSettingView.smtpServer' })}
              errorText={this.state.hostError}
              onChange={(e) => this.setState({host: e.target.value}) }
              value={this.state.host || ""}
@@ -93,7 +96,7 @@ export default class SMTPServerSettingView extends AbstractComponent {
         </div>
         <div className="port">
           <TextField
-             floatingLabelText="SMTPサーバーポート"
+             floatingLabelText={formatMessage({ id: 'settings.SMTPServerSettingView.port' })}
              errorText={this.state.portError}
              onChange={(e) => this.setState({port: e.target.value}) }
              value={this.state.port || ""}
@@ -103,7 +106,7 @@ export default class SMTPServerSettingView extends AbstractComponent {
       <div className="username-and-password">
         <div className="username">
           <TextField
-             floatingLabelText="ユーザー名"
+             floatingLabelText={formatMessage({ id: 'settings.SMTPServerSettingView.user' })}
              errorText={this.state.userNameError}
              onChange={(e) => this.setState({userName: e.target.value}) }
              value={this.state.userName || ""}
@@ -111,7 +114,7 @@ export default class SMTPServerSettingView extends AbstractComponent {
         </div>
         <div className="password">
           <TextField
-            floatingLabelText="パスワード"
+            floatingLabelText={formatMessage({ id: 'settings.SMTPServerSettingView.password' })}
             errorText={this.state.passwordError}
             style={{ width: "100%" }}>
              <input type="password"
@@ -124,10 +127,10 @@ export default class SMTPServerSettingView extends AbstractComponent {
   }
 
   save() {
-    this.model().save(this.collectSetting());
+    this.model().save(this.collectSetting(), this.props.intl.formatMessage);
   }
   composeTestMail() {
-    this.model().composeTestMail(this.collectSetting());
+    this.model().composeTestMail(this.collectSetting(), this.props.intl.formatMessage);
   }
 
   onPropertyChanged(k, ev) {
@@ -161,3 +164,4 @@ SMTPServerSettingView.propTypes = {
 SMTPServerSettingView.defaultProps = {
   model: null
 };
+export default injectIntl(SMTPServerSettingView)

@@ -1,4 +1,5 @@
-import React              from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractComponent    from "../widgets/abstract-component"
 import DateFormatter        from "../../../viewmodel/utils/date-formatter"
@@ -17,7 +18,7 @@ const keys = new Set([
   "isSaving"
 ]);
 
-export default class BacktestBuilder extends AbstractComponent {
+class BacktestBuilder extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -41,11 +42,12 @@ export default class BacktestBuilder extends AbstractComponent {
         <LoadingImage left={-20}/>
       </div>;
     }
+    const { formatMessage } = this.props.intl;
     return (
       <div className="backtest-builder">
         <div className="top-button">
           <RaisedButton
-            label="以下の設定でバックテストを開始"
+            label={formatMessage({ id: 'backtests.BacktestBuilder.button' })}
             primary={true}
             disabled={this.state.isSaving}
             onClick={this.registerBacktest.bind(this)}
@@ -57,17 +59,17 @@ export default class BacktestBuilder extends AbstractComponent {
         </div>
         <div className="inputs table">
           <div className="item">
-            <div className="label">バックテスト名</div>
+            <div className="label"><FormattedMessage id='backtests.BacktestBuilder.name' /></div>
             <div className="input">
               <TextField
                 ref="name"
-                hintText="バックテストの名前"
+                hintText={formatMessage({ id: 'backtests.BacktestBuilder.nameHint' })}
                 defaultValue={this.state.name}
                 errorText={this.state.nameError}/>
             </div>
           </div>
           <div className="item">
-            <div className="label">テスト期間</div>
+            <div className="label"><FormattedMessage id='backtests.BacktestBuilder.range' /></div>
             <div className="input">
               <RangeSelector
                 ref="rangeSelector"
@@ -75,33 +77,33 @@ export default class BacktestBuilder extends AbstractComponent {
             </div>
           </div>
           <div className="item">
-            <div className="label">初期資金</div>
+            <div className="label"><FormattedMessage id='backtests.BacktestBuilder.balance' /></div>
             <div className="input">
               <TextField
                 ref="balance"
-                hintText="初期資金"
+                hintText={formatMessage({ id: 'backtests.BacktestBuilder.balance' })}
                 defaultValue={this.state.balance}
                 errorText={this.state.balanceError} />
             </div>
           </div>
           <div className="item">
-            <div className="label">レート間隔</div>
+            <div className="label"><FormattedMessage id='backtests.BacktestBuilder.tickInterval' /></div>
             <div className="input">
               <TickIntervalSelector
                 model={this.model()} />
               <ul className="desc">
-                <li>エージェントの <code>next_tick(tick)</code> が呼び出される間隔を指定します。</li>
-                <li>1時間や1日にすることでテストの所要時間を大幅に削減できますが、その分、精度は落ちるのでご注意ください。</li>
+                <li><FormattedMessage id='backtests.BacktestBuilder.tickIntervalDescription.part1' /> <code>next_tick(tick)</code> <FormattedMessage id='backtests.BacktestBuilder.tickIntervalDescription.part2' /></li>
+                <li><FormattedMessage id='backtests.BacktestBuilder.tickIntervalDescription.part3' /></li>
               </ul>
             </div>
           </div>
           <div className="item">
-            <div className="label">メモ</div>
+            <div className="label"><FormattedMessage id='backtests.BacktestBuilder.memo' /></div>
             <div className="input">
               <TextField
                 ref="memo"
                 multiLine={true}
-                hintText="メモ"
+                hintText={formatMessage({ id: 'backtests.BacktestBuilder.memo' })}
                 defaultValue={this.state.memo}
                 errorText={this.state.memoError}
                 style={{
@@ -112,20 +114,20 @@ export default class BacktestBuilder extends AbstractComponent {
         </div>
         <div  className="inputs">
           <div className="item">
-            <div className="label">使用する通貨ペア</div>
+            <div className="label"><FormattedMessage id='backtests.BacktestBuilder.pairs' /></div>
             <ul className="desc">
-              <li>バックテストで使用する通貨ペアを選択してください。</li>
-              <li>通貨ペアは最大5つまで選択できます。</li>
-              <li>利用する通貨ペアが増えると、バックテストの所要時間も増加しますのでご注意ください。</li>
+              <li><FormattedMessage id='backtests.BacktestBuilder.pairsDescription.part1' /></li>
+              <li><FormattedMessage id='backtests.BacktestBuilder.pairsDescription.part2' /></li>
+              <li><FormattedMessage id='backtests.BacktestBuilder.pairsDescription.part3' /></li>
             </ul>
             <PairSelector
               ref="pairSelector"
               model={this.model().pairSelectorModel} />
           </div>
           <div className="item horizontal">
-            <div className="label">エージェント</div>
+            <div className="label"><FormattedMessage id='backtests.BacktestBuilder.agent' /></div>
             <ul className="desc">
-              <li>バックテストで動作させるエージェントを設定します。</li>
+              <li><FormattedMessage id='backtests.BacktestBuilder.agentDescription' /></li>
             </ul>
             <AgentSettingEditor
               ref="agentSettingEditor"
@@ -145,7 +147,7 @@ export default class BacktestBuilder extends AbstractComponent {
     builder.memo = this.refs.memo.getValue();
     builder.balance   = this.refs.balance.getValue();
 
-    if (!builder.validate()) return;
+    if (!builder.validate(this.props.intl.formatMessage)) return;
 
     builder.build().then(
       (test) => this.context.router.push({
@@ -166,3 +168,5 @@ BacktestBuilder.defaultProps = {
 BacktestBuilder.contextTypes = {
   router: React.PropTypes.object
 };
+
+export default injectIntl(BacktestBuilder);

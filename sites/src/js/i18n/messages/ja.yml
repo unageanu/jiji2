@@ -1,0 +1,470 @@
+common:
+  currencyUnit: ￥
+  error: エラー
+  button:
+    cancel: キャンセル
+    next: 次へ
+    close: 閉じる
+  action:
+    reload: 更新
+    prev: 前の{size}件
+    next: 次の{size}件
+  newPassword: 新しいパスワード
+  newPasswordConfirm: 新しいパスワード (確認用)
+  newPasswordDescription: ※確認のため、新しいパスワードを再入力してください。
+  tickInterval:
+    fifteenSeconds: 15秒
+    oneMinute: 1分
+    fifteenMinutes: 15分
+    thirtyMinutes: 30分
+    oneHour: 1時間
+    sixHours: 6時間
+    oneDay: 1日
+  realTrade: リアルトレード
+  all: すべて
+  sell: 売
+  buy: 買
+  win: 勝
+  lose: 負
+  draw: 引き分け
+  unknown: 不明
+  period:
+    day: 日
+    hour: 時間
+    minute: 分
+    second: 秒
+  chartIntervals:
+    oneMinute: 分足
+    fifteenMinutes: 15分足
+    thirtyMinutes: 30分足
+    oneHour: 1時間足
+    sixHours: 6時間足
+    oneDay: 日足
+
+
+Frame:
+  support: サポート・フォーラム
+  usage: 使い方
+
+accounts:
+  BalancePanel:
+    title: 口座残高
+    dayBeforeRatio: 前日比
+  PerformancePanel:
+    title: 直近1週間の成績
+    winningPercentage: 勝率
+    profitOrLoss: 損益
+
+agents:
+  AgentFileNameField:
+    label: ファイル名
+  AgentPropertyEditor:
+    classLabel: クラス
+    description: 説明
+    nameLabel: エージェントの名前
+  AgentSelectorDialog:
+    description: 追加するエージェントを選択してください。
+  AgentSettingEditorMenu:
+    add: エージェントを追加
+    remove: 選択したエージェントを削除
+    confirmRemove: 選択したエージェントを削除します。よろしいですか?
+  AgentSourceEditorMenu:
+    save: 保存
+    remove: 削除...
+    confirmRemove: ファイルを削除します。よろしいですか?
+  AgentSourceEditor:
+    description:
+      part1: エージェントの詳しい作り方は
+      part2: こちら
+      part3: をご覧ください。
+  AgentSourceListMenu:
+    newFile: 新規作成
+  AgentSourceList:
+    noFile: ファイルはありません
+
+backtests:
+  BacktestBuilder:
+    button: 以下の設定でバックテストを開始
+    name:  バックテスト名
+    nameHint: バックテストの名前
+    range:  テスト期間
+    balance: 初期資金
+    tickInterval: レート間隔
+    tickIntervalDescription:
+      part1: エージェントの
+      part2: が呼び出される間隔を指定します。
+      part3: 1時間や1日にすることでテストの所要時間を大幅に削減できますが、その分、精度は落ちるのでご注意ください。
+    memo: メモ
+    pairs: 使用する通貨ペア
+    pairsDescription:
+      part1: バックテストで使用する通貨ペアを選択してください。
+      part2: 通貨ペアは最大5つまで選択できます。
+      part3: 利用する通貨ペアが増えると、バックテストの所要時間も増加しますのでご注意ください。
+    agent: エージェント
+    agentDescription: バックテストで動作させるエージェントを設定します。
+  BacktestDetailsTab:
+    info: テスト情報
+    report: レポート
+    chart: チャート
+    trades: 建玉一覧
+    logs: ログ
+  BacktestList:
+    noBacktests: バックテストはありません
+  BacktestPropertiesView:
+    confirmRemove: バックテストを削除します。よろしいですか?
+    confirmCancel: バックテストの実行をキャンセルします。よろしいですか?
+    confirmRestart:  同じ設定でバックテストを再実行します。よろしいですか?
+    agent: エージェント
+    button:
+      restart: 再実行...
+      cancel: キャンセル...
+      remove: 削除...
+    columns:
+      name: 名前
+      createdAt: 登録日時
+      status: 状態
+      range: 期間
+      balance: 初期資金
+      pairs: 通貨ペア
+      tickInterval: レート間隔
+      memo: メモ
+    error: エラー (詳細はログを確認してください)
+
+chart:
+  RangeView:
+    label: 表示期間
+  RateView:
+    open: 始値
+    close: 終値
+    high: 高値
+    low: 安値
+
+icons:
+  IconSelector:
+    description: 使用するアイコンを選択してください。
+    change: 変更...
+    addDescription:
+      part1: アイコンを追加したい場合は、画像をここにドロップしてください。
+      part2: png/jpg/gif形式の画像を登録できます。
+      part3: 画像のサイズは最大100KBまで。
+    error: アップロードに失敗しました。画像の形式/サイズをご確認ください。
+
+initialSettings:
+  MailaddressAndPasswordSettingView:
+    title: メールアドレスとパスワードの設定
+    description:
+      part1: メールアドレスとシステムのログインパスワードを設定してください。
+      part2: パスワードはシステムを利用する際に必要になります。
+      part3: メールアドレスは、パスワードを忘れて再設定するときに使用されます。必ず、メールを受信可能なアドレスを設定してください。
+    mailAddress: メールアドレス
+    password: パスワード
+    passwordConfirm: パスワード (確認用)
+    passwordConfirmDescription: ※確認のため、パスワードを再入力してください。
+  SecuritiesSettingView:
+    title: 証券会社の設定
+    description:
+      part1: 利用する証券会社を選択して、アクセストークンを設定してください。
+      part2: OANDA Japan
+      part3: の取引口座、およびデモ取引口座が利用できます。
+      part4: ご利用には「パーソナルアクセストークン」の入力が必要です。アクセストークンの発行手順は、
+      part5: こちら
+      part6: をご覧ください。
+  SettingFinishedView:
+    title: 完了
+    description:
+      part1: すべての設定が完了しました。
+      part2: システムの詳しい使い方は
+      part3: こちら
+      part4: をご覧ください。
+      part5: スマホアプリも、ぜひご利用ください!
+    app:
+      title: スマホアプリでできること
+      p:
+        catch: Push通知で、取引のタイミングを逃さない!
+        detail: スマホアプリを使うと、取引アルゴリズムからのPush通知を受信できます。取引のポイントでPush通知を送ることで、売買のタイミングをリアルタイムに受け取ることができます。
+      p2:
+        catch: 取引状況の確認・システムの管理を、いつでもどこでも。
+        detail: シンプルなUIで、取引状況をさっと把握。<br/>システムの管理もできるので、相場が急に動いても、どこでもすぐに対応できます。
+      description: スマホアプリは、<b>月額450円(税抜)の有料ソフトウェア</b>です。<br/>まずはお試し。いまなら、購入後<b>30日間無料</b>でご利用いただけます。
+      iOS: ※iOS版は準備中です。
+      start: 利用を開始する
+  SMTPServerSettingView:
+    title: SMTPサーバーの設定
+    description: メール送信時に使用するSMTPサーバーを設定してください。<br/>※あとで設定することもできます。
+    composeTestMail: テストメール送信
+    next: 設定して次へ
+    skip: 設定をスキップ
+  WelcomeView:
+    description:
+      part1: Jijiへようこそ。
+      part2: 利用規約をご確認のうえ、初期設定を開始してください。
+    license: Jiji利用規約
+    accept: 利用規約に同意する
+    start: 初期設定を開始
+  ServerUrlSettingView:
+    title: 接続先サーバーの設定
+    description: 初めに、使用するサーバーのURLを設定してください。
+    server: サーバーURL
+
+logs:
+  LogViewer:
+    noLogs: ログはありません
+    scrollToTop: 一番上へ
+    scrollToBottom: 一番下へ
+
+notifications:
+  NotificationListItem:
+    unread: 未読
+  NotificationListMenuBar:
+    prev: 前の{size}件
+    next: 次の{size}件
+  NotificationList:
+    noUnread: 未読の通知はありません
+  NotificationsCard:
+    title: 未読の通知
+    unread: 未読
+
+pages:
+  LoginPage:
+    title: ログイン
+    password: パスワード
+    button: ログイン
+    resetPassword: パスワードを忘れた場合...
+    backToLogin: ログイン画面に戻る
+    resetPasswordFlow:
+      part1: パスワードを忘れた方は、以下の手順に従ってパスワードを再設定してください。
+      part2: システムに登録しているメールアドレスを入力して、 [パスワード再設定メールを送る] ボタンを押してください。
+      part3: 登録されているメールアドレスに [パスワード再設定メール] が送信されます。メールを開封し、記載されている [トークン] と新しいパスワードを入力して、パスワードを再設定してください。
+    registeredEmail: 登録済みメールアドレス
+    sendPasswordResetMail: パスワード再設定メールを送る
+    token: トークン
+    setNewPassword: パスワードを再設定する
+    autoLogin: 自動でログインする
+  NotificationsPage:
+    noItems: 通知はありません
+  RMTAgentSettingPage:
+    description: リアルトレードで動作させるエージェントを設定します。
+    apply: 設定を反映
+    remove: エージェントを削除
+    confirmRemove: 選択したエージェントを削除します。よろしいですか?
+
+positions:
+  DownloadPositionsDialog:
+    label:  すべての建玉をダウンロードする<br/><span className="info">※建玉が多いと時間がかかる場合があります。ご注意ください。</span>
+    description: 建玉データをCSV形式でダウンロードします。<br/>ダウンロードする範囲を選択して、[ダウンロード]をクリックしてください。
+    filter: エントリー日時で絞り込む
+    download: ダウンロード
+  PositionDetailsView:
+    status: 状態
+    type: 種別
+    volume: 数量
+    pair: 通貨ペア
+    price: 購入価格
+    closePrice: 決済価格
+    enteredAt: 購入日時
+    exitedAt: 決済日時
+    agent: エージェント
+    trailStop: トレールストップ
+    takeProfit: 利益確定
+    lossCut: ロスカット
+  PositionListItem:
+    unit: 単位
+  PositionList:
+    noItems: 建玉はありません
+  PositionsCard:
+    title: 建玉
+    notClosed: 未決済
+  PositionsTable:
+    downloadCsv: CSV形式でダウンロード...
+    noItems: 建玉はありません
+
+settings:
+  MailAddressSettingView:
+    title: メールアドレスの設定
+    description:
+      part1: システムで使用するメールアドレスを設定します。
+      part2: メールアドレスは、パスワードを忘れて再設定するときに使用されます。必ず、メールを受信可能なアドレスを設定してください。
+    mailAddress: メールアドレス
+    save: 設定
+  PairSettingView:
+    title: 通貨ペアの設定
+    description:
+      part1: システムで利用する通貨ペアを設定します。
+      part2: 通貨ペアは、最大20個まで選択できます。
+    save: 設定
+  PasswordSettingView:
+    title: パスワードの変更
+    description: システムのアクセスパスワードを変更できます。
+    changePassword: パスワードを変更する
+    oldPassword: 現在のパスワード
+    change: 変更
+  SecuritiesSettingView:
+    title: 証券会社の設定
+    description:
+      part1: 使用する証券会社を設定します。
+      part2: アクセストークンの取得方法は
+      part3: こちら
+      part4: をご覧ください。
+    save: 設定
+  SMTPServerSettingView:
+    title: SMTPサーバーの設定
+    description: エージェントからのメール送信時に使用するSMTPサーバーを設定します。
+    composeTestMail: テストメール送信
+    save: 設定
+    smtpServer: SMTPサーバー
+    port: SMTPサーバーポート
+    user: ユーザー名
+    password: パスワード
+
+tradingSummary:
+  TradingSummaryView:
+    totalProfitOrLoss: 損益合計
+    totalProfit: 総利益
+    totalLoss: 総損失
+    winPercentage: 勝率
+    positionCount: 取引回数
+    closedPositionCount: 決済済
+    profitFactor: Profit Factor
+    maxLoss: 最大損失
+    avgLoss: 平均損失
+    pair: 通貨ペア
+    sellOrBuy: 売/買
+    agent: エージェント
+    holdTime: 建玉の保有期間
+    longest: 最長
+    shortest: 最短
+    avg: 平均
+    volume: 取引数量
+    max: 最大
+    min: 最小
+    term: 集計期間
+
+widgets:
+  RangeSelector:
+    start: 開始
+    end: 終了
+  UIEventHandler:
+    close: 閉じる
+    open: 開く
+
+viewmodel:
+  AgentSourceEditor:
+    saved: ※保存しました。
+  BacktestModel:
+    running: 実行中
+    waitForStart: 待機中
+    cancelled: キャンセル
+    error: エラー
+    finished: 完了
+  NotificationSelectionModel:
+    doAction: アクション {action} を実行しました
+    error: アクション実行時にエラーが発生しました。ログを確認してください。
+  NotificationTableModel:
+    rmt: リアルトレード
+    all: すべて
+  BacktestsPageModel:
+    failedToRestart: 再実行に失敗しました。バックテストの状態を確認してください
+    failedToCancel: キャンセルに失敗しました。バックテストの状態を確認してください
+  PositionModel:
+    status:
+      live: 未決済
+      closed: 決済済
+      lost: ロスト
+  SecuritiesSettingModel:
+    finishToChangeSetting: 証券会社の設定を変更しました。
+    failedToChangeSetting: 証券会社に接続できませんでした。アクセストークンを確認してください。
+  TradingSummaryViewModel:
+    week: 直近の1週間
+    oneMonth: 直近の30日
+    threeMonths: 直近の90日
+    oneYear:  直近の1年
+  Navigation:
+    home: ホーム
+    realtrade: リアルトレード
+    tradingSummary: 取引状況
+    chart: チャート
+    positions: 建玉一覧
+    agentSetting: エージェント設定
+    logs: ログ
+    backtest: バックテスト
+    newBackTest: テストの作成
+    backtestList: テスト一覧
+    notifications: 通知一覧
+    agents: エージェント
+    settings: 設定
+    login: ログイン
+    initialSettings: 初期設定
+    welcome: ようこそ
+  AgentsPageModel:
+    edit: エージェントの編集
+  RmtAgentSettingPageModel:
+    detail: エージェント詳細
+  RmtPositionDetailPageModel:
+    detail: 建玉詳細
+  RmtTradingSummaryPageModel:
+    summary: "{item}の集計"
+
+validation:
+  fields:
+    startTime: 開始日時
+    endTime: 終了日時
+    testName: テスト名
+    memo: メモ
+    balance: 初期資金
+    agent: エージェント
+    fileName: ファイル名
+    password: パスワード
+    mailAddress: メールアドレス
+    token: トークン
+    smtpServer: SMTPサーバー
+    smtpPort: SMTPポート
+    userName: ユーザー名
+    pair: 通貨ペア
+    value: 値
+    data: データ
+    serverURL: サーバーURL
+
+  messages:
+    illegalStartTime: 開始日時が不正です
+    acceptLicense: 利用規約に同意してください
+    mismatchPassword: パスワードが一致していません
+    failedToResetPassword: パスワードの再設定に失敗しました。トークンを確認してください。
+    finishToResetPassword: パスワードを再設定しました。新しいパスワードでログインしてご利用ください。
+    sentResetMail: 登録されているメールアドレスにトークンを記載したメールを送信しました。
+    mismatchMailAddress: 入力されたメールアドレスがシステムに登録されているものと一致しませんでした。メールアドレスを確認してください。
+    failedToSendEmail: メールの送信に失敗しました
+    finishToChangeMailAddress: メールアドレスを変更しました。
+    finishToChangeSetting: 設定を変更しました。
+    mismatch: が一致していません
+    mismatchCurrentPassword: 現在のパスワードが一致していません。入力した値をご確認ください
+    finishToChangePassword: パスワードを変更しました。
+    sentTestMail: 登録されているメールアドレスにテストメールを送信しました。ご確認ください。
+    failedToSentMail: メールの送信でエラーが発生しました。接続先SMTPサーバーの設定を確認してください
+    failedToConnectServer: サーバーに接続できませんでした。URLを確認してください。
+    networkErrorAndretry: 通信エラーが発生しました。ネットワーク接続をご確認のうえ、再実行してください。
+    networkError: サーバーに接続できませんでした。ネットワーク接続を確認してください
+    serverError: サーバーでエラーが発生しました
+    operationNotAllowed: 操作が許可されていません
+    serverBusy: サーバーが混雑しています。しばらく待ってからやり直してください
+    notFound: "{entity}が見つかりません。画面を再読み込みして最新の情報に更新してください"
+    isEmpty:  "{field}を入力してください"
+    loginFailed : メールアドレスとパスワードが一致しません
+    expired: 入力された{field}は有効期限が切れているため、ご利用頂けません
+    notNull: "{field}を入力してください"
+    notEmpty: "{field}が設定されていません"
+    maxLength: "{field}が長すぎます"
+    minLength: "{field}が短すぎます"
+    pattern:    "{field}の形式が不正です"
+    prohibitedCharacter: "{field}に使用できない文字「{character}」が含まれています"
+    controlCode: "{field}に不正な文字が含まれています"
+    notNumber: "{field}は半角数字で入力してください"
+    notNumberOrHyphen: "{field}は半角数字またはハイフン(-)で入力してください"
+    notAlphabet: "{field}は半角英数字、または記号で入力してください"
+    notKatakana: "{field}は全角カタカナで入力してください"
+    notHiragana: "{field}は全角ひらがなで入力してください"
+    max: "{field}に最大値より大きい値が設定されています"
+    min: "{field}に最小値より小さい値が設定されています"
+    range: "{field}の値が範囲外です"
+    size: "{field}は{size}つまで選択できます"
+    invalidValue: "{field}が正しく入力されていません"
+

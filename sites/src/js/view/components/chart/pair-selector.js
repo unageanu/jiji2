@@ -72,8 +72,8 @@ export default class PairSelector extends AbstractComponent {
   }
 
   createMenuItems() {
-    return this.state.items.map((item) => {
-      return <MenuItem key={item.value}
+    return this.state.items.map((item, index) => {
+      return <MenuItem key={index}
         value={item.value} primaryText={item.text} />
     });
   }

@@ -26,7 +26,7 @@ export default class TradingSummaryModel extends Observable {
     });
   }
 
-  get formatedProfitOrLoss() {
+  get formattedProfitOrLoss() {
     return NumberFormatter.formatPrice(
       this.profitOrLoss.totalProfitOrLoss );
   }
@@ -44,9 +44,9 @@ export default class TradingSummaryModel extends Observable {
     return data;
   }
 
-  get sellOrBuyData() {
+  getSellOrBuyData(formatMessage) {
     return {
-      labels: ["買", "売"],
+      labels: [formatMessage({id:'common.buy'}), formatMessage({id:'common.sell'})],
       datasets: [{
         data: [this.sellOrBuy.buy, this.sellOrBuy.sell],
         borderWidth: [0, 0],
@@ -62,10 +62,10 @@ export default class TradingSummaryModel extends Observable {
     };
   }
 
-  get winsAndLossesData() {
+  getWinsAndLossesData(formatMessage) {
     const values = this.winsAndLosses;
     return {
-      labels: ["勝", "負", "引き分け"],
+      labels: [formatMessage({id:'common.win'}), formatMessage({id:'common.lose'}), formatMessage({id:'common.draw'})],
       datasets: [{
         data: [values.win,this.winsAndLosses.lose,this.winsAndLosses.draw],
         borderWidth: [0, 0, 0],
@@ -79,13 +79,13 @@ export default class TradingSummaryModel extends Observable {
     };
   }
 
-  get agentsData() {
+  getAgentsData(formatMessage) {
     const data = this.createInitialDataset();
     _.sortBy(_.keys(this.agentSummary),
       (key) => this.agentSummary[key].states.count * -1).forEach((key, i) => {
       const color = colorPattern[i % colorPattern.length];
       const summary = this.agentSummary[key];
-      data.labels.push(summary.name || "不明");
+      data.labels.push(summary.name || formatMessage({id:'common.unknown'}));
       data.datasets[0].data.push(summary.states.count);
       data.datasets[0].borderWidth.push(0);
       data.datasets[0].backgroundColor.push(color.color);
@@ -106,59 +106,59 @@ export default class TradingSummaryModel extends Observable {
     };
   }
 
-  get formatedWinPercentage() {
+  get formattedWinPercentage() {
     if (!this.states.count) return "-%";
     const values = this.winsAndLosses;
     const ratio = values.win / this.states.count;
     return NumberFormatter.formatRatio(ratio);
   }
 
-  get formatedPositionCount() {
+  get formattedPositionCount() {
     return NumberFormatter.insertThousandsSeparator(this.states.count);
   }
-  get formatedExitedPositionCount() {
+  get formattedExitedPositionCount() {
     return NumberFormatter.insertThousandsSeparator(this.states.exited);
   }
 
-  get formatedMaxProfit() {
+  get formattedMaxProfit() {
     return NumberFormatter.formatPrice(this.profitOrLoss.maxProfit||0);
   }
-  get formatedMaxLoss() {
+  get formattedMaxLoss() {
     return NumberFormatter.formatPrice(this.profitOrLoss.maxLoss||0);
   }
-  get formatedAvgProfit() {
+  get formattedAvgProfit() {
     return NumberFormatter.formatPrice(this.profitOrLoss.avgProfit||0);
   }
-  get formatedAvgLoss() {
+  get formattedAvgLoss() {
     return NumberFormatter.formatPrice(this.profitOrLoss.avgLoss||0);
   }
-  get formatedTotalProfit() {
+  get formattedTotalProfit() {
     return NumberFormatter.formatPrice(this.profitOrLoss.totalProfit||0);
   }
-  get formatedTotalLoss() {
+  get formattedTotalLoss() {
     return NumberFormatter.formatPrice(this.profitOrLoss.totalLoss||0);
   }
-  get formatedProfitFactor() {
+  get formattedProfitFactor() {
     return NumberFormatter.formatDecimal(this.profitOrLoss.profitFactor, 3);
   }
 
-  get formatedMaxPeriod() {
+  get formattedMaxPeriod() {
     return DateFormatter.formatPeriod(this.holdingPeriod.maxPeriod||0);
   }
-  get formatedMinPeriod() {
+  get formattedMinPeriod() {
     return DateFormatter.formatPeriod(this.holdingPeriod.minPeriod||0);
   }
-  get formatedAvgPeriod() {
+  get formattedAvgPeriod() {
     return DateFormatter.formatPeriod(this.holdingPeriod.avgPeriod||0);
   }
 
-  get formatedMaxUnits() {
+  get formattedMaxUnits() {
     return NumberFormatter.insertThousandsSeparator(this.units.maxUnits||0);
   }
-  get formatedMinUnits() {
+  get formattedMinUnits() {
     return NumberFormatter.insertThousandsSeparator(this.units.minUnits||0);
   }
-  get formatedAvgUnits() {
+  get formattedAvgUnits() {
     return NumberFormatter.insertThousandsSeparator(this.units.avgUnits||0);
   }
 

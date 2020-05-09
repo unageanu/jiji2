@@ -1,4 +1,5 @@
 import React               from "react"
+import { injectIntl }      from 'react-intl';
 
 import AbstractComponent   from "../widgets/abstract-component"
 
@@ -7,7 +8,7 @@ import RaisedButton from "material-ui/RaisedButton"
 import IconButton from "material-ui/IconButton"
 import FontIcon from "material-ui/FontIcon"
 
-export default class AgentSourceListMenu extends AbstractComponent {
+class AgentSourceListMenu extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -15,11 +16,12 @@ export default class AgentSourceListMenu extends AbstractComponent {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return (
       <div className="agent-source-list-menu">
         <IconButton
           key="newFile"
-          tooltip={"新規作成"}
+          tooltip={formatMessage({ id: 'agents.AgentSourceListMenu.newFile' })}
           onTouchTap={this.createNewFile.bind(this)}>
           <FontIcon className="md-add"/>
         </IconButton>
@@ -39,3 +41,5 @@ export default class AgentSourceListMenu extends AbstractComponent {
 AgentSourceListMenu.propTypes = {
   model: React.PropTypes.object.isRequired
 };
+
+export default injectIntl(AgentSourceListMenu);

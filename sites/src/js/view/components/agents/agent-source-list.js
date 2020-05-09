@@ -1,4 +1,5 @@
-import React               from "react"
+import React                from "react"
+import { FormattedMessage } from 'react-intl';
 
 import AbstractComponent   from "../widgets/abstract-component"
 import AgentSourceListItem from "./agent-source-list-item"
@@ -39,7 +40,7 @@ export default class AgentSourceList extends AbstractComponent {
       return <div className="center-information loading"><LoadingImage left={-20}/></div>;
     }
     if (this.state.sources.length <= 0) {
-      return <div className="center-information">ファイルはありません</div>;
+      return <div className="center-information"><FormattedMessage id="agents.AgentSourceList.noFile" /></div>;
     }
     const items = this.state.sources.map(
       (source) => this.createItemComponent(source));

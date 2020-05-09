@@ -37,7 +37,7 @@ export default class MailAddressSettingModel extends Observable {
     });
   }
 
-  save(mailAddress) {
+  save(mailAddress, formatMessage) {
     this.message = null;
     if (!this.validate(mailAddress)) return;
     this.isSaving = true;
@@ -45,19 +45,19 @@ export default class MailAddressSettingModel extends Observable {
         (result) => {
           this.isSaving = false;
           this.mailAddress = mailAddress;
-          this.message = "メールアドレスを変更しました。 ("
+          this.message = formatMessage({id:'validation.messages.finishToChangeMailAddress'}) + " ("
             + DateFormatter.format(this.timeSource.now) + ")" ;
         },
         (error) => {
           this.isSaving = false;
-          this.error = ErrorMessages.getMessageFor(error);
+          this.error = ErrorMessages.getMessageFor(formatMessage, error);
           error.preventDefault = true;
         });
   }
 
-  validate(mailAddress) {
+  validate(mailAddress, formatMessage) {
     return ValidationUtils.validate(Validators.mailAddress, mailAddress,
-      {field: "メールアドレス"}, (error) => this.error = error );
+      {field: formatMessage({id:'validation.fields.mailAddress'})}, (error) => this.error = error, formatMessage );
   }
 
   get mailAddress() {

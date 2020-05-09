@@ -34,7 +34,7 @@ export default class NotificationSelectionModel extends SelectionModel {
     this.notificationService.markAsRead( notification.id );
   }
 
-  executeAction( notification, action ) {
+  executeAction( notification, action, formatMessage) {
     this.actionService.post(
       notification.backtest ? notification.backtest.id : null,
       notification.agent.id, action).then((result) => {
@@ -45,19 +45,18 @@ export default class NotificationSelectionModel extends SelectionModel {
       this.eventQueue.push(this.createErrorMessage(error, notification));
     });
   }
-  createResponseMessage(result, notification, action) {
+  createResponseMessage(result, notification, action, formatMessage) {
     return {
       type: "info",
       message: notification.agent.name + " : "
-        + (result.message || "アクション \"" + action + "\" を実行しました")
+        + (result.message || formatMessage({id: "viewmodel.NotificationSelectionModel.doAction"}, {action: action}))
     };
   }
-  createErrorMessage(error, notification) {
+  createErrorMessage(error, notification, formatMessage) {
     return {
       type: "error",
       message: notification.agent.name
-        + " : アクション実行時にエラーが発生しました。"
-        + "ログを確認してください。"
+        + " : " + formatMessage({id: "viewmodel.NotificationSelectionModel.error"})
     };
   }
 

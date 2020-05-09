@@ -1,4 +1,5 @@
 import React                   from "react"
+import { injectIntl }          from 'react-intl';
 
 import AbstractPage            from "./abstract-page"
 import NotificationList        from "../notifications/notification-list"
@@ -7,7 +8,7 @@ import NotificationDetailsView from "../notifications/notification-details-view"
 
 import Card from "material-ui/Card"
 
-export default class NotificationsPage extends AbstractPage {
+class NotificationsPage extends AbstractPage {
 
   constructor(props) {
     super(props);
@@ -24,6 +25,7 @@ export default class NotificationsPage extends AbstractPage {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return (
       <div className="notifications-page page">
         <Card className="main-card">
@@ -35,7 +37,7 @@ export default class NotificationsPage extends AbstractPage {
               model={this.model().notificationsTable}
               selectionModel={this.model().selection}
               autoFill={false}
-              emptyLabel="通知はありません"
+              emptyLabel={formatMessage({ id: 'pages.NotificationsPage.noItems' })}
               selectable={true} />
           </div>
           <div className="details-panel">
@@ -57,3 +59,4 @@ NotificationsPage.contextTypes = {
   application: React.PropTypes.object.isRequired,
   router: React.PropTypes.object
 };
+export default injectIntl(NotificationsPage);

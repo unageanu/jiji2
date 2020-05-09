@@ -56,10 +56,10 @@ export default class AgentSettingBuilder extends Observable {
     this.selectedAgent.properties = configuration;
   }
 
-  validate() {
+  validate(formatMessage) {
     if (!this.validator) return true;
     return ValidationUtils.validate(this.validator, this.agentSetting,
-      {field: "エージェント"}, (error) => this.agentSettingError = error );
+      {field: formatMessage({id:'validation.fields.agent'})}, (error) => this.agentSettingError = error, formatMessage );
   }
 
   convert(agents) {

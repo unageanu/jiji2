@@ -46,9 +46,9 @@ export default class InitialSettingsPageModel extends Observable {
     return d;
   }
 
-  changePhaseToSetMailAddressAndPassword() {
+  changePhaseToSetMailAddressAndPassword(formatMessage) {
     if ( !this.acceptLicense ) {
-      this.acceptionError = "利用規約に同意してください";
+      this.acceptionError = formatMessage({id:'validation.messages.acceptLicense'});
       return;
     }
     this.acceptionError = null;
@@ -68,13 +68,13 @@ export default class InitialSettingsPageModel extends Observable {
     });
   }
 
-  startSetting() {
-    this.changePhaseToSetMailAddressAndPassword();
+  startSetting(formatMessage) {
+    this.changePhaseToSetMailAddressAndPassword(formatMessage);
   }
 
-  setMailAddressAndPassword( mailAddress, password1, password2 ) {
+  setMailAddressAndPassword( mailAddress, password1, password2, formatMessage ) {
     if (!this.validateMailAddressAndPassword( mailAddress,
-      password1, password2)) {
+      password1, password2, formatMessage)) {
         return;
     }
     this.isSaving = true;
@@ -86,7 +86,7 @@ export default class InitialSettingsPageModel extends Observable {
         this.changePhaseToSetSecurities();
       }, (error)  => {
         this.isSaving = false;
-        this.error = ErrorMessages.getMessageFor(error);
+        this.error = ErrorMessages.getMessageFor(formatMessage, error);
         error.preventDefault = true;
         throw error;
       });
@@ -108,10 +108,11 @@ export default class InitialSettingsPageModel extends Observable {
     this.eventQueue.push({ type: "routing", route: "/" });
   }
 
-  validateMailAddressAndPassword( mailAddress, password1, password2 ) {
+  validateMailAddressAndPassword( mailAddress, password1, password2, formatMessage) {
     return Validators.all(
-      this.mailAddressSetting.validate(mailAddress),
-      this.passwordSetting.validate(password1, password2, "パスワード")
+      this.mailAddressSetting.validate(mailAddress, formatMessage),
+      this.passwordSetting.validate(password1, password2,
+        formatMessage({id:'validation.fields.password'}), formatMessage)
     );
   }
 

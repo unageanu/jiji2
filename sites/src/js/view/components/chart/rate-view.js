@@ -1,4 +1,5 @@
-import React              from "react"
+import React                from "react"
+import { FormattedMessage } from 'react-intl';
 
 import Draggable          from "react-draggable"
 import DateFormatter      from "../../../viewmodel/utils/date-formatter"
@@ -32,19 +33,19 @@ export default class RateView extends AbstractComponent {
       <div className="rate-view">
         <div className="time">{DateFormatter.format(this.state.time)}</div>
         <div className="rate">
-          <span className="label">始値:</span>
+          <span className="label"><FormattedMessage id='chart.RateView.open' />:</span>
           <span className="value">
             {NumberFormatter.insertThousandsSeparator(rate.data.open ? rate.data.open.bid : null)}
           </span>
-          <span className="label">終値:</span>
+          <span className="label"><FormattedMessage id='chart.RateView.close' />:</span>
           <span className="value">
             {NumberFormatter.insertThousandsSeparator(rate.data.close ? rate.data.close.bid : null)}
           </span>
-          <span className="label">高値:</span>
+          <span className="label"><FormattedMessage id='chart.RateView.high' />:</span>
           <span className="value">
             {NumberFormatter.insertThousandsSeparator(rate.data.high ? rate.data.high.bid : null)}
           </span>
-          <span className="label">安値:</span>
+          <span className="label"><FormattedMessage id='chart.RateView.low' />:</span>
           <span className="value">
             {NumberFormatter.insertThousandsSeparator(rate.data.low ? rate.data.low.bid : null)}
           </span>

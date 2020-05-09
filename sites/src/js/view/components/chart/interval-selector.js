@@ -1,4 +1,5 @@
-import React     from "react"
+import React          from "react"
+import { injectIntl } from 'react-intl';
 
 import Intervals from "../../../model/trading/intervals"
 import Theme     from "../../theme"
@@ -6,7 +7,7 @@ import Theme     from "../../theme"
 import DropDownMenu from "material-ui/DropDownMenu"
 import MenuItem     from 'material-ui/MenuItem'
 
-export default class IntervalSelector extends React.Component {
+class IntervalSelector extends React.Component {
 
   constructor(props) {
     super(props);
@@ -46,9 +47,10 @@ export default class IntervalSelector extends React.Component {
   }
 
   createMenuItems() {
+    const { formatMessage } = this.props.intl;
     return Intervals.all().map((item) => {
       return <MenuItem key={item.id}
-        value={item.id} primaryText={item.name} />
+        value={item.id} primaryText={formatMessage({ id: `common.chartIntervals.${item.labelId}` })} />
     });
   }
 
@@ -73,3 +75,4 @@ IntervalSelector.defaultProps = {
   labelStyle: {},
   iconStyle: {}
 };
+export default injectIntl(IntervalSelector)

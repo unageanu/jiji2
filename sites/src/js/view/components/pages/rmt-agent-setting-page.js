@@ -1,4 +1,5 @@
-import React              from "react"
+import React                            from "react"
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractPage       from "./abstract-page"
 import AgentSettingEditor from "../agents/agent-setting-editor"
@@ -11,7 +12,7 @@ const keys = new Set([
   "isSaving", "isLoading", "savedLabel"
 ]);
 
-export default class RMTAgentSettingPage extends AbstractPage {
+class RMTAgentSettingPage extends AbstractPage {
 
   constructor(props) {
     super(props);
@@ -43,14 +44,15 @@ export default class RMTAgentSettingPage extends AbstractPage {
         <LoadingImage left={-20}/>
       </div>;
     }
+    const { formatMessage } = this.props.intl;
     return (
       <div>
         <ul className="description">
-          <li>リアルトレードで動作させるエージェントを設定します。</li>
+          <li><FormattedMessage id='pages.RMTAgentSettingPage.description' /></li>
         </ul>
         <div className="top-button">
           <RaisedButton
-            label="設定を反映"
+            label={formatMessage({ id: 'pages.RMTAgentSettingPage.apply' })}
             primary={true}
             disabled={this.state.isSaving}
             onClick={this.save.bind(this)}
@@ -70,8 +72,9 @@ export default class RMTAgentSettingPage extends AbstractPage {
   }
 
   save() {
+    const { formatMessage } = this.props.intl;
     this.refs.agentSettingEditor.applyAgentConfiguration();
-    this.model().saveAgentSetting();
+    this.model().saveAgentSetting(formatMessage);
   }
 
   model() {
@@ -81,3 +84,4 @@ export default class RMTAgentSettingPage extends AbstractPage {
 RMTAgentSettingPage.contextTypes = {
   application: React.PropTypes.object.isRequired,
 };
+export default injectIntl(RMTAgentSettingPage)

@@ -19,10 +19,11 @@ export default class SettingMenuButton extends React.Component {
         iconStyle={{color:Theme.palette.textColorLight}}
       />;
     const menu = this.createMenuItems();
+    const { menuItems, ...others } = this.props;
     return (
       <IconMenu
         iconButtonElement={iconButtonElement}
-        {...this.props}>
+        {...others}>
         {menu}
       </IconMenu>
     );

@@ -25,16 +25,16 @@ export default class AccountViewModel extends Observable {
   calculateChangesFromPreviousDay() {
     if ( this.balance == null || this.balanceOfYesterday == null ) {
       this.setProperty("changesFromPreviousDay", undefined);
-      this.setProperty("formatedChangesFromPreviousDay", "-");
-      this.setProperty("formatedChangeRatioFromPreviousDay", "-");
+      this.setProperty("formattedChangesFromPreviousDay", "-");
+      this.setProperty("formattedChangeRatioFromPreviousDay", "-");
     } else {
       const changesFromPreviousDay =
         parseFloat(new BigDecimal(this.balance).minus(this.balanceOfYesterday));
       const changeRatio = changesFromPreviousDay / this.balanceOfYesterday;
       this.setProperty("changesFromPreviousDay", changesFromPreviousDay);
-      this.setProperty("formatedChangesFromPreviousDay",
+      this.setProperty("formattedChangesFromPreviousDay",
         NumberFormatter.insertThousandsSeparator(changesFromPreviousDay));
-      this.setProperty("formatedChangeRatioFromPreviousDay",
+      this.setProperty("formattedChangeRatioFromPreviousDay",
         (changesFromPreviousDay > 0 ? "+" : "")
          + NumberFormatter.formatRatio(changeRatio, 2));
     }
@@ -45,7 +45,7 @@ export default class AccountViewModel extends Observable {
   }
   set balance(balance) {
     this.setProperty("balance", balance);
-    this.setProperty("formatedBalance",
+    this.setProperty("formattedBalance",
       NumberFormatter.insertThousandsSeparator(balance));
   }
   get profitOrLoss() {
@@ -53,7 +53,7 @@ export default class AccountViewModel extends Observable {
   }
   set profitOrLoss(profitOrLoss) {
     this.setProperty("profitOrLoss", profitOrLoss);
-    this.setProperty("formatedProfitOrLoss",
+    this.setProperty("formattedProfitOrLoss",
       NumberFormatter.insertThousandsSeparator(profitOrLoss));
   }
   get marginRate() {
@@ -61,7 +61,7 @@ export default class AccountViewModel extends Observable {
   }
   set marginRate(marginRate) {
     this.setProperty("marginRate", marginRate);
-    this.setProperty("formatedMarginRate",
+    this.setProperty("formattedMarginRate",
       NumberFormatter.formatRatio(marginRate, 2));
   }
   get balanceOfYesterday() {
@@ -75,20 +75,20 @@ export default class AccountViewModel extends Observable {
   get changesFromPreviousDay() {
     return this.getProperty("changesFromPreviousDay");
   }
-  get formatedChangesFromPreviousDay() {
-    return this.getProperty("formatedChangesFromPreviousDay");
+  get formattedChangesFromPreviousDay() {
+    return this.getProperty("formattedChangesFromPreviousDay");
   }
-  get formatedChangeRatioFromPreviousDay() {
-    return this.getProperty("formatedChangeRatioFromPreviousDay");
+  get formattedChangeRatioFromPreviousDay() {
+    return this.getProperty("formattedChangeRatioFromPreviousDay");
   }
-  get formatedBalance() {
-    return this.getProperty("formatedBalance");
+  get formattedBalance() {
+    return this.getProperty("formattedBalance");
   }
-  get formatedProfitOrLoss() {
-    return this.getProperty("formatedProfitOrLoss");
+  get formattedProfitOrLoss() {
+    return this.getProperty("formattedProfitOrLoss");
   }
-  get formatedMarginRate() {
-    return this.getProperty("formatedMarginRate");
+  get formattedMarginRate() {
+    return this.getProperty("formattedMarginRate");
   }
 
 }

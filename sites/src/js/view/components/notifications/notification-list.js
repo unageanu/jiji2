@@ -1,9 +1,10 @@
-import React                from "react"
+import React          from "react"
+import { injectIntl } from 'react-intl';
 
 import AbstractList         from "../widgets/abstract-list"
 import NotificationListItem from "./notification-list-item"
 
-export default class NotificationList extends AbstractList {
+class NotificationList extends AbstractList {
 
   constructor(props) {
     super(props);
@@ -13,7 +14,10 @@ export default class NotificationList extends AbstractList {
   get className() {
     return "notification-list";
   }
-
+  get emptyLabel() {
+    const { formatMessage } = this.props.intl;
+    return formatMessage({ id: 'notifications.NotificationList.noUnread' });
+  }
   createListItem(notification, index) {
     return <NotificationListItem
       key={index}
@@ -41,10 +45,11 @@ NotificationList.propTypes = {
 };
 NotificationList.defaultProps = {
   selectionModel: null,
-  emptyLabel: "未読の通知はありません",
+  emptyLabel: "",
   autoFill: false
 };
 NotificationList.contextTypes = {
   router: React.PropTypes.object,
   windowResizeManager: React.PropTypes.object
 };
+export default injectIntl(NotificationList);

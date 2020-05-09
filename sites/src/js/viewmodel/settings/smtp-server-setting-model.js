@@ -46,69 +46,69 @@ export default class SMTPServerSettingModel extends Observable {
     return d;
   }
 
-  composeTestMail(setting) {
+  composeTestMail(setting, formatMessage) {
     this.error = null;
     this.message = null;
     this.testMailMessage = null;
-    if (!this.validate(setting)) return;
+    if (!this.validate(setting, formatMessage)) return;
     this.isSaving = true;
     this.smtpServerSettingService.composeTestMail(setting).then(
       (result) => {
         this.testMailMessage =
-          "登録されているメールアドレスにテストメールを送信しました。ご確認ください。 ("
+        formatMessage({id:'validation.messages.sentTestMail'}) + " ("
             + DateFormatter.format(this.timeSource.now) + ")";
         this.isSaving = false;
       }, (error) => {
         this.isSaving = false;
-        this.error = "メールの送信でエラーが発生しました。接続先SMTPサーバーの設定を確認してください";
+        this.error = formatMessage({id:'validation.messages.failedToSentMail'});
         error.preventDefault = true;
       });
   }
 
-  save(setting) {
+  save(setting, formatMessage) {
     this.error = null;
     this.message = null;
     this.testMailMessage = null;
-    if (!this.validate(setting)) return Deferred.errorOf(null);
+    if (!this.validate(setting, formatMessage)) return Deferred.errorOf(null);
     this.isSaving = true;
     return this.smtpServerSettingService.setSMTPServerSetting(setting).then(
       (result) => {
         this.isSaving = false
         this.setting = setting;
-        this.message = "設定を変更しました。 ("
+        this.message = formatMessage({id:'validation.messages.finishToChangeSetting'}) + " ("
           + DateFormatter.format(this.timeSource.now) + ")";
       },
       (error) => {
         this.isSaving = false
-        this.error = ErrorMessages.getMessageFor(error);
+        this.error = ErrorMessages.getMessageFor(formatMessage, error);
         error.preventDefault = true;
         throw error;
       });
   }
 
-  validate(setting) {
+  validate(setting, formatMessage) {
     return Validators.all(
-      this.validateHost(setting.smtpHost),
-      this.validatePort(setting.smtpPort),
-      this.validateUserName(setting.userName),
-      this.validatePassword(setting.password)
+      this.validateHost(setting.smtpHost, formatMessage),
+      this.validatePort(setting.smtpPort, formatMessage),
+      this.validateUserName(setting.userName, formatMessage),
+      this.validatePassword(setting.password, formatMessage)
     );
   }
-  validateHost(host) {
+  validateHost(host, formatMessage) {
     return ValidationUtils.validate(Validators.smtpServer.host, host,
-        {field: "SMTPサーバー"}, (error) => this.hostError = error );
+        {field: formatMessage({id:'validation.fields.smtpServer'})}, (error) => this.hostError = error, formatMessage );
   }
-  validatePort(port) {
+  validatePort(port, formatMessage) {
     return ValidationUtils.validate(Validators.smtpServer.port, port,
-        {field: "SMTPポート"}, (error) => this.portError = error );
+        {field: formatMessage({id:'validation.fields.smtpPort'})}, (error) => this.portError = error, formatMessage );
   }
-  validateUserName(userName) {
+  validateUserName(userName, formatMessage) {
     return ValidationUtils.validate(Validators.smtpServer.userName, userName,
-        {field: "ユーザー名"}, (error) => this.userNameError = error );
+        {field: formatMessage({id:'validation.fields.userName'})}, (error) => this.userNameError = error, formatMessage );
   }
-  validatePassword(password) {
+  validatePassword(password, formatMessage) {
     return ValidationUtils.validate(Validators.smtpServer.password, password,
-        {field: "パスワード"}, (error) => this.passwordError = error );
+        {field: formatMessage({id:'validation.fields.password'})}, (error) => this.passwordError = error, formatMessage );
   }
 
   get enablePostmark() {

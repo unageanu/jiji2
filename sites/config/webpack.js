@@ -12,10 +12,6 @@ var base = {
     }
   },
   plugins:  [
-    new webpack.IgnorePlugin(/vertx/),
-    new webpack.ProvidePlugin({
-      createjs: "easeljs"
-    })
   ],
   module: {
     loaders: [{
@@ -29,6 +25,9 @@ var base = {
     }, {
       test:     /\.jsx/,
       loader: 'jsx'
+    }, {
+      test:     /\.yml$/,
+      loaders: ['json-loader', 'yaml-flat-loader']
     }],
 
     exprContextRecursive : true,
@@ -51,11 +50,17 @@ function createConfig( root, mainFile, env, options) {
       root: __dirname + root
     }
   }), options || {});
-  config.plugins.push(new webpack.DefinePlugin({
-    'process.env':{
-      'NODE_ENV': JSON.stringify(env)
-    }
-  }));
+  config.plugins = [
+    new webpack.IgnorePlugin(/vertx/),
+    new webpack.ProvidePlugin({
+      createjs: "easeljs"
+    }),
+    new webpack.DefinePlugin({
+      'process.env':{
+        'NODE_ENV': JSON.stringify(env)
+      }
+    })
+  ];
   return config;
 }
 

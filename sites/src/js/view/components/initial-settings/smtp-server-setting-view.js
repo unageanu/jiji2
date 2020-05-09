@@ -1,4 +1,5 @@
 import React                  from "react"
+import { injectIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
 import Base                   from "../settings/smtp-server-setting-view"
 import LoadingImage           from "../widgets/loading-image"
@@ -6,19 +7,19 @@ import LoadingImage           from "../widgets/loading-image"
 import RaisedButton from "material-ui/RaisedButton"
 import FlatButton from "material-ui/FlatButton"
 
-export default class SMTPServerSettingView extends Base {
+class SMTPServerSettingView extends Base {
 
   constructor(props) {
     super(props);
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return (
       <div className="smtp-server-setting-view">
-        <h3>SMTPサーバーの設定</h3>
+        <h3><FormattedMessage id='initialSettings.SMTPServerSettingView.title'/></h3>
         <div className="description">
-          メール送信時に使用するSMTPサーバーを設定してください。<br/>
-          ※あとで設定することもできます。
+          <FormattedHTMLMessage id='initialSettings.SMTPServerSettingView.description'/>
         </div>
         <div className="inputs">
           {this.createInputFields()}
@@ -27,7 +28,7 @@ export default class SMTPServerSettingView extends Base {
         <div className="buttons">
           <span className="button test-mail">
             <RaisedButton
-              label="テストメール送信"
+              label={formatMessage({ id: 'initialSettings.SMTPServerSettingView.composeTestMail' })}
               disabled={this.state.isSaving}
               onClick={this.composeTestMail.bind(this)}
               labelStyle={{lineHeight: "50px"}}
@@ -36,7 +37,7 @@ export default class SMTPServerSettingView extends Base {
           </span>
           <span className="button next">
             <RaisedButton
-              label="設定して次へ"
+              label={formatMessage({ id: 'initialSettings.SMTPServerSettingView.next' })}
               primary={true}
               disabled={this.state.isSaving}
               onClick={this.next.bind(this)}
@@ -46,7 +47,7 @@ export default class SMTPServerSettingView extends Base {
           </span>
           <span className="button skip">
             <FlatButton
-              label="設定をスキップ"
+              label={formatMessage({ id: 'initialSettings.SMTPServerSettingView.skip' })}
               disabled={this.state.isSaving}
               onClick={this.skip.bind(this)}
               labelStyle={{lineHeight: "50px"}}
@@ -80,3 +81,5 @@ SMTPServerSettingView.propTypes = {
 SMTPServerSettingView.defaultProps = {
   model: null
 };
+
+export default injectIntl(SMTPServerSettingView);

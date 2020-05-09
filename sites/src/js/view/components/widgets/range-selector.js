@@ -1,4 +1,5 @@
 import React              from "react"
+import { injectIntl }     from 'react-intl';
 
 import DateFormatter      from "../../../viewmodel/utils/date-formatter"
 import AbstractComponent  from "../widgets/abstract-component"
@@ -10,7 +11,7 @@ const keys = new Set([
   "startTimeError", "endTimeError", "enable"
 ]);
 
-export default class RangeSelector extends AbstractComponent {
+class RangeSelector extends AbstractComponent {
 
   constructor(props) {
     super(props);
@@ -24,12 +25,13 @@ export default class RangeSelector extends AbstractComponent {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return (
       <div className="range-selector">
         <div className="selector">
-        {this.createDatePicker("startTime", "開始", this.state.startTime)}
+        {this.createDatePicker("startTime", formatMessage({id:'widgets.RangeSelector.start'}), this.state.startTime)}
         <span className="separator">～</span>
-        {this.createDatePicker("endTime", "終了", this.state.endTime)}
+        {this.createDatePicker("endTime", formatMessage({id:'widgets.RangeSelector.end'}), this.state.endTime)}
         </div>
         {this.createErrorContent(
           this.state.startTimeError || this.state.endTimeError)}
@@ -73,3 +75,4 @@ RangeSelector.propTypes = {
 };
 RangeSelector.defaultProps = {
 };
+export default injectIntl(RangeSelector)

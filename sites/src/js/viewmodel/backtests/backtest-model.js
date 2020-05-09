@@ -10,36 +10,36 @@ export default class BacktestModel {
     this.backtest = backtest;
   }
 
-  get formatedPeriod() {
+  get formattedPeriod() {
     return DateFormatter.format(this.startTime, "yyyy-MM-dd")
      + " ～ " + DateFormatter.format(this.endTime, "yyyy-MM-dd");
   }
 
-  get formatedBalance() {
+  get formattedBalance() {
     return NumberFormatter.insertThousandsSeparator(this.balance);
   }
 
-  get formatedStatus() {
+  get formattedStatus() {
     const status = this.status;
     switch(status) {
       case "wait_for_finished" :
       case "running" :
-        return "実行中";
+        return "running";
       case "wait_for_start" :
-        return "待機中";
+        return "waitForStart";
       case "paused" :
       case "cancelled" :
-        return "キャンセル";
+        return "cancelled";
       case "error" :
-        return "エラー";
+        return "error";
       case "finished" :
-        return "完了";
+        return "finished";
       default :
         return null;
     }
   }
 
-  get formatedCreatedAt() {
+  get formattedCreatedAt() {
     return DateFormatter.format(this.createdAt, "yyyy-MM-dd hh:mm");
   }
 
@@ -47,19 +47,19 @@ export default class BacktestModel {
     const id = this.tickIntervalId;
     switch(id) {
       case "one_minute" :
-        return "1分";
+        return "oneMinute";
       case "fifteen_minutes" :
-        return "15分";
+        return "fifteenMinutes";
       case "thirty_minutes" :
-        return "30分";
+        return "thirtyMinutes";
       case "one_hour" :
-        return "1時間";
+        return "oneHour";
       case "six_hours" :
-        return "6時間";
+        return "sixHours";
       case "one_day" :
-        return "1日";
+        return "oneDay";
       default :
-        return "15秒";
+        return "fifteenSeconds";
     }
   }
 

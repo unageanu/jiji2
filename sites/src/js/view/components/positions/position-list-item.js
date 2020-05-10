@@ -60,7 +60,7 @@ export default class PositionListItem extends React.Component {
     return [
       <span key="pair" className="pair">{position.pairName}</span>,
       <span key="separator" className="separator">/</span>,
-      <span key="sell-or-buy" className="sell-or-buy">{position.formattedSellOrBuy}</span>,
+      <span key="sell-or-buy" className="sell-or-buy"><FormattedMessage id={position.formattedSellOrBuy} /></span>,
       <span key="separator2" className="separator">/</span>,
       <span key="units" className="units">{position.units}</span>,
       <span key="units-suffix" className="suffix"><FormattedMessage id='positions.PositionListItem.unit'/></span>,
@@ -71,7 +71,7 @@ export default class PositionListItem extends React.Component {
   createRightIcon(position) {
       if (position.status != "live") return null;
       return <span className="right-icon" style={{width:"auto"}}>
-        <PositionStatus formattedStatus={position.formattedStatus} status={position.status} />
+        <PositionStatus formattedStatus={<FormattedMessage id={position.formattedStatus} />} status={position.status} />
       </span>;
   }
   createAvatar(position) {

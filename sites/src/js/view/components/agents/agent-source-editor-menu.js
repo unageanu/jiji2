@@ -14,7 +14,7 @@ const keys = new Set([
   "editTarget", "isSaving"
 ]);
 
-class AgentSourceEditorMenu extends AbstractComponent {
+export class AgentSourceEditorMenu extends AbstractComponent {
 
   constructor(props) {
     super(props);

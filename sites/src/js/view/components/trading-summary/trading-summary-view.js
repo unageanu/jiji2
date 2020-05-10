@@ -16,7 +16,7 @@ const keys = new Set([
   "summary", "enablePeriodSelector", "availableAggregationPeriods"
 ]);
 
-class TradingSummaryView extends AbstractComponent {
+export class TradingSummaryView extends AbstractComponent {
 
   constructor(props) {
     super(props);

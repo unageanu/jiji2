@@ -10,7 +10,7 @@ const keys = new Set([
   "acceptLicense", "acceptionError"
 ]);
 
-class WelcomeView extends AbstractComponent {
+export class WelcomeView extends AbstractComponent {
 
   constructor(props) {
     super(props);

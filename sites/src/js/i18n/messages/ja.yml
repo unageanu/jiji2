@@ -247,6 +247,21 @@ pages:
     apply: 設定を反映
     remove: エージェントを削除
     confirmRemove: 選択したエージェントを削除します。よろしいですか?
+  BillingPage:
+    checking: ライセンスをチェックしています
+    failedToConnectServer: ライセンスサーバーに接続できませんでした。ネットワーク接続をご確認のうえ、再実行してください。
+    recheckLicense: ライセンスを再確認する
+    description:
+      part1: Jijiアプリをインストールしていただき、ありがとうございます!
+      part2: Jijiアプリは月額450円(税抜)の有料ソフトウェアです。
+      part3: まずはお試し! いまなら、<b>購入後30日間無料</b>でご利用いただけます。<br/>
+      part4: 無料トライアル期間経過後は自動的に月額料金をご請求させていただきます。ご利用をキャンセルする場合は、
+      part5: こちらの手順
+      part6: に従って定期利用の解除を行ってください。
+      part7: 利用規約をご確認のうえ、ライセンスの購入手続きを開始してください。
+    accept: 利用規約に同意する
+    start: ライセンス購入に進む
+    processing: 処理中です。しばらくお待ちください
 
 positions:
   DownloadPositionsDialog:
@@ -395,6 +410,8 @@ viewmodel:
     login: ログイン
     initialSettings: 初期設定
     welcome: ようこそ
+    support: サポート・フォーラム
+    usage: 使い方
   AgentsPageModel:
     edit: エージェントの編集
   RmtAgentSettingPageModel:

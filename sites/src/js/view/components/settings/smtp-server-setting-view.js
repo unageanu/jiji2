@@ -15,7 +15,7 @@ const keys = new Set([
   "testMailMessage"
 ]);
 
-class SMTPServerSettingView extends AbstractComponent {
+export class SMTPServerSettingView extends AbstractComponent {
 
   constructor(props) {
     super(props);

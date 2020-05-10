@@ -39,7 +39,7 @@ export default class MailAddressSettingModel extends Observable {
 
   save(mailAddress, formatMessage) {
     this.message = null;
-    if (!this.validate(mailAddress)) return;
+    if (!this.validate(mailAddress, formatMessage)) return;
     this.isSaving = true;
     this.userSettingService.setMailAddress(mailAddress).then(
         (result) => {

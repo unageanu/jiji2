@@ -1,5 +1,5 @@
 import React                            from "react"
-import { injectIntl, FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedHTMLMessage } from 'react-intl';
 
 import AbstractComponent from "../widgets/abstract-component"
 import LoadingImage      from "../widgets/loading-image"

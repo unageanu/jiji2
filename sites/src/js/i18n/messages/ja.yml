@@ -187,7 +187,7 @@ initialSettings:
         detail: シンプルなUIで、取引状況をさっと把握。<br/>システムの管理もできるので、相場が急に動いても、どこでもすぐに対応できます。
       description: スマホアプリは、<b>月額450円(税抜)の有料ソフトウェア</b>です。<br/>まずはお試し。いまなら、購入後<b>30日間無料</b>でご利用いただけます。
       iOS: ※iOS版は準備中です。
-      start: 利用を開始する
+    start: 利用を開始する
   SMTPServerSettingView:
     title: SMTPサーバーの設定
     description: メール送信時に使用するSMTPサーバーを設定してください。<br/>※あとで設定することもできます。

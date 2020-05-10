@@ -14,7 +14,7 @@ const keys = new Set([
   "activeSecuritiesId", "error", "message", "isSaving"
 ]);
 
-class SecuritiesSettingView extends AbstractComponent {
+export class SecuritiesSettingView extends AbstractComponent {
 
   constructor(props) {
     super(props);

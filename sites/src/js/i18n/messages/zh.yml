@@ -186,7 +186,7 @@ initialSettings:
         detail: 简洁的操作界面，交易状况一目了然。<br/>可进行系统的管理，随时随地都可进行操作。
       description: 会员期内免费使用手机App
       iOS: ※iOS版即将上线。
-      start: 开始使用
+    start: 开始使用
   SMTPServerSettingView:
     title: SMTP服务器的设置
     description: 设置发送邮箱时使用的SMTP服务器信息。<br/>※稍后也可进行设置

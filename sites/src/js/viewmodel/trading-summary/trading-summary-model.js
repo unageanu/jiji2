@@ -142,14 +142,14 @@ export default class TradingSummaryModel extends Observable {
     return NumberFormatter.formatDecimal(this.profitOrLoss.profitFactor, 3);
   }
 
-  get formattedMaxPeriod() {
-    return DateFormatter.formatPeriod(this.holdingPeriod.maxPeriod||0);
+  getFormattedMaxPeriod(formatMessage) {
+    return DateFormatter.formatPeriod(this.holdingPeriod.maxPeriod||0, formatMessage);
   }
-  get formattedMinPeriod() {
-    return DateFormatter.formatPeriod(this.holdingPeriod.minPeriod||0);
+  getFormattedMinPeriod(formatMessage) {
+    return DateFormatter.formatPeriod(this.holdingPeriod.minPeriod||0, formatMessage);
   }
-  get formattedAvgPeriod() {
-    return DateFormatter.formatPeriod(this.holdingPeriod.avgPeriod||0);
+  getFormattedAvgPeriod(formatMessage) {
+    return DateFormatter.formatPeriod(this.holdingPeriod.avgPeriod||0, formatMessage);
   }
 
   get formattedMaxUnits() {

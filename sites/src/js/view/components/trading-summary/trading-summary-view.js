@@ -70,8 +70,8 @@ class TradingSummaryView extends AbstractComponent {
             label={formatMessage({ id: 'tradingSummary.TradingSummaryView.winPercentage' })}
             value={summary.formattedWinPercentage}
             subContents={[
-              {label: formatMessage({ id: 'tradingSummary.TradingSummaryView.win' }),  value: summary.winsAndLosses.win },
-              {label: formatMessage({ id: 'tradingSummary.TradingSummaryView.lose' }), value: summary.winsAndLosses.lose }
+              {label: formatMessage({ id: 'common.win' }),  value: summary.winsAndLosses.win },
+              {label: formatMessage({ id: 'common.lose' }), value: summary.winsAndLosses.lose }
             ]} />
           <SummaryItem
             label={formatMessage({ id: 'tradingSummary.TradingSummaryView.positionCount' })}
@@ -94,11 +94,11 @@ class TradingSummaryView extends AbstractComponent {
             size={this.props.graphSize} />
           <CircleGraph
             title={formatMessage({ id: 'tradingSummary.TradingSummaryView.sellOrBuy' })}
-            data={summary.sellOrBuyData}
+            data={summary.getSellOrBuyData(formatMessage)}
             size={this.props.graphSize} />
           <CircleGraph
             title={formatMessage({ id: 'tradingSummary.TradingSummaryView.agent' })}
-            data={summary.agentsData}
+            data={summary.getAgentsData(formatMessage)}
             size={this.props.graphSize} />
         </div>
         <div className="data">
@@ -108,25 +108,25 @@ class TradingSummaryView extends AbstractComponent {
               <div className="item">
                 <div className="label"><FormattedMessage id='tradingSummary.TradingSummaryView.longest'/></div>
                 <div className="value">
-                  {summary.formattedMaxPeriod}
+                  {summary.getFormattedMaxPeriod(formatMessage)}
                 </div>
               </div>
               <div className="item">
                 <div className="label"><FormattedMessage id='tradingSummary.TradingSummaryView.shortest'/></div>
                 <div className="value">
-                  {summary.formattedMinPeriod}
+                  {summary.getFormattedMinPeriod(formatMessage)}
                 </div>
               </div>
               <div className="item">
                 <div className="label"><FormattedMessage id='tradingSummary.TradingSummaryView.avg'/></div>
                 <div className="value">
-                  {summary.formattedAvgPeriod}
+                  {summary.getFormattedAvgPeriod(formatMessage)}
                 </div>
               </div>
             </div>
           </div>
           <div className="item">
-            <div className="title">><FormattedMessage id='tradingSummary.TradingSummaryView.volume'/></div>
+            <div className="title"><FormattedMessage id='tradingSummary.TradingSummaryView.volume'/></div>
             <div className="details">
               <div className="item">
                 <div className="label"><FormattedMessage id='tradingSummary.TradingSummaryView.max'/></div>

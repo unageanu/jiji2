@@ -1,8 +1,8 @@
 import React                            from "react"
 import { injectIntl, FormattedMessage } from 'react-intl';
 
-import Base                   from "../settings/securities-setting-view"
-import LoadingImage           from "../widgets/loading-image"
+import { SecuritiesSettingView as Base } from "../settings/securities-setting-view"
+import LoadingImage                      from "../widgets/loading-image"
 
 import RaisedButton from "material-ui/RaisedButton"
 
@@ -63,7 +63,7 @@ class SecuritiesSettingView extends Base {
 
   next() {
     const configurations = this.collectConfigurations();
-    this.props.model.setSecurities( configurations );
+    this.props.model.setSecurities( configurations, this.props.intl.formatMessage );
   }
 
   model() {

@@ -75,4 +75,4 @@ RangeSelector.propTypes = {
 };
 RangeSelector.defaultProps = {
 };
-export default injectIntl(RangeSelector)
+export default injectIntl(RangeSelector, {withRef: true})

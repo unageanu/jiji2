@@ -25,7 +25,7 @@ class SettingFinishedView extends AbstractComponent {
           <li>
             <FormattedMessage id='initialSettings.SettingFinishedView.description.part2'/>
             <a onClick={ () => window.open('http://jiji2.unageanu.net/usage/', '_blank') } >
-              <FormattedMessage id='initialSettings.SettingFinishedView.description.par31'/>
+              <FormattedMessage id='initialSettings.SettingFinishedView.description.part3'/>
             </a>
             <FormattedMessage id='initialSettings.SettingFinishedView.description.part4'/>
           </li>

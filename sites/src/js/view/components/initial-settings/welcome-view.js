@@ -1,5 +1,5 @@
 import React                  from "react"
-import { injectIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { injectIntl, FormattedMessage, } from 'react-intl';
 
 import AbstractComponent      from "../widgets/abstract-component"
 
@@ -28,7 +28,8 @@ class WelcomeView extends AbstractComponent {
     return (
       <div className="welcome-view">
         <div className="description">
-          <FormattedHTMLMessage id='initialSettings.WelcomeView.description'/>
+          <FormattedMessage id='initialSettings.WelcomeView.description.part1'/><br/>
+          <FormattedMessage id='initialSettings.WelcomeView.description.part2'/>
         </div>
         <div className="license inputs">
           <div className="license-link">

@@ -140,7 +140,7 @@ class BacktestBuilder extends AbstractComponent {
 
   registerBacktest() {
     this.refs.agentSettingEditor.applyAgentConfiguration();
-    this.refs.rangeSelector.applySetting();
+    this.refs.rangeSelector.getWrappedInstance().applySetting();
 
     const builder = this.model();
     builder.name = this.refs.name.getValue();

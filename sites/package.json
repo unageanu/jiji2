@@ -15,7 +15,6 @@
     "date-format": "0.0.2",
     "date-with-offset": "1.0.1",
     "events": "1.1.1",
-    "json-loader": "^0.5.7",
     "material-ui": "0.15.2",
     "react": "15.2.1",
     "react-ace": "3.5.0",
@@ -28,10 +27,11 @@
     "react-tap-event-plugin": "1.0.0",
     "underscore": "1.8.3",
     "url": "0.11.0",
-    "xhr": "2.2.1",
-    "yaml-flat-loader": "^1.0.2"
+    "xhr": "2.2.1"
   },
   "devDependencies": {
+    "yaml-flat-loader": "^1.0.2",
+    "json-loader": "^0.5.7",
     "babel-core": "6.10.4",
     "babel-loader": "6.2.4",
     "babel-polyfill": "6.9.1",

@@ -74,7 +74,7 @@ class PositionsTable extends AbstractComponent {
           className="button"
           label={formatMessage({ id: 'positions.PositionsTable.downloadCsv' })}
           labelStyle={{padding:"0px 16px 0px 8px"}}
-          onClick={()=> this.refs.downloadDialog.show()}>
+          onClick={()=> this.refs.downloadDialog.getWrappedInstance().show()}>
           <ButtonIcon className="md-file-download"/>
         </FlatButton>
       </div>

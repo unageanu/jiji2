@@ -26,6 +26,7 @@ class PairSettingView extends AbstractComponent {
   }
 
   render() {
+    const { formatMessage } = this.props.intl;
     return (
       <div className="pair-setting setting">
         <h3><FormattedMessage id='settings.PairSettingView.title'/></h3>

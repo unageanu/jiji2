@@ -1,5 +1,6 @@
-import PriceUtils        from "../utils/price-utils"
-import React             from "react"
+import PriceUtils           from "../utils/price-utils"
+import React                from "react"
+import { FormattedMessage } from 'react-intl';
 
 export default [
   {
@@ -20,9 +21,9 @@ export default [
     sort: "status",
     formatter(value, item) {
       if (item.status == "live" ) {
-         return <span className="live">{item.formattedStatus}</span>;
+         return <span className="live"><FormattedMessage id={item.formattedStatus} /></span>;
       } else {
-        return item.formattedStatus;
+        return <FormattedMessage id={item.formattedStatus} />;
       }
     }
   },{
@@ -34,7 +35,10 @@ export default [
     id:"sellOrBuy",
     name:"tradingSummary.TradingSummaryView.sellOrBuy",
     key:"formattedSellOrBuy",
-    sort: "sell_or_buy"
+    sort: "sell_or_buy",
+    formatter(value, item) {
+      return <FormattedMessage id={value} />;
+    }
   }, {
     id:"units",
     name:"positions.PositionDetailsView.volume",

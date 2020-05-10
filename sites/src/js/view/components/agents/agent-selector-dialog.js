@@ -1,5 +1,5 @@
-import React                            from "react"
-import { injectIntl, FormattedMessage } from 'react-intl';
+import React                from "react"
+import { FormattedMessage } from 'react-intl';
 
 import AgentClassSelector from "./agent-class-selector"
 import Theme              from "../../theme"
@@ -7,7 +7,7 @@ import Theme              from "../../theme"
 import Dialog from "material-ui/Dialog"
 import FlatButton from "material-ui/FlatButton"
 
-class AgentSelectorDialog extends React.Component {
+export default class AgentSelectorDialog extends React.Component {
 
   constructor(props) {
     super(props);
@@ -17,10 +17,10 @@ class AgentSelectorDialog extends React.Component {
   }
 
   render() {
-    const { formatMessage } = this.props.intl;
     const actions = [
       <FlatButton
-        label={formatMessage({ id: 'common.button.cancel' })}
+        label="aaa"
+        label={<FormattedMessage id="common.button.cancel"/>}
         primary={false}
         onTouchTap={this.dismiss.bind(this)}
       />
@@ -59,5 +59,3 @@ AgentClassSelector.defaultProps = {
   availableAgents: [],
   onSelect: (agentClass) => {}
 };
-
-export default injectIntl(AgentSelectorDialog);

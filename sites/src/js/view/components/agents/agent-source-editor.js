@@ -109,8 +109,8 @@ class AgentSourceEditor extends AbstractComponent {
 
   save() {
     const body = this.editor.value;
-    const name = this.fileName.value;
-    this.model().save(name, body,  this.props.intl.formatMessage);
+    const name = this.fileName.getWrappedInstance().value;
+    this.model().save(name, body, this.props.intl.formatMessage);
   }
 
   model() {

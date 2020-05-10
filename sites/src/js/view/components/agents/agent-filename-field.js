@@ -79,4 +79,4 @@ AgentFileNameField.propTypes = {
 AgentFileNameField.contextTypes = {
 };
 
-export default injectIntl(AgentFileNameField);
+export default injectIntl(AgentFileNameField, {withRef: true});

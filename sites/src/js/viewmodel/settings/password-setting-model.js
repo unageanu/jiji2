@@ -24,7 +24,7 @@ export default class PasswordSettingModel extends Observable {
 
   save(newPassword, newPassword2, oldPassword, formatMessage) {
     this.message = null;
-    if (!this.validate(newPassword, newPassword2, formatMessage, formatMessage)) return;
+    if (!this.validate(newPassword, newPassword2, formatMessage({id: 'validation.fields.password'}), formatMessage)) return;
     this.isSaving = true;
     this.userSettingService.setPassword(oldPassword, newPassword).then(
         (result) => {

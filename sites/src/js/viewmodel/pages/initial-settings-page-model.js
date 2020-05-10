@@ -91,12 +91,12 @@ export default class InitialSettingsPageModel extends Observable {
         throw error;
       });
   }
-  setSecurities( configurations ) {
-    this.securitiesSetting.save(configurations).done(
+  setSecurities( configurations, formatMessage ) {
+    this.securitiesSetting.save(configurations, formatMessage).done(
       () => this.changePhaseToSetSMTPServerIfRequired());
   }
-  setSMTPServerSetting( settings ) {
-    this.smtpServerSetting.save(settings).done(
+  setSMTPServerSetting( settings, formatMessage ) {
+    this.smtpServerSetting.save(settings, formatMessage).done(
       () => this.setProperty("phase", "finished"));
   }
   skipSMTPServerSetting( ) {

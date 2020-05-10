@@ -1,5 +1,5 @@
-import React                                from "react"
-import { injectIntl, FormattedHTMLMessage } from 'react-intl';
+import React                    from "react"
+import { injectIntl, FormattedHTMLMessage, FormattedMessage } from 'react-intl';
 
 import Theme              from "../../theme"
 import RangeSelector      from "../widgets/range-selector"
@@ -27,7 +27,6 @@ class DownloadPositionsDialog extends AbstractComponent {
   }
 
   render() {
-    const { formatMessage } = this.props.intl;
     const labelForAll = <span>
       <FormattedHTMLMessage id='positions.DownloadPositionsDialog.label' />
     </span>;
@@ -55,7 +54,7 @@ class DownloadPositionsDialog extends AbstractComponent {
               </RadioButton>
               <RadioButton
                 value="filterd"
-                label={formatMessage({id:'positions.DownloadPositionsDialog.filter'})}>
+                label={<FormattedMessage id='positions.DownloadPositionsDialog.filter' />}>
               </RadioButton>
             </RadioButtonGroup>
             <RangeSelector
@@ -68,14 +67,13 @@ class DownloadPositionsDialog extends AbstractComponent {
   }
 
   createActionButtons() {
-    const { formatMessage } = this.props.intl;
     return [
       <FlatButton
-        label={formatMessage({id:'positions.DownloadPositionsDialog.download'})}
+        label={<FormattedMessage id='positions.DownloadPositionsDialog.download' />}
         primary={false}
         onTouchTap={this.downloadCSV.bind(this)}
       />, <FlatButton
-        label={formatMessage({id:'common.button.cancel'})}
+        label={<FormattedMessage id='common.button.cancel' />}
         primary={false}
         onTouchTap={this.dismiss.bind(this)}
       />
@@ -87,7 +85,7 @@ class DownloadPositionsDialog extends AbstractComponent {
   }
 
   downloadCSV() {
-    this.rangeSelector.applySetting();
+    this.rangeSelector.getWrappedInstance().applySetting();
     this.props.model.createCSVDownloadUrl(this.props.intl.formatMessage).then((url)=> {
       if (!url) return;
       this.dismiss();
@@ -108,5 +106,4 @@ DownloadPositionsDialog.propTypes = {
 };
 DownloadPositionsDialog.defaultProps = {
 };
-
-export default injectIntl(DownloadPositionsDialog)
+export default injectIntl(DownloadPositionsDialog, {withRef: true})

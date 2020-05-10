@@ -49,7 +49,7 @@ export default class AgentSettingEditor extends AbstractComponent {
   }
 
   applyAgentConfiguration() {
-    this.agentPropertyEditor.applyAgentConfiguration();
+    this.agentPropertyEditor.getWrappedInstance().applyAgentConfiguration();
   }
 }
 AgentSettingEditor.propTypes = {

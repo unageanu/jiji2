@@ -144,4 +144,4 @@ AgentPropertyEditor.defaultProps = {
   readOnly : false
 };
 
-export default injectIntl(AgentPropertyEditor);
+export default injectIntl(AgentPropertyEditor, {withRef: true});

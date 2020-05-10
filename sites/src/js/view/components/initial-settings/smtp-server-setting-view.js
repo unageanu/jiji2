@@ -1,7 +1,7 @@
 import React                  from "react"
 import { injectIntl, FormattedMessage, FormattedHTMLMessage } from 'react-intl';
 
-import Base                   from "../settings/smtp-server-setting-view"
+import { SMTPServerSettingView as Base } from "../settings/smtp-server-setting-view"
 import LoadingImage           from "../widgets/loading-image"
 
 import RaisedButton from "material-ui/RaisedButton"
@@ -65,7 +65,7 @@ class SMTPServerSettingView extends Base {
 
   next() {
     const settings = this.collectSetting();
-    this.props.model.setSMTPServerSetting( settings );
+    this.props.model.setSMTPServerSetting( settings, this.props.intl.formatMessage );
   }
   skip() {
     this.props.model.skipSMTPServerSetting( );

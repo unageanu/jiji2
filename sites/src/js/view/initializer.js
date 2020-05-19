@@ -33,8 +33,9 @@ export default class Initializer {
     if (initialRoute) hashHistory.replace(initialRoute);
     try {
       const element = document.getElementById("main");
+      const lang = this.lang();
       ReactDOM.render(
-        <IntlProvider locale={navigator.language} messages={getMessages(navigator.language)}>
+        <IntlProvider locale={lang} messages={getMessages(lang)}>
           <Router
             history={hashHistory}
             createElement={(component, props) => {
@@ -58,5 +59,8 @@ export default class Initializer {
   }
   modules() {
     return modules;
+  }
+  lang() {
+    return navigator.language;
   }
 }

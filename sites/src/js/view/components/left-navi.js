@@ -7,7 +7,7 @@ import Divider          from "material-ui/Divider"
 import Subheader        from 'material-ui/Subheader'
 import Environment      from "../environment"
 
-class LeftNavi extends React.Component {
+export class LeftNavi extends React.Component {
 
   constructor(props) {
     super(props);

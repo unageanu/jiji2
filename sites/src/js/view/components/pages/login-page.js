@@ -20,7 +20,7 @@ const keys = new Set([
   "isResettingPassword"
 ]);
 
-class LoginPage extends AbstractPage {
+export class LoginPage extends AbstractPage {
 
   constructor(props) {
     super(props);

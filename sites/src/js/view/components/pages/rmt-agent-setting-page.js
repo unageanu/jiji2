@@ -12,7 +12,7 @@ const keys = new Set([
   "isSaving", "isLoading", "savedLabel"
 ]);
 
-class RMTAgentSettingPage extends AbstractPage {
+export class RMTAgentSettingPage extends AbstractPage {
 
   constructor(props) {
     super(props);

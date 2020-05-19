@@ -396,6 +396,8 @@ viewmodel:
     login: 登录
     initialSettings: 初期设置
     welcome: 欢迎
+    support: 帮助中心
+    usage: 使用方法
   AgentsPageModel:
     edit: 编辑量化策略
   RmtAgentSettingPageModel:

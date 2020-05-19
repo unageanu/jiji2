@@ -5,6 +5,8 @@ common:
     cancel: 取消
     next: 下一步
     close: 关闭
+    yes: 是
+    no: 不是
   action:
     reload: 更新
     prev: 前{size}条

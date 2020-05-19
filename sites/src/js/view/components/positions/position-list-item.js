@@ -1,5 +1,5 @@
 import React                from "react"
-import { FormattedMessage } from 'react-intl';
+import { injectIntl, FormattedMessage } from 'react-intl';
 
 import AbstractComponent   from "../widgets/abstract-component"
 import PositionStatus      from "./position-status"
@@ -12,7 +12,7 @@ import Avatar from "material-ui/Avatar"
 
 const nullPosition = {};
 
-export default class PositionListItem extends React.Component {
+class PositionListItem extends React.Component {
 
   constructor(props) {
     super(props);
@@ -69,10 +69,11 @@ export default class PositionListItem extends React.Component {
     ];
   }
   createRightIcon(position) {
-      if (position.status != "live") return null;
-      return <span className="right-icon" style={{width:"auto"}}>
-        <PositionStatus formattedStatus={position.formattedStatus} status={position.status} />
-      </span>;
+    const { formatMessage } = this.props.intl;
+    if (position.status != "live") return null;
+    return <span className="right-icon" style={{width:"auto"}}>
+      <PositionStatus formattedStatus={formatMessage({id: position.formattedStatus })} status={position.status} />
+    </span>;
   }
   createAvatar(position) {
     return <Avatar className="left-icon" src={position.agentIconUrl} />
@@ -86,3 +87,4 @@ PositionListItem.defaultProps = {
   position: null,
   selected: false
 };
+export default injectIntl(PositionListItem);

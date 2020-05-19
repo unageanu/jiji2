@@ -1,4 +1,5 @@
-import React        from "react"
+import React          from "react"
+import { FormattedMessage } from 'react-intl';
 
 import Deferred     from "../../../utils/deferred"
 
@@ -37,7 +38,7 @@ export default class ConfirmDialog extends React.Component {
         this.setState({d:null, open:false})
       };
       return <FlatButton
-        label={a.text}
+        label={a.text || <FormattedMessage id={a.labelId} />}
         primary={false}
         onTouchTap={touchAction}
       />
@@ -56,7 +57,7 @@ ConfirmDialog.propTypes = {
 };
 ConfirmDialog.defaultProps = {
   actions: [
-    { text: "いいえ", id:"no"  },
-    { text: "はい",   id:"yes" }
+    { labelId: "common.button.no",  id:"no"  },
+    { labelId: "common.button.yes", id:"yes" }
   ]
 };

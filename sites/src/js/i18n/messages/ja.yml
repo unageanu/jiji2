@@ -5,6 +5,8 @@ common:
     cancel: キャンセル
     next: 次へ
     close: 閉じる
+    yes: はい
+    no: いいえ
   action:
     reload: 更新
     prev: 前の{size}件
